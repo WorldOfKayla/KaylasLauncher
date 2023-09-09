@@ -3,7 +3,7 @@ package org.foxesworld.newengine.locale;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.foxesworld.newengine.FormCreatorApp;
+import org.foxesworld.newengine.APP;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,15 +14,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class LocalizationLoader {
-    private FormCreatorApp formCreatorApp;
+public class LanguageProvier {
+    private APP APP;
+    private  String lang;
     private Map<String, Map<String, String>> localizationData = new HashMap<>();
 
-    public LocalizationLoader(FormCreatorApp formCreatorApp) {
-        this.formCreatorApp = formCreatorApp;
+    public LanguageProvier(APP APP) {
+        this.APP = APP;
+        lang = APP.getLOCALE();
         try {
             Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(formCreatorApp.getLangFile(), StandardCharsets.UTF_8);
+            InputStreamReader reader = new InputStreamReader(APP.getLangFile(), StandardCharsets.UTF_8);
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder jsonStringBuilder = new StringBuilder();
             String line;
@@ -52,7 +54,6 @@ public class LocalizationLoader {
     }
 
     public String getString(String key) {
-        String lang = formCreatorApp.getLOCALE();
         if (localizationData.containsKey(key)) {
             Map<String, String> langMap = localizationData.get(key);
             if (langMap.containsKey(lang)) {
@@ -60,5 +61,9 @@ public class LocalizationLoader {
             }
         }
         return key;
+    }
+
+    public String getLang() {
+        return lang;
     }
 }

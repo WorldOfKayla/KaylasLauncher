@@ -1,0 +1,169 @@
+/*
+ * Decompiled with CFR 0.150.
+ */
+package org.foxesworld.newengine.utils;
+
+import org.foxesworld.newengine.APP;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+
+import static org.foxesworld.newengine.utils.LogUtils.send;
+
+public class ImageUtils {
+
+    private APP app;
+    public ImageUtils(APP app){
+        this.app = app;
+    }
+
+    public static Map<String, BufferedImage> imgs = new HashMap<String, BufferedImage>();
+
+    public static BufferedImage getLocalImage(String name) {
+        try {
+            if (imgs.containsKey(name))
+                return imgs.get(name);
+
+            BufferedImage img = ImageIO.read(ImageUtils.class.getClassLoader().getResourceAsStream(name));
+            imgs.put(name, img);
+            send("Opened local image: " + name + ".png", 0, false);
+            return img;
+        } catch (Exception e) {
+            send("Failed to open local image: " + name + ".png", 0, true);
+            return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
+        }
+    }
+
+    public static BufferedImage genButton(int w, int h, BufferedImage img) {
+        BufferedImage res = new BufferedImage(w, h, 2);
+        BufferedImage left = img.getSubimage(0, 0, img.getWidth() / 3, img.getHeight());
+        BufferedImage center = img.getSubimage(img.getWidth() / 3, 0, img.getWidth() / 3, img.getHeight());
+        BufferedImage right = img.getSubimage(img.getWidth() / 3 * 2, 0, img.getWidth() / 3, img.getHeight());
+        res.getGraphics().drawImage(left, 0, 0, left.getWidth(), left.getHeight(), null);
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(center, w - left.getWidth() - right.getWidth(), h), left.getWidth(), 0, w - left.getWidth() - right.getWidth(), h, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        res.getGraphics().drawImage(right, w - right.getWidth(), 0, right.getWidth(), h, null);
+        return res;
+    }
+
+    public static BufferedImage genPanel(int w, int h, BufferedImage img) {
+        BufferedImage res = new BufferedImage(w, h, 2);
+        int onew = img.getWidth() / 3;
+        int oneh = img.getHeight() / 3;
+        res.getGraphics().drawImage(img.getSubimage(0, 0, onew, oneh), 0, 0, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(onew * 2, 0, onew, oneh), w - onew, 0, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(0, oneh * 2, onew, oneh), 0, h - oneh, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(onew, oneh, onew * 2, oneh * 2), w - onew, h - oneh, onew, oneh, null);
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, 0, onew, oneh), w - onew * 2, oneh), onew, 0, w - onew * 2, oneh, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(0, oneh, onew, oneh), onew, h - oneh * 2), 0, oneh, onew, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, oneh * 2, onew, oneh), w - onew * 2, oneh), onew, h - oneh, w - onew * 2, oneh, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew * 2, oneh, onew, oneh), onew, h - oneh * 2), w - onew, oneh, onew, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, oneh, onew, oneh), w - onew * 2, h - oneh * 2), onew, oneh, w - onew * 2, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        return res;
+    }
+
+    public static BufferedImage fill(BufferedImage texture, int w, int h) {
+        int sizex = texture.getWidth();
+        int sizey = texture.getHeight();
+        BufferedImage img = new BufferedImage(w, h, 2);
+        for (int x2 = 0; x2 <= w / sizex; ++x2) {
+            for (int y2 = 0; y2 <= h / sizey; ++y2) {
+                img.getGraphics().drawImage(texture, x2 * sizex, y2 * sizey, null);
+            }
+        }
+        return img;
+    }
+
+    public static BufferedImage fillHoriz(BufferedImage texture, int w, int h) {
+        int sizex = texture.getWidth();
+        BufferedImage img = new BufferedImage(w, h, 2);
+        for (int x2 = 0; x2 <= w / sizex; ++x2) {
+            img.getGraphics().drawImage(texture, x2 * sizex, 0, sizex, texture.getHeight(), null);
+        }
+        return img;
+    }
+
+    public static BufferedImage blurImage(BufferedImage image) {
+        float ninth = 0.11111111f;
+        float[] blurKernel = new float[]{ninth, ninth, ninth, ninth, ninth, ninth, ninth, ninth, ninth};
+        HashMap<RenderingHints.Key, Object> map = new HashMap<RenderingHints.Key, Object>();
+        map.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        map.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        map.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        RenderingHints hints = new RenderingHints(map);
+        ConvolveOp op = new ConvolveOp(new Kernel(3, 3, blurKernel), 1, hints);
+        return op.filter(image, null);
+    }
+
+    public static BufferedImage sceenComponent(JComponent c) {
+        int w = c.getWidth();
+        int h = c.getHeight();
+        BufferedImage img = new BufferedImage(w, h, 2);
+        Graphics2D g = img.createGraphics();
+        c.paint(g);
+        g.dispose();
+        return img;
+    }
+
+    public static BufferedImage loadImage(String name) {
+        try {
+            return ImageIO.read(ImageUtils.class.getResource("/assets/" + name));
+        } catch (IOException var2) {
+            var2.printStackTrace();
+            return new BufferedImage(1, 1, 2);
+        }
+    }
+
+    public static BufferedImage getByIndex(BufferedImage all, int d, int i) {
+        return all.getSubimage(d * i, 0, d, d);
+    }
+
+    public static BufferedImage getByIndexCR(BufferedImage all, int d, int row, int i) {
+        return all.getSubimage(d * i, row * i, d, d);
+    }
+
+    public static BufferedImage[] spriteCollsRows(BufferedImage img, int colls, int rows, int width, int height) {
+        BufferedImage[] spritesOut = new BufferedImage[rows * colls];
+        int i = 0;
+        int j = 0;
+        for (i = 0; i < rows; ++i) {
+            for (j = 0; j < colls; ++j) {
+                spritesOut[i * colls + j] = img.getSubimage(j * width, i * height, width, height);
+            }
+        }
+        return spritesOut;
+    }
+}
+

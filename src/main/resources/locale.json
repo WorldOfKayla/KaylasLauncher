@@ -1,0 +1,18 @@
+{
+  "appTitle": {
+    "en": "Form Creator App",
+    "ru": "Приложение для создания формы"
+  },
+  "nameLabel": {
+    "en": "Name:",
+    "ru": "Имя:"
+  },
+  "ageLabel": {
+    "en": "Age:",
+    "ru": "Возраст:"
+  },
+  "submit": {
+    "en": "Submit",
+    "ru": "Отправить"
+  }
+}

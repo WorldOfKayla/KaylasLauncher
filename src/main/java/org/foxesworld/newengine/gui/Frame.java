@@ -1,7 +1,6 @@
 package org.foxesworld.newengine.gui;
 
 import org.foxesworld.newengine.APP;
-import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.locale.LanguageProvier;
 
 import javax.swing.*;

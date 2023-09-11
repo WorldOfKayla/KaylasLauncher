@@ -18,9 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.foxesworld.newengine.gui.components.Align.CENTER;
 import static org.foxesworld.newengine.utils.FontUtils.getFont;
 
 public class GuiBuilder {
@@ -80,6 +78,7 @@ public class GuiBuilder {
             ButtonStyle buttonStyle = this.buttonStyleFactory.getButtonStyle(frameComponents.style);
             StyledButton button = new StyledButton(LANG.getString(frameComponents.text), buttonStyle);
             buttonStyle.apply(button);
+            button.setFont(getFont(frameComponents.fontName, frameComponents.fontSize));
             button.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
             button.addActionListener(e -> {});
             return button;

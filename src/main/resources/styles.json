@@ -1,0 +1,15 @@
+[
+  {
+    "button": [
+      "buttonGreen",
+      "buttonRed",
+      "buttonWhite"
+    ]
+  },
+  {
+    "input": [
+      "line",
+      "inputBox"
+    ]
+  }
+]

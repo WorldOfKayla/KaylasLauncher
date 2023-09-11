@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.components.button.ButtonStyle;
+import org.foxesworld.newengine.gui.components.button.ButtonStyleFactory;
 import org.foxesworld.newengine.gui.components.button.StyledButton;
 import org.foxesworld.newengine.locale.LanguageProvier;
 
@@ -11,16 +12,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
 
 public class GuiBuilder {
-
+    private HashMap<String, List<Component>> componentsMap = new HashMap<>();
+    private ButtonStyleFactory buttonStyleFactory;
     private APP app;
+    private  JFrame frame;
     private LanguageProvier LANG;
-    public GuiBuilder(APP app){
-        this.app = app;
+
+    public GuiBuilder(Frame frame){
+        this.app = frame.getApp();
+        this.frame = frame.getFrame();
+        buttonStyleFactory = new ButtonStyleFactory(app, frame.getElementStyles().get("button"));
         this.LANG = app.getLANG();
     }
     public void buildGui(String path) {
@@ -28,7 +37,6 @@ public class GuiBuilder {
         InputStreamReader reader = new InputStreamReader(GuiBuilder.class.getClassLoader().getResourceAsStream(path), StandardCharsets.UTF_8);
         FrameProperties frameProperties = gson.fromJson(reader, FrameProperties.class);
 
-        JFrame frame = new JFrame();
         frame.setTitle(LANG.getString(frameProperties.title));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(frameProperties.width, frameProperties.height);
@@ -45,7 +53,7 @@ public class GuiBuilder {
 
         for (FrameComponents frameComponents : frameProperties.fields) {
             JComponent component = createComponent(frameComponents);
-            frame.add(component);
+            this.addComponentToMap(frameComponents.frameGroup, component);
         }
         frame.setVisible(true);
     }
@@ -60,16 +68,32 @@ public class GuiBuilder {
             textField.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
             return textField;
         } else if ("button".equals(frameComponents.type)) {
-            ButtonStyle buttonStyle = new ButtonStyle(app, frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height, "Roboto-Black", "assets/ui/buttonRed.png", 14.0f, Color.decode("0xd4dc7b"), true, CENTER);
+            ButtonStyle buttonStyle = this.buttonStyleFactory.getButtonStyle(frameComponents.style);
             StyledButton button = new StyledButton(LANG.getString(frameComponents.text), buttonStyle);
             buttonStyle.apply(button);
+            button.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
             button.addActionListener(e -> {});
             return button;
         } else {
             throw new IllegalArgumentException("Unsupported component type: " + frameComponents.type);
         }
     }
+
+    private void addComponentToMap(String groupId, Component component) {
+        if (!componentsMap.containsKey(groupId)) {
+            componentsMap.put(groupId, new ArrayList<>());
+        }
+
+        componentsMap.get(groupId).add(component);
+    }
+
+    public HashMap<String, List<Component>> getComponentsMap() {
+        return componentsMap;
+    }
+
 }
+
+
 
 class FrameProperties {
     @SerializedName("title")
@@ -94,6 +118,12 @@ class FrameProperties {
 class FrameComponents {
     @SerializedName("type")
     String type;
+
+    @SerializedName("frameGroup")
+    String frameGroup;
+
+    @SerializedName("style")
+    String style;
 
     @SerializedName("text")
     String text;

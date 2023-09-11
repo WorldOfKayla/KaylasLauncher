@@ -12,11 +12,6 @@ import javax.swing.SwingConstants;
 
 
 public class ButtonStyle {
-	private APP app;
-	public int x = 0;
-	public int y = 0;
-	public int w = 0;
-	public int h = 0;
 	public String fontName;
 	public float fontSize = 1F;
 	public Color color;
@@ -24,12 +19,7 @@ public class ButtonStyle {
 	public Align align;
 	public BufferedImage texture;
 
-	public ButtonStyle(APP app, int x, int y, int w, int h, String fontName, String texture, float fontSize, Color color, boolean visible, Align align) {
-		this.app = app;
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+	public ButtonStyle(String fontName, String texture, float fontSize, Color color, boolean visible, Align align) {
 		this.fontName = fontName;
 		this.fontSize = fontSize;
 		this.color = color;
@@ -40,7 +30,6 @@ public class ButtonStyle {
 
 	public void apply(Button button) {
 		button.setVisible(visible);
-		button.setBounds(x, y, w, h);
 		button.setForeground(color);
 		button.setFont(FontUtils.getFont(fontName, fontSize));
 		button.setHorizontalAlignment(align == Align.LEFT ? SwingConstants.LEFT : align == Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);

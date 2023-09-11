@@ -8,6 +8,7 @@
     {
       "type": "label",
       "text": "nameLabel",
+      "frameGroup": "test",
       "x": 20,
       "y": 20,
       "width": 100,
@@ -15,6 +16,7 @@
     },
     {
       "type": "textfield",
+      "frameGroup": "test",
       "x": 130,
       "y": 25,
       "width": 160,
@@ -23,6 +25,7 @@
     {
       "type": "label",
       "text": "ageLabel",
+      "frameGroup": "test",
       "x": 20,
       "y": 70,
       "width": 100,
@@ -30,6 +33,7 @@
     },
     {
       "type": "textfield",
+      "frameGroup": "test",
       "x": 130,
       "y": 75,
       "width": 160,
@@ -38,6 +42,8 @@
     {
       "type": "button",
       "text": "submit",
+      "frameGroup": "test",
+      "style": "buttonGreen",
       "x": 20,
       "y": 120,
       "width": 120,

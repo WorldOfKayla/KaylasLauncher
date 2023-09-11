@@ -1,6 +1,6 @@
 package org.foxesworld.newengine;
 
-import org.foxesworld.newengine.gui.Frame;
+import org.foxesworld.newengine.gui.AppFrame;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -22,7 +22,7 @@ public class APP {
         IMAGEUTILS = new ImageUtils(APP);
 
         SwingUtilities.invokeLater(() -> {
-            Frame frame = new Frame(APP);
+            AppFrame appFrame = new AppFrame(APP);
         });
     }
 

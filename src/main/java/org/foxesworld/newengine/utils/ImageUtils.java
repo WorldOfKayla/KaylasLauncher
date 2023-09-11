@@ -35,10 +35,10 @@ public class ImageUtils {
 
             BufferedImage img = ImageIO.read(ImageUtils.class.getClassLoader().getResourceAsStream(name));
             imgs.put(name, img);
-            send("Opened local image: " + name + ".png", 0, false);
+            send("Opened local image: " + name, 0, false);
             return img;
         } catch (Exception e) {
-            send("Failed to open local image: " + name + ".png", 0, true);
+            send("Failed to open local image: " + name, 0, true);
             return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         }
     }

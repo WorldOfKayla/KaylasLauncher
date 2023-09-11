@@ -4,58 +4,68 @@
   "height": 250,
   "resizable": false,
   "undecorated": false,
-  "fields": [
-    {
-      "type": "label",
-      "text": "nameLabel",
-      "frameGroup": "test",
-      "x": 20,
-      "y": 20,
-      "width": 100,
-      "height": 30
-    },
-    {
-      "type": "textfield",
-      "frameGroup": "test",
-      "style": "inputBox",
-      "fontName": "Roboto-Black",
-      "fontSize": 13,
-      "x": 130,
-      "y": 25,
-      "width": 160,
-      "height": 40
-    },
-    {
-      "type": "label",
-      "text": "ageLabel",
-      "frameGroup": "test",
-      "x": 20,
-      "y": 70,
-      "width": 100,
-      "height": 30
-    },
-    {
-      "type": "textfield",
-      "frameGroup": "test",
-      "style": "inputBox",
-      "fontName": "FSElliotPro-Light",
-      "fontSize": 13,
-      "x": 130,
-      "y": 75,
-      "width": 160,
-      "height": 40
-    },
-    {
-      "type": "button",
-      "text": "submit",
-      "frameGroup": "test",
-      "style": "buttonRed",
-      "fontName": "FSElliotPro-Light",
-      "fontSize": 16,
-      "x": 20,
-      "y": 120,
-      "width": 120,
-      "height": 34
-    }
-  ]
+  "fields": {
+    "labels": [
+      {
+        "text": "nameLabel",
+        "frameGroup": "test",
+        "fontName": "FSElliotPro-Light",
+        "color": "#FF4500",
+        "fontSize": 13,
+        "x": 20,
+        "y": 20,
+        "width": 100,
+        "height": 30
+      },
+      {
+        "text": "ageLabel",
+        "frameGroup": "test",
+        "fontName": "FSElliotPro-Light",
+        "color": "#FF4500",
+        "fontSize": 13,
+        "x": 20,
+        "y": 70,
+        "width": 100,
+        "height": 30
+      }
+    ],
+    "textfields": [
+      {
+        "frameGroup": "test",
+        "style": "inputBox",
+        "fontName": "Roboto-Black",
+        "fontSize": 13,
+        "color": "#BDB76B",
+        "x": 130,
+        "y": 25,
+        "width": 200,
+        "height": 25
+      },
+      {
+        "frameGroup": "test",
+        "style": "inputBox",
+        "fontName": "FSElliotPro-Light",
+        "fontSize": 13,
+        "color": "#BDB76B",
+        "x": 130,
+        "y": 75,
+        "width": 200,
+        "height": 25
+      }
+    ],
+    "buttons": [
+      {
+        "text": "submit",
+        "frameGroup": "test",
+        "style": "buttonRed",
+        "fontName": "FSElliotPro-Light",
+        "fontSize": 16,
+        "color": "#F5F5DC",
+        "x": 20,
+        "y": 120,
+        "width": 120,
+        "height": 34
+      }
+    ]
+  }
 }

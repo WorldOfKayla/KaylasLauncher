@@ -34,4 +34,14 @@ public class FontUtils {
         }
         return null;
     }
+
+    public static Color hexToColor(String hex) {
+        hex = hex.replace("#", "");
+
+        int red = Integer.parseInt(hex.substring(0, 2), 16);
+        int green = Integer.parseInt(hex.substring(2, 4), 16);
+        int blue = Integer.parseInt(hex.substring(4, 6), 16);
+
+        return new Color(red, green, blue);
+    }
 }

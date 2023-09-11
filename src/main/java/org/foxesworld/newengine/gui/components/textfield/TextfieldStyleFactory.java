@@ -1,36 +1,21 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
-import org.foxesworld.newengine.APP;
+import org.foxesworld.newengine.gui.components.StyleLoader;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 
 public class TextfieldStyleFactory {
-    private Map<String, TextfieldStyle> textfieldStyles = new HashMap<>();
+    private TextfieldStyle textfieldStyle;
 
-    public TextfieldStyleFactory(List styles) {
-        for(Object style: styles){
-            this.createTextfieldStyles(String.valueOf(style), "assets/ui/input/"+style+".png",Color.BLACK,Color.decode("0xd4dc7b"));
-        }
+    public TextfieldStyleFactory(StyleLoader.StyleAttributes styles) {
+        this.createTextfieldStyles(styles.name, "assets/ui/input/"+styles.texture+".png", styles.font, Float.valueOf(styles.fontSize), styles.color ,Color.decode("0xd4dc7b"));
     }
 
-    public TextfieldStyle createTextfieldStyles(
-            String styleName,
-            String imagePath,
+    public void createTextfieldStyles(String styleName, String imagePath, String font, float fontSize, String textColor,Color carretColor) {
+        textfieldStyle = new TextfieldStyle(imagePath, font, fontSize, textColor, carretColor);
+    }
 
-            Color textColor,
-            Color carretColor
-    ) {
-
-        TextfieldStyle textfieldStyle = new TextfieldStyle(imagePath, textColor, carretColor);
-        textfieldStyles.put(styleName, textfieldStyle);
-
+    public TextfieldStyle getTextfieldStyle() {
         return textfieldStyle;
-    }
-
-    public TextfieldStyle getTextfieldStyle(String styleName) {
-        return textfieldStyles.get(styleName);
     }
 }

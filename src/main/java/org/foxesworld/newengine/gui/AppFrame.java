@@ -1,23 +1,22 @@
 package org.foxesworld.newengine.gui;
 
 import org.foxesworld.newengine.APP;
+import org.foxesworld.newengine.gui.components.StyleLoader;
 import org.foxesworld.newengine.locale.LanguageProvier;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class Frame extends JFrame {
-    protected APP app;
-    private GuiBuilder guiBuilder;
+public class AppFrame extends JFrame {
+    protected final APP app;
+    private FrameBuilder frameBuilder;
+    private Map<String, Map<String, StyleLoader.StyleAttributes>> elementStyles = new HashMap<>();
+    private final JFrame frame;
+    protected final LanguageProvier LANG;
 
-    private Map<String, List<String>> elementStyles = new HashMap<>();
-    private JFrame frame;
-    protected LanguageProvier LANG;
-
-    public Frame(APP app) {
+    public AppFrame(APP app) {
         this.LANG = app.getLANG();
         this.app = app;
         this.frame = new JFrame();
@@ -25,15 +24,15 @@ public class Frame extends JFrame {
     }
 
     private void initialize() {
-        StyleLoader styleLoader = new StyleLoader(app);
+        StyleLoader styleLoader = new StyleLoader();
         this.elementStyles = styleLoader.getElementStyles();
-        guiBuilder = new GuiBuilder(this);
-        guiBuilder.buildGui( "interface.json");
+        frameBuilder = new FrameBuilder(this);
+        frameBuilder.buildGui( "interface.json");
         frameComponents("test", true);
     }
 
     public void frameComponents(String id, boolean visible) {
-        for (Component component : guiBuilder.getComponentsMap().get(id)) {
+        for (Component component : frameBuilder.getComponentsMap().get(id)) {
             if (visible) {
                 frame.add(component);
             } else {
@@ -42,7 +41,7 @@ public class Frame extends JFrame {
         }
     }
 
-    public Map<String, List<String>> getElementStyles() {
+    public Map<String, Map<String, StyleLoader.StyleAttributes>> getElementStyles() {
         return elementStyles;
     }
 

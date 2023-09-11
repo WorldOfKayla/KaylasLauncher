@@ -5,9 +5,11 @@ import org.foxesworld.newengine.utils.ImageUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 
 
 public class Textfield extends JTextField {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public BufferedImage texture;

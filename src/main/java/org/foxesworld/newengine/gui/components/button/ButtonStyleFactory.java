@@ -1,39 +1,22 @@
 package org.foxesworld.newengine.gui.components.button;
 
-import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.components.Align;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import org.foxesworld.newengine.gui.components.StyleLoader;
 
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
 
 public class ButtonStyleFactory {
-    private Map<String, ButtonStyle> buttonStyles = new HashMap<>();
+    private ButtonStyle buttonStyle;
 
-    public ButtonStyleFactory(List styles) {
-        for(Object style: styles){
-            this.createButtonStyle(String.valueOf(style), "assets/ui/button/"+style+".png", Color.decode("0xd4dc7b"), true, CENTER);
-        }
+    public ButtonStyleFactory(StyleLoader.StyleAttributes styles) {
+        this.createButtonStyle(styles.name, "assets/ui/button/"+styles.texture+".png", styles.font, styles.color, Float.valueOf(styles.fontSize), true, CENTER);
     }
 
-    public ButtonStyle createButtonStyle(
-            String styleName,
-            String imagePath,
-            Color textColor,
-            boolean isVisible,
-            Align align
-    ) {
+    public void createButtonStyle(String styleName, String imagePath, String font, String color, float fontSize, boolean isVisible, Align align) {
+        buttonStyle = new ButtonStyle(imagePath, font, fontSize, color, isVisible, align);
+    }
 
-        ButtonStyle buttonStyle = new ButtonStyle(imagePath, textColor, isVisible, align);
-        buttonStyles.put(styleName, buttonStyle);
-
+    public ButtonStyle getButtonStyle() {
         return buttonStyle;
-    }
-
-    public ButtonStyle getButtonStyle(String styleName) {
-        return buttonStyles.get(styleName);
     }
 }

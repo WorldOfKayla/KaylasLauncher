@@ -1,15 +1,43 @@
-[
-  {
-    "button": [
-      "buttonGreen",
-      "buttonRed",
-      "buttonWhite"
-    ]
-  },
-  {
-    "input": [
-      "line",
-      "inputBox"
-    ]
+{
+  "styles": {
+    "button": {
+      "buttonGreen": {
+        "name": "Green Emerald",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "color": "#ffffff",
+        "texture": "buttonGreen"
+      },
+      "buttonRed": {
+        "name": "Red Lava",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "color": "#ffffff",
+        "texture": "buttonRed"
+      },
+      "buttonWhite": {
+        "name": "White Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "color": "#ffffff",
+        "texture": "buttonWhite"
+      }
+    },
+    "input": {
+      "line": {
+        "name": "White Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "color": "#2f333f",
+        "texture": "line"
+      },
+      "inputBox": {
+        "name": "Other Style",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "color": "#2f333f",
+        "texture": "inputBox"
+      }
+    }
   }
-]
+}

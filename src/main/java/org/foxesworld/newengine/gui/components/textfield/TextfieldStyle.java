@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
+import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import java.awt.*;
@@ -7,17 +8,21 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.border.Border;
 
+import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
+
 public class TextfieldStyle {
 	public Color textColor;
+	public String font;
+	public float fontSize;
 	public Color caretColor;
 	public BufferedImage texture;
-	public Border border;
 
-	public TextfieldStyle(String texture, Color textColor, Color caretColor) {
-		this.textColor = textColor;
+	public TextfieldStyle(String texture, String font, float fontSize, String textColor, Color caretColor) {
+		this.textColor = hexToColor(textColor);
+		this.font = font;
+		this.fontSize = fontSize;
 		this.caretColor = caretColor;
 		this.texture = ImageUtils.getLocalImage(texture);
-		//this.border = border;
 	}
 
 	public void apply(Textfield text) {
@@ -25,6 +30,6 @@ public class TextfieldStyle {
 		text.setCaretColor(caretColor);
 		text.setBackground(textColor);
 		text.setForeground(textColor);
-		text.setBorder(border);
+		text.setFont(FontUtils.getFont(font, fontSize));
 	}
 }

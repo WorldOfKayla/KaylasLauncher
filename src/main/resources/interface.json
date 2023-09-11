@@ -17,6 +17,9 @@
     {
       "type": "textfield",
       "frameGroup": "test",
+      "style": "inputBox",
+      "fontName": "Roboto-Black",
+      "fontSize": 35,
       "x": 130,
       "y": 25,
       "width": 160,
@@ -34,6 +37,9 @@
     {
       "type": "textfield",
       "frameGroup": "test",
+      "style": "inputBox",
+      "fontName": "Roboto-Bold",
+      "fontSize": 13,
       "x": 130,
       "y": 75,
       "width": 160,

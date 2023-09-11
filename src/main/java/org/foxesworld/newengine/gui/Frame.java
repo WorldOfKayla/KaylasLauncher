@@ -17,7 +17,6 @@ public class Frame extends JFrame {
     private Map<String, List<String>> elementStyles = new HashMap<>();
     private JFrame frame;
     protected LanguageProvier LANG;
-    private TextfieldStyle inputStyle = new TextfieldStyle("assets/ui/input/inputBox.png", "Roboto-Black", 16.0f, Color.BLACK, Color.decode("0xA67A53"));
 
     public Frame(APP app) {
         this.LANG = app.getLANG();

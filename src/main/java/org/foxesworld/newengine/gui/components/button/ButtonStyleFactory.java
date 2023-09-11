@@ -11,12 +11,9 @@ import java.util.List;
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
 
 public class ButtonStyleFactory {
-    private APP app;
-    private List buttonTextures;
     private Map<String, ButtonStyle> buttonStyles = new HashMap<>();
 
-    public ButtonStyleFactory(APP app, List styles) {
-        this.app = app;
+    public ButtonStyleFactory(List styles) {
         for(Object style: styles){
             this.createButtonStyle(String.valueOf(style), "Roboto-Black", "assets/ui/button/"+style+".png", 11f, Color.decode("0xd4dc7b"), true, CENTER);
         }

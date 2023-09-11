@@ -6,6 +6,9 @@ import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.components.button.ButtonStyle;
 import org.foxesworld.newengine.gui.components.button.ButtonStyleFactory;
 import org.foxesworld.newengine.gui.components.button.StyledButton;
+import org.foxesworld.newengine.gui.components.textfield.StyledTextfield;
+import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
+import org.foxesworld.newengine.gui.components.textfield.TextfieldStyleFactory;
 import org.foxesworld.newengine.locale.LanguageProvier;
 
 import javax.swing.*;
@@ -18,10 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
+import static org.foxesworld.newengine.utils.FontUtils.getFont;
 
 public class GuiBuilder {
     private HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private ButtonStyleFactory buttonStyleFactory;
+    private TextfieldStyleFactory textfieldStyleFactory;
     private APP app;
     private  JFrame frame;
     private LanguageProvier LANG;
@@ -29,7 +34,8 @@ public class GuiBuilder {
     public GuiBuilder(Frame frame){
         this.app = frame.getApp();
         this.frame = frame.getFrame();
-        buttonStyleFactory = new ButtonStyleFactory(app, frame.getElementStyles().get("button"));
+        buttonStyleFactory = new ButtonStyleFactory(frame.getElementStyles().get("button"));
+        textfieldStyleFactory = new TextfieldStyleFactory(frame.getElementStyles().get("input"));
         this.LANG = app.getLANG();
     }
     public void buildGui(String path) {
@@ -64,9 +70,12 @@ public class GuiBuilder {
             label.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
             return label;
         } else if ("textfield".equals(frameComponents.type)) {
-            JTextField textField = new JTextField();
-            textField.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
-            return textField;
+            TextfieldStyle textfieldStyle = this.textfieldStyleFactory.getTextfieldStyle(frameComponents.style);
+            StyledTextfield textfield = new StyledTextfield(textfieldStyle);
+            textfieldStyle.apply(textfield);
+            textfield.setFont(getFont(frameComponents.fontName, frameComponents.fontSize));
+            textfield.setBounds(frameComponents.x, frameComponents.y, frameComponents.width, frameComponents.height);
+            return textfield;
         } else if ("button".equals(frameComponents.type)) {
             ButtonStyle buttonStyle = this.buttonStyleFactory.getButtonStyle(frameComponents.style);
             StyledButton button = new StyledButton(LANG.getString(frameComponents.text), buttonStyle);
@@ -127,6 +136,12 @@ class FrameComponents {
 
     @SerializedName("text")
     String text;
+
+    @SerializedName("fontName")
+    String fontName;
+
+    @SerializedName("fontSize")
+    int fontSize;
 
     @SerializedName("x")
     int x;

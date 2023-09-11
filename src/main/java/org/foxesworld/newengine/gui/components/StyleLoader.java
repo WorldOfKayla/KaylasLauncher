@@ -62,6 +62,12 @@ public class StyleLoader {
         @SerializedName("name")
         public String name;
 
+        @SerializedName("width")
+        public int width;
+
+        @SerializedName("height")
+        public int height;
+
         @SerializedName("font")
         public String font;
 

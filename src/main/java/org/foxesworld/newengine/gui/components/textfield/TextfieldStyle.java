@@ -12,13 +12,17 @@ import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 public class TextfieldStyle {
 	public Color textColor;
+	public int width;
+	public int height;
 	public String font;
 	public float fontSize;
 	public Color caretColor;
 	public BufferedImage texture;
 
-	public TextfieldStyle(String texture, String font, float fontSize, String textColor, Color caretColor) {
+	public TextfieldStyle(String texture, int width, int height, String font, float fontSize, String textColor, Color caretColor) {
 		this.textColor = hexToColor(textColor);
+		this.width = width;
+		this.height = height;
 		this.font = font;
 		this.fontSize = fontSize;
 		this.caretColor = caretColor;
@@ -31,5 +35,6 @@ public class TextfieldStyle {
 		text.setBackground(textColor);
 		text.setForeground(textColor);
 		text.setFont(FontUtils.getFont(font, fontSize));
+		//text.setBounds(0,0, width, height);
 	}
 }

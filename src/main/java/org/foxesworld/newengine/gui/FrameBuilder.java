@@ -6,6 +6,9 @@ import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.components.button.ButtonStyle;
 import org.foxesworld.newengine.gui.components.button.ButtonStyleFactory;
 import org.foxesworld.newengine.gui.components.button.StyledButton;
+import org.foxesworld.newengine.gui.components.label.LabelStyle;
+import org.foxesworld.newengine.gui.components.label.LabelStyleFactory;
+import org.foxesworld.newengine.gui.components.label.StyledLabel;
 import org.foxesworld.newengine.gui.components.textfield.StyledTextfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyleFactory;
@@ -18,14 +21,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
-import static org.foxesworld.newengine.utils.FontUtils.getFont;
-import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
-
 public class FrameBuilder {
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private ButtonStyleFactory buttonStyleFactory;
     private AppFrame appFrame;
     private TextfieldStyleFactory textfieldStyleFactory;
+    private LabelStyleFactory labelStyleFactory;
     private final JFrame frame;
     private final LanguageProvier LANG;
 
@@ -33,8 +34,6 @@ public class FrameBuilder {
         APP app = appFrame.getApp();
         this.frame = appFrame.getFrame();
         this.appFrame = appFrame;
-        //buttonStyleFactory = new ButtonStyleFactory(appFrame.getElementStyles().get("button"));
-        //textfieldStyleFactory = new TextfieldStyleFactory(appFrame.getElementStyles().get("input"));
         this.LANG = app.getLANG();
     }
 
@@ -76,22 +75,20 @@ public class FrameBuilder {
     private JComponent createComponent(FrameComponent frameComponent, String componentType) {
         switch (componentType) {
             case "labels" -> {
-                JLabel label = new JLabel(LANG.getString(frameComponent.text));
-                label.setBounds(frameComponent.x, frameComponent.y, frameComponent.width, frameComponent.height);
-                label.setFont(getFont(frameComponent.fontName, frameComponent.fontSize));
-                label.setForeground(hexToColor(frameComponent.color));
+                labelStyleFactory = new LabelStyleFactory(appFrame.getElementStyles().get("label").get(frameComponent.style));
+                LabelStyle labelStyle = this.labelStyleFactory.getLabelStyle();
+                StyledLabel label = new StyledLabel(LANG.getString(frameComponent.text), labelStyle);
+                labelStyle.apply(label);
+                label.setBounds(frameComponent.x, frameComponent.y, 90, 50);
                 return label;
             }
             case "textfields" -> {
                 textfieldStyleFactory = new TextfieldStyleFactory(appFrame.getElementStyles().get("input").get(frameComponent.style));
-                System.out.println(appFrame.getElementStyles().get("input").get(frameComponent.style).name);
                 TextfieldStyle textfieldStyle = this.textfieldStyleFactory.getTextfieldStyle();
                 StyledTextfield textfield = new StyledTextfield(textfieldStyle);
                 textfieldStyle.apply(textfield);
-                //textfield.setFont(getFont(frameComponent.fontName, frameComponent.fontSize));
-                textfield.setBounds(frameComponent.x, frameComponent.y, frameComponent.width, frameComponent.height);
-                //textfield.setForeground(hexToColor(frameComponent.color));
-                //textfield.setBorder(border);
+                textfield.setBounds(frameComponent.x, frameComponent.y, textfieldStyle.width, textfieldStyle.height);
+                textfield.setBorder(null);
                 return textfield;
             }
             case "buttons" -> {
@@ -99,7 +96,7 @@ public class FrameBuilder {
                 ButtonStyle buttonStyle = this.buttonStyleFactory.getButtonStyle();
                 StyledButton button = new StyledButton(LANG.getString(frameComponent.text), buttonStyle);
                 buttonStyle.apply(button);
-                button.setBounds(frameComponent.x, frameComponent.y, frameComponent.width, frameComponent.height);
+                button.setBounds(frameComponent.x, frameComponent.y, buttonStyle.width, buttonStyle.height);
                 button.addActionListener(e -> {
                 });
                 return button;

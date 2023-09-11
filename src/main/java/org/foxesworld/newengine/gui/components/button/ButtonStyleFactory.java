@@ -9,11 +9,11 @@ public class ButtonStyleFactory {
     private ButtonStyle buttonStyle;
 
     public ButtonStyleFactory(StyleLoader.StyleAttributes styles) {
-        this.createButtonStyle(styles.name, "assets/ui/button/"+styles.texture+".png", styles.font, styles.color, Float.valueOf(styles.fontSize), true, CENTER);
+        this.createButtonStyle(styles.name, styles.texture, styles.font, styles.width, styles.height, styles.color, Float.valueOf(styles.fontSize), true, CENTER);
     }
 
-    public void createButtonStyle(String styleName, String imagePath, String font, String color, float fontSize, boolean isVisible, Align align) {
-        buttonStyle = new ButtonStyle(imagePath, font, fontSize, color, isVisible, align);
+    public void createButtonStyle(String styleName, String imagePath, String font, int width, int height, String color, float fontSize, boolean isVisible, Align align) {
+        buttonStyle = new ButtonStyle(imagePath, font, width, height, fontSize, color, isVisible, align);
     }
 
     public ButtonStyle getButtonStyle() {

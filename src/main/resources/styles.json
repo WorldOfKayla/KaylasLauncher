@@ -5,38 +5,58 @@
         "name": "Green Emerald",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
+        "width": 120,
+        "height": 34,
         "color": "#ffffff",
-        "texture": "buttonGreen"
+        "texture": "assets/ui/button/buttonGreen.png"
       },
       "buttonRed": {
         "name": "Red Lava",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
+        "width": 120,
+        "height": 34,
         "color": "#ffffff",
-        "texture": "buttonRed"
+        "texture": "assets/ui/button/buttonRed.png"
       },
       "buttonWhite": {
         "name": "White Power",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
+        "width": 120,
+        "height": 34,
         "color": "#ffffff",
-        "texture": "buttonWhite"
+        "texture": "assets/ui/button/buttonWhite.png"
       }
     },
     "input": {
       "line": {
-        "name": "White Power",
+        "name": "Pumpkin Power",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
+        "width": 200,
+        "height": 35,
         "color": "#2f333f",
-        "texture": "line"
+        "texture": "assets/ui/input/textfield.png"
       },
       "inputBox": {
         "name": "Other Style",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
+        "width": 200,
+        "height": 25,
         "color": "#2f333f",
-        "texture": "inputBox"
+        "texture": "assets/ui/input/inputBox.png"
+      }
+    },
+    "label": {
+      "textfield": {
+        "name": "Pumpkin Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 0,
+        "height": 0,
+        "color": "#da3156"
       }
     }
   }

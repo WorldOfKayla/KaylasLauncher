@@ -13,13 +13,17 @@ import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 public class ButtonStyle {
 	public boolean visible = false;
+	public  int width;
+	public int height;
 	public String font;
 	public String color;
 	public float fontSize;
 	public Align align;
 	public BufferedImage texture;
 
-	public ButtonStyle(String texture, String font, float fontSize, String color, boolean visible, Align align) {
+	public ButtonStyle(String texture, String font, int width, int height, float fontSize, String color, boolean visible, Align align) {
+		this.width = width;
+		this.height = height;
 		this.visible = visible;
 		this.color = color;
 		this.font = font;

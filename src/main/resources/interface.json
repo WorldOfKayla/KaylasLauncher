@@ -9,62 +9,39 @@
       {
         "text": "nameLabel",
         "frameGroup": "test",
-        "fontName": "FSElliotPro-Light",
-        "color": "#FF4500",
-        "fontSize": 13,
+        "style": "textfield",
         "x": 20,
-        "y": 20,
-        "width": 100,
-        "height": 30
+        "y": 20
       },
       {
         "text": "ageLabel",
         "frameGroup": "test",
-        "fontName": "FSElliotPro-Light",
-        "color": "#FF4500",
-        "fontSize": 13,
+        "style": "textfield",
         "x": 20,
-        "y": 70,
-        "width": 100,
-        "height": 30
+        "y": 70
       }
     ],
     "textfields": [
       {
         "frameGroup": "test",
         "style": "inputBox",
-        "fontName": "Roboto-Black",
-        "fontSize": 13,
-        "color": "#BDB76B",
         "x": 130,
-        "y": 25,
-        "width": 200,
-        "height": 25
+        "y": 25
       },
       {
         "frameGroup": "test",
-        "style": "inputBox",
-        "fontName": "FSElliotPro-Light",
-        "fontSize": 13,
-        "color": "#BDB76B",
+        "style": "line",
         "x": 130,
-        "y": 75,
-        "width": 200,
-        "height": 25
+        "y": 75
       }
     ],
     "buttons": [
       {
         "text": "submit",
         "frameGroup": "test",
-        "style": "buttonRed",
-        "fontName": "FSElliotPro-Light",
-        "fontSize": 16,
-        "color": "#F5F5DC",
+        "style": "buttonGreen",
         "x": 20,
-        "y": 120,
-        "width": 120,
-        "height": 34
+        "y": 120
       }
     ]
   }

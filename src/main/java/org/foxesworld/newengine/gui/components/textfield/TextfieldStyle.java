@@ -17,10 +17,13 @@ public class TextfieldStyle {
 	public String font;
 	public float fontSize;
 	public Color caretColor;
+
+	public Color border;
 	public BufferedImage texture;
 
-	public TextfieldStyle(String texture, int width, int height, String font, float fontSize, String textColor, Color caretColor) {
+	public TextfieldStyle(String texture, int width, int height, String font, float fontSize, String textColor, String borderColor, Color caretColor) {
 		this.textColor = hexToColor(textColor);
+		this.border = hexToColor(borderColor);
 		this.width = width;
 		this.height = height;
 		this.font = font;

@@ -2,7 +2,10 @@ package org.foxesworld.newengine.gui;
 
 import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.components.StyleLoader;
+import org.foxesworld.newengine.gui.components.progressBar.ProgressBar;
+import org.foxesworld.newengine.gui.components.progressBar.StyledProgressBar;
 import org.foxesworld.newengine.locale.LanguageProvier;
+import org.foxesworld.newengine.utils.DownloadUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +17,8 @@ public class AppFrame extends JFrame {
     private FrameBuilder frameBuilder;
     private Map<String, Map<String, StyleLoader.StyleAttributes>> elementStyles = new HashMap<>();
     private final JFrame frame;
+
+    private DownloadUtils download;
     protected final LanguageProvier LANG;
 
     public AppFrame(APP app) {
@@ -29,14 +34,22 @@ public class AppFrame extends JFrame {
         frameBuilder = new FrameBuilder(this);
         frameBuilder.buildGui( "interface.json");
         frameComponents("test", true);
+        frameComponents("download", false);
+        this.download = new DownloadUtils(this.frameBuilder);
+        this.download.download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
     }
 
     public void frameComponents(String id, boolean visible) {
         for (Component component : frameBuilder.getComponentsMap().get(id)) {
+            frame.add(component);
             if (visible) {
-                frame.add(component);
+                component.setVisible(true);
             } else {
-                frame.remove(component);
+                component.setVisible(true);
+            }
+            if(component instanceof StyledProgressBar) {
+                this.frameBuilder.setProgressBar((JProgressBar) component);
+                System.out.println("Setting ProgressBar component - "+component);
             }
         }
     }

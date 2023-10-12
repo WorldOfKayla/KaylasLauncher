@@ -4,7 +4,7 @@
   "height": 250,
   "resizable": false,
   "undecorated": false,
-  "fields": {
+  "inner": {
     "labels": [
       {
         "text": "nameLabel",
@@ -30,7 +30,7 @@
       },
       {
         "frameGroup": "test",
-        "style": "line",
+        "style": "inputBox",
         "x": 130,
         "y": 75
       }
@@ -42,6 +42,16 @@
         "style": "buttonGreen",
         "x": 20,
         "y": 120
+      }
+    ],
+    "progressBars": [
+      {
+        "style": "testPb",
+        "frameGroup": "download",
+        "x": 20,
+        "y": 170,
+        "width": 350,
+        "height": 20
       }
     ]
   }

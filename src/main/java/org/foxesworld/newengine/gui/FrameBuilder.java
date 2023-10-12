@@ -9,6 +9,10 @@ import org.foxesworld.newengine.gui.components.button.StyledButton;
 import org.foxesworld.newengine.gui.components.label.LabelStyle;
 import org.foxesworld.newengine.gui.components.label.LabelStyleFactory;
 import org.foxesworld.newengine.gui.components.label.StyledLabel;
+import org.foxesworld.newengine.gui.components.progressBar.ProgressBar;
+import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyle;
+import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyleFactory;
+import org.foxesworld.newengine.gui.components.progressBar.StyledProgressBar;
 import org.foxesworld.newengine.gui.components.textfield.StyledTextfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyleFactory;
@@ -25,8 +29,12 @@ public class FrameBuilder {
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private ButtonStyleFactory buttonStyleFactory;
     private AppFrame appFrame;
+    private  Dimension screenSize;
     private TextfieldStyleFactory textfieldStyleFactory;
+    private ProgressBarStyleFactory progressBarStyleFactory;
     private LabelStyleFactory labelStyleFactory;
+    private JProgressBar progressBar;
+
     private final JFrame frame;
     private final LanguageProvier LANG;
 
@@ -55,13 +63,13 @@ public class FrameBuilder {
         frame.setUndecorated(frameProperties.undecorated);
         frame.setContentPane(new JLabel(new ImageIcon("/assets/bg_summer.png")));
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - frame.getWidth()) / 2;
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
         frame.setLayout(null);
 
-        for (Map.Entry<String, List<FrameComponent>> entry : frameProperties.fields.entrySet()) {
+        for (Map.Entry<String, List<FrameComponent>> entry : frameProperties.inner.entrySet()) {
             String componentType = entry.getKey();
             List<FrameComponent> components = entry.getValue();
             for (FrameComponent frameComponent : components) {
@@ -74,6 +82,14 @@ public class FrameBuilder {
 
     private JComponent createComponent(FrameComponent frameComponent, String componentType) {
         switch (componentType) {
+            case "progressBars" -> {
+                progressBarStyleFactory = new ProgressBarStyleFactory(appFrame.getElementStyles().get("progressBar").get(frameComponent.style));
+                ProgressBarStyle progressBarStyle = this.progressBarStyleFactory.getProgressBarStyle();
+                StyledProgressBar progressBar = new StyledProgressBar(progressBarStyle);
+                progressBar.setBounds(frameComponent.x, frameComponent.y, frameComponent.width, frameComponent.height);
+                return progressBar;
+            }
+
             case "labels" -> {
                 labelStyleFactory = new LabelStyleFactory(appFrame.getElementStyles().get("label").get(frameComponent.style));
                 LabelStyle labelStyle = this.labelStyleFactory.getLabelStyle();
@@ -88,7 +104,7 @@ public class FrameBuilder {
                 StyledTextfield textfield = new StyledTextfield(textfieldStyle);
                 textfieldStyle.apply(textfield);
                 textfield.setBounds(frameComponent.x, frameComponent.y, textfieldStyle.width, textfieldStyle.height);
-                textfield.setBorder(null);
+                //textfield.setBorder(null);
                 return textfield;
             }
             case "buttons" -> {
@@ -110,12 +126,22 @@ public class FrameBuilder {
         if (!componentsMap.containsKey(groupId)) {
             componentsMap.put(groupId, new ArrayList<>());
         }
-
         componentsMap.get(groupId).add(component);
     }
 
     public HashMap<String, List<Component>> getComponentsMap() {
         return componentsMap;
+    }
+
+    public void setProgressBar(JProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
+    public JProgressBar getProgressBar() {
+        return progressBar;
+    }
+    public Dimension getScreenSize() {
+        return screenSize;
     }
 }
 
@@ -135,8 +161,8 @@ class FrameProperties {
     @SerializedName("undecorated")
     boolean undecorated;
 
-    @SerializedName("fields")
-    Map<String, List<FrameComponent>> fields;
+    @SerializedName("inner")
+    Map<String, List<FrameComponent>> inner;
 }
 
 class FrameComponent {

@@ -1,0 +1,73 @@
+{
+  "styles": {
+    "button": {
+      "buttonGreen": {
+        "name": "Green Emerald",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 120,
+        "height": 34,
+        "color": "#ffffff",
+        "texture": "assets/ui/button/buttonGreen.png"
+      },
+      "buttonRed": {
+        "name": "Red Lava",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 120,
+        "height": 34,
+        "color": "#ffffff",
+        "texture": "assets/ui/button/buttonRed.png"
+      },
+      "buttonWhite": {
+        "name": "White Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 120,
+        "height": 34,
+        "color": "#ffffff",
+        "texture": "assets/ui/button/buttonWhite.png"
+      }
+    },
+    "input": {
+      "line": {
+        "name": "Pumpkin Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 200,
+        "height": 35,
+        "color": "#2b2826",
+        "texture": "assets/ui/input/textfield.png",
+        "borderColor": "#183824"
+      },
+      "inputBox": {
+        "name": "Other Style",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 200,
+        "height": 25,
+        "color": "#371f1c",
+        "texture": "assets/ui/input/inputBox.png",
+        "borderColor": ""
+      }
+    },
+    "label": {
+      "textfield": {
+        "name": "Pumpkin Power",
+        "font": "FSElliotPro-Light",
+        "fontSize": 12,
+        "width": 0,
+        "height": 0,
+        "color": "#da3156"
+      }
+    },
+    "progressBar": {
+      "testPb": {
+        "name": "Let's Rule",
+        "background": "#5e6959",
+        "forgeground": "#b0976b",
+        "borderColor": "#183824"
+      }
+    }
+  }
+}

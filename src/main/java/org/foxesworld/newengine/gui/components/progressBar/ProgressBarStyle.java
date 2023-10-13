@@ -8,6 +8,7 @@ public class ProgressBarStyle {
     private String background;
     private  String forgeground;
     private  String border;
+    JLabel progressLabel = new JLabel();
 
     public ProgressBarStyle(String background, String foreground, String border) {
         this.background = background;
@@ -19,5 +20,7 @@ public class ProgressBarStyle {
         progressBar.setBackground(hexToColor(background));
         progressBar.setForeground(hexToColor(forgeground));
         progressBar.setBorder(BorderFactory.createLineBorder(hexToColor(border)));
+        progressLabel.setBounds(282, 130, 240, 13);
+        progressBar.add(progressLabel);
     }
 }

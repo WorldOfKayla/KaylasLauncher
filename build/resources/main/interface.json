@@ -1,57 +1,60 @@
 {
-  "title": "Form Creator",
+  "title": "appTitle",
   "width": 400,
   "height": 250,
   "resizable": false,
   "undecorated": false,
-  "inner": {
-    "labels": [
+  "groups": {
+    "test": [
       {
-        "text": "nameLabel",
-        "frameGroup": "test",
-        "style": "textfield",
-        "x": 20,
-        "y": 20
+        "componentType": "label",
+        "componentStyle": "textfield",
+        "localeKey": "nameLabel",
+        "xPos": 20,
+        "yPos": 20
       },
       {
-        "text": "ageLabel",
-        "frameGroup": "test",
-        "style": "textfield",
-        "x": 20,
-        "y": 70
-      }
-    ],
-    "textfields": [
-      {
-        "frameGroup": "test",
-        "style": "inputBox",
-        "x": 130,
-        "y": 25
+        "componentType": "label",
+        "componentStyle": "textfield",
+        "localeKey": "ageLabel",
+        "xPos": 20,
+        "yPos": 70
       },
       {
-        "frameGroup": "test",
-        "style": "inputBox",
-        "x": 130,
-        "y": 75
+        "componentType": "textField",
+        "componentStyle": "inputBox",
+        "xPos": 130,
+        "yPos": 25
+      },
+      {
+        "componentType": "textField",
+        "componentStyle": "inputBox",
+        "xPos": 130,
+        "yPos": 75
+      },
+      {
+        "componentType": "button",
+        "componentStyle": "buttonGreen",
+        "localeKey": "submit",
+        "xPos": 20,
+        "yPos": 120
       }
     ],
-    "buttons": [
+    "download": [
       {
-        "text": "submit",
-        "frameGroup": "test",
-        "style": "buttonGreen",
-        "x": 20,
-        "y": 120
-      }
-    ],
-    "progressBars": [
-      {
-        "style": "testPb",
-        "frameGroup": "download",
-        "x": 20,
-        "y": 170,
+        "componentType": "progressBar",
+        "componentStyle": "progress",
         "width": 350,
-        "height": 20
+        "height": 40,
+        "xPos": 20,
+        "yPos": 160
+      },
+      {
+        "componentType": "label",
+        "componentStyle": "textfield",
+        "localeKey": "",
+        "xPos": 290,
+        "yPos": 125
       }
     ]
   }

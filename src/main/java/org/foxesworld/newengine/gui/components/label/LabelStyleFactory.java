@@ -1,11 +1,11 @@
 package org.foxesworld.newengine.gui.components.label;
 
-import org.foxesworld.newengine.gui.components.StyleLoader;
+import org.foxesworld.newengine.gui.components.StyleProvider;
 
 public class LabelStyleFactory {
     private LabelStyle labelStyle;
 
-    public LabelStyleFactory(StyleLoader.StyleAttributes styles) {
+    public LabelStyleFactory(StyleProvider.StyleAttributes styles) {
         this.createLabelStyles(styles.name, styles.font, Float.valueOf(styles.fontSize), styles.color, styles.color);
     }
 

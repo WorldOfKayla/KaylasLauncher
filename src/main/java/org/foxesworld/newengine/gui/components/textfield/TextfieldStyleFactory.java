@@ -1,13 +1,13 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
-import org.foxesworld.newengine.gui.components.StyleLoader;
+import org.foxesworld.newengine.gui.components.StyleProvider;
 
 import java.awt.*;
 
 public class TextfieldStyleFactory {
     private TextfieldStyle textfieldStyle;
 
-    public TextfieldStyleFactory(StyleLoader.StyleAttributes styles) {
+    public TextfieldStyleFactory(StyleProvider.StyleAttributes styles) {
         this.createTextfieldStyles(styles.name, styles.texture, styles.width, styles.height, styles.font, Float.valueOf(styles.fontSize), styles.color, styles.borderColor, Color.decode("0xd4dc7b"));
     }
 

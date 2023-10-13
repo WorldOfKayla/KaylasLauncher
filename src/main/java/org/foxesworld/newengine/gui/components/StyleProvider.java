@@ -8,12 +8,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StyleLoader {
+public class StyleProvider {
 
     private final String stylesJson = "styles.json";
     private Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
 
-    public StyleLoader() {
+    public StyleProvider() {
         this.loadStyles();
     }
 
@@ -21,7 +21,7 @@ public class StyleLoader {
             try {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(
-                        StyleLoader.class.getClassLoader().getResourceAsStream(this.stylesJson),
+                        StyleProvider.class.getClassLoader().getResourceAsStream(this.stylesJson),
                         StandardCharsets.UTF_8
                 );
 

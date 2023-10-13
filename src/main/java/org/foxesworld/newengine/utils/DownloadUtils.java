@@ -1,6 +1,6 @@
 package org.foxesworld.newengine.utils;
 
-import org.foxesworld.newengine.gui.FrameBuilder;
+import org.foxesworld.newengine.gui.components.frame.FrameBuilder;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,20 +21,23 @@ import javax.swing.*;
 
 public class DownloadUtils {
 
+    private  JLabel progressLabel;
     private JProgressBar progressBar;
     public DownloadUtils(FrameBuilder frameBuilder) {
         this.progressBar = frameBuilder.getProgressBar();
+        this.progressLabel = frameBuilder.getProgressLabel();
     }
 
     public void download(String Durl, String PATH){
-        Thread myThready = new Thread(() -> downloader(Durl, PATH));
-        myThready.start();
+        this.progressBar.setStringPainted(true);
+        Thread downloadThread = new Thread(() -> downloader(Durl, PATH));
+        downloadThread.start();
     }
 
     private void downloader(String Durl, String PATH) {
         //splash.PBar.setValue(0);
         this.progressBar.setVisible(true);
-        //splash.progressLabel.setVisible(true);
+        this.progressLabel.setVisible(true);
         try {
             LogUtils.send(Durl + " size is - " +getFileSize(Durl) + "Mb", 0, false);
         } catch (IOException e) {
@@ -59,9 +62,10 @@ public class DownloadUtils {
                     downloaded += read;
                     final int progress = (int) (downloaded / chunkSize);
                     String loadProgress = downloaded/(1024* 1024) + "Mb /" + fileSize /(1024 * 1024) + "Mb";
-                    //splash.progressLabel.setText(loadProgress);
+                    this.progressBar.setString(progress+"%");
                     SwingUtilities.invokeLater(() -> {
                        this.progressBar.setValue(progress);
+                       this.progressLabel.setText(loadProgress);
                     });
                 }
             }
@@ -77,8 +81,7 @@ public class DownloadUtils {
 
         SwingUtilities.invokeLater(() -> {
             this.progressBar.setVisible(false);
-            //splash.progressLabel.setVisible(false);
-            //splash.PBar.setValue(0);
+            this.progressLabel.setVisible(false);
         });
     }
 

@@ -1,14 +1,14 @@
 package org.foxesworld.newengine.gui.components.button;
 
 import org.foxesworld.newengine.gui.components.Align;
-import org.foxesworld.newengine.gui.components.StyleLoader;
+import org.foxesworld.newengine.gui.components.StyleProvider;
 
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
 
 public class ButtonStyleFactory {
     private ButtonStyle buttonStyle;
 
-    public ButtonStyleFactory(StyleLoader.StyleAttributes styles) {
+    public ButtonStyleFactory(StyleProvider.StyleAttributes styles) {
         this.createButtonStyle(styles.name, styles.texture, styles.font, styles.width, styles.height, styles.color, Float.valueOf(styles.fontSize), true, CENTER);
     }
 

@@ -1,11 +1,11 @@
 package org.foxesworld.newengine.gui.components.progressBar;
 
-import org.foxesworld.newengine.gui.components.StyleLoader;
+import org.foxesworld.newengine.gui.components.StyleProvider;
 
 public class ProgressBarStyleFactory {
     private ProgressBarStyle progressBarStyle;
 
-    public ProgressBarStyleFactory(StyleLoader.StyleAttributes styles) {
+    public ProgressBarStyleFactory(StyleProvider.StyleAttributes styles) {
         this.createProgressBarStyle(styles.name, styles.background, styles.forgeground, styles.borderColor);
     }
 

@@ -38,6 +38,5 @@ public class TextfieldStyle {
 		text.setBackground(textColor);
 		text.setForeground(textColor);
 		text.setFont(FontUtils.getFont(font, fontSize));
-		//text.setBounds(0,0, width, height);
 	}
 }

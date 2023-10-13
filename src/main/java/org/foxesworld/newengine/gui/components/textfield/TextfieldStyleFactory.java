@@ -1,6 +1,6 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
-import org.foxesworld.newengine.gui.components.StyleProvider;
+import org.foxesworld.newengine.gui.styles.StyleProvider;
 
 import java.awt.*;
 

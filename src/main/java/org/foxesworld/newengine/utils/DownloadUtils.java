@@ -1,6 +1,6 @@
 package org.foxesworld.newengine.utils;
 
-import org.foxesworld.newengine.gui.components.frame.FrameBuilder;
+import org.foxesworld.newengine.gui.GuiBuilder;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,9 +23,9 @@ public class DownloadUtils {
 
     private  JLabel progressLabel;
     private JProgressBar progressBar;
-    public DownloadUtils(FrameBuilder frameBuilder) {
-        this.progressBar = frameBuilder.getProgressBar();
-        this.progressLabel = frameBuilder.getProgressLabel();
+    public DownloadUtils(GuiBuilder guiBuilder) {
+        this.progressBar = guiBuilder.getProgressBar();
+        this.progressLabel = guiBuilder.getProgressLabel();
     }
 
     public void download(String Durl, String PATH){

@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "group": {
     "test": [
       {
         "componentType": "label",
@@ -18,18 +18,21 @@
       {
         "componentType": "textField",
         "componentStyle": "inputBox",
+        "componentId": "input1",
         "xPos": 130,
         "yPos": 25
       },
       {
         "componentType": "textField",
         "componentStyle": "inputBox",
+        "componentId": "input2",
         "xPos": 130,
         "yPos": 75
       },
       {
         "componentType": "button",
-        "componentStyle": "buttonGreen",
+        "componentStyle": "buttonRed",
+        "componentId": "submit",
         "localeKey": "submit",
         "xPos": 20,
         "yPos": 120

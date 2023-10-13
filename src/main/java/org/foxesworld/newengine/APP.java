@@ -22,7 +22,7 @@ public class APP {
         IMAGEUTILS = new ImageUtils(APP);
 
         SwingUtilities.invokeLater(() -> {
-            AppFrame appFrame = new AppFrame(APP);
+            new AppFrame(APP);
         });
     }
 
@@ -35,9 +35,5 @@ public class APP {
     }
     public InputStream getLangFile() {
         return langFile;
-    }
-
-    public ImageUtils getIMAGEUTILS() {
-        return IMAGEUTILS;
     }
 }

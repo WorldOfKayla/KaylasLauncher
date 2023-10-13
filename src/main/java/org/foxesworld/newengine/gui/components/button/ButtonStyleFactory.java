@@ -1,7 +1,7 @@
 package org.foxesworld.newengine.gui.components.button;
 
 import org.foxesworld.newengine.gui.components.Align;
-import org.foxesworld.newengine.gui.components.StyleProvider;
+import org.foxesworld.newengine.gui.styles.StyleProvider;
 
 import static org.foxesworld.newengine.gui.components.Align.CENTER;
 

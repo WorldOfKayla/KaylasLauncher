@@ -1,8 +1,7 @@
-package org.foxesworld.newengine.gui.components.frame;
+package org.foxesworld.newengine.gui.components;
 
-import com.google.gson.Gson;
-import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.AppFrame;
+import org.foxesworld.newengine.gui.attributes.ComponentAttributes;
 import org.foxesworld.newengine.gui.components.button.ButtonStyle;
 import org.foxesworld.newengine.gui.components.button.ButtonStyleFactory;
 import org.foxesworld.newengine.gui.components.button.StyledButton;
@@ -18,72 +17,25 @@ import org.foxesworld.newengine.gui.components.textfield.TextfieldStyleFactory;
 import org.foxesworld.newengine.locale.LanguageProvier;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.List;
 
-public class FrameBuilder {
-    private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
-    private ButtonStyleFactory buttonStyleFactory;
+public class Components {
+
     private AppFrame appFrame;
-    private Dimension screenSize;
+
+    private LanguageProvier LANG;
     private TextfieldStyleFactory textfieldStyleFactory;
     private ProgressBarStyleFactory progressBarStyleFactory;
     private LabelStyleFactory labelStyleFactory;
-    private JProgressBar progressBar;
-    private JLabel progressLabel;
-    private final JFrame frame;
-    private final LanguageProvier LANG;
+    private ButtonStyleFactory buttonStyleFactory;
 
-    public FrameBuilder(AppFrame appFrame) {
-        APP app = appFrame.getApp();
-        this.frame = appFrame.getFrame();
+    public Components(AppFrame appFrame){
         this.appFrame = appFrame;
-        this.LANG = app.getLANG();
+        this.LANG = appFrame.getApp().getLANG();
     }
 
-    public void buildGui(String framePath, boolean inputStream) {
-        Gson gson = new Gson();
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameBuilder.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
-        FrameAttributes frameAttributes = gson.fromJson(reader, FrameAttributes.class);
-
-        if (framePath.endsWith("assets/frames/frame.json")) {
-            this.frameInit(frameAttributes);
-        } else {
-
-            for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.groups.entrySet()) {
-                String componentGroup = entry.getKey();
-                List<ComponentAttributes> components = entry.getValue();
-                for (ComponentAttributes componentAttributes : components) {
-                    String componentType = componentAttributes.componentType;
-                    JComponent component = createComponent(componentAttributes, componentType);
-                    this.addComponentToMap(componentGroup, component);
-                }
-            }
-            frame.setVisible(true);
-        }
-    }
-
-    private void frameInit(FrameAttributes frameAttributes){
-
-        frame.setTitle(LANG.getString(frameAttributes.title));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(frameAttributes.width, frameAttributes.height);
-        frame.setResizable(frameAttributes.resizable);
-        frame.setUndecorated(frameAttributes.undecorated);
-        frame.setContentPane(new JLabel(new ImageIcon("/assets/bg_summer.png")));
-
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screenSize.width - frame.getWidth()) / 2;
-        int y = (screenSize.height - frame.getHeight()) / 2;
-        frame.setLocation(x, y);
-        frame.setLayout(null);
-    }
-
-    private JComponent createComponent(ComponentAttributes componentAttributes, String componentType) {
+    public JComponent createComponent(ComponentAttributes componentAttributes, String componentType) {
         switch (componentType) {
+
             case "progressBar" -> {
                 progressBarStyleFactory = new ProgressBarStyleFactory(appFrame.getElementStyles().get("progressBar").get(componentAttributes.componentStyle));
                 ProgressBarStyle progressBarStyle = this.progressBarStyleFactory.getProgressBarStyle();
@@ -120,37 +72,5 @@ public class FrameBuilder {
             }
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentType);
         }
-    }
-
-
-    private void addComponentToMap(String groupId, Component component) {
-        if (!componentsMap.containsKey(groupId)) {
-            componentsMap.put(groupId, new ArrayList<>());
-        }
-        componentsMap.get(groupId).add(component);
-    }
-
-    public HashMap<String, List<Component>> getComponentsMap() {
-        return componentsMap;
-    }
-
-    public void setProgressBar(JProgressBar progressBar) {
-        this.progressBar = progressBar;
-    }
-
-    public void setProgressLabel(JLabel label) {
-        this.progressLabel = label;
-    }
-
-    public JLabel getProgressLabel() {
-        return this.progressLabel;
-    }
-
-    public JProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    public Dimension getScreenSize() {
-        return screenSize;
     }
 }

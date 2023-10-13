@@ -1,5 +1,7 @@
 package org.foxesworld.newengine.gui.components.progressBar;
 
+import org.foxesworld.newengine.gui.components.label.Label;
+
 import javax.swing.*;
 
 import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
@@ -8,7 +10,6 @@ public class ProgressBarStyle {
     private String background;
     private  String forgeground;
     private  String border;
-    JLabel progressLabel = new JLabel();
 
     public ProgressBarStyle(String background, String foreground, String border) {
         this.background = background;
@@ -20,7 +21,5 @@ public class ProgressBarStyle {
         progressBar.setBackground(hexToColor(background));
         progressBar.setForeground(hexToColor(forgeground));
         progressBar.setBorder(BorderFactory.createLineBorder(hexToColor(border)));
-        progressLabel.setBounds(282, 130, 240, 13);
-        progressBar.add(progressLabel);
     }
 }

@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "group": {
     "download": [
       {
         "componentType": "progressBar",
@@ -11,9 +11,9 @@
       },
       {
         "componentType": "label",
-        "componentStyle": "textfield",
+        "componentStyle": "textBold",
         "localeKey": "",
-        "xPos": 290,
+        "xPos": 270,
         "yPos": 125
       }
     ]

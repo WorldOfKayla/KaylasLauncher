@@ -1,6 +1,6 @@
 package org.foxesworld.newengine.gui.components.label;
 
-import org.foxesworld.newengine.gui.components.StyleProvider;
+import org.foxesworld.newengine.gui.styles.StyleProvider;
 
 public class LabelStyleFactory {
     private LabelStyle labelStyle;

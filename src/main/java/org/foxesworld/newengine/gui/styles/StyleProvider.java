@@ -1,4 +1,4 @@
-package org.foxesworld.newengine.gui.components;
+package org.foxesworld.newengine.gui.styles;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
@@ -69,6 +69,7 @@ public class StyleProvider {
 
         @SerializedName("borderColor")
         public String borderColor;
+
         @SerializedName("width")
         public int width;
 

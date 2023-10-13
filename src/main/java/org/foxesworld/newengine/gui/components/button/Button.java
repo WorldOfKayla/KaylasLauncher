@@ -1,12 +1,6 @@
 package org.foxesworld.newengine.gui.components.button;
 
-import org.foxesworld.newengine.utils.ImageUtils;
-
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,60 +25,75 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setFocusPainted(false);
 		setOpaque(false);
 		setFocusable(false);
-		setCursor(Cursor.getPredefinedCursor(12));
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
-	protected void paintComponent(Graphics maing) {
-		Graphics2D g = (Graphics2D) maing.create();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		Graphics2D g2d = (Graphics2D) g.create();
+		//g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.KEY_ANTIALIASING);
 
 		int w = getWidth();
 		int h = getHeight();
 
+		BufferedImage imageToDraw = defaultTX;
+
 		if (!isEnabled()) {
-			g.drawImage(ImageUtils.genButton(w, h, this.lockedTX), 0, 0, w, h, null);
-		}
-		if (this.entered && !this.pressed) {
-			g.drawImage(ImageUtils.genButton(w, h, this.rolloverTX), 0, 0, w, h, null);
-		}
-		if (!this.entered) {
-			g.drawImage(ImageUtils.genButton(w, h, this.defaultTX), 0, 0, w, h, null);
-		}
-		if ((this.pressed) && (this.entered)) {
-			this.entered = false;
-
-			g.drawImage(ImageUtils.genButton(w, h, this.pressedTX), 0, 0, w, h, null);
-			this.pressed = false;
+			imageToDraw = lockedTX;
+		} else if (pressed) {
+			imageToDraw = pressedTX;
+		} else if (entered) {
+			imageToDraw = rolloverTX;
 		}
 
-		g.dispose();
-		super.paintComponent(maing);
-	}
+		super.paintComponent(g);
+		g2d.drawImage(imageToDraw, 0, 0, w, h, null);
 
-	public void mouseDragged(MouseEvent e) {
-	}
+		// DrawText
+		if (getText() != null && !getText().isEmpty()) {
+			FontMetrics fm = g.getFontMetrics();
+			int textX = (w - fm.stringWidth(getText())) / 2;
+			int textY = (h + fm.getAscent()) / 2;
+			g.setColor(getForeground());
+			g.drawString(getText(), textX, textY);
+		}
 
-	public void mouseMoved(MouseEvent e) {
+		g2d.dispose();
 	}
-
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	public void mousePressed(MouseEvent e) {
-		this.pressed = (!this.pressed);
-		repaint();
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	}
-
+	@Override
 	public void mouseEntered(MouseEvent e) {
-		this.entered = true;
+		entered = true;
 		repaint();
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
-		this.entered = false;
+		entered = false;
 		repaint();
 	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (isEnabled()) {
+			pressed = true;
+			repaint();
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (pressed) {
+			pressed = false;
+			repaint();
+		}
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
 }

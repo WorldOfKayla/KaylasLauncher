@@ -3,13 +3,15 @@ package org.foxesworld.newengine.gui;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import org.foxesworld.newengine.APP;
-import org.foxesworld.newengine.gui.components.StyleProvider;
-import org.foxesworld.newengine.gui.components.frame.FrameBuilder;
+import org.foxesworld.newengine.gui.styles.StyleProvider;
+import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.DownloadUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -17,11 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class AppFrame extends JFrame {
+public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
-    private FrameBuilder frameBuilder;
+    private GuiBuilder guiBuilder;
     private Map<String, Map<String, StyleProvider.StyleAttributes>> elementStyles = new HashMap<>();
-    private final JFrame frame;
+    private JFrame frame;
     private DownloadUtils download;
     protected final LanguageProvier LANG;
 
@@ -35,17 +37,19 @@ public class AppFrame extends JFrame {
     private void initialize() {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
-        frameBuilder = new FrameBuilder(this);
+        guiBuilder = new GuiBuilder(this);
         this.loadFrames();
+
+        //=================================
         displayId("test", true);
         displayId("download", false);
 
-        this.download = new DownloadUtils(this.frameBuilder);
-        this.download.download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
+        this.download = new DownloadUtils(this.guiBuilder);
+        //this.download.download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
     }
 
     public void displayId(String id, boolean visible){
-        for(Map.Entry<String, List<Component>> entryMap: frameBuilder.getComponentsMap().entrySet()){
+        for(Map.Entry<String, List<Component>> entryMap: guiBuilder.getComponentsMap().entrySet()){
             for (Component component : entryMap.getValue()) {
                 frame.add(component);
                 if(entryMap.getKey().equals(id)) {
@@ -54,12 +58,11 @@ public class AppFrame extends JFrame {
 
                 if(entryMap.getKey().equals("download")) {
                     if (component instanceof JProgressBar) {
-                        this.frameBuilder.setProgressBar((JProgressBar) component);
-                        System.out.println("Setting ProgressBar component - " + component);
+                        this.guiBuilder.setProgressBar((JProgressBar) component);
                     }
 
                     if(component instanceof JLabel){
-                        this.frameBuilder.setProgressLabel((JLabel) component);
+                        this.guiBuilder.setProgressLabel((JLabel) component);
                     }
                 }
             }
@@ -68,13 +71,18 @@ public class AppFrame extends JFrame {
 
     private void loadFrames(){
         Gson gson = new Gson();
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameBuilder.class.getClassLoader().getResourceAsStream("loadFrames.json")), StandardCharsets.UTF_8);
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(Frame.class.getClassLoader().getResourceAsStream("loadFrames.json")), StandardCharsets.UTF_8);
         FrameListAttributes[] array = gson.fromJson(reader, FrameListAttributes[].class);
         for (FrameListAttributes obj : array) {
             String framePath = obj.framePath;
             boolean inputStream = obj.inputStream;
-            this.frameBuilder.buildGui(framePath, inputStream);
+            this.guiBuilder.buildGui(framePath, inputStream);
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getSource());
     }
 
     private class FrameListAttributes {

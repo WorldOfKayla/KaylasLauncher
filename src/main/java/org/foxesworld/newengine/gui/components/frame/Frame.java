@@ -1,7 +1,7 @@
 package org.foxesworld.newengine.gui.components.frame;
 
 import org.foxesworld.newengine.APP;
-import org.foxesworld.newengine.gui.AppFrame;
+import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.gui.attributes.FrameAttributes;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.ImageUtils;
@@ -40,9 +40,10 @@ public class Frame {
             @Override
             public void paintComponent(Graphics gmain) {
                 Graphics2D g = (Graphics2D) gmain;
-                g.drawImage(ImageUtils.getLocalImage("/assets/bg_summer.png"), 0, 0, this.getWidth(), this.getHeight(),null);
+                g.drawImage(ImageUtils.getLocalImage("/assets/bg_summer.png"), 0, 0, screenSize.width, screenSize.height,null);
             }
         };
+        this.frame.add(this.panel);
         //================
     }
 

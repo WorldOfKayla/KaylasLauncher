@@ -3,16 +3,16 @@
     "en": "Form Creator App",
     "ru": "Приложение для создания формы"
   },
-  "nameLabel": {
-    "en": "Name:",
-    "ru": "Имя:"
+  "loginLabel": {
+    "en": "Login:",
+    "ru": "Логин:"
   },
-  "ageLabel": {
-    "en": "Age:",
-    "ru": "Возраст:"
+  "passwordLabel": {
+    "en": "Password:",
+    "ru": "Пароль:"
   },
   "submit": {
     "en": "Submit",
-    "ru": "Отправить"
+    "ru": "Войти"
   }
 }

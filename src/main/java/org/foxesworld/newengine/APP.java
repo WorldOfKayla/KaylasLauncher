@@ -1,8 +1,8 @@
 package org.foxesworld.newengine;
 
-import org.foxesworld.newengine.gui.AppFrame;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.foxesworld.newengine.locale.LanguageProvier;
-import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.io.InputStream;
@@ -11,16 +11,15 @@ import java.io.InputStream;
 public class APP {
     private static org.foxesworld.newengine.APP APP;
     private static LanguageProvier LANG;
-    private String LOCALE = "ru";
-    private static ImageUtils IMAGEUTILS;
-    private InputStream langFile = org.foxesworld.newengine.APP.class.getClassLoader().getResourceAsStream("locale.json");
+    public static final Logger LOGGER = LogManager.getLogger(APP.class);
+    private final String LOCALE = "ru";
+    private InputStream langFile = org.foxesworld.newengine.APP.class.getClassLoader().getResourceAsStream("assets/lang/locale.json");
 
 
     public static void main(String[] args) {
+        LOGGER.info("APP started...");
         APP = new APP();
         LANG = new LanguageProvier(APP);
-        IMAGEUTILS = new ImageUtils(APP);
-
         SwingUtilities.invokeLater(() -> {
             new AppFrame(APP);
         });
@@ -29,7 +28,6 @@ public class APP {
     public String getLOCALE() {
         return LOCALE;
     }
-
     public LanguageProvier getLANG() {
         return LANG;
     }

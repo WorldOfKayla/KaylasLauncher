@@ -3,6 +3,7 @@ package org.foxesworld.newengine.locale;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.logging.log4j.Logger;
 import org.foxesworld.newengine.APP;
 
 import java.io.BufferedReader;
@@ -22,6 +23,7 @@ public class LanguageProvier {
     public LanguageProvier(APP APP) {
         this.APP = APP;
         lang = APP.getLOCALE();
+        APP.LOGGER.info("Loading "+lang+" locale");
         try {
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(APP.getLangFile(), StandardCharsets.UTF_8);

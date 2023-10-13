@@ -1,14 +1,24 @@
 [
   {
+    "frameName": "Frame",
     "framePath": "assets/frames/frame.json",
     "inputStream": true
   },
   {
+    "frameName": "Test",
     "framePath": "assets/frames/test.json",
-    "inputStream": true
+    "inputStream": true,
+    "groupVisibility": [
+      {"groupName":  "test", "visible":  true},
+      {"groupName":  "test2", "visible":  false}
+    ]
   },
   {
-    "framePath": "download.json",
-    "inputStream": false
+    "frameName": "Download",
+    "framePath": "assets/frames/download.json",
+    "inputStream": true,
+    "groupVisibility": [
+      {"groupName":  "download", "visible":  false}
+    ]
   }
 ]

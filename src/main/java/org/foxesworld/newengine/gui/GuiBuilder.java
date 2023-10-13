@@ -1,6 +1,7 @@
 package org.foxesworld.newengine.gui;
 
 import com.google.gson.Gson;
+import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.gui.attributes.ComponentAttributes;
 import org.foxesworld.newengine.gui.attributes.FrameAttributes;
 import org.foxesworld.newengine.gui.components.Components;
@@ -20,8 +21,8 @@ public class GuiBuilder {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final JFrame frame;
-    private Frame frameStyle;
-    private Components components;
+    private final Frame frameStyle;
+    private final Components components;
     private JProgressBar progressBar;
     private JLabel progressLabel;
 

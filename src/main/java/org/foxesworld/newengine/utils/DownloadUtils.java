@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.utils;
 
+import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.GuiBuilder;
 
 import java.io.BufferedInputStream;
@@ -39,7 +40,7 @@ public class DownloadUtils {
         this.progressBar.setVisible(true);
         this.progressLabel.setVisible(true);
         try {
-            LogUtils.send(Durl + " size is - " +getFileSize(Durl) + "Mb", 0, false);
+            APP.LOGGER.info(Durl + " size is - " +getFileSize(Durl) + "Mb");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

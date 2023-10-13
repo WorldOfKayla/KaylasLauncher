@@ -4,14 +4,20 @@
       {
         "componentType": "label",
         "componentStyle": "textfield",
-        "localeKey": "nameLabel",
+        "localeKey": "loginLabel",
+        "imageIcon": "ui/icons/login.png",
+        "iconWidth": 32,
+        "iconHeight": 32,
         "xPos": 20,
         "yPos": 20
       },
       {
         "componentType": "label",
         "componentStyle": "textfield",
-        "localeKey": "ageLabel",
+        "localeKey": "passwordLabel",
+        "imageIcon": "ui/icons/password.png",
+        "iconWidth": 32,
+        "iconHeight": 32,
         "xPos": 20,
         "yPos": 70
       },
@@ -36,6 +42,17 @@
         "localeKey": "submit",
         "xPos": 20,
         "yPos": 120
+      }
+    ],
+    "test2": [
+      {
+        "componentType": "label",
+        "componentStyle": "textBold",
+        "imageIcon": "ui/AidenCoffee.png",
+        "iconWidth": 64,
+        "iconHeight": 64,
+        "xPos": 280,
+        "yPos": 160
       }
     ]
   }

@@ -55,8 +55,8 @@
         "name": "Bald Power",
         "font": "Sans-Black",
         "fontSize": 11,
-        "width": 0,
-        "height": 0,
+        "width": 120,
+        "height": 120,
         "color": "#da3156"
       }
     },

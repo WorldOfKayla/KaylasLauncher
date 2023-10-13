@@ -1,32 +1,20 @@
-/*
- * Decompiled with CFR 0.150.
- */
 package org.foxesworld.newengine.utils;
 
 import org.foxesworld.newengine.APP;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-
-import static org.foxesworld.newengine.utils.LogUtils.send;
 
 public class ImageUtils {
 
-    private APP app;
-    public ImageUtils(APP app){
-        this.app = app;
-    }
-
-    public static Map<String, BufferedImage> imgs = new HashMap<String, BufferedImage>();
+    public static Map<String, BufferedImage> imgs = new HashMap<>();
 
     public static BufferedImage getLocalImage(String name) {
         try {
@@ -35,10 +23,10 @@ public class ImageUtils {
 
             BufferedImage img = ImageIO.read(ImageUtils.class.getClassLoader().getResourceAsStream(name));
             imgs.put(name, img);
-            send("Opened local image: " + name, 0, false);
+            APP.LOGGER.info("Opened local image: " + name, 0, false);
             return img;
         } catch (Exception e) {
-            send("Failed to open local image: " + name, 0, true);
+            APP.LOGGER.error("Failed to open local image: " + name);
             return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         }
     }
@@ -144,6 +132,17 @@ public class ImageUtils {
             var2.printStackTrace();
             return new BufferedImage(1, 1, 2);
         }
+    }
+
+    public static Image getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        return resizedImg;
     }
 
     public static BufferedImage getByIndex(BufferedImage all, int d, int i) {

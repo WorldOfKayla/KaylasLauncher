@@ -16,6 +16,15 @@ public class ComponentAttributes {
     @SerializedName("localeKey")
     public String localeKey;
 
+    @SerializedName("imageIcon")
+    public String imageIcon;
+
+    @SerializedName("iconWidth")
+    public int iconWidth;
+
+    @SerializedName("iconHeight")
+    public int iconHeight;
+
     @SerializedName("xPos")
     public int xPos;
 

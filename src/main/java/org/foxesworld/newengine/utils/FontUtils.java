@@ -1,5 +1,7 @@
 package org.foxesworld.newengine.utils;
 
+import org.foxesworld.newengine.APP;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +18,12 @@ public class FontUtils {
                 Font font = null;
                 try {
                     font = Font.createFont(0, FontUtils.class.getResourceAsStream("/assets/fonts/" + name + ".ttf"));
+                    APP.LOGGER.info("Created font - "+name);
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
                         font = Font.createFont(0, FontUtils.class.getResourceAsStream("/assets/fonts/" + name + ".otf"));
+                        APP.LOGGER.info("Created font - "+name);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -28,7 +32,7 @@ public class FontUtils {
                 return font.deriveFont(size);
             } catch (Exception e) {
                 e.printStackTrace();
-                LogUtils.send("Failed to create font!", 0, true);
+                APP.LOGGER.error("Failed to create font!");
                 return null;
             }
         }

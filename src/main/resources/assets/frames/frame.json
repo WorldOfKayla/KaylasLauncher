@@ -1,7 +1,9 @@
 {
   "title": "appTitle",
-  "width": 400,
-  "height": 250,
+  "backgroundImage": "assets/bg/bg_summer.png",
+  "backgroundBlur": "#67635d63",
+  "width": 850,
+  "height": 525,
   "resizable": false,
   "undecorated": false
 }

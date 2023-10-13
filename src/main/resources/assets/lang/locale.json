@@ -3,13 +3,13 @@
     "en": "Form Creator App",
     "ru": "Приложение для создания формы"
   },
-  "loginLabel": {
-    "en": "Login:",
-    "ru": "Логин:"
+  "passwordPlaceholder": {
+    "en": "Password",
+    "ru": "Пароль"
   },
-  "passwordLabel": {
-    "en": "Password:",
-    "ru": "Пароль:"
+  "loginPlaceholder": {
+    "en": "Login",
+    "ru": "Логин"
   },
   "submit": {
     "en": "Submit",

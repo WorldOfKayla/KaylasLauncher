@@ -61,7 +61,7 @@ public class StyleProvider {
         @SerializedName("name")
         public String name;
 
-        @SerializedName("background")
+        @SerializedName("backgroundImage")
         public String background;
 
         @SerializedName("forgeground")

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
 
 import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
@@ -37,6 +38,7 @@ public class TextfieldStyle {
 		text.setCaretColor(caretColor);
 		text.setBackground(textColor);
 		text.setForeground(textColor);
+		text.setBorder(null);
 		text.setFont(FontUtils.getFont(font, fontSize));
 	}
 }

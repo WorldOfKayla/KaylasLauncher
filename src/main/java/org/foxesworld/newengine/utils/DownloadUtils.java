@@ -31,6 +31,7 @@ public class DownloadUtils {
 
     public void download(String Durl, String PATH){
         this.progressBar.setStringPainted(true);
+        this.progressBar.add(progressLabel);
         Thread downloadThread = new Thread(() -> downloader(Durl, PATH));
         downloadThread.start();
     }

@@ -2,8 +2,8 @@ package org.foxesworld.newengine.gui.components.textfield;
 
 public class StyledTextfield extends  Textfield {
 
-    public StyledTextfield(TextfieldStyle style) {
-        super();
+    public StyledTextfield(String placeholder, TextfieldStyle style) {
+        super(placeholder);
         style.apply(this);
     }
 }

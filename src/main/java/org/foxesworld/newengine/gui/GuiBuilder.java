@@ -20,15 +20,13 @@ import java.util.List;
 public class GuiBuilder {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
-    private final JFrame frame;
-    private final Frame frameStyle;
+    private final Frame frame;
     private final Components components;
     private JProgressBar progressBar;
     private JLabel progressLabel;
 
     public GuiBuilder(AppFrame appFrame) {
         this.frame = appFrame.getFrame();
-        this.frameStyle = new Frame(appFrame);
         this.components = new Components(appFrame);
     }
 
@@ -49,7 +47,7 @@ public class GuiBuilder {
 
 
         if (framePath.endsWith("frame.json")) {
-            frameStyle.buildFrame(frameAttributes);
+            frame.buildFrame(frameAttributes);
         } else {
             for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.group.entrySet()) {
                 String componentGroup = entry.getKey();
@@ -60,7 +58,7 @@ public class GuiBuilder {
                     this.addComponentToMap(componentGroup, component);
                 }
             }
-            frame.setVisible(true);
+            frame.getFrame().setVisible(true);
         }
     }
 

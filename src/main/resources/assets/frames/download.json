@@ -4,17 +4,17 @@
       {
         "componentType": "progressBar",
         "componentStyle": "progress",
-        "width": 350,
+        "width": 790,
         "height": 40,
         "xPos": 20,
-        "yPos": 160
+        "yPos": 430
       },
       {
         "componentType": "label",
         "componentStyle": "textBold",
         "localeKey": "",
-        "xPos": 270,
-        "yPos": 125
+        "xPos": 10,
+        "yPos": -5
       }
     ]
   }

@@ -2,46 +2,28 @@
   "group": {
     "test": [
       {
-        "componentType": "label",
-        "componentStyle": "textfield",
-        "localeKey": "loginLabel",
-        "imageIcon": "ui/icons/login.png",
-        "iconWidth": 32,
-        "iconHeight": 32,
-        "xPos": 20,
-        "yPos": 20
-      },
-      {
-        "componentType": "label",
-        "componentStyle": "textfield",
-        "localeKey": "passwordLabel",
-        "imageIcon": "ui/icons/password.png",
-        "iconWidth": 32,
-        "iconHeight": 32,
-        "xPos": 20,
-        "yPos": 70
-      },
-      {
         "componentType": "textField",
-        "componentStyle": "inputBox",
+        "componentStyle": "line",
+        "localeKey": "loginPlaceholder",
         "componentId": "input1",
-        "xPos": 130,
-        "yPos": 25
+        "xPos": 60,
+        "yPos": 130
       },
       {
         "componentType": "textField",
-        "componentStyle": "inputBox",
+        "componentStyle": "line",
+        "localeKey": "passwordPlaceholder",
         "componentId": "input2",
-        "xPos": 130,
-        "yPos": 75
+        "xPos": 60,
+        "yPos": 200
       },
       {
         "componentType": "button",
         "componentStyle": "buttonRed",
         "componentId": "submit",
         "localeKey": "submit",
-        "xPos": 20,
-        "yPos": 120
+        "xPos": 60,
+        "yPos": 245
       }
     ],
     "test2": [

@@ -8,6 +8,7 @@ import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.DownloadUtils;
+import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,21 +24,21 @@ public class AppFrame extends JFrame implements ActionListener {
     private GuiBuilder guiBuilder;
     private ActionHandler actionHandler;
     private Map<String, Map<String, StyleProvider.StyleAttributes>> elementStyles = new HashMap<>();
-    private final JFrame frame;
+    private final Frame frame;
     private DownloadUtils download;
     protected final LanguageProvier LANG;
 
     public AppFrame(APP app) {
         this.LANG = app.getLANG();
         this.app = app;
-        this.frame = new JFrame();
+        this.frame = new Frame(this);
         initialize();
     }
 
     private void initialize() {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
-        guiBuilder = new GuiBuilder(this);
+        this.guiBuilder = new GuiBuilder(this);
         this.loadFrames();
         this.actionHandler = new ActionHandler(this);
 
@@ -47,7 +48,7 @@ public class AppFrame extends JFrame implements ActionListener {
     public void displayGroup(String id, boolean visible) {
         for (Map.Entry<String, List<Component>> entryMap : guiBuilder.getComponentsMap().entrySet()) {
             for (Component component : entryMap.getValue()) {
-                frame.add(component);
+                this.frame.getContentPanel().add(component);
                 if (entryMap.getKey().equals(id)) {
                     component.setVisible(visible);
                 }
@@ -111,7 +112,7 @@ public class AppFrame extends JFrame implements ActionListener {
         return download;
     }
 
-    public JFrame getFrame() {
+    public Frame getFrame() {
         return this.frame;
     }
 

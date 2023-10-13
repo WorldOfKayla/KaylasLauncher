@@ -60,7 +60,7 @@ public class Components {
             case "textField" -> {
                 textfieldStyleFactory = new TextfieldStyleFactory(appFrame.getElementStyles().get("input").get(componentAttributes.componentStyle));
                 TextfieldStyle textfieldStyle = this.textfieldStyleFactory.getTextfieldStyle();
-                StyledTextfield textfield = new StyledTextfield(textfieldStyle);
+                StyledTextfield textfield = new StyledTextfield(LANG.getString(componentAttributes.localeKey), textfieldStyle);
                 textfieldStyle.apply(textfield);
                 textfield.setName(componentAttributes.localeKey);
                 textfield.setBounds(componentAttributes.xPos, componentAttributes.yPos, textfieldStyle.width, textfieldStyle.height);

@@ -28,8 +28,7 @@
         "width": 200,
         "height": 35,
         "color": "#2b2826",
-        "texture": "assets/ui/input/textfield.png",
-        "borderColor": "#183824"
+        "texture": "assets/ui/input/line.png"
       },
       "inputBox": {
         "name": "Other Style",

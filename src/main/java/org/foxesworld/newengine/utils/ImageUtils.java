@@ -18,8 +18,9 @@ public class ImageUtils {
 
     public static BufferedImage getLocalImage(String name) {
         try {
-            if (imgs.containsKey(name))
+            if (imgs.containsKey(name)) {
                 return imgs.get(name);
+            }
 
             BufferedImage img = ImageIO.read(ImageUtils.class.getClassLoader().getResourceAsStream(name));
             imgs.put(name, img);
@@ -32,19 +33,32 @@ public class ImageUtils {
     }
 
     public static BufferedImage genButton(int w, int h, BufferedImage img) {
-        BufferedImage res = new BufferedImage(w, h, 2);
+        if (w <= 0 || h <= 0) {
+            throw new IllegalArgumentException("Width and height must be greater than zero.");
+        }
+
+        BufferedImage res = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         BufferedImage left = img.getSubimage(0, 0, img.getWidth() / 3, img.getHeight());
         BufferedImage center = img.getSubimage(img.getWidth() / 3, 0, img.getWidth() / 3, img.getHeight());
         BufferedImage right = img.getSubimage(img.getWidth() / 3 * 2, 0, img.getWidth() / 3, img.getHeight());
-        res.getGraphics().drawImage(left, 0, 0, left.getWidth(), left.getHeight(), null);
-        try {
-            res.getGraphics().drawImage(ImageUtils.fill(center, w - left.getWidth() - right.getWidth(), h), left.getWidth(), 0, w - left.getWidth() - right.getWidth(), h, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        res.getGraphics().drawImage(right, w - right.getWidth(), 0, right.getWidth(), h, null);
+
+        Graphics2D g = res.createGraphics();
+
+        // Draw the left part
+        g.drawImage(left, 0, 0, left.getWidth(), h, null);
+
+        // Draw the center part (stretch it to fit the width)
+        g.drawImage(center, left.getWidth(), 0, w - left.getWidth() - right.getWidth(), h, null);
+
+        // Draw the right part
+        g.drawImage(right, w - right.getWidth(), 0, right.getWidth(), h, null);
+
+        g.dispose();
+
         return res;
     }
+
+
 
     public static BufferedImage genPanel(int w, int h, BufferedImage img) {
         BufferedImage res = new BufferedImage(w, h, 2);
@@ -85,14 +99,19 @@ public class ImageUtils {
     public static BufferedImage fill(BufferedImage texture, int w, int h) {
         int sizex = texture.getWidth();
         int sizey = texture.getHeight();
-        BufferedImage img = new BufferedImage(w, h, 2);
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+
         for (int x2 = 0; x2 <= w / sizex; ++x2) {
             for (int y2 = 0; y2 <= h / sizey; ++y2) {
-                img.getGraphics().drawImage(texture, x2 * sizex, y2 * sizey, null);
+                g2d.drawImage(texture, x2 * sizex, y2 * sizey, null);
             }
         }
+
+        g2d.dispose();
         return img;
     }
+
 
     public static BufferedImage fillHoriz(BufferedImage texture, int w, int h) {
         int sizex = texture.getWidth();
@@ -134,14 +153,19 @@ public class ImageUtils {
         }
     }
 
-    public static Image getScaledImage(Image srcImg, int w, int h){
+    public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 
+        // Устанавливаем режим сглаживания
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
 
+        if (w > srcImg.getWidth(null) || h > srcImg.getHeight(null)) {
+            g2.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
+        } else {
+            g2.drawImage(srcImg, 0, 0, w, h, null);
+        }
+        g2.dispose();
         return resizedImg;
     }
 

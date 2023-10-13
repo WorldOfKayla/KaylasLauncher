@@ -18,6 +18,12 @@ public class FrameAttributes {
     @SerializedName("resizable")
     public boolean resizable;
 
+    @SerializedName("backgroundImage")
+    public String backgroundImage;
+
+    @SerializedName("backgroundBlur")
+    public String backgroundBlur;
+
     @SerializedName("undecorated")
     public boolean undecorated;
 

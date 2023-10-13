@@ -46,7 +46,7 @@
         "fontSize": 12,
         "width": 200,
         "height": 25,
-        "color": "#371f1c",
+        "color": "#2b2826",
         "texture": "assets/ui/input/inputBox.png",
         "borderColor": ""
       }
@@ -62,7 +62,7 @@
       }
     },
     "progressBar": {
-      "testPb": {
+      "progress": {
         "name": "Let's Rule",
         "background": "#5e6959",
         "forgeground": "#b0976b",

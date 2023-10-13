@@ -1,0 +1,21 @@
+{
+  "groups": {
+    "download": [
+      {
+        "componentType": "progressBar",
+        "componentStyle": "progress",
+        "width": 350,
+        "height": 40,
+        "xPos": 20,
+        "yPos": 160
+      },
+      {
+        "componentType": "label",
+        "componentStyle": "textfield",
+        "localeKey": "",
+        "xPos": 290,
+        "yPos": 125
+      }
+    ]
+  }
+}

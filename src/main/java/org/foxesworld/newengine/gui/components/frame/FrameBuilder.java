@@ -28,7 +28,7 @@ public class FrameBuilder {
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private ButtonStyleFactory buttonStyleFactory;
     private AppFrame appFrame;
-    private  Dimension screenSize;
+    private Dimension screenSize;
     private TextfieldStyleFactory textfieldStyleFactory;
     private ProgressBarStyleFactory progressBarStyleFactory;
     private LabelStyleFactory labelStyleFactory;
@@ -44,16 +44,29 @@ public class FrameBuilder {
         this.LANG = app.getLANG();
     }
 
-    public void buildGui(String path) {
+    public void buildGui(String framePath, boolean inputStream) {
         Gson gson = new Gson();
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameBuilder.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameBuilder.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
         FrameAttributes frameAttributes = gson.fromJson(reader, FrameAttributes.class);
 
-        frame.setTitle(LANG.getString(frameAttributes.title));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(frameAttributes.width, frameAttributes.height);
-        frame.setResizable(frameAttributes.resizable);
-        frame.setUndecorated(frameAttributes.undecorated);
+        if (framePath.endsWith("assets/frames/frame.json")) {
+            this.frameInit(frameAttributes);
+        } else {
+
+            for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.groups.entrySet()) {
+                String componentGroup = entry.getKey();
+                List<ComponentAttributes> components = entry.getValue();
+                for (ComponentAttributes componentAttributes : components) {
+                    String componentType = componentAttributes.componentType;
+                    JComponent component = createComponent(componentAttributes, componentType);
+                    this.addComponentToMap(componentGroup, component);
+                }
+            }
+            frame.setVisible(true);
+        }
+    }
+
+    private void frameInit(FrameAttributes frameAttributes){
 
         frame.setTitle(LANG.getString(frameAttributes.title));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,20 +80,8 @@ public class FrameBuilder {
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
         frame.setLayout(null);
-
-        for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.groups.entrySet()) {
-            String componentGroup = entry.getKey();
-            List<ComponentAttributes> components = entry.getValue();
-            for (ComponentAttributes componentAttributes : components) {
-                String componentType = componentAttributes.componentType;
-                JComponent component = createComponent(componentAttributes, componentType);
-                this.addComponentToMap(componentGroup, component);
-            }
-        }
-        frame.setVisible(true);
     }
 
-    //WIP
     private JComponent createComponent(ComponentAttributes componentAttributes, String componentType) {
         switch (componentType) {
             case "progressBar" -> {
@@ -137,15 +138,18 @@ public class FrameBuilder {
         this.progressBar = progressBar;
     }
 
-    public void setProgressLabel(JLabel label){
+    public void setProgressLabel(JLabel label) {
         this.progressLabel = label;
     }
 
-    public JLabel getProgressLabel(){ return  this.progressLabel; }
+    public JLabel getProgressLabel() {
+        return this.progressLabel;
+    }
 
     public JProgressBar getProgressBar() {
         return progressBar;
     }
+
     public Dimension getScreenSize() {
         return screenSize;
     }

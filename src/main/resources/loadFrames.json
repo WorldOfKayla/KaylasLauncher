@@ -1,0 +1,14 @@
+[
+  {
+    "framePath": "assets/frames/frame.json",
+    "inputStream": true
+  },
+  {
+    "framePath": "assets/frames/test.json",
+    "inputStream": true
+  },
+  {
+    "framePath": "assets/frames/download.json",
+    "inputStream": true
+  }
+]

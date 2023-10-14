@@ -25,6 +25,12 @@ public class ComponentAttributes {
     @SerializedName("iconHeight")
     public int iconHeight;
 
+    @SerializedName("totalFrames")
+    public int totalFrames;
+
+    @SerializedName("delay")
+    public int delay;
+
     @SerializedName("xPos")
     public int xPos;
 

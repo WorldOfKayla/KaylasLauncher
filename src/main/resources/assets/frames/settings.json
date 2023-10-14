@@ -4,10 +4,10 @@
       "panelOptions": {
         "opaque": true,
         "background": "",
-        "width": 300,
-        "height": 500,
-        "xPos": 0,
-        "yPos": 0
+        "width": 780,
+        "height": 450,
+        "xPos": 35,
+        "yPos": 35
       },
       "childrenComponents": [
         {
@@ -15,8 +15,8 @@
           "componentStyle": "buttonGreen",
           "componentId": "back",
           "localeKey": "back",
-          "xPos": 60,
-          "yPos": 325
+          "xPos": 600,
+          "yPos": 45
         },
         {
           "componentType": "checkBox",
@@ -24,9 +24,21 @@
           "componentId": "checkbox0",
           "localeKey": "shpek",
           "xPos": 60,
-          "yPos": 200,
+          "yPos": 60,
           "width": 120,
           "height": 32
+        },
+        {
+          "componentType": "spriteImage",
+          "imageIcon": "assets/ui/sprites/waitDonkeyKong.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "totalFrames": 11,
+          "delay": 50,
+          "xPos": 90,
+          "yPos": 120,
+          "width": 256,
+          "height": 256
         }
       ]
     }

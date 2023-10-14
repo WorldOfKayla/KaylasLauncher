@@ -10,6 +10,7 @@ import org.foxesworld.newengine.gui.components.label.LabelStyle;
 import org.foxesworld.newengine.gui.components.label.StyledLabel;
 import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyle;
 import org.foxesworld.newengine.gui.components.progressBar.StyledProgressBar;
+import org.foxesworld.newengine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.newengine.gui.components.textfield.StyledTextfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
@@ -35,7 +36,10 @@ public class Components {
     }
 
     public JComponent createComponent(ComponentAttributes componentAttributes, String componentType) {
-        StyleProvider.StyleAttributes style = appFrame.getElementStyles().get(componentType).get(componentAttributes.componentStyle);
+        StyleProvider.StyleAttributes style = null;
+        if(appFrame.getElementStyles().get(componentType)!=null) {
+            style = appFrame.getElementStyles().get(componentType).get(componentAttributes.componentStyle);
+        }
         switch (componentType) {
 
             case "progressBar" -> {
@@ -75,6 +79,13 @@ public class Components {
                 textfield.setActionCommand(componentAttributes.componentId);
                 textfield.addActionListener(appFrame);
                 return textfield;
+            }
+
+            case "spriteImage" -> {
+                SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
+                spriteAnimation.setBounds(componentAttributes.xPos,componentAttributes.yPos,componentAttributes.width,componentAttributes.height);
+                spriteAnimation.setName(componentAttributes.imageIcon);
+                return  spriteAnimation;
             }
 
             case "button" -> {

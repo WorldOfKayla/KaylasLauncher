@@ -62,6 +62,8 @@ public class GuiBuilder {
                 for (ComponentAttributes componentAttributes : componentList) {
                     JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
                     groupPanel.add(component);
+                    System.out.println("adding "+ component);
+                    System.out.println("to "+componentGroup);
                     this.addComponentToMap(componentGroup, component);
                 }
                 groupPanel.setVisible(false);

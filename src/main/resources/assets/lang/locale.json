@@ -22,5 +22,9 @@
   "settings": {
     "en": "Settings",
     "ru": "Настройки"
+  },
+  "shpek": {
+    "en": "Shpeknet'",
+    "ru": "Шпекнуть тебя"
   }
 }

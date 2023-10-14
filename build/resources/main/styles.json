@@ -22,7 +22,7 @@
         "texture": "assets/ui/button/buttonRed.png"
       }
     },
-    "input": {
+    "textField": {
       "line": {
         "name": "Pumpkin Power",
         "font": "FSElliotPro-Heavy",
@@ -43,6 +43,17 @@
         "color": "#2b2826",
         "texture": "assets/ui/input/inputBox.png",
         "borderColor": "#da3156"
+      }
+    },
+    "checkBox": {
+      "solid": {
+        "name": "Pumpkin Power",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "color": "#a96b6b",
+        "caretColor": "#436e22",
+        "background": "#ffffff",
+        "texture": "assets/ui/checkbox/checkbox.png"
       }
     },
     "label": {

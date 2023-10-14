@@ -17,6 +17,16 @@
           "localeKey": "back",
           "xPos": 60,
           "yPos": 325
+        },
+        {
+          "componentType": "checkBox",
+          "componentStyle": "solid",
+          "componentId": "checkbox0",
+          "localeKey": "shpek",
+          "xPos": 60,
+          "yPos": 200,
+          "width": 120,
+          "height": 32
         }
       ]
     }

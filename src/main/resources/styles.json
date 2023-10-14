@@ -23,11 +23,13 @@
     "input": {
       "line": {
         "name": "Pumpkin Power",
-        "font": "FSElliotPro-Light",
+        "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "width": 200,
         "height": 35,
-        "color": "#2b2826",
+        "color": "#a96b6b",
+        "caretColor": "#436e22",
+        "background": "#ffffff",
         "texture": "assets/ui/input/line.png"
       },
       "inputBox": {
@@ -65,7 +67,7 @@
       "progress": {
         "name": "Let's Rule",
         "background": "#5e6959",
-        "forgeground": "#b0976b",
+        "color": "#b0976b",
         "borderColor": "#183824"
       }
     }

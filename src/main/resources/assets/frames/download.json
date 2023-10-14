@@ -1,24 +1,34 @@
 {
   "groups": {
-    "download": [
-      {
-        "componentType": "progressBar",
-        "componentStyle": "progress",
-        "componentId": "progressBar",
-        "width": 790,
-        "height": 40,
+    "download": {
+      "panelOptions": {
+        "opaque": true,
+        "background": "",
+        "width": 800,
+        "height": 30,
         "xPos": 20,
-        "yPos": 430
+        "yPos": 460
       },
-      {
-        "componentType": "label",
-        "componentStyle": "textBold",
-        "componentId": "progressLabel",
-        "width": 170,
-        "height": 40,
-        "xPos": 10,
-        "yPos": 0
-      }
-    ]
+      "childrenComponents": [
+        {
+          "componentType": "progressBar",
+          "componentStyle": "progress",
+          "componentId": "progressBar",
+          "width": 790,
+          "height": 40,
+          "xPos": 0,
+          "yPos": 0
+        },
+        {
+          "componentType": "label",
+          "componentStyle": "textBold",
+          "componentId": "progressLabel",
+          "width": 170,
+          "height": 40,
+          "xPos": 15,
+          "yPos": -3
+        }
+      ]
+    }
   }
 }

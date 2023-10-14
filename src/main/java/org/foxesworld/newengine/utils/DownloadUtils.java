@@ -1,18 +1,10 @@
 package org.foxesworld.newengine.utils;
 
 import org.foxesworld.newengine.APP;
-import org.foxesworld.newengine.gui.GuiBuilder;
-import org.foxesworld.newengine.gui.components.Components;
 
+import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -22,18 +14,16 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.swing.*;
 
 public class DownloadUtils {
 
-    private  JLabel progressLabel;
+    private JLabel progressLabel;
     private JProgressBar progressBar;
+    private JPanel downloadPanel;
 
     private Map<String, Component> downloadComponents = new HashMap<>();
-    public DownloadUtils(GuiBuilder guiBuilder) {
-    }
 
-    public void download(String Durl, String PATH){
+    public void download(String Durl, String PATH) {
         progressBar = (JProgressBar) downloadComponents.get("progressBar");
         progressLabel = (JLabel) downloadComponents.get("progressLabel");
         this.progressBar.setStringPainted(true);
@@ -43,11 +33,9 @@ public class DownloadUtils {
     }
 
     private void downloader(String Durl, String PATH) {
-        //splash.PBar.setValue(0);
-        this.progressBar.setVisible(true);
-        this.progressLabel.setVisible(true);
+        this.downloadPanel.setVisible(true);
         try {
-            APP.LOGGER.info(Durl + " size is - " +getFileSize(Durl) + "Mb");
+            APP.LOGGER.info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,11 +57,11 @@ public class DownloadUtils {
                     out.write(data, 0, read);
                     downloaded += read;
                     final int progress = (int) (downloaded / chunkSize);
-                    String loadProgress = downloaded/(1024* 1024) + "Mb /" + fileSize /(1024 * 1024) + "Mb";
-                    this.progressBar.setString(progress+"%");
+                    String loadProgress = downloaded / (1024 * 1024) + "Mb /" + fileSize / (1024 * 1024) + "Mb";
+                    this.progressBar.setString(progress + "%");
                     SwingUtilities.invokeLater(() -> {
-                       this.progressBar.setValue(progress);
-                       this.progressLabel.setText(loadProgress);
+                        this.progressBar.setValue(progress);
+                        this.progressLabel.setText(loadProgress);
                     });
                 }
             }
@@ -88,8 +76,7 @@ public class DownloadUtils {
         }
 
         SwingUtilities.invokeLater(() -> {
-            this.progressBar.setVisible(false);
-            this.progressLabel.setVisible(false);
+            this.downloadPanel.setVisible(false);
         });
     }
 
@@ -125,7 +112,7 @@ public class DownloadUtils {
     private static double getFileSize(String url) throws IOException {
         URL furl = new URL(url);
         URLConnection conn = furl.openConnection();
-        double SFS = conn.getContentLength()/ (1024*1024);
+        double SFS = conn.getContentLength() / (1024 * 1024);
         conn.getInputStream().close();
         return SFS;
     }
@@ -136,5 +123,9 @@ public class DownloadUtils {
 
     public Map<String, Component> getDownloadComponents() {
         return downloadComponents;
+    }
+
+    public void setDownloadPanel(JPanel downloadPanel) {
+        this.downloadPanel = downloadPanel;
     }
 }

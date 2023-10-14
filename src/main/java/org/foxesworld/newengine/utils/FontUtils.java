@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FontUtils {
-    public static Map<String, Font> fonts = new HashMap<String, Font>();
+    public static Map<String, Font> fonts = new HashMap<>();
 
     public static Font getFont(String name, float size) {
         if (!name.equals("")) {

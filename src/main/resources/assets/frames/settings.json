@@ -1,14 +1,24 @@
 {
   "groups": {
-    "settings": [
-      {
-        "componentType": "button",
-        "componentStyle": "buttonGreen",
-        "componentId": "back",
-        "localeKey": "back",
-        "xPos": 60,
-        "yPos": 325
-      }
-    ]
+    "settings": {
+      "panelOptions": {
+        "opaque": true,
+        "background": "",
+        "width": 300,
+        "height": 500,
+        "xPos": 0,
+        "yPos": 0
+      },
+      "childrenComponents": [
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "back",
+          "localeKey": "back",
+          "xPos": 60,
+          "yPos": 325
+        }
+      ]
+    }
   }
 }

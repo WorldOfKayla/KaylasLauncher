@@ -59,4 +59,8 @@ public class Frame {
     public JFrame getFrame() {
         return frame;
     }
+
+    public Panel getPanel() {
+        return panel;
+    }
 }

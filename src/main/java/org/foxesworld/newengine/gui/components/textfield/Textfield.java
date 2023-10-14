@@ -27,6 +27,8 @@ public class Textfield extends JTextField {
 				if (getText().equals(placeholder)) {
 					setText("");
 					setForeground(UIManager.getColor("textText"));
+					//repaint();
+					//revalidate();
 				}
 			}
 
@@ -35,6 +37,7 @@ public class Textfield extends JTextField {
 				if (getText().isEmpty()) {
 					setText(placeholder);
 					setForeground(UIManager.getColor("textInactiveText"));
+
 				}
 			}
 		});

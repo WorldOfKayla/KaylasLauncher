@@ -6,7 +6,7 @@ public class ProgressBarStyleFactory {
     private ProgressBarStyle progressBarStyle;
 
     public ProgressBarStyleFactory(StyleProvider.StyleAttributes styles) {
-        this.createProgressBarStyle(styles.name, styles.background, styles.forgeground, styles.borderColor);
+        this.createProgressBarStyle(styles.name, styles.background, styles.color, styles.borderColor);
     }
 
     public void createProgressBarStyle(String styleName, String background, String forgeground, String border) {

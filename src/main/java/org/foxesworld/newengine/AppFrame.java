@@ -15,8 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
@@ -38,28 +38,33 @@ public class AppFrame extends JFrame implements ActionListener {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
-        this.download = new DownloadUtils(this.guiBuilder);
+        this.download = new DownloadUtils();
         this.actionHandler = new ActionHandler(this);
         this.loadFrames();
     }
-    public void displayGroup(String id, boolean visible) {
-        for (Map.Entry<String, List<Component>> entryMap : guiBuilder.getComponentsMap().entrySet()) {
-            for (Component component : entryMap.getValue()) {
-                this.frame.getContentPanel().add(component);
-                if (entryMap.getKey().equals(id)) {
-                    component.setVisible(visible);
-                }
 
-                if (entryMap.getKey().equals("download")) {
-                    if (component.getName() != null) {
-                        if(this.download.getDownloadComponents().get(component.getName())== null) {
+    public void displayGroup(String id, boolean visible) {
+        for (Map.Entry<String, JPanel> entryMap : guiBuilder.getPanelsMap().entrySet()) {
+            JPanel groupPanel = entryMap.getValue();
+
+            if (entryMap.getKey().equals(id)) {
+                groupPanel.setVisible(visible);
+            }
+
+            if (entryMap.getKey().equals("download")) {
+                if (groupPanel.getName() != null) {
+                    for(Component component: guiBuilder.getComponentsMap(groupPanel.getName())){
+                        if(this.download.getDownloadComponents().get(component.getName()) ==null) {
                             APP.LOGGER.debug("Adding " + component.getName() + " as default " + component);
                             this.download.addDownloadComponent(component.getName(), component);
+                            this.download.setDownloadPanel(guiBuilder.getPanelsMap().get("download"));
                         }
                     }
                 }
             }
         }
+        frame.getContentPanel().revalidate();
+        frame.getContentPanel().repaint();
     }
 
     private void loadFrames() {
@@ -71,16 +76,16 @@ public class AppFrame extends JFrame implements ActionListener {
             this.guiBuilder.buildGui(obj.framePath, obj.inputStream);
             APP.LOGGER.debug("Processing " + obj.framePath);
             loadedFrames.add(obj.frameName);
-            if(obj.groupVisibility!=null) {
+            if (obj.groupVisibility != null) {
                 for (Map entryMap : obj.groupVisibility) {
                     String group = String.valueOf(entryMap.get("groupName"));
                     boolean visible = (boolean) entryMap.get("visible");
                     this.displayGroup(group, visible);
-                    APP.LOGGER.info("Setting "+group +" visibility to "+visible);
+                    APP.LOGGER.info("Setting " + group + " visibility to " + visible);
                 }
             }
         }
-        APP.LOGGER.info("Loaded Frames "+loadedFrames);
+        APP.LOGGER.info("Loaded Frames " + loadedFrames);
     }
 
     @Override

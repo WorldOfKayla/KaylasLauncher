@@ -1,6 +1,7 @@
 package org.foxesworld.newengine.gui.components.panel;
 
 import org.foxesworld.newengine.gui.attributes.FrameAttributes;
+import org.foxesworld.newengine.gui.attributes.PanelOptions;
 import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -73,5 +74,15 @@ public class Panel {
 
         g.setColor(hexToColor(frameAttributes.backgroundBlur));
         g.fillRect(0, 0, this.frame.getScreenSize().width, this.frame.getScreenSize().height);
+    }
+
+    public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
+        JPanel groupPanel = new JPanel();
+        groupPanel.setName(groupName);
+        groupPanel.setOpaque(panelOptions.opaque);
+        groupPanel.setLayout(null);
+        groupPanel.setBackground(hexToColor(panelOptions.background));
+        groupPanel.setBounds(panelOptions.xPos, panelOptions.yPos, panelOptions.width, panelOptions.height);
+        return groupPanel;
     }
 }

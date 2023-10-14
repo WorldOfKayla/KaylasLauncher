@@ -3,7 +3,6 @@ package org.foxesworld.newengine.locale;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.Logger;
 import org.foxesworld.newengine.APP;
 
 import java.io.BufferedReader;
@@ -12,8 +11,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class LanguageProvier {
     private APP APP;
@@ -48,13 +47,11 @@ public class LanguageProvier {
                 }
                 localizationData.put(entry.getKey(), langMap);
             }
-
             bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public String getString(String key) {
         if (localizationData.containsKey(key)) {
             Map<String, String> langMap = localizationData.get(key);
@@ -63,9 +60,5 @@ public class LanguageProvier {
             }
         }
         return key;
-    }
-
-    public String getLang() {
-        return lang;
     }
 }

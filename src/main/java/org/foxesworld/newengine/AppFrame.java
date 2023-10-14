@@ -42,7 +42,6 @@ public class AppFrame extends JFrame implements ActionListener {
         this.actionHandler = new ActionHandler(this);
         this.loadFrames();
     }
-
     public void displayGroup(String id, boolean visible) {
         for (Map.Entry<String, List<Component>> entryMap : guiBuilder.getComponentsMap().entrySet()) {
             for (Component component : entryMap.getValue()) {
@@ -53,8 +52,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
                 if (entryMap.getKey().equals("download")) {
                     if (component.getName() != null) {
-                        APP.LOGGER.debug("Adding " + component.getName() + " as default "+component);
-                        this.download.addDownloadComponent(component.getName(), component);
+                        if(this.download.getDownloadComponents().get(component.getName())== null) {
+                            APP.LOGGER.debug("Adding " + component.getName() + " as default " + component);
+                            this.download.addDownloadComponent(component.getName(), component);
+                        }
                     }
                 }
             }

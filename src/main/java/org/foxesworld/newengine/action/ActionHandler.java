@@ -16,6 +16,16 @@ public class ActionHandler {
             case "submit" -> {
                 this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
             }
+
+            case "settings" -> {
+                appFrame.displayGroup("authForm", false);
+                appFrame.displayGroup("settings", true);
+            }
+
+            case "back" -> {
+                appFrame.displayGroup("settings", false);
+                appFrame.displayGroup("authForm", true);
+            }
         }
     }
 }

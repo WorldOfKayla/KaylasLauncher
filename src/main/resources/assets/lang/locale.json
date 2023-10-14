@@ -18,5 +18,9 @@
   "submit": {
     "en": "Submit",
     "ru": "Войти"
+  },
+  "settings": {
+    "en": "Settings",
+    "ru": "Настройки"
   }
 }

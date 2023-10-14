@@ -1,0 +1,14 @@
+{
+  "group": {
+    "settings": [
+      {
+        "componentType": "button",
+        "componentStyle": "buttonGreen",
+        "componentId": "back",
+        "localeKey": "back",
+        "xPos": 60,
+        "yPos": 325
+      }
+    ]
+  }
+}

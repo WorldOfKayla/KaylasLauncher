@@ -22,8 +22,6 @@ public class GuiBuilder {
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final Frame frame;
     private final Components components;
-    private JProgressBar progressBar;
-    private JLabel progressLabel;
 
     public GuiBuilder(AppFrame appFrame) {
         this.frame = appFrame.getFrame();
@@ -51,12 +49,17 @@ public class GuiBuilder {
         } else {
             for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.group.entrySet()) {
                 String componentGroup = entry.getKey();
+                JPanel groupPanel = new JPanel() {};
                 List<ComponentAttributes> componentList = entry.getValue();
                 for (ComponentAttributes componentAttributes : componentList) {
                     String componentType = componentAttributes.componentType;
                     JComponent component = this.components.createComponent(componentAttributes, componentType);
+                    groupPanel.add(component);
                     this.addComponentToMap(componentGroup, component);
                 }
+                groupPanel.setOpaque(false);
+                groupPanel.setLayout(null);
+                frame.getContentPanel().add(groupPanel);
             }
             frame.getFrame().setVisible(true);
         }
@@ -67,22 +70,6 @@ public class GuiBuilder {
             componentsMap.put(groupId, new ArrayList<>());
         }
         componentsMap.get(groupId).add(component);
-    }
-
-    public void setProgressBar(JProgressBar progressBar) {
-        this.progressBar = progressBar;
-    }
-
-    public void setProgressLabel(JLabel label) {
-        this.progressLabel = label;
-    }
-
-    public JLabel getProgressLabel() {
-        return this.progressLabel;
-    }
-
-    public JProgressBar getProgressBar() {
-        return progressBar;
     }
 
     public HashMap<String, List<Component>> getComponentsMap() {

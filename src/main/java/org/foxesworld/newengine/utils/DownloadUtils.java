@@ -133,4 +133,8 @@ public class DownloadUtils {
     public void addDownloadComponent(String name, Component downloadComponent) {
         this.downloadComponents.put(name, downloadComponent);
     }
+
+    public Map<String, Component> getDownloadComponents() {
+        return downloadComponents;
+    }
 }

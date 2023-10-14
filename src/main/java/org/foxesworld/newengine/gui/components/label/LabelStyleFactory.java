@@ -6,11 +6,7 @@ public class LabelStyleFactory {
     private LabelStyle labelStyle;
 
     public LabelStyleFactory(StyleProvider.StyleAttributes styles) {
-        this.createLabelStyles(styles.name, styles.font, Float.valueOf(styles.fontSize), styles.color, styles.color);
-    }
-
-    public void createLabelStyles(String styleName, String font, float fontSize, String textColor,String carretColor) {
-        labelStyle = new LabelStyle(font, fontSize, textColor, carretColor);
+        this. labelStyle = new LabelStyle(styles);
     }
 
     public LabelStyle getLabelStyle() {

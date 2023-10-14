@@ -19,16 +19,14 @@ public class Textfield extends JTextField {
 	public Textfield(String placeholder) {
 		setOpaque(false);
 		setText(placeholder);
-		setForeground(UIManager.getColor("textInactiveText"));
 
 		addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (getText().equals(placeholder)) {
 					setText("");
-					setForeground(UIManager.getColor("textText"));
-					//repaint();
-					//revalidate();
+					repaint();
+					revalidate();
 				}
 			}
 
@@ -36,8 +34,6 @@ public class Textfield extends JTextField {
 			public void focusLost(FocusEvent e) {
 				if (getText().isEmpty()) {
 					setText(placeholder);
-					setForeground(UIManager.getColor("textInactiveText"));
-
 				}
 			}
 		});

@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
+import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -17,30 +18,26 @@ public class TextfieldStyle {
 	public String font;
 	public float fontSize;
 	public Color caretColor;
-
 	public BufferedImage texture;
 
-	public TextfieldStyle(String texture, int width, int height, String font, float fontSize, String color, String backgroundColor, String borderColor, String caretColor) {
-		System.out.println(backgroundColor);
-		this.foregroundColor = hexToColor(color);
-		this.backgroundColor = hexToColor(backgroundColor);
-		this.border = hexToColor(borderColor);
-		this.caretColor = hexToColor(caretColor);
-		this.width = width;
-		this.height = height;
-		this.font = font;
-		this.fontSize = fontSize;
-		this.texture = ImageUtils.getLocalImage(texture);
+	public TextfieldStyle(StyleProvider.StyleAttributes styles) {
+		this.foregroundColor = hexToColor(styles.color);
+		this.backgroundColor = hexToColor(styles.background);
+		this.border = hexToColor(styles.borderColor);
+		this.caretColor = hexToColor(styles.caretColor);
+		this.width = styles.width;
+		this.height = styles.height;
+		this.font = styles.font;
+		this.fontSize = styles.fontSize;
+		this.texture = ImageUtils.getLocalImage(styles.texture);
 	}
 
 	public void apply(Textfield text) {
 		text.texture = texture;
 		text.setCaretColor(caretColor);
-
-		//text.setBackground(backgroundColor);
+		text.setBackground(backgroundColor);
 		text.setForeground(foregroundColor);
 		text.setBorder(null);
-		//text.setOpaque(false);
 		text.setFont(FontUtils.getFont(font, fontSize));
 	}
 }

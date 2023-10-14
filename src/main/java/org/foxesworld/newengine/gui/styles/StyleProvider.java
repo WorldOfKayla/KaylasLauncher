@@ -58,6 +58,7 @@ public class StyleProvider {
     }
 
     public class StyleAttributes {
+
         @SerializedName("name")
         public String name;
 
@@ -71,6 +72,9 @@ public class StyleProvider {
         public String color;
         @SerializedName("caretColor")
         public String caretColor;
+
+        @SerializedName("align")
+        public String align;
 
         @SerializedName("borderColor")
         public String borderColor;

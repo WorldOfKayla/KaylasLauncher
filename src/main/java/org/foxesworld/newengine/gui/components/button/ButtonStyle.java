@@ -1,6 +1,7 @@
 package org.foxesworld.newengine.gui.components.button;
 
 import org.foxesworld.newengine.gui.components.Align;
+import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -12,7 +13,7 @@ import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 
 public class ButtonStyle {
-	public boolean visible = false;
+	public boolean visible = true;
 	public  int width;
 	public int height;
 	public String font;
@@ -21,15 +22,14 @@ public class ButtonStyle {
 	public Align align;
 	public BufferedImage texture;
 
-	public ButtonStyle(String texture, String font, int width, int height, float fontSize, String color, boolean visible, Align align) {
-		this.width = width;
-		this.height = height;
-		this.visible = visible;
-		this.color = color;
-		this.font = font;
-		this.fontSize = fontSize;
-		this.align = align;
-		this.texture = ImageUtils.getLocalImage(texture);
+	public ButtonStyle(StyleProvider.StyleAttributes styles) {
+		this.width = styles.width;
+		this.height = styles.height;
+		this.color = styles.color;
+		this.font = styles.font;
+		this.fontSize = styles.fontSize;
+		this.align = Align.valueOf(styles.align);
+		this.texture = ImageUtils.getLocalImage(styles.texture);
 	}
 
 	public void apply(Button button) {

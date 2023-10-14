@@ -2,6 +2,7 @@ package org.foxesworld.newengine.gui.attributes;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,6 @@ public class FrameAttributes {
     @SerializedName("undecorated")
     public boolean undecorated;
 
-    @SerializedName("group")
-    public Map<String, List<ComponentAttributes>> group;
+    @SerializedName("groups")
+    public Map<String, List<ComponentAttributes>> groups;
 }

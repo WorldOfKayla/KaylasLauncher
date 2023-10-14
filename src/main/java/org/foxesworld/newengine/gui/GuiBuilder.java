@@ -47,7 +47,7 @@ public class GuiBuilder {
         if (framePath.endsWith("frame.json")) {
             frame.buildFrame(frameAttributes);
         } else {
-            for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.group.entrySet()) {
+            for (Map.Entry<String, List<ComponentAttributes>> entry : frameAttributes.groups.entrySet()) {
                 String componentGroup = entry.getKey();
                 JPanel groupPanel = new JPanel() {};
                 List<ComponentAttributes> componentList = entry.getValue();

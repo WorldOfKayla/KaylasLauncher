@@ -3,17 +3,16 @@ package org.foxesworld.newengine.gui.components.frame;
 import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.gui.attributes.FrameAttributes;
+import org.foxesworld.newengine.gui.components.panel.Panel;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
-
-//WIP
 public class Frame {
+    private AppFrame appFrame;
+    private Panel panel;
     private Dimension screenSize;
     private JPanel contentPanel;
     private final JFrame frame;
@@ -21,9 +20,9 @@ public class Frame {
 
     public Frame(AppFrame appFrame) {
         APP.LOGGER.info("Frame initialization");
-        APP app = appFrame.getApp();
+        this.appFrame = appFrame;
         this.frame = new JFrame();
-        this.LANG = app.getLANG();
+        this.LANG = appFrame.getApp().getLANG();
     }
 
     public void buildFrame(FrameAttributes frameAttributes) {
@@ -39,26 +38,10 @@ public class Frame {
         int x = (screenSize.width - frame.getWidth()) / 2;
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
-
-        this.contentPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                drawDarkenedBackground(g, frameAttributes);
-            }
-        };
-        this.contentPanel.setOpaque(false);
-        this.contentPanel.setLayout(null);
+        panel = new Panel(this);
+        this.contentPanel = panel.addPanel(frameAttributes);
         frame.setContentPane(this.contentPanel);
         frame.setVisible(true);
-    }
-
-    private void drawDarkenedBackground(Graphics g, FrameAttributes frameAttributes) {
-        BufferedImage background = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
-        g.drawImage(background, 0, 0, null);
-
-        g.setColor(hexToColor(frameAttributes.backgroundBlur));
-        g.fillRect(0, 0, this.screenSize.width, this.screenSize.height);
     }
 
     public Dimension getScreenSize() {
@@ -67,6 +50,10 @@ public class Frame {
 
     public JPanel getContentPanel() {
         return this.contentPanel;
+    }
+
+    public AppFrame getAppFrame() {
+        return appFrame;
     }
 
     public JFrame getFrame() {

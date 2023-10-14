@@ -41,6 +41,7 @@ public class Components {
                 progressBarStyleFactory = new ProgressBarStyleFactory(appFrame.getElementStyles().get("progressBar").get(componentAttributes.componentStyle));
                 ProgressBarStyle progressBarStyle = this.progressBarStyleFactory.getProgressBarStyle();
                 StyledProgressBar progressBar = new StyledProgressBar(progressBarStyle);
+                progressBar.setName(componentAttributes.componentId);
                 progressBar.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
                 return progressBar;
             }
@@ -53,7 +54,8 @@ public class Components {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.loadImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
                 labelStyle.apply(label);
-                label.setBounds(componentAttributes.xPos, componentAttributes.yPos, 90, 50);
+                label.setName(componentAttributes.componentId);
+                label.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
                 return label;
             }
 
@@ -62,7 +64,7 @@ public class Components {
                 TextfieldStyle textfieldStyle = this.textfieldStyleFactory.getTextfieldStyle();
                 StyledTextfield textfield = new StyledTextfield(LANG.getString(componentAttributes.localeKey), textfieldStyle);
                 textfieldStyle.apply(textfield);
-                textfield.setName(componentAttributes.localeKey);
+                textfield.setName(componentAttributes.componentId);
                 textfield.setBounds(componentAttributes.xPos, componentAttributes.yPos, textfieldStyle.width, textfieldStyle.height);
                 textfield.setActionCommand(componentAttributes.componentId);
                 textfield.addActionListener(appFrame);
@@ -74,7 +76,7 @@ public class Components {
                 ButtonStyle buttonStyle = this.buttonStyleFactory.getButtonStyle();
                 StyledButton button = new StyledButton(LANG.getString(componentAttributes.localeKey), buttonStyle);
                 buttonStyle.apply(button);
-                button.setName(componentAttributes.localeKey);
+                button.setName(componentAttributes.componentId);
                 button.setActionCommand(componentAttributes.componentId);
                 button.setBounds(componentAttributes.xPos, componentAttributes.yPos, buttonStyle.width, buttonStyle.height);
                 button.addActionListener(appFrame);

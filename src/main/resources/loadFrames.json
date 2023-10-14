@@ -5,12 +5,12 @@
     "inputStream": true
   },
   {
-    "frameName": "Test",
-    "framePath": "assets/frames/test.json",
+    "frameName": "Auth",
+    "framePath": "assets/frames/auth.json",
     "inputStream": true,
     "groupVisibility": [
-      {"groupName":  "test", "visible":  true},
-      {"groupName":  "test2", "visible":  false}
+      {"groupName":  "authForm", "visible":  true},
+      {"groupName":  "testImage", "visible":  true}
     ]
   },
   {

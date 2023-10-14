@@ -8,7 +8,6 @@ import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvier;
 import org.foxesworld.newengine.utils.DownloadUtils;
-import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,8 +28,8 @@ public class AppFrame extends JFrame implements ActionListener {
     protected final LanguageProvier LANG;
 
     public AppFrame(APP app) {
-        this.LANG = app.getLANG();
         this.app = app;
+        this.LANG = app.getLANG();
         this.frame = new Frame(this);
         initialize();
     }
@@ -39,10 +38,9 @@ public class AppFrame extends JFrame implements ActionListener {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
-        this.loadFrames();
-        this.actionHandler = new ActionHandler(this);
-
         this.download = new DownloadUtils(this.guiBuilder);
+        this.actionHandler = new ActionHandler(this);
+        this.loadFrames();
     }
 
     public void displayGroup(String id, boolean visible) {
@@ -54,12 +52,9 @@ public class AppFrame extends JFrame implements ActionListener {
                 }
 
                 if (entryMap.getKey().equals("download")) {
-                    if (component instanceof JProgressBar) {
-                        this.guiBuilder.setProgressBar((JProgressBar) component);
-                    }
-
-                    if (component instanceof JLabel) {
-                        this.guiBuilder.setProgressLabel((JLabel) component);
+                    if (component.getName() != null) {
+                        APP.LOGGER.debug("Adding " + component.getName() + " as default "+component);
+                        this.download.addDownloadComponent(component.getName(), component);
                     }
                 }
             }
@@ -73,21 +68,20 @@ public class AppFrame extends JFrame implements ActionListener {
         FrameListAttributes[] array = gson.fromJson(reader, FrameListAttributes[].class);
         for (FrameListAttributes obj : array) {
             this.guiBuilder.buildGui(obj.framePath, obj.inputStream);
+            APP.LOGGER.debug("Processing " + obj.framePath);
             loadedFrames.add(obj.frameName);
             if(obj.groupVisibility!=null) {
                 for (Map entryMap : obj.groupVisibility) {
                     String group = String.valueOf(entryMap.get("groupName"));
                     boolean visible = (boolean) entryMap.get("visible");
-                    displayGroup(group, visible);
+                    this.displayGroup(group, visible);
                     APP.LOGGER.info("Setting "+group +" visibility to "+visible);
                 }
             }
-
         }
         APP.LOGGER.info("Loaded Frames "+loadedFrames);
     }
 
-    //WIP
     @Override
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);

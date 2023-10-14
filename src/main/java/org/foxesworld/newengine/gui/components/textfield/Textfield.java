@@ -15,11 +15,9 @@ public class Textfield extends JTextField {
 	private static final long serialVersionUID = 1L;
 
 	public BufferedImage texture;
-	private String placeholder;
 
 	public Textfield(String placeholder) {
 		setOpaque(false);
-		this.placeholder = placeholder;
 		setText(placeholder);
 		setForeground(UIManager.getColor("textInactiveText"));
 
@@ -40,13 +38,6 @@ public class Textfield extends JTextField {
 				}
 			}
 		});
-	}
-
-	public String getActualText() {
-		if (getText().equals(placeholder)) {
-			return "";
-		}
-		return getText();
 	}
 
 	protected void paintComponent(Graphics maing) {

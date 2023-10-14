@@ -8,8 +8,8 @@ import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 
 public class LabelStyle {
-	public String fontName = "";
-	public float fontSize = 1F;
+	public String fontName;
+	public float fontSize;
 	public Color idleColor;
 	public Color activeColor;
 
@@ -20,7 +20,8 @@ public class LabelStyle {
 		this.activeColor = hexToColor(activeColor);
 	}
 
-	public void apply(Label link) {
-		link.setFont(FontUtils.getFont(fontName, fontSize));
+	public void apply(Label label) {
+		label.setFont(FontUtils.getFont(fontName, fontSize));
+		label.setForeground(activeColor);
 	}
 }

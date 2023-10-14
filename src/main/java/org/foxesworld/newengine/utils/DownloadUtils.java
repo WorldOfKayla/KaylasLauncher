@@ -2,7 +2,9 @@ package org.foxesworld.newengine.utils;
 
 import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.gui.GuiBuilder;
+import org.foxesworld.newengine.gui.components.Components;
 
+import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,7 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.swing.*;
@@ -24,12 +28,14 @@ public class DownloadUtils {
 
     private  JLabel progressLabel;
     private JProgressBar progressBar;
+
+    private Map<String, Component> downloadComponents = new HashMap<>();
     public DownloadUtils(GuiBuilder guiBuilder) {
-        this.progressBar = guiBuilder.getProgressBar();
-        this.progressLabel = guiBuilder.getProgressLabel();
     }
 
     public void download(String Durl, String PATH){
+        progressBar = (JProgressBar) downloadComponents.get("progressBar");
+        progressLabel = (JLabel) downloadComponents.get("progressLabel");
         this.progressBar.setStringPainted(true);
         this.progressBar.add(progressLabel);
         Thread downloadThread = new Thread(() -> downloader(Durl, PATH));
@@ -122,5 +128,9 @@ public class DownloadUtils {
         double SFS = conn.getContentLength()/ (1024*1024);
         conn.getInputStream().close();
         return SFS;
+    }
+
+    public void addDownloadComponent(String name, Component downloadComponent) {
+        this.downloadComponents.put(name, downloadComponent);
     }
 }

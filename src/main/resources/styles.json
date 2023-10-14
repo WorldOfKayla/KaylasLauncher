@@ -5,7 +5,7 @@
         "name": "Green Emerald",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
-        "width": 120,
+        "width": 200,
         "height": 34,
         "color": "#ffffff",
         "texture": "assets/ui/button/buttonGreen.png"
@@ -42,20 +42,22 @@
       }
     },
     "label": {
-      "textfield": {
+      "promptLabel": {
         "name": "Pumpkin Power",
         "font": "FSElliotPro-Light",
         "fontSize": 12,
-        "width": 0,
-        "height": 0,
         "color": "#da3156"
+      },
+      "Heading": {
+        "name": "Naming the space",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 32,
+        "color": "#e3e0c585"
       },
       "textBold": {
         "name": "Bald Power",
         "font": "Sans-Black",
         "fontSize": 11,
-        "width": 120,
-        "height": 120,
         "color": "#da3156"
       }
     },

@@ -3,7 +3,7 @@
   "backgroundImage": "assets/bg/bg_summer.png",
   "backgroundBlur": "#67635d63",
   "width": 850,
-  "height": 525,
+  "height": 500,
   "resizable": false,
-  "undecorated": false
+  "undecorated": true
 }

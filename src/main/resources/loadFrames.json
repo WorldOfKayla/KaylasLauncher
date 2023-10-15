@@ -6,7 +6,7 @@
   },
   {
     "frameName": "Auth",
-    "framePath": "assets/frames/auth.json",
+    "framePath": "assets/frames/testAuth.json",
     "inputStream": true,
     "groupVisibility": [
       {"groupName":  "authForm", "visible":  true},

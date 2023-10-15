@@ -33,9 +33,9 @@ public class GuiBuilder {
     }
 
     /*
-     * Current method is indexing a form file
-     * accepting args (String framePath, boolean streamType)
-     * */
+     * Method for building an interface based on a JSON file
+     * Accepts the path to the file and the InputStream flag to specify the data source (resources or file)
+     */
     public void buildGui(String framePath, boolean inputStream) {
         Gson gson = new Gson();
         FrameAttributes frameAttributes;
@@ -51,24 +51,23 @@ public class GuiBuilder {
             }
         }
 
-        //WIP
         if (framePath.endsWith("frame.json")) {
-            //BUILDING A FRAME
+            // Building Frame
             frame.buildFrame(frameAttributes);
         } else {
-            //BUILDING FRAME GROUPS
+            // Building component group
             this.buildComponents(frameAttributes.groups);
         }
     }
 
     /*
-    * Method for building components, requires a components Map
-    * */
+     * Method for building components based on a JSON structure
+     */
     private void buildComponents(Map<String, OptionGroups> groups) {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                APP.LOGGER.debug("Building "+componentGroup + " group");
+                APP.LOGGER.debug("Building group " + componentGroup);
                 OptionGroups optionGroups = entry.getValue();
                 JPanel parentPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
 
@@ -82,11 +81,9 @@ public class GuiBuilder {
         }
     }
 
-
     /*
-     * This method builds a list of components with
-     * ComponentAttributes and adding them all to a parent panel
-     * */
+     * Method for building components based on a JSON structure
+     */
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
         for (ComponentAttributes componentAttributes : componentList) {
             JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
@@ -95,7 +92,9 @@ public class GuiBuilder {
         }
     }
 
-
+    /*
+     * Method for adding a component to the component map
+     */
     private void addComponentToMap(String groupId, Component component) {
         if (!componentsMap.containsKey(groupId)) {
             componentsMap.put(groupId, new ArrayList<>());
@@ -103,10 +102,16 @@ public class GuiBuilder {
         componentsMap.get(groupId).add(component);
     }
 
+    /*
+     * Getting a list of components by group name
+     */
     public List<Component> getComponentsMap(String key) {
         return componentsMap.get(key);
     }
 
+    /*
+     * Getting a panel map
+     */
     public HashMap<String, JPanel> getPanelsMap() {
         return panelsMap;
     }

@@ -63,8 +63,8 @@ public class AppFrame extends JFrame implements ActionListener {
                 }
             }
         }
-        frame.getContentPanel().revalidate();
-        frame.getContentPanel().repaint();
+        frame.getRootPanel().revalidate();
+        frame.getRootPanel().repaint();
     }
 
     private void loadFrames() {

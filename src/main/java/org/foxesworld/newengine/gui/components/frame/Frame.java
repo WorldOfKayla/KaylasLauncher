@@ -14,7 +14,7 @@ public class Frame {
     private AppFrame appFrame;
     private Panel panel;
     private Dimension screenSize;
-    private JPanel contentPanel;
+    private JPanel rootPanel;
     private final JFrame frame;
     private final LanguageProvier LANG;
 
@@ -39,8 +39,8 @@ public class Frame {
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
         panel = new Panel(this);
-        this.contentPanel = panel.addPanel(frameAttributes);
-        frame.setContentPane(this.contentPanel);
+        this.rootPanel = panel.addPanel(frameAttributes);
+        frame.setContentPane(this.rootPanel);
         frame.setVisible(true);
     }
 
@@ -48,8 +48,8 @@ public class Frame {
         return screenSize;
     }
 
-    public JPanel getContentPanel() {
-        return this.contentPanel;
+    public JPanel getRootPanel() {
+        return this.rootPanel;
     }
 
     public AppFrame getAppFrame() {

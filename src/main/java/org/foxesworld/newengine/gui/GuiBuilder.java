@@ -56,7 +56,7 @@ public class GuiBuilder {
             frame.buildFrame(frameAttributes);
         } else {
             // Building component group
-            this.buildComponents(frameAttributes.groups);
+            buildComponents(frameAttributes.groups);
         }
     }
 
@@ -74,8 +74,9 @@ public class GuiBuilder {
                 this.createComponents(optionGroups.childrenComponents, parentPanel, componentGroup);
 
                 parentPanel.setVisible(false);
-                frame.getContentPanel().add(parentPanel);
+                frame.getRootPanel().add(parentPanel);
                 panelsMap.put(componentGroup, parentPanel);
+                buildComponents(optionGroups.groups); // Recursive call for nested groups
             }
             frame.getFrame().setVisible(true);
         }
@@ -86,9 +87,14 @@ public class GuiBuilder {
      */
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
         for (ComponentAttributes componentAttributes : componentList) {
-            JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
-            parentPanel.add(component);
-            this.addComponentToMap(parentGroupName, component);
+            if (componentAttributes.componentType != null) {
+                JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
+                parentPanel.add(component);
+                this.addComponentToMap(parentGroupName, component);
+            } else if (componentAttributes.groups != null) {
+                // Handle nested groups
+                buildComponents(componentAttributes.groups);
+            }
         }
     }
 

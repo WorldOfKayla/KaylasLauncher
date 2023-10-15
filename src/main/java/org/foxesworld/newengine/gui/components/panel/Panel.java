@@ -21,20 +21,20 @@ public class Panel {
     }
 
     public JPanel addPanel(FrameAttributes frameAttributes) {
-        JPanel contentPanel = new JPanel() {
+        JPanel rootPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 drawDarkenedBackground(g, frameAttributes);
             }
         };
-        contentPanel.setOpaque(false);
-        contentPanel.setLayout(null);
+        rootPanel.setOpaque(false);
+        rootPanel.setLayout(null);
 
         JPanel titleBar = new JPanel();
         titleBar.setBackground(hexToColor("#2b2927c9"));
         titleBar.setBounds(0, 0, frame.getFrame().getWidth(), 30);
-        contentPanel.add(titleBar);
+        rootPanel.add(titleBar);
 
         final boolean[] isDragging = {false};
         final int[] xOffset = {0};
@@ -65,7 +65,7 @@ public class Panel {
             }
         });
 
-        return contentPanel;
+        return rootPanel;
     }
 
     private void drawDarkenedBackground(Graphics g, FrameAttributes frameAttributes) {
@@ -82,6 +82,9 @@ public class Panel {
         groupPanel.setOpaque(panelOptions.opaque);
         groupPanel.setLayout(null);
         groupPanel.setBackground(hexToColor(panelOptions.background));
+        if(panelOptions.border != null && panelOptions.border != "") {
+            groupPanel.setBorder(BorderFactory.createLineBorder(hexToColor(panelOptions.border), panelOptions.borderThickness, panelOptions.borderRounded));
+        }
         groupPanel.setBounds(panelOptions.xPos, panelOptions.yPos, panelOptions.width, panelOptions.height);
         return groupPanel;
     }

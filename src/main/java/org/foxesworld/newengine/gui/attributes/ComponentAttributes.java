@@ -2,6 +2,8 @@ package org.foxesworld.newengine.gui.attributes;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
+
 public class ComponentAttributes {
 
     @SerializedName("componentType")
@@ -42,4 +44,7 @@ public class ComponentAttributes {
 
     @SerializedName("height")
     public int height;
+
+    @SerializedName("groups")
+    public Map<String, OptionGroups> groups;
 }

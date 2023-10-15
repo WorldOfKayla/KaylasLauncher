@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JCheckBox;
 
-public abstract class Checkbox extends JCheckBox {
+public class Checkbox extends JCheckBox {
     private static final long serialVersionUID = 1L;
     private Integer pressedNum = 0;
     public BufferedImage defaultTX;

@@ -54,10 +54,10 @@ public class GuiBuilder {
         if (framePath.endsWith("frame.json")) {
             // Building Frame
             frame.buildFrame(frameAttributes);
-        } else {
-            // Building component group
-            buildComponents(frameAttributes.groups);
         }
+        // Building component group
+        buildComponents(frameAttributes.groups);
+
     }
 
     /*

@@ -22,6 +22,15 @@
         "texture": "assets/ui/button/buttonRed.png"
       }
     },
+    "multiButton": {
+      "distributed": {
+        "name": "Distributed Emerald",
+        "width": 62,
+        "height": 30,
+        "color": "#ffffff",
+        "texture": "assets/ui/button/multibutt.png"
+      }
+    },
     "textField": {
       "line": {
         "name": "Pumpkin Power",

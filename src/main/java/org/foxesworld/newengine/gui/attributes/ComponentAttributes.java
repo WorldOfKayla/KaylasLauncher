@@ -15,6 +15,9 @@ public class ComponentAttributes {
     @SerializedName("componentId")
     public String componentId;
 
+    @SerializedName("rowNum")
+    public int rowNum;
+
     @SerializedName("localeKey")
     public String localeKey;
 

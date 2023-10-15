@@ -26,5 +26,9 @@
   "shpek": {
     "en": "Shpeknet'",
     "ru": "Шпекнуть тебя"
+  },
+  "title": {
+      "en": "FoxesWorld",
+      "ru": "FoxesWorld"
   }
 }

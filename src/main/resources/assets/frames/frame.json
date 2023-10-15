@@ -5,5 +5,46 @@
   "width": 850,
   "height": 500,
   "resizable": false,
-  "undecorated": true
+  "undecorated": true,
+  "groups": {
+    "titleBar": {
+      "panelOptions": {
+        "opaque": true,
+        "listener": "dragger",
+        "background": "#2b2927c9",
+        "width": 850,
+        "height": 30,
+        "xPos": 0,
+        "yPos": 0
+      },
+      "childrenComponents": [
+        {
+          "componentType": "label",
+          "componentStyle": "title",
+          "localeKey": "title",
+          "imageIcon": "/assets/ui/logo.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "width": 150,
+          "height": 32,
+          "xPos": 10,
+          "yPos": 0
+        },
+        {
+          "componentType": "multiButton",
+          "componentStyle": "distributed",
+          "rowNum": 1,
+          "xPos": 788,
+          "yPos": 0
+        },
+        {
+          "componentType": "multiButton",
+          "componentStyle": "distributed",
+          "rowNum": 0,
+          "xPos": 725,
+          "yPos": 0
+        }
+      ]
+    }
+  }
 }

@@ -2,16 +2,17 @@ package org.foxesworld.newengine.gui.components;
 
 import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.gui.attributes.ComponentAttributes;
+import org.foxesworld.newengine.gui.components.button.Button;
 import org.foxesworld.newengine.gui.components.button.ButtonStyle;
-import org.foxesworld.newengine.gui.components.button.StyledButton;
+import org.foxesworld.newengine.gui.components.checkbox.Checkbox;
 import org.foxesworld.newengine.gui.components.checkbox.CheckboxStyle;
-import org.foxesworld.newengine.gui.components.checkbox.StyledCheckbox;
+import org.foxesworld.newengine.gui.components.label.Label;
 import org.foxesworld.newengine.gui.components.label.LabelStyle;
-import org.foxesworld.newengine.gui.components.label.StyledLabel;
+import org.foxesworld.newengine.gui.components.multiButton.MultiButton;
+import org.foxesworld.newengine.gui.components.multiButton.MultiButtonStyle;
 import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyle;
-import org.foxesworld.newengine.gui.components.progressBar.StyledProgressBar;
 import org.foxesworld.newengine.gui.components.sprite.SpriteAnimation;
-import org.foxesworld.newengine.gui.components.textfield.StyledTextfield;
+import org.foxesworld.newengine.gui.components.textfield.Textfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvier;
@@ -28,7 +29,7 @@ public class Components {
     private LabelStyle labelStyle;
     private ButtonStyle buttonStyle;
     private CheckboxStyle checkboxStyle;
-    private JPanel panel;
+    private MultiButtonStyle multiButtonStyle;
 
     public Components(AppFrame appFrame){
         this.appFrame = appFrame;
@@ -44,7 +45,8 @@ public class Components {
 
             case "progressBar" -> {
                 progressBarStyle = new ProgressBarStyle(style);
-                StyledProgressBar progressBar = new StyledProgressBar(progressBarStyle);
+                JProgressBar progressBar = new JProgressBar();
+                progressBarStyle.apply(progressBar);
                 progressBar.setName(componentAttributes.componentId);
                 progressBar.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
                 return progressBar;
@@ -52,7 +54,8 @@ public class Components {
 
             case "label" -> {
                 labelStyle = new LabelStyle(style);
-                StyledLabel label = new StyledLabel(LANG.getString(componentAttributes.localeKey), labelStyle);
+                Label label = new Label(LANG.getString(componentAttributes.localeKey));
+                labelStyle.apply(label);
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.loadImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
@@ -64,7 +67,8 @@ public class Components {
 
             case "checkBox" -> {
                 checkboxStyle = new CheckboxStyle(style);
-                StyledCheckbox checkbox = new StyledCheckbox(LANG.getString(componentAttributes.localeKey), checkboxStyle);
+                Checkbox checkbox = new Checkbox(LANG.getString(componentAttributes.localeKey));
+                checkboxStyle.apply(checkbox);
                 checkbox.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
                 checkbox.setName(componentAttributes.localeKey);
                 return checkbox;
@@ -72,7 +76,7 @@ public class Components {
 
             case "textField" -> {
                 textfieldStyle = new TextfieldStyle(style);
-                StyledTextfield textfield = new StyledTextfield(LANG.getString(componentAttributes.localeKey), textfieldStyle);
+                Textfield textfield = new Textfield(LANG.getString(componentAttributes.localeKey));
                 textfieldStyle.apply(textfield);
                 textfield.setName(componentAttributes.componentId);
                 textfield.setBounds(componentAttributes.xPos, componentAttributes.yPos, textfieldStyle.width, textfieldStyle.height);
@@ -90,13 +94,23 @@ public class Components {
 
             case "button" -> {
                 buttonStyle = new ButtonStyle(style);
-                StyledButton button = new StyledButton(LANG.getString(componentAttributes.localeKey), buttonStyle);
+                Button button = new Button(LANG.getString(componentAttributes.localeKey));
                 buttonStyle.apply(button);
-                button.setName(componentAttributes.componentId);
+                button.setName(componentAttributes.localeKey);
                 button.setActionCommand(componentAttributes.componentId);
                 button.setBounds(componentAttributes.xPos, componentAttributes.yPos, buttonStyle.width, buttonStyle.height);
                 button.addActionListener(appFrame);
                 return button;
+            }
+
+            case "multiButton" -> {
+                multiButtonStyle = new MultiButtonStyle(style, componentAttributes.rowNum);
+                MultiButton multiButton = new MultiButton();
+                multiButtonStyle.apply(multiButton);
+                multiButton.setName(componentAttributes.localeKey);
+                multiButton.setActionCommand(componentAttributes.componentId);
+                multiButton.setBounds(componentAttributes.xPos, componentAttributes.yPos, style.width, style.height);
+                return multiButton;
             }
 
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentType);

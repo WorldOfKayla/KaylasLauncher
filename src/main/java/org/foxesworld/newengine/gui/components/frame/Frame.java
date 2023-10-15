@@ -39,7 +39,7 @@ public class Frame {
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
         panel = new Panel(this);
-        this.rootPanel = panel.addPanel(frameAttributes);
+        this.rootPanel = panel.setRootPanel(frameAttributes);
         frame.setContentPane(this.rootPanel);
         frame.setVisible(true);
     }

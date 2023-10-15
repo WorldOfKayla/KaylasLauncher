@@ -9,9 +9,11 @@ public class PanelOptions {
     @SerializedName("border")
     public String border = "";
 
+    @SerializedName("listener")
+    public String listener = "";
+
     @SerializedName("borderThickness")
     public int borderThickness = 1;
-
     @SerializedName("borderRounded")
     public boolean borderRounded = false;
 

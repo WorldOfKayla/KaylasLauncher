@@ -61,21 +61,17 @@ public class StyleProvider {
 
         @SerializedName("name")
         public String name;
-
         @SerializedName("backgroundImage")
         public String backgroundImage;
 
         @SerializedName("background")
         public String background;
-
         @SerializedName("color")
         public String color;
         @SerializedName("caretColor")
         public String caretColor;
-
         @SerializedName("align")
         public String align;
-
         @SerializedName("borderColor")
         public String borderColor;
 
@@ -90,8 +86,6 @@ public class StyleProvider {
 
         @SerializedName("fontSize")
         public int fontSize;
-
-
 
         @SerializedName("texture")
         public String texture;

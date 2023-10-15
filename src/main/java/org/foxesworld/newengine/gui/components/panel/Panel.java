@@ -15,7 +15,7 @@ import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 public class Panel {
 
-    private Frame frame;
+    private final Frame frame;
     public Panel(Frame frame) {
         this.frame = frame;
     }

@@ -74,6 +74,12 @@
         "font": "Sans-Black",
         "fontSize": 11,
         "color": "#da3156"
+      },
+      "title": {
+        "name": "Title",
+        "font": "mcfont",
+        "fontSize": 11,
+        "color": "#da3156"
       }
     },
     "progressBar": {

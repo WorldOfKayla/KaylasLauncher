@@ -27,8 +27,8 @@ public class Components {
     private ProgressBarStyle progressBarStyle;
     private LabelStyle labelStyle;
     private ButtonStyle buttonStyle;
-
     private CheckboxStyle checkboxStyle;
+    private JPanel panel;
 
     public Components(AppFrame appFrame){
         this.appFrame = appFrame;

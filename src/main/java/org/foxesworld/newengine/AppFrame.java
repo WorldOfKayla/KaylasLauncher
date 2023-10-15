@@ -112,6 +112,10 @@ public class AppFrame extends JFrame implements ActionListener {
         return download;
     }
 
+    public GuiBuilder getGuiBuilder() {
+        return guiBuilder;
+    }
+
     public Frame getFrame() {
         return this.frame;
     }

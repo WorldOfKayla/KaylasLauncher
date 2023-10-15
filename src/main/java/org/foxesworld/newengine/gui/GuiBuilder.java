@@ -44,6 +44,7 @@ public class GuiBuilder {
                 throw new RuntimeException(e);
             }
         }
+
         if (framePath.endsWith("frame.json")) {
             frame.buildFrame(frameAttributes);
         } else {
@@ -51,7 +52,7 @@ public class GuiBuilder {
         }
     }
 
-    private void buildComponents(FrameAttributes frameAttributes) {
+    public void buildComponents(FrameAttributes frameAttributes) {
         if (frameAttributes.groups != null) {
             for (Map.Entry<String, OptionGroups> entry : frameAttributes.groups.entrySet()) {
                 String componentGroup = entry.getKey();
@@ -60,11 +61,16 @@ public class GuiBuilder {
                 List<ComponentAttributes> componentList = optionGroups.childrenComponents;
 
                 for (ComponentAttributes componentAttributes : componentList) {
-                    JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
-                    groupPanel.add(component);
-                    System.out.println("adding "+ component);
-                    System.out.println("to "+componentGroup);
-                    this.addComponentToMap(componentGroup, component);
+                    if ("panel".equals(componentAttributes.componentType)) {
+                        // Рекурсивно создаем вложенную панель
+                        JPanel childPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentAttributes.componentId);
+                        groupPanel.add(childPanel);
+                        frame.getContentPanel().add(childPanel);
+                    } else {
+                        JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
+                        groupPanel.add(component);
+                        this.addComponentToMap(componentGroup, component);
+                    }
                 }
                 groupPanel.setVisible(false);
                 frame.getContentPanel().add(groupPanel);

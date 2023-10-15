@@ -146,7 +146,7 @@ public class ImageUtils {
 
     public static BufferedImage loadImage(String name) {
         try {
-            return ImageIO.read(ImageUtils.class.getResource("/assets/" + name));
+            return ImageIO.read(ImageUtils.class.getResource(name));
         } catch (IOException var2) {
             var2.printStackTrace();
             return new BufferedImage(1, 1, 2);

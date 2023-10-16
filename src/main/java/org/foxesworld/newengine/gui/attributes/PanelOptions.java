@@ -5,17 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class PanelOptions {
     @SerializedName("opaque")
     public boolean opaque = false;
-
     @SerializedName("border")
     public String border = "";
-
     @SerializedName("listener")
     public String listener = "";
-
-    @SerializedName("borderThickness")
-    public int borderThickness = 1;
-    @SerializedName("borderRounded")
-    public boolean borderRounded = false;
 
     @SerializedName("background")
     public String background = "";
@@ -25,10 +18,8 @@ public class PanelOptions {
 
     @SerializedName("height")
     public int height = 100;
-
     @SerializedName("xPos")
     public int xPos = 0;
-
     @SerializedName("yPos")
     public int yPos = 0;
 }

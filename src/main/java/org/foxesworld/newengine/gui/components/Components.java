@@ -57,7 +57,7 @@ public class Components {
                 Label label = new Label(LANG.getString(componentAttributes.localeKey));
                 labelStyle.apply(label);
                 if(componentAttributes.imageIcon != null) {
-                    label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.loadImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
+                    label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
@@ -104,7 +104,7 @@ public class Components {
             }
 
             case "multiButton" -> {
-                multiButtonStyle = new MultiButtonStyle(style, componentAttributes.rowNum);
+                multiButtonStyle = new MultiButtonStyle(style, componentAttributes);
                 MultiButton multiButton = new MultiButton();
                 multiButtonStyle.apply(multiButton);
                 multiButton.setName(componentAttributes.localeKey);

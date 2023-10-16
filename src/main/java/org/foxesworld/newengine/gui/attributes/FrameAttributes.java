@@ -5,8 +5,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 public class FrameAttributes {
-    @SerializedName("title")
-    public String title;
+    @SerializedName("appTitle")
+    public String appTitle;
+
+    @SerializedName("appIcon")
+    public String appIcon;
 
     @SerializedName("width")
     public int width;

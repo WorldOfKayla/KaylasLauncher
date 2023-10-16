@@ -1,5 +1,6 @@
 {
-  "title": "appTitle",
+  "appTitle": "appTitle",
+  "appIcon": "assets/ui/logo.png",
   "backgroundImage": "assets/ui/img/bg/bg_summer.png",
   "backgroundBlur": "#494d4db5",
   "width": 850,
@@ -22,9 +23,10 @@
           "componentType": "label",
           "componentStyle": "title",
           "localeKey": "title",
-          "imageIcon": "/assets/ui/logo.png",
-          "iconWidth": 32,
-          "iconHeight": 32,
+          "imageIcon": "assets/ui/logo.png",
+          "componentId": "appLogo",
+          "iconWidth": 64,
+          "iconHeight": 64,
           "width": 150,
           "height": 32,
           "xPos": 10,
@@ -33,6 +35,7 @@
         {
           "componentType": "multiButton",
           "componentStyle": "distributed",
+          "imgCount": 3,
           "rowNum": 1,
           "xPos": 788,
           "yPos": 0
@@ -40,6 +43,7 @@
         {
           "componentType": "multiButton",
           "componentStyle": "distributed",
+          "imgCount": 3,
           "rowNum": 0,
           "xPos": 725,
           "yPos": 0

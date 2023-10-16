@@ -3,7 +3,8 @@
     "settings": {
       "panelOptions": {
         "opaque": true,
-        "background": "",
+        "background": "#2b2927c9",
+        "border": "1,solid,#ffffff,true",
         "width": 780,
         "height": 450,
         "xPos": 35,
@@ -12,7 +13,7 @@
       "childrenComponents": [
         {
           "componentType": "button",
-          "componentStyle": "buttonGreen",
+          "componentStyle": "buttonRed",
           "componentId": "back",
           "localeKey": "back",
           "xPos": 600,
@@ -31,12 +32,12 @@
         {
           "componentType": "spriteImage",
           "imageIcon": "assets/ui/sprites/waitDonkeyKong.png",
-          "iconWidth": 32,
-          "iconHeight": 32,
+          "iconWidth": 64,
+          "iconHeight": 64,
           "totalFrames": 11,
           "delay": 80,
-          "xPos": 90,
-          "yPos": 120,
+          "xPos": 80,
+          "yPos": 100,
           "width": 256,
           "height": 256
         }

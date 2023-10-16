@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,8 +56,6 @@ public class ImageUtils {
 
         return res;
     }
-
-
 
     public static BufferedImage genPanel(int w, int h, BufferedImage img) {
         BufferedImage res = new BufferedImage(w, h, 2);
@@ -133,7 +130,6 @@ public class ImageUtils {
         ConvolveOp op = new ConvolveOp(new Kernel(3, 3, blurKernel), 1, hints);
         return op.filter(image, null);
     }
-
     public static BufferedImage sceenComponent(JComponent c) {
         int w = c.getWidth();
         int h = c.getHeight();
@@ -143,21 +139,10 @@ public class ImageUtils {
         g.dispose();
         return img;
     }
-
-    public static BufferedImage loadImage(String name) {
-        try {
-            return ImageIO.read(ImageUtils.class.getResource(name));
-        } catch (IOException var2) {
-            var2.printStackTrace();
-            return new BufferedImage(1, 1, 2);
-        }
-    }
-
     public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 
-        // Устанавливаем режим сглаживания
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if (w > srcImg.getWidth(null) || h > srcImg.getHeight(null)) {

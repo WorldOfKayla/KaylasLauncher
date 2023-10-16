@@ -18,6 +18,9 @@ public class ComponentAttributes {
     @SerializedName("rowNum")
     public int rowNum;
 
+    @SerializedName("imgCount")
+    public int imgCount;
+
     @SerializedName("localeKey")
     public String localeKey;
 

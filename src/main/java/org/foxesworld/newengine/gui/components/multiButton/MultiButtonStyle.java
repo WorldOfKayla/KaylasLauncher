@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.multiButton;
 
+import org.foxesworld.newengine.gui.attributes.ComponentAttributes;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -11,22 +12,20 @@ public class MultiButtonStyle {
     public int width;
     public int height;
 
-    public MultiButtonStyle(StyleProvider.StyleAttributes style, int rowNum) {
+    public MultiButtonStyle(StyleProvider.StyleAttributes style, ComponentAttributes componentAttributes) {
         this.width = style.width;
         this.height = style.height;
-        this.splitImg = splitImage(rowNum, ImageUtils.getLocalImage(style.texture));
+        this.splitImg = splitImage(componentAttributes.rowNum, componentAttributes.imgCount, ImageUtils.getLocalImage(style.texture));
     }
 
     public void apply(MultiButton multiButton) {
         multiButton.img1 = this.splitImg[0];
         multiButton.img2 = this.splitImg[1];
         multiButton.img3 = this.splitImg[2];
-        multiButton.setVisible(true);
     }
 
 
-    public BufferedImage[] splitImage(int row, BufferedImage texture) {
-        int imgCount = 3;
+    public BufferedImage[] splitImage(int row, int imgCount, BufferedImage texture) {
         int width = texture.getWidth() / imgCount;
         int height = texture.getHeight() / 2;
 

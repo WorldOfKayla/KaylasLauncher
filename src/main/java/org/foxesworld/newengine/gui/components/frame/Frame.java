@@ -27,7 +27,9 @@ public class Frame {
 
     public void buildFrame(FrameAttributes frameAttributes) {
         APP.LOGGER.info("Building Frame...");
-        frame.setTitle(LANG.getString(frameAttributes.title));
+
+        frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.appIcon));
+        frame.setTitle(LANG.getString(frameAttributes.appTitle));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(frameAttributes.width, frameAttributes.height);
         frame.setResizable(frameAttributes.resizable);

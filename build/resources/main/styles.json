@@ -27,7 +27,6 @@
         "name": "Distributed Emerald",
         "width": 62,
         "height": 30,
-        "color": "#ffffff",
         "texture": "assets/ui/button/multibutt.png"
       }
     },

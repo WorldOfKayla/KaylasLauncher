@@ -48,7 +48,7 @@ public class Panel {
         groupPanel.setLayout(null);
         groupPanel.setBackground(hexToColor(panelOptions.background));
         if(panelOptions.border != null && !panelOptions.border.equals("")) {
-            groupPanel.setBorder(BorderFactory.createLineBorder(hexToColor(panelOptions.border), panelOptions.borderThickness, panelOptions.borderRounded));
+            groupPanel = this.createBorder(groupPanel, panelOptions.border);
         }
 
         if(panelOptions.listener != null){
@@ -60,6 +60,17 @@ public class Panel {
             }
         }
         groupPanel.setBounds(panelOptions.xPos, panelOptions.yPos, panelOptions.width, panelOptions.height);
+        return groupPanel;
+    }
+    private JPanel createBorder(JPanel groupPanel, String border){
+        String[] borderData = border.split(",");
+        int borderThickness = Integer.parseInt(borderData[0]);
+        String borderShape = borderData[1];
+        Color borderColor = hexToColor(borderData[2]);
+        boolean borderRounded = Boolean.parseBoolean(borderData[3]);
+        switch(borderShape){
+            case "solid" -> groupPanel.setBorder(BorderFactory.createLineBorder(borderColor, borderThickness, borderRounded));
+        }
         return groupPanel;
     }
 }

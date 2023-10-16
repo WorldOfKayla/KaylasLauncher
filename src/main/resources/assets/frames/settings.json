@@ -3,7 +3,7 @@
     "settings": {
       "panelOptions": {
         "opaque": true,
-        "background": "#2a2e30",
+        "background": "#373c3975",
         "border": "1,1,1,1,#242221",
         "bounds": "35,35,780,450"
       },

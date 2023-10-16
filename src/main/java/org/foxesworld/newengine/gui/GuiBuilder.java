@@ -87,7 +87,7 @@ public class GuiBuilder {
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
         for (ComponentAttributes componentAttributes : componentList) {
             if (componentAttributes.componentType != null) {
-                JComponent component = this.components.createComponent(componentAttributes, componentAttributes.componentType);
+                JComponent component = this.components.createComponent(componentAttributes);
                 parentPanel.add(component);
                 this.addComponentToMap(parentGroupName, component);
             } else if (componentAttributes.groups != null) {

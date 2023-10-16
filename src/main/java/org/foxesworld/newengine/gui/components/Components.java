@@ -10,6 +10,8 @@ import org.foxesworld.newengine.gui.components.label.Label;
 import org.foxesworld.newengine.gui.components.label.LabelStyle;
 import org.foxesworld.newengine.gui.components.multiButton.MultiButton;
 import org.foxesworld.newengine.gui.components.multiButton.MultiButtonStyle;
+import org.foxesworld.newengine.gui.components.passfield.Passfield;
+import org.foxesworld.newengine.gui.components.passfield.PassfieldStyle;
 import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyle;
 import org.foxesworld.newengine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.newengine.gui.components.textfield.Textfield;
@@ -26,6 +28,8 @@ public class Components {
     private AppFrame appFrame;
     private LanguageProvier LANG;
     private TextfieldStyle textfieldStyle;
+
+    private PassfieldStyle passfieldStyle;
     private ProgressBarStyle progressBarStyle;
     private LabelStyle labelStyle;
     private ButtonStyle buttonStyle;
@@ -37,17 +41,17 @@ public class Components {
         this.LANG = appFrame.getApp().getLANG();
     }
 
-    public JComponent createComponent(ComponentAttributes componentAttributes, String componentType) {
+    public JComponent createComponent(ComponentAttributes componentAttributes) {
         StyleProvider.StyleAttributes style = null;
-        if(appFrame.getElementStyles().get(componentType)!=null) {
-            style = appFrame.getElementStyles().get(componentType).get(componentAttributes.componentStyle);
+        if(appFrame.getElementStyles().get(componentAttributes.componentType)!=null) {
+            style = appFrame.getElementStyles().get(componentAttributes.componentType).get(componentAttributes.componentStyle);
         }
         String[] bounds = componentAttributes.bounds.split(",");
         int xPos = Integer.parseInt(bounds[0]);
         int yPos = Integer.parseInt(bounds[1]);
         int width = Integer.parseInt(bounds[2]);
         int height = Integer.parseInt(bounds[3]);
-        switch (componentType) {
+        switch (componentAttributes.componentType) {
 
             case "progressBar" -> {
                 progressBarStyle = new ProgressBarStyle(style);
@@ -92,6 +96,17 @@ public class Components {
                 return textfield;
             }
 
+            case "passField" -> {
+                passfieldStyle = new PassfieldStyle(style);
+                Passfield passfield = new Passfield(LANG.getString(componentAttributes.localeKey));
+                passfieldStyle.apply(passfield);
+                passfield.setName(componentAttributes.localeKey);
+                passfield.setBounds(xPos, yPos, style.width, style.height);
+                passfield.setFont(FontUtils.getFont(style.font, style.fontSize));
+                passfield.setActionCommand(componentAttributes.componentId);
+                return passfield;
+            }
+
             case "spriteImage" -> {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
                 spriteAnimation.setBounds(xPos,yPos,width,height);
@@ -120,7 +135,7 @@ public class Components {
                 return multiButton;
             }
 
-            default -> throw new IllegalArgumentException("Unsupported component type: " + componentType);
+            default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.componentType);
         }
     }
 }

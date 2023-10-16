@@ -6,11 +6,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultiButton extends JButton implements MouseListener, MouseMotionListener {
-    BufferedImage img1;
-    BufferedImage img2;
-    BufferedImage img3;
+    public List<BufferedImage> img = new ArrayList<>();
+    //BufferedImage img2;
+    //BufferedImage img3;
     private boolean entered = false;
     private boolean pressed = false;
 
@@ -31,14 +33,14 @@ public class MultiButton extends JButton implements MouseListener, MouseMotionLi
 
         if (this.entered && !this.pressed) {
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-            g.drawImage(this.img2, 0, 0, this.getWidth(), this.getHeight(), null);
+            g.drawImage(this.img.get(1), 0, 0, this.getWidth(), this.getHeight(), null);
         }
         if (!this.entered) {
-            g.drawImage(this.img1, 0, 0, this.getWidth(), this.getHeight(), null);
+            g.drawImage(this.img.get(0), 0, 0, this.getWidth(), this.getHeight(), null);
         }
         if (this.pressed && this.entered) {
             this.entered = false;
-            g.drawImage(this.img3, 0, 0, this.getWidth(), this.getHeight(), null);
+            g.drawImage(this.img.get(2), 0, 0, this.getWidth(), this.getHeight(), null);
             this.pressed = false;
         }
         g.dispose();

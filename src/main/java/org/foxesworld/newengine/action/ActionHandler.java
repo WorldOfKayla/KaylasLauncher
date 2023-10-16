@@ -18,13 +18,15 @@ public class ActionHandler {
             }
 
             case "settings" -> {
-                appFrame.displayGroup("authForm", false);
-                appFrame.displayGroup("settings", true);
+                appFrame.displayPanel("authForm", false);
+                appFrame.displayPanel("newsForm", false);
+                appFrame.displayPanel("settings", true);
             }
 
             case "back" -> {
-                appFrame.displayGroup("settings", false);
-                appFrame.displayGroup("authForm", true);
+                appFrame.displayPanel("settings", false);
+                appFrame.displayPanel("authForm", true);
+                appFrame.displayPanel("newsForm", true);
             }
         }
     }

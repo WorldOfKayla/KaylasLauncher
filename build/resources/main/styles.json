@@ -23,11 +23,17 @@
       }
     },
     "multiButton": {
-      "distributed": {
+      "frameButtons": {
         "name": "Distributed Emerald",
         "width": 62,
         "height": 30,
-        "texture": "assets/ui/button/multibutt.png"
+        "texture": "assets/ui/button/frameButtons.png"
+      },
+      "back": {
+        "name": "Down home",
+        "width": 50,
+        "height": 30,
+        "texture": "assets/ui/button/back.png"
       }
     },
     "textField": {

@@ -43,7 +43,8 @@ public class AppFrame extends JFrame implements ActionListener {
         this.loadFrames();
     }
 
-    public void displayGroup(String id, boolean visible) {
+    //Will update
+    public void displayPanel(String id, boolean visible) {
         for (Map.Entry<String, JPanel> entryMap : guiBuilder.getPanelsMap().entrySet()) {
             JPanel groupPanel = entryMap.getValue();
 
@@ -63,10 +64,12 @@ public class AppFrame extends JFrame implements ActionListener {
                 }
             }
         }
+        APP.LOGGER.debug("Setting " + id + " visibility to " + visible);
         frame.getRootPanel().revalidate();
         frame.getRootPanel().repaint();
     }
 
+    //Will update
     private void loadFrames() {
         Gson gson = new Gson();
         List loadedFrames = new ArrayList();
@@ -80,8 +83,7 @@ public class AppFrame extends JFrame implements ActionListener {
                 for (Map entryMap : obj.groupVisibility) {
                     String group = String.valueOf(entryMap.get("groupName"));
                     boolean visible = (boolean) entryMap.get("visible");
-                    this.displayGroup(group, visible);
-                    APP.LOGGER.info("Setting " + group + " visibility to " + visible);
+                    this.displayPanel(group, visible);
                 }
             }
         }

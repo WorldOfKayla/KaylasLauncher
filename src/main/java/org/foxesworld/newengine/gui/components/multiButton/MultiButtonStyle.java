@@ -19,9 +19,12 @@ public class MultiButtonStyle {
     }
 
     public void apply(MultiButton multiButton) {
-        multiButton.img1 = this.splitImg[0];
-        multiButton.img2 = this.splitImg[1];
-        multiButton.img3 = this.splitImg[2];
+        for(BufferedImage img: this.splitImg){
+            multiButton.img.add(img);
+        }
+        //multiButton.img1 = this.splitImg[0];
+        //multiButton.img2 = this.splitImg[1];
+        //multiButton.img3 = this.splitImg[2];
     }
 
 

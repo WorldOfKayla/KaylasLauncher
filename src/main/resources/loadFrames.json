@@ -8,16 +8,16 @@
     ]
   },
   {
-    "frameName": "Auth",
+    "frameName": "authForm",
     "framePath": "assets/frames/auth.json",
     "inputStream": true,
     "groupVisibility": [
       {"groupName":  "authForm", "visible":  true},
-      {"groupName":  "testImage", "visible":  true}
+      {"groupName":  "newsForm", "visible":  true}
     ]
   },
   {
-    "frameName": "Settings",
+    "frameName": "settings",
     "framePath": "assets/frames/settings.json",
     "inputStream": true,
     "groupVisibility": [
@@ -25,7 +25,7 @@
     ]
   },
   {
-    "frameName": "Download",
+    "frameName": "download",
     "framePath": "assets/frames/download.json",
     "inputStream": true,
     "groupVisibility": [

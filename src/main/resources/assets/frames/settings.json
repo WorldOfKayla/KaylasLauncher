@@ -3,43 +3,61 @@
     "settings": {
       "panelOptions": {
         "opaque": true,
-        "background": "#2b2927c9",
-        "border": "1,solid,#ffffff,true",
-        "width": 780,
-        "height": 450,
-        "xPos": 35,
-        "yPos": 35
+        "background": "#2a2e30",
+        "border": "1,solid,#242221,true",
+        "bounds": "35,35,780,450"
       },
       "childrenComponents": [
-        {
-          "componentType": "button",
-          "componentStyle": "buttonRed",
-          "componentId": "back",
-          "localeKey": "back",
-          "xPos": 600,
-          "yPos": 45
-        },
         {
           "componentType": "checkBox",
           "componentStyle": "solid",
           "componentId": "checkbox0",
           "localeKey": "shpek",
-          "xPos": 60,
-          "yPos": 60,
-          "width": 120,
-          "height": 32
+          "bounds": "60,60,120,32"
         },
         {
           "componentType": "spriteImage",
-          "imageIcon": "assets/ui/sprites/waitDonkeyKong.png",
+          "imageIcon": "assets/ui/sprites/wait.png",
           "iconWidth": 64,
           "iconHeight": 64,
           "totalFrames": 11,
-          "delay": 80,
-          "xPos": 80,
-          "yPos": 100,
-          "width": 256,
-          "height": 256
+          "delay": 40,
+          "bounds": "80,100,256,256"
+        },
+        {
+          "groups": {
+            "settingsPane": {
+              "panelOptions": {
+                "opaque": true,
+                "background": "#500b0a",
+                "bounds": "0,0,780,30"
+              },
+              "childrenComponents": [
+                {
+                  "componentType": "button",
+                  "componentStyle": "buttonRed",
+                  "componentId": "back",
+                  "imgCount": 3,
+                  "rowNum": 0,
+                  "bounds": "0,0,0,0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "groups": {
+            "settingsOption0": {
+              "panelOptions": {
+                "opaque": true,
+                "background": "#c0a1a0",
+                "bounds": "0,60,780,30",
+                "display": true
+              },
+              "childrenComponents": [
+              ]
+            }
+          }
         }
       ]
     }

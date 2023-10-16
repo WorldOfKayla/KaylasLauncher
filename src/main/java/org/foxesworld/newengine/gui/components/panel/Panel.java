@@ -29,6 +29,7 @@ public class Panel {
         };
         rootPanel.setOpaque(false);
         rootPanel.setLayout(null);
+        rootPanel.setName("rootPanel");
 
         return rootPanel;
     }
@@ -48,18 +49,23 @@ public class Panel {
         groupPanel.setLayout(null);
         groupPanel.setBackground(hexToColor(panelOptions.background));
         if(panelOptions.border != null && !panelOptions.border.equals("")) {
-            groupPanel = this.createBorder(groupPanel, panelOptions.border);
+            this.createBorder(groupPanel, panelOptions.border);
         }
 
-        if(panelOptions.listener != null){
+        if(panelOptions.listener != null) {
             ActionListener actionListener = new ActionListener();
             switch (panelOptions.listener){
-                case "dragger" -> {
-                    actionListener.addDragListener(groupPanel, frame.getFrame());
-                }
+                case "dragger" -> actionListener.addDragListener(groupPanel, frame.getFrame());
             }
         }
-        groupPanel.setBounds(panelOptions.xPos, panelOptions.yPos, panelOptions.width, panelOptions.height);
+        frame.getAppFrame().displayPanel(groupName, panelOptions.display);
+
+        String[] bounds = panelOptions.bounds.split(",");
+        int posX = Integer.parseInt(bounds[0]);
+        int posY = Integer.parseInt(bounds[1]);
+        int width = Integer.parseInt(bounds[2]);
+        int height = Integer.parseInt(bounds[3]);
+        groupPanel.setBounds(posX, posY, width, height);
         return groupPanel;
     }
     private JPanel createBorder(JPanel groupPanel, String border){

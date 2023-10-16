@@ -41,6 +41,11 @@ public class Components {
         if(appFrame.getElementStyles().get(componentType)!=null) {
             style = appFrame.getElementStyles().get(componentType).get(componentAttributes.componentStyle);
         }
+        String[] bounds = componentAttributes.bounds.split(",");
+        int xPos = Integer.parseInt(bounds[0]);
+        int yPos = Integer.parseInt(bounds[1]);
+        int width = Integer.parseInt(bounds[2]);
+        int height = Integer.parseInt(bounds[3]);
         switch (componentType) {
 
             case "progressBar" -> {
@@ -61,7 +66,7 @@ public class Components {
                 }
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
-                label.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
+                label.setBounds(xPos, yPos, width, height);
                 return label;
             }
 
@@ -69,7 +74,7 @@ public class Components {
                 checkboxStyle = new CheckboxStyle(style);
                 Checkbox checkbox = new Checkbox(LANG.getString(componentAttributes.localeKey));
                 checkboxStyle.apply(checkbox);
-                checkbox.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
+                checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.localeKey);
                 return checkbox;
             }
@@ -79,7 +84,7 @@ public class Components {
                 Textfield textfield = new Textfield(LANG.getString(componentAttributes.localeKey));
                 textfieldStyle.apply(textfield);
                 textfield.setName(componentAttributes.componentId);
-                textfield.setBounds(componentAttributes.xPos, componentAttributes.yPos, textfieldStyle.width, textfieldStyle.height);
+                textfield.setBounds(xPos, yPos, textfieldStyle.width, textfieldStyle.height);
                 textfield.setActionCommand(componentAttributes.componentId);
                 textfield.addActionListener(appFrame);
                 return textfield;
@@ -87,7 +92,7 @@ public class Components {
 
             case "spriteImage" -> {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
-                spriteAnimation.setBounds(componentAttributes.xPos,componentAttributes.yPos,componentAttributes.width,componentAttributes.height);
+                spriteAnimation.setBounds(xPos,yPos,width,height);
                 spriteAnimation.setName(componentAttributes.imageIcon);
                 return  spriteAnimation;
             }
@@ -98,7 +103,7 @@ public class Components {
                 buttonStyle.apply(button);
                 button.setName(componentAttributes.localeKey);
                 button.setActionCommand(componentAttributes.componentId);
-                button.setBounds(componentAttributes.xPos, componentAttributes.yPos, buttonStyle.width, buttonStyle.height);
+                button.setBounds(xPos, yPos, buttonStyle.width, buttonStyle.height);
                 button.addActionListener(appFrame);
                 return button;
             }
@@ -109,7 +114,7 @@ public class Components {
                 multiButtonStyle.apply(multiButton);
                 multiButton.setName(componentAttributes.localeKey);
                 multiButton.setActionCommand(componentAttributes.componentId);
-                multiButton.setBounds(componentAttributes.xPos, componentAttributes.yPos, style.width, style.height);
+                multiButton.setBounds(xPos, yPos, style.width, style.height);
                 return multiButton;
             }
 

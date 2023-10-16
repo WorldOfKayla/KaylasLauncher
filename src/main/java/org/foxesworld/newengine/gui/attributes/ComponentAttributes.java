@@ -39,6 +39,9 @@ public class ComponentAttributes {
     @SerializedName("delay")
     public int delay;
 
+    @SerializedName("bounds")
+    public String bounds;
+
     @SerializedName("xPos")
     public int xPos;
 

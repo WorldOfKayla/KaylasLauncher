@@ -4,16 +4,14 @@
       "panelOptions": {
         "opaque": true,
         "background": "",
-        "width": 800,
-        "height": 30,
-        "xPos": 20,
-        "yPos": 460
+        "bounds": "20,460,800,30"
       },
       "childrenComponents": [
         {
           "componentType": "progressBar",
           "componentStyle": "progress",
           "componentId": "progressBar",
+          "bounds": "0,0,790,40",
           "width": 790,
           "height": 40,
           "xPos": 0,
@@ -23,6 +21,7 @@
           "componentType": "label",
           "componentStyle": "textBold",
           "componentId": "progressLabel",
+          "bounds": "15,-3,170,40",
           "width": 170,
           "height": 40,
           "xPos": 15,

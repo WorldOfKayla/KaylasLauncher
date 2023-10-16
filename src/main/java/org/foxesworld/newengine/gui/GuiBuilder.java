@@ -67,19 +67,20 @@ public class GuiBuilder {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                APP.LOGGER.debug("Building group " + componentGroup + " with parent "+parentPanel.getName());
+                APP.LOGGER.debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
-                this.createComponents(optionGroups.childrenComponents, thisPanel, componentGroup);
+                this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
 
-                thisPanel.setVisible(true); //By default all child panels are visible
+                thisPanel.setVisible(true); // By default, all child panels are visible
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups
             }
         }
     }
+
 
     /*
      * Method for building components based on a JSON structure
@@ -93,9 +94,13 @@ public class GuiBuilder {
             } else if (componentAttributes.groups != null) {
                 // Handle nested groups
                 buildComponents(componentAttributes.groups, parentPanel);
+            } else if (componentAttributes.readFrom != null) {
+                // Handle reading from another JSON file
+                buildGui(componentAttributes.readFrom, true);
             }
         }
     }
+
 
     /*
      * Method for adding a component to the component map

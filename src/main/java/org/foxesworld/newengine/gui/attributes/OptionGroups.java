@@ -9,8 +9,9 @@ public class OptionGroups {
     @SerializedName("panelOptions")
     public PanelOptions panelOptions;
 
-    @SerializedName("childrenComponents")
-    public List<ComponentAttributes> childrenComponents;
+    @SerializedName("childComponents")
+    public List<ComponentAttributes> childComponents;
+
     @SerializedName("groups")
     public Map<String, OptionGroups> groups;
 }

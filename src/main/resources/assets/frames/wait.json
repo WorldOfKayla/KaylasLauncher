@@ -6,7 +6,7 @@
         "background": "#638dbebf",
         "bounds": "0,0,850,500"
       },
-      "childrenComponents": [
+      "childComponents": [
 
       ]
     }

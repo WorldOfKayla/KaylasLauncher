@@ -6,7 +6,7 @@
         "background": "",
         "bounds": "20,460,800,30"
       },
-      "childrenComponents": [
+      "childComponents": [
         {
           "componentType": "progressBar",
           "componentStyle": "progress",

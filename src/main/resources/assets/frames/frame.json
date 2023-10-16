@@ -15,7 +15,7 @@
         "background": "#503030",
         "bounds": "0,0,850,30"
       },
-      "childrenComponents": [
+      "childComponents": [
         {
           "componentType": "label",
           "componentStyle": "title",

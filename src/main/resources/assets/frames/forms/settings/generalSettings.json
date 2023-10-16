@@ -1,0 +1,50 @@
+{
+  "groups": {
+    "generalSettings": {
+      "panelOptions": {
+        "opaque": true,
+        "background": "#c0a1a0",
+        "bounds": "10,60,320,240",
+        "display": true
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "fontSize": 16,
+          "componentStyle": "Heading",
+          "localeKey": "baseOptions",
+          "componentId": "baseOptions",
+          "bounds": "5,-10,160,50"
+        },
+        {
+          "componentType": "checkBox",
+          "componentStyle": "solid",
+          "componentId": "autoEnterCheck",
+          "localeKey": "autoEnter",
+          "bounds": "5,20,240,32"
+        },
+        {
+          "componentType": "checkBox",
+          "componentStyle": "solid",
+          "componentId": "fullScreenCheck",
+          "localeKey": "fullScreen",
+          "bounds": "5,40,240,32"
+        },
+        {
+          "componentType": "checkBox",
+          "componentStyle": "solid",
+          "componentId": "loadNewsCheck",
+          "localeKey": "loadNews",
+          "bounds": "5,60,240,32"
+        },
+        {
+          "componentType": "checkBox",
+          "componentStyle": "solid",
+          "componentId": "enableSoundCheck",
+          "localeKey": "enableSound",
+          "bounds": "5,80,240,32"
+        }
+      ]
+    }
+  }
+}

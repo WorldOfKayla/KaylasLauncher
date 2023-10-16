@@ -7,7 +7,7 @@
         "border": "1,1,1,1,#242221",
         "bounds": "35,35,780,450"
       },
-      "childrenComponents": [
+      "childComponents": [
         {
           "groups": {
             "settingsPane": {
@@ -16,7 +16,7 @@
                 "background": "#500b0a",
                 "bounds": "0,0,780,30"
               },
-              "childrenComponents": [
+              "childComponents": [
                 {
                   "componentType": "button",
                   "componentStyle": "buttonRed",
@@ -38,7 +38,7 @@
                 "bounds": "10,60,320,240",
                 "display": true
               },
-              "childrenComponents": [
+              "childComponents": [
                 {
                   "componentType": "label",
                   "fontSize": 16,
@@ -88,7 +88,7 @@
                 "bounds": "470,60,290,370",
                 "display": true
               },
-              "childrenComponents": [
+              "childComponents": [
                 {
                   "componentType": "spriteImage",
                   "imageIcon": "assets/ui/sprites/wait.png",

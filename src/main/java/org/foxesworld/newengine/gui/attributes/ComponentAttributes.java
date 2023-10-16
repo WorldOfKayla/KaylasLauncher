@@ -6,6 +6,9 @@ import java.util.Map;
 
 public class ComponentAttributes {
 
+    @SerializedName("readFrom")
+    public String readFrom;
+
     @SerializedName("componentType")
     public String componentType;
 

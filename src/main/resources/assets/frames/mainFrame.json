@@ -6,75 +6,12 @@
         "background": "",
         "bounds": "0,0,850,500"
       },
-      "childrenComponents": [
+      "childComponents": [
         {
-          "groups": {
-            "authForm": {
-              "panelOptions": {
-                "opaque": false,
-                "background": "",
-                "bounds": "0,0,350,500"
-              },
-              "childrenComponents": [
-                {
-                  "componentType": "textField",
-                  "componentStyle": "line",
-                  "localeKey": "loginPlaceholder",
-                  "componentId": "inputLogin",
-                  "bounds": "60,160,0,0"
-                },
-                {
-                  "componentType": "passField",
-                  "componentStyle": "line",
-                  "localeKey": "passwordPlaceholder",
-                  "componentId": "inputPass",
-                  "bounds": "60,230,0,0"
-                },
-                {
-                  "componentType": "label",
-                  "fontSize": 32,
-                  "componentStyle": "Heading",
-                  "localeKey": "authHeading",
-                  "componentId": "appHeader",
-                  "bounds": "60,50,250,50"
-                },
-                {
-                  "componentType": "button",
-                  "componentStyle": "buttonGreen",
-                  "componentId": "submit",
-                  "localeKey": "submit",
-                  "bounds": "60,275,0,0"
-                },
-                {
-                  "componentType": "button",
-                  "componentStyle": "buttonGreen",
-                  "componentId": "settings",
-                  "localeKey": "settings",
-                  "bounds": "60,325,0,0"
-                }
-              ]
-            },
-            "newsForm": {
-              "panelOptions": {
-                "opaque": true,
-                "background": "#373c3975",
-                "border": "0,1,0,0,#3b4045",
-                "bounds": "350,0,550,500"
-              },
-              "childrenComponents": [
-                {
-                  "componentType": "label",
-                  "fontSize": 16,
-                  "componentStyle": "textBold",
-                  "componentId": "testImage",
-                  "imageIcon": "assets/ui/img/AidenCoffee.png",
-                  "iconWidth": 256,
-                  "iconHeight": 256,
-                  "bounds": "250,120,512,512"
-                }
-              ]
-            }
-          }
+          "readFrom": "assets/frames/forms/auth.json"
+        },
+        {
+          "readFrom": "assets/frames/forms/newsForm.json"
         }
       ]
     }

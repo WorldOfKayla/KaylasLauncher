@@ -8,11 +8,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 
-public class Passfield extends JPasswordField {
+public class PassField extends JPasswordField {
     BufferedImage texture;
     private String placeholder;
     public Font font;
-    public Passfield(String placeholder) {
+    public PassField(String placeholder) {
         this.placeholder = placeholder;
         this.setOpaque(false);
         this.addFocusListener(new FocusListener() {
@@ -34,7 +34,7 @@ public class Passfield extends JPasswordField {
         g2.drawImage(ImageUtils.genButton(getWidth(), getHeight(), texture), 0, 0, getWidth(), getHeight(), null);
 
         if (!hasFocus() && getPassword().length == 0 && placeholder != null) {
-            g2.drawString(placeholder, getInsets().left, g.getFontMetrics().getMaxAscent() + getInsets().top);
+            g2.drawString(placeholder, getInsets().left, g.getFontMetrics().getMaxAscent() + getInsets().top + 10);
         } else {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             super.paintComponent(g);

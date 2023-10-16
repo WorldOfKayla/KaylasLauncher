@@ -10,8 +10,8 @@ import org.foxesworld.newengine.gui.components.label.Label;
 import org.foxesworld.newengine.gui.components.label.LabelStyle;
 import org.foxesworld.newengine.gui.components.multiButton.MultiButton;
 import org.foxesworld.newengine.gui.components.multiButton.MultiButtonStyle;
-import org.foxesworld.newengine.gui.components.passfield.Passfield;
-import org.foxesworld.newengine.gui.components.passfield.PassfieldStyle;
+import org.foxesworld.newengine.gui.components.passfield.PassField;
+import org.foxesworld.newengine.gui.components.passfield.PassFieldStyle;
 import org.foxesworld.newengine.gui.components.progressBar.ProgressBarStyle;
 import org.foxesworld.newengine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.newengine.gui.components.textfield.Textfield;
@@ -29,7 +29,7 @@ public class Components {
     private LanguageProvier LANG;
     private TextfieldStyle textfieldStyle;
 
-    private PassfieldStyle passfieldStyle;
+    private PassFieldStyle passfieldStyle;
     private ProgressBarStyle progressBarStyle;
     private LabelStyle labelStyle;
     private ButtonStyle buttonStyle;
@@ -97,8 +97,8 @@ public class Components {
             }
 
             case "passField" -> {
-                passfieldStyle = new PassfieldStyle(style);
-                Passfield passfield = new Passfield(LANG.getString(componentAttributes.localeKey));
+                passfieldStyle = new PassFieldStyle(style);
+                PassField passfield = new PassField(LANG.getString(componentAttributes.localeKey));
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.localeKey);
                 passfield.setBounds(xPos, yPos, style.width, style.height);

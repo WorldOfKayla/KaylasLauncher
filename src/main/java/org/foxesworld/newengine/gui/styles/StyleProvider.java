@@ -48,13 +48,8 @@ public class StyleProvider {
             }
         }
 
-
     public Map<String, Map<String, StyleAttributes>> getElementStyles() {
         return elementStyles;
-    }
-
-    public Map<String, StyleAttributes> getStylesForElementType(String elementType) {
-        return elementStyles.get(elementType);
     }
 
     public class StyleAttributes {

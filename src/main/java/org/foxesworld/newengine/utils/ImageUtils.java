@@ -130,7 +130,7 @@ public class ImageUtils {
         ConvolveOp op = new ConvolveOp(new Kernel(3, 3, blurKernel), 1, hints);
         return op.filter(image, null);
     }
-    public static BufferedImage sceenComponent(JComponent c) {
+    public static BufferedImage screenComponent(JComponent c) {
         int w = c.getWidth();
         int h = c.getHeight();
         BufferedImage img = new BufferedImage(w, h, 2);

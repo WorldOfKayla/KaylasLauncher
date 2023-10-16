@@ -4,14 +4,14 @@
     "framePath": "assets/frames/frame.json",
     "inputStream": true,
     "groupVisibility": [
-      {"groupName":  "titleBar", "visible":  true}
     ]
   },
   {
-    "frameName": "authForm",
-    "framePath": "assets/frames/auth.json",
+    "frameName": "mainFrame",
+    "framePath": "assets/frames/mainFrame.json",
     "inputStream": true,
     "groupVisibility": [
+      {"groupName":  "mainFrame", "visible":  true},
       {"groupName":  "authForm", "visible":  true},
       {"groupName":  "newsForm", "visible":  true}
     ]
@@ -30,6 +30,14 @@
     "inputStream": true,
     "groupVisibility": [
       {"groupName":  "download", "visible":  false}
+    ]
+  },
+  {
+    "frameName": "wait",
+    "framePath": "assets/frames/wait.json",
+    "inputStream": true,
+    "groupVisibility": [
+      {"groupName":  "wait", "visible":  false}
     ]
   }
 ]

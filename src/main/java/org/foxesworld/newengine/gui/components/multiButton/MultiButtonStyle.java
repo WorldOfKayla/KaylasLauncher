@@ -5,7 +5,6 @@ import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 
 public class MultiButtonStyle {
     private BufferedImage[] splitImg;

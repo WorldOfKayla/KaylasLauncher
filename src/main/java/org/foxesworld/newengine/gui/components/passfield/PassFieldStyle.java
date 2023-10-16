@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 import static org.foxesworld.newengine.utils.FontUtils.hexToColor;
 
 
-public class PassfieldStyle {
+public class PassFieldStyle {
     public String fontName = "";
     public String echoChar = "";
     public float fontSize = 1.0f;
@@ -21,14 +21,14 @@ public class PassfieldStyle {
     public Color caretColor;
     public Border border;
 
-    public PassfieldStyle(StyleProvider.StyleAttributes style) {
+    public PassFieldStyle(StyleProvider.StyleAttributes style) {
         this.texture = ImageUtils.getLocalImage(style.texture);
         this.textColor = hexToColor(style.color);
         this.caretColor = hexToColor(style.caretColor);
         this.echoChar = "*";
     }
 
-    public void apply(Passfield pass) {
+    public void apply(PassField pass) {
         pass.texture = this.texture;
         pass.font = FontUtils.getFont(this.fontName, this.fontSize);
         pass.setCaretColor(this.caretColor);

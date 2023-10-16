@@ -1,7 +1,6 @@
 package org.foxesworld.newengine.gui.components.label;
 
 import org.foxesworld.newengine.gui.styles.StyleProvider;
-import org.foxesworld.newengine.utils.FontUtils;
 
 import java.awt.Color;
 

@@ -89,6 +89,15 @@
                 "display": true
               },
               "childrenComponents": [
+                {
+                  "componentType": "spriteImage",
+                  "imageIcon": "assets/ui/sprites/wait.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
+                  "totalFrames": 11,
+                  "delay": 40,
+                  "bounds": "64,64,256,256"
+                }
               ]
             }
           }

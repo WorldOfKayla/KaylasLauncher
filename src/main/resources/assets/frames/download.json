@@ -4,6 +4,7 @@
       "panelOptions": {
         "opaque": true,
         "background": "",
+        "visibility": false,
         "bounds": "20,460,800,30"
       },
       "childComponents": [

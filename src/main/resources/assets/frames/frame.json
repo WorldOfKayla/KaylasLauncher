@@ -11,6 +11,7 @@
     "titleBar": {
       "panelOptions": {
         "opaque": true,
+        "visibility": true,
         "listener": "dragger",
         "background": "#503030",
         "bounds": "0,0,850,30"

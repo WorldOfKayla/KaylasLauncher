@@ -69,7 +69,6 @@ public class AppFrame extends JFrame implements ActionListener {
         frame.getRootPanel().repaint();
     }
 
-    //Will update
     private void loadFrames() {
         Gson gson = new Gson();
         List loadedFrames = new ArrayList();
@@ -77,15 +76,7 @@ public class AppFrame extends JFrame implements ActionListener {
         FrameListAttributes[] array = gson.fromJson(reader, FrameListAttributes[].class);
         for (FrameListAttributes obj : array) {
             this.guiBuilder.buildGui(obj.framePath, obj.inputStream);
-            APP.LOGGER.debug("Processing " + obj.framePath);
             loadedFrames.add(obj.frameName);
-            if (obj.groupVisibility != null) {
-                for (Map entryMap : obj.groupVisibility) {
-                    String group = String.valueOf(entryMap.get("groupName"));
-                    boolean visible = (boolean) entryMap.get("visible");
-                    this.displayPanel(group, visible);
-                }
-            }
         }
         APP.LOGGER.info("Loaded Frames " + loadedFrames);
     }
@@ -102,20 +93,10 @@ public class AppFrame extends JFrame implements ActionListener {
         String framePath;
         @SerializedName("inputStream")
         boolean inputStream;
-        @SerializedName("groupVisibility")
-        List<Map> groupVisibility;
     }
 
     public Map<String, Map<String, StyleProvider.StyleAttributes>> getElementStyles() {
         return elementStyles;
-    }
-
-    public DownloadUtils getDownload() {
-        return download;
-    }
-
-    public GuiBuilder getGuiBuilder() {
-        return guiBuilder;
     }
 
     public Frame getFrame() {

@@ -71,9 +71,11 @@ public class GuiBuilder {
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
+                System.out.println(thisPanel.getName() + " visible " + optionGroups.panelOptions.visibility);
+                thisPanel.setVisible(optionGroups.panelOptions.visibility);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
-
-                thisPanel.setVisible(true); // By default, all child panels are visible
+                APP.LOGGER.debug("Adding "+thisPanel.getName() + " to parent " +parentPanel.getName());
+                //thisPanel.setVisible(true); // By default, all child panels are visible
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups

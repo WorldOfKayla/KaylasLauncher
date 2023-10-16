@@ -23,7 +23,6 @@ public class ImageUtils {
 
             BufferedImage img = ImageIO.read(ImageUtils.class.getClassLoader().getResourceAsStream(name));
             imgs.put(name, img);
-            APP.LOGGER.info("Opened local image: " + name, 0, false);
             return img;
         } catch (Exception e) {
             APP.LOGGER.error("Failed to open local image: " + name);

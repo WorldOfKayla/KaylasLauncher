@@ -3,6 +3,7 @@
     "settings": {
       "panelOptions": {
         "opaque": true,
+        "visibility": false,
         "background": "#373c3975",
         "border": "1,1,1,1,#242221",
         "bounds": "35,35,780,450"
@@ -13,6 +14,7 @@
             "settingsPane": {
               "panelOptions": {
                 "opaque": true,
+                "visibility": true,
                 "background": "#500b0a",
                 "bounds": "0,0,780,30"
               },
@@ -34,6 +36,7 @@
             "generalSettings": {
               "panelOptions": {
                 "opaque": true,
+                "visibility": true,
                 "background": "#c0a1a0",
                 "bounds": "10,60,320,240",
                 "display": true
@@ -84,6 +87,7 @@
             "generalInfo": {
               "panelOptions": {
                 "opaque": true,
+                "visibility": true,
                 "background": "#deded2a3",
                 "bounds": "470,60,290,370",
                 "display": true

@@ -59,7 +59,7 @@ public class Panel {
                 case "dragger" -> actionListener.addDragListener(groupPanel, frame.getFrame());
             }
         }
-        frame.getAppFrame().displayPanel(groupName, panelOptions.display);
+        //frame.getAppFrame().displayPanel(groupName, panelOptions.display);
 
         String[] bounds = panelOptions.bounds.split(",");
         int posX = Integer.parseInt(bounds[0]);

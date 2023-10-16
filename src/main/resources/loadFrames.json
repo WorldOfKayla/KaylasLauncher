@@ -2,42 +2,26 @@
   {
     "frameName": "Frame",
     "framePath": "assets/frames/frame.json",
-    "inputStream": true,
-    "groupVisibility": [
-    ]
+    "inputStream": true
   },
   {
     "frameName": "mainFrame",
     "framePath": "assets/frames/mainFrame.json",
-    "inputStream": true,
-    "groupVisibility": [
-      {"groupName":  "mainFrame", "visible":  true},
-      {"groupName":  "authForm", "visible":  true},
-      {"groupName":  "newsForm", "visible":  true}
-    ]
+    "inputStream": true
   },
   {
     "frameName": "settings",
     "framePath": "assets/frames/settings.json",
-    "inputStream": true,
-    "groupVisibility": [
-      {"groupName":  "settings", "visible":  false}
-    ]
+    "inputStream": true
   },
   {
     "frameName": "download",
     "framePath": "assets/frames/download.json",
-    "inputStream": true,
-    "groupVisibility": [
-      {"groupName":  "download", "visible":  false}
-    ]
+    "inputStream": true
   },
   {
     "frameName": "wait",
     "framePath": "assets/frames/wait.json",
-    "inputStream": true,
-    "groupVisibility": [
-      {"groupName":  "wait", "visible":  false}
-    ]
+    "inputStream": true
   }
 ]

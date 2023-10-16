@@ -2,7 +2,7 @@
   "appTitle": "appTitle",
   "appIcon": "assets/ui/icons/logo.png",
   "backgroundImage": "assets/ui/img/bg/bg_summer.png",
-  "backgroundBlur": "#494d4db5",
+  "backgroundBlur": "#494d4d54",
   "width": 850,
   "height": 500,
   "resizable": false,
@@ -19,12 +19,13 @@
         {
           "componentType": "label",
           "componentStyle": "title",
+          "fontSize": 15,
           "localeKey": "title",
           "imageIcon": "assets/ui/icons/logo.png",
           "componentId": "appLogo",
           "iconWidth": 64,
           "iconHeight": 64,
-          "bounds": "0,0,150,30"
+          "bounds": "0,0,180,30"
         },
         {
           "componentType": "multiButton",

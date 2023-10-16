@@ -7,6 +7,7 @@ import org.foxesworld.newengine.utils.ActionListener;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -70,13 +71,12 @@ public class Panel {
     }
     private JPanel createBorder(JPanel groupPanel, String border){
         String[] borderData = border.split(",");
-        int borderThickness = Integer.parseInt(borderData[0]);
-        String borderShape = borderData[1];
-        Color borderColor = hexToColor(borderData[2]);
-        boolean borderRounded = Boolean.parseBoolean(borderData[3]);
-        switch(borderShape){
-            case "solid" -> groupPanel.setBorder(BorderFactory.createLineBorder(borderColor, borderThickness, borderRounded));
-        }
+        int top = Integer.parseInt(borderData[0]);
+        int left = Integer.parseInt(borderData[1]);
+        int bottom = Integer.parseInt(borderData[2]);
+        int right = Integer.parseInt(borderData[3]);
+        Color borderColor = hexToColor(borderData[4]);
+        groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
         return groupPanel;
     }
 }

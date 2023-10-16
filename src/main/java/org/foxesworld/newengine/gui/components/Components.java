@@ -16,6 +16,7 @@ import org.foxesworld.newengine.gui.components.textfield.Textfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvier;
+import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -64,6 +65,7 @@ public class Components {
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
+                label.setFont(FontUtils.getFont(style.font, componentAttributes.fontSize));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
                 label.setBounds(xPos, yPos, width, height);

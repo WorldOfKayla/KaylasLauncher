@@ -62,10 +62,9 @@
     "checkBox": {
       "solid": {
         "name": "Pumpkin Power",
-        "font": "FSElliotPro-Heavy",
+        "font": "prompt",
         "fontSize": 12,
-        "color": "#a96b6b",
-        "caretColor": "#436e22",
+        "color": "#ffffff",
         "background": "#ffffff",
         "texture": "assets/ui/checkbox/checkbox.png"
       }
@@ -73,26 +72,22 @@
     "label": {
       "promptLabel": {
         "name": "Pumpkin Power",
-        "font": "FSElliotPro-Light",
-        "fontSize": 12,
+        "font": "prompt",
         "color": "#da3156"
       },
       "Heading": {
         "name": "Naming the space",
         "font": "FSElliotPro-Heavy",
-        "fontSize": 32,
         "color": "#e3e0c585"
       },
       "textBold": {
         "name": "Bald Power",
         "font": "Sans-Black",
-        "fontSize": 11,
         "color": "#da3156"
       },
       "title": {
         "name": "Title",
         "font": "mcfont",
-        "fontSize": 11,
         "color": "#da3156"
       }
     },

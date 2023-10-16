@@ -22,7 +22,6 @@ public class LabelStyle {
 	}
 
 	public void apply(Label label) {
-		label.setFont(FontUtils.getFont(fontName, fontSize));
 		label.setForeground(activeColor);
 	}
 }

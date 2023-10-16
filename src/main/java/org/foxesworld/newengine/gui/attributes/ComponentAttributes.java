@@ -21,6 +21,9 @@ public class ComponentAttributes {
     @SerializedName("imgCount")
     public int imgCount;
 
+    @SerializedName("fontSize")
+    public int fontSize;
+
     @SerializedName("localeKey")
     public String localeKey;
 

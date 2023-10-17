@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.label;
 
+import org.foxesworld.newengine.gui.components.Components;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 
 import java.awt.Color;
@@ -13,11 +14,11 @@ public class LabelStyle {
 	public Color idleColor;
 	public Color activeColor;
 
-	public LabelStyle(StyleProvider.StyleAttributes styles) {
-		this.fontName = styles.font;
-		this.fontSize = styles.fontSize;
-		this.idleColor = hexToColor(styles.color);
-		this.activeColor = hexToColor(styles.color);
+	public LabelStyle(Components components) {
+		this.fontName = components.style.font;
+		this.fontSize = components.style.fontSize;
+		this.idleColor = hexToColor(components.style.color);
+		this.activeColor = hexToColor(components.style.color);
 	}
 
 	public void apply(Label label) {

@@ -35,9 +35,9 @@ public class AppFrame extends JFrame implements ActionListener {
     private GuiBuilder guiBuilder;
     private String LOCALE = "ru";
     private LanguageProvider LANG;
-    private Map<String, Object> CONFIG = new HashMap<>();
+    private Map<String, Object> CONFIG;
+    private ConfigReader configReader;
     private HTTPrequest GETrequest,POSTrequest;
-
     private FontUtils fontUtils;
     private SystemComponents systemComponents;
     private ActionHandler actionHandler;
@@ -48,7 +48,7 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public AppFrame(APP app) {
         this.app = app;
-        ConfigReader configReader = new ConfigReader(this);
+        configReader = new ConfigReader(this);
         CONFIG = configReader.getCfgMaps().get("config");
         LOCALE = String.valueOf(CONFIG.get("Lang"));
         this.LANG = new LanguageProvider(this, "/assets/lang/locale.json");
@@ -165,6 +165,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public String[] getConfigFiles() {
         return configFiles;
+    }
+
+    public ConfigReader getConfigReader() {
+        return configReader;
     }
 
     @Deprecated

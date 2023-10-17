@@ -1,4 +1,8 @@
 {
   "Lang": "ru",
-  "LogLevel": "DEBUG"
+  "LogLevel": "DEBUG",
+  "autoEnter": false,
+  "fullScreen": false,
+  "loadNews": true,
+  "enableSound": true
 }

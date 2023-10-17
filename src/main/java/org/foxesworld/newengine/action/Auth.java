@@ -8,9 +8,8 @@ import org.foxesworld.newengine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Auth {
 
@@ -30,6 +29,8 @@ public class Auth {
         switch (response.type){
             case "success" -> {
                 appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"settings\", \"display\": false}]");
+                appFrame.getConfigReader().addToConfig(inputData, Arrays.asList("login","password"));
+                System.out.println(appFrame.getConfigReader().getConfigWriter().configToJSON());
             }
 
             case "error" -> {

@@ -54,7 +54,7 @@ public class Components {
         switch (componentAttributes.componentType) {
 
             case "progressBar" -> {
-                progressBarStyle = new ProgressBarStyle(style);
+                progressBarStyle = new ProgressBarStyle(this);
                 JProgressBar progressBar = new JProgressBar();
                 progressBarStyle.apply(progressBar);
                 progressBar.setName(componentAttributes.componentId);
@@ -63,7 +63,7 @@ public class Components {
             }
 
             case "label" -> {
-                labelStyle = new LabelStyle(style);
+                labelStyle = new LabelStyle(this);
                 Label label = new Label(LANG.getString(componentAttributes.localeKey));
                 labelStyle.apply(label);
                 if(componentAttributes.imageIcon != null) {
@@ -97,7 +97,7 @@ public class Components {
             }
 
             case "passField" -> {
-                passfieldStyle = new PassFieldStyle(style);
+                passfieldStyle = new PassFieldStyle(this);
                 PassField passfield = new PassField(LANG.getString(componentAttributes.localeKey));
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.componentId);

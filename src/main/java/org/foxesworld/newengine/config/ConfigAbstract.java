@@ -13,7 +13,6 @@ public abstract class ConfigAbstract {
         for(String cfgUnit: configFiles){
             String cfgFileName = cfgUnit + cfgFileExtension;
             new cfgProvider(cfgFileName);
-            //APP.LOGGER.debug("Adding " + cfgFileName + " to CONFIG");
         }
     }
 

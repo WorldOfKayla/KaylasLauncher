@@ -13,6 +13,6 @@
   },
   {
     "propertyKey": "Content-Type",
-    "propertyValue": "multipart/form-data; boundary={$boundary}"
+    "propertyValue": "application/x-www-form-urlencoded; boundary={$boundary}"
   }
 ]

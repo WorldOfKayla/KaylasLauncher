@@ -25,7 +25,7 @@ public class ImageUtils {
             imgs.put(name, img);
             return img;
         } catch (Exception e) {
-            APP.LOGGER.error("Failed to open local image: " + name);
+            //APP.LOGGER.error("Failed to open local image: " + name);
             return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         }
     }

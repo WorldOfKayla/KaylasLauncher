@@ -8,7 +8,6 @@ public class SystemComponents {
     private HashMap<String, Component> componentsMap = new HashMap<>();
 
     public void addComponent(String componentName, Component component) {
-        System.out.println("Adding " + componentName);
         this.componentsMap.put(componentName,component);
     }
 

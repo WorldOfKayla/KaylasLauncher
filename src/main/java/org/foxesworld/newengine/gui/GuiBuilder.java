@@ -27,7 +27,7 @@ public class GuiBuilder {
     private final Components components;
 
     public GuiBuilder(AppFrame appFrame) {
-        APP.LOGGER.debug("=== GUI BUILDER ===");
+        appFrame.getLOGGER().debug("=== GUI BUILDER ===");
         this.frame = appFrame.getFrame();
         this.components = new Components(appFrame);
     }
@@ -71,13 +71,13 @@ public class GuiBuilder {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                APP.LOGGER.debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
+                this.frame.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
-                APP.LOGGER.debug("Adding "+thisPanel.getName() + " to parent " +parentPanel.getName());
+                this.frame.getAppFrame().getLOGGER().debug("Adding "+thisPanel.getName() + " to parent " +parentPanel.getName());
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups

@@ -19,14 +19,14 @@ public class Frame {
     private final LanguageProvider LANG;
 
     public Frame(AppFrame appFrame) {
-        APP.LOGGER.info("Frame initialization");
+        appFrame.getLOGGER().info("Frame initialization");
         this.appFrame = appFrame;
         this.frame = new JFrame();
-        this.LANG = appFrame.getApp().getLANG();
+        this.LANG = appFrame.getLANG();
     }
 
     public void buildFrame(FrameAttributes frameAttributes) {
-        APP.LOGGER.info("Building Frame...");
+        appFrame.getLOGGER().info("Building Frame...");
 
         frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.appIcon));
         frame.setTitle(LANG.getString(frameAttributes.appTitle));

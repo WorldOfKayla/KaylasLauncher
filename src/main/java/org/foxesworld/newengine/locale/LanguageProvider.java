@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.foxesworld.newengine.APP;
+import org.foxesworld.newengine.AppFrame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,14 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LanguageProvider {
-    private final APP app;
+    private final AppFrame app;
     private final String currentLang;
     private final Map<String, Map<String, String>> localizationData = new HashMap<>();
 
-    public LanguageProvider(APP app, String langFilePath) {
+    public LanguageProvider(AppFrame app, String langFilePath) {
         this.app = app;
         this.currentLang = app.getLOCALE();
-        app.LOGGER.info("Loading locale from " + langFilePath);
+        app.getLOGGER().info("Loading locale from " + langFilePath);
         try {
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(app.getClass().getResourceAsStream(langFilePath), StandardCharsets.UTF_8);

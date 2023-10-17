@@ -18,14 +18,13 @@ import org.foxesworld.newengine.gui.components.textfield.Textfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvider;
-import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
 
 public class Components {
 
-    private AppFrame appFrame;
+    public AppFrame appFrame;
     private LanguageProvider LANG;
     private TextfieldStyle textfieldStyle;
 
@@ -35,14 +34,15 @@ public class Components {
     private ButtonStyle buttonStyle;
     private CheckboxStyle checkboxStyle;
     private MultiButtonStyle multiButtonStyle;
+    public StyleProvider.StyleAttributes style = null;
 
     public Components(AppFrame appFrame){
         this.appFrame = appFrame;
-        this.LANG = appFrame.getApp().getLANG();
+        this.LANG = appFrame.getLANG();
     }
 
     public JComponent createComponent(ComponentAttributes componentAttributes) {
-        StyleProvider.StyleAttributes style = null;
+
         if(appFrame.getElementStyles().get(componentAttributes.componentType)!=null) {
             style = appFrame.getElementStyles().get(componentAttributes.componentType).get(componentAttributes.componentStyle);
         }
@@ -69,7 +69,7 @@ public class Components {
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
-                label.setFont(FontUtils.getFont(style.font, componentAttributes.fontSize));
+                label.setFont(this.appFrame.getFontUtils().getFont(style.font, componentAttributes.fontSize));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
                 label.setBounds(xPos, yPos, width, height);
@@ -77,7 +77,7 @@ public class Components {
             }
 
             case "checkBox" -> {
-                checkboxStyle = new CheckboxStyle(style);
+                checkboxStyle = new CheckboxStyle(this);
                 Checkbox checkbox = new Checkbox(LANG.getString(componentAttributes.localeKey));
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
@@ -86,7 +86,7 @@ public class Components {
             }
 
             case "textField" -> {
-                textfieldStyle = new TextfieldStyle(style);
+                textfieldStyle = new TextfieldStyle(this);
                 Textfield textfield = new Textfield(LANG.getString(componentAttributes.localeKey));
                 textfieldStyle.apply(textfield);
                 textfield.setName(componentAttributes.componentId);
@@ -102,7 +102,7 @@ public class Components {
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.componentId);
                 passfield.setBounds(xPos, yPos, style.width, style.height);
-                passfield.setFont(FontUtils.getFont(style.font, style.fontSize));
+                passfield.setFont(this.appFrame.getFontUtils().getFont(style.font, style.fontSize));
                 passfield.setActionCommand(componentAttributes.componentId);
                 return passfield;
             }
@@ -115,7 +115,7 @@ public class Components {
             }
 
             case "button" -> {
-                buttonStyle = new ButtonStyle(style);
+                buttonStyle = new ButtonStyle(this);
                 Button button = new Button(LANG.getString(componentAttributes.localeKey));
                 buttonStyle.apply(button);
                 button.setName(componentAttributes.localeKey);

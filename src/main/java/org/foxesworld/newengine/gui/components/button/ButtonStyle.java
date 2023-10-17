@@ -1,6 +1,7 @@
 package org.foxesworld.newengine.gui.components.button;
 
 import org.foxesworld.newengine.gui.components.Align;
+import org.foxesworld.newengine.gui.components.Components;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
@@ -21,21 +22,23 @@ public class ButtonStyle {
 	public float fontSize;
 	public Align align;
 	public BufferedImage texture;
+	private  Components components;
 
-	public ButtonStyle(StyleProvider.StyleAttributes styles) {
-		this.width = styles.width;
-		this.height = styles.height;
-		this.color = styles.color;
-		this.font = styles.font;
-		this.fontSize = styles.fontSize;
-		this.align = Align.valueOf(styles.align);
-		this.texture = ImageUtils.getLocalImage(styles.texture);
+	public ButtonStyle(Components components) {
+		this.components = components;
+		this.width = components.style.width;
+		this.height = components.style.height;
+		this.color = components.style.color;
+		this.font = components.style.font;
+		this.fontSize = components.style.fontSize;
+		this.align = Align.valueOf(components.style.align);
+		this.texture = ImageUtils.getLocalImage(components.style.texture);
 	}
 
 	public void apply(Button button) {
 		button.setVisible(visible);
 		button.setHorizontalAlignment(align == Align.LEFT ? SwingConstants.LEFT : align == Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);
-		button.setFont(FontUtils.getFont(font, fontSize));
+		button.setFont(components.appFrame.getFontUtils().getFont(font, fontSize));
 		button.setForeground(hexToColor(color));
 		int i = texture.getHeight() / 4;
 		button.defaultTX = texture.getSubimage(0, 0, texture.getWidth(), i);

@@ -39,7 +39,7 @@ public class DownloadUtils {
     private void downloader(String Durl, String PATH) {
         this.appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"download\", \"display\": true}]");
         try {
-            APP.LOGGER.info(Durl + " size is - " + getFileSize(Durl) + "Mb");
+            this.appFrame.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

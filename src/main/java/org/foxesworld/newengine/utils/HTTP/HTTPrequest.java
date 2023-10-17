@@ -2,12 +2,9 @@ package org.foxesworld.newengine.utils.HTTP;
 
 import com.google.gson.Gson;
 import org.foxesworld.newengine.APP;
-import org.foxesworld.newengine.gui.components.frame.Frame;
+import org.foxesworld.newengine.AppFrame;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -19,9 +16,11 @@ import java.util.Random;
 public class HTTPrequest {
 
     private String requestMethod;
+    private AppFrame appFrame;
 
-    public HTTPrequest(String requestMethod){
-        APP.LOGGER.debug("HTTP "+requestMethod+" init");
+    public HTTPrequest(AppFrame appFrame, String requestMethod){
+        this.appFrame = appFrame;
+        appFrame.getLOGGER().debug("HTTP "+requestMethod+" init");
         this.requestMethod = requestMethod;
     }
 
@@ -29,10 +28,10 @@ public class HTTPrequest {
         HttpURLConnection httpURLConnection = null;
         try {
             java.net.URL url = new URL(URL);
-            APP.LOGGER.debug(url);
+            this.appFrame.getLOGGER().debug(url);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
-            this.setRequestProperties(httpURLConnection,"assets/RequestProperties.json");
+            this.setRequestProperties(httpURLConnection, "RequestProperties.json");
             httpURLConnection.setUseCaches(false);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
@@ -41,10 +40,7 @@ public class HTTPrequest {
             try (OutputStream os = httpURLConnection.getOutputStream()) {
                 byte[] postDataBytes = this.formParams(parameters).toString().getBytes("UTF-8");
                 os.write(postDataBytes);
-                System.out.println("Отправляемые данные: " + postDataBytes.toString());
             }
-
-
 
             InputStream is = httpURLConnection.getInputStream();
             StringBuilder response;
@@ -87,15 +83,18 @@ public class HTTPrequest {
         return postData;
     }
 
-    private void setRequestProperties(HttpURLConnection httpURLConnection, String propertyPath){
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(Frame.class.getClassLoader().getResourceAsStream(propertyPath)), StandardCharsets.UTF_8);
-        RequestProperties[] requestProperties = new Gson().fromJson(reader, RequestProperties[].class);
-        for(RequestProperties requestHeader: requestProperties){
-            String value = requestHeader.getPropertyValue;
-            if(value.contains("{$boundary}")){
-                value = value.replace("{$boundary}", this.getBoundary(3));
+    private void setRequestProperties(HttpURLConnection httpURLConnection, String propertyPath) {
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(propertyPath);
+        if (inputStream != null) {
+            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            RequestProperties[] requestProperties = new Gson().fromJson(reader, RequestProperties[].class);
+            for (RequestProperties requestHeader : requestProperties) {
+                String value = requestHeader.getPropertyValue;
+                if (value.contains("{$boundary}")) {
+                    value = value.replace("{$boundary}", this.getBoundary(3));
+                }
+                httpURLConnection.setRequestProperty(requestHeader.propertyKey, value);
             }
-            httpURLConnection.setRequestProperty(requestHeader.propertyKey, value);
         }
     }
 

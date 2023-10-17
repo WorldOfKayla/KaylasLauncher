@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.textfield;
 
+import org.foxesworld.newengine.gui.components.Components;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
@@ -19,17 +20,19 @@ public class TextfieldStyle {
 	public float fontSize;
 	public Color caretColor;
 	public BufferedImage texture;
+	private  Components components;
 
-	public TextfieldStyle(StyleProvider.StyleAttributes styles) {
-		this.foregroundColor = hexToColor(styles.color);
-		this.backgroundColor = hexToColor(styles.background);
-		this.border = hexToColor(styles.borderColor);
-		this.caretColor = hexToColor(styles.caretColor);
-		this.width = styles.width;
-		this.height = styles.height;
-		this.font = styles.font;
-		this.fontSize = styles.fontSize;
-		this.texture = ImageUtils.getLocalImage(styles.texture);
+	public TextfieldStyle(Components components) {
+		this.components = components;
+		this.foregroundColor = hexToColor(components.style.color);
+		this.backgroundColor = hexToColor(components.style.background);
+		this.border = hexToColor(components.style.borderColor);
+		this.caretColor = hexToColor(components.style.caretColor);
+		this.width = components.style.width;
+		this.height = components.style.height;
+		this.font = components.style.font;
+		this.fontSize = components.style.fontSize;
+		this.texture = ImageUtils.getLocalImage(components.style.texture);
 	}
 
 	public void apply(Textfield text) {
@@ -38,6 +41,6 @@ public class TextfieldStyle {
 		text.setBackground(backgroundColor);
 		text.setForeground(foregroundColor);
 		text.setBorder(null);
-		text.setFont(FontUtils.getFont(font, fontSize));
+		text.setFont(components.appFrame.getFontUtils().getFont(font, fontSize));
 	}
 }

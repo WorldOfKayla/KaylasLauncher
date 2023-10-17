@@ -1,5 +1,6 @@
 package org.foxesworld.newengine.gui.components.passfield;
 
+import org.foxesworld.newengine.gui.components.Components;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
@@ -30,7 +31,7 @@ public class PassFieldStyle {
 
     public void apply(PassField pass) {
         pass.texture = this.texture;
-        pass.font = FontUtils.getFont(this.fontName, this.fontSize);
+        //pass.font = FontUtils.getFont(this.fontName, this.fontSize);
         pass.setCaretColor(this.caretColor);
         pass.setBackground(this.textColor);
         pass.setForeground(this.textColor);

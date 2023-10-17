@@ -1,5 +1,8 @@
 package org.foxesworld.newengine.action;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.utils.HTTP.HTTPrequest;
 
@@ -23,7 +26,17 @@ public class Auth {
     public void authorize(List<Component> authCredentials){
         this.collectData(authCredentials);
         inputData.put("userAction", "auth");
-        String response = this.POSTrequest.send("https://foxescraft.ru", inputData);
+        AuthResponse response = new Gson().fromJson(this.POSTrequest.send("https://foxescraft.ru", inputData), AuthResponse.class);
+        switch (response.type){
+            case "success" -> {
+                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"settings\", \"display\": false}]");
+            }
+
+            case "error" -> {
+
+            }
+
+        }
     }
 
     private void collectData(List<Component> authCredentials) {
@@ -32,5 +45,13 @@ public class Auth {
                 inputData.put(component.getName(), ((JTextField) component).getText());
             }
         }
+    }
+
+    private class AuthResponse {
+        @SerializedName("message")
+        private  String message;
+
+        @SerializedName("type")
+        private String type;
     }
 }

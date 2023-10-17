@@ -1,6 +1,7 @@
 package org.foxesworld.newengine.utils;
 
 import org.foxesworld.newengine.APP;
+import org.foxesworld.newengine.AppFrame;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -9,7 +10,11 @@ import java.util.Map;
 public class FontUtils {
     public static Map<String, Font> fonts = new HashMap<>();
 
-    public static Font getFont(String name, float size) {
+    private AppFrame appFrame;
+    public FontUtils(AppFrame appFrame){
+        this.appFrame = appFrame;
+    }
+    public Font getFont(String name, float size) {
         if (!name.equals("")) {
             try {
                 if (fonts.containsKey(name)) {
@@ -18,12 +23,12 @@ public class FontUtils {
                 Font font = null;
                 try {
                     font = Font.createFont(0, FontUtils.class.getResourceAsStream("/assets/fonts/" + name + ".ttf"));
-                    APP.LOGGER.info("Created font - "+name);
+                    this.appFrame.getLOGGER().info("Created font - "+name);
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
                         font = Font.createFont(0, FontUtils.class.getResourceAsStream("/assets/fonts/" + name + ".otf"));
-                        APP.LOGGER.info("Created font - "+name);
+                        this.appFrame.getLOGGER().info("Created font - "+name);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -32,7 +37,7 @@ public class FontUtils {
                 return font.deriveFont(size);
             } catch (Exception e) {
                 e.printStackTrace();
-                APP.LOGGER.error("Failed to create font!");
+                this.appFrame.getLOGGER().error("Failed to create font!");
                 return null;
             }
         }

@@ -1,50 +1,52 @@
 {
-  "appTitle": {
-    "en": "Form Creator App",
-    "ru": "Приложение для создания формы"
-  },
-  "passwordPlaceholder": {
-    "en": "Password",
-    "ru": "Пароль"
-  },
-  "loginPlaceholder": {
-    "en": "Login",
-    "ru": "Логин"
-  },
-  "authHeading": {
-    "en": "Authorisation",
-    "ru": "Авторизация"
-  },
-  "submit": {
-    "en": "Submit",
-    "ru": "Войти"
-  },
-  "settings": {
-    "en": "Settings",
-    "ru": "Настройки"
-  },
-  "baseOptions": {
-    "en": "Base Options",
-    "ru": "Общие параметры"
-  },
-  "autoEnter": {
-    "en": "Auto enter on a selected server",
-    "ru": "Автозаход на сервер"
-  },
-  "fullScreen": {
-    "en": "Set full screen after launching",
-    "ru": "Запустить в полный экран"
-  },
-  "loadNews": {
-    "en": "Load news",
-    "ru": "Загружать новости"
-  },
-  "enableSound": {
-    "en": "Enable Sound",
-    "ru": "Включить звук"
-  },
-  "title": {
+  "general": {
+    "appTitle": {
       "en": "FoxesWorld",
       "ru": "FoxesWorld"
+    }
+  },
+  "settings": {
+    "settingsButt": {
+      "en": "Settings",
+      "ru": "Настройки"
+    },
+    "baseOptions": {
+      "en": "Base Options",
+      "ru": "Общие параметры"
+    },
+    "autoEnter": {
+      "en": "Auto enter a selected server",
+      "ru": "Автозаход на сервер"
+    },
+    "fullScreen": {
+      "en": "Set full screen after launching",
+      "ru": "Запустить в полный экран"
+    },
+    "loadNews": {
+      "en": "Load news",
+      "ru": "Загружать новости"
+    },
+    "enableSound": {
+      "en": "Enable Sound",
+      "ru": "Включить звук"
+    }
+  },
+  "auth": {
+    "authTitle": {
+      "en": "Authorization",
+      "ru": "Авторизация"
+    },
+    "passwordPlaceholder": {
+      "en": "Password",
+      "ru": "Пароль"
+    },
+    "loginPlaceholder": {
+      "en": "Login",
+      "ru": "Логин"
+    },
+    "submit": {
+      "en": "Submit",
+      "ru": "Войти"
+    }
   }
 }

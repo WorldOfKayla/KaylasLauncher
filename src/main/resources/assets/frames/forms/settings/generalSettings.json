@@ -3,6 +3,7 @@
     "generalSettings": {
       "panelOptions": {
         "opaque": true,
+        "visible": true,
         "background": "#c0a1a0",
         "bounds": "10,60,320,240",
         "display": true

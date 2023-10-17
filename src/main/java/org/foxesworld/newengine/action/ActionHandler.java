@@ -2,8 +2,6 @@ package org.foxesworld.newengine.action;
 
 import org.foxesworld.newengine.AppFrame;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class ActionHandler {
@@ -24,19 +22,16 @@ public class ActionHandler {
 
                 //}
                 //JOptionPane.showMessageDialog(null, "");
-                appFrame.displayPanel("wait", true);
+                //appFrame.displayPanel("wait", true);
+                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"wait\", \"display\": true}]");
             }
 
             case "settings" -> {
-                appFrame.displayPanel("authForm", false);
-                appFrame.displayPanel("newsForm", false);
-                appFrame.displayPanel("settings", true);
+                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"settings\", \"display\": true}]");
             }
 
             case "back" -> {
-                appFrame.displayPanel("settings", false);
-                appFrame.displayPanel("authForm", true);
-                appFrame.displayPanel("newsForm", true);
+                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": true},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"settings\", \"display\": false}]");
             }
         }
     }

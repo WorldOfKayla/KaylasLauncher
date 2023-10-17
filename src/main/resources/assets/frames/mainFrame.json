@@ -3,7 +3,7 @@
     "mainFrame": {
       "panelOptions": {
         "opaque": false,
-        "visibility": true,
+        "visible": true,
         "background": "",
         "bounds": "0,0,850,500"
       },

@@ -3,7 +3,7 @@
     "wait": {
       "panelOptions": {
         "opaque": true,
-        "visibility": false,
+        "visible": false,
         "background": "#638dbebf",
         "bounds": "0,0,850,500"
       },

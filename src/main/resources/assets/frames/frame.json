@@ -1,5 +1,5 @@
 {
-  "appTitle": "appTitle",
+  "appTitle": "general.appTitle",
   "appIcon": "assets/ui/icons/logo.png",
   "backgroundImage": "assets/ui/img/bg/bg_summer.png",
   "backgroundBlur": "#494d4d54",
@@ -11,7 +11,7 @@
     "titleBar": {
       "panelOptions": {
         "opaque": true,
-        "visibility": true,
+        "visible": true,
         "listener": "dragger",
         "background": "#503030",
         "bounds": "0,0,850,30"
@@ -21,7 +21,7 @@
           "componentType": "label",
           "componentStyle": "title",
           "fontSize": 15,
-          "localeKey": "title",
+          "localeKey": "general.appTitle",
           "imageIcon": "assets/ui/icons/logo.png",
           "componentId": "appLogo",
           "iconWidth": 64,

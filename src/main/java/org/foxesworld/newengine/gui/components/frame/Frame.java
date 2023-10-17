@@ -4,7 +4,7 @@ import org.foxesworld.newengine.APP;
 import org.foxesworld.newengine.AppFrame;
 import org.foxesworld.newengine.gui.attributes.FrameAttributes;
 import org.foxesworld.newengine.gui.components.panel.Panel;
-import org.foxesworld.newengine.locale.LanguageProvier;
+import org.foxesworld.newengine.locale.LanguageProvider;
 import org.foxesworld.newengine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class Frame {
     private Dimension screenSize;
     private JPanel rootPanel;
     private final JFrame frame;
-    private final LanguageProvier LANG;
+    private final LanguageProvider LANG;
 
     public Frame(AppFrame appFrame) {
         APP.LOGGER.info("Frame initialization");

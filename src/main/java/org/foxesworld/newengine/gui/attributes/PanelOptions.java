@@ -6,8 +6,8 @@ public class PanelOptions {
     @SerializedName("opaque")
     public boolean opaque = false;
 
-    @SerializedName("visibility")
-    public boolean visibility;
+    @SerializedName("visible")
+    public boolean visible;
     @SerializedName("border")
     public String border = "";
     @SerializedName("listener")

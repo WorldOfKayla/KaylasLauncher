@@ -17,7 +17,7 @@ import org.foxesworld.newengine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.newengine.gui.components.textfield.Textfield;
 import org.foxesworld.newengine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
-import org.foxesworld.newengine.locale.LanguageProvier;
+import org.foxesworld.newengine.locale.LanguageProvider;
 import org.foxesworld.newengine.utils.FontUtils;
 import org.foxesworld.newengine.utils.ImageUtils;
 
@@ -26,7 +26,7 @@ import javax.swing.*;
 public class Components {
 
     private AppFrame appFrame;
-    private LanguageProvier LANG;
+    private LanguageProvider LANG;
     private TextfieldStyle textfieldStyle;
 
     private PassFieldStyle passfieldStyle;

@@ -31,6 +31,10 @@ public class GuiBuilder {
         this.frame = appFrame.getFrame();
         this.components = new Components(appFrame);
     }
+    /* TODO
+    *   childPanel should be adding to a parentPanel when uses "readFrom" not a rootPanel
+    *   remove/replace AppFrame.loadFrames (including all files from other files using "readFrom")
+    * */
 
     /*
      * Method for building an interface based on a JSON file
@@ -71,11 +75,9 @@ public class GuiBuilder {
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
-                System.out.println(thisPanel.getName() + " visible " + optionGroups.panelOptions.visibility);
-                thisPanel.setVisible(optionGroups.panelOptions.visibility);
+                thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
                 APP.LOGGER.debug("Adding "+thisPanel.getName() + " to parent " +parentPanel.getName());
-                //thisPanel.setVisible(true); // By default, all child panels are visible
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups

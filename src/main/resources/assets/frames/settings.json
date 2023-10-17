@@ -14,7 +14,7 @@
             "settingsPane": {
               "panelOptions": {
                 "opaque": true,
-                "visibility": true,
+                "visible": true,
                 "background": "#500b0a",
                 "bounds": "0,0,780,30"
               },
@@ -36,7 +36,7 @@
             "generalSettings": {
               "panelOptions": {
                 "opaque": true,
-                "visibility": true,
+                "visible": true,
                 "background": "#c0a1a0",
                 "bounds": "10,60,320,240",
                 "display": true
@@ -46,7 +46,7 @@
                   "componentType": "label",
                   "fontSize": 16,
                   "componentStyle": "Heading",
-                  "localeKey": "baseOptions",
+                  "localeKey": "settings.baseOptions",
                   "componentId": "baseOptions",
                   "bounds": "5,-10,160,50"
                 },
@@ -54,28 +54,28 @@
                   "componentType": "checkBox",
                   "componentStyle": "solid",
                   "componentId": "autoEnterCheck",
-                  "localeKey": "autoEnter",
+                  "localeKey": "settings.autoEnter",
                   "bounds": "5,20,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
                   "componentId": "fullScreenCheck",
-                  "localeKey": "fullScreen",
+                  "localeKey": "settings.fullScreen",
                   "bounds": "5,40,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
                   "componentId": "loadNewsCheck",
-                  "localeKey": "loadNews",
+                  "localeKey": "settings.loadNews",
                   "bounds": "5,60,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
                   "componentId": "enableSoundCheck",
-                  "localeKey": "enableSound",
+                  "localeKey": "settings.enableSound",
                   "bounds": "5,80,240,32"
                 }
               ]
@@ -87,7 +87,7 @@
             "generalInfo": {
               "panelOptions": {
                 "opaque": true,
-                "visibility": true,
+                "visible": true,
                 "background": "#deded2a3",
                 "bounds": "470,60,290,370",
                 "display": true

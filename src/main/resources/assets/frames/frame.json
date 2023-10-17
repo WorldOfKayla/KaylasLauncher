@@ -31,6 +31,7 @@
         {
           "componentType": "multiButton",
           "componentStyle": "frameButtons",
+          "componentId": "closeButton",
           "imgCount": 3,
           "rowNum": 1,
           "bounds": "788,0,0,0"
@@ -38,6 +39,7 @@
         {
           "componentType": "multiButton",
           "componentStyle": "frameButtons",
+          "componentId": "turnButton",
           "imgCount": 3,
           "rowNum": 0,
           "bounds": "725,0,0,0"

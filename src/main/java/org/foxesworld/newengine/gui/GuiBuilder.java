@@ -119,8 +119,8 @@ public class GuiBuilder {
     /*
      * Getting a list of components by group name
      */
-    public List<Component> getComponentsMap(String key) {
-        return componentsMap.get(key);
+    public HashMap<String, List<Component>> getComponentsMap() {
+        return componentsMap;
     }
 
     /*

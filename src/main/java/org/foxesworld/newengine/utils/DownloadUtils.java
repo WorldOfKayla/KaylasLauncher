@@ -1,6 +1,8 @@
 package org.foxesworld.newengine.utils;
 
 import org.foxesworld.newengine.APP;
+import org.foxesworld.newengine.AppFrame;
+import org.foxesworld.newengine.gui.components.SystemComponents;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,13 +21,15 @@ public class DownloadUtils {
 
     private JLabel progressLabel;
     private JProgressBar progressBar;
-    private JPanel downloadPanel;
+    private AppFrame appFrame;
 
-    private Map<String, Component> downloadComponents = new HashMap<>();
+    public DownloadUtils(AppFrame appFrame) {
+        this.appFrame = appFrame;
+        this.progressBar = (JProgressBar) appFrame.getSystemComponents().getComponentsMap().get("progressBar");
+        this.progressLabel = (JLabel) appFrame.getSystemComponents().getComponentsMap().get("progressLabel");
+    }
 
     public void download(String Durl, String PATH) {
-        progressBar = (JProgressBar) downloadComponents.get("progressBar");
-        progressLabel = (JLabel) downloadComponents.get("progressLabel");
         this.progressBar.setStringPainted(true);
         this.progressBar.add(progressLabel);
         Thread downloadThread = new Thread(() -> downloader(Durl, PATH));
@@ -33,7 +37,7 @@ public class DownloadUtils {
     }
 
     private void downloader(String Durl, String PATH) {
-        this.downloadPanel.setVisible(true);
+        this.appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"download\", \"display\": true}]");
         try {
             APP.LOGGER.info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {
@@ -76,7 +80,7 @@ public class DownloadUtils {
         }
 
         SwingUtilities.invokeLater(() -> {
-            this.downloadPanel.setVisible(false);
+            this.appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": true},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"download\", \"display\": false}]");
         });
     }
 
@@ -115,17 +119,5 @@ public class DownloadUtils {
         double SFS = conn.getContentLength() / (1024 * 1024);
         conn.getInputStream().close();
         return SFS;
-    }
-
-    public void addDownloadComponent(String name, Component downloadComponent) {
-        this.downloadComponents.put(name, downloadComponent);
-    }
-
-    public Map<String, Component> getDownloadComponents() {
-        return downloadComponents;
-    }
-
-    public void setDownloadPanel(JPanel downloadPanel) {
-        this.downloadPanel = downloadPanel;
     }
 }

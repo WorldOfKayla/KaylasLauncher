@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import org.foxesworld.newengine.action.ActionHandler;
 import org.foxesworld.newengine.gui.GuiBuilder;
+import org.foxesworld.newengine.gui.components.SystemComponents;
 import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvider;
@@ -24,6 +25,7 @@ public class AppFrame extends JFrame implements ActionListener {
 
     protected final APP app;
     private GuiBuilder guiBuilder;
+    private SystemComponents systemComponents;
     private ActionHandler actionHandler;
     private Map<String, Map<String, StyleProvider.StyleAttributes>> elementStyles = new HashMap<>();
     private final Frame frame;
@@ -41,9 +43,9 @@ public class AppFrame extends JFrame implements ActionListener {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
-        this.download = new DownloadUtils();
-        this.actionHandler = new ActionHandler(this);
         this.loadFrames();
+        this.download = new DownloadUtils(this);
+        this.actionHandler = new ActionHandler(this);
     }
 
     public void  displayPanel(String json){
@@ -75,7 +77,8 @@ public class AppFrame extends JFrame implements ActionListener {
 
     /* TODO
     *   Replace definition of system utils in this method
-    *   if we find an element with id from list -> define as system component*/
+    *   if we find an element with id from list -> define as system component
+    * */
     private void loadFrames() {
         Gson gson = new Gson();
         List loadedFrames = new ArrayList();
@@ -86,6 +89,21 @@ public class AppFrame extends JFrame implements ActionListener {
             loadedFrames.add(obj.frameName);
         }
         APP.LOGGER.info("Loaded Frames " + loadedFrames);
+        this.defineSystemComponents();
+    }
+
+    private void defineSystemComponents(){
+        List systemIds = Arrays.asList("progressBar", "progressLabel");
+        this.systemComponents = new SystemComponents();
+        for(Map.Entry<String, List<Component>> panels: guiBuilder.getComponentsMap().entrySet()){
+            String panelName = panels.getKey();
+            for(Component component: panels.getValue()){
+                if(systemIds.contains(component.getName())){
+                    this.systemComponents.addComponent(component.getName(), component);
+                    APP.LOGGER.debug("Adding system component '" + component.getName()+"'");
+                }
+            }
+        }
     }
 
     @Override
@@ -117,5 +135,13 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public APP getApp() {
         return this.app;
+    }
+
+    public SystemComponents getSystemComponents() {
+        return systemComponents;
+    }
+
+    public DownloadUtils getDownload() {
+        return download;
     }
 }

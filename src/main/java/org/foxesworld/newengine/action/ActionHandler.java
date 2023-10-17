@@ -14,7 +14,7 @@ public class ActionHandler {
     public void handleAction(ActionEvent e){
         switch (e.getActionCommand()){
             case "submit" -> {
-                //this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
+                this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
                 //for(Component component:appFrame.getGuiBuilder().getComponentsMap("authForm")){
                 //    if(component instanceof JTextField){
                 //        System.out.println(((JTextField) component).getText());
@@ -23,7 +23,7 @@ public class ActionHandler {
                 //}
                 //JOptionPane.showMessageDialog(null, "");
                 //appFrame.displayPanel("wait", true);
-                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"wait\", \"display\": true}]");
+                //appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"wait\", \"display\": true}]");
             }
 
             case "settings" -> {

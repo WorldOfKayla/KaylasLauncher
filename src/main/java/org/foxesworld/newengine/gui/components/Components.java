@@ -110,7 +110,7 @@ public class Components {
             case "spriteImage" -> {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
                 spriteAnimation.setBounds(xPos,yPos,width,height);
-                spriteAnimation.setName(componentAttributes.imageIcon);
+                spriteAnimation.setName(componentAttributes.componentId);
                 return  spriteAnimation;
             }
 
@@ -129,7 +129,7 @@ public class Components {
                 multiButtonStyle = new MultiButtonStyle(style, componentAttributes);
                 MultiButton multiButton = new MultiButton();
                 multiButtonStyle.apply(multiButton);
-                multiButton.setName(componentAttributes.localeKey);
+                multiButton.setName(componentAttributes.componentId);
                 multiButton.setActionCommand(componentAttributes.componentId);
                 multiButton.setBounds(xPos, yPos, style.width, style.height);
                 return multiButton;

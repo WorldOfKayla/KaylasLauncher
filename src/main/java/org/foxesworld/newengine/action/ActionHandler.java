@@ -5,6 +5,8 @@ import org.foxesworld.newengine.AppFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActionHandler {
     private AppFrame appFrame;
@@ -29,16 +31,9 @@ public class ActionHandler {
                         auth.authorize(appFrame.getGuiBuilder().getComponentsMap().get(parent));
                     }
                 }
-                //this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
-                //for(Component component:appFrame.getGuiBuilder().getComponentsMap("authForm")){
-                //    if(component instanceof JTextField){
-                //        System.out.println(((JTextField) component).getText());
-                //   }
+            }
 
-                //}
-                //JOptionPane.showMessageDialog(null, "");
-                //appFrame.displayPanel("wait", true);
-                //appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"wait\", \"display\": true}]");
+            case "test" -> {
             }
 
             case "settings" -> {

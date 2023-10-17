@@ -22,6 +22,9 @@
                 {
                   "componentType": "button",
                   "componentStyle": "buttonRed",
+                  "imageIcon": "assets/ui/img/support.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
                   "componentId": "back",
                   "imgCount": 3,
                   "rowNum": 0,
@@ -93,16 +96,6 @@
                 "display": true
               },
               "childComponents": [
-                {
-                  "componentType": "spriteImage",
-                  "imageIcon": "assets/ui/sprites/wait.png",
-                  "componentId": "waitSprite",
-                  "iconWidth": 32,
-                  "iconHeight": 32,
-                  "totalFrames": 11,
-                  "delay": 40,
-                  "bounds": "64,64,256,256"
-                }
               ]
             }
           }

@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.JButton;
+import javax.swing.*;
 
 public class Button extends JButton implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
@@ -20,6 +20,19 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setText(text);
+		setBorderPainted(false);
+		setContentAreaFilled(false);
+		setFocusPainted(false);
+		setOpaque(false);
+		setFocusable(false);
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	}
+
+	public Button(ImageIcon icon) {
+		super(icon);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		setText("");
 		setBorderPainted(false);
 		setContentAreaFilled(false);
 		setFocusPainted(false);

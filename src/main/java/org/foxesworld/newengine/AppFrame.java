@@ -11,6 +11,7 @@ import org.foxesworld.newengine.gui.components.frame.Frame;
 import org.foxesworld.newengine.gui.styles.StyleProvider;
 import org.foxesworld.newengine.locale.LanguageProvider;
 import org.foxesworld.newengine.utils.DownloadUtils;
+import org.foxesworld.newengine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class AppFrame extends JFrame implements ActionListener {
 
     protected final APP app;
     private GuiBuilder guiBuilder;
+    private HTTPrequest GETrequest,POSTrequest;
     private SystemComponents systemComponents;
     private ActionHandler actionHandler;
     private Map<String, Map<String, StyleProvider.StyleAttributes>> elementStyles = new HashMap<>();
@@ -35,6 +37,8 @@ public class AppFrame extends JFrame implements ActionListener {
     public AppFrame(APP app) {
         this.app = app;
         this.LANG = app.getLANG();
+        this.GETrequest = new HTTPrequest("GET");
+        this.POSTrequest = new HTTPrequest("POST");
         this.frame = new Frame(this);
         initialize();
     }
@@ -59,10 +63,9 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     private void loadFrames() {
-        Gson gson = new Gson();
         List loadedFrames = new ArrayList();
         InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(Frame.class.getClassLoader().getResourceAsStream("loadFrames.json")), StandardCharsets.UTF_8);
-        FrameListAttributes[] array = gson.fromJson(reader, FrameListAttributes[].class);
+        FrameListAttributes[] array = new Gson().fromJson(reader, FrameListAttributes[].class);
         for (FrameListAttributes obj : array) {
             this.guiBuilder.buildGui(obj.framePath, obj.inputStream);
             loadedFrames.add(obj.frameName);
@@ -112,6 +115,14 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;
+    }
+
+    public HTTPrequest getGETrequest() {
+        return GETrequest;
+    }
+
+    public HTTPrequest getPOSTrequest() {
+        return POSTrequest;
     }
 
     @Deprecated

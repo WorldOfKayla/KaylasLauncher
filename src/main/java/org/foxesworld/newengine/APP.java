@@ -28,6 +28,8 @@ public class APP {
         CONFIG = configReader.getCfgMaps().get("config");
         Configurator.setLevel(LOGGER.getName(), Level.valueOf((String) CONFIG.get("LogLevel")));
         LOCALE = String.valueOf(CONFIG.get("Lang"));
+
+        //System.setProperty("log4j.saveDirectory", configReader.getFullPath());
         LOGGER.info("APP started...");
 
         APP = new APP();

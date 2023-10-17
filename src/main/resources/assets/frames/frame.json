@@ -39,7 +39,7 @@
         {
           "componentType": "multiButton",
           "componentStyle": "frameButtons",
-          "componentId": "turnButton",
+          "componentId": "hideButton",
           "imgCount": 3,
           "rowNum": 0,
           "bounds": "725,0,0,0"

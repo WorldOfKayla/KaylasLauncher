@@ -2,6 +2,8 @@ package org.foxesworld.newengine.action;
 
 import org.foxesworld.newengine.AppFrame;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class ActionHandler {
@@ -11,14 +13,27 @@ public class ActionHandler {
         this.appFrame = appFrame;
     }
 
-    public void handleAction(ActionEvent e){
-        switch (e.getActionCommand()){
+    public void handleAction(ActionEvent e) {
+        String key = e.getActionCommand();
+        String parent = "";
+        if (e.getActionCommand().contains(">")) {
+            String[] command = e.getActionCommand().split(">");
+            key = command[1];
+            parent = command[0];
+        }
+        switch (key) {
             case "submit" -> {
-                this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
+                switch(parent){
+                    case "authForm" -> {
+                        Auth auth = new Auth(this.appFrame);
+                        auth.authorize(appFrame.getGuiBuilder().getComponentsMap().get(parent));
+                    }
+                }
+                //this.appFrame.getDownload().download("https://cdimage.debian.org/cdimage/archive/11.7.0/amd64/iso-cd/debian-11.7.0-amd64-netinst.iso", "");
                 //for(Component component:appFrame.getGuiBuilder().getComponentsMap("authForm")){
                 //    if(component instanceof JTextField){
                 //        System.out.println(((JTextField) component).getText());
-                 //   }
+                //   }
 
                 //}
                 //JOptionPane.showMessageDialog(null, "");
@@ -32,6 +47,14 @@ public class ActionHandler {
 
             case "back" -> {
                 appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": true},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"settings\", \"display\": false}]");
+            }
+
+            case "closeButton" -> {
+                System.exit(0);
+            }
+
+            case "hideButton" -> {
+                appFrame.getFrame().getFrame().setExtendedState(1);
             }
         }
     }

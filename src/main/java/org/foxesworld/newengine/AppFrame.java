@@ -58,27 +58,6 @@ public class AppFrame extends JFrame implements ActionListener {
         }
     }
 
-    /* WARN
-    * New method is loosing definition of system utils
-    * which are required by download etc.
-    *  if (entryMap.getKey().equals("download")) {
-                if (groupPanel.getName() != null) {
-                    for(Component component: guiBuilder.getComponentsMap(groupPanel.getName())){
-                        if(this.download.getDownloadComponents().get(component.getName()) ==null) {
-                            APP.LOGGER.debug("Adding " + component.getName() + " as default " + component);
-                            this.download.addDownloadComponent(component.getName(), component);
-                            this.download.setDownloadPanel(guiBuilder.getPanelsMap().get("download"));
-                        }
-                    }
-                }
-            }
-    *
-    * */
-
-    /* TODO
-    *   Replace definition of system utils in this method
-    *   if we find an element with id from list -> define as system component
-    * */
     private void loadFrames() {
         Gson gson = new Gson();
         List loadedFrames = new ArrayList();
@@ -111,20 +90,6 @@ public class AppFrame extends JFrame implements ActionListener {
         this.actionHandler.handleAction(e);
     }
 
-    private class FrameListAttributes {
-        @SerializedName("frameName")
-        String frameName;
-        @SerializedName("framePath")
-        String framePath;
-        @SerializedName("inputStream")
-        boolean inputStream;
-    }
-
-    private class DisplayAttributes {
-        private String panel;
-        private  boolean display;
-    }
-
     public Map<String, Map<String, StyleProvider.StyleAttributes>> getElementStyles() {
         return elementStyles;
     }
@@ -143,5 +108,26 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public DownloadUtils getDownload() {
         return download;
+    }
+
+    public GuiBuilder getGuiBuilder() {
+        return guiBuilder;
+    }
+
+    @Deprecated
+    private class FrameListAttributes {
+        @SerializedName("frameName")
+        String frameName;
+        @SerializedName("framePath")
+        String framePath;
+        @SerializedName("inputStream")
+        boolean inputStream;
+    }
+
+    private class DisplayAttributes {
+        @SerializedName("panel")
+        private String panel;
+        @SerializedName("display")
+        private  boolean display;
     }
 }

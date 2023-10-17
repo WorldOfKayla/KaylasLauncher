@@ -100,7 +100,7 @@ public class Components {
                 passfieldStyle = new PassFieldStyle(style);
                 PassField passfield = new PassField(LANG.getString(componentAttributes.localeKey));
                 passfieldStyle.apply(passfield);
-                passfield.setName(componentAttributes.localeKey);
+                passfield.setName(componentAttributes.componentId);
                 passfield.setBounds(xPos, yPos, style.width, style.height);
                 passfield.setFont(FontUtils.getFont(style.font, style.fontSize));
                 passfield.setActionCommand(componentAttributes.componentId);
@@ -132,6 +132,7 @@ public class Components {
                 multiButton.setName(componentAttributes.componentId);
                 multiButton.setActionCommand(componentAttributes.componentId);
                 multiButton.setBounds(xPos, yPos, style.width, style.height);
+                multiButton.addActionListener(appFrame);
                 return multiButton;
             }
 

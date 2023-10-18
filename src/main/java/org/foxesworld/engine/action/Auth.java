@@ -52,8 +52,12 @@ public class Auth {
         if (success) {
             appFrame.setAuthorised(success);
             appFrame.displayPanel("authForm->false|logged->true");
-            appFrame.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
-            appFrame.getConfig().writeCurrentConfig();
+
+            if(CONFIG.get("login") == null){
+                appFrame.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
+                appFrame.getConfig().writeCurrentConfig();
+            }
+
         } else {
 
         }

@@ -1,5 +1,7 @@
 package org.foxesworld.engine.gui.components.frame;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import org.foxesworld.engine.AppFrame;
 import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.components.panel.Panel;
@@ -8,6 +10,9 @@ import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class Frame {
     private AppFrame appFrame;
@@ -22,6 +27,15 @@ public class Frame {
         this.appFrame = appFrame;
         this.frame = new JFrame();
         this.LANG = appFrame.getLANG();
+        buildFrame("assets/frames/frame.json");
+    }
+
+    private void buildFrame(String path){
+        Gson gson = new Gson();
+        FrameAttributes frameAttributes;
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(AppFrame.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
+        frameAttributes = gson.fromJson(reader, FrameAttributes.class);
+        buildFrame(frameAttributes);
     }
 
     public void buildFrame(FrameAttributes frameAttributes) {

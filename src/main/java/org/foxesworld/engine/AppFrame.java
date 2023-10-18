@@ -1,7 +1,5 @@
 package org.foxesworld.engine;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +10,6 @@ import org.foxesworld.engine.action.Auth;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.LoadState;
-import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.Frame;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -26,10 +23,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 public class AppFrame extends JFrame implements ActionListener {
 
@@ -68,26 +65,19 @@ public class AppFrame extends JFrame implements ActionListener {
         initialize();
     }
 
+    /* TODO
+    *   Remove too many calls of GuiBuilder
+    * */
     private void initialize() {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
-        this.buildFrame("assets/frames/frame.json");
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
-        //this.loadFrames();
-       this.loadMainPanel("assets/frames/mainFrame.json");
+        this.loadMainPanel("assets/frames/mainFrame.json");
         this.loadState = new LoadState(this);
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-    }
-
-    private void buildFrame(String path){
-        Gson gson = new Gson();
-        FrameAttributes frameAttributes;
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(AppFrame.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
-        frameAttributes = gson.fromJson(reader, FrameAttributes.class);
-        frame.buildFrame(frameAttributes);
     }
 
     public void displayPanel(String displayString) {
@@ -112,7 +102,6 @@ public class AppFrame extends JFrame implements ActionListener {
             getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
         }
     }
-
 
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
@@ -225,22 +214,5 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public LoadState getLoadingState() {
         return loadState;
-    }
-
-    @Deprecated
-    private class FrameListAttributes {
-        @SerializedName("frameName")
-        String frameName;
-        @SerializedName("framePath")
-        String framePath;
-        @SerializedName("inputStream")
-        boolean inputStream;
-    }
-
-    private class DisplayAttributes {
-        @SerializedName("panel")
-        private String panel;
-        @SerializedName("display")
-        private  boolean display;
     }
 }

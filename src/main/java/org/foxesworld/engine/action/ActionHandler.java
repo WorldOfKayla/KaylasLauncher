@@ -34,8 +34,9 @@ public class ActionHandler {
             case "test" -> {
                 //appFrame.getFrame().getRootPanel().removeAll();
                 //appFrame.getLoadingState().showLoadingState(60);
-                System.out.println(appFrame.getConfig().getFullPath());
-                appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
+                //System.out.println(appFrame.getConfig().getFullPath());
+                appFrame.displayPanel("wait->true");
+                //appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
             }
 
             case "applySettings" -> {
@@ -70,15 +71,10 @@ public class ActionHandler {
                 }
             }
 
-            case "closeButton" -> {
-                System.exit(0);
-            }
+            case "closeButton" -> System.exit(0);
 
-            case "hideButton" -> {
-                appFrame.getFrame().getFrame().setExtendedState(1);
-            }
+
+            case "hideButton" ->  appFrame.getFrame().getFrame().setExtendedState(1);
         }
     }
-
-
 }

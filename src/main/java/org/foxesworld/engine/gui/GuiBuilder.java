@@ -7,7 +7,6 @@ import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.attributes.OptionGroups;
 import org.foxesworld.engine.gui.components.Components;
 import org.foxesworld.engine.gui.components.frame.Frame;
-import org.foxesworld.engine.gui.components.panel.Panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,10 +30,6 @@ public class GuiBuilder {
         this.frame = appFrame.getFrame();
         this.components = new Components(appFrame);
     }
-    /* TODO
-    *   childPanel should be adding to a parentPanel when uses "readFrom" not a rootPanel
-    *   remove/replace AppFrame.loadFrames (including all files from other files using "readFrom")
-    * */
 
     /*
      * Method for building an interface based on a JSON file
@@ -54,15 +49,8 @@ public class GuiBuilder {
                 throw new RuntimeException(e);
             }
         }
-
-
-        if (framePath.endsWith("frame.json")) {
-            // Building Frame
-            //frame.buildFrame(frameAttributes);
-        }
         // Building component group
         buildComponents(frameAttributes.groups, parent);
-
     }
 
     /*
@@ -72,26 +60,18 @@ public class GuiBuilder {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                /* TODO
-                *   Hardcoding!!11!111!
-                *   Will replace later!!!*/
-                if(parentPanel == null) {
-                    parentPanel = this.frame.getRootPanel();
-                }
                 this.frame.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
-                this.frame.getAppFrame().getLOGGER().debug("Adding "+thisPanel.getName() + " to parent " +parentPanel.getName());
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups
             }
         }
     }
-
 
     /*
      * Method for building components based on a JSON structure
@@ -111,7 +91,6 @@ public class GuiBuilder {
             }
         }
     }
-
 
     /*
      * Method for adding a component to the component map

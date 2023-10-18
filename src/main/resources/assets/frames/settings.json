@@ -10,105 +10,13 @@
       },
       "childComponents": [
         {
-          "groups": {
-            "settingsPane": {
-              "panelOptions": {
-                "opaque": true,
-                "visible": true,
-                "background": "#500b0a",
-                "bounds": "0,0,780,30"
-              },
-              "childComponents": [
-                {
-                  "componentType": "button",
-                  "componentStyle": "buttonRed",
-                  "imageIcon": "assets/ui/icons/back.png",
-                  "localeKey": "settings.back",
-                  "iconWidth": 32,
-                  "iconHeight": 32,
-                  "componentId": "back",
-                  "bounds": "0,0,97,34"
-                }
-              ]
-            }
-          }
+          "readFrom": "assets/frames/forms/settings/settingsPane.json"
         },
         {
-          "groups": {
-            "generalSettings": {
-              "panelOptions": {
-                "opaque": true,
-                "visible": true,
-                "background": "#c0a1a0",
-                "bounds": "10,60,320,240",
-                "display": true
-              },
-              "childComponents": [
-                {
-                  "componentType": "label",
-                  "fontSize": 16,
-                  "componentStyle": "Heading",
-                  "localeKey": "settings.baseOptions",
-                  "componentId": "baseOptions",
-                  "bounds": "5,-10,160,50"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "autoEnter",
-                  "localeKey": "settings.autoEnter",
-                  "bounds": "5,20,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "fullScreen",
-                  "localeKey": "settings.fullScreen",
-                  "bounds": "5,40,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "loadNews",
-                  "localeKey": "settings.loadNews",
-                  "bounds": "5,60,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": false,
-                  "componentStyle": "solid",
-                  "componentId": "enableSound",
-                  "localeKey": "settings.enableSound",
-                  "bounds": "5,80,240,32"
-                },
-                {
-                  "componentType": "button",
-                  "componentStyle": "buttonGreen",
-                  "componentId": "applySettings",
-                  "localeKey": "settings.applySettings",
-                  "bounds": "60,195,120,34"
-                }
-              ]
-            }
-          }
+          "readFrom": "assets/frames/forms/settings/generalSettings.json"
         },
         {
-          "groups": {
-            "generalInfo": {
-              "panelOptions": {
-                "opaque": true,
-                "visible": true,
-                "background": "#deded2a3",
-                "bounds": "490,0,290,450",
-                "display": true
-              },
-              "childComponents": [
-              ]
-            }
-          }
+          "readFrom": "assets/frames/forms/settings/generalInfo.json"
         }
       ]
     }

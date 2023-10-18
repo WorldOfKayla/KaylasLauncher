@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+
 public class SpriteAnimation extends JComponent {
 
     private BufferedImage spriteSheet;
@@ -30,6 +32,7 @@ public class SpriteAnimation extends JComponent {
         Timer timer = new Timer(animationDelay, e -> {
             currentFrame = (currentFrame + 1) % totalFrames;
             repaint();
+            revalidate();
         });
         timer.start();
     }

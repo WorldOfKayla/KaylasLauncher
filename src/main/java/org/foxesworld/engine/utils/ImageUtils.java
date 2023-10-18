@@ -128,9 +128,7 @@ public class ImageUtils {
         return op.filter(image, null);
     }
     public static BufferedImage screenComponent(JComponent c) {
-        int w = c.getWidth();
-        int h = c.getHeight();
-        BufferedImage img = new BufferedImage(w, h, 2);
+        BufferedImage img = new BufferedImage(c.getWidth(), c.getHeight(), 2);
         Graphics2D g = img.createGraphics();
         c.paint(g);
         g.dispose();

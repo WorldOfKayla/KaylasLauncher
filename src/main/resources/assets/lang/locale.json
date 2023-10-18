@@ -64,7 +64,7 @@
   "logged": {
     "loggedIn": {
       "en": "You're in!",
-      "ru": "Вы авторизованы!"
+      "ru": "Привет!"
     },
     "logOut": {
       "en": "Log Out",

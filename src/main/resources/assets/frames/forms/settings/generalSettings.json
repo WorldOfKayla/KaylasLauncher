@@ -13,37 +13,48 @@
           "componentType": "label",
           "fontSize": 16,
           "componentStyle": "Heading",
-          "localeKey": "baseOptions",
+          "localeKey": "settings.baseOptions",
           "componentId": "baseOptions",
           "bounds": "5,-10,160,50"
         },
         {
           "componentType": "checkBox",
+          "enabled": true,
           "componentStyle": "solid",
-          "componentId": "autoEnterCheck",
-          "localeKey": "autoEnter",
+          "componentId": "autoEnter",
+          "localeKey": "settings.autoEnter",
           "bounds": "5,20,240,32"
         },
         {
           "componentType": "checkBox",
+          "enabled": true,
           "componentStyle": "solid",
-          "componentId": "fullScreenCheck",
-          "localeKey": "fullScreen",
+          "componentId": "fullScreen",
+          "localeKey": "settings.fullScreen",
           "bounds": "5,40,240,32"
         },
         {
           "componentType": "checkBox",
+          "enabled": true,
           "componentStyle": "solid",
-          "componentId": "loadNewsCheck",
-          "localeKey": "loadNews",
+          "componentId": "loadNews",
+          "localeKey": "settings.loadNews",
           "bounds": "5,60,240,32"
         },
         {
           "componentType": "checkBox",
+          "enabled": false,
           "componentStyle": "solid",
-          "componentId": "enableSoundCheck",
-          "localeKey": "enableSound",
+          "componentId": "enableSound",
+          "localeKey": "settings.enableSound",
           "bounds": "5,80,240,32"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "applySettings",
+          "localeKey": "settings.applySettings",
+          "bounds": "60,195,160,34"
         }
       ]
     }

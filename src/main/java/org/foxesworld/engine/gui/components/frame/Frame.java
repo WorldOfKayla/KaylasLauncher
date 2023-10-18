@@ -41,6 +41,7 @@ public class Frame {
         frame.setLocation(x, y);
         panel = new Panel(this);
         this.rootPanel = panel.setRootPanel(frameAttributes);
+        this.rootPanel.setName("rootPanel");
         frame.setContentPane(this.rootPanel);
         frame.setVisible(true);
     }

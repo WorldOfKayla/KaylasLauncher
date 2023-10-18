@@ -89,7 +89,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			// Реагировать только на левую кнопку мыши
 			pressed = true;
 			repaint();
 		}
@@ -98,7 +97,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (pressed && e.getButton() == MouseEvent.BUTTON1) {
-			// Реагировать только на левую кнопку мыши
 			pressed = false;
 			repaint();
 		}

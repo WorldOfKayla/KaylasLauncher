@@ -32,6 +32,8 @@ public class ActionHandler {
             }
 
             case "test" -> {
+                //appFrame.getFrame().getRootPanel().removeAll();
+                //appFrame.getLoadingState().showLoadingState(60);
                 System.out.println(appFrame.getConfig().getFullPath());
                 appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
             }

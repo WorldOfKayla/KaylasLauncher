@@ -16,6 +16,15 @@
         },
         {
           "readFrom": "assets/frames/forms/newsForm.json"
+        },
+        {
+          "readFrom": "assets/frames/settings.json"
+        },
+        {
+          "readFrom": "assets/frames/download.json"
+        },
+        {
+          "readFrom": "assets/frames/wait.json"
         }
       ]
     }

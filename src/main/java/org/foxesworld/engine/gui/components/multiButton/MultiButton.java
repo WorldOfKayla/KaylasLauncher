@@ -11,8 +11,6 @@ import java.util.List;
 
 public class MultiButton extends JButton implements MouseListener, MouseMotionListener {
     public List<BufferedImage> img = new ArrayList<>();
-    //BufferedImage img2;
-    //BufferedImage img3;
     private boolean entered = false;
     private boolean pressed = false;
 
@@ -61,14 +59,19 @@ public class MultiButton extends JButton implements MouseListener, MouseMotionLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //Click
-        this.pressed = !this.pressed;
-        this.repaint();
-        this.revalidate();
+        if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
+            pressed = true;
+            repaint();
+            revalidate();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (pressed && e.getButton() == MouseEvent.BUTTON1) {
+            pressed = false;
+            repaint();
+        }
     }
 
     @Override

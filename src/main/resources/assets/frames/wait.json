@@ -8,7 +8,15 @@
         "bounds": "0,0,850,500"
       },
       "childComponents": [
-
+        {
+          "componentType": "spriteImage",
+          "imageIcon": "assets/ui/sprites/wait.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "totalFrames": 11,
+          "delay": 40,
+          "bounds": "0,0,256,256"
+        }
       ]
     }
   }

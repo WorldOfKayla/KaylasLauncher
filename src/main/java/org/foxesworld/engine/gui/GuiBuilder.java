@@ -7,6 +7,7 @@ import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.attributes.OptionGroups;
 import org.foxesworld.engine.gui.components.Components;
 import org.foxesworld.engine.gui.components.frame.Frame;
+import org.foxesworld.engine.gui.components.panel.Panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public class GuiBuilder {
      * Method for building an interface based on a JSON file
      * Accepts the path to the file and the InputStream flag to specify the data source (resources or file)
      */
-    public void buildGui(String framePath, boolean inputStream) {
+    public void buildGui(String framePath, boolean inputStream, JPanel parent) {
         Gson gson = new Gson();
         FrameAttributes frameAttributes;
         if (inputStream) {
@@ -54,12 +55,13 @@ public class GuiBuilder {
             }
         }
 
+
         if (framePath.endsWith("frame.json")) {
             // Building Frame
-            frame.buildFrame(frameAttributes);
+            //frame.buildFrame(frameAttributes);
         }
         // Building component group
-        buildComponents(frameAttributes.groups, frame.getRootPanel());
+        buildComponents(frameAttributes.groups, parent);
 
     }
 
@@ -70,6 +72,12 @@ public class GuiBuilder {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
+                /* TODO
+                *   Hardcoding!!11!111!
+                *   Will replace later!!!*/
+                if(parentPanel == null) {
+                    parentPanel = this.frame.getRootPanel();
+                }
                 this.frame.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
@@ -99,7 +107,7 @@ public class GuiBuilder {
                 buildComponents(componentAttributes.groups, parentPanel);
             } else if (componentAttributes.readFrom != null) {
                 // Handle reading from another JSON file
-                buildGui(componentAttributes.readFrom, true);
+                buildGui(componentAttributes.readFrom, true, parentPanel);
             }
         }
     }

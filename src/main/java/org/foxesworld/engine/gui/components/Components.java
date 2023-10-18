@@ -114,6 +114,7 @@ public class Components {
 
             case "spriteImage" -> {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
+                spriteAnimation.setOpaque(false);
                 spriteAnimation.setBounds(xPos,yPos,width,height);
                 spriteAnimation.setName(componentAttributes.componentId);
                 return  spriteAnimation;

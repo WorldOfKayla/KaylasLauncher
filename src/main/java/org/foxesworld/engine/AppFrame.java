@@ -11,6 +11,8 @@ import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.action.Auth;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.LoadState;
+import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.Frame;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -34,6 +36,7 @@ public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
+    private LoadState loadState;
     private CryptUtils cryptUtils;
     private boolean authorised = false;
     private String LOCALE;
@@ -68,25 +71,37 @@ public class AppFrame extends JFrame implements ActionListener {
     private void initialize() {
         StyleProvider styleProvider = new StyleProvider();
         this.elementStyles = styleProvider.getElementStyles();
+        this.buildFrame("assets/frames/frame.json");
         this.guiBuilder = new GuiBuilder(this);
-        this.loadFrames();
+        getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
+        //this.loadFrames();
+       this.loadMainPanel("assets/frames/mainFrame.json");
+        this.loadState = new LoadState(this);
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
 
+    private void buildFrame(String path){
+        Gson gson = new Gson();
+        FrameAttributes frameAttributes;
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(AppFrame.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
+        frameAttributes = gson.fromJson(reader, FrameAttributes.class);
+        frame.buildFrame(frameAttributes);
+    }
+
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
-            this.processSinglePanel(displayString);
+            this.processSinglePanelDisplay(displayString);
         } else {
             for (String panelElement : panelElements) {
-                this.processSinglePanel(panelElement);
+                this.processSinglePanelDisplay(panelElement);
             }
         }
     }
 
-    private void processSinglePanel(String panelElement){
+    private void processSinglePanelDisplay(String panelElement){
         String[] parts = panelElement.split("->");
         if (parts.length == 2) {
             String panelName = parts[0];
@@ -99,15 +114,8 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
 
-    private void loadFrames() {
-        List loadedFrames = new ArrayList();
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(AppFrame.class.getClassLoader().getResourceAsStream("loadFrames.json")), StandardCharsets.UTF_8);
-        FrameListAttributes[] array = new Gson().fromJson(reader, FrameListAttributes[].class);
-        for (FrameListAttributes obj : array) {
-            this.guiBuilder.buildGui(obj.framePath, obj.inputStream);
-            loadedFrames.add(obj.frameName);
-        }
-        getLOGGER().info("Loaded Frames " + loadedFrames);
+    private void loadMainPanel(String path) {
+        this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
         this.processComponents();
     }
 
@@ -213,6 +221,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
+    }
+
+    public LoadState getLoadingState() {
+        return loadState;
     }
 
     @Deprecated

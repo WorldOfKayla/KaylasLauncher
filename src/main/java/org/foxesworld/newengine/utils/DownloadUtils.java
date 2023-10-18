@@ -37,7 +37,7 @@ public class DownloadUtils {
     }
 
     private void downloader(String Durl, String PATH) {
-        this.appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"download\", \"display\": true}]");
+        this.appFrame.displayPanel("logged->false|newsForm->false|download->true");
         try {
             this.appFrame.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {
@@ -80,7 +80,7 @@ public class DownloadUtils {
         }
 
         SwingUtilities.invokeLater(() -> {
-            this.appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": true},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"download\", \"display\": false}]");
+            this.appFrame.displayPanel("download->false");
         });
     }
 

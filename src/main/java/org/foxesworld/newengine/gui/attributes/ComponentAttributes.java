@@ -27,6 +27,9 @@ public class ComponentAttributes {
     @SerializedName("fontSize")
     public int fontSize;
 
+    @SerializedName("enabled")
+    public boolean enabled;
+
     @SerializedName("localeKey")
     public String localeKey;
 

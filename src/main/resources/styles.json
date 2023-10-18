@@ -3,7 +3,7 @@
     "button": {
       "buttonGreen": {
         "name": "Green Emerald",
-        "font": "FSElliotPro-Light",
+        "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "width": 200,
         "height": 34,
@@ -13,7 +13,7 @@
       },
       "buttonRed": {
         "name": "Red Lava",
-        "font": "FSElliotPro-Light",
+        "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "width": 120,
         "height": 34,

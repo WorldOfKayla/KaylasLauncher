@@ -1,8 +1,12 @@
 package org.foxesworld.newengine.action;
 
 import org.foxesworld.newengine.AppFrame;
+import org.foxesworld.newengine.gui.components.Components;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 public class ActionHandler {
     private AppFrame appFrame;
@@ -29,6 +33,24 @@ public class ActionHandler {
             }
 
             case "test" -> {
+                System.out.println(appFrame.getConfig().getFullPath());
+                appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
+            }
+
+            case "applySettings" -> {
+               for(Component component: this.appFrame.getGuiBuilder().getComponentsMap().get("generalSettings")){
+                   if(component instanceof JCheckBox){
+                       this.appFrame.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                   }
+               }
+                this.appFrame.getConfig().writeCurrentConfig();
+            }
+
+            case "logOut" -> {
+                System.out.println("LoggingOut...");
+                this.appFrame.setAuthorised(false);
+                this.appFrame.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+                appFrame.displayPanel("logged->false|newsForm->true|authForm->true");
             }
 
             case "settings" -> {

@@ -12,9 +12,16 @@
           "componentType": "label",
           "fontSize": 32,
           "componentStyle": "Heading",
-          "localeKey": "LOGGED IN!!!",
+          "localeKey": "logged.loggedIn",
           "componentId": "appHeader",
           "bounds": "60,50,250,50"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "test",
+          "localeKey": "TEST",
+          "bounds": "60,95,0,0"
         },
         {
           "componentType": "button",
@@ -22,6 +29,13 @@
           "componentId": "settings",
           "localeKey": "settings.settingsButt",
           "bounds": "60,325,0,0"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonRed",
+          "componentId": "logOut",
+          "localeKey": "logged.logOut",
+          "bounds": "60,365,0,0"
         }
       ]
     }

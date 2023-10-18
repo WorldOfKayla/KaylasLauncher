@@ -82,6 +82,7 @@ public class Components {
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.componentId);
+                checkbox.setEnabled(componentAttributes.enabled);
                 return checkbox;
             }
 

@@ -29,6 +29,10 @@
     "enableSound": {
       "en": "Enable Sound",
       "ru": "Включить звук"
+    },
+    "applySettings": {
+      "en": "Apply Settings",
+      "ru": "Применить настройки"
     }
   },
   "auth": {
@@ -47,6 +51,16 @@
     "submit": {
       "en": "Submit",
       "ru": "Войти"
+    }
+  },
+  "logged": {
+    "loggedIn": {
+      "en": "You're in!",
+      "ru": "Вы авторизованы!"
+    },
+    "logOut": {
+      "en": "Log Out",
+      "ru": "Выйти"
     }
   }
 }

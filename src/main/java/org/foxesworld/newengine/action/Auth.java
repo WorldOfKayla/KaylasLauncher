@@ -30,7 +30,7 @@ public class Auth {
             authCredentials.put("login", (String) CONFIG.get("login"));
             authCredentials.put("password", (String) CONFIG.get("password"));
             if(!this.authorize(authCredentials)){
-                System.out.println("Wiping authData!");
+                appFrame.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
             }
         }
     }
@@ -48,15 +48,20 @@ public class Auth {
         authCredentials.put("userAction", "auth");
         AuthResponse response = new Gson().fromJson(this.POSTrequest.send("https://foxescraft.ru", authCredentials), AuthResponse.class);
         boolean success = response.type.equals("success");
+        System.out.println(response.message);
         if (success) {
             appFrame.setAuthorised(success);
-            appFrame.displayPanel("authForm->false|logged->true|newsForm->true|settings->false");
-            appFrame.getConfigReader().addToConfig(authCredentials, Arrays.asList("login", "password"));
-            System.out.println(appFrame.getConfigReader().getConfigWriter().configToJSON());
+            appFrame.displayPanel("authForm->false|logged->true");
+            appFrame.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
+            appFrame.getConfig().writeCurrentConfig();
         } else {
 
         }
         return success;
+    }
+
+    public void clearConfigData(){
+
     }
 
     private class AuthResponse {

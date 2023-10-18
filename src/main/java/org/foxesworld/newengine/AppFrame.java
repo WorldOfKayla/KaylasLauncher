@@ -32,7 +32,6 @@ public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
-
     private boolean authorised = false;
     private String LOCALE;
     private LanguageProvider LANG;
@@ -194,7 +193,7 @@ public class AppFrame extends JFrame implements ActionListener {
         return configFiles;
     }
 
-    public Config getConfigReader() {
+    public Config getConfig() {
         return config;
     }
 

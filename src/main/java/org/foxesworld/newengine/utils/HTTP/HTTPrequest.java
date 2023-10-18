@@ -52,7 +52,6 @@ public class HTTPrequest {
             }
 
             String str = response.toString();
-            System.out.println(str);
             return str;
         } catch (Exception e) {
             return null;

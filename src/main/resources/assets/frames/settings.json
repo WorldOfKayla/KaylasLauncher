@@ -56,28 +56,28 @@
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
-                  "componentId": "autoEnterCheck",
+                  "componentId": "autoEnter",
                   "localeKey": "settings.autoEnter",
                   "bounds": "5,20,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
-                  "componentId": "fullScreenCheck",
+                  "componentId": "fullScreen",
                   "localeKey": "settings.fullScreen",
                   "bounds": "5,40,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
-                  "componentId": "loadNewsCheck",
+                  "componentId": "loadNews",
                   "localeKey": "settings.loadNews",
                   "bounds": "5,60,240,32"
                 },
                 {
                   "componentType": "checkBox",
                   "componentStyle": "solid",
-                  "componentId": "enableSoundCheck",
+                  "componentId": "enableSound",
                   "localeKey": "settings.enableSound",
                   "bounds": "5,80,240,32"
                 }

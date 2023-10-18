@@ -81,7 +81,7 @@ public class Components {
                 Checkbox checkbox = new Checkbox(LANG.getString(componentAttributes.localeKey));
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
-                checkbox.setName(componentAttributes.localeKey);
+                checkbox.setName(componentAttributes.componentId);
                 return checkbox;
             }
 

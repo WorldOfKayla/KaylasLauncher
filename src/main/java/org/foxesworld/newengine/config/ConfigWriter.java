@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 
 public class ConfigWriter {
 
-    private ConfigReader configReader;
-    public ConfigWriter(ConfigReader configReader) {
-        this.configReader = configReader;
+    private Config config;
+    public ConfigWriter(Config config) {
+        this.config = config;
     }
 
     public String configToJSON(){
-        return new Gson().toJson(this.configReader.getAppFrame().getCONFIG());
+        return new Gson().toJson(this.config.getAppFrame().getCONFIG());
     }
 }

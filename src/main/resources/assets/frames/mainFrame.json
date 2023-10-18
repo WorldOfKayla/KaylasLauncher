@@ -12,6 +12,9 @@
           "readFrom": "assets/frames/forms/auth.json"
         },
         {
+          "readFrom": "assets/frames/forms/logged.json"
+        },
+        {
           "readFrom": "assets/frames/forms/newsForm.json"
         }
       ]

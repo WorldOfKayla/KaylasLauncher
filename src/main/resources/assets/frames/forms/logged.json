@@ -1,0 +1,29 @@
+{
+  "groups": {
+    "logged": {
+      "panelOptions": {
+        "opaque": false,
+        "visible": false,
+        "background": "",
+        "bounds": "0,0,350,500"
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "fontSize": 32,
+          "componentStyle": "Heading",
+          "localeKey": "LOGGED IN!!!",
+          "componentId": "appHeader",
+          "bounds": "60,50,250,50"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "settings",
+          "localeKey": "settings.settingsButt",
+          "bounds": "60,325,0,0"
+        }
+      ]
+    }
+  }
+}

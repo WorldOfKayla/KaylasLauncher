@@ -6,10 +6,12 @@ import org.foxesworld.newengine.AppFrame;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigReader extends ConfigAbstract {
+public class Config extends ConfigAbstract {
     private  AppFrame appFrame;
     private ConfigWriter configWriter;
-    public ConfigReader(AppFrame appFrame) {
+
+    private Map<String, Object> CONFIG;
+    public Config(AppFrame appFrame) {
         this.appFrame = appFrame;
         this.configWriter = new ConfigWriter(this);
         setCfgExportDir("config");
@@ -17,6 +19,7 @@ public class ConfigReader extends ConfigAbstract {
         setDirPathIndex(0);
         setCfgFileExtension(".json");
         addCfgFiles(appFrame.getConfigFiles());
+        this.CONFIG = getCfgMaps().get("config");
     }
 
     public void addToConfig(Map<String, String> inputData, List values){
@@ -26,12 +29,17 @@ public class ConfigReader extends ConfigAbstract {
             }
         }
     }
+
     public Map<String, Map> getCfgMaps() {
         return getAllCfgMaps();
     }
 
     public ConfigWriter getConfigWriter() {
         return configWriter;
+    }
+
+    public Map<String, Object> getCONFIG() {
+        return CONFIG;
     }
 
     public AppFrame getAppFrame() {

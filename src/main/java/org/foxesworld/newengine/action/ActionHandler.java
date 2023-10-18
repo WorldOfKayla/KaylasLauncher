@@ -2,11 +2,7 @@ package org.foxesworld.newengine.action;
 
 import org.foxesworld.newengine.AppFrame;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ActionHandler {
     private AppFrame appFrame;
@@ -27,8 +23,7 @@ public class ActionHandler {
             case "submit" -> {
                 switch(parent){
                     case "authForm" -> {
-                        Auth auth = new Auth(this.appFrame);
-                        auth.authorize(appFrame.getGuiBuilder().getComponentsMap().get(parent));
+                        this.appFrame.getAuth().formAuth(appFrame.getGuiBuilder().getComponentsMap().get(parent));
                     }
                 }
             }
@@ -37,11 +32,19 @@ public class ActionHandler {
             }
 
             case "settings" -> {
-                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": false},{\"panel\": \"newsForm\", \"display\": false},{\"panel\": \"settings\", \"display\": true}]");
+                if(!appFrame.isAuthorised()) {
+                    appFrame.displayPanel("authForm->false|newsForm->false|settings->true");
+                } else {
+                    appFrame.displayPanel("logged->false|newsForm->false|settings->true");
+                }
             }
 
             case "back" -> {
-                appFrame.displayPanel("[{\"panel\": \"authForm\", \"display\": true},{\"panel\": \"newsForm\", \"display\": true},{\"panel\": \"settings\", \"display\": false}]");
+                if(!appFrame.isAuthorised()) {
+                    appFrame.displayPanel("authForm->true|newsForm->true|settings->false");
+                } else {
+                    appFrame.displayPanel("logged->true|newsForm->true|settings->false");
+                }
             }
 
             case "closeButton" -> {

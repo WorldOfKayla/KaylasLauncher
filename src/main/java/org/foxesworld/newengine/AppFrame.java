@@ -1,15 +1,14 @@
 package org.foxesworld.newengine;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.newengine.action.ActionHandler;
-import org.foxesworld.newengine.config.ConfigReader;
+import org.foxesworld.newengine.action.Auth;
+import org.foxesworld.newengine.config.Config;
 import org.foxesworld.newengine.gui.GuiBuilder;
 import org.foxesworld.newengine.gui.components.SystemComponents;
 import org.foxesworld.newengine.gui.components.frame.Frame;
@@ -33,10 +32,13 @@ public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
-    private String LOCALE = "ru";
+
+    private boolean authorised = false;
+    private String LOCALE;
     private LanguageProvider LANG;
     private Map<String, Object> CONFIG;
-    private ConfigReader configReader;
+    private Auth auth;
+    private Config config;
     private HTTPrequest GETrequest,POSTrequest;
     private FontUtils fontUtils;
     private SystemComponents systemComponents;
@@ -48,8 +50,8 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public AppFrame(APP app) {
         this.app = app;
-        configReader = new ConfigReader(this);
-        CONFIG = configReader.getCfgMaps().get("config");
+        config = new Config(this);
+        CONFIG = config.getCONFIG();
         LOCALE = String.valueOf(CONFIG.get("Lang"));
         this.LANG = new LanguageProvider(this, "/assets/lang/locale.json");
         this.fontUtils = new FontUtils(this);
@@ -65,20 +67,34 @@ public class AppFrame extends JFrame implements ActionListener {
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         this.loadFrames();
+        this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
 
-    @Deprecated
-    public void  displayPanel(String displayString){
-        JsonArray jsonArray = new JsonParser().parse(displayString).getAsJsonArray();
-        DisplayAttributes[] panels = new Gson().fromJson(jsonArray, DisplayAttributes[].class);
-        for(DisplayAttributes panel: panels){
-            JPanel groupPanel = guiBuilder.getPanelsMap().get(panel.panel);
-           groupPanel.setVisible(panel.display);
-            getLOGGER().debug("Setting " + panel.panel + " visible to " + panel.display);
+    public void displayPanel(String displayString) {
+        String[] panelElements = displayString.split("\\|");
+        if (panelElements.length <= 1) {
+            this.processSinglePanel(displayString);
+        } else {
+            for (String panelElement : panelElements) {
+                this.processSinglePanel(panelElement);
+            }
         }
     }
+
+    private void processSinglePanel(String panelElement){
+        String[] parts = panelElement.split("->");
+        if (parts.length == 2) {
+            String panelName = parts[0];
+            boolean displayValue = Boolean.parseBoolean(parts[1]);
+
+            JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
+            groupPanel.setVisible(displayValue);
+            getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
+        }
+    }
+
 
     private void loadFrames() {
         List loadedFrames = new ArrayList();
@@ -89,11 +105,11 @@ public class AppFrame extends JFrame implements ActionListener {
             loadedFrames.add(obj.frameName);
         }
         getLOGGER().info("Loaded Frames " + loadedFrames);
-        this.defineSystemComponents();
+        this.processComponents();
     }
 
-    private void defineSystemComponents(){
-        List systemIds = Arrays.asList("progressBar", "progressLabel");
+    private void processComponents(){
+        List systemIds = Arrays.asList("progressBar", "progressLabel"); //Components we define as system
         this.systemComponents = new SystemComponents();
         for(Map.Entry<String, List<Component>> panels: guiBuilder.getComponentsMap().entrySet()){
             String panelName = panels.getKey();
@@ -102,6 +118,17 @@ public class AppFrame extends JFrame implements ActionListener {
                     this.systemComponents.addComponent(component.getName(), component);
                     getLOGGER().debug("Adding system component '" + component.getName()+"'");
                 }
+                this.setComponentValues(component);
+            }
+        }
+    }
+
+    private void setComponentValues(Component component){
+        if(component instanceof  JLabel){
+            String text = ((JLabel) component).getText();
+        } else {
+            if(component instanceof  JCheckBox) {
+                ((JCheckBox) component).setSelected((Boolean) CONFIG.get(component.getName()));
             }
         }
     }
@@ -167,8 +194,20 @@ public class AppFrame extends JFrame implements ActionListener {
         return configFiles;
     }
 
-    public ConfigReader getConfigReader() {
-        return configReader;
+    public Config getConfigReader() {
+        return config;
+    }
+
+    public Auth getAuth() {
+        return auth;
+    }
+
+    public boolean isAuthorised() {
+        return authorised;
+    }
+
+    public void setAuthorised(boolean authorised) {
+        this.authorised = authorised;
     }
 
     @Deprecated

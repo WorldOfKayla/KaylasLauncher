@@ -21,21 +21,38 @@
           "componentStyle": "buttonGreen",
           "componentId": "test",
           "localeKey": "TEST",
-          "bounds": "60,95,0,0"
+          "bounds": "60,95,60,34"
+        },
+        {
+          "componentType": "scrollBox",
+          "componentStyle": "selectable",
+          "componentId": "scrolling",
+          "localeKey": "settings.settingsButt",
+          "bounds": "40,230,245,34"
         },
         {
           "componentType": "button",
-          "componentStyle": "buttonGreen",
+          "componentStyle": "transparent",
+          "imageIcon": "assets/ui/icons/settings.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
           "componentId": "settings",
           "localeKey": "settings.settingsButt",
-          "bounds": "60,325,0,0"
+          "bounds": "300,450,32,32"
         },
         {
           "componentType": "button",
           "componentStyle": "buttonRed",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
-          "bounds": "60,365,0,0"
+          "bounds": "40,260,120,34"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "toGame",
+          "localeKey": "logged.toGame",
+          "bounds": "165,260,120,34"
         }
       ]
     }

@@ -10,6 +10,10 @@
       "en": "Settings",
       "ru": "Настройки"
     },
+    "back": {
+      "en": "Back",
+      "ru": "Назад"
+    },
     "baseOptions": {
       "en": "Base Options",
       "ru": "Общие параметры"
@@ -51,6 +55,10 @@
     "submit": {
       "en": "Submit",
       "ru": "Войти"
+    },
+    "rememberMe": {
+      "en": "Remember Me",
+      "ru": "Запомнить меня"
     }
   },
   "logged": {
@@ -61,6 +69,10 @@
     "logOut": {
       "en": "Log Out",
       "ru": "Выйти"
+    },
+    "toGame": {
+      "en": "To game",
+      "ru": "В игру"
     }
   }
 }

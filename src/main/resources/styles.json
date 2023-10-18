@@ -5,8 +5,6 @@
         "name": "Green Emerald",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
-        "width": 200,
-        "height": 34,
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonGreen.png"
@@ -20,6 +18,16 @@
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonRed.png"
+      },
+      "transparent": {
+        "name": "Red Lava",
+        "font": "",
+        "fontSize": 12,
+        "width": 120,
+        "height": 34,
+        "color": "#ffffff",
+        "align": "CENTER",
+        "texture": "assets/ui/button/transparent.png"
       }
     },
     "multiButton": {
@@ -57,6 +65,15 @@
         "color": "#2b2826",
         "texture": "assets/ui/input/inputBox.png",
         "borderColor": "#da3156"
+      }
+    },
+    "scrollBox": {
+      "selectable": {
+        "name": "A selectable dude!",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "color": "#08162f",
+        "texture": "assets/ui/scrollBox/scrollBox.png"
       }
     },
     "passField": {

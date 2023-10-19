@@ -1,0 +1,12 @@
+{
+  "styles": {
+    "progressBar": {
+      "progress": {
+        "name": "Let's Rule",
+        "background": "#5e6959",
+        "color": "#b0976b",
+        "borderColor": "#183824"
+      }
+    }
+  }
+}

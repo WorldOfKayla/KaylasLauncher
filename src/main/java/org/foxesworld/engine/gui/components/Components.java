@@ -24,13 +24,15 @@ import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Components {
 
     public AppFrame appFrame;
     private LanguageProvider LANG;
+    private Map<String, Map<String, StyleProvider.StyleAttributes>> componentStyles = new HashMap<>();
     private TextfieldStyle textfieldStyle;
-
     private PassFieldStyle passfieldStyle;
     private ProgressBarStyle progressBarStyle;
     private LabelStyle labelStyle;
@@ -44,11 +46,13 @@ public class Components {
         this.appFrame = appFrame;
         this.LANG = appFrame.getLANG();
     }
-
     public JComponent createComponent(ComponentAttributes componentAttributes) {
 
-        if(appFrame.getElementStyles().get(componentAttributes.componentType)!=null) {
-            style = appFrame.getElementStyles().get(componentAttributes.componentType).get(componentAttributes.componentStyle);
+        if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
+            if(componentStyles.get(componentAttributes.componentType) == null){
+                componentStyles.put(componentAttributes.componentType, appFrame.getStyleProvider().loadStyle(componentAttributes.componentType));
+            }
+            style = componentStyles.get(componentAttributes.componentType).get(componentAttributes.componentStyle);
         }
         String[] bounds = componentAttributes.bounds.split(",");
         int xPos = Integer.parseInt(bounds[0]);

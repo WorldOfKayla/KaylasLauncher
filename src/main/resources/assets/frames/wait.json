@@ -15,7 +15,15 @@
           "iconHeight": 32,
           "totalFrames": 11,
           "delay": 40,
-          "bounds": "0,0,256,256"
+          "bounds": "90,90,128,128"
+        },
+        {
+          "componentType": "label",
+          "fontSize": 14,
+          "componentStyle": "promptLabel",
+          "localeKey": "auth.authTitle",
+          "componentId": "appHeader",
+          "bounds": "60,50,250,50"
         }
       ]
     }

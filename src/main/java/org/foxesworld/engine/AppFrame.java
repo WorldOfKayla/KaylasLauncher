@@ -33,6 +33,7 @@ public class AppFrame extends JFrame implements ActionListener {
     protected final APP app;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
+    private StyleProvider styleProvider;
     private LoadState loadState;
     private CryptUtils cryptUtils;
     private boolean authorised = false;
@@ -69,7 +70,7 @@ public class AppFrame extends JFrame implements ActionListener {
     *   Remove too many calls of GuiBuilder
     * */
     private void initialize() {
-        StyleProvider styleProvider = new StyleProvider();
+        styleProvider = new StyleProvider(this);
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
@@ -210,6 +211,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
+    }
+
+    public StyleProvider getStyleProvider() {
+        return styleProvider;
     }
 
     public LoadState getLoadingState() {

@@ -50,6 +50,21 @@
           "bounds": "5,80,240,32"
         },
         {
+          "componentType": "label",
+          "fontSize": 12,
+          "componentStyle": "promptLabel",
+          "localeKey": "settings.ramField",
+          "componentId": "ramField",
+          "bounds": "10,90,250,50"
+        },
+        {
+          "componentType": "textField",
+          "componentStyle": "inputBox",
+          "localeKey": "settings.ramPlaceholder",
+          "componentId": "ramAmount",
+          "bounds": "10,125,0,0"
+        },
+        {
           "componentType": "button",
           "componentStyle": "buttonGreen",
           "componentId": "applySettings",

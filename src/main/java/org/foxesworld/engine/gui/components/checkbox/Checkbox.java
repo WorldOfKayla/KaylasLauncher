@@ -38,10 +38,12 @@ public class Checkbox extends JCheckBox {
             @Override
             public void mousePressed(MouseEvent e) {
                 boolean isSel = Checkbox.isSelected();
-                if(isSel){
-                    components.appFrame.getSound().playSound("checkbox/checkboxOff2.ogg");
-                } else {
-                    components.appFrame.getSound().playSound("checkbox/checkboxOn2.ogg");
+                if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
+                    if (isSel) {
+                        components.appFrame.getSound().playSound("checkbox/checkboxOff2.ogg");
+                    } else {
+                        components.appFrame.getSound().playSound("checkbox/checkboxOn2.ogg");
+                    }
                 }
             }
 

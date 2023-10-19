@@ -22,6 +22,8 @@ public class GuiBuilder {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
+
+    private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final Frame frame;
     private final Components components;
 
@@ -53,6 +55,17 @@ public class GuiBuilder {
         buildComponents(frameAttributes.groups, parent);
     }
 
+    public List<Component> getAllChildComponents(String parentPanel){
+        List<Component> components = new ArrayList<>();
+        for(String thisChild: childsNparents.get(parentPanel)){
+            System.out.println(getComponentsMap());
+            for(Component component: getComponentsMap().get(thisChild)){
+                components.add(component);
+            }
+        }
+        return components;
+    }
+
     /*
      * Method for building components based on a JSON structure
      */
@@ -69,6 +82,7 @@ public class GuiBuilder {
                 parentPanel.add(thisPanel);
                 panelsMap.put(componentGroup, thisPanel);
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups
+                childsNparents.computeIfAbsent(parentPanel.getName(), k -> new ArrayList<>()).add(thisPanel.getName());
             }
         }
     }
@@ -115,4 +129,6 @@ public class GuiBuilder {
     public HashMap<String, JPanel> getPanelsMap() {
         return panelsMap;
     }
+
+    public HashMap<String, List<String>> getChildsNparents() {return childsNparents;}
 }

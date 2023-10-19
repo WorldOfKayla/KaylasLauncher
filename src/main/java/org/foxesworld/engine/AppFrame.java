@@ -10,6 +10,7 @@ import org.foxesworld.engine.action.Auth;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.LoadState;
+import org.foxesworld.engine.gui.components.Components;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.Frame;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -24,10 +25,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class AppFrame extends JFrame implements ActionListener {
 
@@ -83,7 +82,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-        sound.playSound("amaze.ogg");
+        //sound.playSound("amaze.ogg");
     }
 
     public void displayPanel(String displayString) {
@@ -102,10 +101,21 @@ public class AppFrame extends JFrame implements ActionListener {
         if (parts.length == 2) {
             String panelName = parts[0];
             boolean displayValue = Boolean.parseBoolean(parts[1]);
-
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
             getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
+            if(displayValue == true) {
+                if(guiBuilder.getChildsNparents().containsKey(panelName)){
+                    for(Component component: guiBuilder.getAllChildComponents(panelName)){
+                        setComponentValues(component);
+                    }
+                } else {
+                    for(Component component: guiBuilder.getComponentsMap().get(panelName)){
+                        setComponentValues(component);
+                    }
+                }
+
+            }
         }
     }
 
@@ -114,6 +124,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.processComponents();
     }
 
+    @Deprecated
     private void processComponents(){
         List systemIds = Arrays.asList("progressBar", "progressLabel"); //Components we define as system
         this.systemComponents = new SystemComponents();
@@ -124,18 +135,26 @@ public class AppFrame extends JFrame implements ActionListener {
                     this.systemComponents.addComponent(component.getName(), component);
                     getLOGGER().debug("Adding system component '" + component.getName()+"'");
                 }
-                this.setComponentValues(component);
             }
         }
     }
 
+    /*
+    * TODO
+    *  We should specify which form to perform to avoid setting values of unneeded components */
     private void setComponentValues(Component component){
+        System.out.println("Setting value of "+component.getName());
         if(component instanceof  JLabel){
             String text = ((JLabel) component).getText();
         } else {
             if(component instanceof  JCheckBox) {
                 if(component.isEnabled()){
                     ((JCheckBox) component).setSelected((Boolean) CONFIG.get(component.getName()));
+                }
+            } else {
+                if(component instanceof  JTextField) {
+                    if(CONFIG.get(component.getName()) != null)
+                    ((JTextField) component).setText(String.valueOf((int) CONFIG.get(component.getName())));
                 }
             }
         }

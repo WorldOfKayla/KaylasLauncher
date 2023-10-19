@@ -35,14 +35,18 @@ public class ActionHandler {
                 //appFrame.getFrame().getRootPanel().removeAll();
                 //appFrame.getLoadingState().showLoadingState(60);
                 //System.out.println(appFrame.getConfig().getFullPath());
-                appFrame.displayPanel("wait->true");
-                //appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
+                //appFrame.displayPanel("wait->true");
+                appFrame.getDownload().download("https://foxescraft.ru/assets.zip", appFrame.getConfig().getFullPath()+"/assets.zip");
             }
 
             case "applySettings" -> {
                for(Component component: this.appFrame.getGuiBuilder().getComponentsMap().get("generalSettings")){
                    if(component instanceof JCheckBox){
                        this.appFrame.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                   } else {
+                       if(component instanceof JTextField) {
+                           this.appFrame.getConfig().setConfigValue(component.getName(), ((JTextField) component).getText());
+                       }
                    }
                }
                 this.appFrame.getConfig().writeCurrentConfig();

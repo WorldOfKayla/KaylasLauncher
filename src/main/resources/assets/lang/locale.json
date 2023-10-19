@@ -37,6 +37,14 @@
     "applySettings": {
       "en": "Apply Settings",
       "ru": "Применить настройки"
+    },
+    "ramField": {
+      "en": "RAM amount",
+      "ru": "Выделение оперативной памяти"
+    },
+    "ramPlaceholder": {
+      "en": "RAM",
+      "ru": "ОЗУ"
     }
   },
   "auth": {

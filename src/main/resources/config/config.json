@@ -4,5 +4,6 @@
   "autoEnter": false,
   "fullScreen": false,
   "loadNews": true,
-  "enableSound": true
+  "enableSound": true,
+  "ramAmount": "1024"
 }

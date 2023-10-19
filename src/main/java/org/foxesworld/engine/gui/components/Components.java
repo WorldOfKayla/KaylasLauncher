@@ -23,7 +23,6 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

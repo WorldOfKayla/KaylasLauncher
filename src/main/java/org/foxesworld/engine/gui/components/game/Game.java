@@ -19,10 +19,12 @@ public class Game {
     }
 
     public void testLaunch() {
-        String minecraftJarPath = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\versions\\1.16.5 Mods.jar";
+        String gameDir = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\versions\\1.16.5 Mods";
+        String minecraftJarPath = gameDir+ "\\1.16.5 Mods.jar";
+        String nativesPath = gameDir + "\\natives";
         String librariesPath = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\libraries";
         String assetsPath = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\assets";
-        String nativesPath = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\versions\\1.16.5 Mods\\natives";
+
 
         List<String> command = new ArrayList<>();
         String javaPath = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
@@ -43,10 +45,10 @@ public class Game {
         command.add("-cp");
         command.add(classpath);
 
-        // Minecraftr params
+        // Minecraft params
         command.add("net.minecraft.client.main.Main");
-        command.add("--username=YourUsername");
-        command.add("--version=1.12.2");
+        command.add("--username="+appFrame.getCONFIG().get("login"));
+        command.add("--version=1.16.5");
         command.add("--gameDir=" + assetsPath);
         command.add("--assetsDir=" + assetsPath);
         command.add("--accessToken=YourAccessToken");

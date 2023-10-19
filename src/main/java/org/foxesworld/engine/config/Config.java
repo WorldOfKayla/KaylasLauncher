@@ -79,6 +79,4 @@ public class Config extends ConfigAbstract {
     public String getFullPath() {
         return cfgProvider.getGameFullPath();
     }
-
-
 }

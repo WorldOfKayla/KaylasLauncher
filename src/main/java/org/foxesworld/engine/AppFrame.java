@@ -68,13 +68,14 @@ public class AppFrame extends JFrame implements ActionListener {
 
     /* TODO
     *   Remove too many calls of GuiBuilder
+    *   In process
     * */
     private void initialize() {
         styleProvider = new StyleProvider(this);
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
-        this.loadMainPanel("assets/frames/mainFrame.json");
+        this.loadMainPanel(this.app.getMainFrame());
         this.loadState = new LoadState(this);
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);

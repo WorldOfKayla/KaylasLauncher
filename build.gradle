@@ -1,6 +1,24 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.johnrengelman:shadow:8.1.0"
+    }
+}
+
 plugins {
     id 'java'
+    id 'application'
+    id "com.github.johnrengelman.shadow" version "8.1.0"
 }
+
+application {
+    mainClass = 'org.foxesworld.APP'
+}
+
 
 group 'org.foxesworld'
 version '1.0-SNAPSHOT'
@@ -16,8 +34,9 @@ dependencies {
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
-
 }
+
+apply plugin: "com.github.johnrengelman.shadow"
 
 test {
     useJUnitPlatform()

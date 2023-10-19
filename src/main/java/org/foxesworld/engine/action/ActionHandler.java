@@ -1,6 +1,7 @@
 package org.foxesworld.engine.action;
 
 import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.gui.components.game.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,6 +74,12 @@ public class ActionHandler {
                 } else {
                     appFrame.displayPanel("logged->true|newsForm->true|settings->false");
                 }
+            }
+
+            case "toGame" -> {
+                System.out.println("GG");
+                Game game = new Game(appFrame);
+                game.testLaunch();
             }
 
             case "closeButton" -> System.exit(0);

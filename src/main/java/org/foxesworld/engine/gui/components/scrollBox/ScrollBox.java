@@ -17,6 +17,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public static int initialy = 0;
     private static boolean entered = false;
     private static boolean opened = false;
+    private static int x = 0;
     private static int y = 0;
     private static int selected;
     private static int hover;
@@ -27,11 +28,11 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public BufferedImage panelTX;
     public BufferedImage point;
 
-    public ScrollBox(Components components, String[] elements, int y2) {
+    public ScrollBox(Components components, String[] elements, int y) {
         this.components = components;
         components.appFrame.getLOGGER().info("Updating combobox " + elements.toString());
         this.elements = elements;
-        initialy = y2;
+        initialy = y;
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.setFocusable(true);
@@ -102,12 +103,17 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         }
         this.grabFocus();
         this.requestFocus();
-        boolean bl = opened = !opened;
+        if (opened && y / this.openedTX.getHeight() < this.elements.length) {
+            selected = y / this.openedTX.getHeight();
+            entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        }
         if (opened) {
             components.appFrame.getSound().playSound("scrollBox/scrollBoxOff.ogg");
         } else {
             components.appFrame.getSound().playSound("scrollBox/scrollBoxOn.ogg");
         }
+        boolean bl = opened = !opened;
+
         hover = selected;
         this.repaint();
     }
@@ -115,7 +121,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     @Override
     public void mouseEntered(MouseEvent e) {
         if (!opened) {
-            //Frame.MUSIC.playSnd("button/button_mouse_over.mp3", 1.0f);
+            components.appFrame.getSound().playSound("button/buttonHover.ogg");
         }
         entered = true;
         this.repaint();
@@ -142,6 +148,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     @Override
     public void mouseMoved(MouseEvent e) {
         y = e.getY();
+        x = e.getX();
         if (opened && y / this.openedTX.getHeight() < this.elements.length) {
             if (hover != y / this.openedTX.getHeight()) {
                 this.repaint();
@@ -182,9 +189,4 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public static boolean isOpened() {
         return opened;
     }
-
-    static {
-        hover = selected = 0;
-    }
 }
-

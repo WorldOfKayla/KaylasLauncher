@@ -151,7 +151,7 @@ public class Components {
 
             case "scrollBox" -> {
                 scrollBoxStyle = new ScrollBoxStyle(this);
-                ScrollBox scrollBox = new ScrollBox(this, new String[]{"GG", "WP"}, yPos);
+                ScrollBox scrollBox = new ScrollBox(this, new String[]{"Classic", "Underground", "HardTech"}, yPos);
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
                 scrollBox.setName(componentAttributes.localeKey);

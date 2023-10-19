@@ -54,6 +54,10 @@ public class ImageUtils {
         return res;
     }
 
+    public static boolean contains(int x2, int y2, int xx, int yy, int w, int h) {
+        return x2 >= xx && y2 >= yy && x2 < xx + w && y2 < yy + h;
+    }
+
     public static BufferedImage genPanel(int w, int h, BufferedImage img) {
         BufferedImage res = new BufferedImage(w, h, 2);
         int onew = img.getWidth() / 3;

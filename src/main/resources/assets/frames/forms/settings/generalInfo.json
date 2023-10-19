@@ -11,11 +11,11 @@
       "childComponents": [
         {
           "componentType": "label",
-          "fontSize": 32,
-          "componentStyle": "Heading",
-          "localeKey": "logged.loggedIn",
-          "componentId": "appHeader",
-          "bounds": "60,50,250,50"
+          "fontSize": 12,
+          "componentStyle": "promptLabel",
+          "localeKey": "settings.info",
+          "componentId": "settingsInfo",
+          "bounds": "5,20,280,70"
         }
       ]
     }

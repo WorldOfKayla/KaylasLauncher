@@ -45,6 +45,10 @@
     "ramPlaceholder": {
       "en": "RAM",
       "ru": "ОЗУ"
+    },
+    "info": {
+      "en": "Settings information",
+      "ru":"Информация о настройках"
     }
   },
   "auth": {

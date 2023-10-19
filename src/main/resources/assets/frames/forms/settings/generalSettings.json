@@ -43,7 +43,7 @@
         },
         {
           "componentType": "checkBox",
-          "enabled": false,
+          "enabled": true,
           "componentStyle": "solid",
           "componentId": "enableSound",
           "localeKey": "settings.enableSound",

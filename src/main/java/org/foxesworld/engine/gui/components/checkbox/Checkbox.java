@@ -1,5 +1,7 @@
 package org.foxesworld.engine.gui.components.checkbox;
 
+import org.foxesworld.engine.gui.components.Components;
+
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,17 +10,18 @@ import javax.swing.JCheckBox;
 
 public class Checkbox extends JCheckBox {
     private static final long serialVersionUID = 1L;
-    private Integer pressedNum = 0;
     public BufferedImage defaultTX;
     public BufferedImage rolloverTX;
     public BufferedImage selectedTX;
     public BufferedImage selectedRolloverTX;
-    public boolean isSel;
+    private  Components components;
 
-    public Checkbox(String string) {
+    public Checkbox(Components components, String string) {
         super(string);
+        this.components = components;
         this.setOpaque(false);
         this.setFocusable(false);
+        this.listener(this);
     }
 
     @Override
@@ -26,29 +29,30 @@ public class Checkbox extends JCheckBox {
         super.paintComponent(g);
     }
 
-    public void checkbox_listener(final JCheckBox Checkbox2) {
+    public void listener(final JCheckBox Checkbox) {
         this.addMouseListener(new MouseListener(){
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-            }
+            public void mouseReleased(MouseEvent e) {}
 
             @Override
             public void mousePressed(MouseEvent e) {
-                boolean isSel = Checkbox2.isSelected();
+                boolean isSel = Checkbox.isSelected();
+                if(isSel){
+                    components.appFrame.getSound().playSound("checkbox/checkboxOff2.ogg");
+                } else {
+                    components.appFrame.getSound().playSound("checkbox/checkboxOn2.ogg");
+                }
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-            }
+            public void mouseExited(MouseEvent e) {}
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-            }
+            public void mouseEntered(MouseEvent e) {}
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-            }
+            public void mouseClicked(MouseEvent e) {}
         });
     }
 }

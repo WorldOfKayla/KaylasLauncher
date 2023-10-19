@@ -86,7 +86,7 @@ public class Components {
 
             case "checkBox" -> {
                 checkboxStyle = new CheckboxStyle(this);
-                Checkbox checkbox = new Checkbox(LANG.getString(componentAttributes.localeKey));
+                Checkbox checkbox = new Checkbox(this, LANG.getString(componentAttributes.localeKey));
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.componentId);
@@ -126,10 +126,10 @@ public class Components {
 
             case "button" -> {
                 buttonStyle = new ButtonStyle(this);
-                Button button = new Button(LANG.getString(componentAttributes.localeKey));
+                Button button = new Button(this, LANG.getString(componentAttributes.localeKey));
                 if(componentAttributes.imageIcon != null){
                     ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight));
-                    button = new Button(icon);
+                    button = new Button(this, icon);
                 }
                 buttonStyle.apply(button);
                 button.setName(componentAttributes.localeKey);
@@ -140,8 +140,8 @@ public class Components {
             }
 
             case "multiButton" -> {
-                multiButtonStyle = new MultiButtonStyle(style, componentAttributes);
-                MultiButton multiButton = new MultiButton();
+                multiButtonStyle = new MultiButtonStyle(this, componentAttributes);
+                MultiButton multiButton = new MultiButton(this);
                 multiButtonStyle.apply(multiButton);
                 multiButton.setName(componentAttributes.componentId);
                 multiButton.setActionCommand(componentAttributes.componentId);

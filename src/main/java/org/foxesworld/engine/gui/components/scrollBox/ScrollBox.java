@@ -17,7 +17,6 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public static int initialy = 0;
     private static boolean entered = false;
     private static boolean opened = false;
-    private static int x = 0;
     private static int y = 0;
     private static int selected;
     private static int hover;
@@ -103,27 +102,12 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         }
         this.grabFocus();
         this.requestFocus();
-        if (opened && y / this.openedTX.getHeight() < this.elements.length) {
-            selected = y / this.openedTX.getHeight();
-            //entered = BaseUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
-        }
-        try {
-            ///Frame.MUSIC.combobox_sound(opened);
-        }
-        catch (Exception exception) {
-            // empty catch block
-        }
         boolean bl = opened = !opened;
         if (opened) {
-            //Frame.visibleLinks("refs", false);
+            components.appFrame.getSound().playSound("scrollBox/scrollBoxOff.ogg");
         } else {
-            //Frame.visibleLinks("refs", true);
+            components.appFrame.getSound().playSound("scrollBox/scrollBoxOn.ogg");
         }
-        //Frame.lore.setText(Settings.servers[selected].split("& ")[5]);
-        //Frame.lore.setVisible(opened);
-        //Frame.serverbar.setVisible(!opened);
-        //Frame.panel.newsS.setVisible(!opened);
-        //Frame.panel.repaint();
         hover = selected;
         this.repaint();
     }
@@ -158,10 +142,9 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     @Override
     public void mouseMoved(MouseEvent e) {
         y = e.getY();
-        x = e.getX();
         if (opened && y / this.openedTX.getHeight() < this.elements.length) {
             if (hover != y / this.openedTX.getHeight()) {
-                //Frame.panel.repaint();
+                this.repaint();
             }
             hover = y / this.openedTX.getHeight();
         }

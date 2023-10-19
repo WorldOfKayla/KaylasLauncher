@@ -14,6 +14,7 @@ import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.Frame;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
@@ -36,6 +37,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private StyleProvider styleProvider;
     private LoadState loadState;
     private CryptUtils cryptUtils;
+    private Sound sound;
     private boolean authorised = false;
     private String LOCALE;
     private LanguageProvider LANG;
@@ -53,11 +55,12 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public AppFrame(APP app) {
         this.app = app;
-        config = new Config(this);
-        CONFIG = config.getCONFIG();
-        LOCALE = String.valueOf(CONFIG.get("Lang"));
+        this.config = new Config(this);
+        this.CONFIG = config.getCONFIG();
+        this.LOCALE = String.valueOf(CONFIG.get("Lang"));
         this.LANG = new LanguageProvider(this, "/assets/lang/locale.json");
         this.fontUtils = new FontUtils(this);
+        this.sound = new Sound(this);
         Configurator.setLevel(LOGGER.getName(), Level.valueOf((String) CONFIG.get("LogLevel")));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
@@ -80,6 +83,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
+        sound.playSound("amaze.ogg");
     }
 
     public void displayPanel(String displayString) {
@@ -216,6 +220,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public StyleProvider getStyleProvider() {
         return styleProvider;
+    }
+
+    public Sound getSound() {
+        return sound;
     }
 
     public LoadState getLoadingState() {

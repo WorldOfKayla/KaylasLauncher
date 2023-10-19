@@ -23,7 +23,6 @@ public class Sound {
     public void playSound(String path){
         if((boolean) appFrame.getCONFIG().get("enableSound") == true) {
             String fullPath = baseDir + path;
-            appFrame.getLOGGER().debug("Playing sound " + fullPath);
             try {
                 InputStream inputStream = Sound.class.getClassLoader().getResourceAsStream(fullPath);
                 AudioInputStream audioInputStream = vorbisAudioFileReader.getAudioInputStream(inputStream);

@@ -10,7 +10,6 @@ import org.foxesworld.engine.action.Auth;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.LoadState;
-import org.foxesworld.engine.gui.components.Components;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.Frame;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -121,12 +120,15 @@ public class AppFrame extends JFrame implements ActionListener {
 
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
-        this.processComponents();
+        this.defineSystemComponents();
     }
 
+    /* NOTE
+    *  May system components will be removed soon as we're planing to define them
+    *  While loading a new panel */
     @Deprecated
-    private void processComponents(){
-        List systemIds = Arrays.asList("progressBar", "progressLabel"); //Components we define as system
+    private void defineSystemComponents(){
+        List systemIds = Arrays.asList("progressBar", "progressLabel");
         this.systemComponents = new SystemComponents();
         for(Map.Entry<String, List<Component>> panels: guiBuilder.getComponentsMap().entrySet()){
             String panelName = panels.getKey();
@@ -141,11 +143,12 @@ public class AppFrame extends JFrame implements ActionListener {
 
     /*
     * TODO
-    *  We should specify which form to perform to avoid setting values of unneeded components */
+    *  We should specify which form to perform to avoid setting values of unneeded components
+    *  VERY IMPORTANT */
     private void setComponentValues(Component component){
-        System.out.println("Setting value of "+component.getName());
         if(component instanceof  JLabel){
             String text = ((JLabel) component).getText();
+            //To replace Text on labels
         } else {
             if(component instanceof  JCheckBox) {
                 if(component.isEnabled()){
@@ -154,7 +157,7 @@ public class AppFrame extends JFrame implements ActionListener {
             } else {
                 if(component instanceof  JTextField) {
                     if(CONFIG.get(component.getName()) != null)
-                    ((JTextField) component).setText(String.valueOf((int) CONFIG.get(component.getName())));
+                    ((JTextField) component).setText(String.valueOf(CONFIG.get(component.getName())));
                 }
             }
         }

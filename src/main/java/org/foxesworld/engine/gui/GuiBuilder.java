@@ -58,7 +58,6 @@ public class GuiBuilder {
     public List<Component> getAllChildComponents(String parentPanel){
         List<Component> components = new ArrayList<>();
         for(String thisChild: childsNparents.get(parentPanel)){
-            System.out.println(getComponentsMap());
             for(Component component: getComponentsMap().get(thisChild)){
                 components.add(component);
             }

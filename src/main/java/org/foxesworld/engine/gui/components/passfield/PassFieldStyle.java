@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.passfield;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.border.Border;
@@ -20,10 +20,10 @@ public class PassFieldStyle {
     public Color caretColor;
     public Border border;
 
-    public PassFieldStyle(Components components) {
-        this.texture = ImageUtils.getLocalImage(components.style.texture);
-        this.textColor = hexToColor(components.style.color);
-        this.caretColor = hexToColor(components.style.caretColor);
+    public PassFieldStyle(ComponentFactory componentFactory) {
+        this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
+        this.textColor = hexToColor(componentFactory.style.color);
+        this.caretColor = hexToColor(componentFactory.style.caretColor);
         this.echoChar = "*";
     }
 

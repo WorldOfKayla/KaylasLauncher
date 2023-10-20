@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.textfield;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import java.awt.*;
@@ -18,19 +18,19 @@ public class TextfieldStyle {
 	public float fontSize;
 	public Color caretColor;
 	public BufferedImage texture;
-	private  Components components;
+	private ComponentFactory componentFactory;
 
-	public TextfieldStyle(Components components) {
-		this.components = components;
-		this.foregroundColor = hexToColor(components.style.color);
-		this.backgroundColor = hexToColor(components.style.background);
-		this.border = hexToColor(components.style.borderColor);
-		this.caretColor = hexToColor(components.style.caretColor);
-		this.width = components.style.width;
-		this.height = components.style.height;
-		this.font = components.style.font;
-		this.fontSize = components.style.fontSize;
-		this.texture = ImageUtils.getLocalImage(components.style.texture);
+	public TextfieldStyle(ComponentFactory componentFactory) {
+		this.componentFactory = componentFactory;
+		this.foregroundColor = hexToColor(componentFactory.style.color);
+		this.backgroundColor = hexToColor(componentFactory.style.background);
+		this.border = hexToColor(componentFactory.style.borderColor);
+		this.caretColor = hexToColor(componentFactory.style.caretColor);
+		this.width = componentFactory.style.width;
+		this.height = componentFactory.style.height;
+		this.font = componentFactory.style.font;
+		this.fontSize = componentFactory.style.fontSize;
+		this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
 	}
 
 	public void apply(Textfield text) {
@@ -39,6 +39,6 @@ public class TextfieldStyle {
 		text.setBackground(backgroundColor);
 		text.setForeground(foregroundColor);
 		text.setBorder(null);
-		text.setFont(components.engine.getFontUtils().getFont(font, fontSize));
+		text.setFont(componentFactory.engine.getFONTUTILS().getFont(font, fontSize));
 	}
 }

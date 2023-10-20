@@ -19,7 +19,7 @@ public class Game {
     public Game(Engine engine) {
         this.engine = engine;
         this.libraryScanner = new LibraryScanner(engine);
-        this.absoluteHomePath = engine.getConfig().getFullPath();
+        this.absoluteHomePath = engine.getCONFIG().getFullPath();
     }
 
     public void testLaunch() {
@@ -46,20 +46,20 @@ public class Game {
         // Forming launch string
         String classpath = String.join(File.pathSeparator, libraryPaths);
         classpath += File.pathSeparator + minecraftJarPath;
-        command.add("-Xmx" + engine.getCONFIG().get("ramAmount") + "m");
+        command.add("-Xmx" + engine.getCONFIG().getCONFIG().get("ramAmount") + "m");
         command.add("-cp");
         command.add(classpath);
 
         // Minecraft params
         command.add("net.minecraft.client.main.Main");
-        command.add("--username="+ engine.getCONFIG().get("login"));
+        command.add("--username="+ engine.getCONFIG().getCONFIG().get("login"));
         command.add("--version=1.16.5");
         command.add("--gameDir=" + assetsPath);
         command.add("--assetsDir=" + assetsPath);
         command.add("--accessToken=YourAccessToken");
         command.add("--userProperties={}");
 
-        if(engine.getCONFIG().get("fullScreen").equals(true)){
+        if(engine.getCONFIG().getCONFIG().get("fullScreen").equals(true)){
             command.add("--fullscreen");
             command.add("true");
         }

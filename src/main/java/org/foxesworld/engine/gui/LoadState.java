@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+@Deprecated
 public class LoadState extends JPanel {
     private JPanel rootPanel;
     private Timer timer;

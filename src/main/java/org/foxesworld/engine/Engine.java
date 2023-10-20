@@ -13,7 +13,7 @@ import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.LoadState;
 import org.foxesworld.engine.gui.components.SystemComponents;
-import org.foxesworld.engine.gui.components.frame.Frame;
+import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
@@ -33,46 +33,45 @@ import java.util.*;
 import java.util.List;
 
 public class Engine extends JFrame implements ActionListener {
-    protected final APP app;
-    private EngineData engineData;
+    protected final APP APP;
+    private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
+    private final  LanguageProvider LANG;
+    private final FontUtils FONTUTILS;
+    private final Config CONFIG;
+    private final CryptUtils CRYPTO;
+    private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
+    @Deprecated
     private LoadState loadState;
-    private CryptUtils cryptUtils;
-    private Sound sound;
     private boolean authorised = false;
-    private String LOCALE;
-    private LanguageProvider LANG;
-    private Map<String, Object> CONFIG;
     private Auth auth;
-
     private User user;
-    private Config config;
+    private EngineData engineData;
     private HTTPrequest GETrequest,POSTrequest;
-    private FontUtils fontUtils;
     private SystemComponents systemComponents;
     private ActionHandler actionHandler;
-    private Map<String, Map<String, StyleProvider.StyleAttributes>> elementStyles = new HashMap<>();
-    private final Frame frame;
     private DownloadUtils download;
-    private String[] configFiles = new String[]{"config"};
 
-    public Engine(APP app) {
-        this.app = app;
+    /*
+    * TODO
+    *  LOMBOK
+    * */
+    public Engine(APP APP) {
+        this.APP = APP;
         this.engineData = new EngineData();
-        this.initEngineValues(getApp().getEngineVars());
-        this.config = new Config(this);
-        this.CONFIG = config.getCONFIG();
-        this.LOCALE = String.valueOf(CONFIG.get("Lang"));
-        this.LANG = new LanguageProvider(this, "/assets/lang/locale.json");
-        this.fontUtils = new FontUtils(this);
-        this.sound = new Sound(this);
-        Configurator.setLevel(LOGGER.getName(), Level.valueOf((String) CONFIG.get("LogLevel")));
+        this.initEngineValues(getAPP().getEngineVars());
+        this.CONFIG = new Config(this);
+        this.getAPP().setLOCALE(String.valueOf(CONFIG.getCONFIG().get("Lang")));
+        this.LANG = new LanguageProvider(this.getAPP(), "/assets/lang/locale.json");
+        this.FONTUTILS = new FontUtils(this);
+        this.SOUND = new Sound(this);
+        Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getCONFIG().get("LogLevel")));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
-        this.frame = new Frame(this);
-        this.cryptUtils = new CryptUtils(this);
+        this.frameConstructor = new FrameConstructor(this);
+        this.CRYPTO = new CryptUtils(this);
         initialize();
     }
 
@@ -82,7 +81,7 @@ public class Engine extends JFrame implements ActionListener {
 
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            engineData = new Gson().fromJson(reader, EngineData.class);
+            setEngineData(new Gson().fromJson(reader, EngineData.class));
         }
     }
 
@@ -91,17 +90,17 @@ public class Engine extends JFrame implements ActionListener {
     *   In process
     * */
     private void initialize() {
-        this.auth = new Auth(this);
-        styleProvider = new StyleProvider(this);
-        this.elementStyles = styleProvider.getElementStyles();
+        setAuth(new Auth(this));
+        setStyleProvider(new StyleProvider(this));
+        //this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
-        this.loadMainPanel(this.app.getMainFrame());
+        this.loadMainPanel(this.APP.getMainFrame());
         user = new User(this.auth);
         this.loadState = new LoadState(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-        sound.playSound("intro.ogg");
+        SOUND.playSound("intro.ogg");
     }
 
     public void displayPanel(String displayString) {
@@ -164,7 +163,8 @@ public class Engine extends JFrame implements ActionListener {
     /*
     * TODO
     *  We should specify which form to perform to avoid setting values of unneeded components
-    *  VERY IMPORTANT */
+    *  VERY IMPORTANT
+    *  May initialValue help us */
     private void setComponentValues(Component component){
         if(component instanceof  JLabel){
             String text = ((JLabel) component).getText();
@@ -172,12 +172,12 @@ public class Engine extends JFrame implements ActionListener {
         } else {
             if(component instanceof  JCheckBox) {
                 if(component.isEnabled()){
-                    ((JCheckBox) component).setSelected((Boolean) CONFIG.get(component.getName()));
+                    ((JCheckBox) component).setSelected((Boolean) CONFIG.getCONFIG().get(component.getName()));
                 }
             } else {
                 if(component instanceof  JTextField) {
-                    if(CONFIG.get(component.getName()) != null)
-                    ((JTextField) component).setText(String.valueOf(CONFIG.get(component.getName())));
+                    if(CONFIG.getCONFIG().get(component.getName()) != null)
+                    ((JTextField) component).setText(String.valueOf(CONFIG.getCONFIG().get(component.getName())));
                 }
             }
         }
@@ -187,92 +187,64 @@ public class Engine extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
     }
-
-    public Map<String, Map<String, StyleProvider.StyleAttributes>> getElementStyles() {
-        return elementStyles;
+    public FrameConstructor getFrame() {
+        return this.frameConstructor;
     }
-
-    public Frame getFrame() {
-        return this.frame;
+    public APP getAPP() {
+        return this.APP;
     }
-
-    public APP getApp() {
-        return this.app;
-    }
-
     public SystemComponents getSystemComponents() {
         return systemComponents;
     }
-
     public DownloadUtils getDownload() {
         return download;
     }
-
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;
     }
-
     public HTTPrequest getGETrequest() {
         return GETrequest;
     }
-
     public HTTPrequest getPOSTrequest() {
         return POSTrequest;
     }
-
     public Logger getLOGGER() {
         return LOGGER;
     }
-
     public LanguageProvider getLANG() {
         return LANG;
     }
-
-    public Map<String, Object> getCONFIG() {
+    public FontUtils getFONTUTILS() {
+        return FONTUTILS;
+    }
+    public Config getCONFIG() {
         return CONFIG;
     }
-
-    public String getLOCALE() {
-        return LOCALE;
-    }
-
-    public FontUtils getFontUtils() {
-        return fontUtils;
-    }
-
-    public String[] getConfigFiles() {
-        return configFiles;
-    }
-
-    public Config getConfig() {
-        return config;
-    }
-
     public Auth getAuth() {
         return auth;
     }
-
     public boolean isAuthorised() {
         return authorised;
     }
-
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
-
     public StyleProvider getStyleProvider() {
         return styleProvider;
     }
-
-    public Sound getSound() {
-        return sound;
+    public Sound getSOUND() {
+        return SOUND;
     }
-
-    public LoadState getLoadingState() {
-        return loadState;
-    }
-
     public EngineData getEngineData() {
         return engineData;
+    }
+    public void setAuth(Auth auth) {
+        this.auth = auth;
+    }
+    public void setStyleProvider(StyleProvider styleProvider) {
+        this.styleProvider = styleProvider;
+    }
+    public void setEngineData(EngineData engineData) {
+        this.engineData = engineData;
     }
 }

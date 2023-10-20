@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class Frame {
+public class FrameConstructor {
     private Engine engine;
     private Panel panel;
     private Dimension screenSize;
@@ -21,8 +21,8 @@ public class Frame {
     private final JFrame frame;
     private final LanguageProvider LANG;
 
-    public Frame(Engine engine) {
-        engine.getLOGGER().info("Frame initialization");
+    public FrameConstructor(Engine engine) {
+        engine.getLOGGER().info("FrameConstructor initialization");
         this.engine = engine;
         this.frame = new JFrame();
         this.LANG = engine.getLANG();
@@ -38,7 +38,7 @@ public class Frame {
     }
 
     public void buildFrame(FrameAttributes frameAttributes) {
-        engine.getLOGGER().info("Building Frame...");
+        engine.getLOGGER().info("Building FrameConstructor...");
 
         frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.appIcon));
         frame.setTitle(LANG.getString(frameAttributes.appTitle));

@@ -2,7 +2,7 @@ package org.foxesworld.engine.gui.components.panel;
 
 import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.attributes.PanelOptions;
-import org.foxesworld.engine.gui.components.frame.Frame;
+import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.utils.ActionListener;
 import org.foxesworld.engine.utils.ImageUtils;
 
@@ -15,9 +15,9 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class Panel {
 
-    private final Frame frame;
-    public Panel(Frame frame) {
-        this.frame = frame;
+    private final FrameConstructor frameConstructor;
+    public Panel(FrameConstructor frameConstructor) {
+        this.frameConstructor = frameConstructor;
     }
 
     public JPanel setRootPanel(FrameAttributes frameAttributes) {
@@ -40,7 +40,7 @@ public class Panel {
         g.drawImage(background, 0, 0, null);
 
         g.setColor(hexToColor(frameAttributes.backgroundBlur));
-        g.fillRect(0, 0, this.frame.getScreenSize().width, this.frame.getScreenSize().height);
+        g.fillRect(0, 0, this.frameConstructor.getScreenSize().width, this.frameConstructor.getScreenSize().height);
     }
 
     public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
@@ -56,10 +56,10 @@ public class Panel {
         if(panelOptions.listener != null) {
             ActionListener actionListener = new ActionListener();
             switch (panelOptions.listener){
-                case "dragger" -> actionListener.addDragListener(groupPanel, frame.getFrame());
+                case "dragger" -> actionListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
         }
-        //frame.getAppFrame().displayPanel(groupName, panelOptions.display);
+        //frameConstructor.getAppFrame().displayPanel(groupName, panelOptions.display);
 
         String[] bounds = panelOptions.bounds.split(",");
         int posX = Integer.parseInt(bounds[0]);

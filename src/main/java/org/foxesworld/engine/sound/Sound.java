@@ -21,7 +21,7 @@ public class Sound {
     }
 
     public void playSound(String path){
-        if((boolean) engine.getCONFIG().get("enableSound") == true) {
+        if((boolean) engine.getCONFIG().getCONFIG().get("enableSound") == true) {
             String fullPath = baseDir + path;
             try {
                 InputStream inputStream = Sound.class.getClassLoader().getResourceAsStream(fullPath);

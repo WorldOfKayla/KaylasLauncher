@@ -22,14 +22,14 @@ public class Config extends ConfigAbstract {
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         cfgProvider.setDefaultConfFilesDir("config/");
-        addCfgFiles(engine.getConfigFiles());
+        addCfgFiles(engine.getAPP().getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
     }
 
     public void addToConfig(Map<String, String> inputData, List values) {
         for (Map.Entry<String, String> configEntry : inputData.entrySet()) {
             if (values.contains(configEntry.getKey())) {
-                this.engine.getCONFIG().put(configEntry.getKey(), configEntry.getValue());
+                this.getCONFIG().put(configEntry.getKey(), configEntry.getValue());
             }
         }
     }

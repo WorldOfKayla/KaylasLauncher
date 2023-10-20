@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.button;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -17,10 +17,10 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public BufferedImage rolloverTX;
 	public BufferedImage pressedTX;
 	public BufferedImage lockedTX;
-	private Components components;
+	private ComponentFactory componentFactory;
 
-	public Button(Components components, String text) {
-		this.components = components;
+	public Button(ComponentFactory componentFactory, String text) {
+		this.componentFactory = componentFactory;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setText(text);
@@ -32,9 +32,9 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
-	public Button(Components components, ImageIcon icon) {
+	public Button(ComponentFactory componentFactory, ImageIcon icon) {
 		super(icon);
-		this.components = components;
+		this.componentFactory = componentFactory;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setText("");
@@ -81,7 +81,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		entered = true;
-		components.engine.getSound().playSound("button/buttonHover.ogg");
+		componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg");
 		repaint();
 	}
 
@@ -93,7 +93,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			components.engine.getSound().playSound("button/buttonClick.ogg");
+			componentFactory.engine.getSOUND().playSound("button/buttonClick.ogg");
 			pressed = true;
 			repaint();
 		}

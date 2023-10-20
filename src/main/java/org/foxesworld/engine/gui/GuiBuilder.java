@@ -5,8 +5,8 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.attributes.ComponentAttributes;
 import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.attributes.OptionGroups;
-import org.foxesworld.engine.gui.components.Components;
-import org.foxesworld.engine.gui.components.frame.Frame;
+import org.foxesworld.engine.gui.components.ComponentFactory;
+import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,13 +23,13 @@ public class GuiBuilder {
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
-    private final Frame frame;
-    private final Components components;
+    private final FrameConstructor frameConstructor;
+    private final ComponentFactory componentFactory;
 
     public GuiBuilder(Engine engine) {
         engine.getLOGGER().debug("=== GUI BUILDER ===");
-        this.frame = engine.getFrame();
-        this.components = new Components(engine);
+        this.frameConstructor = engine.getFrame();
+        this.componentFactory = new ComponentFactory(engine);
     }
 
     /*
@@ -40,7 +40,7 @@ public class GuiBuilder {
         Gson gson = new Gson();
         FrameAttributes frameAttributes;
         if (inputStream) {
-            InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(Frame.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
+            InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameConstructor.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
             frameAttributes = gson.fromJson(reader, FrameAttributes.class);
         } else {
             try {
@@ -77,15 +77,15 @@ public class GuiBuilder {
     }
 
     /*
-     * Method for building components based on a JSON structure
+     * Method for building componentFactory based on a JSON structure
      */
     private void buildComponents(Map<String, OptionGroups> groups, JPanel parentPanel) {
         if (groups != null) {
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                this.frame.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
+                this.frameConstructor.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
-                JPanel thisPanel = frame.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
+                JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
@@ -98,12 +98,12 @@ public class GuiBuilder {
     }
 
     /*
-     * Method for building components based on a JSON structure
+     * Method for building componentFactory based on a JSON structure
      */
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
         for (ComponentAttributes componentAttributes : componentList) {
             if (componentAttributes.componentType != null) {
-                JComponent component = this.components.createComponent(componentAttributes);
+                JComponent component = this.componentFactory.createComponent(componentAttributes);
                 parentPanel.add(component);
                 this.addComponentToMap(parentGroupName, component);
             } else if (componentAttributes.groups != null) {
@@ -127,7 +127,7 @@ public class GuiBuilder {
     }
 
     /*
-     * Getting a list of components by group name
+     * Getting a list of componentFactory by group name
      */
     public HashMap<String, List<Component>> getComponentsMap() {
         return componentsMap;

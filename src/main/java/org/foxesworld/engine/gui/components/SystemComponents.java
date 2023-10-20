@@ -3,6 +3,7 @@ package org.foxesworld.engine.gui.components;
 import java.awt.*;
 import java.util.HashMap;
 
+@Deprecated
 public class SystemComponents {
 
     private HashMap<String, Component> componentsMap = new HashMap<>();

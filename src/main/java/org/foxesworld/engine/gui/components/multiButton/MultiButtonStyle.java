@@ -1,7 +1,7 @@
 package org.foxesworld.engine.gui.components.multiButton;
 
 import org.foxesworld.engine.gui.attributes.ComponentAttributes;
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
@@ -11,10 +11,10 @@ public class MultiButtonStyle {
     public int width;
     public int height;
 
-    public MultiButtonStyle(Components components, ComponentAttributes componentAttributes) {
-        this.width = components.style.width;
-        this.height = components.style.height;
-        this.splitImg = splitImage(componentAttributes.rowNum, componentAttributes.imgCount, ImageUtils.getLocalImage(components.style.texture));
+    public MultiButtonStyle(ComponentFactory componentFactory, ComponentAttributes componentAttributes) {
+        this.width = componentFactory.style.width;
+        this.height = componentFactory.style.height;
+        this.splitImg = splitImage(componentAttributes.rowNum, componentAttributes.imgCount, ImageUtils.getLocalImage(componentFactory.style.texture));
     }
 
     public void apply(MultiButton multiButton) {

@@ -1,7 +1,6 @@
 package org.foxesworld.engine.action;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.game.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,28 +34,28 @@ public class ActionHandler {
             case "test" -> {
                 //engine.getFrame().getRootPanel().removeAll();
                 //engine.getLoadingState().showLoadingState(60);
-                //System.out.println(engine.getConfig().getFullPath());
+                //System.out.println(engine.getCONFIG().getFullPath());
                 //engine.displayPanel("wait->true");
-                engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getConfig().getFullPath()+"/assets.zip");
+                engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
             }
 
             case "applySettings" -> {
                for(Component component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
                    if(component instanceof JCheckBox){
-                       this.engine.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                       this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                    } else {
                        if(component instanceof JTextField) {
-                           this.engine.getConfig().setConfigValue(component.getName(), ((JTextField) component).getText());
+                           this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
                        }
                    }
                }
-                this.engine.getConfig().writeCurrentConfig();
+                this.engine.getCONFIG().writeCurrentConfig();
             }
 
             case "logOut" -> {
                 System.out.println("LoggingOut...");
                 this.engine.setAuthorised(false);
-                this.engine.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+                this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
                 engine.displayPanel("loggedForm->false|newsForm->true|authForm->true");
             }
 
@@ -77,9 +76,8 @@ public class ActionHandler {
             }
 
             case "toGame" -> {
-                System.out.println("GG");
-                Game game = new Game(engine);
-                game.testLaunch();
+                //Game game = new Game(engine);
+                //game.testLaunch();
             }
 
             case "closeButton" -> System.exit(0);

@@ -17,7 +17,6 @@ public class Auth {
     private Engine engine;
 
     private List<ServerAttributes> userServersAttributes;
-
     private String[] userServersArray;
     private Map<String, String> authCredentials = new HashMap<>();
     private Map<String, Object> CONFIG;
@@ -27,15 +26,16 @@ public class Auth {
     public Auth(Engine engine) {
         this.engine = engine;
         this.POSTrequest = engine.getPOSTrequest();
-        this.CONFIG = engine.getCONFIG();
+        this.CONFIG = engine.getCONFIG().getCONFIG();
         //If we just initialised and are not sending a form
         if (CONFIG.get("login") != null && CONFIG.get("password") != null) {
             Map<String, String> authCredentials = new HashMap<>();
             authCredentials.put("login", (String) CONFIG.get("login"));
             authCredentials.put("password", (String) CONFIG.get("password"));
             this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.get("login"));
-            if(!this.authorize(authCredentials)){
-                engine.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+            //Writing login data if it's not present
+            if (!this.authorize(authCredentials)) {
+                engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
             }
         }
     }
@@ -69,21 +69,20 @@ public class Auth {
         return status;
     }
 
-    private void loadUserServers(){
+    private void loadUserServers() {
         int i = 0;
         ServerParser serverParser = new ServerParser(getEngine());
         userServersAttributes = serverParser.parseServers(getAuthCredentials("login"));
-        userServersArray = new  String[serverParser.getServersNum()];
-        for(ServerAttributes serverAttributes: userServersAttributes){
+        userServersArray = new String[serverParser.getServersNum()];
+        for (ServerAttributes serverAttributes : userServersAttributes) {
             userServersArray[i] = serverAttributes.serverName;
             i++;
         }
-        System.out.println(userServersArray);
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
-        engine.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
-        engine.getConfig().writeCurrentConfig();
+        engine.getCONFIG().addToConfig(authCredentials, Arrays.asList("login", "password"));
+        engine.getCONFIG().writeCurrentConfig();
     }
 
     public String getAuthCredentials(String key) {

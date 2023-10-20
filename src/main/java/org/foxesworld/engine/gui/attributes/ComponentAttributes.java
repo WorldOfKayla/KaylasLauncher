@@ -30,6 +30,9 @@ public class ComponentAttributes {
     @SerializedName("enabled")
     public boolean enabled;
 
+    @SerializedName("initialValue")
+    public String initialValue;
+
     @SerializedName("localeKey")
     public String localeKey;
 

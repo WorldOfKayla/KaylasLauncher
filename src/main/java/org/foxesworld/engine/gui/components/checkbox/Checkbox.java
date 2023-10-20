@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.checkbox;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -14,11 +14,11 @@ public class Checkbox extends JCheckBox {
     public BufferedImage rolloverTX;
     public BufferedImage selectedTX;
     public BufferedImage selectedRolloverTX;
-    private  Components components;
+    private ComponentFactory componentFactory;
 
-    public Checkbox(Components components, String string) {
+    public Checkbox(ComponentFactory componentFactory, String string) {
         super(string);
-        this.components = components;
+        this.componentFactory = componentFactory;
         this.setOpaque(false);
         this.setFocusable(false);
         this.listener(this);
@@ -40,9 +40,9 @@ public class Checkbox extends JCheckBox {
                 boolean isSel = Checkbox.isSelected();
                 if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
                     if (isSel) {
-                        components.engine.getSound().playSound("checkbox/checkboxOff2.ogg");
+                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff2.ogg");
                     } else {
-                        components.engine.getSound().playSound("checkbox/checkboxOn2.ogg");
+                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn2.ogg");
                     }
                 }
             }

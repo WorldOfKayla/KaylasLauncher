@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.progressBar;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import javax.swing.*;
 
@@ -11,10 +11,10 @@ public class ProgressBarStyle {
     private  String forgeground;
     private  String border;
 
-    public ProgressBarStyle(Components components) {
-        this.background = components.style.backgroundImage;
-        this.forgeground = components.style.background;
-        this.border = components.style.borderColor;
+    public ProgressBarStyle(ComponentFactory componentFactory) {
+        this.background = componentFactory.style.backgroundImage;
+        this.forgeground = componentFactory.style.background;
+        this.border = componentFactory.style.borderColor;
     }
 
     public void apply(JProgressBar progressBar) {

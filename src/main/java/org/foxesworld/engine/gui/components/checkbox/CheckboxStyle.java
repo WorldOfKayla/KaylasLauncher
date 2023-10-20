@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.checkbox;
 
-import org.foxesworld.engine.gui.components.Components;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import java.awt.Color;
@@ -14,20 +14,20 @@ public class CheckboxStyle {
     public float fontSize;
     public Color color;
     public BufferedImage texture;
-    private Components components;
+    private ComponentFactory componentFactory;
 
-    public CheckboxStyle(Components components) {
-        this.components = components;
-        this.fontName = components.style.font;
-        this.fontSize = components.style.fontSize;
-        this.color = hexToColor(components.style.color);
-        this.texture = ImageUtils.getLocalImage(components.style.texture);
+    public CheckboxStyle(ComponentFactory componentFactory) {
+        this.componentFactory = componentFactory;
+        this.fontName = componentFactory.style.font;
+        this.fontSize = componentFactory.style.fontSize;
+        this.color = hexToColor(componentFactory.style.color);
+        this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
     }
 
     public void apply(Checkbox checkbox) {
         checkbox.setVisible(true);
         checkbox.setForeground(this.color);
-        checkbox.setFont(components.engine.getFontUtils().getFont(this.fontName, this.fontSize));
+        checkbox.setFont(componentFactory.engine.getFONTUTILS().getFont(this.fontName, this.fontSize));
         int i = this.texture.getWidth() / 4;
         checkbox.defaultTX = this.texture.getSubimage(0, 0, i, i);
         checkbox.rolloverTX = this.texture.getSubimage(i, 0, i, i);

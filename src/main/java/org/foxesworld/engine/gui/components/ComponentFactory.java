@@ -26,7 +26,7 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Components {
+public class ComponentFactory {
 
     public Engine engine;
     private LanguageProvider LANG;
@@ -41,11 +41,17 @@ public class Components {
     private ScrollBoxStyle scrollBoxStyle;
     public StyleProvider.StyleAttributes style = null;
 
-    public Components(Engine engine){
+    public ComponentFactory(Engine engine){
         this.engine = engine;
         this.LANG = engine.getLANG();
     }
     public JComponent createComponent(ComponentAttributes componentAttributes) {
+        /*
+        * TODO
+        *  We should try supplying an InitialValue
+        *  That's the only way we may use Component factory for initialising a couple of
+        *  components of a type
+        *  */
 
         if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
             if(componentStyles.get(componentAttributes.componentType) == null){
@@ -76,7 +82,7 @@ public class Components {
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
-                label.setFont(this.engine.getFontUtils().getFont(style.font, componentAttributes.fontSize));
+                label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.fontSize));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
                 label.setBounds(xPos, yPos, width, height);
@@ -110,7 +116,7 @@ public class Components {
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.componentId);
                 passfield.setBounds(xPos, yPos, style.width, style.height);
-                passfield.setFont(this.engine.getFontUtils().getFont(style.font, style.fontSize));
+                passfield.setFont(this.engine.getFONTUTILS().getFont(style.font, style.fontSize));
                 passfield.setActionCommand(componentAttributes.componentId);
                 return passfield;
             }
@@ -150,8 +156,20 @@ public class Components {
             }
 
             case "scrollBox" -> {
+                /*
+                * TODO
+                *  We should never initialize a* single component in ComponentFactory, never...
+                *  Never...
+                *  A temporary solution...
+                 */
+                String scrollBoxArr[] = {};
                 scrollBoxStyle = new ScrollBoxStyle(this);
-                ScrollBox scrollBox = new ScrollBox(this, engine.getAuth().getUserServersArray(), yPos);
+                switch (componentAttributes.initialValue) {
+                    case"userServers" -> {
+                        scrollBoxArr  = engine.getAuth().getUserServersArray();
+                    }
+                }
+                ScrollBox scrollBox = new ScrollBox(this, scrollBoxArr, yPos);
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
                 scrollBox.setName(componentAttributes.componentId);

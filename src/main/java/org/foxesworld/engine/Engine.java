@@ -7,7 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.APP;
 import org.foxesworld.engine.action.ActionHandler;
-import org.foxesworld.engine.action.Auth;
+import org.foxesworld.engine.action.Auth.Auth;
+import org.foxesworld.engine.action.user.User;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.LoadState;
@@ -33,7 +34,6 @@ import java.util.List;
 
 public class Engine extends JFrame implements ActionListener {
     protected final APP app;
-
     private EngineData engineData;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
@@ -46,6 +46,8 @@ public class Engine extends JFrame implements ActionListener {
     private LanguageProvider LANG;
     private Map<String, Object> CONFIG;
     private Auth auth;
+
+    private User user;
     private Config config;
     private HTTPrequest GETrequest,POSTrequest;
     private FontUtils fontUtils;
@@ -60,7 +62,6 @@ public class Engine extends JFrame implements ActionListener {
         this.app = app;
         this.engineData = new EngineData();
         this.initEngineValues(getApp().getEngineVars());
-
         this.config = new Config(this);
         this.CONFIG = config.getCONFIG();
         this.LOCALE = String.valueOf(CONFIG.get("Lang"));
@@ -90,13 +91,14 @@ public class Engine extends JFrame implements ActionListener {
     *   In process
     * */
     private void initialize() {
+        this.auth = new Auth(this);
         styleProvider = new StyleProvider(this);
         this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
         this.loadMainPanel(this.app.getMainFrame());
+        user = new User(this.auth);
         this.loadState = new LoadState(this);
-        this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
         sound.playSound("intro.ogg");

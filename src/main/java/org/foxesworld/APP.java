@@ -13,6 +13,7 @@ public class APP {
     private static org.foxesworld.APP APP;
     public static void main(String[] args) {
         APP = new APP();
+        System.setProperty("file.encoding", "UTF-8");
         SwingUtilities.invokeLater(() -> new Engine(APP));
     }
 

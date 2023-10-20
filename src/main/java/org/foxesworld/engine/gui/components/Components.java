@@ -131,7 +131,7 @@ public class Components {
                     button = new Button(this, icon);
                 }
                 buttonStyle.apply(button);
-                button.setName(componentAttributes.localeKey);
+                button.setName(componentAttributes.componentId);
                 button.setActionCommand(componentAttributes.componentId);
                 button.setBounds(xPos, yPos, width, height);
                 button.addActionListener(engine);
@@ -151,10 +151,10 @@ public class Components {
 
             case "scrollBox" -> {
                 scrollBoxStyle = new ScrollBoxStyle(this);
-                ScrollBox scrollBox = new ScrollBox(this, new String[]{"Classic", "Underground", "HardTech"}, yPos);
+                ScrollBox scrollBox = new ScrollBox(this, new String[]{""}, yPos);
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
-                scrollBox.setName(componentAttributes.localeKey);
+                scrollBox.setName(componentAttributes.componentId);
                 return  scrollBox;
             }
 

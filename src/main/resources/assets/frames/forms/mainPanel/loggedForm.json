@@ -26,7 +26,7 @@
         {
           "componentType": "scrollBox",
           "componentStyle": "selectable",
-          "componentId": "scrolling",
+          "componentId": "serverBox",
           "localeKey": "settings.settingsButt",
           "bounds": "40,230,245,34"
         },

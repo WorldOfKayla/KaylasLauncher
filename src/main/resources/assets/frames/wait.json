@@ -11,6 +11,7 @@
         {
           "componentType": "spriteImage",
           "imageIcon": "assets/ui/sprites/wait.png",
+          "componentId": "waitSprite",
           "iconWidth": 32,
           "iconHeight": 32,
           "totalFrames": 11,

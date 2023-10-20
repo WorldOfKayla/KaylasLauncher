@@ -13,7 +13,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     private Components components;
 
     private static final long serialVersionUID = 1L;
-    public final String[] elements;
+    public String[] values;
     public static int initialy = 0;
     private static boolean entered = false;
     private static boolean opened = false;
@@ -28,10 +28,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public BufferedImage panelTX;
     public BufferedImage point;
 
-    public ScrollBox(Components components, String[] elements, int y) {
+    public ScrollBox(Components components, String[] values, int y) {
         this.components = components;
-        components.engine.getLOGGER().info("Updating combobox " + elements.toString());
-        this.elements = elements;
+        components.engine.getLOGGER().info("Updating combobox " + values.toString());
+        this.values = values;
         initialy = y;
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -55,7 +55,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         g.setColor(Color.WHITE);
         if (opened) {
             g.drawImage(ImageUtils.genButton(w, this.openedTX.getHeight(), this.openedTX), 0, this.getHeight() - this.openedTX.getHeight(), w, this.openedTX.getHeight(), null);
-            int righth = this.openedTX.getHeight() * (this.elements.length + 1);
+            int righth = this.openedTX.getHeight() * (this.values.length + 1);
             int righty = initialy + this.openedTX.getHeight() - righth;
             if (this.getY() != righty || this.getHeight() != righth) {
                 this.setLocation(this.getX(), righty);
@@ -63,17 +63,17 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 y = this.getHeight();
                 return;
             }
-            for (int i = 0; i < this.elements.length; ++i) {
+            for (int i = 0; i < this.values.length; ++i) {
                 if (hover != i) {
                     g.drawImage(this.panelTX, 0, this.panelTX.getHeight() * i, this);
                 } else {
                     g.drawImage(this.selectedTX, 0, this.panelTX.getHeight() * i, this);
                 }
-                g.drawString(this.elements[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2);
+                g.drawString(this.values[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2);
                 if (i != selected) continue;
                 g.drawImage(this.point, 176, this.panelTX.getHeight() * i + 3, this);
             }
-            g.drawString(this.elements[selected], 5, this.selectedTX.getHeight() * (this.elements.length + 1) - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 5, this.selectedTX.getHeight() * (this.values.length + 1) - g.getFontMetrics().getHeight() / 2);
         } else if (entered) {
             int righth = this.openedTX.getHeight();
             if (this.getY() != initialy || this.getHeight() != righth) {
@@ -82,7 +82,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 return;
             }
             g.drawImage(ImageUtils.genButton(w, this.rolloverTX.getHeight(), this.rolloverTX), 0, 0, w, this.rolloverTX.getHeight(), null);
-            g.drawString(this.elements[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
         } else {
             int righth = this.openedTX.getHeight();
             if (this.getY() != initialy || this.getHeight() != righth) {
@@ -91,7 +91,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 return;
             }
             g.drawImage(ImageUtils.genButton(w, this.defaultTX.getHeight(), this.defaultTX), 0, 0, w, this.defaultTX.getHeight(), null);
-            g.drawString(this.elements[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
         }
         g.dispose();
     }
@@ -103,7 +103,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         }
         this.grabFocus();
         this.requestFocus();
-        if (opened && y / this.openedTX.getHeight() < this.elements.length) {
+        if (opened && y / this.openedTX.getHeight() < this.values.length) {
             selected = y / this.openedTX.getHeight();
             entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
@@ -149,7 +149,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public void mouseMoved(MouseEvent e) {
         y = e.getY();
         x = e.getX();
-        if (opened && y / this.openedTX.getHeight() < this.elements.length) {
+        if (opened && y / this.openedTX.getHeight() < this.values.length) {
             if (hover != y / this.openedTX.getHeight()) {
                 this.repaint();
             }
@@ -169,21 +169,25 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public String getSelected() {
         try {
-            return this.elements[selected];
+            return this.values[selected];
         }
         catch (Exception e) {
             e.printStackTrace();
-            return this.elements[0];
+            return this.values[0];
         }
     }
 
     public boolean setSelectedIndex(int i) {
-        if (this.elements.length <= i) {
+        if (this.values.length <= i) {
             return false;
         }
         selected = i;
         this.repaint();
         return true;
+    }
+
+    public void setValues(String[] values){
+        this.values = values;
     }
 
     public static boolean isOpened() {

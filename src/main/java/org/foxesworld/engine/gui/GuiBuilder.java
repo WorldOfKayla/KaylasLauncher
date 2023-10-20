@@ -54,14 +54,26 @@ public class GuiBuilder {
         buildComponents(frameAttributes.groups, parent);
     }
 
-    public List<Component> getAllChildComponents(String parentPanel){
+    public List<Component> getAllChildComponents(String parentPanel) {
         List<Component> components = new ArrayList<>();
-        for(String thisChild: childsNparents.get(parentPanel)){
-            for(Component component: getComponentsMap().get(thisChild)){
+        for (String thisChild : childsNparents.get(parentPanel)) {
+            for (Component component : getComponentsMap().get(thisChild)) {
                 components.add(component);
             }
         }
         return components;
+    }
+
+    public Component getComponentById(String id) {
+        for (Map.Entry<String, List<Component>> panelsMap : this.getComponentsMap().entrySet()) {
+            String panelName = panelsMap.getKey();
+            for (Component component : panelsMap.getValue()) {
+                if (component.getName().equals(id)) {
+                    return component;
+                }
+            }
+        }
+        return null;
     }
 
     /*
@@ -128,5 +140,7 @@ public class GuiBuilder {
         return panelsMap;
     }
 
-    public HashMap<String, List<String>> getChildsNparents() {return childsNparents;}
+    public HashMap<String, List<String>> getChildsNparents() {
+        return childsNparents;
+    }
 }

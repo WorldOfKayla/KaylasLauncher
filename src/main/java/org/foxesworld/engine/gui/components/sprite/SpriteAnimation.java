@@ -1,13 +1,11 @@
 package org.foxesworld.engine.gui.components.sprite;
 
-import org.foxesworld.engine.gui.attributes.ComponentAttributes;
+import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class SpriteAnimation extends JComponent {
 

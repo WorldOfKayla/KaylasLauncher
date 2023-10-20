@@ -2,7 +2,6 @@ package org.foxesworld.engine.gui.components.frame;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.components.panel.Panel;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;

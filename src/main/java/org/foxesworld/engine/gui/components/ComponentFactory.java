@@ -1,7 +1,6 @@
 package org.foxesworld.engine.gui.components;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.attributes.ComponentAttributes;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.button.ButtonStyle;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;

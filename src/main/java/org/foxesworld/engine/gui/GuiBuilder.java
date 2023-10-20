@@ -2,9 +2,9 @@ package org.foxesworld.engine.gui;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.attributes.ComponentAttributes;
-import org.foxesworld.engine.gui.attributes.FrameAttributes;
-import org.foxesworld.engine.gui.attributes.OptionGroups;
+import org.foxesworld.engine.gui.components.ComponentAttributes;
+import org.foxesworld.engine.gui.components.frame.FrameAttributes;
+import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 

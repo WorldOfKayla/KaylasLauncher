@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.multiButton;
 
-import org.foxesworld.engine.gui.attributes.ComponentAttributes;
+import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 

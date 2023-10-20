@@ -1,4 +1,4 @@
-package org.foxesworld.engine.gui.attributes;
+package org.foxesworld.engine.gui.components.frame;
 
 import com.google.gson.annotations.SerializedName;
 

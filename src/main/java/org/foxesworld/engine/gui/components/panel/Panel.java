@@ -1,7 +1,6 @@
 package org.foxesworld.engine.gui.components.panel;
 
-import org.foxesworld.engine.gui.attributes.FrameAttributes;
-import org.foxesworld.engine.gui.attributes.PanelOptions;
+import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.utils.ActionListener;
 import org.foxesworld.engine.utils.ImageUtils;

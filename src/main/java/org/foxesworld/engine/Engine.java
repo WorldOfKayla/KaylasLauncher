@@ -31,8 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
-public class AppFrame extends JFrame implements ActionListener {
-
+public class Engine extends JFrame implements ActionListener {
     protected final APP app;
 
     private EngineData engineData;
@@ -57,10 +56,10 @@ public class AppFrame extends JFrame implements ActionListener {
     private DownloadUtils download;
     private String[] configFiles = new String[]{"config"};
 
-    public AppFrame(APP app) {
+    public Engine(APP app) {
         this.app = app;
         this.engineData = new EngineData();
-        this.initEngineValues("engine.json");
+        this.initEngineValues(getApp().getEngineVars());
 
         this.config = new Config(this);
         this.CONFIG = config.getCONFIG();
@@ -78,8 +77,7 @@ public class AppFrame extends JFrame implements ActionListener {
 
     @Deprecated
     private void initEngineValues(String propertyPath){
-        InputStream inputStream = AppFrame.class.getClassLoader().getResourceAsStream(propertyPath);
-        System.out.println(inputStream);
+        InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
 
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);

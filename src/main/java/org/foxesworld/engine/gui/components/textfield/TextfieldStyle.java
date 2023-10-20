@@ -39,6 +39,6 @@ public class TextfieldStyle {
 		text.setBackground(backgroundColor);
 		text.setForeground(foregroundColor);
 		text.setBorder(null);
-		text.setFont(components.appFrame.getFontUtils().getFont(font, fontSize));
+		text.setFont(components.engine.getFontUtils().getFont(font, fontSize));
 	}
 }

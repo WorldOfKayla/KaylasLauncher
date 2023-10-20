@@ -1,6 +1,7 @@
 package org.foxesworld.engine.gui.components.game;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -10,15 +11,15 @@ import java.util.List;
 
 public class Game {
 
-    private final AppFrame appFrame;
+    private final Engine engine;
     private final LibraryScanner libraryScanner;
 
     private final String absoluteHomePath;
 
-    public Game(AppFrame appFrame) {
-        this.appFrame = appFrame;
-        this.libraryScanner = new LibraryScanner(appFrame);
-        this.absoluteHomePath = appFrame.getConfig().getFullPath();
+    public Game(Engine engine) {
+        this.engine = engine;
+        this.libraryScanner = new LibraryScanner(engine);
+        this.absoluteHomePath = engine.getConfig().getFullPath();
     }
 
     public void testLaunch() {
@@ -45,20 +46,20 @@ public class Game {
         // Forming launch string
         String classpath = String.join(File.pathSeparator, libraryPaths);
         classpath += File.pathSeparator + minecraftJarPath;
-        command.add("-Xmx" + appFrame.getCONFIG().get("ramAmount") + "m");
+        command.add("-Xmx" + engine.getCONFIG().get("ramAmount") + "m");
         command.add("-cp");
         command.add(classpath);
 
         // Minecraft params
         command.add("net.minecraft.client.main.Main");
-        command.add("--username="+appFrame.getCONFIG().get("login"));
+        command.add("--username="+ engine.getCONFIG().get("login"));
         command.add("--version=1.16.5");
         command.add("--gameDir=" + assetsPath);
         command.add("--assetsDir=" + assetsPath);
         command.add("--accessToken=YourAccessToken");
         command.add("--userProperties={}");
 
-        if(appFrame.getCONFIG().get("fullScreen").equals(true)){
+        if(engine.getCONFIG().get("fullScreen").equals(true)){
             command.add("--fullscreen");
             command.add("true");
         }
@@ -85,10 +86,10 @@ public class Game {
 
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                this.appFrame.getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
+                this.engine.getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
-            this.appFrame.getLOGGER().error("Minecraft launch exception: " + e.getMessage());
+            this.engine.getLOGGER().error("Minecraft launch exception: " + e.getMessage());
         }
     }
 

@@ -27,7 +27,7 @@ public class ScrollBoxStyle {
 
     public void apply(ScrollBox scrollBox) {
         scrollBox.setForeground(this.color);
-        scrollBox.setFont(components.appFrame.getFontUtils().getFont(this.fontName, this.fontSize));
+        scrollBox.setFont(components.engine.getFontUtils().getFont(this.fontName, this.fontSize));
         int comboboxh = this.texture.getHeight() / 5;
         int comboboxw = this.texture.getWidth();
         scrollBox.defaultTX = this.texture.getSubimage(0, 0, comboboxw, comboboxh);

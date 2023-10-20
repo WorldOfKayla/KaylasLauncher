@@ -36,7 +36,7 @@ public class ButtonStyle {
 	public void apply(Button button) {
 		button.setVisible(visible);
 		button.setHorizontalAlignment(align == Align.LEFT ? SwingConstants.LEFT : align == Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);
-		button.setFont(components.appFrame.getFontUtils().getFont(font, fontSize));
+		button.setFont(components.engine.getFontUtils().getFont(font, fontSize));
 		button.setForeground(hexToColor(color));
 		int i = texture.getHeight() / 4;
 		button.defaultTX = texture.getSubimage(0, 0, texture.getWidth(), i);

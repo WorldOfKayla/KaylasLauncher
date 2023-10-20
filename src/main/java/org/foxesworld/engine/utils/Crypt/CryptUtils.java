@@ -1,6 +1,6 @@
 package org.foxesworld.engine.utils.Crypt;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -13,11 +13,11 @@ import java.security.NoSuchAlgorithmException;
 public class CryptUtils {
 
     private CryptHelper cryptHelper;
-    private AppFrame appFrame;
+    private Engine engine;
 
-    public CryptUtils(AppFrame appFrame) {
+    public CryptUtils(Engine engine) {
         this.cryptHelper = new CryptHelper();
-        this.appFrame = appFrame;
+        this.engine = engine;
     }
 
     public String decrypt(String input, String key) {
@@ -28,7 +28,7 @@ public class CryptUtils {
             cipher.init(2, skey);
             output = cipher.doFinal(cryptHelper.getDecoder().decode(input));
         } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
-            this.appFrame.getLOGGER().debug("Key is not valid for: " + input);
+            this.engine.getLOGGER().debug("Key is not valid for: " + input);
         }
         return new String(output);
     }
@@ -42,7 +42,7 @@ public class CryptUtils {
             crypted = cipher.doFinal(input.getBytes());
         } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             e.printStackTrace();
-            this.appFrame.getLOGGER().debug("Key must be 16 symbols!", 0, true);
+            this.engine.getLOGGER().debug("Key must be 16 symbols!", 0, true);
         }
         return new String(cryptHelper.getEncoder().encode(crypted));
     }

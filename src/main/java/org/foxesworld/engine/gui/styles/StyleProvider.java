@@ -2,7 +2,7 @@ package org.foxesworld.engine.gui.styles;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -12,10 +12,10 @@ import java.util.Map;
 public class StyleProvider {
 
     private Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
-    private AppFrame appFrame;
+    private Engine engine;
 
-    public StyleProvider(AppFrame appFrame) {
-        this.appFrame = appFrame;
+    public StyleProvider(Engine engine) {
+        this.engine = engine;
     }
 
     public Map<String, StyleAttributes> loadStyle(String component) {
@@ -27,7 +27,7 @@ public class StyleProvider {
                     StyleProvider.class.getClassLoader().getResourceAsStream(stylePath),
                     StandardCharsets.UTF_8
             );
-            appFrame.getLOGGER().debug("Loading " + component + " style from " + stylePath);
+            engine.getLOGGER().debug("Loading " + component + " style from " + stylePath);
 
             JsonObject jsonRoot = gson.fromJson(reader, JsonObject.class);
             JsonObject stylesObject = jsonRoot.getAsJsonObject("styles");

@@ -1,6 +1,6 @@
 package org.foxesworld.engine.utils;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import javax.swing.*;
 import java.io.*;
@@ -16,12 +16,12 @@ public class DownloadUtils {
 
     private JLabel progressLabel;
     private JProgressBar progressBar;
-    private AppFrame appFrame;
+    private Engine engine;
 
-    public DownloadUtils(AppFrame appFrame) {
-        this.appFrame = appFrame;
-        this.progressBar = (JProgressBar) appFrame.getSystemComponents().getComponentsMap().get("progressBar");
-        this.progressLabel = (JLabel) appFrame.getSystemComponents().getComponentsMap().get("progressLabel");
+    public DownloadUtils(Engine engine) {
+        this.engine = engine;
+        this.progressBar = (JProgressBar) engine.getSystemComponents().getComponentsMap().get("progressBar");
+        this.progressLabel = (JLabel) engine.getSystemComponents().getComponentsMap().get("progressLabel");
     }
 
     public void download(String Durl, String PATH) {
@@ -32,9 +32,9 @@ public class DownloadUtils {
     }
 
     private void downloader(String Durl, String PATH) {
-        this.appFrame.displayPanel("loggedForm->false|newsForm->false|download->true");
+        this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
         try {
-            this.appFrame.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
+            this.engine.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +75,7 @@ public class DownloadUtils {
         }
 
         SwingUtilities.invokeLater(() -> {
-            this.appFrame.displayPanel("download->false");
+            this.engine.displayPanel("download->false");
         });
     }
 

@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -12,20 +12,20 @@ public class LoadState extends JPanel {
     private JPanel rootPanel;
     private Timer timer;
     private BufferedImage tmpImage;
-    private AppFrame appFrame;
+    private Engine engine;
     private  int tindex;
 
-    public LoadState(AppFrame appFrame) {
-        this.appFrame = appFrame;
-        this.rootPanel = appFrame.getFrame().getRootPanel();
+    public LoadState(Engine engine) {
+        this.engine = engine;
+        this.rootPanel = engine.getFrame().getRootPanel();
     }
 
     public void showLoadingState(int displayTimeMillis) {
-        JPanel loadingPanel = this.appFrame.getGuiBuilder().getPanelsMap().get("wait");
-        this.tmpImage = ImageUtils.screenComponent(appFrame.getFrame().getRootPanel());
+        JPanel loadingPanel = this.engine.getGuiBuilder().getPanelsMap().get("wait");
+        this.tmpImage = ImageUtils.screenComponent(engine.getFrame().getRootPanel());
         loadingPanel.setBounds(0, 0, rootPanel.getWidth(), rootPanel.getHeight());
 
-        //appFrame.getFrame().getRootPanel().setVisible(false);
+        //engine.getFrame().getRootPanel().setVisible(false);
         rootPanel.add(loadingPanel);
         rootPanel.revalidate();
         rootPanel.repaint();

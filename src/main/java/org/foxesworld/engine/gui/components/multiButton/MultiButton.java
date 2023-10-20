@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.multiButton;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.Components;
 
 import javax.swing.*;
@@ -16,10 +16,10 @@ public class MultiButton extends JButton implements MouseListener, MouseMotionLi
     public List<BufferedImage> img = new ArrayList<>();
     private boolean entered = false;
     private boolean pressed = false;
-    private AppFrame appFrame;
+    private Engine engine;
 
     public MultiButton(Components components) {
-        this.appFrame = components.appFrame;
+        this.engine = components.engine;
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.setBorderPainted(false);
@@ -65,7 +65,7 @@ public class MultiButton extends JButton implements MouseListener, MouseMotionLi
     @Override
     public void mousePressed(MouseEvent e) {
         if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-            appFrame.getSound().playSound("button/buttonClose.ogg");
+            engine.getSound().playSound("button/buttonClose.ogg");
             pressed = true;
             repaint();
             revalidate();
@@ -82,7 +82,7 @@ public class MultiButton extends JButton implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        appFrame.getSound().playSound("button/buttonHover.ogg");
+        engine.getSound().playSound("button/buttonHover.ogg");
         this.entered = true;
     }
 

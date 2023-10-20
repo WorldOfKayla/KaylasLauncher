@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.game;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.List;
 
 public class LibraryScanner {
 
-    private AppFrame appFrame;
-    public LibraryScanner(AppFrame appFrame) {
-        this.appFrame = appFrame;
+    private Engine engine;
+    public LibraryScanner(Engine engine) {
+        this.engine = engine;
     }
     public List<String> findLibraryPaths(String librariesDirPath) {
         List<String> libraryPaths = new ArrayList<>();

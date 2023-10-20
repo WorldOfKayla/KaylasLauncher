@@ -1,6 +1,5 @@
 package org.foxesworld.engine.gui.components.button;
 
-import org.foxesworld.engine.AppFrame;
 import org.foxesworld.engine.gui.components.Components;
 
 import java.awt.*;
@@ -82,7 +81,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		entered = true;
-		components.appFrame.getSound().playSound("button/buttonHover.ogg");
+		components.engine.getSound().playSound("button/buttonHover.ogg");
 		repaint();
 	}
 
@@ -94,7 +93,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			components.appFrame.getSound().playSound("button/buttonClick.ogg");
+			components.engine.getSound().playSound("button/buttonClick.ogg");
 			pressed = true;
 			repaint();
 		}

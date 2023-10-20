@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.attributes.ComponentAttributes;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.button.ButtonStyle;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class Components {
 
-    public AppFrame appFrame;
+    public Engine engine;
     private LanguageProvider LANG;
     private Map<String, Map<String, StyleProvider.StyleAttributes>> componentStyles = new HashMap<>();
     private TextfieldStyle textfieldStyle;
@@ -41,15 +41,15 @@ public class Components {
     private ScrollBoxStyle scrollBoxStyle;
     public StyleProvider.StyleAttributes style = null;
 
-    public Components(AppFrame appFrame){
-        this.appFrame = appFrame;
-        this.LANG = appFrame.getLANG();
+    public Components(Engine engine){
+        this.engine = engine;
+        this.LANG = engine.getLANG();
     }
     public JComponent createComponent(ComponentAttributes componentAttributes) {
 
         if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
             if(componentStyles.get(componentAttributes.componentType) == null){
-                componentStyles.put(componentAttributes.componentType, appFrame.getStyleProvider().loadStyle(componentAttributes.componentType));
+                componentStyles.put(componentAttributes.componentType, engine.getStyleProvider().loadStyle(componentAttributes.componentType));
             }
             style = componentStyles.get(componentAttributes.componentType).get(componentAttributes.componentStyle);
         }
@@ -76,7 +76,7 @@ public class Components {
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
-                label.setFont(this.appFrame.getFontUtils().getFont(style.font, componentAttributes.fontSize));
+                label.setFont(this.engine.getFontUtils().getFont(style.font, componentAttributes.fontSize));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
                 label.setBounds(xPos, yPos, width, height);
@@ -100,7 +100,7 @@ public class Components {
                 textfield.setName(componentAttributes.componentId);
                 textfield.setBounds(xPos, yPos, textfieldStyle.width, textfieldStyle.height);
                 textfield.setActionCommand(componentAttributes.componentId);
-                textfield.addActionListener(appFrame);
+                textfield.addActionListener(engine);
                 return textfield;
             }
 
@@ -110,7 +110,7 @@ public class Components {
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.componentId);
                 passfield.setBounds(xPos, yPos, style.width, style.height);
-                passfield.setFont(this.appFrame.getFontUtils().getFont(style.font, style.fontSize));
+                passfield.setFont(this.engine.getFontUtils().getFont(style.font, style.fontSize));
                 passfield.setActionCommand(componentAttributes.componentId);
                 return passfield;
             }
@@ -134,7 +134,7 @@ public class Components {
                 button.setName(componentAttributes.localeKey);
                 button.setActionCommand(componentAttributes.componentId);
                 button.setBounds(xPos, yPos, width, height);
-                button.addActionListener(appFrame);
+                button.addActionListener(engine);
                 return button;
             }
 
@@ -145,7 +145,7 @@ public class Components {
                 multiButton.setName(componentAttributes.componentId);
                 multiButton.setActionCommand(componentAttributes.componentId);
                 multiButton.setBounds(xPos, yPos, style.width, style.height);
-                multiButton.addActionListener(appFrame);
+                multiButton.addActionListener(engine);
                 return multiButton;
             }
 

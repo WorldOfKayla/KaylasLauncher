@@ -1,7 +1,7 @@
 package org.foxesworld.engine.gui;
 
 import com.google.gson.Gson;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.attributes.ComponentAttributes;
 import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.attributes.OptionGroups;
@@ -22,15 +22,14 @@ public class GuiBuilder {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
-
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final Frame frame;
     private final Components components;
 
-    public GuiBuilder(AppFrame appFrame) {
-        appFrame.getLOGGER().debug("=== GUI BUILDER ===");
-        this.frame = appFrame.getFrame();
-        this.components = new Components(appFrame);
+    public GuiBuilder(Engine engine) {
+        engine.getLOGGER().debug("=== GUI BUILDER ===");
+        this.frame = engine.getFrame();
+        this.components = new Components(engine);
     }
 
     /*

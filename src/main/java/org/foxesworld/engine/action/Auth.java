@@ -2,7 +2,8 @@ package org.foxesworld.engine.action;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.action.server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
@@ -13,24 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Auth {
-
-    private AppFrame appFrame;
-
+    private Engine engine;
+    private ServerParser serverParser;
     private Map<String, Object> CONFIG;
     private HTTPrequest POSTrequest;
     private Map<String, String> inputData = new HashMap<>();
 
-    public Auth(AppFrame appFrame) {
-        this.appFrame = appFrame;
-        this.POSTrequest = appFrame.getPOSTrequest();
-        this.CONFIG = appFrame.getCONFIG();
+    public Auth(Engine engine) {
+        this.engine = engine;
+        this.POSTrequest = engine.getPOSTrequest();
+        this.CONFIG = engine.getCONFIG();
         if (CONFIG.get("login") != null && CONFIG.get("password") != null) {
-            this.appFrame.getLOGGER().debug("Authorising with existing login " + CONFIG.get("login"));
             Map<String, String> authCredentials = new HashMap<>();
             authCredentials.put("login", (String) CONFIG.get("login"));
             authCredentials.put("password", (String) CONFIG.get("password"));
+            this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.get("login"));
             if(!this.authorize(authCredentials)){
-                appFrame.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+                engine.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
             }
         }
     }
@@ -46,26 +46,23 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        AuthResponse response = new Gson().fromJson(this.POSTrequest.send(appFrame.getEngineData().bindUrl, authCredentials), AuthResponse.class);
-        boolean success = response.type.equals("success");
-        System.out.println(response.message);
-        if (success) {
-            appFrame.setAuthorised(success);
-            appFrame.displayPanel("authForm->false|loggedForm->true");
+        AuthResponse response = new Gson().fromJson(this.POSTrequest.send(authCredentials), AuthResponse.class);
+        boolean status = response.type.equals("success");
+
+        if (status) {
+            engine.setAuthorised(status);
+            engine.displayPanel("authForm->false|loggedForm->true");
+            engine.getLOGGER().info(CONFIG.get("login") + " authorised!");
+            serverParser = new ServerParser(engine);
 
             if(CONFIG.get("login") == null){
-                appFrame.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
-                appFrame.getConfig().writeCurrentConfig();
+                engine.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
+                engine.getConfig().writeCurrentConfig();
             }
-
         } else {
-
+            System.out.println("Screw you!");
         }
-        return success;
-    }
-
-    public void clearConfigData(){
-
+        return status;
     }
 
     private class AuthResponse {

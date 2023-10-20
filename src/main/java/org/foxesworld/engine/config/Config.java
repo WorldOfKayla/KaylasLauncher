@@ -2,7 +2,7 @@ package org.foxesworld.engine.config;
 
 import com.foxesworld.cfgProvider.cfgProvider;
 import com.google.gson.GsonBuilder;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,25 +12,24 @@ import java.util.List;
 import java.util.Map;
 
 public class Config extends ConfigAbstract {
-    private AppFrame appFrame;
+    private Engine engine;
     private Map<String, Object> CONFIG;
 
-    public Config(AppFrame appFrame) {
-        this.appFrame = appFrame;
+    public Config(Engine engine) {
+        this.engine = engine;
         setCfgExportDir("config/");
         setDebug(true);
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         cfgProvider.setDefaultConfFilesDir("config/");
-        addCfgFiles(appFrame.getConfigFiles());
+        addCfgFiles(engine.getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
-        System.out.println(this.getFullPath());
     }
 
     public void addToConfig(Map<String, String> inputData, List values) {
         for (Map.Entry<String, String> configEntry : inputData.entrySet()) {
             if (values.contains(configEntry.getKey())) {
-                this.appFrame.getCONFIG().put(configEntry.getKey(), configEntry.getValue());
+                this.engine.getCONFIG().put(configEntry.getKey(), configEntry.getValue());
             }
         }
     }
@@ -43,7 +42,7 @@ public class Config extends ConfigAbstract {
     }
 
     public void clearConfigData(List<String> dataToClear, boolean write) {
-        this.appFrame.getLOGGER().debug("Wiping "+dataToClear);
+        this.engine.getLOGGER().debug("Wiping "+dataToClear);
         for (String keyToWipe : dataToClear) {
             this.CONFIG.remove(keyToWipe);
         }
@@ -53,7 +52,7 @@ public class Config extends ConfigAbstract {
     }
 
     public void writeCurrentConfig() {
-        this.appFrame.getLOGGER().debug("Writing "+ configToJSON());
+        this.engine.getLOGGER().debug("Writing "+ configToJSON());
         try (FileWriter fileWriter = new FileWriter(this.getFullPath() + File.separator + "config/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
@@ -73,8 +72,8 @@ public class Config extends ConfigAbstract {
         return CONFIG;
     }
 
-    public AppFrame getAppFrame() {
-        return appFrame;
+    public Engine getAppFrame() {
+        return engine;
     }
 
     @Override

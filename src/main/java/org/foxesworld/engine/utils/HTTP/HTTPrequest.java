@@ -1,6 +1,6 @@
 package org.foxesworld.engine.utils.HTTP;
 
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -12,21 +12,21 @@ import java.util.Random;
 public class HTTPrequest {
 
     private String requestMethod;
-    private AppFrame appFrame;
+    private Engine engine;
 
-    public HTTPrequest(AppFrame appFrame, String requestMethod) {
-        this.appFrame = appFrame;
-        appFrame.getLOGGER().debug("HTTP " + requestMethod + " init");
+    public HTTPrequest(Engine engine, String requestMethod) {
+        this.engine = engine;
+        engine.getLOGGER().debug("HTTP " + requestMethod + " init");
         this.requestMethod = requestMethod;
     }
 
-    public String send(String URL, Map<String, String> parameters) {
+    public String send(Map<String, String> parameters) {
         HttpURLConnection httpURLConnection = null;
         try {
-            java.net.URL url = new URL(URL);
+            java.net.URL url = new URL(engine.getEngineData().bindUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
-            this.setRequestProperties(httpURLConnection, appFrame.getEngineData().requestProperties);
+            this.setRequestProperties(httpURLConnection, engine.getEngineData().requestProperties);
             httpURLConnection.setUseCaches(false);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
@@ -85,7 +85,7 @@ public class HTTPrequest {
                 value = value.replace("{$boundary}", this.getBoundary(3));
             }
             httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
-            appFrame.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
+            engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
         }
 
     }

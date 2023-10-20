@@ -27,7 +27,7 @@ public class CheckboxStyle {
     public void apply(Checkbox checkbox) {
         checkbox.setVisible(true);
         checkbox.setForeground(this.color);
-        checkbox.setFont(components.appFrame.getFontUtils().getFont(this.fontName, this.fontSize));
+        checkbox.setFont(components.engine.getFontUtils().getFont(this.fontName, this.fontSize));
         int i = this.texture.getWidth() / 4;
         checkbox.defaultTX = this.texture.getSubimage(0, 0, i, i);
         checkbox.rolloverTX = this.texture.getSubimage(i, 0, i, i);

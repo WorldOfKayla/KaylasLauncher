@@ -3,7 +3,7 @@ package org.foxesworld.engine.locale;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LanguageProvider {
-    private final AppFrame app;
+    private final Engine app;
     private final String currentLang;
     private final Map<String, Map<String, String>> localizationData = new HashMap<>();
 
-    public LanguageProvider(AppFrame app, String langFilePath) {
+    public LanguageProvider(Engine app, String langFilePath) {
         this.app = app;
         this.currentLang = app.getLOCALE();
         app.getLOGGER().info("Loading locale from " + langFilePath);

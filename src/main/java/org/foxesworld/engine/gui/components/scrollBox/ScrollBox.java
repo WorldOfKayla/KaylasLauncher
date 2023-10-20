@@ -30,7 +30,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public ScrollBox(Components components, String[] elements, int y) {
         this.components = components;
-        components.appFrame.getLOGGER().info("Updating combobox " + elements.toString());
+        components.engine.getLOGGER().info("Updating combobox " + elements.toString());
         this.elements = elements;
         initialy = y;
         this.addMouseListener(this);
@@ -42,7 +42,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             public void focusLost(FocusEvent e) {
                 opened = false;
                 hover = selected;
-                components.appFrame.getFrame().getFrame().repaint();
+                components.engine.getFrame().getFrame().repaint();
                 ScrollBox.this.repaint();
             }
         });
@@ -108,9 +108,9 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
         if (opened) {
-            components.appFrame.getSound().playSound("scrollBox/scrollBoxOff.ogg");
+            components.engine.getSound().playSound("scrollBox/scrollBoxOff.ogg");
         } else {
-            components.appFrame.getSound().playSound("scrollBox/scrollBoxOn.ogg");
+            components.engine.getSound().playSound("scrollBox/scrollBoxOn.ogg");
         }
         boolean bl = opened = !opened;
 
@@ -121,7 +121,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     @Override
     public void mouseEntered(MouseEvent e) {
         if (!opened) {
-            components.appFrame.getSound().playSound("button/buttonHover.ogg");
+            components.engine.getSound().playSound("button/buttonHover.ogg");
         }
         entered = true;
         this.repaint();

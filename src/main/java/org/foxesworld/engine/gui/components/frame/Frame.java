@@ -1,8 +1,7 @@
 package org.foxesworld.engine.gui.components.frame;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-import org.foxesworld.engine.AppFrame;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.attributes.FrameAttributes;
 import org.foxesworld.engine.gui.components.panel.Panel;
 import org.foxesworld.engine.locale.LanguageProvider;
@@ -15,31 +14,31 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Frame {
-    private AppFrame appFrame;
+    private Engine engine;
     private Panel panel;
     private Dimension screenSize;
     private JPanel rootPanel;
     private final JFrame frame;
     private final LanguageProvider LANG;
 
-    public Frame(AppFrame appFrame) {
-        appFrame.getLOGGER().info("Frame initialization");
-        this.appFrame = appFrame;
+    public Frame(Engine engine) {
+        engine.getLOGGER().info("Frame initialization");
+        this.engine = engine;
         this.frame = new JFrame();
-        this.LANG = appFrame.getLANG();
+        this.LANG = engine.getLANG();
         buildFrame("assets/frames/frame.json");
     }
 
     private void buildFrame(String path){
         Gson gson = new Gson();
         FrameAttributes frameAttributes;
-        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(AppFrame.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(Engine.class.getClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8);
         frameAttributes = gson.fromJson(reader, FrameAttributes.class);
         buildFrame(frameAttributes);
     }
 
     public void buildFrame(FrameAttributes frameAttributes) {
-        appFrame.getLOGGER().info("Building Frame...");
+        engine.getLOGGER().info("Building Frame...");
 
         frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.appIcon));
         frame.setTitle(LANG.getString(frameAttributes.appTitle));
@@ -68,8 +67,8 @@ public class Frame {
         return this.rootPanel;
     }
 
-    public AppFrame getAppFrame() {
-        return appFrame;
+    public Engine getAppFrame() {
+        return engine;
     }
 
     public JFrame getFrame() {

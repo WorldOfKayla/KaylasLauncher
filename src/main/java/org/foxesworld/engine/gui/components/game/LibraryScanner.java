@@ -30,14 +30,10 @@ public class LibraryScanner {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    // Рекурсивно сканировать поддиректории
                     scanForJARs(file, libraryPaths);
                 } else if (file.getName().endsWith(".jar")) {
-                    // Нашли JAR-файл, добавляем его путь
                     String libraryPath = file.getAbsolutePath();
                     libraryPaths.add(libraryPath);
-                    // Логируем каждый путь к библиотеке
-                    System.out.println("Library: " + libraryPath);
                 }
             }
         }

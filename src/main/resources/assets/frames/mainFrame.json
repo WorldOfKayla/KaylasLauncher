@@ -12,7 +12,7 @@
           "readFrom": "assets/frames/forms/mainPanel/auth.json"
         },
         {
-          "readFrom": "assets/frames/forms/mainPanel/logged.json"
+          "readFrom": "assets/frames/forms/mainPanel/loggedForm.json"
         },
         {
           "readFrom": "assets/frames/forms/mainPanel/newsForm.json"

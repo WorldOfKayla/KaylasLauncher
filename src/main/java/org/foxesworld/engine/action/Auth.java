@@ -46,12 +46,12 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        AuthResponse response = new Gson().fromJson(this.POSTrequest.send("https://foxescraft.ru", authCredentials), AuthResponse.class);
+        AuthResponse response = new Gson().fromJson(this.POSTrequest.send(appFrame.getEngineData().bindUrl, authCredentials), AuthResponse.class);
         boolean success = response.type.equals("success");
         System.out.println(response.message);
         if (success) {
             appFrame.setAuthorised(success);
-            appFrame.displayPanel("authForm->false|logged->true");
+            appFrame.displayPanel("authForm->false|loggedForm->true");
 
             if(CONFIG.get("login") == null){
                 appFrame.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));

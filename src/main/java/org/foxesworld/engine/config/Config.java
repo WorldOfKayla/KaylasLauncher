@@ -17,12 +17,14 @@ public class Config extends ConfigAbstract {
 
     public Config(AppFrame appFrame) {
         this.appFrame = appFrame;
-        setCfgExportDir("config");
+        setCfgExportDir("config/");
         setDebug(true);
-        setDirPathIndex(0);
+        setDirPathIndex(3);
         setCfgFileExtension(".json");
+        cfgProvider.setDefaultConfFilesDir("config/");
         addCfgFiles(appFrame.getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
+        System.out.println(this.getFullPath());
     }
 
     public void addToConfig(Map<String, String> inputData, List values) {

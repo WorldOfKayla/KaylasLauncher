@@ -10,16 +10,19 @@ import java.util.List;
 
 public class Game {
 
-    private AppFrame appFrame;
-    private LibraryScanner libraryScanner;
+    private final AppFrame appFrame;
+    private final LibraryScanner libraryScanner;
+
+    private final String absoluteHomePath;
 
     public Game(AppFrame appFrame) {
         this.appFrame = appFrame;
         this.libraryScanner = new LibraryScanner(appFrame);
+        this.absoluteHomePath = appFrame.getConfig().getFullPath();
     }
 
     public void testLaunch() {
-        String gameDir = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\versions\\1.16.5 Mods";
+        String gameDir = this.absoluteHomePath + "\\1.16.5 Mods";
         String minecraftJarPath = gameDir+ "\\1.16.5 Mods.jar";
         String nativesPath = gameDir + "\\natives";
         String librariesPath = "C:\\Users\\Aiden\\AppData\\Roaming\\.minecraft\\libraries";
@@ -42,6 +45,7 @@ public class Game {
         // Forming launch string
         String classpath = String.join(File.pathSeparator, libraryPaths);
         classpath += File.pathSeparator + minecraftJarPath;
+        command.add("-Xmx" + appFrame.getCONFIG().get("ramAmount") + "m");
         command.add("-cp");
         command.add(classpath);
 

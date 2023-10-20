@@ -1,0 +1,16 @@
+package org.foxesworld.engine;
+
+import com.google.gson.annotations.SerializedName;
+import org.foxesworld.engine.utils.HTTP.RequestProperty;
+
+import java.util.List;
+
+public class EngineData {
+
+    @SerializedName("bindUrl")
+    public String bindUrl;
+
+    @SerializedName("requestProperties")
+    public List<RequestProperty> requestProperties;
+
+}

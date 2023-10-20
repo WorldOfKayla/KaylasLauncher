@@ -1,12 +1,10 @@
 package org.foxesworld.engine.utils.HTTP;
 
-import com.google.gson.Gson;
 import org.foxesworld.engine.AppFrame;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -16,9 +14,9 @@ public class HTTPrequest {
     private String requestMethod;
     private AppFrame appFrame;
 
-    public HTTPrequest(AppFrame appFrame, String requestMethod){
+    public HTTPrequest(AppFrame appFrame, String requestMethod) {
         this.appFrame = appFrame;
-        appFrame.getLOGGER().debug("HTTP "+requestMethod+" init");
+        appFrame.getLOGGER().debug("HTTP " + requestMethod + " init");
         this.requestMethod = requestMethod;
     }
 
@@ -26,10 +24,9 @@ public class HTTPrequest {
         HttpURLConnection httpURLConnection = null;
         try {
             java.net.URL url = new URL(URL);
-            this.appFrame.getLOGGER().debug(url);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
-            this.setRequestProperties(httpURLConnection, "RequestProperties.json");
+            this.setRequestProperties(httpURLConnection, appFrame.getEngineData().requestProperties);
             httpURLConnection.setUseCaches(false);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
@@ -59,15 +56,15 @@ public class HTTPrequest {
         }
     }
 
-    private StringBuilder getBoundary(int length){
+    private StringBuilder getBoundary(int length) {
         StringBuilder boundary = new StringBuilder();
-        for(int k = 0; k < length; k++){
+        for (int k = 0; k < length; k++) {
             boundary.append(Long.toString(new Random().nextLong(), 3));
         }
         return boundary;
     }
 
-    private StringBuilder formParams(Map<String, String> parameters){
+    private StringBuilder formParams(Map<String, String> parameters) {
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             if (postData.length() != 0) {
@@ -80,22 +77,21 @@ public class HTTPrequest {
         return postData;
     }
 
-    private void setRequestProperties(HttpURLConnection httpURLConnection, String propertyPath) {
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(propertyPath);
-        if (inputStream != null) {
-            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            RequestProperties[] requestProperties = new Gson().fromJson(reader, RequestProperties[].class);
-            for (RequestProperties requestHeader : requestProperties) {
-                String value = requestHeader.getPropertyValue;
-                if (value.contains("{$boundary}")) {
-                    value = value.replace("{$boundary}", this.getBoundary(3));
-                }
-                httpURLConnection.setRequestProperty(requestHeader.propertyKey, value);
+    private void setRequestProperties(HttpURLConnection httpURLConnection, List<RequestProperty> properties) {
+        //RequestProperty[] requestProperties = new Gson().fromJson(properties, RequestProperty[].class);
+        for(RequestProperty requestProperty: properties){
+            String value = requestProperty.propertyValue;
+            if (value.contains("{$boundary}")) {
+                value = value.replace("{$boundary}", this.getBoundary(3));
             }
+            httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
+            appFrame.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
         }
+
     }
 
-    private  void requestProperties(HttpURLConnection httpURLConnection){
+
+    private void requestProperties(HttpURLConnection httpURLConnection) {
         Map<String, List<String>> requestProperties = httpURLConnection.getRequestProperties();
 
         for (Map.Entry<String, List<String>> entry : requestProperties.entrySet()) {

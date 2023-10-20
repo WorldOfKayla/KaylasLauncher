@@ -32,7 +32,7 @@ public class DownloadUtils {
     }
 
     private void downloader(String Durl, String PATH) {
-        this.appFrame.displayPanel("logged->false|newsForm->false|download->true");
+        this.appFrame.displayPanel("loggedForm->false|newsForm->false|download->true");
         try {
             this.appFrame.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 {
   "groups": {
-    "logged": {
+    "loggedForm": {
       "panelOptions": {
         "opaque": false,
         "visible": false,

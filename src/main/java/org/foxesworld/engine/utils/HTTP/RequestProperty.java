@@ -2,10 +2,10 @@ package org.foxesworld.engine.utils.HTTP;
 
 import com.google.gson.annotations.SerializedName;
 
-class RequestProperties {
+public class RequestProperty {
     @SerializedName("propertyKey")
     String propertyKey;
 
     @SerializedName("propertyValue")
-    String getPropertyValue;
+    String propertyValue;
 }

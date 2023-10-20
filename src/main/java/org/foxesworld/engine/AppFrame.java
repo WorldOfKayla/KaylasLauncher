@@ -1,5 +1,6 @@
 package org.foxesworld.engine;
 
+import com.google.gson.Gson;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,12 +25,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
 public class AppFrame extends JFrame implements ActionListener {
 
     protected final APP app;
+
+    private EngineData engineData;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
@@ -53,6 +59,9 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public AppFrame(APP app) {
         this.app = app;
+        this.engineData = new EngineData();
+        this.initEngineValues("engine.json");
+
         this.config = new Config(this);
         this.CONFIG = config.getCONFIG();
         this.LOCALE = String.valueOf(CONFIG.get("Lang"));
@@ -65,6 +74,17 @@ public class AppFrame extends JFrame implements ActionListener {
         this.frame = new Frame(this);
         this.cryptUtils = new CryptUtils(this);
         initialize();
+    }
+
+    @Deprecated
+    private void initEngineValues(String propertyPath){
+        InputStream inputStream = AppFrame.class.getClassLoader().getResourceAsStream(propertyPath);
+        System.out.println(inputStream);
+
+        if (inputStream != null) {
+            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            engineData = new Gson().fromJson(reader, EngineData.class);
+        }
     }
 
     /* TODO
@@ -81,7 +101,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.auth = new Auth(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-        //sound.playSound("amaze.ogg");
+        sound.playSound("intro.ogg");
     }
 
     public void displayPanel(String displayString) {
@@ -250,5 +270,9 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public LoadState getLoadingState() {
         return loadState;
+    }
+
+    public EngineData getEngineData() {
+        return engineData;
     }
 }

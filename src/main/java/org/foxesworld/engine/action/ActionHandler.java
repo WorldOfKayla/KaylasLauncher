@@ -57,14 +57,14 @@ public class ActionHandler {
                 System.out.println("LoggingOut...");
                 this.appFrame.setAuthorised(false);
                 this.appFrame.getConfig().clearConfigData(Arrays.asList("login", "password"), true);
-                appFrame.displayPanel("logged->false|newsForm->true|authForm->true");
+                appFrame.displayPanel("loggedForm->false|newsForm->true|authForm->true");
             }
 
             case "settings" -> {
                 if(!appFrame.isAuthorised()) {
                     appFrame.displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
-                    appFrame.displayPanel("logged->false|newsForm->false|settings->true");
+                    appFrame.displayPanel("loggedForm->false|newsForm->false|settings->true");
                 }
             }
 
@@ -72,7 +72,7 @@ public class ActionHandler {
                 if(!appFrame.isAuthorised()) {
                     appFrame.displayPanel("authForm->true|newsForm->true|settings->false");
                 } else {
-                    appFrame.displayPanel("logged->true|newsForm->true|settings->false");
+                    appFrame.displayPanel("loggedForm->true|newsForm->true|settings->false");
                 }
             }
 

@@ -11,6 +11,8 @@ import java.util.Map;
 public class ServerParser {
 
     private Engine engine;
+
+    private int serversNum = 0;
     private List<ServerAttributes> serverList = new ArrayList<>();
     private Map<String, String> request = new HashMap<>();
 
@@ -25,7 +27,12 @@ public class ServerParser {
         ServerAttributes[] serversArray = new Gson().fromJson(serversList, ServerAttributes[].class);
         for(ServerAttributes serverAttributes: serversArray){
             this.serverList.add(serverAttributes);
+            this.serversNum+=1;
         }
         return serverList;
+    }
+
+    public int getServersNum() {
+        return serversNum;
     }
 }

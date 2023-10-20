@@ -16,7 +16,9 @@ import java.util.Map;
 public class Auth {
     private Engine engine;
 
-    private List<ServerAttributes> userServers;
+    private List<ServerAttributes> userServersAttributes;
+
+    private String[] userServersArray;
     private Map<String, String> authCredentials = new HashMap<>();
     private Map<String, Object> CONFIG;
     private HTTPrequest POSTrequest;
@@ -68,11 +70,15 @@ public class Auth {
     }
 
     private void loadUserServers(){
+        int i = 0;
         ServerParser serverParser = new ServerParser(getEngine());
-        userServers = serverParser.parseServers(getAuthCredentials("login"));
-        for(ServerAttributes serverAttributes: userServers){
-            System.out.println(serverAttributes.serverName);
+        userServersAttributes = serverParser.parseServers(getAuthCredentials("login"));
+        userServersArray = new  String[serverParser.getServersNum()];
+        for(ServerAttributes serverAttributes: userServersAttributes){
+            userServersArray[i] = serverAttributes.serverName;
+            i++;
         }
+        System.out.println(userServersArray);
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
@@ -88,7 +94,11 @@ public class Auth {
         return engine;
     }
 
-    public List<ServerAttributes> getUserServers() {
-        return userServers;
+    public String[] getUserServersArray() {
+        return userServersArray;
+    }
+
+    public List<ServerAttributes> getUserServersAttributes() {
+        return userServersAttributes;
     }
 }

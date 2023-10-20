@@ -151,7 +151,7 @@ public class Components {
 
             case "scrollBox" -> {
                 scrollBoxStyle = new ScrollBoxStyle(this);
-                ScrollBox scrollBox = new ScrollBox(this, new String[]{""}, yPos);
+                ScrollBox scrollBox = new ScrollBox(this, engine.getAuth().getUserServersArray(), yPos);
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
                 scrollBox.setName(componentAttributes.componentId);

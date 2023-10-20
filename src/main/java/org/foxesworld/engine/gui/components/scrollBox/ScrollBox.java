@@ -69,6 +69,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 } else {
                     g.drawImage(this.selectedTX, 0, this.panelTX.getHeight() * i, this);
                 }
+                //System.out.println(this.values[i]);
                 g.drawString(this.values[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2);
                 if (i != selected) continue;
                 g.drawImage(this.point, 176, this.panelTX.getHeight() * i + 3, this);

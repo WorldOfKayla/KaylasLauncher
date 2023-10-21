@@ -43,7 +43,6 @@ public class Engine extends JFrame implements ActionListener {
     private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
-    private boolean authorised = false;
     private Auth auth;
     private User user;
     private EngineData engineData;
@@ -90,6 +89,7 @@ public class Engine extends JFrame implements ActionListener {
     * */
     private void initialize() {
         setAuth(new Auth(this));
+        getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
@@ -219,12 +219,6 @@ public class Engine extends JFrame implements ActionListener {
     }
     public Auth getAuth() {
         return auth;
-    }
-    public boolean isAuthorised() {
-        return authorised;
-    }
-    public void setAuthorised(boolean authorised) {
-        this.authorised = authorised;
     }
     public StyleProvider getStyleProvider() {
         return styleProvider;

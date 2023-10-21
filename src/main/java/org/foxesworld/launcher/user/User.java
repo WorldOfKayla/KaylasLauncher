@@ -11,7 +11,7 @@ public class User {
     }
 
     public void setUserSpace(){
-        if(this.auth.getEngine().isAuthorised()) {
+        if(this.auth.getEngine().getAuth().isAuthorised()) {
             auth.getEngine().displayPanel("authForm->false|loggedForm->true");
         }
     }

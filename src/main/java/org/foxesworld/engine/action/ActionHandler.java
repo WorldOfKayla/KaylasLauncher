@@ -27,7 +27,7 @@ public class ActionHandler {
                 switch(parent){
                     case "authForm" -> {
                         this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
-                        if(this.engine.isAuthorised()) {
+                        if(this.engine.getAuth().isAuthorised()) {
                             this.engine = new Engine(this.engine.getAPP());
                         }
                     }
@@ -57,13 +57,13 @@ public class ActionHandler {
 
             case "logOut" -> {
                 System.out.println("LoggingOut...");
-                this.engine.setAuthorised(false);
+                this.engine.getAuth().setAuthorised(false);
                 this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
                 engine.displayPanel("loggedForm->false|newsForm->true|authForm->true");
             }
 
             case "settings" -> {
-                if(!engine.isAuthorised()) {
+                if(!engine.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
                     engine.displayPanel("loggedForm->false|newsForm->false|settings->true");
@@ -71,7 +71,7 @@ public class ActionHandler {
             }
 
             case "back" -> {
-                if(!engine.isAuthorised()) {
+                if(!engine.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->true|newsForm->true|settings->false");
                 } else {
                     engine.displayPanel("loggedForm->true|newsForm->true|settings->false");

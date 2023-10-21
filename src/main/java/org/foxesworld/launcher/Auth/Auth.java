@@ -22,6 +22,7 @@ public class Auth {
     private Map<String, Object> CONFIG;
     private HTTPrequest POSTrequest;
     private Map<String, String> inputData = new HashMap<>();
+    private boolean authorised = false;
 
     public Auth(Engine engine) {
         this.engine = engine;
@@ -55,7 +56,7 @@ public class Auth {
         boolean status = response.type.equals("success");
 
         if (status) {
-            engine.setAuthorised(true);
+            setAuthorised(true);
             this.authCredentials = authCredentials;
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
@@ -94,7 +95,7 @@ public class Auth {
     }
 
     public String[] getUserServersArray() {
-        if(engine.isAuthorised()) {
+        if(isAuthorised()) {
             return userServersArray;
         } else {
             return new String[0];
@@ -103,5 +104,11 @@ public class Auth {
 
     public List<ServerAttributes> getUserServersAttributes() {
         return userServersAttributes;
+    }
+    public boolean isAuthorised() {
+        return authorised;
+    }
+    public void setAuthorised(boolean authorised) {
+        this.authorised = authorised;
     }
 }

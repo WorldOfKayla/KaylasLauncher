@@ -9,7 +9,7 @@
       },
       "childComponents": [
         {
-          "readFrom": "assets/frames/forms/mainPanel/auth.json"
+          "readFrom": "assets/frames/forms/mainPanel/authForm.json"
         },
         {
           "readFrom": "assets/frames/forms/mainPanel/loggedForm.json"
@@ -18,13 +18,13 @@
           "readFrom": "assets/frames/forms/mainPanel/newsForm.json"
         },
         {
-          "readFrom": "assets/frames/settings.json"
+          "readFrom": "assets/frames/forms/mainPanel/settings.json"
         },
         {
-          "readFrom": "assets/frames/download.json"
+          "readFrom": "assets/frames/forms/mainPanel/download.json"
         },
         {
-          "readFrom": "assets/frames/wait.json"
+          "readFrom": "assets/frames/forms/mainPanel/wait.json"
         }
       ]
     }

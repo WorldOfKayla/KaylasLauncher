@@ -18,27 +18,21 @@ public class APP {
         System.setProperty("file.encoding", "UTF-8");
         SwingUtilities.invokeLater(() -> new Engine(APP));
     }
-
     public String getMainFrame() {
         return mainFrame;
     }
-
     public String getEngineVars() {
         return engineVars;
     }
-
     public String getLocaleFile() {
         return localeFile;
     }
-
     public String[] getConfigFiles() {
         return configFiles;
     }
-
     public String getLOCALE() {
         return LOCALE;
     }
-
     public void setLOCALE(String LOCALE) {
         this.LOCALE = LOCALE;
     }

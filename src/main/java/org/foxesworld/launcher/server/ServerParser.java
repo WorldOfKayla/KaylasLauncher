@@ -27,6 +27,7 @@ public class ServerParser {
             this.serverList.add(serverAttributes);
             serversNum++;
         }
+        engine.getLOGGER().debug("Loading "+serversNum + " servers for user "+login);
         return serverList;
     }
 

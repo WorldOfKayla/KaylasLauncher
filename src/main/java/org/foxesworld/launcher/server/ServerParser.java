@@ -1,4 +1,4 @@
-package org.foxesworld.engine.action.server;
+package org.foxesworld.launcher.server;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ServerParser {
-
     private Engine engine;
-
-    private int serversNum = 0;
+    private  int serversNum = 0;
     private List<ServerAttributes> serverList = new ArrayList<>();
     private Map<String, String> request = new HashMap<>();
 
@@ -27,7 +25,7 @@ public class ServerParser {
         ServerAttributes[] serversArray = new Gson().fromJson(serversList, ServerAttributes[].class);
         for(ServerAttributes serverAttributes: serversArray){
             this.serverList.add(serverAttributes);
-            this.serversNum+=1;
+            serversNum++;
         }
         return serverList;
     }

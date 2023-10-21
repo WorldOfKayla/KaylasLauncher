@@ -55,17 +55,6 @@ public class ComponentAttributes {
     @SerializedName("bounds")
     public String bounds;
 
-    @SerializedName("xPos")
-    public int xPos;
-
-    @SerializedName("yPos")
-    public int yPos;
-
-    @SerializedName("width")
-    public int width;
-
-    @SerializedName("height")
-    public int height;
 
     @SerializedName("groups")
     public Map<String, OptionGroups> groups;

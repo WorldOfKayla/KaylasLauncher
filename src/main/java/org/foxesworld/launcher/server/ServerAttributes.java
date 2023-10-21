@@ -1,4 +1,4 @@
-package org.foxesworld.engine.action.server;
+package org.foxesworld.launcher.server;
 
 import com.google.gson.annotations.SerializedName;
 

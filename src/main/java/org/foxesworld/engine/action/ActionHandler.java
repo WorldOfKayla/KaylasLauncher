@@ -27,6 +27,9 @@ public class ActionHandler {
                 switch(parent){
                     case "authForm" -> {
                         this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
+                        if(this.engine.isAuthorised()) {
+                            this.engine = new Engine(this.engine.getAPP());
+                        }
                     }
                 }
             }

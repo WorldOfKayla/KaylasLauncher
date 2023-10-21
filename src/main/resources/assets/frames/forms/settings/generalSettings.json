@@ -23,6 +23,7 @@
           "componentStyle": "solid",
           "componentId": "autoEnter",
           "localeKey": "settings.autoEnter",
+          "initialValue": "config#autoEnter",
           "bounds": "5,20,240,32"
         },
         {
@@ -31,6 +32,7 @@
           "componentStyle": "solid",
           "componentId": "fullScreen",
           "localeKey": "settings.fullScreen",
+          "initialValue": "config#fullScreen",
           "bounds": "5,40,240,32"
         },
         {
@@ -39,6 +41,7 @@
           "componentStyle": "solid",
           "componentId": "loadNews",
           "localeKey": "settings.loadNews",
+          "initialValue": "config#loadNews",
           "bounds": "5,60,240,32"
         },
         {
@@ -47,6 +50,7 @@
           "componentStyle": "solid",
           "componentId": "enableSound",
           "localeKey": "settings.enableSound",
+          "initialValue": "config#enableSound",
           "bounds": "5,80,240,32"
         },
         {
@@ -61,6 +65,7 @@
           "componentType": "textField",
           "componentStyle": "inputBox",
           "localeKey": "settings.ramPlaceholder",
+          "initialValue": "config#ramAmount",
           "componentId": "ramAmount",
           "bounds": "10,125,0,0"
         },

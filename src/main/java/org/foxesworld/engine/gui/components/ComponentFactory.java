@@ -22,6 +22,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class ComponentFactory {
         *  That's the only way we may use Component factory for initialising a couple of
         *  components of a type
         *  */
-
+        Object initialData = "";
         if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
             if(componentStyles.get(componentAttributes.componentType) == null){
                 componentStyles.put(componentAttributes.componentType, engine.getStyleProvider().loadStyle(componentAttributes.componentType));
@@ -63,6 +64,9 @@ public class ComponentFactory {
         int yPos = Integer.parseInt(bounds[1]);
         int width = Integer.parseInt(bounds[2]);
         int height = Integer.parseInt(bounds[3]);
+        if(componentAttributes.initialValue != null) {
+            initialData = this.getInitialData(componentAttributes.initialValue);
+        }
         switch (componentAttributes.componentType) {
 
             case "progressBar" -> {
@@ -70,7 +74,7 @@ public class ComponentFactory {
                 JProgressBar progressBar = new JProgressBar();
                 progressBarStyle.apply(progressBar);
                 progressBar.setName(componentAttributes.componentId);
-                progressBar.setBounds(componentAttributes.xPos, componentAttributes.yPos, componentAttributes.width, componentAttributes.height);
+                progressBar.setBounds(xPos, yPos, width, height);
                 return progressBar;
             }
 
@@ -85,6 +89,10 @@ public class ComponentFactory {
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
                 label.setBounds(xPos, yPos, width, height);
+
+                if(componentAttributes.initialValue != null) {
+                    label.setText(String.valueOf(initialData));
+                }
                 return label;
             }
 
@@ -95,6 +103,7 @@ public class ComponentFactory {
                 checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.componentId);
                 checkbox.setEnabled(componentAttributes.enabled);
+                if(componentAttributes.initialValue != null) checkbox.setSelected((Boolean) initialData);
                 return checkbox;
             }
 
@@ -106,6 +115,7 @@ public class ComponentFactory {
                 textfield.setBounds(xPos, yPos, textfieldStyle.width, textfieldStyle.height);
                 textfield.setActionCommand(componentAttributes.componentId);
                 textfield.addActionListener(engine);
+                if(componentAttributes.initialValue != null) textfield.setText(String.valueOf(initialData));
                 return textfield;
             }
 
@@ -164,7 +174,7 @@ public class ComponentFactory {
                 String scrollBoxArr[] = {};
                 scrollBoxStyle = new ScrollBoxStyle(this);
                 switch (componentAttributes.initialValue) {
-                    case"userServers" -> {
+                    case "userServers" -> {
                         scrollBoxArr  = engine.getAuth().getUserServersArray();
                     }
                 }
@@ -177,5 +187,22 @@ public class ComponentFactory {
 
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.componentType);
         }
+    }
+
+    private Object getInitialData(String initialValue){
+        String[] splitValue = initialValue.split("#");
+        switch(splitValue[0]){
+            case "config" -> {
+                return engine.getCONFIG().getCONFIG().get(splitValue[1]);
+            }
+            case "user" -> {
+                return engine.getAuth().getAuthCredentials(splitValue[1]);
+            }
+        }
+        return null;
+    }
+
+    public enum Align {
+        LEFT, CENTER, RIGHT
     }
 }

@@ -1,4 +1,4 @@
-package org.foxesworld.engine.action.Auth;
+package org.foxesworld.launcher.Auth;
 
 import com.google.gson.annotations.SerializedName;
 

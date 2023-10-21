@@ -7,11 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.APP;
 import org.foxesworld.engine.action.ActionHandler;
-import org.foxesworld.engine.action.Auth.Auth;
-import org.foxesworld.engine.action.user.User;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.GuiBuilder;
-import org.foxesworld.engine.gui.LoadState;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -21,6 +18,8 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.launcher.Auth.Auth;
+import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,8 +28,9 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Engine extends JFrame implements ActionListener {
     protected final APP APP;
@@ -43,13 +43,12 @@ public class Engine extends JFrame implements ActionListener {
     private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
-    @Deprecated
-    private LoadState loadState;
     private boolean authorised = false;
     private Auth auth;
     private User user;
     private EngineData engineData;
-    private HTTPrequest GETrequest,POSTrequest;
+    private final HTTPrequest GETrequest;
+    private final HTTPrequest POSTrequest;
     private SystemComponents systemComponents;
     private ActionHandler actionHandler;
     private DownloadUtils download;
@@ -92,12 +91,10 @@ public class Engine extends JFrame implements ActionListener {
     private void initialize() {
         setAuth(new Auth(this));
         setStyleProvider(new StyleProvider(this));
-        //this.elementStyles = styleProvider.getElementStyles();
         this.guiBuilder = new GuiBuilder(this);
         getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
         user = new User(this.auth);
-        this.loadState = new LoadState(this);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
         SOUND.playSound("intro.ogg");
@@ -122,18 +119,18 @@ public class Engine extends JFrame implements ActionListener {
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
             getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
+            /*
             if(displayValue == true) {
                 if(guiBuilder.getChildsNparents().containsKey(panelName)){
                     for(Component component: guiBuilder.getAllChildComponents(panelName)){
-                        setComponentValues(component);
+                        //setComponentValues(component);
                     }
                 } else {
                     for(Component component: guiBuilder.getComponentsMap().get(panelName)){
-                        setComponentValues(component);
+                        //setComponentValues(component);
                     }
                 }
-
-            }
+            } */
         }
     }
 
@@ -147,7 +144,7 @@ public class Engine extends JFrame implements ActionListener {
     *  While loading a new panel */
     @Deprecated
     private void defineSystemComponents(){
-        List systemIds = Arrays.asList("progressBar", "progressLabel");
+        List<String> systemIds = Arrays.asList("progressBar", "progressLabel");
         this.systemComponents = new SystemComponents();
         for(Map.Entry<String, List<Component>> panels: guiBuilder.getComponentsMap().entrySet()){
             String panelName = panels.getKey();
@@ -246,5 +243,8 @@ public class Engine extends JFrame implements ActionListener {
     }
     public void setEngineData(EngineData engineData) {
         this.engineData = engineData;
+    }
+    public User getUser() {
+        return user;
     }
 }

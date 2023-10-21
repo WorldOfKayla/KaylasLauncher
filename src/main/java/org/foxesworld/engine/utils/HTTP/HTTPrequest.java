@@ -97,7 +97,7 @@ public class HTTPrequest {
         for (Map.Entry<String, List<String>> entry : requestProperties.entrySet()) {
             String headerName = entry.getKey();
             List<String> headerValues = entry.getValue();
-            System.out.println(headerName + ": " + headerValues);
+            //System.out.println(headerName + ": " + headerValues);
         }
     }
 }

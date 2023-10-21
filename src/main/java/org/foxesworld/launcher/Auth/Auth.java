@@ -1,9 +1,9 @@
-package org.foxesworld.engine.action.Auth;
+package org.foxesworld.launcher.Auth;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.action.server.ServerAttributes;
-import org.foxesworld.engine.action.server.ServerParser;
+import org.foxesworld.launcher.server.ServerAttributes;
+import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class Auth {
 
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private Map<String, String> authCredentials = new HashMap<>();
+    private Map<String, String> authCredentials = new HashMap<>(){};
     private Map<String, Object> CONFIG;
     private HTTPrequest POSTrequest;
     private Map<String, String> inputData = new HashMap<>();
@@ -94,7 +94,11 @@ public class Auth {
     }
 
     public String[] getUserServersArray() {
-        return userServersArray;
+        if(engine.isAuthorised()) {
+            return userServersArray;
+        } else {
+            return new String[0];
+        }
     }
 
     public List<ServerAttributes> getUserServersAttributes() {

@@ -1,6 +1,5 @@
 package org.foxesworld.engine.gui.components.button;
 
-import org.foxesworld.engine.gui.components.Align;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
@@ -18,7 +17,7 @@ public class ButtonStyle {
 	public String font;
 	public String color;
 	public float fontSize;
-	public Align align;
+	public ComponentFactory.Align align;
 	public BufferedImage texture;
 	private ComponentFactory componentFactory;
 
@@ -29,13 +28,13 @@ public class ButtonStyle {
 		this.color = componentFactory.style.color;
 		this.font = componentFactory.style.font;
 		this.fontSize = componentFactory.style.fontSize;
-		this.align = Align.valueOf(componentFactory.style.align);
+		this.align = ComponentFactory.Align.valueOf(componentFactory.style.align);
 		this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
 	}
 
 	public void apply(Button button) {
 		button.setVisible(visible);
-		button.setHorizontalAlignment(align == Align.LEFT ? SwingConstants.LEFT : align == Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);
+		button.setHorizontalAlignment(align == ComponentFactory.Align.LEFT ? SwingConstants.LEFT : align == ComponentFactory.Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);
 		button.setFont(componentFactory.engine.getFONTUTILS().getFont(font, fontSize));
 		button.setForeground(hexToColor(color));
 		int i = texture.getHeight() / 4;

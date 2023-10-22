@@ -8,7 +8,11 @@ import org.foxesworld.launcher.server.ServerAttributes;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class ActionHandler {
     private Engine engine;
@@ -44,6 +48,10 @@ public class ActionHandler {
                 //System.out.println(engine.getCONFIG().getFullPath());
                 //engine.displayPanel("wait->true");
                 engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
+            }
+
+            case "gameDir" -> {
+                openGameFolder();
             }
 
             case "applySettings" -> {
@@ -95,6 +103,17 @@ public class ActionHandler {
             case "hideButton" ->  engine.getFrame().getFrame().setExtendedState(1);
         }
     }
+
+    private void openGameFolder() {
+        try {
+            //engine.getSOUND().playSound();
+            Desktop d = Desktop.getDesktop();
+            d.browse(new URI(engine.getCONFIG().getFullPath().toString().replaceAll(Pattern.quote("\\"), "/")));
+        } catch (IOException | URISyntaxException exception) {
+            // empty catch block
+        }
+    }
+
 
     public ServerAttributes getCurrentServer() {
         return currentServer;

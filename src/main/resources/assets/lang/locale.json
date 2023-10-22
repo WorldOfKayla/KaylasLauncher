@@ -49,6 +49,10 @@
     "info": {
       "en": "Settings information",
       "ru":"Информация о настройках"
+    },
+    "homeDir": {
+      "en": "Game Dir",
+      "ru": "Директория игры"
     }
   },
   "auth": {

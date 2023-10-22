@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-
     private final ActionHandler actionHandler;
     private final ServerAttributes selectedServer;
     private final LibraryScanner libraryScanner;
@@ -96,37 +95,43 @@ public class Game {
     }
 
     private void addArgs() {
-        //params.add("--session=nope");
         params.add("--userType=legacy");
         params.add("--versionType=release");
         params.add("--username="+actionHandler.getEngine().getCONFIG().getCONFIG().get("login"));
         params.add("--version="+selectedServer.serverVersion);
         params.add("--gameDir="+buildClientDir());
         params.add("--assetsDir="+buildAssetsPath());
+        if((boolean)actionHandler.getEngine().getCONFIG().getCONFIG().get("fullScreen")==true) {
+            params.add("--fullscreen=true");
+        }
         params.add(tweakClassVal);
     }
 
     private void launchGame() {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(params);
-            processBuilder.redirectErrorStream(true);
-            Process process;
-            process = processBuilder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+        Thread gameThread = new Thread(() -> {
+            try {
+                ProcessBuilder processBuilder = new ProcessBuilder(params);
+                processBuilder.redirectErrorStream(true);
+                Process process = processBuilder.start();
+                actionHandler.getEngine().getFrame().getFrame().setVisible(false);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+                int exitCode = process.waitFor();
+                if (exitCode != 0) {
+                    SwingUtilities.invokeLater(() -> {
+                        actionHandler.getEngine().getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
+                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exitcode - " + exitCode, "Launch error", 0, null);
+                    });
+                }
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                SwingUtilities.invokeLater(() -> {
-                    actionHandler.getEngine().getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
-                    JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exitcode - " + exitCode, "Launch error", 0, null);
-                });
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        });
+
+        gameThread.start();
     }
 
 
@@ -139,6 +144,8 @@ public class Game {
                 tweakClassVal = "--tweakClass="+className;
                 tweakClass = true;
                 actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " was found!");
+                System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");
+                System.setProperty("fml.ignorePatchDiscrepancies", "true");
                 return;
             } catch (ClassNotFoundException classNotFoundException) {
                 actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " not found");
@@ -151,23 +158,13 @@ public class Game {
         return actionHandler.getEngine().getCONFIG().getFullPath();
     }
 
-    private String buildClientDir() {
-        File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.serverName);
-        if (!clientDir.isDirectory()) {
-            actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.serverName + " directory");
-            clientDir.mkdirs();
-        }
-        return clientDir.toString();
-    }
+
 
     private void setJre() {
-        String javaPath = buildGameDir() + "jre-8-271-x64" + File.separator + "bin" + File.separator + "java";
-        params.add(javaPath);
+        params.add(buildRuntimeDir() + File.separator + "jre-8-271-x64" + File.separator + "bin" + File.separator + "java");
         params.add("-Djava.library.path=" + buildNativesPath());
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
         params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
-        System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");
-        System.setProperty("fml.ignorePatchDiscrepancies", "true");
     }
 
     private String buildVersionDir() {
@@ -186,7 +183,24 @@ public class Game {
         return buildVersionDir() + File.separator + "natives";
     }
 
+    private String buildClientDir() {
+        File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.serverName);
+        if (!clientDir.isDirectory()) {
+            actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.serverName + " directory");
+            clientDir.mkdirs();
+        }
+        return clientDir.toString();
+    }
+
     private String buildAssetsPath() {
         return buildGameDir() + "assets";
+    }
+
+    private File buildRuntimeDir(){
+        File runtimeDir =  new File(buildGameDir() + "runtime");
+        if(!runtimeDir.isDirectory()){
+            runtimeDir.mkdirs();
+        }
+        return runtimeDir;
     }
 }

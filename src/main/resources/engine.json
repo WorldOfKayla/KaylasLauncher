@@ -1,5 +1,6 @@
 {
   "bindUrl": "https://foxescraft.ru",
+  "appId": "712667904956432456",
   "requestProperties": [
     {
       "propertyKey": "User-Agent",

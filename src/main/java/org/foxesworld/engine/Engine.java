@@ -8,6 +8,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.APP;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
@@ -36,6 +37,8 @@ public class Engine extends JFrame implements ActionListener {
     protected final APP APP;
     private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
+
+    private final Discord discord;
     private final  LanguageProvider LANG;
     private final FontUtils FONTUTILS;
     private final Config CONFIG;
@@ -65,6 +68,7 @@ public class Engine extends JFrame implements ActionListener {
         this.LANG = new LanguageProvider(this.getAPP(), "/assets/lang/locale.json");
         this.FONTUTILS = new FontUtils(this);
         this.SOUND = new Sound(this);
+        this.discord = new Discord(this);
         Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getCONFIG().get("LogLevel")));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
@@ -88,6 +92,7 @@ public class Engine extends JFrame implements ActionListener {
     *   In process
     * */
     private void initialize() {
+        this.discord.discordRpcStart("DevState","FoxesEngine","aiden");
         setAuth(new Auth(this));
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));

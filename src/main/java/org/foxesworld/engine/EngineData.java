@@ -11,6 +11,9 @@ public class EngineData {
     @SerializedName("bindUrl")
     public String bindUrl;
 
+    @SerializedName("appId")
+    public String appId;
+
     @SerializedName("requestProperties")
     public List<RequestProperty> requestProperties;
 

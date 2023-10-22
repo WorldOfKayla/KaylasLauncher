@@ -106,7 +106,7 @@ public class ActionHandler {
 
     private void openGameFolder() {
         try {
-            //engine.getSOUND().playSound();
+            engine.getSOUND().playSound("openFolder.ogg");
             Desktop d = Desktop.getDesktop();
             d.browse(new URI(engine.getCONFIG().getFullPath().toString().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException exception) {

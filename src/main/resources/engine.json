@@ -20,13 +20,13 @@
   ],
   "tweakClasses": [
     {
-      "classPath": "com.mumfrey.liteloader.launch.LiteLoaderTweaker"
+      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
     },
     {
       "classPath": "cpw.mods.fml.common.launcher.FMLTweaker"
     },
     {
-      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
+      "classPath": "com.mumfrey.liteloader.launch.LiteLoaderTweaker"
     },
     {
       "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"

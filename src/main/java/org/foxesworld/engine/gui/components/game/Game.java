@@ -20,7 +20,6 @@ public class Game {
     private final LibraryScanner libraryScanner;
     private URLClassLoader cl;
     private List<String> params = new ArrayList<>();
-    private List<URL> url = new ArrayList<URL>();
     private String tweakClassVal = "";
     boolean tweakClass = false;
 
@@ -37,11 +36,13 @@ public class Game {
         actionHandler.getEngine().getLOGGER().debug("Libraries " + buildLibrariesPath());
         actionHandler.getEngine().getLOGGER().debug("Assets " + buildAssetsPath());
         actionHandler.getEngine().getLOGGER().debug("#############################");
+
         this.setJre();
         this.collectLibraries();
-        this.addTweakClasses();
+        this.addTweakClass();
         params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-        this.addGameArgs();
+        this.loadAtuhLib();
+        this.addArgs();
         this.launchGame();
         System.out.print(params);
     }
@@ -49,36 +50,58 @@ public class Game {
     private void collectLibraries() {
         int num = 0;
         params.add("-cp");
-        //params.add(buildMinecraftJarPath());
+
         StringBuilder sb = new StringBuilder();
+        List<URL> libraryURLs = new ArrayList<>();
+
         for (String libraryPath : libraryScanner.findLibraryPaths(buildLibrariesPath())) {
             File libraryFile = new File(libraryPath);
-            sb.append(libraryFile.getAbsoluteFile() + ";");
+            sb.append(libraryFile.getAbsoluteFile() + File.pathSeparator);
+
             if (libraryFile.isFile()) {
                 try {
                     URL libraryURL = libraryFile.toURI().toURL();
-                    url.add(libraryURL);
+                    libraryURLs.add(libraryURL);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             num++;
         }
-        sb.append(buildMinecraftJarPath()+';');
+
+        sb.append(buildMinecraftJarPath() + File.pathSeparator);
         params.add(sb.toString());
 
-        cl = new URLClassLoader(url.toArray(new URL[url.size()]));
+        cl = createClassLoader(libraryURLs);
         actionHandler.getEngine().getLOGGER().debug(num + " libraries found");
     }
 
-    private void addGameArgs() {
-        params.add("--accessToken=GG");
-        params.add("--session");
+    private URLClassLoader createClassLoader(List<URL> libraryURLs) {
+        URL[] urls = libraryURLs.toArray(new URL[0]);
+        return new URLClassLoader(urls, getClass().getClassLoader());
+    }
+
+    private void loadAtuhLib(){
+        try {
+            cl.loadClass("com.mojang.authlib.Agent");
+            params.add("--accessToken=nope");
+            params.add("--uuid=7148dc2a-23f8-4b8d-9081-d3ec38e079b8");
+            params.add("--userProperties={}");
+            params.add("--assetIndex="+selectedServer.serverVersion);
+        }
+        catch (ClassNotFoundException e2) {
+            e2.printStackTrace();
+            params.add("--session=65");
+        }
+    }
+
+    private void addArgs() {
+        //params.add("--session=nope");
         params.add("--userType=legacy");
         params.add("--versionType=release");
         params.add("--username="+actionHandler.getEngine().getCONFIG().getCONFIG().get("login"));
         params.add("--version="+selectedServer.serverVersion);
-        params.add("--gameDir="+buildGameDir());
+        params.add("--gameDir="+buildClientDir());
         params.add("--assetsDir="+buildAssetsPath());
         params.add(tweakClassVal);
     }
@@ -107,16 +130,16 @@ public class Game {
     }
 
 
-    private void addTweakClasses() {
+    private void addTweakClass() {
         List<TweakClasses> tweakClasses = actionHandler.getEngine().getEngineData().tweakClasses;
         for (int i = 0; i < tweakClasses.size(); i++) {
             String className = tweakClasses.get(i).classPath;
-
             try {
                 cl.loadClass(className);
                 tweakClassVal = "--tweakClass="+className;
                 tweakClass = true;
                 actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " was found!");
+                return;
             } catch (ClassNotFoundException classNotFoundException) {
                 actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " not found");
             }
@@ -138,9 +161,10 @@ public class Game {
     }
 
     private void setJre() {
-        String javaPath = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        String javaPath = buildGameDir() + "jre-8-271-x64" + File.separator + "bin" + File.separator + "java";
         params.add(javaPath);
         params.add("-Djava.library.path=" + buildNativesPath());
+        params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
         params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
         System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");
         System.setProperty("fml.ignorePatchDiscrepancies", "true");

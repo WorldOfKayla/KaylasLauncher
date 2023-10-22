@@ -1,6 +1,9 @@
 package org.foxesworld.engine.action;
 
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.components.game.Game;
+import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
+import org.foxesworld.launcher.server.ServerAttributes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +13,7 @@ import java.util.Arrays;
 public class ActionHandler {
     private Engine engine;
 
+    private ServerAttributes currentServer;
     public ActionHandler(Engine engine) {
         this.engine = engine;
     }
@@ -79,8 +83,10 @@ public class ActionHandler {
             }
 
             case "toGame" -> {
-                //Game game = new Game(engine);
-                //game.testLaunch();
+                Component component = engine.getGuiBuilder().getComponentById("serverBox");
+                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) component).getSelectedIndex());
+                Game game = new Game(this);
+                //game.launchGame();
             }
 
             case "closeButton" -> System.exit(0);
@@ -88,5 +94,13 @@ public class ActionHandler {
 
             case "hideButton" ->  engine.getFrame().getFrame().setExtendedState(1);
         }
+    }
+
+    public ServerAttributes getCurrentServer() {
+        return currentServer;
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }

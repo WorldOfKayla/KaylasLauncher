@@ -15,10 +15,9 @@ import java.util.Map;
 
 public class Auth {
     private Engine engine;
-
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private Map<String, String> authCredentials = new HashMap<>(){};
+    private Map<String, String> authCredentials = new HashMap<>();
     private Map<String, Object> CONFIG;
     private HTTPrequest POSTrequest;
     private Map<String, String> inputData = new HashMap<>();

@@ -17,5 +17,22 @@
       "propertyKey": "Content-Type",
       "propertyValue": "application/x-www-form-urlencoded; boundary={$boundary}"
     }
+  ],
+  "tweakClasses": [
+    {
+      "classPath": "com.mumfrey.liteloader.launch.LiteLoaderTweaker"
+    },
+    {
+      "classPath": "cpw.mods.fml.common.launcher.FMLTweaker"
+    },
+    {
+      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
+    },
+    {
+      "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
+    },
+    {
+      "classPath": "optifine.OptiFineTweaker"
+    }
   ]
 }

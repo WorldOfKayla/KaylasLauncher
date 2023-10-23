@@ -2,8 +2,6 @@ package org.foxesworld.engine.action;
 
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
-import org.foxesworld.launcher.FileLoader.DownloadListBuilder;
-import org.foxesworld.launcher.FileLoader.FilesArray;
 import org.foxesworld.launcher.Game.Game;
 import org.foxesworld.launcher.server.ServerAttributes;
 
@@ -13,16 +11,14 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class ActionHandler {
     private Engine engine;
+    private Game game;
 
     private ServerAttributes currentServer;
-    private List<FilesArray> filesToLoadFilesArray = new ArrayList<>();
     public ActionHandler(Engine engine) {
         this.engine = engine;
     }
@@ -47,18 +43,9 @@ public class ActionHandler {
                 }
             }
 
-            case "test" -> {
-                //engine.getFrame().getRootPanel().removeAll();
-                //engine.getLoadingState().showLoadingState(60);
-                //System.out.println(engine.getCONFIG().getFullPath());
-                //engine.displayPanel("wait->true");
-                //engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
-                this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
-            }
+            case "test" -> this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
 
-            case "gameDir" -> {
-                openGameFolder();
-            }
+            case "gameDir" -> openGameFolder();
 
             case "applySettings" -> {
                for(Component component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
@@ -97,13 +84,12 @@ public class ActionHandler {
             }
 
             case "toGame" -> {
-                Component serverBox = engine.getGuiBuilder().getComponentById("serverBox");
-                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) serverBox).getSelectedIndex());
-                new Game(this).start();
+                this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
+                game = new Game(this);
+                game.start();
             }
 
             case "closeButton" -> System.exit(0);
-
 
             case "hideButton" ->  engine.getFrame().getFrame().setExtendedState(1);
         }
@@ -113,10 +99,8 @@ public class ActionHandler {
         try {
             engine.getSOUND().playSound("openFolder.ogg");
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI(engine.getCONFIG().getFullPath().toString().replaceAll(Pattern.quote("\\"), "/")));
-        } catch (IOException | URISyntaxException exception) {
-            // empty catch block
-        }
+            d.browse(new URI(engine.getCONFIG().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
+        } catch (IOException | URISyntaxException ignored) {}
     }
 
 
@@ -124,11 +108,15 @@ public class ActionHandler {
         return currentServer;
     }
 
-    public List<FilesArray> getFilesToLoadFilesArray() {
-        return filesToLoadFilesArray;
-    }
-
     public Engine getEngine() {
         return engine;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

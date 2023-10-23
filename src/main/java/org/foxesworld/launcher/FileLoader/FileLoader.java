@@ -2,8 +2,11 @@ package org.foxesworld.launcher.FileLoader;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.utils.DownloadUtils;
+import org.foxesworld.engine.action.ActionHandler;
+import org.foxesworld.engine.utils.Download.DownloadListener;
+import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.launcher.Game.Game;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DownloadListBuilder {
+public class FileLoader implements DownloadListener {
+    private ActionHandler actionHandler;
     private final Engine engine;
     private final HTTPrequest POSTrequest;
     private final String downloadMask = "/uploads/files/clients/";
@@ -25,34 +28,37 @@ public class DownloadListBuilder {
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
 
-    public DownloadListBuilder(Engine engine) {
-        this.engine = engine;
+    public FileLoader(ActionHandler actionHandler) {
+        this.engine = actionHandler.getEngine();
+        this.actionHandler = actionHandler;
         this.POSTrequest = engine.getPOSTrequest();
         this.homeDir = engine.getCONFIG().getFullPath();
         this.downloadUtils = new DownloadUtils(engine);
-        this.executorService = Executors.newFixedThreadPool(4);
+        downloadUtils.setDownloadListener(this);
+        this.executorService = Executors.newFixedThreadPool(2);
     }
 
     public List<FilesArray> getFilesToDownload(String version, String client) {
         Map<String, String> request = new HashMap<>();
-       request.put("sysRequest", "loadFiles");
+        request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
-
         FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(request), FilesArray[].class);
-
         return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
 
     public void downloadFiles(List<FilesArray> filesToDownload) {
-        AtomicInteger downloaded = new AtomicInteger();
         engine.displayPanel("loggedForm->false|newsForm->false|download->true");
 
+        long totalSize = 0;
+        for (FilesArray file : filesToDownload) {
+            totalSize += file.size;
+        }
+        final long totalSizeFinal = totalSize;
         filesToDownload.forEach(file -> executorService.execute(() -> {
             String localPath = file.filename.replace(downloadMask, "");
             String localFilePath = homeDir + localPath;
-            System.out.println("Downloading " + file.filename);
-            downloadUtils.download(file.filename, localFilePath, filesToDownload.size(), downloaded.getAndIncrement());
+            downloadUtils.downloader(file.filename, localFilePath, totalSizeFinal);
         }));
     }
 
@@ -90,5 +96,19 @@ public class DownloadListBuilder {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void onDownloadProgress(int percent) {
+    }
+
+    @Override
+    public void onDownloadComplete() {
+        this.actionHandler.setGame(new Game(actionHandler));
+        actionHandler.getGame().start();
+    }
+
+    @Override
+    public void onDownloadError(Exception e) {
     }
 }

@@ -15,7 +15,7 @@ import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.DownloadUtils;
+import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.Auth.Auth;

@@ -53,6 +53,7 @@ public class ActionHandler {
                 //System.out.println(engine.getCONFIG().getFullPath());
                 //engine.displayPanel("wait->true");
                 //engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
+                this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
             }
 
             case "gameDir" -> {

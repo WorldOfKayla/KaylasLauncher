@@ -15,7 +15,7 @@ public class Game {
 
     public Game(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
-        downloadListBuilder = new DownloadListBuilder(actionHandler);
+        downloadListBuilder = new DownloadListBuilder(actionHandler.getEngine());
         this.filesArray = downloadListBuilder.getFilesToDownload(actionHandler.getCurrentServer().serverVersion, actionHandler.getCurrentServer().serverName);
     }
 

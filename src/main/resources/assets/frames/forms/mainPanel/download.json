@@ -2,31 +2,29 @@
   "groups": {
     "download": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "background": "",
         "visible": false,
-        "bounds": "20,460,800,30"
+        "bounds": "20,400,800,300"
       },
       "childComponents": [
         {
           "componentType": "progressBar",
           "componentStyle": "progress",
           "componentId": "progressBar",
-          "bounds": "0,0,790,40",
-          "width": 790,
-          "height": 40,
-          "xPos": 0,
-          "yPos": 0
+          "bounds": "0,20,790,40"
+        },
+        {
+          "componentType": "progressBar",
+          "componentStyle": "progressMini",
+          "componentId": "progressMini",
+          "bounds": "0,10,790,10"
         },
         {
           "componentType": "label",
           "componentStyle": "textBold",
           "componentId": "progressLabel",
-          "bounds": "15,-3,170,40",
-          "width": 170,
-          "height": 40,
-          "xPos": 15,
-          "yPos": -3
+          "bounds": "15,-3,170,40"
         }
       ]
     }

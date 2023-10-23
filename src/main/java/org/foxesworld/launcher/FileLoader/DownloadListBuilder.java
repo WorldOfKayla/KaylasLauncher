@@ -2,70 +2,64 @@ package org.foxesworld.launcher.FileLoader;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.utils.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DownloadListBuilder {
-    private Engine engine;
-    private final ActionHandler actionHandler;
-    private int totalFiles = 0;
+    private final Engine engine;
     private final HTTPrequest POSTrequest;
     private final String downloadMask = "/uploads/files/clients/";
-    private Map<String, String> loadCredentials = new HashMap<>();
     private final String homeDir;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
 
-    public DownloadListBuilder(ActionHandler actionHandler) {
-        this.actionHandler = actionHandler;
-        this.engine = actionHandler.getEngine();
+    public DownloadListBuilder(Engine engine) {
+        this.engine = engine;
         this.POSTrequest = engine.getPOSTrequest();
         this.homeDir = engine.getCONFIG().getFullPath();
-        this.loadCredentials.put("sysRequest", "loadFiles");
         this.downloadUtils = new DownloadUtils(engine);
         this.executorService = Executors.newFixedThreadPool(4);
     }
 
     public List<FilesArray> getFilesToDownload(String version, String client) {
-        this.loadCredentials.put("version", version);
-        this.loadCredentials.put("client", client);
-        FilesArray[] filesArray = new Gson().fromJson(this.POSTrequest.send(loadCredentials), FilesArray[].class);
+        Map<String, String> request = new HashMap<>();
+       request.put("sysRequest", "loadFiles");
+        request.put("version", version);
+        request.put("client", client);
 
-        List<FilesArray> filesToLoad = Arrays.stream(filesArray).map(fileSection -> {
-            String localPath = fileSection.filename.replace(downloadMask, "");
-            File localFile = new File(homeDir, localPath);
-            if (!localFile.exists() || !checkFile(localFile, fileSection.hash, fileSection.size)) {
-                return fileSection;
-            }
-            return null;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
-        engine.getLOGGER().debug("Total files to download: " + filesToLoad.size());
+        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(request), FilesArray[].class);
 
-        return filesToLoad;
+        return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
 
     public void downloadFiles(List<FilesArray> filesToDownload) {
         AtomicInteger downloaded = new AtomicInteger();
-        this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
-        for (FilesArray file : filesToDownload) {
-            executorService.execute(() -> {
-                String localPath = file.filename.replace(downloadMask, "");
-                String localFilePath = homeDir + localPath;
-                System.out.println("Downloading "+file.filename);
-                downloadUtils.download(file.filename, localFilePath, filesToDownload.size(), downloaded.get());
-                downloaded.getAndIncrement();
-            });
-        }
+        engine.displayPanel("loggedForm->false|newsForm->false|download->true");
+
+        filesToDownload.forEach(file -> executorService.execute(() -> {
+            String localPath = file.filename.replace(downloadMask, "");
+            String localFilePath = homeDir + localPath;
+            System.out.println("Downloading " + file.filename);
+            downloadUtils.download(file.filename, localFilePath, filesToDownload.size(), downloaded.getAndIncrement());
+        }));
+    }
+
+    private boolean shouldDownloadFile(FilesArray fileSection) {
+        String localPath = fileSection.filename.replace(downloadMask, "");
+        File localFile = new File(homeDir, localPath);
+        return !localFile.exists() || !checkFile(localFile, fileSection.hash, fileSection.size);
     }
 
     private boolean checkFile(File file, String expectedHash, long expectedSize) {
@@ -75,9 +69,10 @@ public class DownloadListBuilder {
 
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] dataBytes = new byte[1024];
+            int bytesRead;
+
             try (FileInputStream fis = new FileInputStream(file)) {
-                byte[] dataBytes = new byte[1024];
-                int bytesRead;
                 while ((bytesRead = fis.read(dataBytes)) != -1) {
                     md.update(dataBytes, 0, bytesRead);
                 }
@@ -85,8 +80,9 @@ public class DownloadListBuilder {
 
             byte[] digestBytes = md.digest();
             StringBuilder hexString = new StringBuilder();
+
             for (byte digestByte : digestBytes) {
-                hexString.append(Integer.toString((digestByte & 0xff) + 0x100, 16).substring(1));
+                hexString.append(String.format("%02x", digestByte));
             }
 
             return hexString.toString().equals(expectedHash);
@@ -94,9 +90,5 @@ public class DownloadListBuilder {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public Engine getEngine() {
-        return engine;
     }
 }

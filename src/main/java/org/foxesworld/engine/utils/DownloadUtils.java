@@ -1,6 +1,7 @@
 package org.foxesworld.engine.utils;
 
 import org.foxesworld.engine.Engine;
+
 import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -9,31 +10,33 @@ import java.net.URL;
 
 public class DownloadUtils {
     private Engine engine;
-    private int totalFilesToDownload;
+    private int percentage;
     private int downloaded = 0;
+    private JLabel progressLabel;
+    private JProgressBar progressBar;
 
     public DownloadUtils(Engine engine) {
         this.engine = engine;
+        this.progressBar = (JProgressBar) engine.getGuiBuilder().getComponentById("progressBar");
+        this.progressLabel = (JLabel) engine.getGuiBuilder().getComponentById("progressLabel");
     }
 
-    public void download(String Durl, String PATH, int totalFiles) {
-        this.totalFilesToDownload = totalFiles;
-        Runnable downloadTask = () -> downloader(Durl, PATH);
+    public void download(String Durl, String PATH, int totalFiles, int downloadedCount) {
+        Runnable downloadTask = () -> downloader(Durl, PATH, totalFiles, downloadedCount);
         new Thread(downloadTask).start();
     }
 
 
-    private void downloader(String downloadFile, String PATH) {
+    private void downloader(String downloadFile, String savePath, int totalFiles, int downloadedCount) {
         String Durl = engine.getEngineData().bindUrl + downloadFile;
-        this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
 
         try {
             this.engine.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
-            System.out.println("Downloading file: " + Durl);
-            System.out.println("Saving to path: " + PATH);
+            //System.out.println("Downloading file: " + Durl);
+            //System.out.println("Saving to path: " + savePath);
 
-            File parentDir = new File(PATH).getParentFile();
-            if(!parentDir.isDirectory()) {
+            File parentDir = new File(savePath).getParentFile();
+            if (!parentDir.isDirectory()) {
                 parentDir.mkdirs();
             }
         } catch (IOException e) {
@@ -59,29 +62,29 @@ public class DownloadUtils {
                     final int progress = (int) (downloaded / chunkSize);
                     String loadProgress = downloaded / (1024 * 1024) + "Mb /" + fileSize / (1024 * 1024) + "Mb";
                     SwingUtilities.invokeLater(() -> {
-                        updateProgressBar(progress, loadProgress);
+                        int percent = (downloadedCount * 100) / totalFiles;
+                        this.progressBar.setValue(progress);
+                        this.progressLabel.setText(loadProgress);
                     });
                 }
             }
             out.close();
             byte[] response = out.toByteArray();
 
-            try (FileOutputStream fos = new FileOutputStream(PATH)) {
+            try (FileOutputStream fos = new FileOutputStream(savePath)) {
                 fos.write(response);
             } catch (FileNotFoundException exc) {
             } catch (IOException exc) {
             }
-            downloaded++;
-            totalFilesToDownload--;
+
 
             synchronized (this) {
-                if (totalFilesToDownload == 0) {
+                if (percentage == 0) {
                     SwingUtilities.invokeLater(() -> {
                         this.engine.displayPanel("download->false");
                     });
                 }
             }
-            //System.out.println("Files reaming " + (totalFilesToDownload - downloaded));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -96,12 +99,8 @@ public class DownloadUtils {
         return fileSizeMB;
     }
 
-    private void updateProgressBar(int progress, String loadProgress) {
-        // Здесь можно обновить ваш ProgressBar
-    }
-
-    public void setTotalFilesToDownload(int totalFilesToDownload) {
-        this.totalFilesToDownload = totalFilesToDownload;
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 
 }

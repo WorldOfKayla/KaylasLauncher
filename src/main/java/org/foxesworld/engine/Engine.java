@@ -10,7 +10,6 @@ import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
-import org.foxesworld.engine.gui.components.SystemComponents;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
@@ -29,9 +28,6 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class Engine extends JFrame implements ActionListener {
     protected final APP APP;
@@ -49,7 +45,6 @@ public class Engine extends JFrame implements ActionListener {
     private User user;
     private EngineData engineData;
     private final HTTPrequest GETrequest, POSTrequest;
-    private SystemComponents systemComponents;
     private ActionHandler actionHandler;
     private DownloadUtils download;
 
@@ -139,25 +134,6 @@ public class Engine extends JFrame implements ActionListener {
 
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
-        this.defineSystemComponents();
-    }
-
-    /* NOTE
-    *  May system components will be removed soon as we're planing to define them
-    *  While loading a new panel */
-    @Deprecated
-    private void defineSystemComponents(){
-        List<String> systemIds = Arrays.asList("progressBar", "progressLabel");
-        this.systemComponents = new SystemComponents();
-        for(Map.Entry<String, List<Component>> panels: guiBuilder.getComponentsMap().entrySet()){
-            String panelName = panels.getKey();
-            for(Component component: panels.getValue()){
-                if(systemIds.contains(component.getName())){
-                    this.systemComponents.addComponent(component.getName(), component);
-                    getLOGGER().debug("Adding system component '" + component.getName()+"'");
-                }
-            }
-        }
     }
 
     /*
@@ -192,9 +168,6 @@ public class Engine extends JFrame implements ActionListener {
     }
     public APP getAPP() {
         return this.APP;
-    }
-    public SystemComponents getSystemComponents() {
-        return systemComponents;
     }
     public DownloadUtils getDownload() {
         return download;

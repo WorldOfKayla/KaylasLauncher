@@ -3,6 +3,8 @@ package org.foxesworld.engine.action;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.launcher.FileLoader.DownloadListBuilder;
+import org.foxesworld.launcher.FileLoader.FilesArray;
+import org.foxesworld.launcher.Game.Game;
 import org.foxesworld.launcher.server.ServerAttributes;
 
 import javax.swing.*;
@@ -11,13 +13,16 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class ActionHandler {
     private Engine engine;
 
     private ServerAttributes currentServer;
+    private List<FilesArray> filesToLoadFilesArray = new ArrayList<>();
     public ActionHandler(Engine engine) {
         this.engine = engine;
     }
@@ -93,14 +98,7 @@ public class ActionHandler {
             case "toGame" -> {
                 Component serverBox = engine.getGuiBuilder().getComponentById("serverBox");
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) serverBox).getSelectedIndex());
-                DownloadListBuilder downloadListBuilder = new DownloadListBuilder(this);
-                downloadListBuilder.getFilesToDownload(currentServer.serverVersion, currentServer.serverName);
-                /*
-                Component serverBox = engine.getGuiBuilder().getComponentById("serverBox");
-                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) serverBox).getSelectedIndex());
-                Game game = new Game(this);
-                game.launchGame();
-                */
+                new Game(this).start();
             }
 
             case "closeButton" -> System.exit(0);
@@ -123,6 +121,10 @@ public class ActionHandler {
 
     public ServerAttributes getCurrentServer() {
         return currentServer;
+    }
+
+    public List<FilesArray> getFilesToLoadFilesArray() {
+        return filesToLoadFilesArray;
     }
 
     public Engine getEngine() {

@@ -13,7 +13,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class GameLauncher {
     private final ActionHandler actionHandler;
     private final ServerAttributes selectedServer;
     private final LibraryScanner libraryScanner;
@@ -22,7 +22,7 @@ public class Game {
     private String tweakClassVal = "";
     boolean tweakClass = false;
 
-    public Game(ActionHandler actionHandler) {
+    public GameLauncher(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
         this.selectedServer = actionHandler.getCurrentServer();
         this.libraryScanner = new LibraryScanner(actionHandler.getEngine());

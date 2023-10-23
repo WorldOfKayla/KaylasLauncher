@@ -37,7 +37,6 @@ public class Engine extends JFrame implements ActionListener {
     protected final APP APP;
     private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
-
     private final Discord discord;
     private final  LanguageProvider LANG;
     private final FontUtils FONTUTILS;
@@ -49,8 +48,7 @@ public class Engine extends JFrame implements ActionListener {
     private Auth auth;
     private User user;
     private EngineData engineData;
-    private final HTTPrequest GETrequest;
-    private final HTTPrequest POSTrequest;
+    private final HTTPrequest GETrequest, POSTrequest;
     private SystemComponents systemComponents;
     private ActionHandler actionHandler;
     private DownloadUtils download;
@@ -102,7 +100,7 @@ public class Engine extends JFrame implements ActionListener {
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-        SOUND.playSound("intro.ogg");
+        //SOUND.playSound("intro.ogg");
     }
 
     public void displayPanel(String displayString) {

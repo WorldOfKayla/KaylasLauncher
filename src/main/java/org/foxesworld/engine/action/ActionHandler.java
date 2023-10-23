@@ -1,8 +1,8 @@
 package org.foxesworld.engine.action;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.game.Game;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
+import org.foxesworld.launcher.FileLoader.DownloadListBuilder;
 import org.foxesworld.launcher.server.ServerAttributes;
 
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class ActionHandler {
                 //engine.getLoadingState().showLoadingState(60);
                 //System.out.println(engine.getCONFIG().getFullPath());
                 //engine.displayPanel("wait->true");
-                engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
+                //engine.getDownload().download("https://foxescraft.ru/assets.zip", engine.getCONFIG().getFullPath()+"/assets.zip");
             }
 
             case "gameDir" -> {
@@ -91,10 +91,16 @@ public class ActionHandler {
             }
 
             case "toGame" -> {
-                Component component = engine.getGuiBuilder().getComponentById("serverBox");
-                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) component).getSelectedIndex());
+                Component serverBox = engine.getGuiBuilder().getComponentById("serverBox");
+                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) serverBox).getSelectedIndex());
+                DownloadListBuilder downloadListBuilder = new DownloadListBuilder(this);
+                downloadListBuilder.getFilesToDownload(currentServer.serverVersion, currentServer.serverName);
+                /*
+                Component serverBox = engine.getGuiBuilder().getComponentById("serverBox");
+                this.currentServer = engine.getAuth().getUserServersAttributes().get(((ScrollBox) serverBox).getSelectedIndex());
                 Game game = new Game(this);
-                //game.launchGame();
+                game.launchGame();
+                */
             }
 
             case "closeButton" -> System.exit(0);

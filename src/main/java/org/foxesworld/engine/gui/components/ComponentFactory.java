@@ -165,18 +165,16 @@ public class ComponentFactory {
             }
 
             case "scrollBox" -> {
-                /*
+               /*
                 * TODO
                 *  We should never initialize a* single component in ComponentFactory, never...
                 *  Never...
                 *  A temporary solution...
-                 */
+                */
                 String scrollBoxArr[] = {};
                 scrollBoxStyle = new ScrollBoxStyle(this);
                 switch (componentAttributes.initialValue) {
-                    case "userServers" -> {
-                        scrollBoxArr  = engine.getAuth().getUserServersArray();
-                    }
+                    case "userServers" -> scrollBoxArr  = engine.getAuth().getUserServersArray();
                 }
                 ScrollBox scrollBox = new ScrollBox(this, scrollBoxArr, yPos);
                 scrollBoxStyle.apply(scrollBox);

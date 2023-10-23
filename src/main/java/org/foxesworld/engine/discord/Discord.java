@@ -17,7 +17,6 @@ public class Discord implements DiscordInterface {
         DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> {
             //Instance.setUserLogin(user.username);
-            System.out.println(user.discriminator);
         };
         lib.Discord_Initialize(applicationId, handlers, true, steamId);
         presence = new DiscordRichPresence();

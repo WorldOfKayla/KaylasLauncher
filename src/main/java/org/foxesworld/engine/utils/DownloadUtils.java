@@ -1,40 +1,41 @@
 package org.foxesworld.engine.utils;
 
 import org.foxesworld.engine.Engine;
-
 import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class DownloadUtils {
-
-    private JLabel progressLabel;
-    private JProgressBar progressBar;
     private Engine engine;
+    private int totalFilesToDownload;
+    private int downloaded = 0;
 
     public DownloadUtils(Engine engine) {
         this.engine = engine;
-        this.progressBar = (JProgressBar) engine.getSystemComponents().getComponentsMap().get("progressBar");
-        this.progressLabel = (JLabel) engine.getSystemComponents().getComponentsMap().get("progressLabel");
     }
 
-    public void download(String Durl, String PATH) {
-        this.progressBar.setStringPainted(true);
-        this.progressBar.add(progressLabel);
-        Thread downloadThread = new Thread(() -> downloader(Durl, PATH));
-        downloadThread.start();
+    public void download(String Durl, String PATH, int totalFiles) {
+        this.totalFilesToDownload = totalFiles;
+        Runnable downloadTask = () -> downloader(Durl, PATH);
+        new Thread(downloadTask).start();
     }
 
-    private void downloader(String Durl, String PATH) {
+
+    private void downloader(String downloadFile, String PATH) {
+        String Durl = engine.getEngineData().bindUrl + downloadFile;
         this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
+
         try {
             this.engine.getLOGGER().info(Durl + " size is - " + getFileSize(Durl) + "Mb");
+            System.out.println("Downloading file: " + Durl);
+            System.out.println("Saving to path: " + PATH);
+
+            File parentDir = new File(PATH).getParentFile();
+            if(!parentDir.isDirectory()) {
+                parentDir.mkdirs();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,10 +58,8 @@ public class DownloadUtils {
                     downloaded += read;
                     final int progress = (int) (downloaded / chunkSize);
                     String loadProgress = downloaded / (1024 * 1024) + "Mb /" + fileSize / (1024 * 1024) + "Mb";
-                    this.progressBar.setString(progress + "%");
                     SwingUtilities.invokeLater(() -> {
-                        this.progressBar.setValue(progress);
-                        this.progressLabel.setText(loadProgress);
+                        updateProgressBar(progress, loadProgress);
                     });
                 }
             }
@@ -69,50 +68,40 @@ public class DownloadUtils {
 
             try (FileOutputStream fos = new FileOutputStream(PATH)) {
                 fos.write(response);
+            } catch (FileNotFoundException exc) {
+            } catch (IOException exc) {
             }
-        } catch (FileNotFoundException exc) {
-        } catch (IOException exc) {
-        }
+            downloaded++;
+            totalFilesToDownload--;
 
-        SwingUtilities.invokeLater(() -> {
-            this.engine.displayPanel("download->false");
-        });
-    }
-
-    public static void unpack(String path, String dir_to) throws IOException {
-        File fileZip = new File(path);
-        try (ZipFile zip = new ZipFile(path)) {
-            Enumeration entries = zip.entries();
-            LinkedList<ZipEntry> zfiles = new LinkedList<>();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) entries.nextElement();
-                if (entry.isDirectory()) {
-                    new File(dir_to + "/" + entry.getName()).mkdir();
-                } else {
-                    zfiles.add(entry);
+            synchronized (this) {
+                if (totalFilesToDownload == 0) {
+                    SwingUtilities.invokeLater(() -> {
+                        this.engine.displayPanel("download->false");
+                    });
                 }
             }
-            for (ZipEntry entry : zfiles) {
-                OutputStream out;
-                try (InputStream in = zip.getInputStream(entry)) {
-                    out = new FileOutputStream(dir_to + File.separator + entry.getName());
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = in.read(buffer)) >= 0) {
-                        out.write(buffer, 0, len);
-                    }
-                }
-                out.close();
-            }
+            //System.out.println("Files reaming " + (totalFilesToDownload - downloaded));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        fileZip.delete();
     }
 
-    private static double getFileSize(String url) throws IOException {
+    private double getFileSize(String url) throws IOException {
         URL furl = new URL(url);
-        URLConnection conn = furl.openConnection();
-        double SFS = conn.getContentLength() / (1024 * 1024);
-        conn.getInputStream().close();
-        return SFS;
+        double fileSizeBytes = furl.openConnection().getContentLength();
+        double fileSizeMB = fileSizeBytes / (1024.0 * 1024.0);
+        return fileSizeMB;
     }
+
+    private void updateProgressBar(int progress, String loadProgress) {
+        // Здесь можно обновить ваш ProgressBar
+    }
+
+    public void setTotalFilesToDownload(int totalFilesToDownload) {
+        this.totalFilesToDownload = totalFilesToDownload;
+    }
+
 }

@@ -42,8 +42,7 @@ public class Game {
         params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
         this.loadAtuhLib();
         this.addArgs();
-        this.launchGame();
-        System.out.print(params);
+        //this.launchGame();
     }
 
     private void collectLibraries() {
@@ -107,7 +106,7 @@ public class Game {
         params.add(tweakClassVal);
     }
 
-    private void launchGame() {
+    public void launchGame() {
         Thread gameThread = new Thread(() -> {
             try {
                 ProcessBuilder processBuilder = new ProcessBuilder(params);
@@ -162,6 +161,7 @@ public class Game {
 
     private void setJre() {
         params.add(buildRuntimeDir() + File.separator + "jre-8-271-x64" + File.separator + "bin" + File.separator + "java");
+        params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
         params.add("-Djava.library.path=" + buildNativesPath());
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
         params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");

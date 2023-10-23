@@ -46,7 +46,9 @@ public class Auth {
                 inputData.put(component.getName(), ((JTextField) component).getText());
             }
         }
-        this.authorize(inputData);
+        if(this.authorize(inputData)) {
+            engine.getSOUND().playSound("auth.ogg");
+        }
     }
 
     public boolean authorize(Map<String, String> authCredentials) {

@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Auth {
-    private Engine engine;
+    private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private Map<String, String> authCredentials = new HashMap<>();
-    private Map<String, Object> CONFIG;
-    private HTTPrequest POSTrequest;
+    private final Map<String, Object> CONFIG;
+    private final HTTPrequest POSTrequest;
     private Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
 
@@ -44,7 +44,12 @@ public class Auth {
         for (Component component : authCredentials) {
             if (component instanceof JTextField) {
                 inputData.put(component.getName(), ((JTextField) component).getText());
+            } else {
+                if(component instanceof JCheckBox) {
+                    inputData.put(component.getName(), String.valueOf(((JCheckBox) component).isSelected()));
+                }
             }
+
         }
         if(this.authorize(inputData)) {
             engine.getSOUND().playSound("auth.ogg");
@@ -62,7 +67,8 @@ public class Auth {
             this.authCredentials.put("units", response.units);
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
-            if (CONFIG.get("login") == null) {
+            System.out.println(authCredentials.get("rememberMe"));
+            if (CONFIG.get("login") == null && authCredentials.get("rememberMe") == "true") {
                 saveAuthCredentials(authCredentials);
             }
         } else {

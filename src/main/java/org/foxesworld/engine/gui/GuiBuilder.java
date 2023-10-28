@@ -123,7 +123,32 @@ public class GuiBuilder implements ComponentFactoryInterface {
     *  Use this method for components value replacement */
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
-        System.out.println(componentAttributes.componentId);
+        if(componentAttributes.initialValue != null) {
+            this.getInitialData(componentAttributes);
+        }
+    }
+
+    /* INFO
+    * An experimental solution
+    * Will do something with hardCoded scrollBox */
+    private void getInitialData(ComponentAttributes componentAttributes){
+        String[] splitValue = componentAttributes.initialValue.toString().split("#");
+        switch(splitValue[0]){
+            case "config" -> {
+                componentAttributes.initialValue = String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1]));
+            }
+            case "user" -> {
+                componentAttributes.initialValue = this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]);
+            }
+
+            case "scrollBox" -> {
+                switch (splitValue[1]) {
+                    case "servers" -> {
+                        this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
+                    }
+                }
+            }
+        }
     }
 
     /*

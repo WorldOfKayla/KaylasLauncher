@@ -32,7 +32,7 @@
         },
         {
           "componentType": "checkBox",
-          "enabled": false,
+          "enabled": true,
           "componentStyle": "solid",
           "componentId": "rememberMe",
           "localeKey": "auth.rememberMe",

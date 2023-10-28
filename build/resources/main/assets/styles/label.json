@@ -1,0 +1,26 @@
+{
+  "styles": {
+    "label": {
+      "promptLabel": {
+        "name": "Pumpkin Power",
+        "font": "prompt",
+        "color": "#ffffff"
+      },
+      "Heading": {
+        "name": "Naming the space",
+        "font": "FSElliotPro-Heavy",
+        "color": "#e3e0c585"
+      },
+      "textBold": {
+        "name": "Bald Power",
+        "font": "Sans-Black",
+        "color": "#da3156"
+      },
+      "title": {
+        "name": "Title",
+        "font": "mcfont",
+        "color": "#da3156"
+      }
+    }
+  }
+}

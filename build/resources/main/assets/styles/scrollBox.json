@@ -1,0 +1,13 @@
+{
+  "styles": {
+    "scrollBox": {
+      "selectable": {
+        "name": "A selectable dude!",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "color": "#08162f",
+        "texture": "assets/ui/scrollBox/scrollBox.png"
+      }
+    }
+  }
+}

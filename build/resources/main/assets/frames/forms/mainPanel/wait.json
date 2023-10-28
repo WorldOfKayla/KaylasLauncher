@@ -1,0 +1,32 @@
+{
+  "groups": {
+    "wait": {
+      "panelOptions": {
+        "opaque": true,
+        "visible": false,
+        "background": "#638dbebf",
+        "bounds": "0,0,850,500"
+      },
+      "childComponents": [
+        {
+          "componentType": "spriteImage",
+          "imageIcon": "assets/ui/sprites/wait.png",
+          "componentId": "waitSprite",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "totalFrames": 11,
+          "delay": 40,
+          "bounds": "90,90,128,128"
+        },
+        {
+          "componentType": "label",
+          "fontSize": 14,
+          "componentStyle": "promptLabel",
+          "localeKey": "auth.authTitle",
+          "componentId": "appHeader",
+          "bounds": "60,50,250,50"
+        }
+      ]
+    }
+  }
+}

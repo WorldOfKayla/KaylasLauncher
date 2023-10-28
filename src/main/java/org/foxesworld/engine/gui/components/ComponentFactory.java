@@ -39,13 +39,17 @@ public class ComponentFactory {
     private CheckboxStyle checkboxStyle;
     private MultiButtonStyle multiButtonStyle;
     private ScrollBoxStyle scrollBoxStyle;
+
     public StyleProvider.StyleAttributes style = null;
+
+    private ComponentFactoryInterface componentFactoryInterface;
 
     public ComponentFactory(Engine engine){
         this.engine = engine;
         this.LANG = engine.getLANG();
     }
     public JComponent createComponent(ComponentAttributes componentAttributes) {
+        componentFactoryInterface.onComponentCreation(componentAttributes);
         /*
         * TODO
         *  We should try supplying an InitialValue
@@ -91,7 +95,7 @@ public class ComponentFactory {
                 label.setBounds(xPos, yPos, width, height);
 
                 if(componentAttributes.initialValue != null) {
-                    label.setText(String.valueOf(initialData));
+                    label.setText(LANG.getString(componentAttributes.localeKey) + " " + initialData);
                 }
                 return label;
             }
@@ -198,6 +202,10 @@ public class ComponentFactory {
             }
         }
         return null;
+    }
+
+    public void setComponentFactoryInterface(ComponentFactoryInterface componentFactoryInterface) {
+        this.componentFactoryInterface = componentFactoryInterface;
     }
 
     public enum Align {

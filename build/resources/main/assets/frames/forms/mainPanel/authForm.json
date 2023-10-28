@@ -1,0 +1,61 @@
+{
+  "groups": {
+    "authForm": {
+      "panelOptions": {
+        "opaque": false,
+        "visible": true,
+        "background": "",
+        "bounds": "0,0,350,500"
+      },
+      "childComponents": [
+        {
+          "componentType": "textField",
+          "componentStyle": "line",
+          "localeKey": "auth.loginPlaceholder",
+          "componentId": "login",
+          "bounds": "60,160,0,0"
+        },
+        {
+          "componentType": "passField",
+          "componentStyle": "line",
+          "localeKey": "auth.passwordPlaceholder",
+          "componentId": "password",
+          "bounds": "60,230,0,0"
+        },
+        {
+          "componentType": "label",
+          "fontSize": 32,
+          "componentStyle": "Heading",
+          "localeKey": "auth.authTitle",
+          "componentId": "appHeader",
+          "bounds": "60,50,250,50"
+        },
+        {
+          "componentType": "checkBox",
+          "enabled": false,
+          "componentStyle": "solid",
+          "componentId": "rememberMe",
+          "localeKey": "auth.rememberMe",
+          "bounds": "55,265,240,32"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "buttonGreen",
+          "componentId": "authForm>submit",
+          "localeKey": "auth.submit",
+          "bounds": "60,295,120,34"
+        },
+        {
+          "componentType": "button",
+          "componentStyle": "transparent",
+          "imageIcon": "assets/ui/icons/settings.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "componentId": "settings",
+          "localeKey": "settings.settingsButt",
+          "bounds": "300,450,32,32"
+        }
+      ]
+    }
+  }
+}

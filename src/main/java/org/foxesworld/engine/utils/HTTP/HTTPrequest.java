@@ -46,8 +46,7 @@ public class HTTPrequest {
                 response.append(line);
             }
 
-            String str = response.toString();
-            return str;
+            return response.toString();
         } catch (Exception e) {
             return null;
         } finally {

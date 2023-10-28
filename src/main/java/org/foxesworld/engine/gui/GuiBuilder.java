@@ -3,6 +3,7 @@ package org.foxesworld.engine.gui;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
+import org.foxesworld.engine.gui.components.ComponentFactoryInterface;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.components.ComponentFactory;
@@ -18,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 
-public class GuiBuilder {
+public class GuiBuilder implements ComponentFactoryInterface {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
@@ -101,6 +102,7 @@ public class GuiBuilder {
      * Method for building componentFactory based on a JSON structure
      */
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
+        this.componentFactory.setComponentFactoryInterface(this);
         for (ComponentAttributes componentAttributes : componentList) {
             if (componentAttributes.componentType != null) {
                 JComponent component = this.componentFactory.createComponent(componentAttributes);
@@ -114,6 +116,15 @@ public class GuiBuilder {
                 buildGui(componentAttributes.readFrom, true, parentPanel);
             }
         }
+    }
+
+    /*
+    * TODO
+    *  Use this method for components value replacement */
+    @Override
+    public JComponent onComponentCreation(ComponentAttributes componentAttributes) {
+        System.out.println(componentAttributes.componentId);
+        return null;
     }
 
     /*
@@ -143,4 +154,5 @@ public class GuiBuilder {
     public HashMap<String, List<String>> getChildsNparents() {
         return childsNparents;
     }
+
 }

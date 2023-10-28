@@ -1,5 +1,6 @@
 package org.foxesworld.engine.utils.Download;
 
+import me.tongfei.progressbar.ProgressBar;
 import org.foxesworld.engine.Engine;
 
 import javax.swing.*;
@@ -11,14 +12,16 @@ public class DownloadUtils {
     private Engine engine;
     private JLabel progressLabel;
     private JProgressBar progressBar;
-    private int procents;
+    private int percent;
     private long downloaded = 0;
     private DownloadListener downloadListener;
+    private ProgressBar consolePb;
 
     public DownloadUtils(Engine engine) {
         this.engine = engine;
         this.progressBar = (JProgressBar) engine.getGuiBuilder().getComponentById("progressBar");
         this.progressLabel = (JLabel) engine.getGuiBuilder().getComponentById("progressLabel");
+        this.consolePb = new ProgressBar("Test", 0);
     }
 
     public void downloader(String downloadFile, String savePath, long totalSize) {
@@ -50,11 +53,12 @@ public class DownloadUtils {
                 while ((read = in.read(data, 0, data.length)) != -1) {
                     out.write(data, 0, read);
                     downloaded += read;
-                    procents = (int) (downloaded * 100 / totalSize);
+                    percent = (int) (downloaded * 100 / totalSize);
                     SwingUtilities.invokeLater(() -> {
-                        downloadListener.onDownloadProgress(procents);
-                        progressBar.setValue(procents);
+                        downloadListener.onDownloadProgress(percent);
+                        progressBar.setValue(percent);
                         progressLabel.setText(downloaded / (1024 * 1024) + "Mb /" + fileSize / (1024 * 1024) + "Mb");
+                        this.consolePb.stepTo(percent);
                     });
                 }
 
@@ -66,7 +70,7 @@ public class DownloadUtils {
             } catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-            if (procents >= 99) {
+            if (percent >= 99) {
                 downloadListener.onDownloadComplete();
             }
             httpConnection.disconnect();

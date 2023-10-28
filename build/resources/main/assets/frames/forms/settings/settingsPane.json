@@ -1,0 +1,24 @@
+{
+  "groups": {
+    "settingsPane": {
+      "panelOptions": {
+        "opaque": true,
+        "visible": true,
+        "background": "#500b0a",
+        "bounds": "0,0,780,30"
+      },
+      "childComponents": [
+        {
+          "componentType": "button",
+          "componentStyle": "buttonRed",
+          "imageIcon": "assets/ui/icons/back.png",
+          "localeKey": "settings.back",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "componentId": "back",
+          "bounds": "0,0,97,34"
+        }
+      ]
+    }
+  }
+}

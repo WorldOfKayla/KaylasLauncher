@@ -1,0 +1,27 @@
+{
+  "styles": {
+    "textField": {
+      "line": {
+        "name": "Pumpkin Power",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 200,
+        "height": 35,
+        "color": "#08162f",
+        "caretColor": "#436e22",
+        "background": "#ffffff",
+        "texture": "assets/ui/input/line.png"
+      },
+      "inputBox": {
+        "name": "Other Style",
+        "font": "prompt",
+        "fontSize": 12,
+        "width": 200,
+        "height": 25,
+        "color": "#2b2826",
+        "texture": "assets/ui/input/inputBox.png",
+        "borderColor": "#da3156"
+      }
+    }
+  }
+}

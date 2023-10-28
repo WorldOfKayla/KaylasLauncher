@@ -1,0 +1,25 @@
+{
+  "groups":{
+    "newsForm": {
+      "panelOptions": {
+        "opaque": true,
+        "visible": true,
+        "background": "#373c3975",
+        "border": "0,1,0,0,#3b4045",
+        "bounds": "350,0,500,500"
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "fontSize": 16,
+          "componentStyle": "textBold",
+          "componentId": "testImage",
+          "imageIcon": "assets/ui/img/AidenCoffee.png",
+          "iconWidth": 256,
+          "iconHeight": 256,
+          "bounds": "250,120,512,512"
+        }
+      ]
+    }
+  }
+}

@@ -59,6 +59,7 @@ public class Auth {
         if (status) {
             setAuthorised(true);
             this.authCredentials = authCredentials;
+            this.authCredentials.put("units", response.units);
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
             if (CONFIG.get("login") == null) {

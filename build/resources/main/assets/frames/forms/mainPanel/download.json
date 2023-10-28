@@ -1,0 +1,47 @@
+{
+  "groups": {
+    "download": {
+      "panelOptions": {
+        "opaque": true,
+        "background": "#373c3975",
+        "visible": false,
+        "bounds": "20,40,800,440"
+      },
+      "childComponents": [
+        {
+          "componentType": "progressBar",
+          "componentStyle": "progress",
+          "componentId": "progressBar",
+          "bounds": "5,370,790,60"
+        },
+        {
+          "componentType": "label",
+          "componentStyle": "textBold",
+          "componentId": "progressLabel",
+          "bounds": "15,0,170,40"
+        },
+        {
+          "groups": {
+            "download": {
+              "panelOptions": {
+                "opaque": true,
+                "background": "#222425a3",
+                "visible": true,
+                "bounds": "40,40,700,300"
+              },
+              "childComponents": [
+                {
+                  "componentType": "label",
+                  "componentStyle": "textBold",
+                  "componentId": "progressInfo",
+                  "localeKey": "auth.authTitle",
+                  "bounds": "0,0,170,40"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

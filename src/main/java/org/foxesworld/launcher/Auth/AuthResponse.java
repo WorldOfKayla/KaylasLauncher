@@ -6,6 +6,9 @@ class AuthResponse {
     @SerializedName("message")
     String message;
 
+    @SerializedName("units")
+    String units;
+
     @SerializedName("type")
     String type;
 }

@@ -37,6 +37,7 @@ public class ActionHandler {
                     case "authForm" -> {
                         this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
                         if(this.engine.getAuth().isAuthorised()) {
+                            this.engine.getFrame().getFrame().setVisible(false);
                             this.engine = new Engine(this.engine.getAPP());
                         }
                     }
@@ -48,15 +49,15 @@ public class ActionHandler {
             case "gameDir" -> openGameFolder();
 
             case "applySettings" -> {
-               for(Component component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
-                   if(component instanceof JCheckBox){
-                       this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
-                   } else {
-                       if(component instanceof JTextField) {
-                           this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
-                       }
-                   }
-               }
+                for(Component component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
+                    if(component instanceof JCheckBox){
+                        this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                    } else {
+                        if(component instanceof JTextField) {
+                            this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
+                        }
+                    }
+                }
                 this.engine.getCONFIG().writeCurrentConfig();
             }
 

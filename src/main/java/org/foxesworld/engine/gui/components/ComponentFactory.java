@@ -191,6 +191,7 @@ public class ComponentFactory {
         }
     }
 
+    @Deprecated
     private Object getInitialData(String initialValue){
         String[] splitValue = initialValue.split("#");
         switch(splitValue[0]){

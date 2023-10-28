@@ -4,5 +4,5 @@ import javax.swing.*;
 
 public interface ComponentFactoryInterface {
 
-    JComponent onComponentCreation(ComponentAttributes componentAttributes);
+    void onComponentCreation(ComponentAttributes componentAttributes);
 }

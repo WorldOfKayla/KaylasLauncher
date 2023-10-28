@@ -122,9 +122,8 @@ public class GuiBuilder implements ComponentFactoryInterface {
     * TODO
     *  Use this method for components value replacement */
     @Override
-    public JComponent onComponentCreation(ComponentAttributes componentAttributes) {
+    public void onComponentCreation(ComponentAttributes componentAttributes) {
         System.out.println(componentAttributes.componentId);
-        return null;
     }
 
     /*

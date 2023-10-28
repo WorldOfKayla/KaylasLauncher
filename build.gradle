@@ -41,7 +41,7 @@ dependencies {
     implementation files('lib/java-discord-rpc-2.0.1-all.jar')
     implementation 'com.github.stephengold:j-ogg-all:1.0.4'
 
-    implementation group: 'me.tongfei', name: 'progressbar', version: '0.9.2'
+    implementation group: 'me.tongfei', name: 'progressbar', version: '0.10.0'
     implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.3.1'
 
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'

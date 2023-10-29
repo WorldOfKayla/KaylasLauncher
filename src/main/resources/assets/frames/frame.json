@@ -29,6 +29,15 @@
           "bounds": "0,0,180,30"
         },
         {
+          "componentType": "label",
+          "fontSize": 8,
+          "componentStyle": "title",
+          "localeKey": "general.status",
+          "color":  "#c98319",
+          "componentId": "appHeader",
+          "bounds": "175,-20,250,50"
+        },
+        {
           "componentType": "multiButton",
           "componentStyle": "frameButtons",
           "componentId": "closeButton",

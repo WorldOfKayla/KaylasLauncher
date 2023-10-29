@@ -25,6 +25,8 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+
 public class ComponentFactory {
 
     public Engine engine;
@@ -71,6 +73,7 @@ public class ComponentFactory {
                 if(componentAttributes.imageIcon != null) {
                     label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
                 }
+
                 label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.fontSize));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.componentId);
@@ -79,6 +82,11 @@ public class ComponentFactory {
                 if(componentAttributes.initialValue != null) {
                     label.setText(LANG.getString(componentAttributes.localeKey) + " " + componentAttributes.initialValue);
                 }
+
+                if(componentAttributes.color != null) {
+                    label.setForeground(hexToColor(componentAttributes.color));
+                }
+
                 return label;
             }
 

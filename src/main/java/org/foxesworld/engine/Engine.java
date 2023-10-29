@@ -58,7 +58,7 @@ public class Engine extends JFrame implements ActionListener {
         this.initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getCONFIG().get("Lang")));
-        this.LANG = new LanguageProvider(this.getAPP(), "/assets/lang/locale.json");
+        this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);

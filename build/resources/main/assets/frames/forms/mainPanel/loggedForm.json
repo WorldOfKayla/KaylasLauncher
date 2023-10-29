@@ -12,7 +12,7 @@
           "componentType": "scrollBox",
           "componentStyle": "selectable",
           "componentId": "serverBox",
-          "initialValue": "userServers",
+          "initialValue": "scrollBox#servers",
           "bounds": "40,230,245,34"
         },
         {

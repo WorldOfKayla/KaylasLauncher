@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ActionListener {
+public class DragListener {
 
     public void addDragListener(Component component, JFrame frame) {
         final int[] xOffset = {0};

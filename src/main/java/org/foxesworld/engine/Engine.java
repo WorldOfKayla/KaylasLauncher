@@ -22,7 +22,6 @@ import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -67,13 +66,13 @@ public class Engine extends JFrame implements ActionListener {
         this.POSTrequest = new HTTPrequest(this,"POST");
         this.frameConstructor = new FrameConstructor(this);
         this.CRYPTO = new CryptUtils(this);
-        initialize();
+        setAuth(new Auth(this));
+        initialize(this.auth.getAuthCredentials("login"));
     }
 
     @Deprecated
     private void initEngineValues(String propertyPath){
         InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
-
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             setEngineData(new Gson().fromJson(reader, EngineData.class));
@@ -84,9 +83,8 @@ public class Engine extends JFrame implements ActionListener {
     *   Remove too many calls of GuiBuilder
     *   In process
     * */
-    private void initialize() {
-        this.discord.discordRpcStart("DevState","FoxesEngine","aiden");
-        setAuth(new Auth(this));
+    public void initialize(String login) {
+        this.discord.discordRpcStart("User login - " + login,"FoxesEngine","aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
@@ -95,40 +93,26 @@ public class Engine extends JFrame implements ActionListener {
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
-        //SOUND.playSound("intro.ogg");
     }
 
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
-            this.processSinglePanelDisplay(displayString);
+            this.panelVisibility(displayString);
         } else {
             for (String panelElement : panelElements) {
-                this.processSinglePanelDisplay(panelElement);
+                this.panelVisibility(panelElement);
             }
         }
     }
 
-    private void processSinglePanelDisplay(String panelElement){
+    private void panelVisibility(String panelElement){
         String[] parts = panelElement.split("->");
         if (parts.length == 2) {
             String panelName = parts[0];
             boolean displayValue = Boolean.parseBoolean(parts[1]);
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
-            //getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
-            /*
-            if(displayValue == true) {
-                if(guiBuilder.getChildsNparents().containsKey(panelName)){
-                    for(Component component: guiBuilder.getAllChildComponents(panelName)){
-                        //setComponentValues(component);
-                    }
-                } else {
-                    for(Component component: guiBuilder.getComponentsMap().get(panelName)){
-                        //setComponentValues(component);
-                    }
-                }
-            } */
         }
     }
 

@@ -16,7 +16,7 @@
     },
     {
       "propertyKey": "Content-Type",
-      "propertyValue": "application/x-www-form-urlencoded; boundary={$boundary}"
+      "propertyValue": "application/x-www-form-urlencoded; charset=UTF-8; boundary={$boundary}"
     }
   ],
   "tweakClasses": [

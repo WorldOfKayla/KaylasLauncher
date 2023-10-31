@@ -2,7 +2,7 @@ package org.foxesworld.engine.gui.components.panel;
 
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
-import org.foxesworld.engine.utils.ActionListener;
+import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -53,9 +53,9 @@ public class Panel {
         }
 
         if(panelOptions.listener != null) {
-            ActionListener actionListener = new ActionListener();
+            DragListener dragListener = new DragListener();
             switch (panelOptions.listener){
-                case "dragger" -> actionListener.addDragListener(groupPanel, frameConstructor.getFrame());
+                case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
         }
         //frameConstructor.getAppFrame().displayPanel(groupName, panelOptions.display);

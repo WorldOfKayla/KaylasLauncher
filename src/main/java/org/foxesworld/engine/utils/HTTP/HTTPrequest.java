@@ -56,10 +56,10 @@ public class HTTPrequest {
         }
     }
 
-    private StringBuilder getBoundary(int length) {
+    private StringBuilder getBoundary(int length, int radix) {
         StringBuilder boundary = new StringBuilder();
         for (int k = 0; k < length; k++) {
-            boundary.append(Long.toString(new Random().nextLong(), 3));
+            boundary.append(Long.toString(new Random().nextLong(), radix));
         }
         return boundary;
     }
@@ -81,7 +81,7 @@ public class HTTPrequest {
         for(RequestProperty requestProperty: properties){
             String value = requestProperty.propertyValue;
             if (value.contains("{$boundary}")) {
-                value = value.replace("{$boundary}", this.getBoundary(3));
+                value = value.replace("{$boundary}", this.getBoundary(3, 3));
             }
             httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
             engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);

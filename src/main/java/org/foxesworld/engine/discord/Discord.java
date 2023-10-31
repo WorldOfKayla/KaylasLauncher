@@ -3,7 +3,7 @@ package org.foxesworld.engine.discord;
 import club.minnced.discord.rpc.*;
 import org.foxesworld.engine.Engine;
 
-public class Discord implements DiscordInterface {
+public class Discord implements DiscordListener {
 
     private Engine engine;
     private DiscordRPC lib;

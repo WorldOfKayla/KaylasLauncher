@@ -35,14 +35,14 @@ public class ComponentFactory {
 
     public StyleProvider.StyleAttributes style = null;
     private String[] scrollBoxArr = {""};
-    private ComponentFactoryInterface componentFactoryInterface;
+    private ComponentFactoryListener componentFactoryListener;
 
     public ComponentFactory(Engine engine){
         this.engine = engine;
         this.LANG = engine.getLANG();
     }
     public JComponent createComponent(ComponentAttributes componentAttributes) {
-        componentFactoryInterface.onComponentCreation(componentAttributes);
+        componentFactoryListener.onComponentCreation(componentAttributes);
         if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
             if(componentStyles.get(componentAttributes.componentType) == null){
                 componentStyles.put(componentAttributes.componentType, engine.getStyleProvider().loadStyle(componentAttributes.componentType));
@@ -173,8 +173,8 @@ public class ComponentFactory {
         }
     }
 
-    public void setComponentFactoryInterface(ComponentFactoryInterface componentFactoryInterface) {
-        this.componentFactoryInterface = componentFactoryInterface;
+    public void setComponentFactoryInterface(ComponentFactoryListener componentFactoryListener) {
+        this.componentFactoryListener = componentFactoryListener;
     }
 
     public enum Align {

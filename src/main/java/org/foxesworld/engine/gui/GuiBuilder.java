@@ -3,7 +3,7 @@ package org.foxesworld.engine.gui;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
-import org.foxesworld.engine.gui.components.ComponentFactoryInterface;
+import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.components.ComponentFactory;
@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 
-public class GuiBuilder implements ComponentFactoryInterface {
+public class GuiBuilder implements ComponentFactoryListener {
 
     private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();

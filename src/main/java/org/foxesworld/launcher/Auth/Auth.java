@@ -8,10 +8,8 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Auth {
     private final Engine engine;
@@ -20,7 +18,7 @@ public class Auth {
     private Map<String, String> authCredentials = new HashMap<>();
     private final Map<String, Object> CONFIG;
     private final HTTPrequest POSTrequest;
-    private Map<String, String> inputData = new HashMap<>();
+    private final Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
 
     public Auth(Engine engine) {
@@ -67,8 +65,7 @@ public class Auth {
             this.authCredentials.put("units", response.units);
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
-            System.out.println(authCredentials.get("rememberMe"));
-            if (CONFIG.get("login") == null && authCredentials.get("rememberMe") == "true") {
+            if (CONFIG.get("login") == null && Objects.equals(authCredentials.get("rememberMe"), "true")) {
                 saveAuthCredentials(authCredentials);
             }
         } else {

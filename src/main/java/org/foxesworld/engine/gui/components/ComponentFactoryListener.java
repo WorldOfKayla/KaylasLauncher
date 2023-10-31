@@ -1,8 +1,6 @@
 package org.foxesworld.engine.gui.components;
 
-import javax.swing.*;
-
-public interface ComponentFactoryInterface {
+public interface ComponentFactoryListener {
 
     void onComponentCreation(ComponentAttributes componentAttributes);
 }

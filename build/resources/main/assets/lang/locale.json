@@ -3,6 +3,10 @@
     "appTitle": {
       "en": "FoxesWorld",
       "ru": "FoxesWorld"
+    },
+    "status": {
+      "en": "Alpha",
+      "ru": "Alpha"
     }
   },
   "settings": {

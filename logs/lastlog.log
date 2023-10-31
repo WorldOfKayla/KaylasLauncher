@@ -6334,3 +6334,337 @@
 [09:50:38.246][DEBUG] Building group wait with parent mainFrame
 [09:50:38.268][DEBUG] Setting authForm visible to false
 [09:50:38.269][DEBUG] Setting loggedForm visible to true
+[19:34:27.231][DEBUG] HTTP GET init
+[19:34:27.240][DEBUG] HTTP POST init
+[19:34:27.241][INFO] FrameConstructor initialization
+[19:34:27.249][INFO] Building FrameConstructor...
+[19:34:28.945][INFO] Loading engine auth(false)
+[19:34:28.947][DEBUG] === GUI BUILDER ===
+[19:34:28.961][DEBUG] Building group titleBar with parent rootPanel
+[19:34:28.967][DEBUG] Loading label style from assets/styles/label.json
+[19:34:28.990][INFO] Created font - mcfont
+[19:34:28.991][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:34:29.013][DEBUG] Building group mainFrame with parent rootPanel
+[19:34:29.017][DEBUG] Building group authForm with parent mainFrame
+[19:34:29.019][DEBUG] Loading textField style from assets/styles/textField.json
+[19:34:29.136][INFO] Created font - FSElliotPro-Heavy
+[19:34:29.137][DEBUG] Loading passField style from assets/styles/passField.json
+[19:34:29.183][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:34:29.205][INFO] Created font - prompt
+[19:34:29.207][DEBUG] Loading button style from assets/styles/button.json
+[19:34:29.231][DEBUG] Building group loggedForm with parent mainFrame
+[19:34:29.232][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:34:29.238][INFO] Updating combobox [Ljava.lang.String;@51ed6f88
+[19:34:29.248][DEBUG] Building group userPane with parent loggedForm
+[19:34:29.249][DEBUG] Building group userDataForm with parent userPane
+[19:34:29.253][DEBUG] Building group newsForm with parent mainFrame
+[19:34:29.288][INFO] Created font - Sans-Black
+[19:34:29.290][DEBUG] Building group settings with parent mainFrame
+[19:34:29.293][DEBUG] Building group settingsPane with parent settings
+[19:34:29.301][DEBUG] Building group generalSettings with parent settings
+[19:34:29.333][DEBUG] Building group generalInfo with parent settings
+[19:34:29.337][DEBUG] Building group download with parent mainFrame
+[19:34:29.338][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:34:29.345][DEBUG] Building group download with parent download
+[19:34:29.348][DEBUG] Building group wait with parent mainFrame
+[19:34:51.635][DEBUG] Setting authForm visible to false
+[19:34:51.635][DEBUG] Setting newsForm visible to false
+[19:34:51.636][DEBUG] Setting settings visible to true
+[19:35:06.560][DEBUG] Setting authForm visible to true
+[19:35:06.561][DEBUG] Setting newsForm visible to true
+[19:35:06.561][DEBUG] Setting settings visible to false
+[19:35:10.545][DEBUG] Setting authForm visible to false
+[19:35:10.545][DEBUG] Setting newsForm visible to false
+[19:35:10.546][DEBUG] Setting settings visible to true
+[19:35:52.292][DEBUG] HTTP GET init
+[19:35:52.297][DEBUG] HTTP POST init
+[19:35:52.298][INFO] FrameConstructor initialization
+[19:35:52.308][INFO] Building FrameConstructor...
+[19:35:52.552][INFO] Loading engine auth(false)
+[19:35:52.553][DEBUG] === GUI BUILDER ===
+[19:35:52.569][DEBUG] Building group titleBar with parent rootPanel
+[19:35:52.575][DEBUG] Loading label style from assets/styles/label.json
+[19:35:52.595][INFO] Created font - mcfont
+[19:35:52.597][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:35:52.616][DEBUG] Building group mainFrame with parent rootPanel
+[19:35:52.620][DEBUG] Building group authForm with parent mainFrame
+[19:35:52.621][DEBUG] Loading textField style from assets/styles/textField.json
+[19:35:52.694][INFO] Created font - FSElliotPro-Heavy
+[19:35:52.695][DEBUG] Loading passField style from assets/styles/passField.json
+[19:35:52.704][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:35:52.724][INFO] Created font - prompt
+[19:35:52.726][DEBUG] Loading button style from assets/styles/button.json
+[19:35:52.752][DEBUG] Building group loggedForm with parent mainFrame
+[19:35:52.753][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:35:52.765][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:35:52.778][DEBUG] Building group userPane with parent loggedForm
+[19:35:52.779][DEBUG] Building group userDataForm with parent userPane
+[19:35:52.784][DEBUG] Building group newsForm with parent mainFrame
+[19:35:52.834][INFO] Created font - Sans-Black
+[19:35:52.836][DEBUG] Building group settings with parent mainFrame
+[19:35:52.839][DEBUG] Building group settingsPane with parent settings
+[19:35:52.847][DEBUG] Building group generalSettings with parent settings
+[19:35:52.881][DEBUG] Building group generalInfo with parent settings
+[19:35:52.886][DEBUG] Building group download with parent mainFrame
+[19:35:52.887][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:35:52.893][DEBUG] Building group download with parent download
+[19:35:52.896][DEBUG] Building group wait with parent mainFrame
+[19:36:47.582][DEBUG] HTTP GET init
+[19:36:47.587][DEBUG] HTTP POST init
+[19:36:47.588][INFO] FrameConstructor initialization
+[19:36:47.600][INFO] Building FrameConstructor...
+[19:36:47.842][INFO] Loading engine auth(false)
+[19:36:47.843][DEBUG] === GUI BUILDER ===
+[19:36:47.858][DEBUG] Building group titleBar with parent rootPanel
+[19:36:47.863][DEBUG] Loading label style from assets/styles/label.json
+[19:36:47.884][INFO] Created font - mcfont
+[19:36:47.885][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:36:47.903][DEBUG] Building group mainFrame with parent rootPanel
+[19:36:47.906][DEBUG] Building group authForm with parent mainFrame
+[19:36:47.906][DEBUG] Loading textField style from assets/styles/textField.json
+[19:36:47.970][INFO] Created font - FSElliotPro-Heavy
+[19:36:47.972][DEBUG] Loading passField style from assets/styles/passField.json
+[19:36:47.980][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:36:47.997][INFO] Created font - prompt
+[19:36:47.998][DEBUG] Loading button style from assets/styles/button.json
+[19:36:48.018][DEBUG] Building group loggedForm with parent mainFrame
+[19:36:48.020][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:36:48.026][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:36:48.038][DEBUG] Building group userPane with parent loggedForm
+[19:36:48.039][DEBUG] Building group userDataForm with parent userPane
+[19:36:48.044][DEBUG] Building group newsForm with parent mainFrame
+[19:36:48.079][INFO] Created font - Sans-Black
+[19:36:48.081][DEBUG] Building group settings with parent mainFrame
+[19:36:48.083][DEBUG] Building group settingsPane with parent settings
+[19:36:48.089][DEBUG] Building group generalSettings with parent settings
+[19:36:48.122][DEBUG] Building group generalInfo with parent settings
+[19:36:48.125][DEBUG] Building group download with parent mainFrame
+[19:36:48.127][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:36:48.131][DEBUG] Building group download with parent download
+[19:36:48.134][DEBUG] Building group wait with parent mainFrame
+[19:39:20.829][DEBUG] HTTP GET init
+[19:39:20.832][DEBUG] HTTP POST init
+[19:39:20.833][INFO] FrameConstructor initialization
+[19:39:20.841][INFO] Building FrameConstructor...
+[19:39:21.115][INFO] Loading engine auth(false)
+[19:39:21.116][DEBUG] === GUI BUILDER ===
+[19:39:21.131][DEBUG] Building group titleBar with parent rootPanel
+[19:39:21.136][DEBUG] Loading label style from assets/styles/label.json
+[19:39:21.172][INFO] Created font - mcfont
+[19:39:21.174][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:39:21.191][DEBUG] Building group mainFrame with parent rootPanel
+[19:39:21.195][DEBUG] Building group authForm with parent mainFrame
+[19:39:21.196][DEBUG] Loading textField style from assets/styles/textField.json
+[19:39:21.260][INFO] Created font - FSElliotPro-Heavy
+[19:39:21.262][DEBUG] Loading passField style from assets/styles/passField.json
+[19:39:21.269][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:39:21.286][INFO] Created font - prompt
+[19:39:21.288][DEBUG] Loading button style from assets/styles/button.json
+[19:39:21.313][DEBUG] Building group loggedForm with parent mainFrame
+[19:39:21.314][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:39:21.322][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:39:21.334][DEBUG] Building group userPane with parent loggedForm
+[19:39:21.335][DEBUG] Building group userDataForm with parent userPane
+[19:39:21.339][DEBUG] Building group newsForm with parent mainFrame
+[19:39:21.373][INFO] Created font - Sans-Black
+[19:39:21.375][DEBUG] Building group settings with parent mainFrame
+[19:39:21.379][DEBUG] Building group settingsPane with parent settings
+[19:39:21.387][DEBUG] Building group generalSettings with parent settings
+[19:39:21.429][DEBUG] Building group generalInfo with parent settings
+[19:39:21.437][DEBUG] Building group download with parent mainFrame
+[19:39:21.439][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:39:21.449][DEBUG] Building group download with parent download
+[19:39:21.454][DEBUG] Building group wait with parent mainFrame
+[19:39:23.956][DEBUG] Adding request header User-Agent
+[19:39:23.956][DEBUG] Adding request header Accept-Language
+[19:39:23.956][DEBUG] Adding request header Accept
+[19:39:23.956][DEBUG] Adding request header Content-Type
+[19:41:59.958][DEBUG] HTTP GET init
+[19:41:59.962][DEBUG] HTTP POST init
+[19:41:59.964][INFO] FrameConstructor initialization
+[19:41:59.975][INFO] Building FrameConstructor...
+[19:42:00.275][INFO] Loading engine auth(false)
+[19:42:00.276][DEBUG] === GUI BUILDER ===
+[19:42:00.298][DEBUG] Building group titleBar with parent rootPanel
+[19:42:00.305][DEBUG] Loading label style from assets/styles/label.json
+[19:42:00.331][INFO] Created font - mcfont
+[19:42:00.333][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:42:00.354][DEBUG] Building group mainFrame with parent rootPanel
+[19:42:00.359][DEBUG] Building group authForm with parent mainFrame
+[19:42:00.361][DEBUG] Loading textField style from assets/styles/textField.json
+[19:42:00.445][INFO] Created font - FSElliotPro-Heavy
+[19:42:00.446][DEBUG] Loading passField style from assets/styles/passField.json
+[19:42:00.454][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:42:00.471][INFO] Created font - prompt
+[19:42:00.473][DEBUG] Loading button style from assets/styles/button.json
+[19:42:00.494][DEBUG] Building group loggedForm with parent mainFrame
+[19:42:00.495][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:42:00.502][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:42:00.510][DEBUG] Building group userPane with parent loggedForm
+[19:42:00.510][DEBUG] Building group userDataForm with parent userPane
+[19:42:00.515][DEBUG] Building group newsForm with parent mainFrame
+[19:42:00.548][INFO] Created font - Sans-Black
+[19:42:00.551][DEBUG] Building group settings with parent mainFrame
+[19:42:00.554][DEBUG] Building group settingsPane with parent settings
+[19:42:00.563][DEBUG] Building group generalSettings with parent settings
+[19:42:00.604][DEBUG] Building group generalInfo with parent settings
+[19:42:00.608][DEBUG] Building group download with parent mainFrame
+[19:42:00.609][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:42:00.616][DEBUG] Building group download with parent download
+[19:42:00.619][DEBUG] Building group wait with parent mainFrame
+[19:42:01.967][DEBUG] Adding request header User-Agent
+[19:42:01.968][DEBUG] Adding request header Accept-Language
+[19:42:01.968][DEBUG] Adding request header Accept
+[19:42:01.968][DEBUG] Adding request header Content-Type
+[19:42:20.081][DEBUG] Adding request header User-Agent
+[19:42:20.081][DEBUG] Adding request header Accept-Language
+[19:42:20.082][DEBUG] Adding request header Accept
+[19:42:20.082][DEBUG] Adding request header Content-Type
+[19:43:49.813][DEBUG] HTTP GET init
+[19:43:49.820][DEBUG] HTTP POST init
+[19:43:49.822][INFO] FrameConstructor initialization
+[19:43:49.841][INFO] Building FrameConstructor...
+[19:43:50.176][INFO] Loading engine auth(false)
+[19:43:50.177][DEBUG] === GUI BUILDER ===
+[19:43:50.192][DEBUG] Building group titleBar with parent rootPanel
+[19:43:50.197][DEBUG] Loading label style from assets/styles/label.json
+[19:43:50.218][INFO] Created font - mcfont
+[19:43:50.220][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:43:50.237][DEBUG] Building group mainFrame with parent rootPanel
+[19:43:50.241][DEBUG] Building group authForm with parent mainFrame
+[19:43:50.243][DEBUG] Loading textField style from assets/styles/textField.json
+[19:43:50.318][INFO] Created font - FSElliotPro-Heavy
+[19:43:50.319][DEBUG] Loading passField style from assets/styles/passField.json
+[19:43:50.327][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:43:50.345][INFO] Created font - prompt
+[19:43:50.346][DEBUG] Loading button style from assets/styles/button.json
+[19:43:50.370][DEBUG] Building group loggedForm with parent mainFrame
+[19:43:50.372][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:43:50.380][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:43:50.392][DEBUG] Building group userPane with parent loggedForm
+[19:43:50.393][DEBUG] Building group userDataForm with parent userPane
+[19:43:50.397][DEBUG] Building group newsForm with parent mainFrame
+[19:43:50.430][INFO] Created font - Sans-Black
+[19:43:50.433][DEBUG] Building group settings with parent mainFrame
+[19:43:50.435][DEBUG] Building group settingsPane with parent settings
+[19:43:50.441][DEBUG] Building group generalSettings with parent settings
+[19:43:50.497][DEBUG] Building group generalInfo with parent settings
+[19:43:50.513][DEBUG] Building group download with parent mainFrame
+[19:43:50.517][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:43:50.530][DEBUG] Building group download with parent download
+[19:43:50.534][DEBUG] Building group wait with parent mainFrame
+[19:43:51.926][DEBUG] Adding request header User-Agent
+[19:43:51.927][DEBUG] Adding request header Accept-Language
+[19:43:51.927][DEBUG] Adding request header Accept
+[19:43:51.927][DEBUG] Adding request header Content-Type
+[19:44:14.519][DEBUG] HTTP GET init
+[19:44:14.525][DEBUG] HTTP POST init
+[19:44:14.527][INFO] FrameConstructor initialization
+[19:44:14.537][INFO] Building FrameConstructor...
+[19:44:14.811][INFO] Loading engine auth(false)
+[19:44:14.812][DEBUG] === GUI BUILDER ===
+[19:44:14.825][DEBUG] Building group titleBar with parent rootPanel
+[19:44:14.830][DEBUG] Loading label style from assets/styles/label.json
+[19:44:14.891][INFO] Created font - mcfont
+[19:44:14.893][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:44:14.909][DEBUG] Building group mainFrame with parent rootPanel
+[19:44:14.913][DEBUG] Building group authForm with parent mainFrame
+[19:44:14.915][DEBUG] Loading textField style from assets/styles/textField.json
+[19:44:14.978][INFO] Created font - FSElliotPro-Heavy
+[19:44:14.979][DEBUG] Loading passField style from assets/styles/passField.json
+[19:44:14.985][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:44:15.001][INFO] Created font - prompt
+[19:44:15.002][DEBUG] Loading button style from assets/styles/button.json
+[19:44:15.021][DEBUG] Building group loggedForm with parent mainFrame
+[19:44:15.022][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:44:15.029][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:44:15.039][DEBUG] Building group userPane with parent loggedForm
+[19:44:15.040][DEBUG] Building group userDataForm with parent userPane
+[19:44:15.043][DEBUG] Building group newsForm with parent mainFrame
+[19:44:15.074][INFO] Created font - Sans-Black
+[19:44:15.076][DEBUG] Building group settings with parent mainFrame
+[19:44:15.079][DEBUG] Building group settingsPane with parent settings
+[19:44:15.087][DEBUG] Building group generalSettings with parent settings
+[19:44:15.128][DEBUG] Building group generalInfo with parent settings
+[19:44:15.132][DEBUG] Building group download with parent mainFrame
+[19:44:15.134][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:44:15.140][DEBUG] Building group download with parent download
+[19:44:15.144][DEBUG] Building group wait with parent mainFrame
+[19:44:17.054][DEBUG] Adding request header User-Agent
+[19:44:17.054][DEBUG] Adding request header Accept-Language
+[19:44:17.054][DEBUG] Adding request header Accept
+[19:44:17.055][DEBUG] Adding request header Content-Type
+[19:44:35.028][DEBUG] HTTP GET init
+[19:44:35.031][DEBUG] HTTP POST init
+[19:44:35.033][INFO] FrameConstructor initialization
+[19:44:35.042][INFO] Building FrameConstructor...
+[19:44:35.290][INFO] Loading engine auth(false)
+[19:44:35.291][DEBUG] === GUI BUILDER ===
+[19:44:35.307][DEBUG] Building group titleBar with parent rootPanel
+[19:44:35.312][DEBUG] Loading label style from assets/styles/label.json
+[19:44:35.348][INFO] Created font - mcfont
+[19:44:35.350][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:44:35.368][DEBUG] Building group mainFrame with parent rootPanel
+[19:44:35.372][DEBUG] Building group authForm with parent mainFrame
+[19:44:35.373][DEBUG] Loading textField style from assets/styles/textField.json
+[19:44:35.443][INFO] Created font - FSElliotPro-Heavy
+[19:44:35.445][DEBUG] Loading passField style from assets/styles/passField.json
+[19:44:35.453][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:44:35.469][INFO] Created font - prompt
+[19:44:35.470][DEBUG] Loading button style from assets/styles/button.json
+[19:44:35.491][DEBUG] Building group loggedForm with parent mainFrame
+[19:44:35.493][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:44:35.501][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:44:35.512][DEBUG] Building group userPane with parent loggedForm
+[19:44:35.513][DEBUG] Building group userDataForm with parent userPane
+[19:44:35.517][DEBUG] Building group newsForm with parent mainFrame
+[19:44:35.564][INFO] Created font - Sans-Black
+[19:44:35.567][DEBUG] Building group settings with parent mainFrame
+[19:44:35.569][DEBUG] Building group settingsPane with parent settings
+[19:44:35.576][DEBUG] Building group generalSettings with parent settings
+[19:44:35.617][DEBUG] Building group generalInfo with parent settings
+[19:44:35.621][DEBUG] Building group download with parent mainFrame
+[19:44:35.622][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:44:35.629][DEBUG] Building group download with parent download
+[19:44:35.632][DEBUG] Building group wait with parent mainFrame
+[19:44:37.316][DEBUG] Adding request header User-Agent
+[19:44:37.316][DEBUG] Adding request header Accept-Language
+[19:44:37.317][DEBUG] Adding request header Accept
+[19:44:37.317][DEBUG] Adding request header Content-Type
+[19:46:06.124][DEBUG] HTTP GET init
+[19:46:06.129][DEBUG] HTTP POST init
+[19:46:06.130][INFO] FrameConstructor initialization
+[19:46:06.141][INFO] Building FrameConstructor...
+[19:46:06.400][INFO] Loading engine auth(false)
+[19:46:06.401][DEBUG] === GUI BUILDER ===
+[19:46:06.416][DEBUG] Building group titleBar with parent rootPanel
+[19:46:06.421][DEBUG] Loading label style from assets/styles/label.json
+[19:46:06.441][INFO] Created font - mcfont
+[19:46:06.443][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:46:06.460][DEBUG] Building group mainFrame with parent rootPanel
+[19:46:06.464][DEBUG] Building group authForm with parent mainFrame
+[19:46:06.465][DEBUG] Loading textField style from assets/styles/textField.json
+[19:46:06.519][INFO] Created font - FSElliotPro-Heavy
+[19:46:06.520][DEBUG] Loading passField style from assets/styles/passField.json
+[19:46:06.526][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:46:06.540][INFO] Created font - prompt
+[19:46:06.541][DEBUG] Loading button style from assets/styles/button.json
+[19:46:06.562][DEBUG] Building group loggedForm with parent mainFrame
+[19:46:06.563][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:46:06.570][INFO] Updating combobox [Ljava.lang.String;@3512eba9
+[19:46:06.578][DEBUG] Building group userPane with parent loggedForm
+[19:46:06.579][DEBUG] Building group userDataForm with parent userPane
+[19:46:06.582][DEBUG] Building group newsForm with parent mainFrame
+[19:46:06.617][INFO] Created font - Sans-Black
+[19:46:06.620][DEBUG] Building group settings with parent mainFrame
+[19:46:06.623][DEBUG] Building group settingsPane with parent settings
+[19:46:06.630][DEBUG] Building group generalSettings with parent settings
+[19:46:06.671][DEBUG] Building group generalInfo with parent settings
+[19:46:06.674][DEBUG] Building group download with parent mainFrame
+[19:46:06.676][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:46:06.681][DEBUG] Building group download with parent download
+[19:46:06.684][DEBUG] Building group wait with parent mainFrame
+[19:46:08.011][DEBUG] Adding request header User-Agent
+[19:46:08.011][DEBUG] Adding request header Accept-Language
+[19:46:08.011][DEBUG] Adding request header Accept
+[19:46:08.012][DEBUG] Adding request header Content-Type

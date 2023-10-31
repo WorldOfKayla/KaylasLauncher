@@ -23,7 +23,6 @@ public class DownloadUtils {
         this.engine = engine;
         this.progressBar = (JProgressBar) engine.getGuiBuilder().getComponentById("progressBar");
         this.progressLabel = (JLabel) engine.getGuiBuilder().getComponentById("progressLabel");
-        this.consolePb = new ProgressBar("Exp", 100);
     }
 
     public void downloader(String downloadFile, String savePath, long totalSize) {
@@ -57,7 +56,8 @@ public class DownloadUtils {
                     downloaded += read;
                     percent = (int) (downloaded * 100 / totalSize);
                     SwingUtilities.invokeLater(() -> {
-                        this.consolePb.setExtraMessage(out.toString());
+                        this.consolePb = new ProgressBar("Exp", 100);
+                        //this.consolePb.setExtraMessage(out.toString());
                         downloadListener.onDownloadProgress(percent);
                         progressBar.setValue(percent);
                         this.consolePb.stepTo(percent);

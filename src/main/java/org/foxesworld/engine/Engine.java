@@ -116,7 +116,7 @@ public class Engine extends JFrame implements ActionListener {
             boolean displayValue = Boolean.parseBoolean(parts[1]);
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
-            getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
+            //getLOGGER().debug("Setting " + panelName + " visible to " + displayValue);
             /*
             if(displayValue == true) {
                 if(guiBuilder.getChildsNparents().containsKey(panelName)){
@@ -134,29 +134,6 @@ public class Engine extends JFrame implements ActionListener {
 
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
-    }
-
-    /*
-    * TODO
-    *  We should specify which form to perform to avoid setting values of unneeded components
-    *  VERY IMPORTANT
-    *  May initialValue help us */
-    private void setComponentValues(Component component){
-        if(component instanceof  JLabel){
-            String text = ((JLabel) component).getText();
-            //To replace Text on labels
-        } else {
-            if(component instanceof  JCheckBox) {
-                if(component.isEnabled()){
-                    ((JCheckBox) component).setSelected((Boolean) CONFIG.getCONFIG().get(component.getName()));
-                }
-            } else {
-                if(component instanceof  JTextField) {
-                    if(CONFIG.getCONFIG().get(component.getName()) != null)
-                    ((JTextField) component).setText(String.valueOf(CONFIG.getCONFIG().get(component.getName())));
-                }
-            }
-        }
     }
 
     @Override

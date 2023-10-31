@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -39,7 +40,7 @@ public class HTTPrequest {
 
             InputStream is = httpURLConnection.getInputStream();
             StringBuilder response;
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             response = new StringBuilder();
             String line;
             while ((line = rd.readLine()) != null) {
@@ -77,7 +78,6 @@ public class HTTPrequest {
     }
 
     private void setRequestProperties(HttpURLConnection httpURLConnection, List<RequestProperty> properties) {
-        //RequestProperty[] requestProperties = new Gson().fromJson(properties, RequestProperty[].class);
         for(RequestProperty requestProperty: properties){
             String value = requestProperty.propertyValue;
             if (value.contains("{$boundary}")) {
@@ -85,18 +85,6 @@ public class HTTPrequest {
             }
             httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
             engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
-        }
-
-    }
-
-
-    private void requestProperties(HttpURLConnection httpURLConnection) {
-        Map<String, List<String>> requestProperties = httpURLConnection.getRequestProperties();
-
-        for (Map.Entry<String, List<String>> entry : requestProperties.entrySet()) {
-            String headerName = entry.getKey();
-            List<String> headerValues = entry.getValue();
-            //System.out.println(headerName + ": " + headerValues);
         }
     }
 }

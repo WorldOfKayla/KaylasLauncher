@@ -95,6 +95,10 @@ public class Auth {
         return authCredentials.get(key);
     }
 
+    public Map<String, String> getAuthCredentials() {
+        return authCredentials;
+    }
+
     public Engine getEngine() {
         return engine;
     }

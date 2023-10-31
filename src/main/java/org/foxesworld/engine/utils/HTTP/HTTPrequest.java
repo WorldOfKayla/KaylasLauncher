@@ -46,7 +46,7 @@ public class HTTPrequest {
             while ((line = rd.readLine()) != null) {
                 response.append(line);
             }
-
+            System.out.println(response);
             return response.toString();
         } catch (Exception e) {
             return null;

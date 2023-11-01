@@ -99,6 +99,20 @@
       "ru": "Юниты: "
     }
   },
+  "download": {
+    "file": {
+      "en": "File: ",
+      "ru": "Файл: "
+    },
+    "directory": {
+      "en": "Directory: ",
+      "ru": "Директория: "
+    },
+    "totalSize": {
+      "en": "Total size: ",
+      "ru": "Полный размер: "
+    }
+  },
   "dev": {
     "token": {
       "en": "Token: ",

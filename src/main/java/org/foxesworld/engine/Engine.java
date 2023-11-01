@@ -118,6 +118,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
         }
+        System.out.println(parts[0]+'-'+parts[1]);
     }
 
     private void loadMainPanel(String path) {

@@ -26,6 +26,7 @@ public class DownloadUtils {
     }
 
     public void downloader(String downloadFile, String savePath, long totalSize) {
+        this.progressBar.add(this.progressLabel);
         String Durl = engine.getEngineData().bindUrl + downloadFile;
 
         File parentDir = new File(savePath).getParentFile();
@@ -43,7 +44,6 @@ public class DownloadUtils {
             httpConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             httpConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=jkghjgyutfvbhgvt78ty78yghb7y8");
             long fileSize = httpConnection.getContentLength();
-
             long chunkSize = fileSize / 100;
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -57,11 +57,10 @@ public class DownloadUtils {
                     percent = (int) (downloaded * 100 / totalSize);
                     SwingUtilities.invokeLater(() -> {
                         this.consolePb = new ProgressBar("Exp", 100);
-                        //this.consolePb.setExtraMessage(out.toString());
                         downloadListener.onDownloadProgress(percent);
                         progressBar.setValue(percent);
                         this.consolePb.stepTo(percent);
-                        progressLabel.setText(downloaded / (1024 * 1024) + "Mb /" + fileSize / (1024 * 1024) + "Mb");
+                        progressLabel.setText(getFileSize((int) downloaded) + "Mb /" + getFileSize(Math.toIntExact(totalSize)) + "Mb");
                     });
                 }
 
@@ -73,7 +72,7 @@ public class DownloadUtils {
             } catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-            if (percent >= 99) {
+            if (percent > 99) {
                 downloadListener.onDownloadComplete();
             }
             httpConnection.disconnect();
@@ -92,5 +91,9 @@ public class DownloadUtils {
         URL furl = new URL(url);
         double fileSizeBytes = furl.openConnection().getContentLength();
         return fileSizeBytes / (1024.0 * 1024.0);
+    }
+
+    private int getFileSize(int kbSize) {
+        return (int) (kbSize / (1024.0 * 1024.0));
     }
 }

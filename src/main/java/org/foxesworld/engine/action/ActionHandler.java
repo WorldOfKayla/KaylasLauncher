@@ -46,8 +46,7 @@ public class ActionHandler {
             }
 
             case "test" -> {
-                engine.getFrame().getRootPanel().removeAll();
-                this.engine.initialize("test");//"loggedForm->false|newsForm->false|download->true");
+                this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
             }
 
             case "gameDir" -> openGameFolder();

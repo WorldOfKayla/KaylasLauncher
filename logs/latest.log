@@ -1,54 +1,155 @@
-[20:17:08] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:17:08] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:17:08] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:17:09] [main/INFO]: Forge Mod Loader version 14.23.5.2855 for Minecraft 1.12.2 loading
-[20:17:09] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_271, running on Windows 10:amd64:10.0, installed at C:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
-[20:17:09] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-[20:17:09] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:09] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:17:15] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
-[20:17:15] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
-[20:17:15] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
-[20:17:15] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
-[20:17:15] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:17:15] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:17:17] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:17:17] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:17:18] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[20:17:28] [Client thread/INFO]: Setting user: AidenFox
-[20:17:47] [Client thread/INFO]: LWJGL Version: 2.9.4
-[20:17:55] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
-[20:17:55] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
-[20:17:56] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
-[20:17:57] [Client thread/INFO]: Replaced 1227 ore ingredients
-[20:17:57] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
-[20:17:30] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-[20:17:30] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:30] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:17:39] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
-[20:17:39] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
-[20:17:39] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
-[20:17:39] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
-[20:17:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:17:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:17:40] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:17:40] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:17:41] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[20:17:48] [Client thread/INFO]: Setting user: AidenFox
-[20:17:59] [Client thread/INFO]: LWJGL Version: 2.9.4
-[20:18:01] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
-[20:18:01] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
-[20:18:01] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
-[20:18:01] [Client thread/INFO]: Replaced 1227 ore ingredients
-[20:18:01] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-[20:18:03] [Client thread/ERROR]: Unable to read a class file correctly
+[23:19:33] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[23:19:33] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[23:19:33] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[23:19:33] [main/INFO]: Forge Mod Loader version 14.23.5.2855 for Minecraft 1.12.2 loading
+[23:19:33] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_271, running on Windows 10:amd64:10.0, installed at C:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
+[23:19:33] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\mods for mods
+[23:19:33] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\mods\1.12.2 for mods
+[23:19:34] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in astralsorcery-1.12.2-1.10.27.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[23:19:34] [main/WARN]: The coremod hellfirepvp.astralsorcery.core.AstralCore does not have a MCVersion annotation, it may cause issues with this version of Minecraft
+[23:19:34] [main/INFO]: [AstralCore] Initialized.
+[23:19:34] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in ClientFixer-1.12.2-1.9.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[23:19:34] [main/WARN]: The coremod ClientFixer (com.gamerforea.clientfixer.loader.CoreMod) is not signed!
+[23:19:34] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in EnderCore-1.12.2-0.5.45.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[23:19:34] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in Mekanism-1.12.2-9.8.3.390.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[23:19:34] [main/WARN]: The coremod mekanism.coremod.MekanismCoremod does not have a MCVersion annotation, it may cause issues with this version of Minecraft
+[23:19:34] [main/WARN]: The coremod MekanismCoremod (mekanism.coremod.MekanismCoremod) is not signed!
+[23:19:34] [main/INFO]: Loading tweaker optifine.OptiFineForgeTweaker from OptiFine-1.12.2_HD_U_F4.jar
+[23:19:34] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in xaeros_minimap_22.1.2_forge_1.12.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[23:19:34] [main/WARN]: The coremod XaeroMinimapPlugin (xaero.common.core.XaeroMinimapPlugin) is not signed!
+[23:19:34] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[23:19:34] [main/INFO]: Loading tweak class name optifine.OptiFineForgeTweaker
+[23:19:34] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[23:19:34] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[23:19:34] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[23:19:34] [main/INFO]: Calling tweak class optifine.OptiFineForgeTweaker
+[23:19:34] [main/INFO]: [optifine.OptiFineForgeTweaker:dbg:56]: OptiFineForgeTweaker: acceptOptions
+[23:19:34] [main/INFO]: [optifine.OptiFineForgeTweaker:dbg:56]: OptiFineForgeTweaker: injectIntoClassLoader
+[23:19:34] [main/INFO]: [optifine.OptiFineClassTransformer:dbg:242]: OptiFine ClassTransformer
+[23:19:34] [main/INFO]: [optifine.OptiFineClassTransformer:dbg:242]: OptiFine ZIP file: C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\mods\OptiFine-1.12.2_HD_U_F4.jar
+[23:19:34] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:36] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
+[23:19:36] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
+[23:19:36] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
+[23:19:36] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
+[23:19:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[23:19:36] [main/INFO]: [AstralTransformer] Loading patches...
+[23:19:37] [main/INFO]: [AstralTransformer] Initialized! Loaded 14 class patches!
+[23:19:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[23:19:38] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[23:19:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[23:19:38] [main/INFO]: [optifine.OptiFineForgeTweaker:dbg:56]: OptiFineForgeTweaker: getLaunchArguments
+[23:19:38] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[23:19:38] [main/INFO]: [AstralTransformer] Transforming amu : net.minecraft.world.World with 2 patches!
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHSUNBRIGHTNESSWORLDCLIENT
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHSUNBRIGHTNESSWORLDCOMMON
+[23:19:38] [main/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class bsb net.minecraft.client.multiplayer.WorldClient
+[23:19:38] [main/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class net.minecraftforge.client.GuiIngameForge net.minecraftforge.client.GuiIngameForge
+[23:19:38] [main/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class bud net.minecraft.client.entity.EntityPlayerSP
+[23:19:38] [main/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class bua net.minecraft.client.entity.AbstractClientPlayer
+[23:19:38] [main/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class aed net.minecraft.entity.player.EntityPlayer
+[23:19:38] [main/INFO]: Transforming net.minecraft.entity.player.EntityPlayer finished, added func_184613_cA() overriding EntityLivingBase
+[23:19:38] [main/INFO]: [AstralTransformer] Transforming vp : net.minecraft.entity.EntityLivingBase with 4 patches!
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHAPPLYPOTIONEFFECTEVENT
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHENTITYLIVINGBASEWATERSLOWDOWN
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHSETPLAYERATTRIBUTE
+[23:19:38] [main/INFO]: [AstralTransformer] Applied patch PATCHUPDATEELYTRA
+[23:19:40] [Client thread/INFO]: Setting user: AidenFox
+[23:19:40] [Client thread/INFO]: [AstralTransformer] Transforming aip : net.minecraft.item.ItemStack with 2 patches!
+[23:19:40] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHMODIFYENCHANTMENTLEVELSTOOLTIP
+[23:19:40] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHMODIFYENCHANTMENTLEVELSTOOLTIPEVENT
+[23:19:43] [Client thread/INFO]: [AstralTransformer] Transforming wg : net.minecraft.entity.ai.attributes.AbstractAttributeMap with 1 patches!
+[23:19:43] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHADDPLAYERATTRIBUTE
+[23:19:44] [Client thread/INFO]: Transforming Class [net.minecraft.entity.ai.EntityAICreeperSwell], Method [func_75246_d]
+[23:19:44] [Client thread/INFO]: Transforming net.minecraft.entity.ai.EntityAICreeperSwell Finished.
+[23:19:45] [Client thread/INFO]: Transforming Class [net.minecraft.inventory.ContainerFurnace], Method [func_82846_b]
+[23:19:45] [Client thread/INFO]: Transforming net.minecraft.inventory.ContainerFurnace Finished.
+[23:19:45] [Client thread/INFO]: Patching GameSettings.datafix
+[23:19:45] [Client thread/INFO]: [OptiFine] *** Reflector Forge ***
+[23:19:45] [Client thread/INFO]: [OptiFine] (Reflector) Class not present: mods.betterfoliage.client.BetterFoliageClient
+[23:19:45] [Client thread/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class axw net.minecraft.world.chunk.Chunk
+[23:19:45] [Client thread/INFO]: [AstralTransformer] Transforming buq : net.minecraft.client.renderer.EntityRenderer with 1 patches!
+[23:19:45] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHENTITYRENDEREREXTENDEDENTITYREACH
+[23:19:46] [Client thread/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class brz net.minecraft.client.network.NetHandlerPlayClient
+[23:19:46] [Client thread/INFO]: [AstralTransformer] Transforming pa : net.minecraft.network.NetHandlerPlayServer with 1 patches!
+[23:19:46] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHSERVEREXTENDENTITYINTERACTREACH
+[23:19:46] [Client thread/INFO]: Transforming Class [net.minecraft.client.renderer.RenderItem], Method [func_180453_a, func_184391_a]
+[23:19:46] [Client thread/INFO]: Transforming failed. Applying ersatz patch...
+[23:19:46] [Client thread/WARN]: Ersatz patch applied, things may break!
+[23:19:46] [Client thread/INFO]: Transforming net.minecraft.client.renderer.RenderItem Finished.
+[23:19:47] [Client thread/INFO]: [OptiFine] *** Reflector Vanilla ***
+[23:19:47] [Client thread/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class brs net.minecraft.client.model.ModelRenderer
+[23:19:48] [Client thread/INFO]: LWJGL Version: 2.9.4
+[23:19:49] [Client thread/INFO]: [OptiFine] 
+[23:19:49] [Client thread/INFO]: [OptiFine] OptiFine_1.12.2_HD_U_F4
+[23:19:49] [Client thread/INFO]: [OptiFine] Build: 20191023-234904
+[23:19:49] [Client thread/INFO]: [OptiFine] OS: Windows 10 (amd64) version 10.0
+[23:19:49] [Client thread/INFO]: [OptiFine] Java: 1.8.0_271, Oracle Corporation
+[23:19:49] [Client thread/INFO]: [OptiFine] VM: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+[23:19:49] [Client thread/INFO]: [OptiFine] LWJGL: 2.9.4
+[23:19:49] [Client thread/INFO]: [OptiFine] OpenGL: Quadro RTX 4000/PCIe/SSE2, version 4.6.0 NVIDIA 531.41, NVIDIA Corporation
+[23:19:49] [Client thread/INFO]: [OptiFine] OpenGL Version: 4.6.0
+[23:19:49] [Client thread/INFO]: [OptiFine] Maximum texture size: 32768x32768
+[23:19:49] [VersionCheck/INFO]: [OptiFine] Checking for new version
+[23:19:49] [Client thread/INFO]: [Shaders] OpenGL Version: 4.6.0 NVIDIA 531.41
+[23:19:49] [Client thread/INFO]: [Shaders] Vendor:  NVIDIA Corporation
+[23:19:49] [Client thread/INFO]: [Shaders] Renderer: Quadro RTX 4000/PCIe/SSE2
+[23:19:49] [Client thread/INFO]: [Shaders] Capabilities:  2.0  2.1  3.0  3.2  4.0 
+[23:19:49] [Client thread/INFO]: [Shaders] GL_MAX_DRAW_BUFFERS: 8
+[23:19:49] [Client thread/INFO]: [Shaders] GL_MAX_COLOR_ATTACHMENTS_EXT: 8
+[23:19:49] [Client thread/INFO]: [Shaders] GL_MAX_TEXTURE_IMAGE_UNITS: 32
+[23:19:49] [Client thread/INFO]: [Shaders] Load shaders configuration.
+[23:19:49] [Client thread/INFO]: [Shaders] Save shaders configuration.
+[23:19:49] [Client thread/INFO]: [Shaders] No shaderpack loaded.
+[23:19:49] [Client thread/INFO]: [OptiFine] [Shaders] Delayed loading of block mappings after resources are loaded
+[23:19:49] [Client thread/INFO]: [OptiFine] [Shaders] Delayed loading of item mappings after resources are loaded
+[23:19:49] [Client thread/INFO]: [OptiFine] [Shaders] Delayed loading of entity mappings after resources are loaded
+[23:19:49] [Client thread/INFO]: Forge Mod Loader has detected optifine OptiFine_1.12.2_HD_U_F4, enabling compatibility features
+[23:19:49] [Client thread/INFO]: -- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_271, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 596179968 bytes (568 MB) / 848297984 bytes (809 MB) up to 3817865216 bytes (3641 MB)
+	JVM Flags: 1 total; -Xmx4096m
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+XaeroMinimapPlugin (xaeros_minimap_22.1.2_forge_1.12.jar)
+  xaero.common.core.transformer.ChunkTransformer
+  xaero.common.core.transformer.NetHandlerPlayClientTransformer
+  xaero.common.core.transformer.EntityPlayerTransformer
+  xaero.common.core.transformer.AbstractClientPlayerTransformer
+  xaero.common.core.transformer.WorldClientTransformer
+  xaero.common.core.transformer.EntityPlayerSPTransformer
+  xaero.common.core.transformer.PlayerListTransformer
+  xaero.common.core.transformer.GuiIngameForgeTransformer
+  xaero.common.core.transformer.GuiBossOverlayTransformer
+  xaero.common.core.transformer.ModelRendererTransformer
+AstralCore (astralsorcery-1.12.2-1.10.27.jar)
+  
+ClientFixer (ClientFixer-1.12.2-1.9.jar)
+  com.gamerforea.clientfixer.asm.ASMTransformer
+MekanismCoremod (Mekanism-1.12.2-9.8.3.390.jar)
+  mekanism.coremod.KeybindingMigrationHelper
+EnderCorePlugin (EnderCore-1.12.2-0.5.45.jar)
+  com.enderio.core.common.transform.EnderCoreTransformer
+  com.enderio.core.common.transform.SimpleMixinPatcher
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 531.41' Renderer: 'Quadro RTX 4000/PCIe/SSE2'
+[23:19:49] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
+[23:19:49] [VersionCheck/INFO]: [OptiFine] Version found: G5
+[23:19:49] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[23:19:50] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[23:19:50] [Client thread/INFO]: Replaced 1227 ore ingredients
+[23:19:50] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\mods for mods
+[23:19:50] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\mods\1.12.2 for mods
+[23:19:52] [Client thread/ERROR]: Unable to read a class file correctly
 java.lang.IllegalArgumentException: null
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
@@ -77,7 +178,7 @@ java.lang.IllegalArgumentException: null
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
 	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
 	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
-[20:18:03] [Client thread/ERROR]: There was a problem reading the file C:\Users\Aiden\Documents\GitHub\NewEngine\build\classes\java\main\org\foxesworld\APP.class - probably this is a corrupt file
+[23:19:52] [Client thread/ERROR]: There was a problem reading the file C:\Users\Aiden\Documents\GitHub\NewEngine\build\classes\java\main\org\foxesworld\APP.class - probably this is a corrupt file
 net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
 
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
@@ -110,7 +211,7 @@ Caused by: java.lang.IllegalArgumentException
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
 	... 23 more
-[20:18:03] [Client thread/WARN]: Identified a problem with the mod candidate C:\Users\Aiden\Documents\GitHub\NewEngine, ignoring this source
+[23:19:52] [Client thread/WARN]: Identified a problem with the mod candidate C:\Users\Aiden\Documents\GitHub\NewEngine, ignoring this source
 net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
 
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
@@ -143,21 +244,1092 @@ Caused by: java.lang.IllegalArgumentException
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
 	... 23 more
-[20:18:03] [Client thread/INFO]: Forge Mod Loader has identified 4 mods to load
-[20:18:04] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge] at CLIENT
-[20:18:04] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge] at SERVER
-[20:18:04] [Client thread/INFO]: The game window is being closed by the player, exiting.
-[20:18:04] [Client thread/WARN]: Java has been asked to exit (code 0)
-[20:18:04] [Client thread/WARN]: Exit trace:
-[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.common.LoadController.transition(LoadController.java:145)
-[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.common.Loader.loadMods(Loader.java:615)
-[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:232)
-[20:18:04] [Client thread/WARN]: 	net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:467)
-[20:18:04] [Client thread/WARN]: 	net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:378)
-[20:18:04] [Client thread/WARN]: 	net.minecraft.client.main.Main.main(SourceFile:123)
-[20:18:04] [Client thread/WARN]: 	sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-[20:18:04] [Client thread/WARN]: 	sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-[20:18:04] [Client thread/WARN]: 	sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-[20:18:04] [Client thread/WARN]: 	java.lang.reflect.Method.invoke(Method.java:498)
-[20:18:04] [Client thread/WARN]: 	net.minecraft.launchwrapper.Launch.launch(Launch.java:133)
-[20:18:04] [Client thread/WARN]: 	net.minecraft.launchwrapper.Launch.main(Launch.java:21)
+[23:19:52] [Client thread/WARN]: Mod codechickenlib is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 3.2.3.358
+[23:19:53] [Thread-3/INFO]: Using alternative sync timing : 200 frames of Display.update took 2328624100 nanos
+[23:19:57] [Client thread/WARN]: Mod ironchest is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 1.12.2-7.0.67.844
+[23:19:58] [Client thread/WARN]: Mod mekanismgenerators is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 1.12.2-9.8.3.390
+[23:19:58] [Client thread/WARN]: Mod mekanismtools is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 1.12.2-9.8.3.390
+[23:19:58] [Client thread/WARN]: Mod mobends is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 1.0.0-beta-20.06.20
+[23:19:58] [Client thread/INFO]: Forge Mod Loader has identified 53 mods to load
+[23:19:58] [Client thread/INFO]: FML has found a non-mod file ClientFixer-1.12.2-1.9.jar in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.
+[23:19:58] [Client thread/INFO]: FML has found a non-mod file AutoSave-1.12.2-1.0.9.jar in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.
+[23:19:58] [Client thread/INFO]: FML has found a non-mod file AutoConfig-1.12.2-1.0.1.jar in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.
+[23:20:00] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, xaerominimap_core, ClientFixer, baubles, codechickenlib, mantle, appliedenergistics2, astralsorcery, biomesoplenty, micsiege, buildcraftcompat, buildcraftbuilders, buildcraftcore, buildcraftenergy, buildcraftfactory, buildcraftlib, buildcraftrobotics, buildcraftsilicon, buildcrafttransport, criogonals_zombies_mod, dynamictrees, dynamictreesbop, endercore, enderio, enderiobase, enderioconduits, enderiopowertools, enderioconduitsappliedenergistics, enderioendergy, enderiointegrationtic, enderiointegrationticlate, enderiomachines, energyconverters, forestry, gravisuite, ic2, infernalmobs, ironchest, jei, mekanism, mekanismgenerators, mekanismtools, mobends, mousetweaks, tconstruct, worldeditcuife3, xaerominimap, betteranimalsplus, betteranimals, orelib] at CLIENT
+[23:20:00] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, xaerominimap_core, ClientFixer, baubles, codechickenlib, mantle, appliedenergistics2, astralsorcery, biomesoplenty, micsiege, buildcraftcompat, buildcraftbuilders, buildcraftcore, buildcraftenergy, buildcraftfactory, buildcraftlib, buildcraftrobotics, buildcraftsilicon, buildcrafttransport, criogonals_zombies_mod, dynamictrees, dynamictreesbop, endercore, enderio, enderiobase, enderioconduits, enderiopowertools, enderioconduitsappliedenergistics, enderioendergy, enderiointegrationtic, enderiointegrationticlate, enderiomachines, energyconverters, forestry, gravisuite, ic2, infernalmobs, ironchest, jei, mekanism, mekanismgenerators, mekanismtools, mobends, mousetweaks, tconstruct, worldeditcuife3, xaerominimap, betteranimalsplus, betteranimals, orelib] at SERVER
+[23:20:08] [Client thread/WARN]: Patcher expecting empty class data file for net.minecraft.block.state.BlockStateContainer$Builder, but received non-empty
+[23:20:10] [Client thread/INFO]: Skipping Pulse chiselIntegration; missing dependency: chisel
+[23:20:10] [Client thread/INFO]: Skipping Pulse chiselsandbitsIntegration; missing dependency: chiselsandbits
+[23:20:10] [Client thread/INFO]: Skipping Pulse craftingtweaksIntegration; missing dependency: craftingtweaks
+[23:20:10] [Client thread/INFO]: Skipping Pulse wailaIntegration; missing dependency: waila
+[23:20:10] [Client thread/INFO]: Skipping Pulse theoneprobeIntegration; missing dependency: theoneprobe
+[23:20:10] [Client thread/INFO]: Skipping Pulse quarkIntegration; missing dependency: quark
+[23:20:11] [Client thread/INFO]: Preparing to take over the world
+[23:20:14] [Client thread/INFO]: 
+[23:20:14] [Client thread/INFO]: ******************************************************************************************
+[23:20:14] [Client thread/INFO]: 
+[23:20:14] [Client thread/INFO]: WorldEdit CUI Forge Edition 3 version 3.0.5 for Minecraft 1.12.2
+[23:20:14] [Client thread/INFO]: Built with forge 14.23.5.2838
+[23:20:14] [Client thread/INFO]: 
+[23:20:14] [Client thread/INFO]: Environment :
+[23:20:14] [Client thread/INFO]: 		 OS :Windows 10 (amd64) 
+[23:20:14] [Client thread/INFO]: 		 Java: 1.8.0_271
+[23:20:14] [Client thread/INFO]: 		 Language :RU_ru
+[23:20:14] [Client thread/INFO]: 
+[23:20:14] [Client thread/INFO]: ******************************************************************************************
+[23:20:14] [Client thread/INFO]: 
+[23:20:14] [Client thread/INFO]: WorldEdit CUI Forge Edition 3 is loading ...
+[23:20:14] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Baubles, FMLFileResourcePack:CodeChicken Lib, FMLFileResourcePack:Mantle, FMLFileResourcePack:Applied Energistics 2, FMLFileResourcePack:Astral Sorcery, FMLFileResourcePack:Biomes O' Plenty, FMLFileResourcePack:Brutal Zombie Siege, FMLFileResourcePack:BuildCraft Compat, FMLFileResourcePack:BuildCraft Builders, FMLFileResourcePack:BuildCraft, FMLFileResourcePack:BuildCraft Energy, FMLFileResourcePack:BuildCraft Factory, FMLFileResourcePack:BuildCraft Lib, FMLFileResourcePack:BuildCraft Robotics, FMLFileResourcePack:BuildCraft Silicon, FMLFileResourcePack:BuildCraft Transport, FMLFileResourcePack:Criogonal's Zombies Mod, FMLFileResourcePack:Dynamic Trees, FMLFileResourcePack:Dynamic Trees BOP, FMLFileResourcePack:EnderCore, FMLFileResourcePack:Ender IO, FMLFileResourcePack:Ender IO Base, FMLFileResourcePack:Ender IO Conduits, FMLFileResourcePack:Ender IO Powertools, FMLFileResourcePack:Ender IO Applied Energistics Conduits, FMLFileResourcePack:Ender IO endergy, FMLFileResourcePack:Ender IO Integration with Tinkers' Construct, FMLFileResourcePack:Ender IO Integration with Tinkers' Construct, FMLFileResourcePack:Ender IO Machines, FMLFileResourcePack:Energy Converters, FMLFileResourcePack:Forestry, FMLFileResourcePack:Gravitation Suite, FMLFileResourcePack:IndustrialCraft 2, FMLFileResourcePack:Infernal Mobs, FMLFileResourcePack:Iron Chest, FMLFileResourcePack:Just Enough Items, FMLFileResourcePack:Mekanism, FMLFileResourcePack:Mekanism: Generators, FMLFileResourcePack:Mekanism: Tools, FMLFileResourcePack:Mo' Bends, FMLFileResourcePack:Mouse Tweaks, FMLFileResourcePack:Tinkers' Construct, FMLFileResourcePack:WorldEdit CUI Forge Edition 3, FMLFileResourcePack:Xaero's Minimap, FMLFileResourcePack:Better Animals Plus, FMLFileResourcePack:Cyber's Better Animal Models, FMLFileResourcePack:OreLib Support Mod
+[23:20:15] [Client thread/INFO]: Processing ObjectHolder annotations
+[23:20:15] [Client thread/INFO]: Found 1380 ObjectHolder annotations
+[23:20:15] [Client thread/INFO]: Identifying ItemStackHolder annotations
+[23:20:15] [Client thread/INFO]: Found 3 ItemStackHolder annotations
+[23:20:15] [Client thread/INFO]: Forge Energy integration loaded
+[23:20:15] [Client thread/INFO]: Configured a dormant chunk cache size of 0
+[23:20:15] [Forge Version Check/INFO]: [orelib] Starting version check at https://raw.githubusercontent.com/OreCruncher/OreLib/master/version.json
+[23:20:20] [Client thread/INFO]: Pre Initialization ( started )
+[23:20:20] [Forge Version Check/INFO]: [orelib] Found status: UP_TO_DATE Target: null
+[23:20:20] [Forge Version Check/INFO]: [buildcraftcompat] Starting version check at https://mod-buildcraft.com/version/versions-compat.json
+[23:20:21] [Forge Version Check/INFO]: [buildcraftcompat] Found status: AHEAD Target: null
+[23:20:21] [Forge Version Check/INFO]: [mousetweaks] Starting version check at http://play.sourceruns.org/yalter/MouseTweaks/update.json
+[23:20:21] [Forge Version Check/INFO]: [mousetweaks] Found status: BETA Target: null
+[23:20:21] [Forge Version Check/INFO]: [codechickenlib] Starting version check at http://chickenbones.net/Files/notification/version.php?query=forge&version=1.12&file=CodeChickenLib
+[23:20:22] [Forge Version Check/INFO]: [codechickenlib] Found status: BETA Target: null
+[23:20:22] [Forge Version Check/INFO]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[23:20:23] [Client thread/INFO]: Starting AE2 VersionChecker
+[23:20:23] [Client thread/INFO]: Pre Initialization ( ended after 4628ms )
+[23:20:24] [Client thread/INFO]: [AssetLibrary] Refreshing and Invalidating Resources
+[23:20:24] [Client thread/INFO]: [AssetLibrary] Finished reloading, rebinding textures...
+[23:20:24] [Client thread/INFO]: [AssetLibrary] Preload mandatory textures
+[23:20:24] [Forge Version Check/INFO]: [forge] Found status: OUTDATED Target: 14.23.5.2859
+[23:20:24] [Forge Version Check/INFO]: [buildcraftcore] Starting version check at https://mod-buildcraft.com/version/versions.json
+[23:20:24] [Forge Version Check/INFO]: [buildcraftcore] Found status: UP_TO_DATE Target: null
+[23:20:24] [Forge Version Check/INFO]: [buildcraftlib] Starting version check at https://mod-buildcraft.com/version/versions.json
+[23:20:24] [AE2 VersionChecker/INFO]: No newer version is available: missing(found) < rv6-stable-7 (current)
+[23:20:24] [AE2 VersionChecker/INFO]: Stopping AE2 VersionChecker
+[23:20:24] [Forge Version Check/INFO]: [buildcraftlib] Found status: UP_TO_DATE Target: null
+[23:20:24] [Forge Version Check/INFO]: [worldeditcuife3] Starting version check at https://raw.githubusercontent.com/hexosse/WorldEditCUI-Forge-Edition-2/master/update.json
+[23:20:25] [Client thread/INFO]: [AssetLibrary] Preload textures
+[23:20:30] [Client thread/INFO]: [AssetLibrary] Initializing sprite library
+[23:20:30] [Client thread/INFO]: [AssetLibrary] Texture Preloading took 5533ms!
+[23:20:30] [Client thread/INFO]: [AssetLibrary] Successfully reloaded and rebound library.
+[23:20:30] [Client thread/INFO]: OBJLoader: Domain astralsorcery has been added.
+[23:20:34] [Client thread/INFO]: Crafttweaker not found!
+[23:20:38] [Client thread/INFO]: 
+[23:20:38] [Client thread/INFO]: Starting BuildCraft 7.99.24.8
+[23:20:38] [Client thread/INFO]: Copyright (c) the BuildCraft team, 2011-2018
+[23:20:38] [Client thread/INFO]: https://www.mod-buildcraft.com
+[23:20:38] [Client thread/INFO]: Detailed Build Information:
+[23:20:38] [Client thread/INFO]:   Branch HEAD
+[23:20:38] [Client thread/INFO]:   Commit 68370005a10488d02a4bb4b8df86bbc62633d216
+[23:20:38] [Client thread/INFO]:     Bump version for release relase, fix a java 13+ compile error, tweak changelog, and fix engines chaining one block more than they should have.
+[23:20:38] [Client thread/INFO]:     committed by AlexIIL
+[23:20:38] [Client thread/INFO]: 
+[23:20:38] [Client thread/INFO]: Loaded Modules:
+[23:20:38] [Client thread/INFO]:   - lib
+[23:20:38] [Client thread/INFO]:   - core
+[23:20:38] [Client thread/INFO]:   - builders
+[23:20:38] [Client thread/INFO]:   - energy
+[23:20:38] [Client thread/INFO]:   - factory
+[23:20:38] [Client thread/INFO]:   - robotics
+[23:20:38] [Client thread/INFO]:   - silicon
+[23:20:38] [Client thread/INFO]:   - transport
+[23:20:38] [Client thread/INFO]:   - compat
+[23:20:38] [Client thread/INFO]: Missing Modules:
+[23:20:38] [Client thread/INFO]: 
+[23:20:40] [Client thread/INFO]: [debugger] Not a dev environment!
+[23:20:40] [Client thread/INFO]: Configured a dormant chunk cache size of 0
+[23:20:42] [Client thread/INFO]: Fuel Integration: Integration for fluid 'oil' loaded
+[23:21:00] [Client thread/INFO]: Fuel Integration: Integration for fluid 'ic2biogas' loaded
+[23:21:02] [Client thread/INFO]: Successfully loaded 352 out of 352 recipes for shaped recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 79 out of 79 recipes for shapeless recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 41 out of 41 recipes for solid uu recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 27 out of 27 recipes for furnace recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 5 out of 5 recipes for blast furnace recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 14 out of 14 recipes for block cutter recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 51 out of 51 recipes for compressor recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 13 out of 13 recipes for extractor recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 86 out of 86 recipes for macerator recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 5 out of 5 recipes for metal former cutting recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 10 out of 10 recipes for metal former extruding recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 14 out of 14 recipes for metal former rolling recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 8 out of 8 recipes for ore washing recipes
+[23:21:02] [Client thread/INFO]: Successfully loaded 26 out of 26 recipes for thermal centrifuge recipes
+[23:21:02] [Client thread/WARN]: The item tritium_fuel_rod is not initialized.
+[23:21:02] [Client thread/WARN]: The item plasma_launcher is not initialized.
+[23:21:02] [Client thread/WARN]: The item item_pipe is not initialized.
+[23:21:02] [Client thread/WARN]: The item extractor_cover is not initialized.
+[23:21:02] [Client thread/WARN]: The item ingot2 is not initialized.
+[23:21:02] [Client thread/WARN]: The item test_pick is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid deuterium is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_brass is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_bronze is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_copper is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_gold is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_iron is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_lead is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_silver is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_steel is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_tin is not initialized.
+[23:21:02] [Client thread/WARN]: The fluid molten_zinc is not initialized.
+[23:21:04] [Client thread/INFO]: Module AgriCraft Module failed to load: AgriCraft not found
+[23:21:04] [Client thread/INFO]: Module Roots Module failed to load: Roots not found
+[23:21:04] [Client thread/INFO]: Module Mystical Agriculture Module failed to load: Mystical Agriculture not found
+[23:21:04] [Client thread/INFO]: Module TechReborn Module failed to load: TechReborn not found
+[23:21:04] [Client thread/INFO]: Module Better With Mods Module failed to load: Better With Mods not found
+[23:21:04] [Client thread/INFO]: Module ImmersiveEngineering Module failed to load: ImmersiveEngineering not found
+[23:21:04] [Client thread/INFO]: Module Natura Module failed to load: Natura not found
+[23:21:04] [Client thread/INFO]: Module rustic Module failed to load: Rustic not found
+[23:21:04] [Client thread/INFO]: Module HarvestCraft Module failed to load: HarvestCraft not found
+[23:21:04] [Client thread/INFO]: Module Actually Additions Module failed to load: Actually Additions not found
+[23:21:04] [Client thread/INFO]: Module Extra Utilities Module failed to load: Extra Utilities not found
+[23:21:06] [Client thread/INFO]: Fuel Integration: Integration for fluid 'bio.ethanol' loaded
+[23:21:08] [Client thread/INFO]: 
+[23:21:08] [Client thread/INFO]: Starting BuildCraftCompat 7.99.24.8
+[23:21:08] [Client thread/INFO]: Copyright (c) the BuildCraft team, 2011-2017
+[23:21:08] [Client thread/INFO]: https://www.mod-buildcraft.com
+[23:21:08] [Client thread/INFO]: Detailed Build Information:
+[23:21:08] [Client thread/INFO]:   Branch 8.0.x-1.12.2
+[23:21:08] [Client thread/INFO]:   Commit 16adfdb3d6a3362ba3659be7d5e9b7d12af7eee5
+[23:21:08] [Client thread/INFO]:     Bump for release.
+[23:21:08] [Client thread/INFO]:     committed by AlexIIL
+[23:21:08] [Client thread/INFO]: 
+[23:21:08] [Client thread/INFO]: [compat] Module list:
+[23:21:08] [Client thread/INFO]: [compat]   + forestry
+[23:21:08] [Client thread/INFO]: [compat]   x theoneprobe (It cannot load)
+[23:21:08] [Client thread/INFO]: [compat]   x crafttweaker (It cannot load)
+[23:21:08] [Client thread/INFO]: [compat]   + ic2
+[23:21:08] [Client thread/INFO]: OBJLoader: Domain criogonals_zombies_mod has been added.
+[23:21:08] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `species_tile_entity`, expected `dynamictrees`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:08] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `bonsai_tile_entity`, expected `dynamictrees`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:08] [Client thread/INFO]: Found annotation mixin: crazypants.enderio.conduits.me.conduit.MEMixin
+[23:21:08] [Client thread/INFO]: Registered mixin.
+[23:21:08] [Client thread/INFO]: Found mixin source class data for crazypants.enderio.conduits.me.conduit.MEMixin.
+[23:21:09] [Client thread/INFO]: Patching 1 mixins onto class crazypants.enderio.conduits.conduit.TileConduitBundle
+[23:21:09] [Client thread/INFO]: Added methods and interfaces from class crazypants.enderio.conduits.me.conduit.MEMixin
+[23:21:09] [Client thread/INFO]: Successfully patched.
+[23:21:11] [Client thread/WARN]: TConstruct, you fail again, muhaha! The world is mine, mine!
+[23:21:11] [Client thread/WARN]: Applied Energistics conduits loaded. Let your networks connect!
+[23:21:12] [Client thread/INFO]: Loading GS Config from C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\config\gravisuite.cfg
+[23:21:13] [Client thread/INFO]: Didn't detect MCMP, ignoring compatibility package
+[23:21:13] [Client thread/INFO]: Loading language resources [orelib:en_us]
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.table`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.craftingstation`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.stenciltable`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.partbuilder`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.patternchest`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.partchest`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.toolstation`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.toolforge`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.smeltery_controller`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.smeltery_component`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.tank`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.faucet`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.channel`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.casting_table`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.casting_basin`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.smeltery_drain`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.seared_furnace`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.tinker_tank`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.item_rack`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.drying_rack`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.wooden_hopper`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `tconstruct.slime_channel`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.iron`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.gold`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.diamond`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.copper`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.silver`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.crystal`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.obsidian`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironchest.dirtchest9000`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.iron`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.gold`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.diamond`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.copper`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.silver`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.crystal`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:20] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `ironshulkerbox.obsidian`, expected `ironchest`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:26] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `portal`, expected `mekanism`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:26] [Client thread/INFO]: Applying holder lookups
+[23:21:26] [Client thread/INFO]: Holder lookups applied
+[23:21:29] [Client thread/WARN]: Missing block: sandstone
+[23:21:29] [Client thread/INFO]: Applying holder lookups
+[23:21:29] [Client thread/INFO]: Holder lookups applied
+[23:21:29] [Client thread/INFO]: Farming Station: Extra Utilities 2 integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: IC2 classic integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Natura integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: TechReborn integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Immersive Engineering integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: MFR integration not loaded
+[23:21:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `botania` for name `petals`, expected `enderio`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:29] [Client thread/INFO]: Farming Station: Botania integration for farming fully loaded
+[23:21:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `ic2` for name `trees`, expected `enderio`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:29] [Client thread/INFO]: Farming Station: IC2 integration fully loaded
+[23:21:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `dye`, expected `enderio`. This could be a intended override, but in most cases indicates a broken mod.
+[23:21:29] [Client thread/INFO]: Farming Station: Gardencore integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Magicalcrops integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Metallurgy integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Actually Additions integration not loaded
+[23:21:29] [Client thread/INFO]: Farming Station: Botania integration for fertilizing not loaded
+[23:21:29] [Client thread/INFO]: Applying holder lookups
+[23:21:29] [Client thread/INFO]: Holder lookups applied
+[23:21:30] [Client thread/INFO]: OBJLoader: Domain mekanism has been added.
+[23:21:30] [Client thread/INFO]: Applying holder lookups
+[23:21:30] [Client thread/INFO]: Holder lookups applied
+[23:21:30] [Client thread/INFO]: Injecting itemstacks
+[23:21:30] [Client thread/INFO]: Itemstack injection complete
+[23:21:30] [Client thread/INFO]: [OptiFine] *** Reloading textures ***
+[23:21:30] [Client thread/INFO]: [OptiFine] Resource packs: Default
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow1.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow2.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow3.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow4.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss1.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss2.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss3.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr1.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr2.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr3.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow1.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow2.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.generic.splash
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe1.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe2.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe3.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.hostile.splash
+[23:21:31] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.player.splash
+[23:21:32] [Client thread/WARN]: File minecraft:sounds/music/menu/menu1.ogg does not exist, cannot add it to event minecraft:music.menu
+[23:21:32] [Client thread/WARN]: File minecraft:sounds/music/menu/menu2.ogg does not exist, cannot add it to event minecraft:music.menu
+[23:21:32] [Client thread/WARN]: File minecraft:sounds/music/menu/menu3.ogg does not exist, cannot add it to event minecraft:music.menu
+[23:21:32] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[23:21:32] [Thread-7/INFO]: Initializing LWJGL OpenAL
+[23:21:32] [Thread-7/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[23:21:33] [Thread-7/INFO]: OpenAL initialized.
+[23:21:33] [Sound Library Loader/INFO]: Sound engine started
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/arrow.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/arrow_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/arrow_shaft.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/axe_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/battlesign.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/binding.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/bolt.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:parts/bolt_core.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/bow_limb.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/bow_string.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/broad_axe_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/broadsword.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/cleaver.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/cross_guard.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/crossbow.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/excavator.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/excavator_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/fletching.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/frypan.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/hammer.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/hammer_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/hand_guard.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/hatchet.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/kama.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/kama_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/knife_blade.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/large_plate.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/large_sword_blade.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/longbow.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/longsword.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/lumberaxe.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/mattock.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:moms_spaghetti.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/pan_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/pick_head.tmat#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/pickaxe.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/rapier.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/scythe.tcon#inventory
+[23:22:00] [Client thread/ERROR]: Could not load material model tconstruct:parts/scythe_head.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/shard.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/sharpening_kit.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/shortbow.tcon#inventory
+[23:22:01] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/shovel.tcon#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/shovel_head.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load multimodel tconstruct:tools/shuriken.tcon#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/sign_head.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/sword_blade.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/tool_rod.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/tough_binding.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/tough_tool_rod.tmat#inventory
+[23:22:01] [Client thread/ERROR]: Could not load material model tconstruct:parts/wide_guard.tmat#inventory
+[23:22:07] [Client thread/INFO]: [OptiFine] Mipmap levels: 4
+[23:22:07] [Client thread/INFO]: [OptiFine] Multitexture: false
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/0_glass_white/glass_pane_white.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/0_glass_white/glass_white.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/10_glass_purple/glass_pane_purple.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/10_glass_purple/glass_purple.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/11_glass_blue/glass_blue.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/11_glass_blue/glass_pane_blue.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/12_glass_brown/glass_brown.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/12_glass_brown/glass_pane_brown.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/13_glass_green/glass_green.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/13_glass_green/glass_pane_green.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/14_glass_red/glass_pane_red.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/14_glass_red/glass_red.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/15_glass_black/glass_black.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/15_glass_black/glass_pane_black.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/1_glass_orange/glass_orange.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/1_glass_orange/glass_pane_orange.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/2_glass_magenta/glass_magenta.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/2_glass_magenta/glass_pane_magenta.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/3_glass_light_blue/glass_light_blue.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/3_glass_light_blue/glass_pane_light_blue.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/4_glass_yellow/glass_pane_yellow.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/4_glass_yellow/glass_yellow.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/5_glass_lime/glass_lime.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/5_glass_lime/glass_pane_lime.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/6_glass_pink/glass_pane_pink.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/6_glass_pink/glass_pink.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/7_glass_gray/glass_gray.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/7_glass_gray/glass_pane_gray.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/8_glass_silver/glass_pane_silver.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/8_glass_silver/glass_silver.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/9_glass_cyan/glass_cyan.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/9_glass_cyan/glass_pane_cyan.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/bookshelf.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/glass.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/glasspane.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] ConnectedTextures: mcpatcher/ctm/default/sandstone.properties
+[23:22:07] [Client thread/INFO]: [OptiFine] Multipass connected textures: false
+[23:22:07] [Client thread/INFO]: [OptiFine] BetterGrass: Parsing default configuration optifine/bettergrass.properties
+[23:22:08] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/pressurizedtubeverticalelite, 12 -> 16
+[23:22:08] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/thermodynamicconductorverticalelite, 12 -> 16
+[23:22:08] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/thermodynamicconductorverticaladvanced, 12 -> 16
+[23:22:09] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/universalcableverticalbasic, 12 -> 16
+[23:22:09] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/universalcableverticaladvanced, 12 -> 16
+[23:22:09] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/thermodynamicconductorverticaladvanced, 12 -> 16
+[23:22:10] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/pressurizedtubeverticalelite, 12 -> 16
+[23:22:10] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/thermodynamicconductorverticalultimate, 12 -> 16
+[23:22:11] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/universalcableverticalelite, 12 -> 16
+[23:22:11] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/pressurizedtubeverticaladvanced, 12 -> 16
+[23:22:11] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/thermodynamicconductorverticalelite, 12 -> 16
+[23:22:11] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/thermodynamicconductorverticalbasic, 12 -> 16
+[23:22:11] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/universalcableverticalultimate, 12 -> 16
+[23:22:12] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/pressurizedtubeverticalbasic, 12 -> 16
+[23:22:12] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/pressurizedtubeverticaladvanced, 12 -> 16
+[23:22:13] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/pressurizedtubeverticalultimate, 12 -> 16
+[23:22:13] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/thermodynamicconductorverticalultimate, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/universalcableverticalultimate, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/pressurizedtubeverticalultimate, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/universalcableverticalbasic, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/universalcableverticalelite, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/opaque/universalcableverticaladvanced, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/pressurizedtubeverticalbasic, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Scaled non power of 2: mekanism:blocks/models/multipart/thermodynamicconductorverticalbasic, 12 -> 16
+[23:22:14] [Client thread/INFO]: [OptiFine] Custom loader sprites: 2624
+[23:22:14] [Client thread/INFO]: [OptiFine] Sprite dependencies: 2877
+[23:22:16] [Client thread/INFO]: Created: 4096x2048 textures-atlas
+[23:22:16] [Client thread/INFO]: [OptiFine] Animated sprites: 644
+[23:22:16] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:17] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:17] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:17] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:17] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:17] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:18] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:19] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:20] [Client thread/ERROR]: MultiModel minecraft:builtin/missing is empty (no base model or parts were provided/resolved)
+[23:22:28] [Client thread/INFO]: Ignored smelting recipe with conflicting input: 1xic2.dust@8 = 1xitem.ingotIron@0
+[23:22:28] [Client thread/INFO]: Ignored smelting recipe with conflicting input: 1xic2.dust@7 = 1xitem.ingotGold@0
+[23:22:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `enderio` for name `capbank_basic2normal`, expected `enderiopowertools`. This could be a intended override, but in most cases indicates a broken mod.
+[23:22:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `enderio` for name `capbank_normal2vibrant`, expected `enderiopowertools`. This could be a intended override, but in most cases indicates a broken mod.
+[23:22:29] [Client thread/WARN]: Potentially Dangerous alternative prefix `minecraft` for name `slime`, expected `tconstruct`. This could be a intended override, but in most cases indicates a broken mod.
+[23:22:29] [Client thread/INFO]: Ignored smelting recipe with conflicting input: 1xitem.Dust@0 = 1xitem.ingotIron@0
+[23:22:29] [Client thread/INFO]: Ignored smelting recipe with conflicting input: 1xitem.Dust@1 = 1xitem.ingotGold@0
+[23:22:30] [Client thread/INFO]: Applying holder lookups
+[23:22:30] [Client thread/INFO]: Holder lookups applied
+[23:22:30] [Client thread/INFO]: Initialization ( started )
+[23:22:30] [Client thread/INFO]: Starting AE2 CSV Export
+[23:22:30] [AE2 CSV Export/INFO]: Cache is enabled. Checking for new mod configurations.
+[23:22:30] [AE2 CSV Export/INFO]: New mod configuration was found. Commencing exporting.
+[23:22:30] [AE2 CSV Export/INFO]: Item Exporting ( started )
+[23:22:31] [Client thread/INFO]: Initialization ( ended after 326ms )
+[23:22:31] [Client thread/INFO]: Ignoring fluid crystaloil for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid empoweredoil for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid pyrotheum for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid cryotheum for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid refined_oil for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid refined_fuel for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid fluidoil for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid fluidnitrodiesel for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid mana for rarity registry - it doesn't exist in the current environment
+[23:22:31] [Client thread/INFO]: Ignoring fluid nacre for rarity registry - it doesn't exist in the current environment
+[23:22:31] [AE2 CSV Export/INFO]: Exported successfully 2207 items into items.csv
+[23:22:31] [AE2 CSV Export/INFO]: Item Exporting ( ended after 414 ms)
+[23:22:31] [CC Supporters Downloader/INFO]: [codechicken.lib.internal.ModDescriptionEnhancer:lambda$init$0:85]: java.lang.UnsupportedOperationException: JsonNull
+[23:22:31] [CC Supporters Downloader/INFO]: [codechicken.lib.internal.ModDescriptionEnhancer:lambda$init$0:85]: 	at com.google.gson.JsonElement.getAsString(JsonElement.java:191)
+[23:22:31] [CC Supporters Downloader/INFO]: [codechicken.lib.internal.ModDescriptionEnhancer:lambda$init$0:85]: 	at codechicken.lib.internal.ModDescriptionEnhancer.parse(ModDescriptionEnhancer.java:103)
+[23:22:31] [CC Supporters Downloader/INFO]: [codechicken.lib.internal.ModDescriptionEnhancer:lambda$init$0:85]: 	at codechicken.lib.internal.ModDescriptionEnhancer.lambda$init$0(ModDescriptionEnhancer.java:82)
+[23:22:31] [CC Supporters Downloader/INFO]: [codechicken.lib.internal.ModDescriptionEnhancer:lambda$init$0:85]: 	at java.lang.Thread.run(Thread.java:748)
+[23:22:42] [Client thread/INFO]: [AstralTransformer] Transforming wh : net.minecraft.entity.ai.attributes.ModifiableAttributeInstance with 1 patches!
+[23:22:42] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHPOSTPROCESSATTRIBUTES
+[23:22:42] [AstralSorcery Patreon Effect Loader/WARN]: Skipped 4 patreon effects during loading due to malformed data!
+[23:22:42] [AstralSorcery Patreon Effect Loader/INFO]: Patreon effect loading finished.
+[23:22:43] [Client thread/INFO]: Loaded OAK of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded SPRUCE of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded BIRCH of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded JUNGLE of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded ACACIA of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded DARK_OAK of minecraft into tree registry.
+[23:22:43] [Client thread/INFO]: Loaded SLIME of tconstruct into tree registry.
+[23:22:46] [Client thread/INFO]: [energy.oilgen] Registered the ocean oil biome.
+[23:22:46] [Client thread/INFO]: [energy.oilgen] Registered the desert oil biome.
+[23:22:46] [Client thread/INFO]: [energy.oilgen] Registered the oil spout generator
+[23:22:46] [Client thread/INFO]: [energy.oilgen] Registered the oil biome initiializer
+[23:22:53] [Client thread/INFO]: Created: 128x256 textures-atlas
+[23:22:54] [Client thread/INFO]: Created: 256x128 textures-atlas
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler JoinMessageHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler FluidVisualsHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler OreDictTooltipHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler XPBoostHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler RightClickCropHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler SpecialTooltipHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler ClientHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler FluidSpawnHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler AutoSmeltHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler FireworkHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler Scheduler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: [Handlers] Registering handler EnchantTooltipHandler to busses: [FORGE]
+[23:22:56] [Client thread/INFO]: Sending dummy event to all mods
+[23:22:56] [Client thread/INFO]: Reloading ingame configs for modid: endercore
+[23:22:56] [Client thread/INFO]: Updating config...
+[23:22:56] [Client thread/INFO]: Updating config...
+[23:22:56] [Client thread/INFO]: Updating config...
+[23:22:56] [Client thread/INFO]: Updating config...
+[23:22:56] [Client thread/INFO]: Updating config...
+[23:22:56] [Client thread/INFO]: Sending whitelist message to Chisel and Bits for block blockDecoration1
+[23:22:56] [Client thread/INFO]: Sending whitelist message to Chisel and Bits for block blockDecoration2
+[23:22:56] [Client thread/INFO]: Sending whitelist message to Chisel and Bits for block blockDecoration3
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_dark_steel_anvil
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_basic_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_advanced_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_limited_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_big_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_big_advanced_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_existing_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_mod_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_power_item_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_soul_filter_normal
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_soul_filter_big
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_enchantment_filter_normal
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_enchantment_filter_big
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_fluid_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_not_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_or_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_and_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_nor_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_nand_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_xor_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_xnor_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_toggle_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_counting_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_sensor_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.item_redstone_timer_filter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_conduit_bundle
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_cap_bank
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_power_monitor
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_advanced_power_monitor
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_furnace
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_alloy_smelter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_alloy_smelter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enhanced_alloy_smelter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_buffer
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enchanter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_farm_station
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_combustion_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enhanced_combustion_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_stirling_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_stirling_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_zombie_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_franken_zombie_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_ender_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_lava_generator
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_killer_joe
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_attractor_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_aversion_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_inhibitor_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_relocator_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_weather_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_experience_obelisk
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_painter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_sag_mill
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_sag_mill
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enhanced_sag_mill
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_slice_and_splice
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_soul_binder
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_powered_spawner
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_vat
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enhanced_vat
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_wired_charger
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_enhanced_wired_charger
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_wired_charger
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_tank
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_transceiver
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_vacuum_chest
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_xp_vacuum
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_travel_anchor
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_tele_pad
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_dialing_device
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_impulse_hopper
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_crafter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_simple_crafter
+[23:22:57] [Client thread/INFO]: Registered permission enderio.gui.block_creative_spawner
+[23:22:57] [Client thread/INFO]: [crazypants.enderio.conduits.me.EnderIOConduitsAppliedEnergistics:init:69]: Mixin successful? true
+[23:22:59] [Client thread/INFO]: InfernalMobsCore load() completed! Modifiers ready: 27, config file at: C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\config\infernalmobs.cfg
+[23:22:59] [Client thread/INFO]: Version 9.8.3 initializing...
+[23:22:59] [Client thread/INFO]: Initialized HolidayManager.
+[23:22:59] [Client thread/INFO]: Loading complete.
+[23:22:59] [Client thread/INFO]: Mod loaded.
+[23:22:59] [Client thread/INFO]: Loaded MekanismGenerators module.
+[23:22:59] [Client thread/INFO]: Loaded 'Mekanism: Tools' module.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] A call to initialize, entry point: FORGE.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Reflecting GuiContainer...
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Detected obfuscation: FORGE.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Success.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Minecraft Forge is installed.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] LiteLoader is not installed.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Using Forge for the mod operation.
+[23:23:00] [Client thread/INFO]: [yalter.mousetweaks.Logger:Log:6]: [Mouse Tweaks] Mouse Tweaks has been initialized.
+[23:23:01] [Client thread/INFO]: Overspawning lammergeiers...
+[23:23:02] [Client thread/INFO]: Processing IMC message recipe:xml from endercore
+[23:23:02] [Client thread/INFO]: Processing IMC message recipe:xml from endercore
+[23:23:02] [Client thread/INFO]: Processing IMC message fluidFuel:add from forestry
+[23:23:02] [Client thread/INFO]: Processing IMC message fluidCoolant:add from forestry
+[23:23:02] [Client thread/INFO]: Reading user recipe file user_recipes.xml
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:concussioncreeper'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:direslime'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:direwolf'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:enderminy'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:fallenknight'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:fallenmount'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:owl'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:withercat'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'enderzoo:witherwitch'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'chickens:chickenschicken'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'thermalfoundation:blizz'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'thermalfoundation:basalz'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'thermalfoundation:blitz'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'industrialforegoing:pink_slime'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:firedragon'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:icedragon'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:icevillager'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:hippogryph'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:gorgon'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:if_pixie'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:cyclops'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'iceandfire:hippogryph'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'matteroverdrive:rogue_android'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'matteroverdrive:mad_scientist'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'matteroverdrive:mutant_scientist'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'meecreeps:meecreeps'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:chameleon'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:treasure_slime'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:haunted_tool'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:grovesprite'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:bewitched_tome'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:filch_lizard'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:brain_slime'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:rocket_creeper'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:festive_creeper'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:support_creeper'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:skeleton_warrior'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:blazing_juggernaut'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:lily_lurker'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:mother_spider'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:baby_spider'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:trollager'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:lost_miner'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:traveling_merchant'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:dodo'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'primitivemobs:mimic'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'quark:pirate'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'quark:wraith'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'quark:dweller'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'quark:ashen'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'totemic:buffalo'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'totemic:baykok'
+[23:23:03] [Client thread/INFO]: Could not find an entity for 'totemic:bald_eagle'
+[23:23:03] [Client thread/INFO]: Valid IMC recipes to be processed:
+[23:23:03] [Client thread/INFO]:  * Enchanter: endercore:xpboost from IMC from mod 'endercore'
+[23:23:03] [Client thread/INFO]:  * Enchanter: endercore:autosmelt from IMC from mod 'endercore'
+[23:23:03] [Client thread/INFO]: Reading user recipe file user_recipes.xml
+[23:23:04] [Client thread/ERROR]: Cannot add smelting recipe Smelting: Copper Dust (1xitem.Dust@3 => 1xic2.ingot@2) because another mod already has registered a recipe 1xitem.Dust@3 => 1xitem.Ingot@5.
+[23:23:04] [Client thread/ERROR]: Cannot add smelting recipe Smelting: Tin Dust (1xitem.Dust@4 => 1xic2.ingot@6) because another mod already has registered a recipe 1xitem.Dust@4 => 1xitem.Ingot@6.
+[23:23:04] [Client thread/ERROR]: Cannot add smelting recipe Smelting: Steel Dust (1xitem.OtherDust@1 => 1xic2.ingot@5) because another mod already has registered a recipe 1xitem.OtherDust@1 => 1xitem.Ingot@4.
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@3, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@3, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@2, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@2, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_copper@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@5, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@5, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@4, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@4, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xic2.ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xic2.ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.for.ingot_tin@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@6, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@6, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.Ingot@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.Ingot@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/WARN]: The supplied recipe BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]] for Alloy Smelter may be a duplicate to: BasicManyToOneRecipe [output=3xitem.item_alloy_ingot@9, recipe=Recipe [input=[RecipeInput [input=1xitem.tconstruct.ingots@1, useMeta=true], RecipeInput [input=1xitem.ingotIron@0, useMeta=true], RecipeInput [input=1xitem.tconstruct.ingots@0, useMeta=true]], output=[crazypants.enderio.base.recipe.RecipeOutput@6e1e8b02], energyRequired=10000]]
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 3xitem.item_material@38 => 1xitem.item_material@3
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 4xitem.netherquartz@0 => 1xtile.block_fused_quartz@0
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 1xtile.quartzBlock@0 => 1xtile.block_fused_quartz@0
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 1xtile.glass@0 => 1xtile.block_fused_glass@0
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 1xtile.sapling@0 => 1xtile.deadbush@0
+[23:23:04] [Client thread/INFO]: Created 6 synthetic recipes for 9xitem.item_material@28 => 1xitem.enderPearl@0
+[23:23:04] [Client thread/ERROR]: Cannot add smelting recipe Copper (1xitem.Dust@3 => 1xic2.ingot@2) because another mod already has registered a recipe 1xitem.Dust@3 => 1xitem.Ingot@5.
+[23:23:04] [Client thread/ERROR]: Cannot add smelting recipe Tin (1xitem.Dust@4 => 1xic2.ingot@6) because another mod already has registered a recipe 1xitem.Dust@4 => 1xitem.Ingot@6.
+[23:23:04] [Client thread/INFO]: Injecting itemstacks
+[23:23:04] [Client thread/INFO]: Itemstack injection complete
+[23:23:04] [Client thread/WARN]: No types have been added to Biome appliedenergistics2:storage_biome, types have been assigned on a best-effort guess: [COLD, PLAINS]
+[23:23:04] [Client thread/INFO]: Post Initialization ( started )
+[23:23:04] [Client thread/INFO]: Industrial Craft 2 - Integration Enable
+[23:23:04] [Client thread/INFO]: Railcraft - Integration Disabled
+[23:23:04] [Client thread/INFO]: Mine Factory Reloaded - Integration Disabled
+[23:23:04] [Client thread/INFO]: Waila - Integration Disabled
+[23:23:04] [Client thread/INFO]: Inventory Tweaks - Integration Disabled
+[23:23:04] [Client thread/INFO]: Just Enough Items - Integration Enable
+[23:23:04] [Client thread/INFO]: Mekanism - Integration Enable
+[23:23:04] [Client thread/INFO]: OpenComputers - Integration Disabled
+[23:23:04] [Client thread/INFO]: TheOneProbe - Integration Disabled
+[23:23:04] [Client thread/INFO]: Tesla - Integration Disabled
+[23:23:04] [Client thread/INFO]: CraftTweaker - Integration Disabled
+[23:23:04] [Client thread/INFO]: Post Initialization ( ended after 616ms )
+[23:23:04] [Client thread/INFO]: Post compile recipes
+[23:23:05] [Client thread/INFO]: Item Colorization Helper: Rebuilding colorization cache! This might take longer for higher-res texture packs...
+[23:23:05] [Client thread/INFO]: Item Colorization Helper: Cache rebuilt! Time required: 130ms - Entries cached: 41
+[23:23:06] [Client thread/INFO]: [AstralTransformer] Transforming alm : net.minecraft.enchantment.EnchantmentHelper with 1 patches!
+[23:23:06] [Client thread/INFO]: [AstralTransformer] Applied patch PATCHMODIFYENCHANTMENTLEVELS
+[23:23:06] [Client thread/WARN]: [lib.guide.loader.xml] Unknown recipe type null - must be one of [crafting, assembling, smelting]
+[23:23:06] [Client thread/WARN]: [lib.guide.loader] Unable to load guide page 'buildcraftcore:item/volume_box' (full path = 'buildcraftcore:compat/buildcraft/guide/en_us/item/volume_box.md') because we couldn't find any of the valid paths in any resource pack!
+[23:23:06] [Client thread/WARN]: [lib.guide.loader] Unable to load guide page 'buildcraftcore:item/marker_volume' (full path = 'buildcraftcore:compat/buildcraft/guide/en_us/item/marker_volume.md') because we couldn't find any of the valid paths in any resource pack!
+[23:23:06] [Client thread/WARN]: [lib.guide.loader] Unable to load guide page 'buildcraftfactory:block/autoworkbench_item' (full path = 'buildcraftfactory:compat/buildcraft/guide/en_us/block/autoworkbench_item.md') because we couldn't find any of the valid paths in any resource pack!
+[23:23:06] [Client thread/WARN]: [lib.guide.loader] Unable to load guide page 'buildcraftcore:block/engine_creative' (full path = 'buildcraftcore:compat/buildcraft/guide/en_us/block/engine_creative.md') because we couldn't find any of the valid paths in any resource pack!
+[23:23:07] [Client thread/INFO]: [lib.guide] Squished appliedenergistics2:facade and all of it's 718 variants down into one page entry.
+[23:23:08] [Client thread/INFO]: [lib.search] Max suffix length is 31
+[23:23:08] [Client thread/INFO]: [lib.search]   'item.tconstruct.clay_cast.blank'
+[23:23:08] [Client thread/WARN]: [lib.gui.cfg] Failed to read the config file! C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\HardTech\config\buildcraft\gui.json
+[23:23:08] [Client thread/INFO]: Loading predefined UU world scan values, run /ic2 uu-world-scan <small|medium|large> to calibrate them for your world.
+[23:23:08] [Client thread/INFO]: ic2 version 2.8.197-ex112 loaded.
+[23:23:09] [Client thread/INFO]: Started adding oredict melting recipes
+[23:23:11] [Client thread/INFO]: Oredict melting recipes finished in 1851.0676 ms
+[23:23:11] [Client thread/WARN]: Item used in cast recipe 'Things [things=[OreThing [name=nuggetSignalum, ores=[]]], size=1, ] ([])' doesn't smelt into a fluid
+[23:23:11] [Client thread/WARN]: Item used in cast recipe 'Things [things=[OreThing [name=nuggetEnderium, ores=[]]], size=1, ] ([])' doesn't smelt into a fluid
+[23:23:11] [Client thread/WARN]: Item used in cast recipe 'Things [things=[OreThing [name=nuggetLumium, ores=[]]], size=1, ] ([])' doesn't smelt into a fluid
+[23:23:11] [Client thread/INFO]: Fake player readout: UUID = 46e82cd0-d480-3d48-800a-77431ede078e, name = [Mekanism]
+[23:23:11] [Client thread/INFO]: Hooked into IC2 successfully.
+[23:23:11] [Client thread/INFO]: Hooked into AE2 successfully.
+[23:23:11] [Client thread/INFO]: Finished loading Cardboard Box blacklist (loaded 0 entries)
+[23:23:11] [Client thread/INFO]: Hooking complete.
+[23:23:12] [Client thread/INFO]: [xaero.common.mods.SupportMods:<init>:42]: Optifine!
+[23:23:12] [Client thread/INFO]: Crazy bird creation complete.
+[23:23:12] [Client thread/INFO]: Starting JEI...
+[23:23:13] [Client thread/INFO]: Registering recipe categories...
+[23:23:13] [Client thread/INFO]: Loaded JEI mods: [factory, energy, silicon]
+[23:23:14] [Client thread/INFO]: Registering recipe categories took 214.0 ms
+[23:23:14] [Client thread/INFO]: Registering mod plugins...
+[23:23:17] [Client thread/INFO]: Added recipe registry plugin: class crazypants.enderio.base.integration.jei.DarkSteelUpgradeRecipeCategory$1
+[23:23:17] [Client thread/INFO]: InfinityRecipeCategory: Added 2 infinity recipe(s) to JEI in 0.022 seconds.
+[23:23:17] [Client thread/INFO]: Added recipe registry plugin: class appeng.integration.modules.jei.FacadeRegistryPlugin
+[23:23:17] [Client thread/INFO]: AlloyRecipeCategory: Added 303 alloy smelter recipes to JEI in 0.010 seconds.
+[23:23:17] [Client thread/INFO]: CombustionRecipeCategory: Added 18 combustion generator recipes to JEI in 0.007 seconds.
+[23:23:17] [Client thread/INFO]: Added recipe registry plugin: class crazypants.enderio.machines.integration.jei.PainterRegistryPlugin
+[23:23:18] [Client thread/INFO]: StirlingRecipeCategory: Added 19 stirling generator recipes for 825 solid fuels to JEI in 0.063 seconds.
+[23:23:18] [Client thread/INFO]: TankRecipeCategory: Added 3432 tank recipes to JEI in 0.093 seconds.
+[23:23:18] [Client thread/INFO]: WiredChargerRecipeCategory: Added 98 item charging recipes to JEI in 0.058 seconds.
+[23:23:18] [Client thread/INFO]: WeatherObeliskRecipeCategory: Added 3 weather changing recipes to JEI in 0.002 seconds.
+[23:23:18] [Client thread/INFO]: Registering mod plugins took 4.276 s
+[23:23:18] [Client thread/INFO]: Building recipe registry...
+[23:23:19] [Client thread/INFO]: Building recipe registry took 1.131 s
+[23:23:19] [Client thread/INFO]: Building ingredient list...
+[23:23:19] [Client thread/INFO]: Building ingredient list took 537.7 ms
+[23:23:19] [Client thread/INFO]: Building ingredient filter...
+[23:23:22] [Client thread/INFO]: Building ingredient filter took 2.879 s
+[23:23:22] [Client thread/INFO]: Building bookmarks...
+[23:23:22] [Client thread/INFO]: Building bookmarks took 5.614 ms
+[23:23:22] [Client thread/INFO]: Building runtime...
+[23:23:22] [Client thread/INFO]: Building runtime took 131.9 ms
+[23:23:22] [Client thread/INFO]: Ingredients are being added at runtime: 37 net.minecraft.item.ItemStack
+[23:23:23] [Client thread/INFO]: Optimizing memory usage...
+[23:23:23] [Client thread/INFO]: Optimizing memory usage took 160.7 ms
+[23:23:23] [Client thread/INFO]: Starting JEI took 10.79 s
+[23:23:27] [Client thread/INFO]: Forge Mod Loader has successfully loaded 53 mods
+[23:23:27] [Client thread/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class biz net.minecraft.client.gui.GuiBossOverlay
+[23:23:28] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[23:23:28] [Client thread/ERROR]: Realms module missing
+[23:23:28] [Client thread/INFO]: [OptiFine] *** Reloading custom textures ***
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: tail
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: saddle
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: mouth
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: left_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: right_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: left_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: right_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: left_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: right_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: headpiece
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: donkey, name: noseband
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: evocation_illager, name: hat
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: tail
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: saddle
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: mouth
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: left_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: right_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: left_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: right_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: left_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: right_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: headpiece
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: horse, name: noseband
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: tail
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: saddle
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: mouth
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: left_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: right_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: left_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: right_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: left_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: right_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: headpiece
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: mule, name: noseband
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: tail
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: saddle
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: mouth
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: left_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: right_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: left_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: right_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: left_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: right_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: headpiece
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: zombie_horse, name: noseband
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: villager, name: headwear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: villager, name: headwear2
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: villager, name: bodywear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: vindication_illager, name: hat
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: tail
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: saddle
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: mouth
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: left_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: right_ear
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: left_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: right_bit
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: left_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: right_rein
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: headpiece
+[23:23:28] [Client thread/WARN]: [OptiFine] Model renderer not found, model: skeleton_horse, name: noseband
+[23:23:31] [Client thread/ERROR]: Realms module missing
+[23:25:48] [Client thread/ERROR]: Realms module missing
+[23:26:00] [Client thread/INFO]: [xaero.common.core.transformer.ClassNodeTransformer:transform:26]: Transforming class pl net.minecraft.server.management.PlayerList
+[23:26:01] [Server thread/INFO]: Starting integrated minecraft server version 1.12.2
+[23:26:01] [Server thread/INFO]: Generating keypair
+[23:26:01] [Server thread/INFO]: Injecting existing registry data into this server instance
+[23:26:07] [Server thread/INFO]: Applying holder lookups
+[23:26:07] [Server thread/INFO]: Holder lookups applied
+[23:26:07] [Server thread/INFO]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@79922f84)
+[23:26:09] [Server thread/INFO]: Loaded 860 advancements
+[23:26:10] [Server thread/INFO]: Transforming Class [net.minecraft.world.chunk.storage.ExtendedBlockStorage], Method [func_76663_a]
+[23:26:10] [Server thread/INFO]: Transforming net.minecraft.world.chunk.storage.ExtendedBlockStorage Finished.
+[23:26:10] [Server thread/INFO]: Checking GatewayCache integrity for dimension 0
+[23:26:10] [Server thread/INFO]: GatewayCache checked and fully loaded in 0ms! Collected and checked 0 gateway nodes!
+[23:26:10] [Server thread/INFO]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@79922f84)
+[23:26:10] [Server thread/INFO]: Checking GatewayCache integrity for dimension 1
+[23:26:10] [Server thread/INFO]: GatewayCache checked and fully loaded in 0ms! Collected and checked 0 gateway nodes!
+[23:26:10] [Server thread/INFO]: [biomesoplenty.common.world.BiomeProviderBOPHell:<init>:32]: settings for hell world: 
+[23:26:10] [Server thread/INFO]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@79922f84)
+[23:26:10] [Server thread/INFO]: Checking GatewayCache integrity for dimension -1
+[23:26:10] [Server thread/INFO]: GatewayCache checked and fully loaded in 0ms! Collected and checked 0 gateway nodes!
+[23:26:10] [Server thread/INFO]: Loading dimension 2 (New World) (net.minecraft.server.integrated.IntegratedServer@79922f84)
+[23:26:10] [Server thread/INFO]: Checking GatewayCache integrity for dimension 2
+[23:26:10] [Server thread/INFO]: GatewayCache checked and fully loaded in 0ms! Collected and checked 0 gateway nodes!
+[23:26:10] [Server thread/INFO]: Preparing start region for level 0
+[23:26:11] [Server thread/INFO]: Preparing spawn area: 4%
+[23:26:12] [Server thread/INFO]: Preparing spawn area: 6%
+[23:26:13] [Server thread/INFO]: Preparing spawn area: 9%
+[23:26:14] [Server thread/INFO]: Preparing spawn area: 11%
+[23:26:15] [Server thread/INFO]: Preparing spawn area: 13%
+[23:26:16] [Server thread/INFO]: Preparing spawn area: 17%
+[23:26:17] [Server thread/INFO]: Preparing spawn area: 20%
+[23:26:18] [Server thread/INFO]: Preparing spawn area: 24%
+[23:26:19] [Server thread/INFO]: Preparing spawn area: 27%
+[23:26:21] [Server thread/INFO]: Preparing spawn area: 31%
+[23:26:22] [Server thread/INFO]: Preparing spawn area: 33%
+[23:26:23] [Server thread/INFO]: Preparing spawn area: 36%
+[23:26:24] [Server thread/INFO]: Preparing spawn area: 37%
+[23:26:25] [Server thread/INFO]: Preparing spawn area: 38%
+[23:26:26] [Server thread/INFO]: Preparing spawn area: 40%
+[23:26:27] [Server thread/INFO]: Preparing spawn area: 41%
+[23:26:28] [Server thread/INFO]: Preparing spawn area: 43%
+[23:26:29] [Server thread/INFO]: Preparing spawn area: 44%
+[23:26:30] [Server thread/INFO]: Preparing spawn area: 46%
+[23:26:31] [Server thread/INFO]: Preparing spawn area: 48%
+[23:26:32] [Server thread/INFO]: Preparing spawn area: 50%
+[23:26:33] [Server thread/INFO]: Preparing spawn area: 51%
+[23:26:34] [Server thread/INFO]: Preparing spawn area: 54%
+[23:26:36] [Server thread/INFO]: Preparing spawn area: 55%
+[23:26:37] [Server thread/INFO]: Preparing spawn area: 57%
+[23:26:38] [Server thread/INFO]: Preparing spawn area: 59%
+[23:26:39] [Server thread/INFO]: Preparing spawn area: 61%
+[23:26:40] [Server thread/INFO]: Preparing spawn area: 63%
+[23:26:41] [Server thread/INFO]: Preparing spawn area: 66%
+[23:26:42] [Server thread/INFO]: Preparing spawn area: 69%
+[23:26:43] [Server thread/INFO]: Preparing spawn area: 72%
+[23:26:44] [Server thread/INFO]: Preparing spawn area: 74%
+[23:26:45] [Server thread/INFO]: Preparing spawn area: 78%
+[23:26:46] [Server thread/INFO]: Preparing spawn area: 79%
+[23:26:47] [Server thread/INFO]: Preparing spawn area: 82%
+[23:26:48] [Server thread/INFO]: Preparing spawn area: 84%
+[23:26:49] [Server thread/INFO]: Preparing spawn area: 86%
+[23:26:50] [Server thread/INFO]: Preparing spawn area: 88%
+[23:26:51] [Server thread/INFO]: Preparing spawn area: 91%
+[23:26:52] [Server thread/INFO]: Preparing spawn area: 94%
+[23:26:53] [Server thread/INFO]: Preparing spawn area: 99%
+[23:26:55] [Server thread/INFO]: Unloading dimension 1
+[23:26:55] [Server thread/INFO]: Unloading dimension -1
+[23:26:55] [Server thread/INFO]: Changing view distance to 8, from 10
+[23:26:56] [Client thread/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@2444365e[id=436246fd-f1d0-384b-9b2c-a7e0646aecc9,name=AidenFox,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationUnavailableException: Cannot contact authentication server
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:75) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:162) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:154) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.func_71371_a(Minecraft.java:2421) [bib.class:?]
+	at net.minecraft.client.gui.GuiCreateWorld.func_146284_a(GuiCreateWorld.java:224) [boi.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_73864_a(GuiScreen.java:443) [blk.class:?]
+	at net.minecraft.client.gui.GuiCreateWorld.func_73864_a(GuiCreateWorld.java:416) [boi.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146274_d(GuiScreen.java:533) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146269_k(GuiScreen.java:501) [blk.class:?]
+	at net.minecraft.client.Minecraft.func_71407_l(Minecraft.java:1759) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1098) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_271]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_271]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_271]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
+Caused by: com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:224) ~[ReflectiveTypeAdapterFactory$Adapter.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:887) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:852) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:801) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:773) ~[Gson.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:55) ~[YggdrasilAuthenticationService.class:?]
+	... 18 more
+Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at com.google.gson.stream.JsonReader.beginObject(JsonReader.java:385) ~[JsonReader.class:?]
+	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:213) ~[ReflectiveTypeAdapterFactory$Adapter.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:887) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:852) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:801) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:773) ~[Gson.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:55) ~[YggdrasilAuthenticationService.class:?]
+	... 18 more
+[23:26:57] [Netty Local Client IO #0/INFO]: Server protocol version 2
+[23:26:57] [Netty Server IO #1/INFO]: Client protocol version 2
+[23:26:57] [Netty Server IO #1/INFO]: Client attempting to join with 53 mods : buildcraftlib@7.99.24.8,astralsorcery@1.10.27,dynamictreesbop@1.12.2-1.4.1e,criogonals_zombies_mod@1.0.0,buildcraftenergy@7.99.24.8,jei@4.15.0.293,buildcrafttransport@7.99.24.8,mekanism@1.12.2-9.8.3.390,endercore@1.12.2-0.5.45,mcp@9.42,enderioendergy@5.0.40,appliedenergistics2@rv6-stable-7,gravisuite@3.1.1,enderiointegrationticlate@5.0.40,betteranimalsplus@9.0.1,mekanismgenerators@1.12.2-9.8.3.390,forge@14.23.5.2855,enderioconduits@5.0.40,buildcraftrobotics@7.99.24.8,orelib@3.6.0.1,infernalmobs@1.7.3,ironchest@1.12.2-7.0.67.844,minecraft@1.12.2,tconstruct@1.12.2-2.13.0.183,micsiege@1.0.2,mousetweaks@2.10,enderiomachines@5.0.40,biomesoplenty@7.0.1.2444,baubles@1.5.2,buildcraftsilicon@7.99.24.8,enderiopowertools@5.0.40,energyconverters@1.3.7.30,enderio@5.0.40,mantle@1.12-1.3.3.55,ic2@2.8.197-ex112,buildcraftbuilders@7.99.24.8,xaerominimap@22.1.2,buildcraftfactory@7.99.24.8,betteranimals@5.3.1,FML@8.0.99.99,enderiobase@5.0.40,worldeditcuife3@3.0.5,enderiointegrationtic@5.0.40,enderioconduitsappliedenergistics@5.0.40,mekanismtools@1.12.2-9.8.3.390,buildcraftcompat@7.99.24.8,xaerominimap_core@1.12.2-1.0,codechickenlib@3.2.3.358,dynamictrees@1.12.2-0.9.7,buildcraftcore@7.99.24.8,ClientFixer@1.12.2-1.9,forestry@5.8.2.414,mobends@1.0.0-beta-20.06.20
+[23:26:57] [Netty Server IO #1/INFO]: Skipping config sync, No mods have registered a syncable config.
+[23:26:57] [Netty Local Client IO #0/INFO]: [Netty Local Client IO #0] Client side modded connection established
+[23:26:57] [Server thread/INFO]: [Server thread] Server side modded connection established
+[23:26:57] [Server thread/INFO]: AidenFox[local:E:8935c146] logged in with entity id 1160 at (253.5, 63.0, 257.5)
+[23:26:57] [Server thread/INFO]: AidenFox joined the game
+[23:26:57] [Server thread/INFO]: Sending server configs to client for com.enderio.core.common.config.ConfigHandler
+[23:26:57] [Server thread/INFO]: [Astral Sorcery] Waiting for server synchronization on login for AidenFox...
+[23:26:57] [Client thread/INFO]: [xaero.common.XaeroMinimapSession:init:57]: New minimap session initialized!
+[23:26:57] [Server thread/INFO]: [Astral Sorcery] Synchronizing baseline information to AidenFox
+[23:27:05] [Server thread/INFO]: Saving and pausing game...
+[23:27:05] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[23:27:05] [Client thread/INFO]: Using gateway screenshots for folder 'new_world'
+[23:27:05] [Client thread/INFO]: [CHAT] A new §eOptiFine§f version is available: §e§nHD Ultra G5§r§f
+[23:27:05] [Netty Local Client IO #0/INFO]: Received Cardboard Box blacklist entries from server (22 explicit blocks, 2 mod wildcards)
+[23:27:06] [Server thread/INFO]: Saving chunks for level 'New World'/Storage Cell
+[23:27:06] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 11581ms behind, skipping 231 tick(s)
+[23:27:07] [Client thread/INFO]: [xaero.common.minimap.render.radar.EntityIconManager:resetResources:162]: Reloading entity icon resources...
+[23:27:07] [pool-3-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@7c46bf5d[id=436246fd-f1d0-384b-9b2c-a7e0646aecc9,name=AidenFox,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationUnavailableException: Cannot contact authentication server
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:75) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:162) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:59) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:1) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3716) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2424) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2298) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2211) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4154) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:4158) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:5147) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:5153) [guava-21.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:154) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.func_181037_M(Minecraft.java:3001) [bib.class:?]
+	at net.minecraft.client.resources.SkinManager$3.run(SourceFile:110) [cex$3.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_271]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_271]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_271]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_271]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_271]
+Caused by: com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:224) ~[ReflectiveTypeAdapterFactory$Adapter.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:887) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:852) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:801) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:773) ~[Gson.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:55) ~[YggdrasilAuthenticationService.class:?]
+	... 19 more
+Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at com.google.gson.stream.JsonReader.beginObject(JsonReader.java:385) ~[JsonReader.class:?]
+	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:213) ~[ReflectiveTypeAdapterFactory$Adapter.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:887) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:852) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:801) ~[Gson.class:?]
+	at com.google.gson.Gson.fromJson(Gson.java:773) ~[Gson.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:55) ~[YggdrasilAuthenticationService.class:?]
+	... 19 more
+[23:27:07] [Client thread/INFO]: [xaero.common.minimap.render.radar.EntityIconManager:resetResources:175]: Done!
+[23:27:07] [Client thread/INFO]: Loaded 29 advancements
+[23:27:19] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 7250ms behind, skipping 145 tick(s)
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading buildcraftenergy:fluid_block_oil_heat_0 texture, using material colour.
+[23:27:29] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:31] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading dynamictrees:junglebranch texture, using material colour.
+[23:27:31] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:27:56] [Client thread/INFO]: Loaded 31 advancements
+[23:28:02] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1531]: Exception when loading dynamictrees:sprucebranch texture, using material colour.
+[23:28:02] [Client thread/INFO]: [xaero.common.minimap.write.MinimapWriter:loadBlockColourFromTexture:1538]: Didn't pass the unlisted property check.
+[23:28:14] [Client thread/INFO]: Loaded 53 advancements
+[23:28:42] [Server thread/INFO]: Saving and pausing game...
+[23:28:42] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[23:28:43] [Server thread/INFO]: Saving chunks for level 'New World'/Storage Cell
+[23:32:27] [Client thread/INFO]: Stopping!
+[23:32:27] [Client thread/INFO]: [xaero.common.XaeroMinimapSession:cleanup:68]: Minimap session finalized.
+[23:32:27] [Server thread/INFO]: Stopping server
+[23:32:27] [Server thread/INFO]: Saving players
+[23:32:27] [Server thread/INFO]: Saving worlds
+[23:32:27] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[23:32:27] [Netty Local Client IO #0/INFO]: Reset configs to client values for com.enderio.core.common.config.ConfigHandler
+[23:32:27] [Netty Local Client IO #0/INFO]: Cleaning client cache...
+[23:32:27] [Netty Local Client IO #0/INFO]: Cleared cached client data! Disconnected from server.
+[23:32:27] [Server thread/INFO]: Saving chunks for level 'New World'/Storage Cell
+[23:32:27] [Server thread/INFO]: Unloading dimension 0
+[23:32:27] [Server thread/INFO]: Unloading dimension 2
+[23:32:31] [Server thread/INFO]: Applying holder lookups
+[23:32:31] [Server thread/INFO]: Holder lookups applied
+[23:32:31] [Client thread/INFO]: SoundSystem shutting down...
+[23:32:32] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com

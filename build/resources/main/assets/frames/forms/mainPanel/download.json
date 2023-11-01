@@ -16,15 +16,17 @@
         },
         {
           "componentType": "label",
+          "fontSize": 14,
           "componentStyle": "textBold",
           "componentId": "progressLabel",
-          "bounds": "15,0,170,40"
+          "bounds": "15,10,170,40"
         },
         {
           "groups": {
-            "download": {
+            "downloadInfo": {
               "panelOptions": {
                 "opaque": true,
+                "border": "1,1,1,1,#3b4045",
                 "background": "#222425a3",
                 "visible": true,
                 "bounds": "40,40,700,300"
@@ -32,10 +34,30 @@
               "childComponents": [
                 {
                   "componentType": "label",
-                  "componentStyle": "textBold",
-                  "componentId": "progressInfo",
-                  "localeKey": "auth.authTitle",
-                  "bounds": "0,0,170,40"
+                  "fontSize": 14,
+                  "color": "#636c73bf",
+                  "componentStyle": "title",
+                  "componentId": "downloadFile",
+                  "localeKey": "download.file",
+                  "bounds": "20,10,170,40"
+                },
+                {
+                  "componentType": "label",
+                  "fontSize": 14,
+                  "color": "#636c73bf",
+                  "componentStyle": "title",
+                  "componentId": "downloadDirectory",
+                  "localeKey": "download.directory",
+                  "bounds": "20,30,170,40"
+                },
+                {
+                  "componentType": "label",
+                  "fontSize": 14,
+                  "color": "#636c73bf",
+                  "componentStyle": "title",
+                  "componentId": "downloadTotalSize",
+                  "localeKey": "download.totalSize",
+                  "bounds": "20,50,170,40"
                 }
               ]
             }

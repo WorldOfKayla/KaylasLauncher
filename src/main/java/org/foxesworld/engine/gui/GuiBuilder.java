@@ -59,9 +59,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     public List<Component> getAllChildComponents(String parentPanel) {
         List<Component> components = new ArrayList<>();
         for (String thisChild : childsNparents.get(parentPanel)) {
-            for (Component component : getComponentsMap().get(thisChild)) {
-                components.add(component);
-            }
+            components.addAll(getComponentsMap().get(thisChild));
         }
         return components;
     }
@@ -92,8 +90,10 @@ public class GuiBuilder implements ComponentFactoryListener {
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
-                parentPanel.add(thisPanel);
-                panelsMap.put(componentGroup, thisPanel);
+                if(!this.getPanelsMap().containsKey(componentGroup)) {
+                    parentPanel.add(thisPanel);
+                    getPanelsMap().put(componentGroup, thisPanel);
+                }
                 buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups
                 childsNparents.computeIfAbsent(parentPanel.getName(), k -> new ArrayList<>()).add(thisPanel.getName());
             }
@@ -134,10 +134,10 @@ public class GuiBuilder implements ComponentFactoryListener {
         String[] splitValue = componentAttributes.initialValue.split("#");
         switch(splitValue[0]){
             case "config" -> {
-                componentAttributes.initialValue = String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1]));
+                componentAttributes.setInitialValue(String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1])));
             }
             case "user" -> {
-                componentAttributes.initialValue = this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]);
+                componentAttributes.setInitialValue(this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]));
             }
 
             //EXP

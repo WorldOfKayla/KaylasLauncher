@@ -126,10 +126,14 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, JPanel parentPanel) {
-        //parentPanel.updateUI();
-        //parentPanel.revalidate();
-        //parentPanel.repaint();
-        //parentPanel.revalidate();
+        parentPanel.updateUI();
+        parentPanel.repaint();
+        parentPanel.revalidate();
+    }
+
+    @Override
+    public void onPanelsAdded() {
+
     }
 
     @Override

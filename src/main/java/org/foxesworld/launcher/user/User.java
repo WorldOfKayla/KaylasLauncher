@@ -26,6 +26,8 @@ public class User {
                     }
                 } catch (NoSuchFieldException | IllegalAccessException ignored) {}
             }
+        } else {
+            auth.getEngine().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
     }
 

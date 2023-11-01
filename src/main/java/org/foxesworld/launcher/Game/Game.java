@@ -9,9 +9,9 @@ import java.util.List;
 
 public class Game {
 
-    private ActionHandler actionHandler;
-    private List<FilesArray> filesArray;
-    private FileLoader fileLoader;
+    private final ActionHandler actionHandler;
+    private final List<FilesArray> filesArray;
+    private final FileLoader fileLoader;
 
     public Game(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;

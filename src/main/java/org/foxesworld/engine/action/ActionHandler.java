@@ -37,6 +37,7 @@ public class ActionHandler {
                     case "authForm" -> {
                         this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
                         if(this.engine.getAuth().isAuthorised()) {
+                            engine.getFrame().getRootPanel().removeAll();
                             engine.displayPanel("authForm->false");
                             this.engine.initialize(this.engine.getAuth().getAuthCredentials("login"));
                         }
@@ -44,7 +45,10 @@ public class ActionHandler {
                 }
             }
 
-            case "test" -> this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
+            case "test" -> {
+                engine.getFrame().getRootPanel().removeAll();
+                this.engine.initialize("test");//"loggedForm->false|newsForm->false|download->true");
+            }
 
             case "gameDir" -> openGameFolder();
 
@@ -64,8 +68,10 @@ public class ActionHandler {
             case "logOut" -> {
                 System.out.println("LoggingOut...");
                 this.engine.getAuth().setAuthorised(false);
+                engine.getFrame().getRootPanel().removeAll();
                 this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-                engine.displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                //engine.displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                engine.initialize("");
             }
 
             case "settings" -> {

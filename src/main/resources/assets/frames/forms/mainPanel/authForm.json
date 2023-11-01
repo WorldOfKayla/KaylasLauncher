@@ -43,7 +43,7 @@
           "componentStyle": "buttonGreen",
           "componentId": "authForm>submit",
           "localeKey": "auth.submit",
-          "bounds": "60,295,120,34"
+          "bounds": "40,295,240,43"
         },
         {
           "componentType": "button",

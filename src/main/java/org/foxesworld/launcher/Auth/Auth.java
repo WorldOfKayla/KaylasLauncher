@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.Auth;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.server.ServerParser;
@@ -56,22 +57,26 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        AuthResponse response = new Gson().fromJson(this.POSTrequest.send(authCredentials), AuthResponse.class);
-        boolean status = response.type.equals("success");
+        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
+        boolean status = "success".equals(responseMap.get("type"));
 
         if (status) {
             setAuthorised(true);
             this.authCredentials = authCredentials;
-            this.authCredentials.put("units", response.units);
+
+            // Adding all sent data to MAP
+            for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
+                authCredentials.put(entry.getKey(), entry.getValue().toString());
+            }
+
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
-            if (CONFIG.get("login") == null && Objects.equals(authCredentials.get("rememberMe"), "true")) {
+            if (CONFIG.get("login") == null && "true".equals(authCredentials.get("rememberMe"))) {
                 saveAuthCredentials(authCredentials);
             }
         } else {
-            JOptionPane.showMessageDialog(engine.getFrame().getFrame(), response.message);
+            JOptionPane.showMessageDialog(engine.getFrame().getFrame(), responseMap.get("message"));
         }
-
         return status;
     }
 

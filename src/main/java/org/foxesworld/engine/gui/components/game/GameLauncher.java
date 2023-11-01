@@ -2,6 +2,7 @@ package org.foxesworld.engine.gui.components.game;
 
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.launcher.server.ServerAttributes;
+import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.io.BufferedReader;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class GameLauncher {
     private final ActionHandler actionHandler;
+
+    private final User user;
     private final ServerAttributes selectedServer;
     private final LibraryScanner libraryScanner;
     private URLClassLoader cl;
@@ -35,6 +38,7 @@ public class GameLauncher {
         actionHandler.getEngine().getLOGGER().debug("Libraries " + buildLibrariesPath());
         actionHandler.getEngine().getLOGGER().debug("Assets " + buildAssetsPath());
         actionHandler.getEngine().getLOGGER().debug("#############################");
+        this.user = actionHandler.getEngine().getUser();
 
         this.setJre();
         this.collectLibraries();
@@ -42,7 +46,6 @@ public class GameLauncher {
         params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
         this.loadAtuhLib();
         this.addArgs();
-        //this.launchGame();
     }
 
     private void collectLibraries() {
@@ -82,12 +85,11 @@ public class GameLauncher {
     private void loadAtuhLib(){
         try {
             cl.loadClass("com.mojang.authlib.Agent");
-            params.add("--accessToken=nope");
-            params.add("--uuid=7148dc2a-23f8-4b8d-9081-d3ec38e079b8");
-            params.add("--userProperties={}");
+            params.add("--accessToken="+this.user.getToken());
+            params.add("--uuid="+this.user.getUuid());
+            params.add("--userProperties={}"); //WIP
             params.add("--assetIndex="+selectedServer.serverVersion);
-        }
-        catch (ClassNotFoundException e2) {
+        } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
             params.add("--session=65");
         }
@@ -96,7 +98,7 @@ public class GameLauncher {
     private void addArgs() {
         params.add("--userType=legacy");
         params.add("--versionType=release");
-        params.add("--username="+actionHandler.getEngine().getCONFIG().getCONFIG().get("login"));
+        params.add("--username="+this.user.getLogin());
         params.add("--version="+selectedServer.serverVersion);
         params.add("--gameDir="+buildClientDir());
         params.add("--assetsDir="+buildAssetsPath());
@@ -164,7 +166,6 @@ public class GameLauncher {
         params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
         params.add("-Djava.library.path=" + buildNativesPath());
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
-        params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
     }
 
     private String buildVersionDir() {

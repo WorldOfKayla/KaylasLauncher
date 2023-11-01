@@ -173,7 +173,7 @@ public class ComponentFactory {
         }
     }
 
-    public void setComponentFactoryInterface(ComponentFactoryListener componentFactoryListener) {
+    public void setComponentFactoryListener(ComponentFactoryListener componentFactoryListener) {
         this.componentFactoryListener = componentFactoryListener;
     }
 

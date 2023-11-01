@@ -1,162 +1,19 @@
-[20:13:48] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', name='PROD'
-[20:13:48] [Render thread/INFO]: Setting user: AidenFox
-[20:13:49] [Render thread/INFO]: Backend library: LWJGL version 3.2.2 build 10
-[20:13:53] [Render thread/INFO]: Narrator library for x64 successfully loaded
-[20:13:54] [Render thread/INFO]: Reloading ResourceManager: Default
-[20:14:08] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
-[20:14:12] [Render thread/INFO]: OpenAL initialized.
-[20:14:12] [Render thread/INFO]: Sound engine started
-[20:14:14] [Render thread/INFO]: Created: 1024x1024x4 minecraft:textures/atlas/blocks.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 256x128x4 minecraft:textures/atlas/signs.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[20:14:14] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[20:14:16] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
-[20:14:16] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
-[20:14:16] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[20:14:40] [Render thread/INFO]: Attempt 1...
-[20:14:47] [Render thread/WARN]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[20:14:47] [Render thread/WARN]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[20:14:47] [Render thread/WARN]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[20:14:47] [Render thread/WARN]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[20:14:47] [Render thread/WARN]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[20:14:47] [Render thread/INFO]: Reloading ResourceManager: Default
-[20:14:48] [Render thread/INFO]: Loaded 7 recipes
-[20:14:48] [Render thread/INFO]: Loaded 927 advancements
-[20:14:51] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', name='PROD'
-[20:14:51] [Server thread/INFO]: Starting integrated minecraft server version 1.16.3
-[20:14:51] [Server thread/INFO]: Generating keypair
-[20:15:03] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[20:15:03] [Render thread/INFO]: Preparing spawn area: 0%
-[20:15:03] [Render thread/INFO]: Preparing spawn area: 0%
-[20:15:04] [Render thread/INFO]: Preparing spawn area: 0%
-[20:15:05] [Render thread/INFO]: Preparing spawn area: 0%
-[20:15:05] [Render thread/INFO]: Preparing spawn area: 0%
-[20:15:05] [Render thread/INFO]: Preparing spawn area: 1%
-[20:15:06] [Render thread/INFO]: Preparing spawn area: 1%
-[20:15:06] [Render thread/INFO]: Preparing spawn area: 2%
-[20:15:07] [Render thread/INFO]: Preparing spawn area: 3%
-[20:15:07] [Render thread/INFO]: Preparing spawn area: 4%
-[20:15:08] [Render thread/INFO]: Preparing spawn area: 4%
-[20:15:08] [Render thread/INFO]: Preparing spawn area: 6%
-[20:15:09] [Render thread/INFO]: Preparing spawn area: 6%
-[20:15:09] [Render thread/INFO]: Preparing spawn area: 9%
-[20:15:10] [Render thread/INFO]: Preparing spawn area: 10%
-[20:15:10] [Render thread/INFO]: Preparing spawn area: 12%
-[20:15:11] [Render thread/INFO]: Preparing spawn area: 12%
-[20:15:11] [Render thread/INFO]: Preparing spawn area: 15%
-[20:15:12] [Render thread/INFO]: Preparing spawn area: 17%
-[20:15:12] [Render thread/INFO]: Preparing spawn area: 17%
-[20:15:13] [Render thread/INFO]: Preparing spawn area: 17%
-[20:15:13] [Render thread/INFO]: Preparing spawn area: 17%
-[20:15:14] [Render thread/INFO]: Preparing spawn area: 22%
-[20:15:14] [Render thread/INFO]: Preparing spawn area: 26%
-[20:15:15] [Render thread/INFO]: Preparing spawn area: 26%
-[20:15:15] [Render thread/INFO]: Preparing spawn area: 26%
-[20:15:16] [Render thread/INFO]: Preparing spawn area: 31%
-[20:15:16] [Render thread/INFO]: Preparing spawn area: 31%
-[20:15:17] [Render thread/INFO]: Preparing spawn area: 31%
-[20:15:17] [Render thread/INFO]: Preparing spawn area: 31%
-[20:15:18] [Render thread/INFO]: Preparing spawn area: 31%
-[20:15:18] [Render thread/INFO]: Preparing spawn area: 39%
-[20:15:19] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:19] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:20] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:20] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:21] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:21] [Render thread/INFO]: Preparing spawn area: 42%
-[20:15:22] [Render thread/INFO]: Preparing spawn area: 55%
-[20:15:22] [Render thread/INFO]: Preparing spawn area: 55%
-[20:15:23] [Render thread/INFO]: Preparing spawn area: 55%
-[20:15:23] [Render thread/INFO]: Preparing spawn area: 55%
-[20:15:25] [Render thread/INFO]: Preparing spawn area: 68%
-[20:15:25] [Render thread/INFO]: Preparing spawn area: 68%
-[20:15:25] [Render thread/INFO]: Preparing spawn area: 68%
-[20:15:26] [Render thread/INFO]: Preparing spawn area: 80%
-[20:15:26] [Render thread/INFO]: Preparing spawn area: 80%
-[20:15:27] [Render thread/INFO]: Preparing spawn area: 90%
-[20:15:27] [Render thread/INFO]: Preparing spawn area: 90%
-[20:15:27] [Render thread/INFO]: Time elapsed: 24250 ms
-[20:15:29] [Server thread/INFO]: Changing view distance to 11, from 10
-[20:15:29] [Server thread/WARN]: Can't keep up! Is the server overloaded? Running 2294ms or 45 ticks behind
-[20:15:32] [Server thread/INFO]: AidenFox[local:E:7a06b6db] logged in with entity id 304 at (-246.5, 69.0, 60.5)
-[20:15:33] [Server thread/INFO]: AidenFox joined the game
-[20:15:34] [Server thread/INFO]: Saving and pausing game...
-[20:15:34] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[20:15:34] [Render thread/INFO]: Loaded 0 advancements
-[20:15:35] [Worker-Main-10/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@6a259b2e[id=7148dc2a-23f8-4b8d-9081-d3ec38e079b8,name=AidenFox,properties={},legacy=false]
-com.mojang.authlib.exceptions.AuthenticationUnavailableException: Cannot contact authentication server
-	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:104) ~[authlib-1.6.25.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:168) ~[authlib-1.6.25.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:59) ~[authlib-1.6.25.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:56) ~[authlib-1.6.25.jar:?]
-	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3716) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2424) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2298) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2211) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache.get(LocalCache.java:4154) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:4158) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:5147) ~[guava-21.0.jar:?]
-	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:5153) ~[guava-21.0.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:156) ~[authlib-1.6.25.jar:?]
-	at djw.J(SourceFile:2349) ~[1.16.4.jar:?]
-	at ekk.a(SourceFile:98) ~[1.16.4.jar:?]
-	at java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402) [?:1.8.0_271]
-	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289) [?:1.8.0_271]
-	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1067) [?:1.8.0_271]
-	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1703) [?:1.8.0_271]
-	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:172) [?:1.8.0_271]
-Caused by: com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
-	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:224) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:887) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:852) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:801) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:773) ~[gson-2.8.0.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:86) ~[authlib-1.6.25.jar:?]
-	... 19 more
-Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
-	at com.google.gson.stream.JsonReader.beginObject(JsonReader.java:385) ~[gson-2.8.0.jar:?]
-	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:213) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:887) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:852) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:801) ~[gson-2.8.0.jar:?]
-	at com.google.gson.Gson.fromJson(Gson.java:773) ~[gson-2.8.0.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:86) ~[authlib-1.6.25.jar:?]
-	... 19 more
-[20:15:36] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[20:15:36] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[20:15:37] [Server thread/INFO]: Saving and pausing game...
-[20:15:37] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[20:15:38] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[20:15:38] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[20:15:52] [Server thread/WARN]: Can't keep up! Is the server overloaded? Running 7342ms or 146 ticks behind
-[20:16:09] [Server thread/WARN]: Mismatch in destroy block pos: fx{x=-263, y=67, z=66} fx{x=-264, y=65, z=65}
-[20:19:08] [Render thread/INFO]: Loaded 7 advancements
-[20:19:08] [Render thread/INFO]: Loaded 9 advancements
-[20:20:03] [Server thread/INFO]: Saving and pausing game...
-[20:20:03] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[20:20:05] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[20:20:05] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[20:20:15] [Render thread/INFO]: Loaded 23 advancements
-[20:20:47] [Server thread/INFO]: Saving and pausing game...
-[20:20:47] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[20:20:48] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[20:20:48] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[20:20:48] [Render thread/INFO]: Stopping!
-[20:20:48] [Server thread/INFO]: AidenFox lost connection: Disconnected
-[20:20:48] [Server thread/INFO]: AidenFox left the game
-[20:20:48] [Server thread/INFO]: Stopping singleplayer server as player logged out
-[20:20:48] [Server thread/INFO]: Stopping server
-[20:20:48] [Server thread/INFO]: Saving players
-[20:20:48] [Server thread/INFO]: Saving worlds
-[20:20:48] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (New World): All chunks are saved
-[20:20:49] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[20:20:49] [Server thread/INFO]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (New World): All chunks are saved
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[20:20:49] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[12:39:55] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', name='PROD'
+[12:39:55] [Render thread/INFO]: Setting user: AidenFox
+[12:39:55] [Render thread/INFO]: Backend library: LWJGL version 3.2.2 build 10
+[12:39:58] [Render thread/INFO]: Narrator library for x64 successfully loaded
+[12:39:58] [Render thread/INFO]: Reloading ResourceManager: Default
+[12:40:12] [Render thread/INFO]: OpenAL initialized.
+[12:40:12] [Render thread/INFO]: Sound engine started
+[12:40:13] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
+[12:40:13] [Render thread/INFO]: Created: 1024x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 256x128x4 minecraft:textures/atlas/signs.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[12:40:13] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[12:40:15] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[12:40:15] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[12:40:15] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[12:40:29] [Render thread/INFO]: Stopping!

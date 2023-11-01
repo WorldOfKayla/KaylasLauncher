@@ -8,7 +8,7 @@ import java.util.Map;
 public class User {
     private final Auth auth;
 
-    private String login, password, units;
+    private String login, password, units, token, uuid;
 
     public User(Auth auth){
         this.auth = auth;
@@ -39,5 +39,13 @@ public class User {
 
     public String getUnits() {
         return units;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 }

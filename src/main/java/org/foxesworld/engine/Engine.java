@@ -10,7 +10,9 @@ import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.GuiBuilderListener;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
+import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
@@ -27,8 +29,9 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
-public class Engine extends JFrame implements ActionListener {
+public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
     protected final APP APP;
     private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
@@ -88,7 +91,8 @@ public class Engine extends JFrame implements ActionListener {
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
-        getGuiBuilder().buildGui("assets/frames/frame.json", true, this.getFrame().getRootPanel());
+        this.guiBuilder.setGuiBuilderListener(this);
+        getGuiBuilder().buildGui(getAPP().getFrameTpl(), true, this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
@@ -118,6 +122,14 @@ public class Engine extends JFrame implements ActionListener {
 
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
+    }
+
+    @Override
+    public void onPanelBuild(Map<String, OptionGroups> groups, JPanel parentPanel) {
+        //parentPanel.updateUI();
+        //parentPanel.revalidate();
+        //parentPanel.repaint();
+        //parentPanel.revalidate();
     }
 
     @Override

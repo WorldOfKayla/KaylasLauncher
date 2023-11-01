@@ -8,6 +8,7 @@ import javax.swing.*;
 public class APP {
 
     private String LOCALE;
+    private String frameTpl = "assets/frames/frame.json";
     private String mainFrame = "assets/frames/mainFrame.json";
     private String localeFile = "/assets/lang/locale.json";
     private String engineVars = "engine.json";
@@ -33,6 +34,11 @@ public class APP {
     public String getLOCALE() {
         return LOCALE;
     }
+
+    public String getFrameTpl() {
+        return frameTpl;
+    }
+
     public void setLOCALE(String LOCALE) {
         this.LOCALE = LOCALE;
     }

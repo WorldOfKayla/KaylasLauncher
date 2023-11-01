@@ -26,6 +26,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final FrameConstructor frameConstructor;
     private final ComponentFactory componentFactory;
+    private  GuiBuilderListener guiBuilderListener;
 
     public GuiBuilder(Engine engine) {
         engine.getLOGGER().debug("=== GUI BUILDER ===");
@@ -82,6 +83,7 @@ public class GuiBuilder implements ComponentFactoryListener {
      */
     private void buildComponents(Map<String, OptionGroups> groups, JPanel parentPanel) {
         if (groups != null) {
+            guiBuilderListener.onPanelBuild(groups, parentPanel);
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
                 this.frameConstructor.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
@@ -102,7 +104,7 @@ public class GuiBuilder implements ComponentFactoryListener {
      * Method for building componentFactory based on a JSON structure
      */
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
-        this.componentFactory.setComponentFactoryInterface(this);
+        this.componentFactory.setComponentFactoryListener(this);
         for (ComponentAttributes componentAttributes : componentList) {
             if (componentAttributes.componentType != null) {
                 JComponent component = this.componentFactory.createComponent(componentAttributes);
@@ -118,9 +120,6 @@ public class GuiBuilder implements ComponentFactoryListener {
         }
     }
 
-    /*
-    * TODO
-    *  Use this method for components value replacement */
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
         if(componentAttributes.initialValue != null) {
@@ -132,7 +131,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     * An experimental solution
     * Will do something with hardCoded scrollBox */
     private void getInitialData(ComponentAttributes componentAttributes){
-        String[] splitValue = componentAttributes.initialValue.toString().split("#");
+        String[] splitValue = componentAttributes.initialValue.split("#");
         switch(splitValue[0]){
             case "config" -> {
                 componentAttributes.initialValue = String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1]));
@@ -141,6 +140,7 @@ public class GuiBuilder implements ComponentFactoryListener {
                 componentAttributes.initialValue = this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]);
             }
 
+            //EXP
             case "scrollBox" -> {
                 switch (splitValue[1]) {
                     case "servers" -> {
@@ -179,4 +179,7 @@ public class GuiBuilder implements ComponentFactoryListener {
         return childsNparents;
     }
 
+    public void setGuiBuilderListener(GuiBuilderListener guiBuilderListener) {
+        this.guiBuilderListener = guiBuilderListener;
+    }
 }

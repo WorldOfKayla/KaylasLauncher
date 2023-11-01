@@ -98,5 +98,15 @@
       "en": "Units: ",
       "ru": "Юниты: "
     }
+  },
+  "dev": {
+    "token": {
+      "en": "Token: ",
+      "ru": "Token: "
+    },
+    "uuid": {
+      "en": "UUID: ",
+      "ru": "UUID: "
+    }
   }
 }

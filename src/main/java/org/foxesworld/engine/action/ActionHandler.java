@@ -37,11 +37,8 @@ public class ActionHandler {
                     case "authForm" -> {
                         this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
                         if(this.engine.getAuth().isAuthorised()) {
-                            //this.engine.getFrame().getFrame().dispose();
-                            //this.engine = new Engine(this.engine.getAPP());
                             engine.displayPanel("authForm->false");
                             this.engine.initialize(this.engine.getAuth().getAuthCredentials("login"));
-
                         }
                     }
                 }

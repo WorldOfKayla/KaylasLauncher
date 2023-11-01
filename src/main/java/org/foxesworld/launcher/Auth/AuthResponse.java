@@ -9,6 +9,12 @@ class AuthResponse {
     @SerializedName("units")
     String units;
 
+    @SerializedName("uuid")
+    String uuid;
+
+    @SerializedName("token")
+    String token;
+
     @SerializedName("type")
     String type;
 }

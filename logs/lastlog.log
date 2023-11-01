@@ -17584,3 +17584,756 @@
 [19:27:21.649][DEBUG] Loading progressBar style from assets/styles/progressBar.json
 [19:27:21.651][DEBUG] Building group download with parent download
 [19:27:21.653][DEBUG] Building group wait with parent mainFrame
+[19:44:50.352][DEBUG] HTTP GET init
+[19:44:50.359][DEBUG] HTTP POST init
+[19:44:50.360][INFO] FrameConstructor initialization
+[19:44:50.374][INFO] Building FrameConstructor...
+[19:44:50.783][INFO] Loading engine auth(false)
+[19:44:50.783][DEBUG] === GUI BUILDER ===
+[19:44:50.805][DEBUG] Building group titleBar with parent rootPanel
+[19:44:50.811][DEBUG] Loading label style from assets/styles/label.json
+[19:44:50.833][INFO] Created font - mcfont
+[19:44:50.835][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:44:50.853][DEBUG] Building group mainFrame with parent rootPanel
+[19:44:50.857][DEBUG] Building group authForm with parent mainFrame
+[19:44:50.859][DEBUG] Loading textField style from assets/styles/textField.json
+[19:44:50.943][INFO] Created font - FSElliotPro-Heavy
+[19:44:50.945][DEBUG] Loading passField style from assets/styles/passField.json
+[19:44:50.955][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:44:50.981][INFO] Created font - prompt
+[19:44:50.982][DEBUG] Loading button style from assets/styles/button.json
+[19:44:51.005][DEBUG] Building group loggedForm with parent mainFrame
+[19:44:51.007][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:44:51.014][INFO] Updating combobox [Ljava.lang.String;@5881a998
+[19:44:51.025][DEBUG] Building group userPane with parent loggedForm
+[19:44:51.029][DEBUG] Building group userDataForm with parent userPane
+[19:44:51.046][DEBUG] Building group newsForm with parent mainFrame
+[19:44:51.083][INFO] Created font - Sans-Black
+[19:44:51.083][DEBUG] Building group devInfo with parent newsForm
+[19:44:51.086][DEBUG] Building group settings with parent mainFrame
+[19:44:51.088][DEBUG] Building group settingsPane with parent settings
+[19:44:51.096][DEBUG] Building group generalSettings with parent settings
+[19:44:51.140][DEBUG] Building group generalInfo with parent settings
+[19:44:51.143][DEBUG] Building group download with parent mainFrame
+[19:44:51.145][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:44:51.154][DEBUG] Building group download with parent download
+[19:44:51.158][DEBUG] Building group wait with parent mainFrame
+[19:45:05.166][DEBUG] Adding request header User-Agent
+[19:45:05.166][DEBUG] Adding request header Accept-Language
+[19:45:05.166][DEBUG] Adding request header Accept
+[19:45:05.167][DEBUG] Adding request header Content-Type
+[19:45:05.691][INFO] AidenFox authorised!
+[19:45:05.692][DEBUG] Adding request header User-Agent
+[19:45:05.692][DEBUG] Adding request header Accept-Language
+[19:45:05.693][DEBUG] Adding request header Accept
+[19:45:05.693][DEBUG] Adding request header Content-Type
+[19:45:05.825][DEBUG] Loading 3 servers for user AidenFox
+[19:45:05.953][INFO] Loading engine auth(true)
+[19:45:05.953][DEBUG] === GUI BUILDER ===
+[19:45:05.955][DEBUG] Building group titleBar with parent rootPanel
+[19:45:05.956][DEBUG] Loading label style from assets/styles/label.json
+[19:45:05.960][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:45:05.965][DEBUG] Building group mainFrame with parent rootPanel
+[19:45:05.967][DEBUG] Building group authForm with parent mainFrame
+[19:45:05.968][DEBUG] Loading textField style from assets/styles/textField.json
+[19:45:05.971][DEBUG] Loading passField style from assets/styles/passField.json
+[19:45:05.974][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:45:05.977][DEBUG] Loading button style from assets/styles/button.json
+[19:45:05.983][DEBUG] Building group loggedForm with parent mainFrame
+[19:45:05.984][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:45:05.985][INFO] Updating combobox [Ljava.lang.String;@ba3d5f2
+[19:45:05.987][DEBUG] Building group userPane with parent loggedForm
+[19:45:05.988][DEBUG] Building group userDataForm with parent userPane
+[19:45:05.992][DEBUG] Building group newsForm with parent mainFrame
+[19:45:05.996][DEBUG] Building group devInfo with parent newsForm
+[19:45:05.999][DEBUG] Building group settings with parent mainFrame
+[19:45:06.001][DEBUG] Building group settingsPane with parent settings
+[19:45:06.004][DEBUG] Building group generalSettings with parent settings
+[19:45:06.012][DEBUG] Building group generalInfo with parent settings
+[19:45:06.014][DEBUG] Building group download with parent mainFrame
+[19:45:06.015][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:45:06.017][DEBUG] Building group download with parent download
+[19:45:06.019][DEBUG] Building group wait with parent mainFrame
+[19:45:24.465][DEBUG] HTTP GET init
+[19:45:24.472][DEBUG] HTTP POST init
+[19:45:24.474][INFO] FrameConstructor initialization
+[19:45:24.487][INFO] Building FrameConstructor...
+[19:45:24.738][INFO] Loading engine auth(false)
+[19:45:24.739][DEBUG] === GUI BUILDER ===
+[19:45:24.753][DEBUG] Building group titleBar with parent rootPanel
+[19:45:24.756][DEBUG] Loading label style from assets/styles/label.json
+[19:45:24.772][INFO] Created font - mcfont
+[19:45:24.773][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:45:24.789][DEBUG] Building group mainFrame with parent rootPanel
+[19:45:24.793][DEBUG] Building group authForm with parent mainFrame
+[19:45:24.794][DEBUG] Loading textField style from assets/styles/textField.json
+[19:45:24.842][INFO] Created font - FSElliotPro-Heavy
+[19:45:24.843][DEBUG] Loading passField style from assets/styles/passField.json
+[19:45:24.851][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:45:24.873][INFO] Created font - prompt
+[19:45:24.874][DEBUG] Loading button style from assets/styles/button.json
+[19:45:24.897][DEBUG] Building group loggedForm with parent mainFrame
+[19:45:24.898][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:45:24.903][INFO] Updating combobox [Ljava.lang.String;@5881a998
+[19:45:24.911][DEBUG] Building group userPane with parent loggedForm
+[19:45:24.913][DEBUG] Building group userDataForm with parent userPane
+[19:45:24.927][DEBUG] Building group newsForm with parent mainFrame
+[19:45:24.956][INFO] Created font - Sans-Black
+[19:45:24.956][DEBUG] Building group devInfo with parent newsForm
+[19:45:24.958][DEBUG] Building group settings with parent mainFrame
+[19:45:24.961][DEBUG] Building group settingsPane with parent settings
+[19:45:24.969][DEBUG] Building group generalSettings with parent settings
+[19:45:24.993][DEBUG] Building group generalInfo with parent settings
+[19:45:24.996][DEBUG] Building group download with parent mainFrame
+[19:45:24.998][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:45:25.003][DEBUG] Building group download with parent download
+[19:45:25.007][DEBUG] Building group wait with parent mainFrame
+[19:45:41.463][DEBUG] Adding request header User-Agent
+[19:45:41.464][DEBUG] Adding request header Accept-Language
+[19:45:41.464][DEBUG] Adding request header Accept
+[19:45:41.464][DEBUG] Adding request header Content-Type
+[19:45:41.968][INFO] AidenFox authorised!
+[19:45:41.969][DEBUG] Adding request header User-Agent
+[19:45:41.969][DEBUG] Adding request header Accept-Language
+[19:45:41.970][DEBUG] Adding request header Accept
+[19:45:41.970][DEBUG] Adding request header Content-Type
+[19:45:42.116][DEBUG] Loading 3 servers for user AidenFox
+[19:45:42.120][DEBUG] Writing {
+  "password": "Aiden2556308",
+  "enableSound": true,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "Lang": "ru",
+  "login": "AidenFox",
+  "autoEnter": false,
+  "LogLevel": "DEBUG",
+  "fullScreen": false
+}
+[19:45:42.192][INFO] Loading engine auth(true)
+[19:45:42.192][DEBUG] === GUI BUILDER ===
+[19:45:42.195][DEBUG] Building group titleBar with parent rootPanel
+[19:45:42.196][DEBUG] Loading label style from assets/styles/label.json
+[19:45:42.199][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:45:42.204][DEBUG] Building group mainFrame with parent rootPanel
+[19:45:42.206][DEBUG] Building group authForm with parent mainFrame
+[19:45:42.207][DEBUG] Loading textField style from assets/styles/textField.json
+[19:45:42.210][DEBUG] Loading passField style from assets/styles/passField.json
+[19:45:42.213][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:45:42.214][DEBUG] Loading button style from assets/styles/button.json
+[19:45:42.220][DEBUG] Building group loggedForm with parent mainFrame
+[19:45:42.221][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:45:42.222][INFO] Updating combobox [Ljava.lang.String;@1ce592ec
+[19:45:42.224][DEBUG] Building group userPane with parent loggedForm
+[19:45:42.226][DEBUG] Building group userDataForm with parent userPane
+[19:45:42.229][DEBUG] Building group newsForm with parent mainFrame
+[19:45:42.233][DEBUG] Building group devInfo with parent newsForm
+[19:45:42.236][DEBUG] Building group settings with parent mainFrame
+[19:45:42.242][DEBUG] Building group settingsPane with parent settings
+[19:45:42.248][DEBUG] Building group generalSettings with parent settings
+[19:45:42.257][DEBUG] Building group generalInfo with parent settings
+[19:45:42.259][DEBUG] Building group download with parent mainFrame
+[19:45:42.260][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:45:42.262][DEBUG] Building group download with parent download
+[19:45:42.264][DEBUG] Building group wait with parent mainFrame
+[19:45:59.347][DEBUG] HTTP GET init
+[19:45:59.352][DEBUG] HTTP POST init
+[19:45:59.353][INFO] FrameConstructor initialization
+[19:45:59.364][INFO] Building FrameConstructor...
+[19:45:59.611][DEBUG] Authorising with existing login AidenFox
+[19:45:59.816][DEBUG] Adding request header User-Agent
+[19:45:59.817][DEBUG] Adding request header Accept-Language
+[19:45:59.817][DEBUG] Adding request header Accept
+[19:45:59.819][DEBUG] Adding request header Content-Type
+[19:46:00.333][INFO] AidenFox authorised!
+[19:46:00.334][DEBUG] Adding request header User-Agent
+[19:46:00.334][DEBUG] Adding request header Accept-Language
+[19:46:00.335][DEBUG] Adding request header Accept
+[19:46:00.335][DEBUG] Adding request header Content-Type
+[19:46:00.483][DEBUG] Loading 3 servers for user AidenFox
+[19:46:00.485][INFO] Loading engine auth(true)
+[19:46:00.486][DEBUG] === GUI BUILDER ===
+[19:46:00.496][DEBUG] Building group titleBar with parent rootPanel
+[19:46:00.499][DEBUG] Loading label style from assets/styles/label.json
+[19:46:00.515][INFO] Created font - mcfont
+[19:46:00.516][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:46:00.530][DEBUG] Building group mainFrame with parent rootPanel
+[19:46:00.533][DEBUG] Building group authForm with parent mainFrame
+[19:46:00.534][DEBUG] Loading textField style from assets/styles/textField.json
+[19:46:00.581][INFO] Created font - FSElliotPro-Heavy
+[19:46:00.582][DEBUG] Loading passField style from assets/styles/passField.json
+[19:46:00.587][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:46:00.602][INFO] Created font - prompt
+[19:46:00.603][DEBUG] Loading button style from assets/styles/button.json
+[19:46:00.626][DEBUG] Building group loggedForm with parent mainFrame
+[19:46:00.628][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:46:00.636][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:46:00.648][DEBUG] Building group userPane with parent loggedForm
+[19:46:00.651][DEBUG] Building group userDataForm with parent userPane
+[19:46:00.666][DEBUG] Building group newsForm with parent mainFrame
+[19:46:00.701][INFO] Created font - Sans-Black
+[19:46:00.702][DEBUG] Building group devInfo with parent newsForm
+[19:46:00.706][DEBUG] Building group settings with parent mainFrame
+[19:46:00.708][DEBUG] Building group settingsPane with parent settings
+[19:46:00.715][DEBUG] Building group generalSettings with parent settings
+[19:46:00.733][DEBUG] Building group generalInfo with parent settings
+[19:46:00.735][DEBUG] Building group download with parent mainFrame
+[19:46:00.736][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:46:00.740][DEBUG] Building group download with parent download
+[19:46:00.743][DEBUG] Building group wait with parent mainFrame
+[19:47:31.935][DEBUG] HTTP GET init
+[19:47:31.941][DEBUG] HTTP POST init
+[19:47:31.942][INFO] FrameConstructor initialization
+[19:47:31.954][INFO] Building FrameConstructor...
+[19:47:32.202][DEBUG] Authorising with existing login AidenFox
+[19:47:32.403][DEBUG] Adding request header User-Agent
+[19:47:32.403][DEBUG] Adding request header Accept-Language
+[19:47:32.403][DEBUG] Adding request header Accept
+[19:47:32.404][DEBUG] Adding request header Content-Type
+[19:47:32.918][INFO] AidenFox authorised!
+[19:47:32.919][DEBUG] Adding request header User-Agent
+[19:47:32.920][DEBUG] Adding request header Accept-Language
+[19:47:32.920][DEBUG] Adding request header Accept
+[19:47:32.920][DEBUG] Adding request header Content-Type
+[19:47:33.047][DEBUG] Loading 3 servers for user AidenFox
+[19:47:33.048][INFO] Loading engine auth(true)
+[19:47:33.049][DEBUG] === GUI BUILDER ===
+[19:47:33.058][DEBUG] Building group titleBar with parent rootPanel
+[19:47:33.064][DEBUG] Loading label style from assets/styles/label.json
+[19:47:33.084][INFO] Created font - mcfont
+[19:47:33.085][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:47:33.098][DEBUG] Building group mainFrame with parent rootPanel
+[19:47:33.101][DEBUG] Building group authForm with parent mainFrame
+[19:47:33.102][DEBUG] Loading textField style from assets/styles/textField.json
+[19:47:33.146][INFO] Created font - FSElliotPro-Heavy
+[19:47:33.146][DEBUG] Loading passField style from assets/styles/passField.json
+[19:47:33.151][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:47:33.163][INFO] Created font - prompt
+[19:47:33.164][DEBUG] Loading button style from assets/styles/button.json
+[19:47:33.256][DEBUG] Building group loggedForm with parent mainFrame
+[19:47:33.260][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:47:33.294][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:47:33.319][DEBUG] Building group userPane with parent loggedForm
+[19:47:33.321][DEBUG] Building group userDataForm with parent userPane
+[19:47:33.334][DEBUG] Building group newsForm with parent mainFrame
+[19:47:33.425][INFO] Created font - Sans-Black
+[19:47:33.426][DEBUG] Building group devInfo with parent newsForm
+[19:47:33.429][DEBUG] Building group settings with parent mainFrame
+[19:47:33.433][DEBUG] Building group settingsPane with parent settings
+[19:47:33.441][DEBUG] Building group generalSettings with parent settings
+[19:47:33.475][DEBUG] Building group generalInfo with parent settings
+[19:47:33.481][DEBUG] Building group download with parent mainFrame
+[19:47:33.484][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:47:33.511][DEBUG] Building group download with parent download
+[19:47:33.518][DEBUG] Building group wait with parent mainFrame
+[19:47:42.082][DEBUG] HTTP GET init
+[19:47:42.086][DEBUG] HTTP POST init
+[19:47:42.087][INFO] FrameConstructor initialization
+[19:47:42.097][INFO] Building FrameConstructor...
+[19:47:42.346][DEBUG] Authorising with existing login AidenFox
+[19:47:42.551][DEBUG] Adding request header User-Agent
+[19:47:42.551][DEBUG] Adding request header Accept-Language
+[19:47:42.551][DEBUG] Adding request header Accept
+[19:47:42.552][DEBUG] Adding request header Content-Type
+[19:47:43.039][INFO] AidenFox authorised!
+[19:47:43.040][DEBUG] Adding request header User-Agent
+[19:47:43.040][DEBUG] Adding request header Accept-Language
+[19:47:43.040][DEBUG] Adding request header Accept
+[19:47:43.040][DEBUG] Adding request header Content-Type
+[19:47:43.185][DEBUG] Loading 3 servers for user AidenFox
+[19:47:43.187][INFO] Loading engine auth(true)
+[19:47:43.188][DEBUG] === GUI BUILDER ===
+[19:47:43.201][DEBUG] Building group titleBar with parent rootPanel
+[19:47:43.206][DEBUG] Loading label style from assets/styles/label.json
+[19:47:43.223][INFO] Created font - mcfont
+[19:47:43.225][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:47:43.242][DEBUG] Building group mainFrame with parent rootPanel
+[19:47:43.246][DEBUG] Building group authForm with parent mainFrame
+[19:47:43.247][DEBUG] Loading textField style from assets/styles/textField.json
+[19:47:43.307][INFO] Created font - FSElliotPro-Heavy
+[19:47:43.308][DEBUG] Loading passField style from assets/styles/passField.json
+[19:47:43.315][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:47:43.330][INFO] Created font - prompt
+[19:47:43.332][DEBUG] Loading button style from assets/styles/button.json
+[19:47:43.354][DEBUG] Building group loggedForm with parent mainFrame
+[19:47:43.355][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:47:43.363][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:47:43.375][DEBUG] Building group userPane with parent loggedForm
+[19:47:43.384][DEBUG] Building group userDataForm with parent userPane
+[19:47:43.394][DEBUG] Building group newsForm with parent mainFrame
+[19:47:43.434][INFO] Created font - Sans-Black
+[19:47:43.435][DEBUG] Building group devInfo with parent newsForm
+[19:47:43.439][DEBUG] Building group settings with parent mainFrame
+[19:47:43.442][DEBUG] Building group settingsPane with parent settings
+[19:47:43.450][DEBUG] Building group generalSettings with parent settings
+[19:47:43.473][DEBUG] Building group generalInfo with parent settings
+[19:47:43.476][DEBUG] Building group download with parent mainFrame
+[19:47:43.478][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:47:43.484][DEBUG] Building group download with parent download
+[19:47:43.488][DEBUG] Building group wait with parent mainFrame
+[19:48:01.312][DEBUG] HTTP GET init
+[19:48:01.318][DEBUG] HTTP POST init
+[19:48:01.320][INFO] FrameConstructor initialization
+[19:48:01.333][INFO] Building FrameConstructor...
+[19:48:01.586][DEBUG] Authorising with existing login AidenFox
+[19:48:01.791][DEBUG] Adding request header User-Agent
+[19:48:01.791][DEBUG] Adding request header Accept-Language
+[19:48:01.791][DEBUG] Adding request header Accept
+[19:48:01.791][DEBUG] Adding request header Content-Type
+[19:48:02.299][INFO] AidenFox authorised!
+[19:48:02.300][DEBUG] Adding request header User-Agent
+[19:48:02.300][DEBUG] Adding request header Accept-Language
+[19:48:02.300][DEBUG] Adding request header Accept
+[19:48:02.301][DEBUG] Adding request header Content-Type
+[19:48:02.453][DEBUG] Loading 3 servers for user AidenFox
+[19:48:02.455][INFO] Loading engine auth(true)
+[19:48:02.456][DEBUG] === GUI BUILDER ===
+[19:48:02.468][DEBUG] Building group titleBar with parent rootPanel
+[19:48:02.473][DEBUG] Loading label style from assets/styles/label.json
+[19:48:02.491][INFO] Created font - mcfont
+[19:48:02.492][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:48:02.507][DEBUG] Building group mainFrame with parent rootPanel
+[19:48:02.511][DEBUG] Building group authForm with parent mainFrame
+[19:48:02.512][DEBUG] Loading textField style from assets/styles/textField.json
+[19:48:02.565][INFO] Created font - FSElliotPro-Heavy
+[19:48:02.566][DEBUG] Loading passField style from assets/styles/passField.json
+[19:48:02.572][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:48:02.589][INFO] Created font - prompt
+[19:48:02.590][DEBUG] Loading button style from assets/styles/button.json
+[19:48:02.613][DEBUG] Building group loggedForm with parent mainFrame
+[19:48:02.615][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:48:02.622][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:48:02.642][DEBUG] Building group userPane with parent loggedForm
+[19:48:02.644][DEBUG] Building group userDataForm with parent userPane
+[19:48:02.654][DEBUG] Building group newsForm with parent mainFrame
+[19:48:02.690][INFO] Created font - Sans-Black
+[19:48:02.690][DEBUG] Building group devInfo with parent newsForm
+[19:48:02.693][DEBUG] Building group settings with parent mainFrame
+[19:48:02.696][DEBUG] Building group settingsPane with parent settings
+[19:48:02.702][DEBUG] Building group generalSettings with parent settings
+[19:48:02.722][DEBUG] Building group generalInfo with parent settings
+[19:48:02.725][DEBUG] Building group download with parent mainFrame
+[19:48:02.726][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:48:02.738][DEBUG] Building group download with parent download
+[19:48:02.747][DEBUG] Building group wait with parent mainFrame
+[19:48:14.811][DEBUG] HTTP GET init
+[19:48:14.817][DEBUG] HTTP POST init
+[19:48:14.819][INFO] FrameConstructor initialization
+[19:48:14.830][INFO] Building FrameConstructor...
+[19:48:15.122][DEBUG] Authorising with existing login AidenFox
+[19:48:15.347][DEBUG] Adding request header User-Agent
+[19:48:15.347][DEBUG] Adding request header Accept-Language
+[19:48:15.347][DEBUG] Adding request header Accept
+[19:48:15.348][DEBUG] Adding request header Content-Type
+[19:48:15.894][INFO] AidenFox authorised!
+[19:48:15.895][DEBUG] Adding request header User-Agent
+[19:48:15.895][DEBUG] Adding request header Accept-Language
+[19:48:15.895][DEBUG] Adding request header Accept
+[19:48:15.896][DEBUG] Adding request header Content-Type
+[19:48:16.037][DEBUG] Loading 3 servers for user AidenFox
+[19:48:16.039][INFO] Loading engine auth(true)
+[19:48:16.040][DEBUG] === GUI BUILDER ===
+[19:48:16.050][DEBUG] Building group titleBar with parent rootPanel
+[19:48:16.055][DEBUG] Loading label style from assets/styles/label.json
+[19:48:16.071][INFO] Created font - mcfont
+[19:48:16.073][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:48:16.087][DEBUG] Building group mainFrame with parent rootPanel
+[19:48:16.090][DEBUG] Building group authForm with parent mainFrame
+[19:48:16.091][DEBUG] Loading textField style from assets/styles/textField.json
+[19:48:16.144][INFO] Created font - FSElliotPro-Heavy
+[19:48:16.145][DEBUG] Loading passField style from assets/styles/passField.json
+[19:48:16.152][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:48:16.169][INFO] Created font - prompt
+[19:48:16.171][DEBUG] Loading button style from assets/styles/button.json
+[19:48:16.194][DEBUG] Building group loggedForm with parent mainFrame
+[19:48:16.195][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:48:16.203][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:48:16.221][DEBUG] Building group userPane with parent loggedForm
+[19:48:16.224][DEBUG] Building group userDataForm with parent userPane
+[19:48:16.234][DEBUG] Building group newsForm with parent mainFrame
+[19:48:16.274][INFO] Created font - Sans-Black
+[19:48:16.274][DEBUG] Building group devInfo with parent newsForm
+[19:48:16.278][DEBUG] Building group settings with parent mainFrame
+[19:48:16.281][DEBUG] Building group settingsPane with parent settings
+[19:48:16.289][DEBUG] Building group generalSettings with parent settings
+[19:48:16.312][DEBUG] Building group generalInfo with parent settings
+[19:48:16.315][DEBUG] Building group download with parent mainFrame
+[19:48:16.317][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:48:16.322][DEBUG] Building group download with parent download
+[19:48:16.326][DEBUG] Building group wait with parent mainFrame
+[19:48:28.623][DEBUG] HTTP GET init
+[19:48:28.629][DEBUG] HTTP POST init
+[19:48:28.631][INFO] FrameConstructor initialization
+[19:48:28.643][INFO] Building FrameConstructor...
+[19:48:28.891][DEBUG] Authorising with existing login AidenFox
+[19:48:29.117][DEBUG] Adding request header User-Agent
+[19:48:29.118][DEBUG] Adding request header Accept-Language
+[19:48:29.118][DEBUG] Adding request header Accept
+[19:48:29.118][DEBUG] Adding request header Content-Type
+[19:48:29.634][INFO] AidenFox authorised!
+[19:48:29.634][DEBUG] Adding request header User-Agent
+[19:48:29.635][DEBUG] Adding request header Accept-Language
+[19:48:29.635][DEBUG] Adding request header Accept
+[19:48:29.635][DEBUG] Adding request header Content-Type
+[19:48:29.762][DEBUG] Loading 3 servers for user AidenFox
+[19:48:29.764][INFO] Loading engine auth(true)
+[19:48:29.764][DEBUG] === GUI BUILDER ===
+[19:48:29.774][DEBUG] Building group titleBar with parent rootPanel
+[19:48:29.777][DEBUG] Loading label style from assets/styles/label.json
+[19:48:29.791][INFO] Created font - mcfont
+[19:48:29.792][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[19:48:29.805][DEBUG] Building group mainFrame with parent rootPanel
+[19:48:29.807][DEBUG] Building group authForm with parent mainFrame
+[19:48:29.809][DEBUG] Loading textField style from assets/styles/textField.json
+[19:48:29.854][INFO] Created font - FSElliotPro-Heavy
+[19:48:29.855][DEBUG] Loading passField style from assets/styles/passField.json
+[19:48:29.862][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[19:48:29.875][INFO] Created font - prompt
+[19:48:29.876][DEBUG] Loading button style from assets/styles/button.json
+[19:48:29.894][DEBUG] Building group loggedForm with parent mainFrame
+[19:48:29.895][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[19:48:29.902][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[19:48:29.911][DEBUG] Building group userPane with parent loggedForm
+[19:48:29.913][DEBUG] Building group userDataForm with parent userPane
+[19:48:29.921][DEBUG] Building group newsForm with parent mainFrame
+[19:48:29.953][INFO] Created font - Sans-Black
+[19:48:29.953][DEBUG] Building group devInfo with parent newsForm
+[19:48:29.957][DEBUG] Building group settings with parent mainFrame
+[19:48:29.960][DEBUG] Building group settingsPane with parent settings
+[19:48:29.968][DEBUG] Building group generalSettings with parent settings
+[19:48:29.991][DEBUG] Building group generalInfo with parent settings
+[19:48:29.994][DEBUG] Building group download with parent mainFrame
+[19:48:29.995][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[19:48:30.002][DEBUG] Building group download with parent download
+[19:48:30.007][DEBUG] Building group wait with parent mainFrame
+[20:08:55.296][DEBUG] Adding request header User-Agent
+[20:08:55.296][DEBUG] Adding request header Accept-Language
+[20:08:55.296][DEBUG] Adding request header Accept
+[20:08:55.296][DEBUG] Adding request header Content-Type
+[20:09:18.058][DEBUG] Adding request header User-Agent
+[20:09:18.058][DEBUG] Adding request header User-Agent
+[20:09:18.058][DEBUG] Adding request header Accept-Language
+[20:09:18.058][DEBUG] Adding request header Accept-Language
+[20:09:18.058][DEBUG] Adding request header Accept
+[20:09:18.058][DEBUG] Adding request header Accept
+[20:09:18.059][DEBUG] Adding request header Content-Type
+[20:09:18.059][DEBUG] Adding request header Content-Type
+[20:09:22.095][DEBUG] #############################
+[20:09:22.096][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:09:22.096][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:09:22.097][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:09:22.097][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:09:22.097][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:09:22.098][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:09:22.098][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:09:22.098][DEBUG] #############################
+[20:09:22.132][DEBUG] 51 libraries found
+[20:09:22.185][DEBUG] #############################
+[20:09:22.185][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:09:22.185][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:09:22.185][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:09:22.185][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:09:22.185][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:09:22.185][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:09:22.186][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:09:22.186][DEBUG] #############################
+[20:09:22.230][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:09:22.239][DEBUG] 51 libraries found
+[20:09:22.355][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:09:22.465][DEBUG] Adding request header User-Agent
+[20:09:22.466][DEBUG] Adding request header Accept-Language
+[20:09:22.466][DEBUG] Adding request header Accept
+[20:09:22.466][DEBUG] Adding request header Content-Type
+[20:09:22.494][DEBUG] Adding request header User-Agent
+[20:09:22.494][DEBUG] Adding request header Accept-Language
+[20:09:22.494][DEBUG] Adding request header Accept
+[20:09:22.495][DEBUG] Adding request header Content-Type
+[20:09:40.528][DEBUG] #############################
+[20:09:40.529][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:09:40.533][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:09:40.533][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:09:40.533][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:09:40.533][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:09:40.533][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:09:40.534][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:09:40.534][DEBUG] #############################
+[20:09:40.618][DEBUG] #############################
+[20:09:40.620][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:09:40.620][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:09:40.621][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:09:40.621][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:09:40.621][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:09:40.621][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:09:40.622][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:09:40.622][DEBUG] #############################
+[20:09:40.650][DEBUG] 51 libraries found
+[20:09:40.685][DEBUG] 51 libraries found
+[20:09:40.716][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:09:40.730][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:09:40.870][DEBUG] Adding request header User-Agent
+[20:09:40.871][DEBUG] Adding request header Accept-Language
+[20:09:40.871][DEBUG] Adding request header Accept
+[20:09:40.871][DEBUG] Adding request header Content-Type
+[20:09:40.881][DEBUG] Adding request header User-Agent
+[20:09:40.881][DEBUG] Adding request header Accept-Language
+[20:09:40.881][DEBUG] Adding request header Accept
+[20:09:40.882][DEBUG] Adding request header Content-Type
+[20:10:34.279][DEBUG] #############################
+[20:10:34.430][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:10:34.740][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:10:35.339][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:10:35.426][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:10:35.464][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:10:35.464][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:10:35.503][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:10:35.503][DEBUG] #############################
+[20:10:35.531][DEBUG] #############################
+[20:10:35.641][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:10:35.642][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:10:35.642][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:10:35.643][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:10:35.643][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:10:35.643][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:10:35.643][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:10:35.643][DEBUG] #############################
+[20:10:35.982][DEBUG] 51 libraries found
+[20:10:36.046][DEBUG] 51 libraries found
+[20:10:36.360][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:10:36.413][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:10:36.636][DEBUG] Adding request header User-Agent
+[20:10:36.636][DEBUG] Adding request header Accept-Language
+[20:10:36.636][DEBUG] Adding request header Accept
+[20:10:36.636][DEBUG] Adding request header Content-Type
+[20:10:36.648][DEBUG] Adding request header User-Agent
+[20:10:36.648][DEBUG] Adding request header Accept-Language
+[20:10:36.648][DEBUG] Adding request header Accept
+[20:10:36.649][DEBUG] Adding request header Content-Type
+[20:14:23.520][DEBUG] HTTP GET init
+[20:14:23.525][DEBUG] HTTP POST init
+[20:14:23.526][INFO] FrameConstructor initialization
+[20:14:23.538][INFO] Building FrameConstructor...
+[20:14:23.811][DEBUG] Authorising with existing login AidenFox
+[20:14:24.055][DEBUG] Adding request header User-Agent
+[20:14:24.055][DEBUG] Adding request header Accept-Language
+[20:14:24.055][DEBUG] Adding request header Accept
+[20:14:24.055][DEBUG] Adding request header Content-Type
+[20:14:24.576][INFO] AidenFox authorised!
+[20:14:24.577][DEBUG] Adding request header User-Agent
+[20:14:24.577][DEBUG] Adding request header Accept-Language
+[20:14:24.577][DEBUG] Adding request header Accept
+[20:14:24.577][DEBUG] Adding request header Content-Type
+[20:14:24.727][DEBUG] Loading 3 servers for user AidenFox
+[20:14:24.729][INFO] Loading engine auth(true)
+[20:14:24.730][DEBUG] === GUI BUILDER ===
+[20:14:24.745][DEBUG] Building group titleBar with parent rootPanel
+[20:14:24.751][DEBUG] Loading label style from assets/styles/label.json
+[20:14:24.769][INFO] Created font - mcfont
+[20:14:24.771][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[20:14:24.788][DEBUG] Building group mainFrame with parent rootPanel
+[20:14:24.792][DEBUG] Building group authForm with parent mainFrame
+[20:14:24.793][DEBUG] Loading textField style from assets/styles/textField.json
+[20:14:24.899][INFO] Created font - FSElliotPro-Heavy
+[20:14:24.900][DEBUG] Loading passField style from assets/styles/passField.json
+[20:14:24.910][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[20:14:24.932][INFO] Created font - prompt
+[20:14:24.934][DEBUG] Loading button style from assets/styles/button.json
+[20:14:24.959][DEBUG] Building group loggedForm with parent mainFrame
+[20:14:24.960][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[20:14:24.968][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[20:14:24.979][DEBUG] Building group userPane with parent loggedForm
+[20:14:24.981][DEBUG] Building group userDataForm with parent userPane
+[20:14:24.991][DEBUG] Building group newsForm with parent mainFrame
+[20:14:25.021][INFO] Created font - Sans-Black
+[20:14:25.022][DEBUG] Building group devInfo with parent newsForm
+[20:14:25.025][DEBUG] Building group settings with parent mainFrame
+[20:14:25.027][DEBUG] Building group settingsPane with parent settings
+[20:14:25.035][DEBUG] Building group generalSettings with parent settings
+[20:14:25.055][DEBUG] Building group generalInfo with parent settings
+[20:14:25.058][DEBUG] Building group download with parent mainFrame
+[20:14:25.059][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[20:14:25.066][DEBUG] Building group download with parent download
+[20:14:25.071][DEBUG] Building group wait with parent mainFrame
+[20:14:27.187][DEBUG] Adding request header User-Agent
+[20:14:27.188][DEBUG] Adding request header Accept-Language
+[20:14:27.188][DEBUG] Adding request header Accept
+[20:14:27.188][DEBUG] Adding request header Content-Type
+[20:15:22.340][DEBUG] HTTP GET init
+[20:15:22.345][DEBUG] HTTP POST init
+[20:15:22.347][INFO] FrameConstructor initialization
+[20:15:22.361][INFO] Building FrameConstructor...
+[20:15:22.631][DEBUG] Authorising with existing login AidenFox
+[20:15:22.833][DEBUG] Adding request header User-Agent
+[20:15:22.834][DEBUG] Adding request header Accept-Language
+[20:15:22.834][DEBUG] Adding request header Accept
+[20:15:22.834][DEBUG] Adding request header Content-Type
+[20:15:23.321][INFO] AidenFox authorised!
+[20:15:23.322][DEBUG] Adding request header User-Agent
+[20:15:23.322][DEBUG] Adding request header Accept-Language
+[20:15:23.322][DEBUG] Adding request header Accept
+[20:15:23.322][DEBUG] Adding request header Content-Type
+[20:15:23.481][DEBUG] Loading 3 servers for user AidenFox
+[20:15:23.483][INFO] Loading engine auth(true)
+[20:15:23.484][DEBUG] === GUI BUILDER ===
+[20:15:23.497][DEBUG] Building group titleBar with parent rootPanel
+[20:15:23.501][DEBUG] Loading label style from assets/styles/label.json
+[20:15:23.519][INFO] Created font - mcfont
+[20:15:23.521][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[20:15:23.540][DEBUG] Building group mainFrame with parent rootPanel
+[20:15:23.544][DEBUG] Building group authForm with parent mainFrame
+[20:15:23.545][DEBUG] Loading textField style from assets/styles/textField.json
+[20:15:23.622][INFO] Created font - FSElliotPro-Heavy
+[20:15:23.624][DEBUG] Loading passField style from assets/styles/passField.json
+[20:15:23.631][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[20:15:23.648][INFO] Created font - prompt
+[20:15:23.650][DEBUG] Loading button style from assets/styles/button.json
+[20:15:23.693][DEBUG] Building group loggedForm with parent mainFrame
+[20:15:23.694][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[20:15:23.724][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[20:15:23.734][DEBUG] Building group userPane with parent loggedForm
+[20:15:23.736][DEBUG] Building group userDataForm with parent userPane
+[20:15:23.745][DEBUG] Building group newsForm with parent mainFrame
+[20:15:23.784][INFO] Created font - Sans-Black
+[20:15:23.784][DEBUG] Building group devInfo with parent newsForm
+[20:15:23.787][DEBUG] Building group settings with parent mainFrame
+[20:15:23.790][DEBUG] Building group settingsPane with parent settings
+[20:15:23.797][DEBUG] Building group generalSettings with parent settings
+[20:15:23.819][DEBUG] Building group generalInfo with parent settings
+[20:15:23.825][DEBUG] Building group download with parent mainFrame
+[20:15:23.827][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[20:15:23.836][DEBUG] Building group download with parent download
+[20:15:23.840][DEBUG] Building group wait with parent mainFrame
+[20:15:25.161][DEBUG] Adding request header User-Agent
+[20:15:25.162][DEBUG] Adding request header Accept-Language
+[20:15:25.162][DEBUG] Adding request header Accept
+[20:15:25.162][DEBUG] Adding request header Content-Type
+[20:15:28.774][DEBUG] #############################
+[20:15:28.774][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:15:28.774][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Foxesworld
+[20:15:28.775][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.16.4
+[20:15:28.775][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.16.4\1.16.4.jar
+[20:15:28.775][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.16.4\natives
+[20:15:28.776][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.16.4\libraries
+[20:15:28.776][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:15:28.776][DEBUG] #############################
+[20:15:28.805][DEBUG] 41 libraries found
+[20:15:28.840][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker not found
+[20:15:28.840][DEBUG] TweakClass cpw.mods.fml.common.launcher.FMLTweaker not found
+[20:15:28.841][DEBUG] TweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker not found
+[20:15:28.841][DEBUG] TweakClass org.dimdev.riftloader.launch.RiftLoaderClientTweaker not found
+[20:15:28.842][DEBUG] TweakClass optifine.OptiFineTweaker not found
+[20:16:22.689][DEBUG] HTTP GET init
+[20:16:22.693][DEBUG] HTTP POST init
+[20:16:22.695][INFO] FrameConstructor initialization
+[20:16:22.706][INFO] Building FrameConstructor...
+[20:16:22.948][DEBUG] Authorising with existing login AidenFox
+[20:16:23.139][DEBUG] Adding request header User-Agent
+[20:16:23.139][DEBUG] Adding request header Accept-Language
+[20:16:23.139][DEBUG] Adding request header Accept
+[20:16:23.140][DEBUG] Adding request header Content-Type
+[20:16:23.652][INFO] AidenFox authorised!
+[20:16:23.653][DEBUG] Adding request header User-Agent
+[20:16:23.653][DEBUG] Adding request header Accept-Language
+[20:16:23.653][DEBUG] Adding request header Accept
+[20:16:23.654][DEBUG] Adding request header Content-Type
+[20:16:23.812][DEBUG] Loading 3 servers for user AidenFox
+[20:16:23.814][INFO] Loading engine auth(true)
+[20:16:23.814][DEBUG] === GUI BUILDER ===
+[20:16:23.824][DEBUG] Building group titleBar with parent rootPanel
+[20:16:23.828][DEBUG] Loading label style from assets/styles/label.json
+[20:16:23.845][INFO] Created font - mcfont
+[20:16:23.847][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[20:16:23.866][DEBUG] Building group mainFrame with parent rootPanel
+[20:16:23.869][DEBUG] Building group authForm with parent mainFrame
+[20:16:23.870][DEBUG] Loading textField style from assets/styles/textField.json
+[20:16:23.918][INFO] Created font - FSElliotPro-Heavy
+[20:16:23.919][DEBUG] Loading passField style from assets/styles/passField.json
+[20:16:23.924][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[20:16:23.937][INFO] Created font - prompt
+[20:16:23.938][DEBUG] Loading button style from assets/styles/button.json
+[20:16:23.959][DEBUG] Building group loggedForm with parent mainFrame
+[20:16:23.960][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[20:16:23.969][INFO] Updating combobox [Ljava.lang.String;@1cf66049
+[20:16:23.982][DEBUG] Building group userPane with parent loggedForm
+[20:16:23.984][DEBUG] Building group userDataForm with parent userPane
+[20:16:23.995][DEBUG] Building group newsForm with parent mainFrame
+[20:16:24.037][INFO] Created font - Sans-Black
+[20:16:24.038][DEBUG] Building group devInfo with parent newsForm
+[20:16:24.042][DEBUG] Building group settings with parent mainFrame
+[20:16:24.045][DEBUG] Building group settingsPane with parent settings
+[20:16:24.052][DEBUG] Building group generalSettings with parent settings
+[20:16:24.073][DEBUG] Building group generalInfo with parent settings
+[20:16:24.075][DEBUG] Building group download with parent mainFrame
+[20:16:24.077][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[20:16:24.085][DEBUG] Building group download with parent download
+[20:16:24.088][DEBUG] Building group wait with parent mainFrame
+[20:16:46.606][DEBUG] Adding request header User-Agent
+[20:16:46.607][DEBUG] Adding request header Accept-Language
+[20:16:46.607][DEBUG] Adding request header Accept
+[20:16:46.607][DEBUG] Adding request header Content-Type
+[20:17:02.377][DEBUG] Adding request header User-Agent
+[20:17:02.378][DEBUG] Adding request header Accept-Language
+[20:17:02.378][DEBUG] Adding request header Accept
+[20:17:02.379][DEBUG] Adding request header Content-Type
+[20:17:02.399][DEBUG] Adding request header User-Agent
+[20:17:02.400][DEBUG] Adding request header Accept-Language
+[20:17:02.400][DEBUG] Adding request header Accept
+[20:17:02.400][DEBUG] Adding request header Content-Type
+[20:17:06.520][DEBUG] #############################
+[20:17:06.520][DEBUG] #############################
+[20:17:06.521][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:17:06.521][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:17:06.522][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:17:06.522][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:17:06.522][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:17:06.522][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:17:06.522][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:17:06.522][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:17:06.522][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:17:06.523][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:17:06.523][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:17:06.523][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:17:06.523][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:17:06.523][DEBUG] #############################
+[20:17:06.523][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:17:06.523][DEBUG] #############################
+[20:17:06.558][DEBUG] 51 libraries found
+[20:17:06.559][DEBUG] 51 libraries found
+[20:17:06.674][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:17:06.693][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:17:06.821][DEBUG] Adding request header User-Agent
+[20:17:06.821][DEBUG] Adding request header Accept-Language
+[20:17:06.821][DEBUG] Adding request header Accept
+[20:17:06.822][DEBUG] Adding request header Content-Type
+[20:17:06.899][DEBUG] Adding request header User-Agent
+[20:17:06.900][DEBUG] Adding request header Accept-Language
+[20:17:06.900][DEBUG] Adding request header Accept
+[20:17:06.900][DEBUG] Adding request header Content-Type
+[20:17:18.345][DEBUG] #############################
+[20:17:18.345][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:17:18.346][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:17:18.346][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:17:18.346][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:17:18.346][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:17:18.346][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:17:18.347][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:17:18.349][DEBUG] #############################
+[20:17:18.749][DEBUG] 51 libraries found
+[20:17:19.537][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:17:20.289][DEBUG] Adding request header User-Agent
+[20:17:20.289][DEBUG] Adding request header Accept-Language
+[20:17:20.290][DEBUG] Adding request header Accept
+[20:17:20.290][DEBUG] Adding request header Content-Type
+[20:17:21.583][DEBUG] #############################
+[20:17:21.584][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[20:17:21.585][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech
+[20:17:21.585][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[20:17:21.587][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[20:17:21.587][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[20:17:21.587][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[20:17:21.587][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[20:17:21.587][DEBUG] #############################
+[20:17:22.237][DEBUG] 51 libraries found
+[20:17:22.567][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!
+[20:17:22.748][DEBUG] Adding request header User-Agent
+[20:17:22.748][DEBUG] Adding request header Accept-Language
+[20:17:22.748][DEBUG] Adding request header Accept
+[20:17:22.749][DEBUG] Adding request header Content-Type

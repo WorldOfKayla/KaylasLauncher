@@ -1,19 +1,163 @@
-[12:39:55] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', name='PROD'
-[12:39:55] [Render thread/INFO]: Setting user: AidenFox
-[12:39:55] [Render thread/INFO]: Backend library: LWJGL version 3.2.2 build 10
-[12:39:58] [Render thread/INFO]: Narrator library for x64 successfully loaded
-[12:39:58] [Render thread/INFO]: Reloading ResourceManager: Default
-[12:40:12] [Render thread/INFO]: OpenAL initialized.
-[12:40:12] [Render thread/INFO]: Sound engine started
-[12:40:13] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
-[12:40:13] [Render thread/INFO]: Created: 1024x1024x4 minecraft:textures/atlas/blocks.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 256x128x4 minecraft:textures/atlas/signs.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[12:40:13] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[12:40:15] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
-[12:40:15] [Render thread/INFO]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
-[12:40:15] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[12:40:29] [Render thread/INFO]: Stopping!
+[20:17:08] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:17:08] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:17:08] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:17:09] [main/INFO]: Forge Mod Loader version 14.23.5.2855 for Minecraft 1.12.2 loading
+[20:17:09] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_271, running on Windows 10:amd64:10.0, installed at C:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
+[20:17:09] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+[20:17:09] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:09] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:09] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:17:15] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
+[20:17:15] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
+[20:17:15] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
+[20:17:15] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
+[20:17:15] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:17:15] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:17:17] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:17:17] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:17:18] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[20:17:28] [Client thread/INFO]: Setting user: AidenFox
+[20:17:47] [Client thread/INFO]: LWJGL Version: 2.9.4
+[20:17:55] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
+[20:17:55] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[20:17:56] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[20:17:57] [Client thread/INFO]: Replaced 1227 ore ingredients
+[20:17:57] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
+[20:17:30] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+[20:17:30] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:30] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:17:30] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:17:39] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
+[20:17:39] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
+[20:17:39] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
+[20:17:39] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
+[20:17:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:17:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:17:40] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:17:40] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:17:41] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[20:17:48] [Client thread/INFO]: Setting user: AidenFox
+[20:17:59] [Client thread/INFO]: LWJGL Version: 2.9.4
+[20:18:01] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
+[20:18:01] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[20:18:01] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[20:18:01] [Client thread/INFO]: Replaced 1227 ore ingredients
+[20:18:01] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+[20:18:03] [Client thread/ERROR]: Unable to read a class file correctly
+java.lang.IllegalArgumentException: null
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) [ASMModParser.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:116) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.discover(DirectoryDiscoverer.java:62) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.ContainerType.findMods(ContainerType.java:47) [ContainerType.class:?]
+	at net.minecraftforge.fml.common.discovery.ModCandidate.explore(ModCandidate.java:74) [ModCandidate.class:?]
+	at net.minecraftforge.fml.common.discovery.ModDiscoverer.identifyMods(ModDiscoverer.java:93) [ModDiscoverer.class:?]
+	at net.minecraftforge.fml.common.Loader.identifyMods(Loader.java:427) [Loader.class:?]
+	at net.minecraftforge.fml.common.Loader.loadMods(Loader.java:568) [Loader.class:?]
+	at net.minecraftforge.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:232) [FMLClientHandler.class:?]
+	at net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:467) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:378) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_271]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_271]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_271]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
+[20:18:03] [Client thread/ERROR]: There was a problem reading the file C:\Users\Aiden\Documents\GitHub\NewEngine\build\classes\java\main\org\foxesworld\APP.class - probably this is a corrupt file
+net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
+
+	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:116) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.discover(DirectoryDiscoverer.java:62) [DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.ContainerType.findMods(ContainerType.java:47) [ContainerType.class:?]
+	at net.minecraftforge.fml.common.discovery.ModCandidate.explore(ModCandidate.java:74) [ModCandidate.class:?]
+	at net.minecraftforge.fml.common.discovery.ModDiscoverer.identifyMods(ModDiscoverer.java:93) [ModDiscoverer.class:?]
+	at net.minecraftforge.fml.common.Loader.identifyMods(Loader.java:427) [Loader.class:?]
+	at net.minecraftforge.fml.common.Loader.loadMods(Loader.java:568) [Loader.class:?]
+	at net.minecraftforge.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:232) [FMLClientHandler.class:?]
+	at net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:467) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:378) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_271]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_271]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_271]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
+Caused by: java.lang.IllegalArgumentException
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
+	... 23 more
+[20:18:03] [Client thread/WARN]: Identified a problem with the mod candidate C:\Users\Aiden\Documents\GitHub\NewEngine, ignoring this source
+net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
+
+	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:116) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.exploreFileSystem(DirectoryDiscoverer.java:104) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.DirectoryDiscoverer.discover(DirectoryDiscoverer.java:62) ~[DirectoryDiscoverer.class:?]
+	at net.minecraftforge.fml.common.discovery.ContainerType.findMods(ContainerType.java:47) ~[ContainerType.class:?]
+	at net.minecraftforge.fml.common.discovery.ModCandidate.explore(ModCandidate.java:74) ~[ModCandidate.class:?]
+	at net.minecraftforge.fml.common.discovery.ModDiscoverer.identifyMods(ModDiscoverer.java:93) [ModDiscoverer.class:?]
+	at net.minecraftforge.fml.common.Loader.identifyMods(Loader.java:427) [Loader.class:?]
+	at net.minecraftforge.fml.common.Loader.loadMods(Loader.java:568) [Loader.class:?]
+	at net.minecraftforge.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:232) [FMLClientHandler.class:?]
+	at net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:467) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:378) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_271]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_271]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_271]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
+Caused by: java.lang.IllegalArgumentException
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
+	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
+	... 23 more
+[20:18:03] [Client thread/INFO]: Forge Mod Loader has identified 4 mods to load
+[20:18:04] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge] at CLIENT
+[20:18:04] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge] at SERVER
+[20:18:04] [Client thread/INFO]: The game window is being closed by the player, exiting.
+[20:18:04] [Client thread/WARN]: Java has been asked to exit (code 0)
+[20:18:04] [Client thread/WARN]: Exit trace:
+[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.common.LoadController.transition(LoadController.java:145)
+[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.common.Loader.loadMods(Loader.java:615)
+[20:18:04] [Client thread/WARN]: 	net.minecraftforge.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:232)
+[20:18:04] [Client thread/WARN]: 	net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:467)
+[20:18:04] [Client thread/WARN]: 	net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:378)
+[20:18:04] [Client thread/WARN]: 	net.minecraft.client.main.Main.main(SourceFile:123)
+[20:18:04] [Client thread/WARN]: 	sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[20:18:04] [Client thread/WARN]: 	sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[20:18:04] [Client thread/WARN]: 	sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[20:18:04] [Client thread/WARN]: 	java.lang.reflect.Method.invoke(Method.java:498)
+[20:18:04] [Client thread/WARN]: 	net.minecraft.launchwrapper.Launch.launch(Launch.java:133)
+[20:18:04] [Client thread/WARN]: 	net.minecraft.launchwrapper.Launch.main(Launch.java:21)

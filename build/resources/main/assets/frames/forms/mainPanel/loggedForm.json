@@ -73,6 +73,9 @@
                           "componentType": "label",
                           "fontSize": 11,
                           "componentStyle": "title",
+                          "imageIcon": "assets/ui/icons/units.png",
+                          "iconWidth": 32,
+                          "iconHeight": 32,
                           "localeKey": "logged.units",
                           "componentId": "unitsField",
                           "initialValue": "user#units",
@@ -83,7 +86,7 @@
                           "componentStyle": "buttonGreen",
                           "componentId": "test",
                           "localeKey": "TEST",
-                          "bounds": "95,15,60,34"
+                          "bounds": "95,30,60,34"
                         }
                       ]
                     }

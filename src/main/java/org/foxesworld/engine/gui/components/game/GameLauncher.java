@@ -21,7 +21,7 @@ public class GameLauncher {
     private final ServerAttributes selectedServer;
     private final LibraryScanner libraryScanner;
     private URLClassLoader cl;
-    private List<String> params = new ArrayList<>();
+    private final List<String> params = new ArrayList<>();
     private String tweakClassVal = "";
     boolean tweakClass = false;
 
@@ -44,7 +44,7 @@ public class GameLauncher {
         this.collectLibraries();
         this.addTweakClass();
         params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-        this.loadAtuhLib();
+        this.loadAuthLib();
         this.addArgs();
     }
 
@@ -57,7 +57,7 @@ public class GameLauncher {
 
         for (String libraryPath : libraryScanner.findLibraryPaths(buildLibrariesPath())) {
             File libraryFile = new File(libraryPath);
-            sb.append(libraryFile.getAbsoluteFile() + File.pathSeparator);
+            sb.append(libraryFile.getAbsoluteFile()).append(File.pathSeparator);
 
             if (libraryFile.isFile()) {
                 try {
@@ -69,8 +69,7 @@ public class GameLauncher {
             }
             num++;
         }
-
-        sb.append(buildMinecraftJarPath() + File.pathSeparator);
+        sb.append(buildMinecraftJarPath()).append(File.pathSeparator);
         params.add(sb.toString());
 
         cl = createClassLoader(libraryURLs);
@@ -82,7 +81,7 @@ public class GameLauncher {
         return new URLClassLoader(urls, getClass().getClassLoader());
     }
 
-    private void loadAtuhLib(){
+    private void loadAuthLib(){
         try {
             cl.loadClass("com.mojang.authlib.Agent");
             params.add("--accessToken="+this.user.getToken());
@@ -102,7 +101,7 @@ public class GameLauncher {
         params.add("--version="+selectedServer.serverVersion);
         params.add("--gameDir="+buildClientDir());
         params.add("--assetsDir="+buildAssetsPath());
-        if((boolean)actionHandler.getEngine().getCONFIG().getCONFIG().get("fullScreen")==true) {
+        if((boolean) actionHandler.getEngine().getCONFIG().getCONFIG().get("fullScreen")) {
             params.add("--fullscreen=true");
         }
         params.add(tweakClassVal);
@@ -124,7 +123,7 @@ public class GameLauncher {
                 if (exitCode != 0) {
                     SwingUtilities.invokeLater(() -> {
                         actionHandler.getEngine().getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exitcode - " + exitCode, "Launch error", 0, null);
+                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exitcode - " + exitCode, "Launch error", JOptionPane.ERROR_MESSAGE, null);
                     });
                 }
             } catch (IOException | InterruptedException e) {
@@ -138,11 +137,11 @@ public class GameLauncher {
 
     private void addTweakClass() {
         List<TweakClasses> tweakClasses = actionHandler.getEngine().getEngineData().tweakClasses;
-        for (int i = 0; i < tweakClasses.size(); i++) {
-            String className = tweakClasses.get(i).classPath;
+        for (TweakClasses aClass : tweakClasses) {
+            String className = aClass.classPath;
             try {
                 cl.loadClass(className);
-                tweakClassVal = "--tweakClass="+className;
+                tweakClassVal = "--tweakClass=" + className;
                 tweakClass = true;
                 actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " was found!");
                 System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");

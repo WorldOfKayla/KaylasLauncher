@@ -17,7 +17,7 @@ public class User {
 
     public void setUserSpace(){
         if(this.auth.getEngine().getAuth().isAuthorised()) {
-            auth.getEngine().displayPanel("authForm->false|loggedForm->true");
+            auth.getEngine().displayPanel("authForm->false|loggedForm->true|devInfo->true");
             for(Map.Entry<String, String> credentials: auth.getAuthCredentials().entrySet()){
                 try {
                     Field field = User.class.getDeclaredField(credentials.getKey());

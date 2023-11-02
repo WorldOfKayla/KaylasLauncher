@@ -10,7 +10,10 @@ import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -118,6 +121,27 @@ public class GuiBuilder implements ComponentFactoryListener {
                 buildGui(componentAttributes.readFrom, true, parentPanel);
             }
         }
+    }
+    private void fadePanelIn(JPanel panel) {
+        Timer timer = new Timer(50, null);
+        timer.addActionListener(new ActionListener() {
+            float alpha = 0.0f;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (alpha < 1.0f) {
+                    alpha += 0.05f; // Увеличиваем прозрачность панели
+                    panel.setOpaque(false);
+                    panel.setBackground(new Color(0, 0, 255, (int) (alpha * 255))); // Устанавливаем цвет с учетом прозрачности
+                    panel.repaint(); // Перерисовываем панель
+                } else {
+                    ((Timer) e.getSource()).stop(); // Останавливаем таймер после завершения анимации
+                }
+                panel.setOpaque(true);
+            }
+        });
+
+        timer.start();
     }
 
     @Override

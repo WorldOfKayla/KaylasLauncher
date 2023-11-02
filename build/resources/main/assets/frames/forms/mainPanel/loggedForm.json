@@ -30,14 +30,14 @@
           "componentStyle": "buttonRed",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
-          "bounds": "40,260,120,43"
+          "bounds": "40,260,120,47"
         },
         {
           "componentType": "button",
           "componentStyle": "buttonGreen",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
-          "bounds": "165,260,120,43"
+          "bounds": "165,260,120,47"
         },
         {
           "groups": {

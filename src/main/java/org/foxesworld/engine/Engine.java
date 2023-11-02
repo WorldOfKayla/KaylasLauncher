@@ -133,11 +133,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
 
     @Override
-    public void onPanelsAdded() {
-
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
     }

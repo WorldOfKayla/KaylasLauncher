@@ -24,7 +24,7 @@ public class HTTPrequest {
     public String send(Map<String, String> parameters) {
         HttpURLConnection httpURLConnection = null;
         try {
-            java.net.URL url = new URL(engine.getEngineData().bindUrl);
+            URL url = new URL(engine.getEngineData().bindUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
             this.setRequestProperties(httpURLConnection, engine.getEngineData().requestProperties);

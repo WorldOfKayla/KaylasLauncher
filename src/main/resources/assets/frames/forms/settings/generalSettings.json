@@ -85,7 +85,7 @@
           "componentStyle": "buttonGreen",
           "componentId": "applySettings",
           "localeKey": "settings.applySettings",
-          "bounds": "60,195,160,34"
+          "bounds": "40,185,210,47"
         }
       ]
     }

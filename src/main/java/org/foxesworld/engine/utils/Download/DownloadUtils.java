@@ -1,8 +1,6 @@
 package org.foxesworld.engine.utils.Download;
 
 import me.tongfei.progressbar.ProgressBar;
-import me.tongfei.progressbar.ProgressBarBuilder;
-import me.tongfei.progressbar.ProgressBarStyle;
 import org.foxesworld.engine.Engine;
 
 import javax.swing.*;
@@ -50,6 +48,7 @@ public class DownloadUtils {
             byte[] data = new byte[1024];
 
             try (InputStream in = new BufferedInputStream(httpConnection.getInputStream())) {
+
                 int read;
                 while ((read = in.read(data, 0, data.length)) != -1) {
                     out.write(data, 0, read);
@@ -61,7 +60,9 @@ public class DownloadUtils {
                         progressBar.setValue(percent);
                         this.consolePb.stepTo(percent);
                         progressLabel.setText(getFileSize((int) downloaded) + "Mb /" + getFileSize(Math.toIntExact(totalSize)) + "Mb");
+                        System.out.println(downloaded+" - "+totalSize);
                     });
+
                 }
 
             }
@@ -72,7 +73,8 @@ public class DownloadUtils {
             } catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-            if (percent > 99) {
+            //System.out.println(chunkSize);
+            if (downloaded == totalSize) {
                 downloadListener.onDownloadComplete();
             }
             httpConnection.disconnect();

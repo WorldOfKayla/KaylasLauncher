@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ActionHandler {
-    private Engine engine;
+    private final Engine engine;
     private Game game;
 
     private ServerAttributes currentServer;
@@ -33,21 +33,17 @@ public class ActionHandler {
         }
         switch (key) {
             case "submit" -> {
-                switch(parent){
-                    case "authForm" -> {
-                        this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
-                        if(this.engine.getAuth().isAuthorised()) {
-                            engine.getFrame().getRootPanel().removeAll();
-                            engine.displayPanel("authForm->false");
-                            this.engine.initialize(this.engine.getAuth().getAuthCredentials("login"));
-                        }
+                if ("authForm".equals(parent)) {
+                    this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
+                    if (this.engine.getAuth().isAuthorised()) {
+                        engine.getFrame().getRootPanel().removeAll();
+                        engine.displayPanel("authForm->false");
+                        this.engine.initialize(this.engine.getAuth().getAuthCredentials("login"));
                     }
                 }
             }
 
-            case "test" -> {
-                this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
-            }
+            case "test" -> this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
 
             case "gameDir" -> openGameFolder();
 

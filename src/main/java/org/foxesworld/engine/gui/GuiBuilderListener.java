@@ -8,5 +8,4 @@ import java.util.Map;
 public interface GuiBuilderListener {
 
     void onPanelBuild(Map<String, OptionGroups> groups, JPanel parentPanel);
-    void onPanelsAdded();
 }

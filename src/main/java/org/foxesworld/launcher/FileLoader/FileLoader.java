@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileLoader implements DownloadListener {
-    private ActionHandler actionHandler;
+    private final ActionHandler actionHandler;
     private final Engine engine;
     private final HTTPrequest POSTrequest;
     private final String downloadMask = "/uploads/files/clients/";
@@ -104,6 +104,7 @@ public class FileLoader implements DownloadListener {
 
     @Override
     public void onDownloadComplete() {
+        System.out.println("Starting game...");
         this.actionHandler.setGame(new Game(actionHandler));
         actionHandler.getGame().start();
     }

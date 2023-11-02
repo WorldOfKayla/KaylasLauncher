@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
+import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final FrameConstructor frameConstructor;
     private final ComponentFactory componentFactory;
-    private  GuiBuilderListener guiBuilderListener;
+    private GuiBuilderListener guiBuilderListener;
 
     public GuiBuilder(Engine engine) {
         engine.getLOGGER().debug("=== GUI BUILDER ===");
@@ -90,7 +91,7 @@ public class GuiBuilder implements ComponentFactoryListener {
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.panelOptions.visible);
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
-                if(!this.getPanelsMap().containsKey(componentGroup)) {
+                if (!this.getPanelsMap().containsKey(componentGroup)) {
                     parentPanel.add(thisPanel);
                     getPanelsMap().put(componentGroup, thisPanel);
                 }
@@ -122,17 +123,17 @@ public class GuiBuilder implements ComponentFactoryListener {
 
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
-        if(componentAttributes.initialValue != null) {
+        if (componentAttributes.initialValue != null) {
             this.getInitialData(componentAttributes);
         }
     }
 
     /* INFO
-    * An experimental solution
-    * Will do something with hardCoded scrollBox */
-    private void getInitialData(ComponentAttributes componentAttributes){
+     * An experimental solution
+     * Will do something with hardCoded scrollBox */
+    private void getInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = componentAttributes.initialValue.split("#");
-        switch(splitValue[0]){
+        switch (splitValue[0]) {
             case "config" -> {
                 componentAttributes.setInitialValue(String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1])));
             }
@@ -145,8 +146,10 @@ public class GuiBuilder implements ComponentFactoryListener {
                 switch (splitValue[1]) {
                     case "servers" -> {
                         this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
-                        if(this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer") != null){
-                            //this.getComponentById(componentAttributes.componentId).setSelectedIndex(0);
+                        if (this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer") != null) {
+                            Object selectedIndex = this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer");
+                            if(selectedIndex != null)
+                            componentAttributes.setSelectedIndex((int) selectedIndex);
                         }
                     }
                 }

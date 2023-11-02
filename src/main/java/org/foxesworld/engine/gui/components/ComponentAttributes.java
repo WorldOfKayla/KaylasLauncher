@@ -54,7 +54,17 @@ public class ComponentAttributes {
     @SerializedName("groups")
     public Map<String, OptionGroups> groups;
 
+    private int selectedIndex = 0;
+
     public void setInitialValue(String initialValue) {
         this.initialValue = initialValue;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
+
+    public int getSelectedIndex() {
+        return selectedIndex;
     }
 }

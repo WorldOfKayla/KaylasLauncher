@@ -166,6 +166,8 @@ public class ComponentFactory {
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
                 scrollBox.setName(componentAttributes.componentId);
+                scrollBox.setSelectedIndex(componentAttributes.getSelectedIndex());
+                scrollBox.repaint();
                 return  scrollBox;
             }
 

@@ -35,5 +35,19 @@
     {
       "classPath": "optifine.OptiFineTweaker"
     }
-  ]
+  ],
+  "authLib": {
+    "sessionHost": {
+      "arg": "-Dminecraft.api.session.host=",
+      "value": ""
+      },
+    "accountHost": {
+      "arg": "-Dminecraft.api.account.host",
+      "value": ""
+    },
+    "authHost": {
+      "arg": "-Dminecraft.api.auth.host=",
+      "value": ""
+    }
+  }
 }

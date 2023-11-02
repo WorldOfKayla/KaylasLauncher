@@ -5,6 +5,7 @@ import org.foxesworld.engine.gui.components.game.GameLauncher;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FilesArray;
 
+import java.io.File;
 import java.util.List;
 
 public class Game {
@@ -12,6 +13,7 @@ public class Game {
     private final ActionHandler actionHandler;
     private final List<FilesArray> filesArray;
     private final FileLoader fileLoader;
+    private  GameLauncher gameLauncher;
 
     public Game(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
@@ -20,11 +22,20 @@ public class Game {
     }
 
     public void start(){
-        if(filesArray.size() == 0){
-            GameLauncher game = new GameLauncher(actionHandler);
-            game.launchGame();
+        gameLauncher = new GameLauncher(actionHandler);
+        if(!this.hasJre(gameLauncher.getCurrentJre())) {
+            //If we don't have JRE download it the first
+            filesArray.add(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
+            this.fileLoader.setDownloadMask("/uploads/files/");
+        }
+        if(filesArray.size() == 0 ){
+            gameLauncher.launchGame();
         } else {
             this.fileLoader.downloadFiles(filesArray);
         }
+    }
+
+    private  boolean hasJre(String version){
+        return  new File(gameLauncher.buildRuntimeDir()+ File.separator + version).exists();
     }
 }

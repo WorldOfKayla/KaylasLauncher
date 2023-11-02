@@ -23,7 +23,7 @@ public class FileLoader implements DownloadListener {
     private final ActionHandler actionHandler;
     private final Engine engine;
     private final HTTPrequest POSTrequest;
-    private final String downloadMask = "/uploads/files/clients/";
+    private String downloadMask;
     private final String homeDir;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
@@ -43,7 +43,10 @@ public class FileLoader implements DownloadListener {
         request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
-        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(request), FilesArray[].class);
+        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray[].class);
+        for(FilesArray file: filesArray) {
+            file.setReplaceMask("/uploads/files/clients/");
+        }
         return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
 
@@ -56,14 +59,20 @@ public class FileLoader implements DownloadListener {
         }
         final long totalSizeFinal = totalSize;
         filesToDownload.forEach(file -> executorService.execute(() -> {
-            String localPath = file.filename.replace(downloadMask, "");
+            String localPath = file.filename.replace(file.getReplaceMask(), "");
             String localFilePath = homeDir + localPath;
-            downloadUtils.downloader(file.filename, localFilePath, totalSizeFinal);
+            if(!new File(localFilePath).exists()) {
+                System.out.println(localFilePath + " doesn't exist");
+                downloadUtils.downloader(file.filename, localFilePath, totalSizeFinal);
+            }
+            if(localFilePath.contains(".zip")) {
+                downloadUtils.unpack(localFilePath, new File(localFilePath).getParentFile());
+            }
         }));
     }
 
     private boolean shouldDownloadFile(FilesArray fileSection) {
-        String localPath = fileSection.filename.replace(downloadMask, "");
+        String localPath = fileSection.filename.replace(fileSection.getReplaceMask(), "");
         File localFile = new File(homeDir, localPath);
         return !localFile.exists() || !checkFile(localFile, fileSection.hash, fileSection.size);
     }
@@ -98,6 +107,15 @@ public class FileLoader implements DownloadListener {
         }
     }
 
+    public FilesArray addJreToLoad(String jreVersion){
+        Map<String, String> request = new HashMap<>();
+        request.put("sysRequest", "getJre");
+        request.put("jreVersion", jreVersion);
+        FilesArray jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray.class);
+        jreFile.setReplaceMask("/uploads/files/");
+        return  jreFile;
+    }
+
     @Override
     public void onDownloadProgress(int percent) {
     }
@@ -111,5 +129,9 @@ public class FileLoader implements DownloadListener {
 
     @Override
     public void onDownloadError(Exception e) {
+    }
+
+    public void setDownloadMask(String downloadMask) {
+        this.downloadMask = downloadMask;
     }
 }

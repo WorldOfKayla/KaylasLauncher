@@ -21,7 +21,7 @@ public class ServerParser {
 
     public List<ServerAttributes> parseServers(String login){
         request.put("login", login);
-        String serversList = engine.getPOSTrequest().send(request);
+        String serversList = engine.getPOSTrequest().send(engine.getEngineData().bindUrl, request);
         ServerAttributes[] serversArray = new Gson().fromJson(serversList, ServerAttributes[].class);
         for(ServerAttributes serverAttributes: serversArray){
             this.serverList.add(serverAttributes);

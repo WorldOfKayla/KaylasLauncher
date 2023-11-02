@@ -57,7 +57,7 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
+        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(engine.getEngineData().bindUrl, authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
         boolean status = "success".equals(responseMap.get("type"));
 
         if (status) {

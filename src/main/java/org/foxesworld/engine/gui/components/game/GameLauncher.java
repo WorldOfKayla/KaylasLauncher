@@ -19,6 +19,7 @@ public class GameLauncher {
 
     private final User user;
     private final ServerAttributes selectedServer;
+    private final String currentJre;
     private final LibraryScanner libraryScanner;
     private URLClassLoader cl;
     private final List<String> params = new ArrayList<>();
@@ -28,6 +29,7 @@ public class GameLauncher {
     public GameLauncher(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
         this.selectedServer = actionHandler.getCurrentServer();
+        this.currentJre = selectedServer.jreVersion;
         this.libraryScanner = new LibraryScanner(actionHandler.getEngine());
         actionHandler.getEngine().getLOGGER().debug("#############################");
         actionHandler.getEngine().getLOGGER().debug("GameDir " + buildGameDir());
@@ -153,15 +155,12 @@ public class GameLauncher {
         }
     }
 
-
     private String buildGameDir() {
         return actionHandler.getEngine().getCONFIG().getFullPath();
     }
 
-
-
     private void setJre() {
-        params.add(buildRuntimeDir() + File.separator + "jre-8-271-x64" + File.separator + "bin" + File.separator + "java");
+        params.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
         params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
         params.add("-Djava.library.path=" + buildNativesPath());
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
@@ -196,11 +195,15 @@ public class GameLauncher {
         return buildGameDir() + "assets";
     }
 
-    private File buildRuntimeDir(){
+    public File buildRuntimeDir(){
         File runtimeDir =  new File(buildGameDir() + "runtime");
         if(!runtimeDir.isDirectory()){
             runtimeDir.mkdirs();
         }
         return runtimeDir;
+    }
+
+    public String getCurrentJre() {
+        return currentJre;
     }
 }

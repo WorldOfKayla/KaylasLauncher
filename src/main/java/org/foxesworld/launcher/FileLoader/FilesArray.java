@@ -11,4 +11,14 @@ public class FilesArray {
 
     @SerializedName("size")
     public int size;
+
+    private  String replaceMask;
+
+    public void setReplaceMask(String replaceMask) {
+        this.replaceMask = replaceMask;
+    }
+
+    public String getReplaceMask() {
+        return replaceMask;
+    }
 }

@@ -7,6 +7,10 @@ import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class DownloadUtils {
     private Engine engine;
@@ -83,6 +87,37 @@ public class DownloadUtils {
             downloadListener.onDownloadError(e);
             throw new RuntimeException(e);
         }
+    }
+
+    public void unpack(String path, File dir_to) {
+        File fileZip = new File(path);
+        try (ZipFile zip = new ZipFile(path)) {
+            Enumeration entries = zip.entries();
+            LinkedList<ZipEntry> zfiles = new LinkedList<>();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) entries.nextElement();
+                if (entry.isDirectory()) {
+                    new File(dir_to + "/" + entry.getName()).mkdir();
+                } else {
+                    zfiles.add(entry);
+                }
+            }
+            for (ZipEntry entry : zfiles) {
+                OutputStream out;
+                try (InputStream in = zip.getInputStream(entry)) {
+                    out = new FileOutputStream(dir_to + File.separator + entry.getName());
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = in.read(buffer)) >= 0) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+                out.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        fileZip.delete();
     }
 
     public void setDownloadListener(DownloadListener listener) {

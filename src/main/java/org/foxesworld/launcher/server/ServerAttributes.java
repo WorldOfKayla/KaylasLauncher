@@ -16,6 +16,9 @@ public class ServerAttributes {
     @SerializedName("mainClass")
     public String mainClass;
 
+    @SerializedName("jreVersion")
+    public String jreVersion;
+
     @SerializedName("forgeVersion")
     public String forgeVersion;
 

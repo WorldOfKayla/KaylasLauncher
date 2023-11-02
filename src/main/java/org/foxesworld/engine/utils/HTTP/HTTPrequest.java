@@ -21,10 +21,10 @@ public class HTTPrequest {
         this.requestMethod = requestMethod;
     }
 
-    public String send(Map<String, String> parameters) {
+    public String send(String queryUrl, Map<String, String> parameters) {
         HttpURLConnection httpURLConnection = null;
         try {
-            URL url = new URL(engine.getEngineData().bindUrl);
+            URL url = new URL(queryUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
             this.setRequestProperties(httpURLConnection, engine.getEngineData().requestProperties);

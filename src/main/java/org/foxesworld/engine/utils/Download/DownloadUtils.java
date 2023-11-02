@@ -18,7 +18,6 @@ public class DownloadUtils {
     private JProgressBar progressBar;
     private int percent;
     private long downloaded = 0;
-    private DownloadListener downloadListener;
     private ProgressBar consolePb;
 
     public DownloadUtils(Engine engine) {
@@ -48,43 +47,29 @@ public class DownloadUtils {
             long fileSize = httpConnection.getContentLength();
             long chunkSize = fileSize / 100;
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] data = new byte[1024];
+            FileOutputStream fileOutputStream = new FileOutputStream(savePath);
+            byte[] buffer = new byte[65536];
 
             try (InputStream in = new BufferedInputStream(httpConnection.getInputStream())) {
 
-                int read;
-                while ((read = in.read(data, 0, data.length)) != -1) {
-                    out.write(data, 0, read);
+                int read = 0;
+                while ((read = in.read(buffer, 0, buffer.length)) != -1) {
+                    fileOutputStream.write(buffer, 0, read);
                     downloaded += read;
                     percent = (int) (downloaded * 100 / totalSize);
                     SwingUtilities.invokeLater(() -> {
                         this.consolePb = new ProgressBar("Exp", 100);
-                        downloadListener.onDownloadProgress(percent);
                         progressBar.setValue(percent);
                         this.consolePb.stepTo(percent);
                         progressLabel.setText(getFileSize((int) downloaded) + "Mb /" + getFileSize(Math.toIntExact(totalSize)) + "Mb");
                         System.out.println(downloaded+" - "+totalSize);
                     });
-
                 }
-
             }
-            out.close();
-            byte[] response = out.toByteArray();
-            try (FileOutputStream fos = new FileOutputStream(savePath)) {
-                fos.write(response);
-            } catch (IOException exc) {
-                throw new RuntimeException(exc);
-            }
-            //System.out.println(chunkSize);
-            if (downloaded == totalSize) {
-                downloadListener.onDownloadComplete();
-            }
+            fileOutputStream.close();
             httpConnection.disconnect();
 
         } catch (IOException e) {
-            downloadListener.onDownloadError(e);
             throw new RuntimeException(e);
         }
     }
@@ -118,10 +103,6 @@ public class DownloadUtils {
             throw new RuntimeException(e);
         }
         fileZip.delete();
-    }
-
-    public void setDownloadListener(DownloadListener listener) {
-        this.downloadListener = listener;
     }
 
     private double getFileSize(String url) throws IOException {

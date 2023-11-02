@@ -48,7 +48,7 @@ public class ActionHandler {
             case "gameDir" -> openGameFolder();
 
             case "applySettings" -> {
-                for(Component component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
+                for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
                     if(component instanceof JCheckBox){
                         this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                     } else {
@@ -87,6 +87,8 @@ public class ActionHandler {
 
             case "toGame" -> {
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
+                this.engine.getCONFIG().setConfigValue("selectedServer", this.currentServer.id);
+                this.engine.getCONFIG().writeCurrentConfig();
                 game = new Game(this);
                 game.start();
             }

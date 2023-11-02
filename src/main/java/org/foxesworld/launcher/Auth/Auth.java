@@ -39,7 +39,7 @@ public class Auth {
         }
     }
 
-    public void formAuth(List<Component> authCredentials) {
+    public void formAuth(List<JComponent> authCredentials) {
         for (Component component : authCredentials) {
             if (component instanceof JTextField) {
                 inputData.put(component.getName(), ((JTextField) component).getText());

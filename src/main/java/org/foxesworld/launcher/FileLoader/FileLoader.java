@@ -3,10 +3,8 @@ package org.foxesworld.launcher.FileLoader;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.action.ActionHandler;
-import org.foxesworld.engine.utils.Download.DownloadListener;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
-import org.foxesworld.launcher.Game.Game;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,26 +14,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileLoader implements DownloadListener {
-    private final ActionHandler actionHandler;
+public class FileLoader {
     private final Engine engine;
     private final HTTPrequest POSTrequest;
-    private String downloadMask;
     private final String homeDir;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
+    private FileLoaderListener fileLoaderListener;
+    private AtomicInteger filesDownloaded = new AtomicInteger(0);
+    private int totalFiles;
 
     public FileLoader(ActionHandler actionHandler) {
         this.engine = actionHandler.getEngine();
-        this.actionHandler = actionHandler;
         this.POSTrequest = engine.getPOSTrequest();
         this.homeDir = engine.getCONFIG().getFullPath();
         this.downloadUtils = new DownloadUtils(engine);
-        downloadUtils.setDownloadListener(this);
-        this.executorService = Executors.newFixedThreadPool(2);
+        this.executorService = Executors.newFixedThreadPool(this.engine.getEngineData().downloadThreads);
     }
 
     public List<FilesArray> getFilesToDownload(String version, String client) {
@@ -51,22 +49,20 @@ public class FileLoader implements DownloadListener {
     }
 
     public void downloadFiles(List<FilesArray> filesToDownload) {
+        totalFiles = filesToDownload.size();
+        this.engine.getLOGGER().debug("Downloading " + totalFiles + " files");
         engine.displayPanel("loggedForm->false|newsForm->false|download->true");
-
-        long totalSize = 0;
-        for (FilesArray file : filesToDownload) {
-            totalSize += file.size;
-        }
-        final long totalSizeFinal = totalSize;
+        final long totalSizeFinal = filesToDownload.stream().mapToLong(FilesArray::getSize).sum();
         filesToDownload.forEach(file -> executorService.execute(() -> {
             String localPath = file.filename.replace(file.getReplaceMask(), "");
-            String localFilePath = homeDir + localPath;
-            if(!new File(localFilePath).exists()) {
-                System.out.println(localFilePath + " doesn't exist");
-                downloadUtils.downloader(file.filename, localFilePath, totalSizeFinal);
-            }
-            if(localFilePath.contains(".zip")) {
-                downloadUtils.unpack(localFilePath, new File(localFilePath).getParentFile());
+            fileLoaderListener.onNewFileFound(file, homeDir + localPath, totalSizeFinal);
+
+            // Incrementing a counter
+            filesDownloaded.incrementAndGet();
+
+            // Checking if all files are loaded
+            if (filesDownloaded.get() == totalFiles) {
+                this.fileLoaderListener.onFilesLoaded();
             }
         }));
     }
@@ -116,22 +112,11 @@ public class FileLoader implements DownloadListener {
         return  jreFile;
     }
 
-    @Override
-    public void onDownloadProgress(int percent) {
+    public void setLoaderListener(FileLoaderListener fileLoaderListener) {
+        this.fileLoaderListener = fileLoaderListener;
     }
 
-    @Override
-    public void onDownloadComplete() {
-        System.out.println("Starting game...");
-        this.actionHandler.setGame(new Game(actionHandler));
-        actionHandler.getGame().start();
-    }
-
-    @Override
-    public void onDownloadError(Exception e) {
-    }
-
-    public void setDownloadMask(String downloadMask) {
-        this.downloadMask = downloadMask;
+    public DownloadUtils getDownloadUtils() {
+        return downloadUtils;
     }
 }

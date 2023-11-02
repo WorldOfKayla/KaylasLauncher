@@ -4,11 +4,12 @@ import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.gui.components.game.GameLauncher;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FilesArray;
+import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 
 import java.io.File;
 import java.util.List;
 
-public class Game {
+public class Game implements FileLoaderListener {
 
     private final ActionHandler actionHandler;
     private final List<FilesArray> filesArray;
@@ -18,6 +19,7 @@ public class Game {
     public Game(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
+        fileLoader.setLoaderListener(this);
         this.filesArray = fileLoader.getFilesToDownload(actionHandler.getCurrentServer().serverVersion, actionHandler.getCurrentServer().serverName);
     }
 
@@ -26,7 +28,6 @@ public class Game {
         if(!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first
             filesArray.add(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
-            this.fileLoader.setDownloadMask("/uploads/files/");
         }
         if(filesArray.size() == 0 ){
             gameLauncher.launchGame();
@@ -37,5 +38,21 @@ public class Game {
 
     private  boolean hasJre(String version){
         return  new File(gameLauncher.buildRuntimeDir()+ File.separator + version).exists();
+    }
+
+    @Override
+    public void onFilesLoaded() {
+        gameLauncher.launchGame();
+    }
+
+    @Override
+    public void onNewFileFound(FilesArray file, String localPath, final long totalSizeFinal) {
+        if (!new File(localPath).exists()) {
+            this.fileLoader.getDownloadUtils().downloader(file.filename, localPath, totalSizeFinal);
+        }
+
+        if (localPath.contains(".zip")) {
+            this.fileLoader.getDownloadUtils().unpack(localPath, new File(localPath).getParentFile());
+        }
     }
 }

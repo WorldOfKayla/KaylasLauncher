@@ -14,6 +14,10 @@ public class FilesArray {
 
     private  String replaceMask;
 
+    public int getSize() {
+        return size;
+    }
+
     public void setReplaceMask(String replaceMask) {
         this.replaceMask = replaceMask;
     }

@@ -14,6 +14,9 @@ public class EngineData {
     @SerializedName("appId")
     public String appId;
 
+    @SerializedName("downloadThreads")
+    public int downloadThreads;
+
     @SerializedName("requestProperties")
     public List<RequestProperty> requestProperties;
 

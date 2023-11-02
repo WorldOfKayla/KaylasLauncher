@@ -3,17 +3,14 @@ package org.foxesworld.engine.gui;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
-import org.foxesworld.engine.gui.components.frame.OptionGroups;
-import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
+import org.foxesworld.engine.gui.components.frame.OptionGroups;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,7 +21,7 @@ import java.util.*;
 
 public class GuiBuilder implements ComponentFactoryListener {
 
-    private final HashMap<String, List<Component>> componentsMap = new HashMap<>();
+    private final HashMap<String, List<JComponent>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final FrameConstructor frameConstructor;
@@ -67,10 +64,10 @@ public class GuiBuilder implements ComponentFactoryListener {
         return components;
     }
 
-    public Component getComponentById(String id) {
-        for (Map.Entry<String, List<Component>> panelsMap : this.getComponentsMap().entrySet()) {
+    public JComponent getComponentById(String id) {
+        for (Map.Entry<String, List<JComponent>> panelsMap : this.getComponentsMap().entrySet()) {
             String panelName = panelsMap.getKey();
-            for (Component component : panelsMap.getValue()) {
+            for (JComponent component : panelsMap.getValue()) {
                 if (component.getName().equals(id)) {
                     return component;
                 }
@@ -122,27 +119,6 @@ public class GuiBuilder implements ComponentFactoryListener {
             }
         }
     }
-    private void fadePanelIn(JPanel panel) {
-        Timer timer = new Timer(50, null);
-        timer.addActionListener(new ActionListener() {
-            float alpha = 0.0f;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alpha < 1.0f) {
-                    alpha += 0.05f; // Увеличиваем прозрачность панели
-                    panel.setOpaque(false);
-                    panel.setBackground(new Color(0, 0, 255, (int) (alpha * 255))); // Устанавливаем цвет с учетом прозрачности
-                    panel.repaint(); // Перерисовываем панель
-                } else {
-                    ((Timer) e.getSource()).stop(); // Останавливаем таймер после завершения анимации
-                }
-                panel.setOpaque(true);
-            }
-        });
-
-        timer.start();
-    }
 
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
@@ -169,6 +145,9 @@ public class GuiBuilder implements ComponentFactoryListener {
                 switch (splitValue[1]) {
                     case "servers" -> {
                         this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
+                        if(this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer") != null){
+                            //this.getComponentById(componentAttributes.componentId).setSelectedIndex(0);
+                        }
                     }
                 }
             }
@@ -178,7 +157,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     /*
      * Method for adding a component to the component map
      */
-    private void addComponentToMap(String groupId, Component component) {
+    private void addComponentToMap(String groupId, JComponent component) {
         if (!componentsMap.containsKey(groupId)) {
             componentsMap.put(groupId, new ArrayList<>());
         }
@@ -188,7 +167,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     /*
      * Getting a list of componentFactory by group name
      */
-    public HashMap<String, List<Component>> getComponentsMap() {
+    public HashMap<String, List<JComponent>> getComponentsMap() {
         return componentsMap;
     }
 

@@ -42,12 +42,6 @@ public class GameLauncher {
         actionHandler.getEngine().getLOGGER().debug("#############################");
         this.user = actionHandler.getEngine().getUser();
 
-        this.setJre();
-        this.collectLibraries();
-        this.addTweakClass();
-        params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-        this.loadAuthLib();
-        this.addArgs();
     }
 
     private void collectLibraries() {
@@ -112,6 +106,12 @@ public class GameLauncher {
     public void launchGame() {
         Thread gameThread = new Thread(() -> {
             try {
+                this.setJre();
+                this.collectLibraries();
+                this.addTweakClass();
+                params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
+                this.loadAuthLib();
+                this.addArgs();
                 ProcessBuilder processBuilder = new ProcessBuilder(params);
                 processBuilder.redirectErrorStream(true);
                 Process process = processBuilder.start();
@@ -201,6 +201,10 @@ public class GameLauncher {
             runtimeDir.mkdirs();
         }
         return runtimeDir;
+    }
+
+    public ServerAttributes getSelectedServer() {
+        return selectedServer;
     }
 
     public String getCurrentJre() {

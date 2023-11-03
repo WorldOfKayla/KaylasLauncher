@@ -1,20 +1,24 @@
 package org.foxesworld.launcher.FileLoader;
 
+import org.foxesworld.engine.gui.components.game.GameLauncher;
+
 import java.io.File;
-import java.util.List;
+import java.util.Set;
 
 public class FileLoaderScanner {
 
     private final String downloadDir;
-    public  FileLoaderScanner(String downloadDir){
-        this.downloadDir = downloadDir;
+    private final GameLauncher gameLauncher;
+    public  FileLoaderScanner(GameLauncher gameLauncher){
+        this.gameLauncher = gameLauncher;
+        this.downloadDir = gameLauncher.buildClientDir();
     }
 
-    public void scanAndDeleteFilesInSubdirectories(List<FilesArray> filesToDownload) {
-        scanAndDeleteFilesRecursively(new File(downloadDir), filesToDownload);
+    public void scanAndDeleteFilesInSubdirectories(Set<String> filesToKeep) {
+        scanAndDeleteFilesRecursively(new File(downloadDir), filesToKeep);
     }
 
-    private void scanAndDeleteFilesRecursively(File directory, List<FilesArray> filesToDownload) {
+    private void scanAndDeleteFilesRecursively(File directory, Set<String> filesToKeep) {
         File[] files = directory.listFiles();
 
         if (files != null) {
@@ -23,32 +27,23 @@ public class FileLoaderScanner {
                     String filePath = file.getAbsolutePath();
                     String relativePath = filePath.replace(this.downloadDir, "");
 
-                    // Check if the file is not in the list of files to download
-                    boolean shouldDelete = true;
-                    for (FilesArray fileToDownload : filesToDownload) {
-                        String localPath = fileToDownload.filename.replace(fileToDownload.getReplaceMask(), "");
-                        if (relativePath.equals(localPath)) {
-                            shouldDelete = false;
-                            break;
-                        }
-                    }
-
-                    // If the file should be deleted, delete it
-                    if (shouldDelete) {
+                    // Проверьте, содержится ли относительный путь в наборе хэш-значений
+                    String checkPath = "clients" + File.separator + this.gameLauncher.getSelectedServer().serverName + relativePath;
+                    checkPath = checkPath.replace("\\", "/");
+                    if (!filesToKeep.contains(checkPath)) {
                         boolean deleted = file.delete();
                         if (deleted) {
-                            System.out.println("Deleted unlisted file: " + relativePath);
+                            System.out.println("Deleted unlisted file: " + checkPath);
                         } else {
-                            System.out.println("Failed to delete invalid file: " + relativePath);
+                            System.out.println("Failed to delete invalid file: " + checkPath);
                         }
                     }
                 } else if (file.isDirectory()) {
-                    // If it's a directory, recursively scan and delete files in it
-                    scanAndDeleteFilesRecursively(file, filesToDownload);
+                    // Если это директория, рекурсивно сканируйте и удаляйте файлы в ней
+                    scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
             }
         }
     }
-
 
 }

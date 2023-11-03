@@ -9,9 +9,7 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,11 +19,12 @@ import java.util.stream.Stream;
 public class FileLoader {
     private final Engine engine;
     private final HTTPrequest POSTrequest;
+    private final Set<String> filesToKeep = new HashSet<>();
     private final String homeDir;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
     private FileLoaderListener fileLoaderListener;
-    private AtomicInteger filesDownloaded = new AtomicInteger(0);
+    private final AtomicInteger filesDownloaded = new AtomicInteger(0);
     private int totalFiles;
     private String currentFile = "";
 
@@ -45,6 +44,8 @@ public class FileLoader {
         FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray[].class);
         for(FilesArray file: filesArray) {
             file.setReplaceMask("/uploads/files/clients/");
+            addFileToKeep(file.filename.replace(file.getReplaceMask(), ""));
+            System.out.println("Adding to keep "+file.filename.replace(file.getReplaceMask(), ""));
         }
         return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
@@ -58,7 +59,7 @@ public class FileLoader {
             String localPath = file.filename.replace(file.getReplaceMask(), "");
             this.engine.getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
             this.engine.getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
-            fileLoaderListener.onNewFileFound(file, homeDir + localPath, totalSizeFinal);
+            fileLoaderListener.onNewFileFound(file, this.homeDir + localPath, totalSizeFinal);
 
             // Incrementing a counter
             filesDownloaded.incrementAndGet();
@@ -76,7 +77,7 @@ public class FileLoader {
         return !localFile.exists() || !checkFile(localFile, fileSection.hash, fileSection.size);
     }
 
-    private boolean checkFile(File file, String expectedHash, long expectedSize) {
+    public boolean checkFile(File file, String expectedHash, long expectedSize) {
         if (!file.exists() || file.length() != expectedSize) {
             return false;
         }
@@ -129,5 +130,13 @@ public class FileLoader {
 
     public String getCurrentFile() {
         return currentFile;
+    }
+
+    public Set<String> getFilesToKeep() {
+        return filesToKeep;
+    }
+
+    public void addFileToKeep(String filesToKeep) {
+        this.filesToKeep.add(filesToKeep);
     }
 }

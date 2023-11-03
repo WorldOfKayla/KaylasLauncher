@@ -3,16 +3,15 @@ package org.foxesworld.launcher.Game;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.gui.components.game.GameLauncher;
 import org.foxesworld.launcher.FileLoader.FileLoader;
+import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 import org.foxesworld.launcher.FileLoader.FileLoaderScanner;
 import org.foxesworld.launcher.FileLoader.FilesArray;
-import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 
 import java.io.File;
 import java.util.List;
 
 public class Game implements FileLoaderListener {
 
-    private FileLoaderScanner fileLoaderScanner;
     private final ActionHandler actionHandler;
     private final List<FilesArray> filesArray;
     private final FileLoader fileLoader;
@@ -35,8 +34,6 @@ public class Game implements FileLoaderListener {
         if(filesArray.size() == 0 ){
             gameLauncher.launchGame();
         } else {
-            this.fileLoaderScanner = new FileLoaderScanner(this.gameLauncher.buildClientDir());
-            this.fileLoaderScanner.scanAndDeleteFilesInSubdirectories(filesArray);
             this.fileLoader.downloadFiles(filesArray);
         }
     }
@@ -47,12 +44,15 @@ public class Game implements FileLoaderListener {
 
     @Override
     public void onFilesLoaded() {
+        System.out.println("Files loaded!!!");
+        FileLoaderScanner fileLoaderScanner = new FileLoaderScanner(this.gameLauncher);
+        fileLoaderScanner.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
         gameLauncher.launchGame();
     }
 
     @Override
     public void onNewFileFound(FilesArray file, String localPath, final long totalSizeFinal) {
-        if (!new File(localPath).exists()) {
+        if (!fileLoader.checkFile(new File(localPath), file.hash, file.size)) {
             this.fileLoader.getDownloadUtils().downloader(file.filename, localPath, totalSizeFinal);
         }
 

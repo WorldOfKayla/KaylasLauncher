@@ -3,6 +3,7 @@ package org.foxesworld.launcher.Game;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.gui.components.game.GameLauncher;
 import org.foxesworld.launcher.FileLoader.FileLoader;
+import org.foxesworld.launcher.FileLoader.FileLoaderScanner;
 import org.foxesworld.launcher.FileLoader.FilesArray;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class Game implements FileLoaderListener {
 
+    private FileLoaderScanner fileLoaderScanner;
     private final ActionHandler actionHandler;
     private final List<FilesArray> filesArray;
     private final FileLoader fileLoader;
@@ -24,6 +26,7 @@ public class Game implements FileLoaderListener {
     }
 
     public void start(){
+        this.actionHandler.getEngine().getDiscord().discordRpcStart(this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),this.actionHandler.getEngine().getLANG().getString("game.playing")+actionHandler.getCurrentServer().serverName,"aiden");
         gameLauncher = new GameLauncher(actionHandler);
         if(!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first
@@ -32,6 +35,8 @@ public class Game implements FileLoaderListener {
         if(filesArray.size() == 0 ){
             gameLauncher.launchGame();
         } else {
+            this.fileLoaderScanner = new FileLoaderScanner(this.gameLauncher.buildClientDir());
+            this.fileLoaderScanner.scanAndDeleteFilesInSubdirectories(filesArray);
             this.fileLoader.downloadFiles(filesArray);
         }
     }

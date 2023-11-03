@@ -87,7 +87,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     *   In process
     * */
     public void initialize(String login) {
-        this.discord.discordRpcStart("User login - " + login,"FoxesEngine","aiden");
+        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine","aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
@@ -118,7 +118,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
             groupPanel.setVisible(displayValue);
         }
-        System.out.println(parts[0]+'-'+parts[1]);
     }
 
     private void loadMainPanel(String path) {
@@ -189,5 +188,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public User getUser() {
         return user;
+    }
+
+    public Discord getDiscord() {
+        return discord;
     }
 }

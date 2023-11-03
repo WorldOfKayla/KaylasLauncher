@@ -27,6 +27,7 @@ public class FileLoader {
     private FileLoaderListener fileLoaderListener;
     private AtomicInteger filesDownloaded = new AtomicInteger(0);
     private int totalFiles;
+    private String currentFile = "";
 
     public FileLoader(ActionHandler actionHandler) {
         this.engine = actionHandler.getEngine();
@@ -55,6 +56,8 @@ public class FileLoader {
         final long totalSizeFinal = filesToDownload.stream().mapToLong(FilesArray::getSize).sum();
         filesToDownload.forEach(file -> executorService.execute(() -> {
             String localPath = file.filename.replace(file.getReplaceMask(), "");
+            this.engine.getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
+            this.engine.getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
             fileLoaderListener.onNewFileFound(file, homeDir + localPath, totalSizeFinal);
 
             // Incrementing a counter
@@ -118,5 +121,13 @@ public class FileLoader {
 
     public DownloadUtils getDownloadUtils() {
         return downloadUtils;
+    }
+
+    public void setCurrentFile(String currentFile) {
+        this.currentFile = currentFile;
+    }
+
+    public String getCurrentFile() {
+        return currentFile;
     }
 }

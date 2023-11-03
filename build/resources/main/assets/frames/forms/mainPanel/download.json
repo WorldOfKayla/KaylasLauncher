@@ -2,7 +2,7 @@
   "groups": {
     "download": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "background": "#373c3975",
         "visible": false,
         "bounds": "20,40,800,440"
@@ -27,7 +27,7 @@
               "panelOptions": {
                 "opaque": true,
                 "border": "1,1,1,1,#3b4045",
-                "background": "#222425a3",
+                "background": "#b0c1c1",
                 "visible": true,
                 "bounds": "40,40,700,300"
               },
@@ -37,18 +37,24 @@
                   "fontSize": 14,
                   "color": "#636c73bf",
                   "componentStyle": "title",
+                  "imageIcon": "assets/ui/icons/file.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
                   "componentId": "downloadFile",
                   "localeKey": "download.file",
-                  "bounds": "20,10,170,40"
+                  "bounds": "20,10,600,40"
                 },
                 {
                   "componentType": "label",
                   "fontSize": 14,
                   "color": "#636c73bf",
                   "componentStyle": "title",
+                  "imageIcon": "assets/ui/icons/folder.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
                   "componentId": "downloadDirectory",
                   "localeKey": "download.directory",
-                  "bounds": "20,30,170,40"
+                  "bounds": "20,50,600,40"
                 },
                 {
                   "componentType": "label",
@@ -57,7 +63,7 @@
                   "componentStyle": "title",
                   "componentId": "downloadTotalSize",
                   "localeKey": "download.totalSize",
-                  "bounds": "20,50,170,40"
+                  "bounds": "20,80,170,40"
                 }
               ]
             }

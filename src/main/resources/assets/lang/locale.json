@@ -113,6 +113,16 @@
       "ru": "Полный размер: "
     }
   },
+  "game": {
+    "playing": {
+      "en": "Playing on ",
+      "ru": "Играет на "
+    },
+    "login": {
+      "en": "User login: ",
+      "ru": "Логин: "
+    }
+  },
   "dev": {
     "token": {
       "en": "Token: ",

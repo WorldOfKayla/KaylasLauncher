@@ -12,9 +12,9 @@
           "componentType": "button",
           "componentStyle": "buttonRed",
           "imageIcon": "assets/ui/icons/back.png",
-          "localeKey": "settings.back",
           "iconWidth": 32,
           "iconHeight": 32,
+          "localeKey": "settings.back",
           "componentId": "back",
           "bounds": "0,0,97,34"
         }

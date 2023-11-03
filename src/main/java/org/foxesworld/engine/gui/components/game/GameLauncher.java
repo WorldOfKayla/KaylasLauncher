@@ -155,7 +155,7 @@ public class GameLauncher {
         }
     }
 
-    private String buildGameDir() {
+    public String buildGameDir() {
         return actionHandler.getEngine().getCONFIG().getFullPath();
     }
 
@@ -182,7 +182,7 @@ public class GameLauncher {
         return buildVersionDir() + File.separator + "natives";
     }
 
-    private String buildClientDir() {
+    public String buildClientDir() {
         File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.serverName);
         if (!clientDir.isDirectory()) {
             actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.serverName + " directory");

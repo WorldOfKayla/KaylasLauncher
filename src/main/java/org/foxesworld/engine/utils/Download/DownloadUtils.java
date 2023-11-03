@@ -62,7 +62,6 @@ public class DownloadUtils {
                         progressBar.setValue(percent);
                         this.consolePb.stepTo(percent);
                         progressLabel.setText(getFileSize((int) downloaded) + "Mb /" + getFileSize(Math.toIntExact(totalSize)) + "Mb");
-                        System.out.println(downloaded+" - "+totalSize);
                     });
                 }
             }

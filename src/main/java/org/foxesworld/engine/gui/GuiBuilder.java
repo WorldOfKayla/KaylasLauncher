@@ -8,7 +8,6 @@ import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +74,13 @@ public class GuiBuilder implements ComponentFactoryListener {
             }
         }
         return null;
+    }
+
+    public void setLabelText(String componentId, String text){
+        JComponent component = this.getComponentById(componentId);
+        if(component instanceof  JLabel) {
+            ((JLabel) component).setText(text);
+        }
     }
 
     /*

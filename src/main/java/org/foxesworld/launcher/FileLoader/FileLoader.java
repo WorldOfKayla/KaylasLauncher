@@ -26,7 +26,6 @@ public class FileLoader {
     private FileLoaderListener fileLoaderListener;
     private final AtomicInteger filesDownloaded = new AtomicInteger(0);
     private int totalFiles;
-    private String currentFile = "";
 
     public FileLoader(ActionHandler actionHandler) {
         this.engine = actionHandler.getEngine();
@@ -45,21 +44,27 @@ public class FileLoader {
         for(FilesArray file: filesArray) {
             file.setReplaceMask("/uploads/files/clients/");
             addFileToKeep(file.filename.replace(file.getReplaceMask(), ""));
-            System.out.println("Adding to keep "+file.filename.replace(file.getReplaceMask(), ""));
+            this.engine.getLOGGER().debug("Adding to keep "+file.filename.replace(file.getReplaceMask(), ""));
         }
         return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
+    }
+    private boolean shouldDownloadFile(FilesArray fileSection) {
+        String localPath = fileSection.filename.replace(fileSection.getReplaceMask(), "");
+        File localFile = new File(homeDir, localPath);
+        return isInvalidFile(localFile, fileSection.hash, fileSection.size);
     }
 
     public void downloadFiles(List<FilesArray> filesToDownload) {
         totalFiles = filesToDownload.size();
-        this.engine.getLOGGER().debug("Downloading " + totalFiles + " files");
+        this.engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
+        for (FilesArray filesArray: filesToDownload){
+            System.out.println(filesArray.filename);
+        }
         engine.displayPanel("loggedForm->false|newsForm->false|download->true");
         final long totalSizeFinal = filesToDownload.stream().mapToLong(FilesArray::getSize).sum();
         filesToDownload.forEach(file -> executorService.execute(() -> {
             String localPath = file.filename.replace(file.getReplaceMask(), "");
-            this.engine.getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
-            this.engine.getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
-            fileLoaderListener.onNewFileFound(file, this.homeDir + localPath, totalSizeFinal);
+            fileLoaderListener.onNewFileFound(file, localPath, totalSizeFinal);
 
             // Incrementing a counter
             filesDownloaded.incrementAndGet();
@@ -71,15 +76,11 @@ public class FileLoader {
         }));
     }
 
-    private boolean shouldDownloadFile(FilesArray fileSection) {
-        String localPath = fileSection.filename.replace(fileSection.getReplaceMask(), "");
-        File localFile = new File(homeDir, localPath);
-        return !localFile.exists() || !checkFile(localFile, fileSection.hash, fileSection.size);
-    }
 
-    public boolean checkFile(File file, String expectedHash, long expectedSize) {
+
+    public boolean isInvalidFile(File file, String expectedHash, long expectedSize) {
         if (!file.exists() || file.length() != expectedSize) {
-            return false;
+            return true;
         }
 
         try {
@@ -100,10 +101,10 @@ public class FileLoader {
                 hexString.append(String.format("%02x", digestByte));
             }
 
-            return hexString.toString().equals(expectedHash);
+            return !hexString.toString().equals(expectedHash);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return true;
         }
     }
 
@@ -124,19 +125,15 @@ public class FileLoader {
         return downloadUtils;
     }
 
-    public void setCurrentFile(String currentFile) {
-        this.currentFile = currentFile;
-    }
-
-    public String getCurrentFile() {
-        return currentFile;
-    }
-
     public Set<String> getFilesToKeep() {
         return filesToKeep;
     }
 
     public void addFileToKeep(String filesToKeep) {
         this.filesToKeep.add(filesToKeep);
+    }
+
+    public String getHomeDir() {
+        return homeDir;
     }
 }

@@ -44,7 +44,7 @@ public class Game implements FileLoaderListener {
 
     @Override
     public void onFilesLoaded() {
-        System.out.println("Files loaded!!!");
+        System.out.println("--==|Files loaded|==--");
         FileLoaderScanner fileLoaderScanner = new FileLoaderScanner(this.gameLauncher);
         fileLoaderScanner.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
         gameLauncher.launchGame();
@@ -52,12 +52,16 @@ public class Game implements FileLoaderListener {
 
     @Override
     public void onNewFileFound(FilesArray file, String localPath, final long totalSizeFinal) {
-        if (!fileLoader.checkFile(new File(localPath), file.hash, file.size)) {
-            this.fileLoader.getDownloadUtils().downloader(file.filename, localPath, totalSizeFinal);
+        String fullPath = this.fileLoader.getHomeDir() + localPath;
+        this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
+        this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
+
+        if (fileLoader.isInvalidFile(new File(fullPath), file.hash, file.size)) {
+            this.fileLoader.getDownloadUtils().downloader(file.filename, fullPath, totalSizeFinal);
         }
 
-        if (localPath.contains(".zip")) {
-            this.fileLoader.getDownloadUtils().unpack(localPath, new File(localPath).getParentFile());
+        if (fullPath.contains(".zip")) {
+            this.fileLoader.getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }
 }

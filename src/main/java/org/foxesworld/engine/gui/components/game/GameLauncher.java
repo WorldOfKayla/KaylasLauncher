@@ -210,4 +210,8 @@ public class GameLauncher {
     public String getCurrentJre() {
         return currentJre;
     }
+
+    public ActionHandler getActionHandler() {
+        return actionHandler;
+    }
 }

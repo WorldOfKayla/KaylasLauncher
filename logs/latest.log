@@ -1,36 +1,51 @@
-[22:47:56] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:47:57] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:47:57] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:47:57] [main/INFO]: Forge Mod Loader version 14.23.5.2855 for Minecraft 1.12.2 loading
-[22:47:57] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_271, running on Windows 10:amd64:10.0, installed at C:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
-[22:47:57] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-[22:47:57] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in ClientFixer-1.12.2-1.9.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
-[22:47:57] [main/WARN]: The coremod ClientFixer (com.gamerforea.clientfixer.loader.CoreMod) is not signed!
-[22:47:57] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:47:57] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[22:47:57] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:47:57] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:47:57] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:47:59] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
-[22:47:59] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
-[22:47:59] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
-[22:47:59] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
-[22:48:00] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:48:00] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[22:48:00] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:48:00] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[22:48:00] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[22:48:00] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[22:48:02] [Client thread/INFO]: Setting user: AidenFox
-[22:48:07] [Client thread/WARN]: Skipping bad option: lastServer:
-[22:48:07] [Client thread/WARN]: Skipping bad option: streamPreferredServer:
-[22:48:07] [Client thread/INFO]: LWJGL Version: 2.9.4
-[22:48:08] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
-[22:48:08] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
-[22:48:08] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
-[22:48:09] [Client thread/INFO]: Replaced 1227 ore ingredients
-[22:48:09] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
-[22:48:11] [Client thread/ERROR]: Unable to read a class file correctly
+[00:02:35] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[00:02:35] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[00:02:35] [main/INFO]: Forge Mod Loader version 14.23.5.2855 for Minecraft 1.12.2 loading
+[00:02:35] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_271, running on Windows 10:amd64:10.0, installed at C:\Users\Aiden\AppData\Roaming\.FoxesWorld\runtime\jre-8-271-x64
+[00:02:36] [main/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+[00:02:36] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in ClientFixer-1.12.2-1.9.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
+[00:02:36] [main/WARN]: The coremod ClientFixer (com.gamerforea.clientfixer.loader.CoreMod) is not signed!
+[00:02:36] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:02:36] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[00:02:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:02:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:02:36] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[00:02:38] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
+[00:02:38] [main/ERROR]: The minecraft jar file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
+[00:02:38] [main/ERROR]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
+[00:02:38] [main/ERROR]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/Aiden/AppData/Roaming/.FoxesWorld/versions/1.12.2/1.12.2.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
+[00:02:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[00:02:38] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[00:02:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[00:02:39] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[00:02:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[00:02:39] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[00:02:40] [Client thread/INFO]: Setting user: AidenFox
+[00:02:46] [Client thread/WARN]: Skipping bad option: lastServer:
+[00:02:46] [Client thread/WARN]: Skipping bad option: streamPreferredServer:
+[00:02:46] [Client thread/INFO]: LWJGL Version: 2.9.4
+[00:02:48] [Client thread/INFO]: Could not load splash.properties, will create a default one
+[00:02:48] [Client thread/INFO]: -- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_271, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 369406168 bytes (352 MB) / 618659840 bytes (590 MB) up to 3817865216 bytes (3641 MB)
+	JVM Flags: 1 total; -Xmx4096m
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+ClientFixer (ClientFixer-1.12.2-1.9.jar)
+  com.gamerforea.clientfixer.asm.ASMTransformer
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 531.41' Renderer: 'Quadro RTX 4000/PCIe/SSE2'
+[00:02:48] [Client thread/INFO]: MinecraftForge v14.23.5.2855 Initialized
+[00:02:48] [Client thread/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[00:02:49] [Client thread/INFO]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[00:02:49] [Client thread/INFO]: Replaced 1227 ore ingredients
+[00:02:49] [Client thread/INFO]: Searching C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Hi-Tech\mods for mods
+[00:02:51] [Thread-3/INFO]: Using sync timing. 200 frames of Display.update took 325493000 nanos
+[00:02:51] [Client thread/ERROR]: Unable to read a class file correctly
 java.lang.IllegalArgumentException: null
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
@@ -59,7 +74,7 @@ java.lang.IllegalArgumentException: null
 	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_271]
 	at net.minecraft.launchwrapper.Launch.launch(Launch.java:133) [launchwrapper-1.12.jar:?]
 	at net.minecraft.launchwrapper.Launch.main(Launch.java:21) [launchwrapper-1.12.jar:?]
-[22:48:11] [Client thread/ERROR]: There was a problem reading the file C:\Users\Aiden\Documents\GitHub\NewEngine\build\classes\java\main\org\foxesworld\APP.class - probably this is a corrupt file
+[00:02:51] [Client thread/ERROR]: There was a problem reading the file C:\Users\Aiden\Documents\GitHub\NewEngine\build\classes\java\main\org\foxesworld\APP.class - probably this is a corrupt file
 net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
 
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
@@ -92,7 +107,7 @@ Caused by: java.lang.IllegalArgumentException
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
 	... 23 more
-[22:48:11] [Client thread/WARN]: Identified a problem with the mod candidate C:\Users\Aiden\Documents\GitHub\NewEngine, ignoring this source
+[00:02:51] [Client thread/WARN]: Identified a problem with the mod candidate C:\Users\Aiden\Documents\GitHub\NewEngine, ignoring this source
 net.minecraftforge.fml.common.LoaderException: java.lang.IllegalArgumentException
 
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:63) ~[ASMModParser.class:?]
@@ -125,89 +140,89 @@ Caused by: java.lang.IllegalArgumentException
 	at org.objectweb.asm.ClassReader.<init>(Unknown Source) ~[asm-all-5.2.jar:5.2]
 	at net.minecraftforge.fml.common.discovery.asm.ASMModParser.<init>(ASMModParser.java:57) ~[ASMModParser.class:?]
 	... 23 more
-[22:48:11] [Client thread/INFO]: Forge Mod Loader has identified 5 mods to load
-[22:48:12] [Client thread/INFO]: FML has found a non-mod file ClientFixer-1.12.2-1.9.jar in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.
-[22:48:12] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, ClientFixer] at CLIENT
-[22:48:12] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, ClientFixer] at SERVER
-[22:48:13] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge
-[22:48:13] [Client thread/INFO]: Processing ObjectHolder annotations
-[22:48:13] [Client thread/INFO]: Found 1168 ObjectHolder annotations
-[22:48:13] [Client thread/INFO]: Identifying ItemStackHolder annotations
-[22:48:13] [Client thread/INFO]: Found 0 ItemStackHolder annotations
-[22:48:13] [Client thread/INFO]: Configured a dormant chunk cache size of 0
-[22:48:13] [Client thread/INFO]: Applying holder lookups
-[22:48:13] [Client thread/INFO]: Holder lookups applied
-[22:48:13] [Client thread/INFO]: Applying holder lookups
-[22:48:13] [Client thread/INFO]: Holder lookups applied
-[22:48:13] [Client thread/INFO]: Applying holder lookups
-[22:48:13] [Client thread/INFO]: Holder lookups applied
-[22:48:13] [Client thread/INFO]: Applying holder lookups
-[22:48:13] [Client thread/INFO]: Holder lookups applied
-[22:48:13] [Client thread/INFO]: Injecting itemstacks
-[22:48:13] [Client thread/INFO]: Itemstack injection complete
-[22:48:13] [Forge Version Check/INFO]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.fall
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.hit
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.step
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow1.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow2.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow3.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow4.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.death
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.death
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.death
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss1.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss2.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss3.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr1.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr2.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr3.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow1.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
-[22:48:14] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow2.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.generic.splash
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe1.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe2.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe3.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.hostile.splash
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.player.splash
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/music/menu/menu1.ogg does not exist, cannot add it to event minecraft:music.menu
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/music/menu/menu2.ogg does not exist, cannot add it to event minecraft:music.menu
-[22:48:15] [Client thread/WARN]: File minecraft:sounds/music/menu/menu3.ogg does not exist, cannot add it to event minecraft:music.menu
-[22:48:16] [Sound Library Loader/INFO]: Starting up SoundSystem...
-[22:48:16] [Thread-4/INFO]: Initializing LWJGL OpenAL
-[22:48:16] [Thread-4/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[22:48:16] [Thread-4/INFO]: OpenAL initialized.
-[22:48:16] [Forge Version Check/INFO]: [forge] Found status: OUTDATED Target: 14.23.5.2859
-[22:48:16] [Sound Library Loader/INFO]: Sound engine started
-[22:48:21] [Client thread/INFO]: Max texture size: 16384
-[22:48:24] [Client thread/INFO]: Created: 512x512 textures-atlas
-[22:48:26] [Client thread/INFO]: Applying holder lookups
-[22:48:26] [Client thread/INFO]: Holder lookups applied
-[22:48:26] [Client thread/INFO]: Injecting itemstacks
-[22:48:26] [Client thread/INFO]: Itemstack injection complete
-[22:48:27] [Client thread/INFO]: Forge Mod Loader has successfully loaded 5 mods
-[22:48:27] [Client thread/WARN]: Skipping bad option: lastServer:
-[22:48:27] [Client thread/WARN]: Skipping bad option: streamPreferredServer:
-[22:48:27] [Client thread/INFO]: Narrator library for x64 successfully loaded
-[22:48:27] [Client thread/ERROR]: Realms module missing
-[22:52:28] [Client thread/INFO]: Stopping!
-[22:52:28] [Client thread/INFO]: SoundSystem shutting down...
-[22:52:28] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[00:02:52] [Client thread/INFO]: Forge Mod Loader has identified 5 mods to load
+[00:02:52] [Client thread/INFO]: FML has found a non-mod file ClientFixer-1.12.2-1.9.jar in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.
+[00:02:52] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, ClientFixer] at CLIENT
+[00:02:52] [Client thread/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, ClientFixer] at SERVER
+[00:02:53] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge
+[00:02:53] [Client thread/INFO]: Processing ObjectHolder annotations
+[00:02:53] [Client thread/INFO]: Found 1168 ObjectHolder annotations
+[00:02:53] [Client thread/INFO]: Identifying ItemStackHolder annotations
+[00:02:53] [Client thread/INFO]: Found 0 ItemStackHolder annotations
+[00:02:53] [Client thread/INFO]: Configured a dormant chunk cache size of 0
+[00:02:53] [Forge Version Check/INFO]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[00:02:53] [Client thread/INFO]: Applying holder lookups
+[00:02:53] [Client thread/INFO]: Holder lookups applied
+[00:02:53] [Client thread/INFO]: Applying holder lookups
+[00:02:53] [Client thread/INFO]: Holder lookups applied
+[00:02:53] [Client thread/INFO]: Applying holder lookups
+[00:02:53] [Client thread/INFO]: Holder lookups applied
+[00:02:53] [Client thread/INFO]: Applying holder lookups
+[00:02:53] [Client thread/INFO]: Holder lookups applied
+[00:02:53] [Client thread/INFO]: Injecting itemstacks
+[00:02:53] [Client thread/INFO]: Itemstack injection complete
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.fall
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.hit
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood1.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood2.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood3.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood4.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood5.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/step/wood6.ogg does not exist, cannot add it to event minecraft:block.wood.step
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow1.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow2.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow3.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/meow4.ogg does not exist, cannot add it to event minecraft:entity.cat.ambient
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.death
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss1.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss2.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hiss3.ogg does not exist, cannot add it to event minecraft:entity.cat.hiss
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt1.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt2.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/hitt3.ogg does not exist, cannot add it to event minecraft:entity.cat.hurt
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr1.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr2.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/purr3.ogg does not exist, cannot add it to event minecraft:entity.cat.purr
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow1.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
+[00:02:54] [Client thread/WARN]: File minecraft:sounds/mob/cat/purreow2.ogg does not exist, cannot add it to event minecraft:entity.cat.purreow
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.generic.splash
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe1.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe2.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/mob/horse/breathe3.ogg does not exist, cannot add it to event minecraft:entity.horse.breathe
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.hostile.splash
+[00:02:55] [Client thread/WARN]: File minecraft:sounds/liquid/splash2.ogg does not exist, cannot add it to event minecraft:entity.player.splash
+[00:02:56] [Client thread/WARN]: File minecraft:sounds/music/menu/menu1.ogg does not exist, cannot add it to event minecraft:music.menu
+[00:02:56] [Client thread/WARN]: File minecraft:sounds/music/menu/menu2.ogg does not exist, cannot add it to event minecraft:music.menu
+[00:02:56] [Client thread/WARN]: File minecraft:sounds/music/menu/menu3.ogg does not exist, cannot add it to event minecraft:music.menu
+[00:02:56] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[00:02:56] [Thread-6/INFO]: Initializing LWJGL OpenAL
+[00:02:56] [Thread-6/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[00:02:56] [Forge Version Check/INFO]: [forge] Found status: OUTDATED Target: 14.23.5.2859
+[00:02:56] [Thread-6/INFO]: OpenAL initialized.
+[00:02:56] [Sound Library Loader/INFO]: Sound engine started
+[00:03:03] [Client thread/INFO]: Max texture size: 16384
+[00:03:07] [Client thread/INFO]: Created: 512x512 textures-atlas
+[00:03:09] [Client thread/INFO]: Applying holder lookups
+[00:03:09] [Client thread/INFO]: Holder lookups applied
+[00:03:09] [Client thread/INFO]: Injecting itemstacks
+[00:03:09] [Client thread/INFO]: Itemstack injection complete
+[00:03:10] [Client thread/INFO]: Forge Mod Loader has successfully loaded 5 mods
+[00:03:10] [Client thread/WARN]: Skipping bad option: lastServer:
+[00:03:10] [Client thread/WARN]: Skipping bad option: streamPreferredServer:
+[00:03:10] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[00:03:10] [Client thread/ERROR]: Realms module missing
+[00:03:45] [Client thread/INFO]: Stopping!
+[00:03:45] [Client thread/INFO]: SoundSystem shutting down...
+[00:03:45] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com

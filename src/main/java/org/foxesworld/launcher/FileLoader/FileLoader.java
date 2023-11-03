@@ -40,6 +40,7 @@ public class FileLoader {
         request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
+        request.put("platform", String.valueOf(this.getPlatformNumber()));
         FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray[].class);
         for(FilesArray file: filesArray) {
             file.setReplaceMask("/uploads/files/clients/");
@@ -105,6 +106,22 @@ public class FileLoader {
         } catch (Exception e) {
             e.printStackTrace();
             return true;
+        }
+    }
+
+    public int getPlatformNumber() {
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("win")) {
+            return 1; // Windows
+        } else if (osName.contains("mac")) {
+            return 2; // macOS
+        } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("uni")) {
+            return 3; // Unix / Linux
+        } else if (osName.contains("sunos")) {
+            return 4; // Solaris
+        } else {
+            return 0; // Other or Unknown
         }
     }
 

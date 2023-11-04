@@ -43,48 +43,48 @@ public class ComponentFactory {
     }
     public JComponent createComponent(ComponentAttributes componentAttributes) {
         componentFactoryListener.onComponentCreation(componentAttributes);
-        if(componentAttributes.componentType != null && componentAttributes.componentStyle != null) {
-            if(componentStyles.get(componentAttributes.componentType) == null){
-                componentStyles.put(componentAttributes.componentType, engine.getStyleProvider().loadStyle(componentAttributes.componentType));
+        if(componentAttributes.getComponentStyle() != null && componentAttributes.getComponentStyle() != null) {
+            if(componentStyles.get(componentAttributes.getComponentStyle()) == null){
+                componentStyles.put(componentAttributes.getComponentType(), engine.getStyleProvider().loadStyle(componentAttributes.getComponentType()));
             }
-            style = componentStyles.get(componentAttributes.componentType).get(componentAttributes.componentStyle);
+            style = componentStyles.get(componentAttributes.getComponentType()).get(componentAttributes.getComponentStyle());
         }
-        String[] bounds = componentAttributes.bounds.split(",");
+        String[] bounds = componentAttributes.getBounds().split(",");
         int xPos = Integer.parseInt(bounds[0]);
         int yPos = Integer.parseInt(bounds[1]);
         int width = Integer.parseInt(bounds[2]);
         int height = Integer.parseInt(bounds[3]);
 
-        switch (componentAttributes.componentType) {
+        switch (componentAttributes.getComponentType()) {
 
             case "progressBar" -> {
                 ProgressBarStyle progressBarStyle = new ProgressBarStyle(this);
                 JProgressBar progressBar = new JProgressBar();
                 progressBarStyle.apply(progressBar);
-                progressBar.setName(componentAttributes.componentId);
+                progressBar.setName(componentAttributes.getComponentId());
                 progressBar.setBounds(xPos, yPos, width, height);
                 return progressBar;
             }
 
             case "label" -> {
                 LabelStyle labelStyle = new LabelStyle(this);
-                Label label = new Label(LANG.getString(componentAttributes.localeKey));
+                Label label = new Label(LANG.getString(componentAttributes.getLocaleKey()));
                 labelStyle.apply(label);
-                if(componentAttributes.imageIcon != null) {
-                    label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight)));
+                if(componentAttributes.getImageIcon() != null) {
+                    label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight())));
                 }
 
-                label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.fontSize));
+                label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.getFontSize()));
                 labelStyle.apply(label);
-                label.setName(componentAttributes.componentId);
+                label.setName(componentAttributes.getComponentId());
                 label.setBounds(xPos, yPos, width, height);
 
-                if(componentAttributes.initialValue != null) {
-                    label.setText(LANG.getString(componentAttributes.localeKey) + " " + componentAttributes.initialValue);
+                if(componentAttributes.getInitialValue() != null) {
+                    label.setText(LANG.getString(componentAttributes.getLocaleKey()) + " " + componentAttributes.getInitialValue());
                 }
 
-                if(componentAttributes.color != null) {
-                    label.setForeground(hexToColor(componentAttributes.color));
+                if(componentAttributes.getColor() != null) {
+                    label.setForeground(hexToColor(componentAttributes.getColor()));
                 }
 
                 return label;
@@ -92,37 +92,37 @@ public class ComponentFactory {
 
             case "checkBox" -> {
                 CheckboxStyle checkboxStyle = new CheckboxStyle(this);
-                Checkbox checkbox = new Checkbox(this, LANG.getString(componentAttributes.localeKey));
+                Checkbox checkbox = new Checkbox(this, LANG.getString(componentAttributes.getLocaleKey()));
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
-                checkbox.setName(componentAttributes.componentId);
-                checkbox.setEnabled(componentAttributes.enabled);
-                if(componentAttributes.initialValue != null) {
-                    checkbox.setSelected(Boolean.parseBoolean(componentAttributes.initialValue));
+                checkbox.setName(componentAttributes.getComponentId());
+                checkbox.setEnabled(componentAttributes.isEnabled());
+                if(componentAttributes.getInitialValue() != null) {
+                    checkbox.setSelected(Boolean.parseBoolean(componentAttributes.getInitialValue()));
                 }
                 return checkbox;
             }
 
             case "textField" -> {
                 TextfieldStyle textfieldStyle = new TextfieldStyle(this);
-                Textfield textfield = new Textfield(LANG.getString(componentAttributes.localeKey));
+                Textfield textfield = new Textfield(LANG.getString(componentAttributes.getLocaleKey()));
                 textfieldStyle.apply(textfield);
-                textfield.setName(componentAttributes.componentId);
+                textfield.setName(componentAttributes.getComponentId());
                 textfield.setBounds(xPos, yPos, textfieldStyle.width, textfieldStyle.height);
-                textfield.setActionCommand(componentAttributes.componentId);
+                textfield.setActionCommand(componentAttributes.getComponentId());
                 textfield.addActionListener(engine);
-                if(componentAttributes.initialValue != null) textfield.setText(componentAttributes.initialValue);
+                if(componentAttributes.getInitialValue() != null) textfield.setText(componentAttributes.getInitialValue());
                 return textfield;
             }
 
             case "passField" -> {
                 PassFieldStyle passfieldStyle = new PassFieldStyle(this);
-                PassField passfield = new PassField(LANG.getString(componentAttributes.localeKey));
+                PassField passfield = new PassField(LANG.getString(componentAttributes.getLocaleKey()));
                 passfieldStyle.apply(passfield);
-                passfield.setName(componentAttributes.componentId);
+                passfield.setName(componentAttributes.getComponentId());
                 passfield.setBounds(xPos, yPos, style.width, style.height);
                 passfield.setFont(this.engine.getFONTUTILS().getFont(style.font, style.fontSize));
-                passfield.setActionCommand(componentAttributes.componentId);
+                passfield.setActionCommand(componentAttributes.getComponentId());
                 return passfield;
             }
 
@@ -130,20 +130,20 @@ public class ComponentFactory {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
                 spriteAnimation.setOpaque(false);
                 spriteAnimation.setBounds(xPos,yPos,width,height);
-                spriteAnimation.setName(componentAttributes.componentId);
+                spriteAnimation.setName(componentAttributes.getComponentId());
                 return  spriteAnimation;
             }
 
             case "button" -> {
                 ButtonStyle buttonStyle = new ButtonStyle(this);
-                Button button = new Button(this, LANG.getString(componentAttributes.localeKey));
-                if(componentAttributes.imageIcon != null){
-                    ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.imageIcon), componentAttributes.iconWidth, componentAttributes.iconHeight));
+                Button button = new Button(this, LANG.getString(componentAttributes.getLocaleKey()));
+                if(componentAttributes.getImageIcon() != null){
+                    ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight()));
                     button = new Button(this, icon);
                 }
                 buttonStyle.apply(button);
-                button.setName(componentAttributes.componentId);
-                button.setActionCommand(componentAttributes.componentId);
+                button.setName(componentAttributes.getComponentId());
+                button.setActionCommand(componentAttributes.getComponentId());
                 button.setBounds(xPos, yPos, width, height);
                 button.addActionListener(engine);
                 return button;
@@ -153,8 +153,8 @@ public class ComponentFactory {
                 MultiButtonStyle multiButtonStyle = new MultiButtonStyle(this, componentAttributes);
                 MultiButton multiButton = new MultiButton(this);
                 multiButtonStyle.apply(multiButton);
-                multiButton.setName(componentAttributes.componentId);
-                multiButton.setActionCommand(componentAttributes.componentId);
+                multiButton.setName(componentAttributes.getComponentId());
+                multiButton.setActionCommand(componentAttributes.getComponentId());
                 multiButton.setBounds(xPos, yPos, style.width, style.height);
                 multiButton.addActionListener(engine);
                 return multiButton;
@@ -165,13 +165,13 @@ public class ComponentFactory {
                 ScrollBox scrollBox = new ScrollBox(this, this.scrollBoxArr, yPos);
                 scrollBoxStyle.apply(scrollBox);
                 scrollBox.setBounds(xPos,yPos, width,height);
-                scrollBox.setName(componentAttributes.componentId);
+                scrollBox.setName(componentAttributes.getComponentId());
                 scrollBox.setSelectedIndex(componentAttributes.getSelectedIndex());
                 scrollBox.repaint();
                 return  scrollBox;
             }
 
-            default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.componentType);
+            default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.getComponentType());
         }
     }
 

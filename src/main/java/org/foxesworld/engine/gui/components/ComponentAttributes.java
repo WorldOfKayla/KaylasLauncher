@@ -7,61 +7,119 @@ import java.util.Map;
 
 public class ComponentAttributes {
     @SerializedName("readFrom")
-    public String readFrom;
+    private String readFrom;
 
     @SerializedName("componentType")
-    public String componentType;
-
+    private String componentType;
     @SerializedName("componentStyle")
-    public String componentStyle;
-
+    private String componentStyle;
     @SerializedName("componentId")
-    public String componentId;
+    private String componentId;
     @SerializedName("rowNum")
-    public int rowNum;
+    private int rowNum;
     @SerializedName("imgCount")
-    public int imgCount;
-
+    private int imgCount;
     @SerializedName("fontSize")
-    public int fontSize;
+    private int fontSize;
     @SerializedName("enabled")
-    public boolean enabled;
+    private boolean enabled;
     @SerializedName("initialValue")
-    public String initialValue;
-
+    private String initialValue;
     @SerializedName("color")
-    public String color;
-
+    private String color;
     @SerializedName("localeKey")
-    public String localeKey;
-
+    private String localeKey;
     @SerializedName("imageIcon")
-    public String imageIcon;
-
+    private String imageIcon;
     @SerializedName("iconWidth")
-    public int iconWidth;
+    private int iconWidth;
 
     @SerializedName("iconHeight")
-    public int iconHeight;
+    private int iconHeight;
     @SerializedName("totalFrames")
-    public int totalFrames;
+    private int totalFrames;
     @SerializedName("delay")
-    public int delay;
-
+    private int delay;
     @SerializedName("bounds")
-    public String bounds;
-
+    private String bounds;
     @SerializedName("groups")
-    public Map<String, OptionGroups> groups;
-
+    private Map<String, OptionGroups> groups;
     private int selectedIndex = 0;
-
     public void setInitialValue(String initialValue) {
         this.initialValue = initialValue;
     }
-
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
+    }
+    public String getReadFrom() {
+        return readFrom;
+    }
+    public String getComponentType() {
+        return componentType;
+    }
+
+    public String getComponentStyle() {
+        return componentStyle;
+    }
+
+    public String getComponentId() {
+        return componentId;
+    }
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public int getImgCount() {
+        return imgCount;
+    }
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public String getInitialValue() {
+        return initialValue;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getLocaleKey() {
+        return localeKey;
+    }
+
+    public String getImageIcon() {
+        return imageIcon;
+    }
+
+    public int getIconWidth() {
+        return iconWidth;
+    }
+
+    public int getIconHeight() {
+        return iconHeight;
+    }
+
+    public int getTotalFrames() {
+        return totalFrames;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public String getBounds() {
+        return bounds;
+    }
+
+    public Map<String, OptionGroups> getGroups() {
+        return groups;
     }
 
     public int getSelectedIndex() {

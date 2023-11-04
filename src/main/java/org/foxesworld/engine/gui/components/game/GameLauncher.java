@@ -114,7 +114,6 @@ public class GameLauncher {
     public void launchGame() {
         Thread gameThread = new Thread(() -> {
             try {
-                // Остальной код для запуска игры
                 this.setJre();
                 this.collectLibraries();
                 this.addTweakClass();

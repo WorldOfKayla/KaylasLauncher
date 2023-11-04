@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class FrameConstructor {
-    private Engine engine;
+    private final Engine engine;
     private Panel panel;
     private Dimension screenSize;
     private JPanel rootPanel;

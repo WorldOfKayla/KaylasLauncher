@@ -20,11 +20,11 @@ public class SpriteAnimation extends JComponent {
 
 
     public SpriteAnimation(ComponentAttributes componentAttributes) {
-        this.frameWidth = componentAttributes.iconWidth;
-        this.frameHeight = componentAttributes.iconHeight;
-        this.spriteSheet = ImageUtils.getLocalImage(componentAttributes.imageIcon);
-        this.totalFrames = componentAttributes.totalFrames;
-        this.animationDelay = componentAttributes.delay;
+        this.frameWidth = componentAttributes.getIconWidth();
+        this.frameHeight = componentAttributes.getIconHeight();
+        this.spriteSheet = ImageUtils.getLocalImage(componentAttributes.getImageIcon());
+        this.totalFrames = componentAttributes.getTotalFrames();
+        this.animationDelay = componentAttributes.getDelay();
         //this.setPreferredSize(new Dimension(frameWidth, frameHeight));
 
         Timer timer = new Timer(animationDelay, e -> {

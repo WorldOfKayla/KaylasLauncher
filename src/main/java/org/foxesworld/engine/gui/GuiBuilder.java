@@ -113,23 +113,23 @@ public class GuiBuilder implements ComponentFactoryListener {
     private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
         this.componentFactory.setComponentFactoryListener(this);
         for (ComponentAttributes componentAttributes : componentList) {
-            if (componentAttributes.componentType != null) {
+            if (componentAttributes.getComponentType() != null) {
                 JComponent component = this.componentFactory.createComponent(componentAttributes);
                 parentPanel.add(component);
                 this.addComponentToMap(parentGroupName, component);
-            } else if (componentAttributes.groups != null) {
+            } else if (componentAttributes.getGroups() != null) {
                 // Handle nested groups
-                buildComponents(componentAttributes.groups, parentPanel);
-            } else if (componentAttributes.readFrom != null) {
+                buildComponents(componentAttributes.getGroups(), parentPanel);
+            } else if (componentAttributes.getReadFrom() != null) {
                 // Handle reading from another JSON file
-                buildGui(componentAttributes.readFrom, true, parentPanel);
+                buildGui(componentAttributes.getReadFrom(), true, parentPanel);
             }
         }
     }
 
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
-        if (componentAttributes.initialValue != null) {
+        if (componentAttributes.getInitialValue() != null) {
             this.getInitialData(componentAttributes);
         }
     }
@@ -138,7 +138,7 @@ public class GuiBuilder implements ComponentFactoryListener {
      * An experimental solution
      * Will do something with hardCoded scrollBox */
     private void getInitialData(ComponentAttributes componentAttributes) {
-        String[] splitValue = componentAttributes.initialValue.split("#");
+        String[] splitValue = componentAttributes.getInitialValue().split("#");
         switch (splitValue[0]) {
             case "config" -> {
                 componentAttributes.setInitialValue(String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1])));

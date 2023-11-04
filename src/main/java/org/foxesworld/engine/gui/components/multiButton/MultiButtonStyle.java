@@ -14,7 +14,7 @@ public class MultiButtonStyle {
     public MultiButtonStyle(ComponentFactory componentFactory, ComponentAttributes componentAttributes) {
         this.width = componentFactory.style.width;
         this.height = componentFactory.style.height;
-        this.splitImg = splitImage(componentAttributes.rowNum, componentAttributes.imgCount, ImageUtils.getLocalImage(componentFactory.style.texture));
+        this.splitImg = splitImage(componentAttributes.getRowNum(), componentAttributes.getImgCount(), ImageUtils.getLocalImage(componentFactory.style.texture));
     }
 
     public void apply(MultiButton multiButton) {

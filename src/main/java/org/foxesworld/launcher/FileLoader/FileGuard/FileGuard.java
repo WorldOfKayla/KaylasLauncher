@@ -10,12 +10,13 @@ import java.util.Set;
 
 public class FileGuard {
     private FileGuardListener fileGuardListener;
-    private List<String> checkList;
+    private final List<String> checkList;
     private final GameLauncher gameLauncher;
     private final Logger logger;
     private int totalFiles = 0;
+
+    private int dirsAmount = 0;
     private int checkedFiles = 0;
-    private int checkedDirs = 0;
     private int filesDeleted = 0;
 
     public FileGuard(GameLauncher gameLauncher) {
@@ -26,13 +27,13 @@ public class FileGuard {
                 gameLauncher.buildLibrariesPath(),
                 gameLauncher.buildNativesPath()
         );
+
         this.logger = this.gameLauncher.getActionHandler().getEngine().getLOGGER();
     }
 
     public void scanAndDeleteFilesInSubdirectories(Set<String> filesToKeep) {
         totalFiles = countTotalFiles();
         checkedFiles = 0;
-        checkedDirs = 0;
         filesDeleted = 0;
 
         for (String dir : checkList) {
@@ -100,9 +101,6 @@ public class FileGuard {
             }
         } else {
             logger.error(directory + " is not found!");
-        }
-        if(checkedFiles == totalFiles){
-            checkedDirs++;
         }
     }
 

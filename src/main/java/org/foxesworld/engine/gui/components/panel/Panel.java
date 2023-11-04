@@ -20,15 +20,14 @@ public class Panel {
     }
 
     public JPanel setRootPanel(FrameAttributes frameAttributes) {
-        JPanel rootPanel = new JPanel() {
+        JPanel rootPanel = new JPanel(null, true) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 drawDarkenedBackground(g, frameAttributes);
             }
         };
-        rootPanel.setOpaque(false);
-        rootPanel.setLayout(null);
+        //rootPanel.setOpaque(true);
         rootPanel.setName("rootPanel");
 
         return rootPanel;
@@ -37,16 +36,14 @@ public class Panel {
     private void drawDarkenedBackground(Graphics g, FrameAttributes frameAttributes) {
         BufferedImage background = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
         g.drawImage(background, 0, 0, null);
-
         g.setColor(hexToColor(frameAttributes.backgroundBlur));
         g.fillRect(0, 0, this.frameConstructor.getScreenSize().width, this.frameConstructor.getScreenSize().height);
     }
 
     public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
-        JPanel groupPanel = new JPanel();
+        JPanel groupPanel = new JPanel(null, true);
         groupPanel.setName(groupName);
         groupPanel.setOpaque(panelOptions.opaque);
-        groupPanel.setLayout(null);
         groupPanel.setBackground(hexToColor(panelOptions.background));
         if(panelOptions.border != null && !panelOptions.border.equals("")) {
             this.createBorder(groupPanel, panelOptions.border);
@@ -58,7 +55,6 @@ public class Panel {
                 case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
         }
-        //frameConstructor.getAppFrame().displayPanel(groupName, panelOptions.display);
 
         String[] bounds = panelOptions.bounds.split(",");
         int posX = Integer.parseInt(bounds[0]);
@@ -68,7 +64,7 @@ public class Panel {
         groupPanel.setBounds(posX, posY, width, height);
         return groupPanel;
     }
-    private JPanel createBorder(JPanel groupPanel, String border){
+    private void createBorder(JPanel groupPanel, String border){
         String[] borderData = border.split(",");
         int top = Integer.parseInt(borderData[0]);
         int left = Integer.parseInt(borderData[1]);
@@ -76,6 +72,5 @@ public class Panel {
         int right = Integer.parseInt(borderData[3]);
         Color borderColor = hexToColor(borderData[4]);
         groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
-        return groupPanel;
     }
 }

@@ -58,6 +58,7 @@ public class FileLoader {
     public void downloadFiles(List<FilesArray> filesToDownload) {
         totalFiles = filesToDownload.size();
         this.engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
+        if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
         for (FilesArray filesArray: filesToDownload){
             System.out.println(filesArray.filename);
         }
@@ -111,7 +112,6 @@ public class FileLoader {
 
     public int getPlatformNumber() {
         String osName = System.getProperty("os.name").toLowerCase();
-
         if (osName.contains("win")) {
             return 1; // Windows
         } else if (osName.contains("mac")) {

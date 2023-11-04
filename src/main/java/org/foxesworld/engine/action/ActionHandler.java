@@ -65,7 +65,6 @@ public class ActionHandler {
                 this.engine.getAuth().setAuthorised(false);
                 engine.getFrame().getRootPanel().removeAll();
                 this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-                //engine.displayPanel("loggedForm->false|newsForm->true|authForm->true");
                 engine.initialize("");
             }
 
@@ -87,6 +86,7 @@ public class ActionHandler {
 
             case "toGame" -> {
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
+                this.getEngine().getLOGGER().info("Launching "+this.currentServer.serverName);
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 game = new Game(this);

@@ -166,11 +166,11 @@ public class GameLauncher {
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
     }
 
-    private String buildVersionDir() {
+    public String buildVersionDir() {
         return buildGameDir() + "versions" + File.separator + selectedServer.serverVersion;
     }
 
-    private String buildLibrariesPath() {
+    public String buildLibrariesPath() {
         return buildVersionDir() + File.separator + "libraries";
     }
 

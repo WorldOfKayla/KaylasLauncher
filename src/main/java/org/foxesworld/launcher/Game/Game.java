@@ -2,15 +2,16 @@ package org.foxesworld.launcher.Game;
 
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.gui.components.game.GameLauncher;
+import org.foxesworld.launcher.FileLoader.FileGuard.FileGuardListener;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
-import org.foxesworld.launcher.FileLoader.FileLoaderScanner;
+import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
 import org.foxesworld.launcher.FileLoader.FilesArray;
 
 import java.io.File;
 import java.util.List;
 
-public class Game implements FileLoaderListener {
+public class Game implements FileLoaderListener, FileGuardListener {
 
     private final ActionHandler actionHandler;
     private final List<FilesArray> filesArray;
@@ -31,11 +32,11 @@ public class Game implements FileLoaderListener {
             //If we don't have JRE download it the first
             filesArray.add(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
         }
-        if(filesArray.size() == 0 ){
-            gameLauncher.launchGame();
-        } else {
+        //if(filesArray.size() == 0){
+        //    gameLauncher.launchGame();
+        //} else {
             this.fileLoader.downloadFiles(filesArray);
-        }
+        //}
     }
 
     private  boolean hasJre(String version){
@@ -45,9 +46,9 @@ public class Game implements FileLoaderListener {
     @Override
     public void onFilesLoaded() {
         System.out.println("--==|Files loaded|==--");
-        FileLoaderScanner fileLoaderScanner = new FileLoaderScanner(this.gameLauncher);
-        fileLoaderScanner.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
-        gameLauncher.launchGame();
+        FileGuard fileGuard = new FileGuard(this.gameLauncher);
+        fileGuard.setFileGuardListener(this);
+        fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
     }
 
     @Override
@@ -63,5 +64,12 @@ public class Game implements FileLoaderListener {
         if (fullPath.contains(".zip")) {
             this.fileLoader.getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
+    }
+
+    @Override
+    public void onFilesChecked(int filesDeleted) {
+        System.out.println("--==|Files checked|==--");
+        System.out.println(filesDeleted + " removed");
+        gameLauncher.launchGame();
     }
 }

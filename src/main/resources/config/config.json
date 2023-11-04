@@ -1,6 +1,6 @@
 {
-  "Lang": "ru",
-  "LogLevel": "DEBUG",
+  "lang": "ru",
+  "logLevel": "DEBUG",
   "autoEnter": false,
   "fullScreen": false,
   "loadNews": true,

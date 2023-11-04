@@ -1,6 +1,7 @@
 package org.foxesworld.engine.gui.components.game;
 
 import org.foxesworld.engine.action.ActionHandler;
+import org.foxesworld.engine.config.Config;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.user.User;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class GameLauncher {
     private final ActionHandler actionHandler;
 
+    private final Config config;
     private final User user;
     private final ServerAttributes selectedServer;
     private final String currentJre;
@@ -28,6 +30,7 @@ public class GameLauncher {
 
     public GameLauncher(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
+        this.config = actionHandler.getEngine().getCONFIG();
         this.selectedServer = actionHandler.getCurrentServer();
         this.currentJre = selectedServer.jreVersion;
         this.libraryScanner = new LibraryScanner(actionHandler.getEngine());
@@ -82,7 +85,7 @@ public class GameLauncher {
             cl.loadClass("com.mojang.authlib.Agent");
             params.add("--accessToken="+this.user.getToken());
             params.add("--uuid="+this.user.getUuid());
-            params.add("--userProperties={}"); //WIP
+            params.add("--userProperties={}");
             params.add("--assetIndex="+selectedServer.serverVersion);
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
@@ -97,8 +100,13 @@ public class GameLauncher {
         params.add("--version="+selectedServer.serverVersion);
         params.add("--gameDir="+buildClientDir());
         params.add("--assetsDir="+buildAssetsPath());
-        if((boolean) actionHandler.getEngine().getCONFIG().getCONFIG().get("fullScreen")) {
+        if(config.isFullScreen()) {
             params.add("--fullscreen=true");
+        }
+
+        if(config.isAutoEnter()){
+            params.add("--server="+selectedServer.host);
+            params.add("--port="+selectedServer.port);
         }
         params.add(tweakClassVal);
     }
@@ -106,6 +114,7 @@ public class GameLauncher {
     public void launchGame() {
         Thread gameThread = new Thread(() -> {
             try {
+                // Остальной код для запуска игры
                 this.setJre();
                 this.collectLibraries();
                 this.addTweakClass();
@@ -125,16 +134,22 @@ public class GameLauncher {
                 if (exitCode != 0) {
                     SwingUtilities.invokeLater(() -> {
                         actionHandler.getEngine().getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exitcode - " + exitCode, "Launch error", JOptionPane.ERROR_MESSAGE, null);
+                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exit Code - " + exitCode, "Launch error", JOptionPane.ERROR_MESSAGE, null);
                     });
                 }
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            gameThread.interrupt();
+        }));
 
         gameThread.start();
     }
+
+
+
 
 
     private void addTweakClass() {
@@ -156,12 +171,12 @@ public class GameLauncher {
     }
 
     public String buildGameDir() {
-        return actionHandler.getEngine().getCONFIG().getFullPath();
+        return config.getFullPath();
     }
 
     private void setJre() {
         params.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
-        params.add("-Xmx" + actionHandler.getEngine().getCONFIG().getCONFIG().get("ramAmount") + "m");
+        params.add("-Xms" + config.getRamAmount() + "m");
         params.add("-Djava.library.path=" + buildNativesPath());
         params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
     }
@@ -178,7 +193,7 @@ public class GameLauncher {
         return buildVersionDir() + File.separator + selectedServer.serverVersion + ".jar";
     }
 
-    private String buildNativesPath() {
+    public String buildNativesPath() {
         return buildVersionDir() + File.separator + "natives";
     }
 

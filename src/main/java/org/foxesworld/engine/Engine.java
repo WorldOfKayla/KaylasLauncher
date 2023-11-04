@@ -59,12 +59,12 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.engineData = new EngineData();
         this.initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
-        this.getAPP().setLOCALE(String.valueOf(CONFIG.getCONFIG().get("Lang")));
+        this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);
-        Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getCONFIG().get("LogLevel")));
+        Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getLogLevel()));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
         this.frameConstructor = new FrameConstructor(this);

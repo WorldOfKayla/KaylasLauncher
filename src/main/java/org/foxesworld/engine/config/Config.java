@@ -5,10 +5,12 @@ import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.launcher.user.User;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,10 @@ import java.util.Map;
 public class Config extends ConfigAbstract {
     private Engine engine;
     private Map<String, Object> CONFIG;
+
+    private int selectedServer;
+    private  String login, password, lang, logLevel, ramAmount;
+    private  boolean autoEnter, fullScreen, loadNews, enableSound;
 
     public Config(Engine engine) {
         this.engine = engine;
@@ -26,6 +32,7 @@ public class Config extends ConfigAbstract {
         cfgProvider.setDefaultConfFilesDir("config/");
         addCfgFiles(engine.getAPP().getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
+        this.assignConfigValues();
     }
 
     public void addToConfig(Map<String, String> inputData, List values) {
@@ -41,6 +48,7 @@ public class Config extends ConfigAbstract {
             clearConfigData(Arrays.asList(key), false);
         }
         CONFIG.put(key, value);
+        assignConfigValues();
     }
 
     public void clearConfigData(List<String> dataToClear, boolean write) {
@@ -50,6 +58,19 @@ public class Config extends ConfigAbstract {
         }
         if (write) {
             this.writeCurrentConfig();
+        }
+    }
+
+    private void assignConfigValues(){
+        for(Map.Entry<String, Object> configMap : this.CONFIG.entrySet()){
+            try {
+                Field field = Config.class.getDeclaredField(configMap.getKey());
+                if(field.hashCode()!= 0) {
+                    field.set(this, configMap.getValue());
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -74,12 +95,48 @@ public class Config extends ConfigAbstract {
         return CONFIG;
     }
 
-    public Engine getAppFrame() {
-        return engine;
-    }
-
     @Override
     public String getFullPath() {
         return cfgProvider.getGameFullPath();
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    public String getRamAmount() {
+        return ramAmount;
+    }
+
+    public boolean isAutoEnter() {
+        return autoEnter;
+    }
+
+    public boolean isFullScreen() {
+        return fullScreen;
+    }
+
+    public boolean isLoadNews() {
+        return loadNews;
+    }
+
+    public boolean isEnableSound() {
+        return enableSound;
+    }
+
+    public int getSelectedServer() {
+        return selectedServer;
     }
 }

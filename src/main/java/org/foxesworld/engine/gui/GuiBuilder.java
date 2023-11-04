@@ -152,8 +152,8 @@ public class GuiBuilder implements ComponentFactoryListener {
                 switch (splitValue[1]) {
                     case "servers" -> {
                         this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
-                        if (this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer") != null) {
-                            Object selectedIndex = this.componentFactory.engine.getCONFIG().getCONFIG().get("selectedServer");
+                        if (this.componentFactory.engine.getCONFIG().getSelectedServer() != 0) {
+                            Object selectedIndex = this.componentFactory.engine.getCONFIG().getSelectedServer();
                             if(selectedIndex != null)
                             componentAttributes.setSelectedIndex((int) selectedIndex);
                         }

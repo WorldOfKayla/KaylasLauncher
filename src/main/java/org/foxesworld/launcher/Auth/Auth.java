@@ -3,6 +3,7 @@ package org.foxesworld.launcher.Auth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.config.Config;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -17,7 +18,7 @@ public class Auth {
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private Map<String, String> authCredentials = new HashMap<>();
-    private final Map<String, Object> CONFIG;
+    private final Config CONFIG;
     private final HTTPrequest POSTrequest;
     private final Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
@@ -25,13 +26,13 @@ public class Auth {
     public Auth(Engine engine) {
         this.engine = engine;
         this.POSTrequest = engine.getPOSTrequest();
-        this.CONFIG = engine.getCONFIG().getCONFIG();
+        this.CONFIG = engine.getCONFIG();
         //If we just initialised and are not sending a form
-        if (CONFIG.get("login") != null && CONFIG.get("password") != null) {
+        if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             Map<String, String> authCredentials = new HashMap<>();
-            authCredentials.put("login", (String) CONFIG.get("login"));
-            authCredentials.put("password", (String) CONFIG.get("password"));
-            this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.get("login"));
+            authCredentials.put("login", (String) CONFIG.getLogin());
+            authCredentials.put("password", (String) CONFIG.getPassword());
+            this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.getLogin());
             //Writing login data if it's not present
             if (!this.authorize(authCredentials)) {
                 engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
@@ -71,7 +72,7 @@ public class Auth {
 
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
-            if (CONFIG.get("login") == null && "true".equals(authCredentials.get("rememberMe"))) {
+            if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
                 saveAuthCredentials(authCredentials);
             }
         } else {

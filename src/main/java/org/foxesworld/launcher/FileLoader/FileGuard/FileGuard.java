@@ -23,7 +23,8 @@ public class FileGuard {
         this.checkList = Arrays.asList(
                 gameLauncher.buildClientDir(),
                 gameLauncher.buildVersionDir(),
-                gameLauncher.buildLibrariesPath()
+                gameLauncher.buildLibrariesPath(),
+                gameLauncher.buildNativesPath()
         );
         this.logger = this.gameLauncher.getActionHandler().getEngine().getLOGGER();
     }
@@ -76,8 +77,6 @@ public class FileGuard {
                 if (file.isFile()) {
                     String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
                     checkPath = checkPath.replace("\\", "/");
-                    System.out.println("Checking " + checkPath);
-
                     if (!filesToKeep.contains(checkPath)) {
                         // Removing unlisted file
                         boolean deleted = file.delete();
@@ -94,8 +93,8 @@ public class FileGuard {
                 } else if (file.isDirectory()) {
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
-                System.out.println("["+checkedDirs+"."+checkList.size() +"]" + checkedFiles + " / "+totalFiles);
-                if (checkedDirs == checkList.size() && checkedFiles == totalFiles) {
+                this.logger.debug("Checked " + checkedFiles + " / "+totalFiles);
+                if (checkedFiles == totalFiles) {
                     fileGuardListener.onFilesChecked(filesDeleted);
                 }
             }

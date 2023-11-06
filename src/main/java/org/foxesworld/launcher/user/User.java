@@ -1,8 +1,19 @@
 package org.foxesworld.launcher.user;
 
+import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.Auth.Auth;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
@@ -26,9 +37,25 @@ public class User {
                     }
                 } catch (NoSuchFieldException | IllegalAccessException ignored) {}
             }
+
+            try {
+                Label headLabel = (Label) this.auth.getEngine().getGuiBuilder().getComponentById("userHead");
+                headLabel.setIcon(new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead())));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             auth.getEngine().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
+    }
+
+    private String getUserHead() throws MalformedURLException {
+        Map<String, String> skinData = new HashMap<>();
+        skinData.put("sysRequest", "skin");
+        skinData.put("show", "head");
+        skinData.put("login", this.getLogin());
+        String imageBase64 = this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().bindUrl, skinData);
+        return imageBase64;
     }
 
     public String getLogin() {

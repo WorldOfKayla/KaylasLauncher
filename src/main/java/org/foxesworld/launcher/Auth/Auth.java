@@ -4,12 +4,19 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.List;
 

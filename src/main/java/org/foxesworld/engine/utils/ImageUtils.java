@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,30 @@ public class ImageUtils {
         } catch (Exception e) {
             //APP.LOGGER.error("Failed to open local image: " + name);
             return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
+        }
+    }
+
+    public static BufferedImage createImageFromPNGString(byte[] pngBytes) {
+        try {
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(pngBytes);
+            BufferedImage image = ImageIO.read(byteArrayInputStream);
+            return image;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static BufferedImage base64ToBufferedImage(String base64Image) {
+        try {
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+            BufferedImage bufferedImage = ImageIO.read(bis);
+            bis.close();
+            return bufferedImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

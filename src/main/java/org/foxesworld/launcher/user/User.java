@@ -22,7 +22,7 @@ public class User implements ScrollBoxListener {
     private final Auth auth;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
-    private ServerBox serverBox;
+    private final ServerBox serverBox;
 
     private String login, password, units, token, uuid;
 
@@ -66,8 +66,7 @@ public class User implements ScrollBoxListener {
         skinData.put("sysRequest", "skin");
         skinData.put("show", "head");
         skinData.put("login", this.getLogin());
-        String imageBase64 = this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().bindUrl, skinData);
-        return imageBase64;
+        return this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().bindUrl, skinData);
     }
 
     private Map<String, Label> getLabelsMap(List<String> labeldIds){
@@ -124,7 +123,7 @@ public class User implements ScrollBoxListener {
         try {
             serverPollThread[0].interrupt();
             serverPollThread[0] = null;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         this.auth.getEngine().getLOGGER().info("Refreshing server state... (" + this.auth.getUserServersArray()[index] + ")");

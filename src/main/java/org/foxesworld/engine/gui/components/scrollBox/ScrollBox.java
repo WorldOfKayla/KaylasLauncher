@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 
 public class ScrollBox extends JComponent implements MouseListener, MouseMotionListener {
 
+    private boolean loaded = false;
     private ComponentFactory componentFactory;
-
     private ScrollBoxListener scrollBoxListener;
     private static final long serialVersionUID = 1L;
     public String[] values;
@@ -95,6 +95,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             g.drawString(this.values[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
         }
         g.dispose();
+        if(!loaded){
+            this.scrollBoxListener.onScrollBoxCreated(selected);
+            setLoaded(true);
+        }
     }
 
     @Override
@@ -201,5 +205,9 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public void setScrollBoxListener(ScrollBoxListener scrollBoxListener) {
         this.scrollBoxListener = scrollBoxListener;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 }

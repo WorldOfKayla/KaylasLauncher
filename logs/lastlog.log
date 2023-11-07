@@ -1,0 +1,1518 @@
+[15:43:47.099][DEBUG] HTTP GET init
+[15:43:47.102][DEBUG] HTTP POST init
+[15:43:47.102][INFO] FrameConstructor initialization
+[15:43:47.108][INFO] Building FrameConstructor...
+[15:43:47.216][DEBUG] Authorising with existing login Jesus
+[15:43:47.303][DEBUG] Adding request header User-Agent
+[15:43:47.303][DEBUG] Adding request header Accept-Language
+[15:43:47.303][DEBUG] Adding request header Accept
+[15:43:47.303][DEBUG] Adding request header Content-Type
+[15:43:47.568][INFO] Jesus authorised!
+[15:43:47.569][DEBUG] Adding request header User-Agent
+[15:43:47.569][DEBUG] Adding request header Accept-Language
+[15:43:47.569][DEBUG] Adding request header Accept
+[15:43:47.569][DEBUG] Adding request header Content-Type
+[15:43:47.626][DEBUG] Loading 4 servers for user Jesus
+[15:43:47.627][INFO] Loading engine auth(true)
+[15:43:47.628][DEBUG] === GUI BUILDER ===
+[15:43:47.635][DEBUG] Building group titleBar with parent rootPanel
+[15:43:47.637][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.645][INFO] Created font - mcfont
+[15:43:47.645][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.646][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[15:43:47.652][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[15:43:47.654][DEBUG] Building group mainFrame with parent rootPanel
+[15:43:47.655][DEBUG] Building group authForm with parent mainFrame
+[15:43:47.656][DEBUG] Loading textField style from assets/styles/textField.json
+[15:43:47.686][INFO] Created font - FSElliotPro-Heavy
+[15:43:47.686][DEBUG] Loading passField style from assets/styles/passField.json
+[15:43:47.689][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.691][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[15:43:47.701][INFO] Created font - Montserrat-Bold
+[15:43:47.702][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.707][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.713][DEBUG] Building group loggedForm with parent mainFrame
+[15:43:47.714][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[15:43:47.717][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[15:43:47.719][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[15:43:47.720][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.722][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.725][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.726][DEBUG] Building group userPane with parent loggedForm
+[15:43:47.727][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.728][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.729][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.732][DEBUG] Building group userDataForm with parent userPane
+[15:43:47.732][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.735][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.737][DEBUG] Building group newsForm with parent mainFrame
+[15:43:47.737][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.754][INFO] Created font - Sans-Black
+[15:43:47.754][DEBUG] Building group devInfo with parent newsForm
+[15:43:47.754][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.755][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.757][DEBUG] Building group settings with parent mainFrame
+[15:43:47.758][DEBUG] Building group settingsPane with parent settings
+[15:43:47.758][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.761][DEBUG] Building group generalSettings with parent settings
+[15:43:47.762][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.763][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[15:43:47.763][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[15:43:47.764][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[15:43:47.765][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[15:43:47.766][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.767][DEBUG] Loading textField style from assets/styles/textField.json
+[15:43:47.773][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.781][DEBUG] Loading button style from assets/styles/button.json
+[15:43:47.782][DEBUG] Building group generalInfo with parent settings
+[15:43:47.783][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.784][DEBUG] Building group download with parent mainFrame
+[15:43:47.784][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[15:43:47.786][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.787][DEBUG] Building group downloadInfo with parent download
+[15:43:47.787][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.795][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.796][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.798][DEBUG] Building group wait with parent mainFrame
+[15:43:47.804][DEBUG] Loading label style from assets/styles/label.json
+[15:43:47.818][DEBUG] Adding request header User-Agent
+[15:43:47.818][DEBUG] Adding request header Accept-Language
+[15:43:47.818][DEBUG] Adding request header Accept
+[15:43:47.818][DEBUG] Adding request header Content-Type
+[15:43:50.025][INFO] Refreshing server state... (Worlds)
+[15:43:50.038][INFO] Refreshing server done!
+[15:43:56.015][INFO] Refreshing server state... (Hi-Tech)
+[15:43:56.043][INFO] Refreshing server done!
+[15:43:58.972][INFO] Refreshing server state... (lastDay)
+[15:44:01.983][INFO] Refreshing server done!
+[15:44:26.358][INFO] Refreshing server state... (lastDay)
+[15:44:27.763][INFO] Refreshing server state... (Hi-Tech)
+[15:44:27.765][INFO] Refreshing server done!
+[15:44:29.625][INFO] Refreshing server state... (Foxesworld)
+[15:44:29.650][INFO] Refreshing server done!
+[15:44:32.176][INFO] Refreshing server state... (Hi-Tech)
+[15:44:32.177][INFO] Refreshing server done!
+[15:44:32.366][INFO] Refreshing server done!
+[15:44:35.209][INFO] Refreshing server state... (Worlds)
+[15:44:35.221][INFO] Refreshing server done!
+[16:33:53.629][DEBUG] HTTP GET init
+[16:33:53.632][DEBUG] HTTP POST init
+[16:33:53.632][INFO] FrameConstructor initialization
+[16:33:53.637][INFO] Building FrameConstructor...
+[16:33:53.744][DEBUG] Authorising with existing login Jesus
+[16:33:53.835][DEBUG] Adding request header User-Agent
+[16:33:53.835][DEBUG] Adding request header Accept-Language
+[16:33:53.835][DEBUG] Adding request header Accept
+[16:33:53.835][DEBUG] Adding request header Content-Type
+[16:33:54.055][INFO] Jesus authorised!
+[16:33:54.056][DEBUG] Adding request header User-Agent
+[16:33:54.056][DEBUG] Adding request header Accept-Language
+[16:33:54.056][DEBUG] Adding request header Accept
+[16:33:54.056][DEBUG] Adding request header Content-Type
+[16:33:54.100][DEBUG] Loading 4 servers for user Jesus
+[16:33:54.101][INFO] Loading engine auth(true)
+[16:33:54.102][DEBUG] === GUI BUILDER ===
+[16:33:54.109][DEBUG] Building group titleBar with parent rootPanel
+[16:33:54.112][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.122][INFO] Created font - mcfont
+[16:33:54.123][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.124][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:33:54.130][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:33:54.133][DEBUG] Building group mainFrame with parent rootPanel
+[16:33:54.135][DEBUG] Building group authForm with parent mainFrame
+[16:33:54.135][DEBUG] Loading textField style from assets/styles/textField.json
+[16:33:54.168][INFO] Created font - FSElliotPro-Heavy
+[16:33:54.168][DEBUG] Loading passField style from assets/styles/passField.json
+[16:33:54.171][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.173][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:33:54.180][INFO] Created font - Montserrat-Bold
+[16:33:54.180][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.184][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.191][DEBUG] Building group loggedForm with parent mainFrame
+[16:33:54.192][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:33:54.197][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[16:33:54.199][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:33:54.200][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.202][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.204][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.205][DEBUG] Building group userPane with parent loggedForm
+[16:33:54.205][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.206][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.207][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.210][DEBUG] Building group userDataForm with parent userPane
+[16:33:54.210][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.212][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.214][DEBUG] Building group newsForm with parent mainFrame
+[16:33:54.214][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.229][INFO] Created font - Sans-Black
+[16:33:54.230][DEBUG] Building group devInfo with parent newsForm
+[16:33:54.230][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.231][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.232][DEBUG] Building group settings with parent mainFrame
+[16:33:54.233][DEBUG] Building group settingsPane with parent settings
+[16:33:54.234][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.237][DEBUG] Building group generalSettings with parent settings
+[16:33:54.237][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.238][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:33:54.239][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:33:54.240][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:33:54.241][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:33:54.242][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.242][DEBUG] Loading textField style from assets/styles/textField.json
+[16:33:54.249][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.256][DEBUG] Loading button style from assets/styles/button.json
+[16:33:54.258][DEBUG] Building group generalInfo with parent settings
+[16:33:54.258][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.259][DEBUG] Building group download with parent mainFrame
+[16:33:54.259][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:33:54.262][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.262][DEBUG] Building group downloadInfo with parent download
+[16:33:54.262][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.271][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.272][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.273][DEBUG] Building group wait with parent mainFrame
+[16:33:54.280][DEBUG] Loading label style from assets/styles/label.json
+[16:33:54.293][DEBUG] Adding request header User-Agent
+[16:33:54.294][DEBUG] Adding request header Accept-Language
+[16:33:54.294][DEBUG] Adding request header Accept
+[16:33:54.294][DEBUG] Adding request header Content-Type
+[16:33:59.503][INFO] Refreshing server state... (Worlds)
+[16:33:59.516][INFO] Refreshing server done!
+[16:35:52.546][DEBUG] HTTP GET init
+[16:35:52.549][DEBUG] HTTP POST init
+[16:35:52.549][INFO] FrameConstructor initialization
+[16:35:52.554][INFO] Building FrameConstructor...
+[16:35:52.660][DEBUG] Authorising with existing login Jesus
+[16:35:52.749][DEBUG] Adding request header User-Agent
+[16:35:52.749][DEBUG] Adding request header Accept-Language
+[16:35:52.749][DEBUG] Adding request header Accept
+[16:35:52.749][DEBUG] Adding request header Content-Type
+[16:35:52.988][INFO] Jesus authorised!
+[16:35:52.989][DEBUG] Adding request header User-Agent
+[16:35:52.989][DEBUG] Adding request header Accept-Language
+[16:35:52.989][DEBUG] Adding request header Accept
+[16:35:52.989][DEBUG] Adding request header Content-Type
+[16:35:53.039][DEBUG] Loading 4 servers for user Jesus
+[16:35:53.040][INFO] Loading engine auth(true)
+[16:35:53.041][DEBUG] === GUI BUILDER ===
+[16:35:53.050][DEBUG] Building group titleBar with parent rootPanel
+[16:35:53.052][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.061][INFO] Created font - mcfont
+[16:35:53.061][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.062][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:35:53.069][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:35:53.071][DEBUG] Building group mainFrame with parent rootPanel
+[16:35:53.073][DEBUG] Building group authForm with parent mainFrame
+[16:35:53.074][DEBUG] Loading textField style from assets/styles/textField.json
+[16:35:53.105][INFO] Created font - FSElliotPro-Heavy
+[16:35:53.106][DEBUG] Loading passField style from assets/styles/passField.json
+[16:35:53.111][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.113][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:35:53.120][INFO] Created font - Montserrat-Bold
+[16:35:53.121][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.125][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.131][DEBUG] Building group loggedForm with parent mainFrame
+[16:35:53.132][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:35:53.135][INFO] Updating ScrollBox [Ljava.lang.String;@2110548f
+[16:35:53.137][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:35:53.138][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.139][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.141][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.142][DEBUG] Building group userPane with parent loggedForm
+[16:35:53.143][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.144][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.144][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.147][DEBUG] Building group userDataForm with parent userPane
+[16:35:53.148][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.150][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.152][DEBUG] Building group newsForm with parent mainFrame
+[16:35:53.152][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.168][INFO] Created font - Sans-Black
+[16:35:53.169][DEBUG] Building group devInfo with parent newsForm
+[16:35:53.169][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.170][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.172][DEBUG] Building group settings with parent mainFrame
+[16:35:53.173][DEBUG] Building group settingsPane with parent settings
+[16:35:53.173][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.177][DEBUG] Building group generalSettings with parent settings
+[16:35:53.177][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.178][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:35:53.179][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:35:53.180][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:35:53.181][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:35:53.182][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.183][DEBUG] Loading textField style from assets/styles/textField.json
+[16:35:53.190][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.197][DEBUG] Loading button style from assets/styles/button.json
+[16:35:53.199][DEBUG] Building group generalInfo with parent settings
+[16:35:53.200][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.201][DEBUG] Building group download with parent mainFrame
+[16:35:53.202][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:35:53.204][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.205][DEBUG] Building group downloadInfo with parent download
+[16:35:53.205][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.215][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.217][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.218][DEBUG] Building group wait with parent mainFrame
+[16:35:53.228][DEBUG] Loading label style from assets/styles/label.json
+[16:35:53.242][DEBUG] Adding request header User-Agent
+[16:35:53.242][DEBUG] Adding request header Accept-Language
+[16:35:53.243][DEBUG] Adding request header Accept
+[16:35:53.243][DEBUG] Adding request header Content-Type
+[16:35:53.384][INFO] Refreshing server state... (Worlds)
+[16:35:53.397][INFO] Refreshing server done!
+[16:35:55.549][INFO] Refreshing server state... (Worlds)
+[16:35:55.560][INFO] Refreshing server done!
+[16:35:57.187][INFO] Refreshing server state... (Hi-Tech)
+[16:35:57.210][INFO] Refreshing server done!
+[16:35:59.596][INFO] Refreshing server state... (lastDay)
+[16:36:02.608][INFO] Refreshing server done!
+[16:36:51.910][DEBUG] HTTP GET init
+[16:36:51.913][DEBUG] HTTP POST init
+[16:36:51.914][INFO] FrameConstructor initialization
+[16:36:51.918][INFO] Building FrameConstructor...
+[16:36:52.030][DEBUG] Authorising with existing login Jesus
+[16:36:52.118][DEBUG] Adding request header User-Agent
+[16:36:52.118][DEBUG] Adding request header Accept-Language
+[16:36:52.119][DEBUG] Adding request header Accept
+[16:36:52.119][DEBUG] Adding request header Content-Type
+[16:36:52.352][INFO] Jesus authorised!
+[16:36:52.353][DEBUG] Adding request header User-Agent
+[16:36:52.353][DEBUG] Adding request header Accept-Language
+[16:36:52.353][DEBUG] Adding request header Accept
+[16:36:52.353][DEBUG] Adding request header Content-Type
+[16:36:52.398][DEBUG] Loading 4 servers for user Jesus
+[16:36:52.400][INFO] Loading engine auth(true)
+[16:36:52.400][DEBUG] === GUI BUILDER ===
+[16:36:52.407][DEBUG] Building group titleBar with parent rootPanel
+[16:36:52.410][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.420][INFO] Created font - mcfont
+[16:36:52.420][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.421][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:36:52.427][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:36:52.430][DEBUG] Building group mainFrame with parent rootPanel
+[16:36:52.432][DEBUG] Building group authForm with parent mainFrame
+[16:36:52.433][DEBUG] Loading textField style from assets/styles/textField.json
+[16:36:52.464][INFO] Created font - FSElliotPro-Heavy
+[16:36:52.464][DEBUG] Loading passField style from assets/styles/passField.json
+[16:36:52.472][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.473][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:36:52.481][INFO] Created font - Montserrat-Bold
+[16:36:52.481][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.486][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.492][DEBUG] Building group loggedForm with parent mainFrame
+[16:36:52.493][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:36:52.495][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[16:36:52.497][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:36:52.499][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.500][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.503][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.504][DEBUG] Building group userPane with parent loggedForm
+[16:36:52.504][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.505][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.506][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.508][DEBUG] Building group userDataForm with parent userPane
+[16:36:52.509][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.511][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.513][DEBUG] Building group newsForm with parent mainFrame
+[16:36:52.513][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.528][INFO] Created font - Sans-Black
+[16:36:52.529][DEBUG] Building group devInfo with parent newsForm
+[16:36:52.529][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.530][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.532][DEBUG] Building group settings with parent mainFrame
+[16:36:52.533][DEBUG] Building group settingsPane with parent settings
+[16:36:52.533][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.537][DEBUG] Building group generalSettings with parent settings
+[16:36:52.537][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.538][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:36:52.538][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:36:52.539][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:36:52.540][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:36:52.541][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.542][DEBUG] Loading textField style from assets/styles/textField.json
+[16:36:52.548][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.555][DEBUG] Loading button style from assets/styles/button.json
+[16:36:52.556][DEBUG] Building group generalInfo with parent settings
+[16:36:52.557][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.558][DEBUG] Building group download with parent mainFrame
+[16:36:52.559][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:36:52.562][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.563][DEBUG] Building group downloadInfo with parent download
+[16:36:52.563][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.571][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.572][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.573][DEBUG] Building group wait with parent mainFrame
+[16:36:52.581][DEBUG] Loading label style from assets/styles/label.json
+[16:36:52.594][DEBUG] Adding request header User-Agent
+[16:36:52.594][DEBUG] Adding request header Accept-Language
+[16:36:52.594][DEBUG] Adding request header Accept
+[16:36:52.595][DEBUG] Adding request header Content-Type
+[16:37:01.558][DEBUG] HTTP GET init
+[16:37:01.561][DEBUG] HTTP POST init
+[16:37:01.561][INFO] FrameConstructor initialization
+[16:37:01.566][INFO] Building FrameConstructor...
+[16:37:01.677][DEBUG] Authorising with existing login Jesus
+[16:37:01.767][DEBUG] Adding request header User-Agent
+[16:37:01.767][DEBUG] Adding request header Accept-Language
+[16:37:01.767][DEBUG] Adding request header Accept
+[16:37:01.768][DEBUG] Adding request header Content-Type
+[16:37:02.010][INFO] Jesus authorised!
+[16:37:02.010][DEBUG] Adding request header User-Agent
+[16:37:02.010][DEBUG] Adding request header Accept-Language
+[16:37:02.010][DEBUG] Adding request header Accept
+[16:37:02.010][DEBUG] Adding request header Content-Type
+[16:37:02.055][DEBUG] Loading 4 servers for user Jesus
+[16:37:02.056][INFO] Loading engine auth(true)
+[16:37:02.057][DEBUG] === GUI BUILDER ===
+[16:37:02.064][DEBUG] Building group titleBar with parent rootPanel
+[16:37:02.067][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.074][INFO] Created font - mcfont
+[16:37:02.075][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.076][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:37:02.081][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:37:02.083][DEBUG] Building group mainFrame with parent rootPanel
+[16:37:02.085][DEBUG] Building group authForm with parent mainFrame
+[16:37:02.086][DEBUG] Loading textField style from assets/styles/textField.json
+[16:37:02.115][INFO] Created font - FSElliotPro-Heavy
+[16:37:02.115][DEBUG] Loading passField style from assets/styles/passField.json
+[16:37:02.118][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.119][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:37:02.127][INFO] Created font - Montserrat-Bold
+[16:37:02.128][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.134][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.140][DEBUG] Building group loggedForm with parent mainFrame
+[16:37:02.140][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:37:02.143][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[16:37:02.145][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:37:02.146][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.148][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.150][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.151][DEBUG] Building group userPane with parent loggedForm
+[16:37:02.151][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.152][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.153][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.155][DEBUG] Building group userDataForm with parent userPane
+[16:37:02.156][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.158][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.160][DEBUG] Building group newsForm with parent mainFrame
+[16:37:02.160][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.175][INFO] Created font - Sans-Black
+[16:37:02.175][DEBUG] Building group devInfo with parent newsForm
+[16:37:02.176][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.177][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.178][DEBUG] Building group settings with parent mainFrame
+[16:37:02.179][DEBUG] Building group settingsPane with parent settings
+[16:37:02.179][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.182][DEBUG] Building group generalSettings with parent settings
+[16:37:02.183][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.183][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:37:02.184][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:37:02.185][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:37:02.186][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:37:02.187][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.187][DEBUG] Loading textField style from assets/styles/textField.json
+[16:37:02.194][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.201][DEBUG] Loading button style from assets/styles/button.json
+[16:37:02.202][DEBUG] Building group generalInfo with parent settings
+[16:37:02.203][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.204][DEBUG] Building group download with parent mainFrame
+[16:37:02.204][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:37:02.206][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.207][DEBUG] Building group downloadInfo with parent download
+[16:37:02.207][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.216][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.217][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.218][DEBUG] Building group wait with parent mainFrame
+[16:37:02.225][DEBUG] Loading label style from assets/styles/label.json
+[16:37:02.238][DEBUG] Adding request header User-Agent
+[16:37:02.238][DEBUG] Adding request header Accept-Language
+[16:37:02.238][DEBUG] Adding request header Accept
+[16:37:02.238][DEBUG] Adding request header Content-Type
+[16:37:02.355][INFO] Refreshing server state... (Worlds)
+[16:37:02.377][INFO] Refreshing server done!
+[16:39:21.575][DEBUG] HTTP GET init
+[16:39:21.577][DEBUG] HTTP POST init
+[16:39:21.578][INFO] FrameConstructor initialization
+[16:39:21.583][INFO] Building FrameConstructor...
+[16:39:21.699][DEBUG] Authorising with existing login Jesus
+[16:39:21.786][DEBUG] Adding request header User-Agent
+[16:39:21.786][DEBUG] Adding request header Accept-Language
+[16:39:21.786][DEBUG] Adding request header Accept
+[16:39:21.786][DEBUG] Adding request header Content-Type
+[16:39:22.045][INFO] Jesus authorised!
+[16:39:22.046][DEBUG] Adding request header User-Agent
+[16:39:22.046][DEBUG] Adding request header Accept-Language
+[16:39:22.046][DEBUG] Adding request header Accept
+[16:39:22.046][DEBUG] Adding request header Content-Type
+[16:39:22.107][DEBUG] Loading 4 servers for user Jesus
+[16:39:22.108][INFO] Loading engine auth(true)
+[16:39:22.109][DEBUG] === GUI BUILDER ===
+[16:39:22.116][DEBUG] Building group titleBar with parent rootPanel
+[16:39:22.119][DEBUG] Loading label style from assets/styles/label.json
+[16:39:22.128][INFO] Created font - mcfont
+[16:39:22.129][DEBUG] Loading label style from assets/styles/label.json
+[16:39:22.130][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:39:22.136][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:39:22.139][DEBUG] Building group mainFrame with parent rootPanel
+[16:39:22.141][DEBUG] Building group authForm with parent mainFrame
+[16:39:22.141][DEBUG] Loading textField style from assets/styles/textField.json
+[16:39:22.173][INFO] Created font - FSElliotPro-Heavy
+[16:39:22.174][DEBUG] Loading passField style from assets/styles/passField.json
+[16:39:22.177][DEBUG] Loading label style from assets/styles/label.json
+[16:39:22.178][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:39:22.190][INFO] Created font - Montserrat-Bold
+[16:39:22.191][DEBUG] Loading button style from assets/styles/button.json
+[16:39:22.195][DEBUG] Loading button style from assets/styles/button.json
+[16:39:22.202][DEBUG] Building group loggedForm with parent mainFrame
+[16:39:22.202][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:39:22.205][INFO] Updating ScrollBox [Ljava.lang.String;@19ed8886
+[16:39:22.208][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:39:52.714][DEBUG] HTTP GET init
+[16:39:52.716][DEBUG] HTTP POST init
+[16:39:52.717][INFO] FrameConstructor initialization
+[16:39:52.721][INFO] Building FrameConstructor...
+[16:39:52.833][DEBUG] Authorising with existing login Jesus
+[16:39:52.920][DEBUG] Adding request header User-Agent
+[16:39:52.920][DEBUG] Adding request header Accept-Language
+[16:39:52.920][DEBUG] Adding request header Accept
+[16:39:52.921][DEBUG] Adding request header Content-Type
+[16:39:53.179][INFO] Jesus authorised!
+[16:39:53.180][DEBUG] Adding request header User-Agent
+[16:39:53.180][DEBUG] Adding request header Accept-Language
+[16:39:53.180][DEBUG] Adding request header Accept
+[16:39:53.180][DEBUG] Adding request header Content-Type
+[16:39:53.228][DEBUG] Loading 4 servers for user Jesus
+[16:39:53.229][INFO] Loading engine auth(true)
+[16:39:53.229][DEBUG] === GUI BUILDER ===
+[16:39:53.237][DEBUG] Building group titleBar with parent rootPanel
+[16:39:53.240][DEBUG] Loading label style from assets/styles/label.json
+[16:39:53.248][INFO] Created font - mcfont
+[16:39:53.249][DEBUG] Loading label style from assets/styles/label.json
+[16:39:53.250][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:39:53.256][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:39:53.259][DEBUG] Building group mainFrame with parent rootPanel
+[16:39:53.261][DEBUG] Building group authForm with parent mainFrame
+[16:39:53.262][DEBUG] Loading textField style from assets/styles/textField.json
+[16:39:53.293][INFO] Created font - FSElliotPro-Heavy
+[16:39:53.294][DEBUG] Loading passField style from assets/styles/passField.json
+[16:39:53.297][DEBUG] Loading label style from assets/styles/label.json
+[16:39:53.298][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:39:53.309][INFO] Created font - Montserrat-Bold
+[16:39:53.310][DEBUG] Loading button style from assets/styles/button.json
+[16:39:53.314][DEBUG] Loading button style from assets/styles/button.json
+[16:39:53.320][DEBUG] Building group loggedForm with parent mainFrame
+[16:39:53.321][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:39:53.324][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[16:39:53.326][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:40:16.229][DEBUG] HTTP GET init
+[16:40:16.232][DEBUG] HTTP POST init
+[16:40:16.232][INFO] FrameConstructor initialization
+[16:40:16.237][INFO] Building FrameConstructor...
+[16:40:16.350][DEBUG] Authorising with existing login Jesus
+[16:40:16.445][DEBUG] Adding request header User-Agent
+[16:40:16.445][DEBUG] Adding request header Accept-Language
+[16:40:16.445][DEBUG] Adding request header Accept
+[16:40:16.445][DEBUG] Adding request header Content-Type
+[16:40:16.714][INFO] Jesus authorised!
+[16:40:16.715][DEBUG] Adding request header User-Agent
+[16:40:16.715][DEBUG] Adding request header Accept-Language
+[16:40:16.715][DEBUG] Adding request header Accept
+[16:40:16.715][DEBUG] Adding request header Content-Type
+[16:40:16.759][DEBUG] Loading 4 servers for user Jesus
+[16:40:16.760][INFO] Loading engine auth(true)
+[16:40:16.760][DEBUG] === GUI BUILDER ===
+[16:40:16.767][DEBUG] Building group titleBar with parent rootPanel
+[16:40:16.769][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.777][INFO] Created font - mcfont
+[16:40:16.778][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.779][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:40:16.784][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:40:16.786][DEBUG] Building group mainFrame with parent rootPanel
+[16:40:16.788][DEBUG] Building group authForm with parent mainFrame
+[16:40:16.788][DEBUG] Loading textField style from assets/styles/textField.json
+[16:40:16.818][INFO] Created font - FSElliotPro-Heavy
+[16:40:16.819][DEBUG] Loading passField style from assets/styles/passField.json
+[16:40:16.821][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.822][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:40:16.830][INFO] Created font - Montserrat-Bold
+[16:40:16.830][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.834][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.842][DEBUG] Building group loggedForm with parent mainFrame
+[16:40:16.843][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:40:16.846][INFO] Updating ScrollBox [Ljava.lang.String;@62855d1a
+[16:40:16.848][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:40:16.849][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.850][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.853][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.854][DEBUG] Building group userPane with parent loggedForm
+[16:40:16.854][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.855][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.856][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.859][DEBUG] Building group userDataForm with parent userPane
+[16:40:16.859][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.862][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.864][DEBUG] Building group newsForm with parent mainFrame
+[16:40:16.864][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.881][INFO] Created font - Sans-Black
+[16:40:16.881][DEBUG] Building group devInfo with parent newsForm
+[16:40:16.881][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.882][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.883][DEBUG] Building group settings with parent mainFrame
+[16:40:16.884][DEBUG] Building group settingsPane with parent settings
+[16:40:16.885][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.887][DEBUG] Building group generalSettings with parent settings
+[16:40:16.888][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.889][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:40:16.889][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:40:16.890][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:40:16.891][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:40:16.892][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.892][DEBUG] Loading textField style from assets/styles/textField.json
+[16:40:16.899][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.906][DEBUG] Loading button style from assets/styles/button.json
+[16:40:16.907][DEBUG] Building group generalInfo with parent settings
+[16:40:16.908][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.909][DEBUG] Building group download with parent mainFrame
+[16:40:16.909][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:40:16.912][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.912][DEBUG] Building group downloadInfo with parent download
+[16:40:16.912][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.920][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.921][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.923][DEBUG] Building group wait with parent mainFrame
+[16:40:16.929][DEBUG] Loading label style from assets/styles/label.json
+[16:40:16.943][DEBUG] Adding request header User-Agent
+[16:40:16.943][DEBUG] Adding request header Accept-Language
+[16:40:16.943][DEBUG] Adding request header Accept
+[16:40:16.943][DEBUG] Adding request header Content-Type
+[16:40:17.058][INFO] Refreshing server state... (Worlds)
+[16:40:17.071][INFO] Refreshing server done!
+[16:40:20.642][INFO] Refreshing server state... (Hi-Tech)
+[16:40:20.646][INFO] Refreshing server done!
+[16:40:22.413][INFO] Refreshing server state... (lastDay)
+[16:40:28.417][INFO] Refreshing server done!
+[16:40:31.388][INFO] Refreshing server state... (Hi-Tech)
+[16:40:31.412][INFO] Refreshing server done!
+[16:40:34.623][INFO] Refreshing server state... (Hi-Tech)
+[16:40:34.641][INFO] Refreshing server done!
+[16:40:38.184][INFO] Refreshing server state... (Foxesworld)
+[16:40:38.210][INFO] Refreshing server done!
+[16:40:41.121][INFO] Refreshing server state... (lastDay)
+[16:40:47.133][INFO] Refreshing server done!
+[16:40:51.287][INFO] Refreshing server state... (lastDay)
+[16:40:52.123][INFO] Refreshing server state... (lastDay)
+[16:40:55.306][INFO] Refreshing server state... (Worlds)
+[16:40:55.319][INFO] Refreshing server done!
+[16:40:56.331][INFO] Refreshing server state... (Worlds)
+[16:40:56.343][INFO] Refreshing server done!
+[16:40:57.055][INFO] Refreshing server state... (Worlds)
+[16:40:57.066][INFO] Refreshing server done!
+[16:40:57.304][INFO] Refreshing server done!
+[16:40:58.131][INFO] Refreshing server done!
+[16:41:01.633][INFO] Refreshing server state... (Worlds)
+[16:41:01.646][INFO] Refreshing server done!
+[16:41:03.570][INFO] Refreshing server state... (Worlds)
+[16:41:03.581][INFO] Refreshing server done!
+[16:41:04.682][INFO] Refreshing server state... (Worlds)
+[16:41:04.694][INFO] Refreshing server done!
+[16:41:05.404][INFO] Refreshing server state... (Worlds)
+[16:41:05.416][INFO] Refreshing server done!
+[16:41:05.925][INFO] Refreshing server state... (Worlds)
+[16:41:05.937][INFO] Refreshing server done!
+[16:41:06.447][INFO] Refreshing server state... (Worlds)
+[16:41:06.458][INFO] Refreshing server done!
+[16:41:06.920][INFO] Refreshing server state... (Worlds)
+[16:41:06.931][INFO] Refreshing server done!
+[16:41:07.471][INFO] Refreshing server state... (Worlds)
+[16:41:07.483][INFO] Refreshing server done!
+[16:41:08.360][INFO] Refreshing server state... (Worlds)
+[16:41:08.371][INFO] Refreshing server done!
+[16:41:09.259][INFO] Launching Worlds
+[16:41:09.259][DEBUG] Wiping [selectedServer]
+[16:41:09.262][DEBUG] Writing {
+  "password": "Jesus12",
+  "logLevel": "DEBUG",
+  "enableSound": true,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "selectedServer": 2,
+  "lang": "ru",
+  "login": "Jesus",
+  "autoEnter": false,
+  "fullScreen": false
+}
+[16:41:09.265][DEBUG] Adding request header User-Agent
+[16:41:09.265][DEBUG] Adding request header Accept-Language
+[16:41:09.265][DEBUG] Adding request header Accept
+[16:41:09.266][DEBUG] Adding request header Content-Type
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/forge.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/buildcraft/detailed.properties
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/buildcraft/objects.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/buildcraft/main.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/forestry/fluids.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/forestry/farm.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/forestry/backpacks.cfg
+[16:41:09.583][DEBUG] Adding to keep clients/Worlds/config/forestry/common.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/crates.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/lepidopterology.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/apiculture.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/arboriculture.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/gamemodes/HARD.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/gamemodes/NORMAL.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/gamemodes/EASY.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/gamemodes/OP.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forestry/modules.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/codechickenlib.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/mekanism/BoxBlacklist.txt
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/betteranimalsplus.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/TinkerModules.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/forgeChunkLoading.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/smoothfont/smoothfont.cfg
+[16:41:09.584][DEBUG] Adding to keep clients/Worlds/config/astralsorcery.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/enderio/enderioendergy.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/enderio/enderiomachines.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/enderio/enderio.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/enderio/enderioconduits.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/enderio/enderiopowertools.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/astralsorcery/fluid_rarities.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/astralsorcery/amulet_enchantments.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/energyconverters.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/dynamictrees.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/baubles.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/betteranimals.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/gravisuite.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/xaerominimap.txt
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/orelib.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/ironchest.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/tconstruct.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/jei/itemBlacklist.cfg
+[16:41:09.585][DEBUG] Adding to keep clients/Worlds/config/jei/worldSettings.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/jei/jei.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/jei/searchColors.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/mekanism.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/AppliedEnergistics2/CustomRecipes.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/AppliedEnergistics2/AppliedEnergistics2.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/infernalmobs.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/splash.properties
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/config/endercore/endercore.cfg
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/servers.dat
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/mods/AETHER.jar
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/mods/OptiFine-1.12.2_HD_U_F4.jar
+[16:41:09.586][DEBUG] Adding to keep clients/Worlds/options.txt
+[16:41:09.586][DEBUG] Adding to keep versions/1.12.2/natives/lwjgl64.dll
+[16:41:09.586][DEBUG] Adding to keep versions/1.12.2/natives/jinput-wintab.dll
+[16:41:09.586][DEBUG] Adding to keep versions/1.12.2/natives/SAPIWrapper_x64.dll
+[16:41:09.586][DEBUG] Adding to keep versions/1.12.2/natives/OpenAL32.dll
+[16:41:09.586][DEBUG] Adding to keep versions/1.12.2/natives/jinput-raw_64.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/jinput-dx8_64.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/SAPIWrapper_x86.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/lwjgl.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/jinput-raw.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/OpenAL64.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/natives/jinput-dx8.dll
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/io/netty/netty-all/4.1.25.Final/netty-all-4.1.25.Final.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/lzma/lzma/0.0.1/lzma-0.0.1.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/java3d/vecmath/1.5.2/vecmath-1.5.2.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/commons-codec/commons-codec/1.10/commons-codec-1.10.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/oshi-project/oshi-core/1.1/oshi-core-1.1.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/commons-io/commons-io/2.5/commons-io-2.5.jar
+[16:41:09.587][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-compiler/2.11.1/scala-compiler-2.11.1.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-parser-combinators_2.11/1.0.1/scala-parser-combinators_2.11-1.0.1.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-reflect/2.11.1/scala-reflect-2.11.1.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-library/2.11.1/scala-library-2.11.1.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-actors-migration_2.11/1.1.0/scala-actors-migration_2.11-1.1.0.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-plugin_2.11.1/1.0.2/scala-continuations-plugin_2.11.1-1.0.2.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2.jar
+[16:41:09.588][DEBUG] Adding to keep versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/jline/jline/3.5.1/jline-3.5.1.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/maven/maven-artifact/3.5.3/maven-artifact-3.5.3.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/logging/log4j/log4j-core/2.8.1/log4j-core-2.8.1.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/logging/log4j/log4j-api/2.8.1/log4j-api-2.8.1.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/net/minecraftforge/forge/14.23.5.2855/forge-1.12.2-14.23.5.2855-universal.jar
+[16:41:09.589][DEBUG] Adding to keep versions/1.12.2/libraries/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/java/dev/jna/platform/5.8.0/jna-platform-5.8.0.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/net/sf/jopt-simple/jopt-simple/5.0.3/jopt-simple-5.0.3.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/google/guava/guava/21.0/guava-21.0.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/paulscode/soundsystem/20120107/soundsystem-20120107.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/paulscode/libraryjavasound/20101123/libraryjavasound-20101123.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/paulscode/codecwav/20101023/codecwav-20101023.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/paulscode/codecjorbis/20101023/codecjorbis-20101023.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/paulscode/librarylwjglopenal/20100824/librarylwjglopenal-20100824.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/mojang/authlib/authlib-1.5.25.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3-natives-windows.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/ibm/icu/icu4j-core-mojang/51.2/icu4j-core-mojang-51.2.jar
+[16:41:09.590][DEBUG] Adding to keep versions/1.12.2/libraries/com/typesafe/config/1.2.1/config-1.2.1.jar
+[16:41:09.591][DEBUG] Adding to keep versions/1.12.2/libraries/com/typesafe/akka/akka-actor_2.11/2.3.3/akka-actor_2.11-2.3.3.jar
+[16:41:09.591][DEBUG] Adding to keep versions/1.12.2/libraries/it/unimi/dsi/fastutil/7.1.0/fastutil-7.1.0.jar
+[16:41:09.591][DEBUG] Adding to keep versions/1.12.2/libraries/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar
+[16:41:09.591][DEBUG] Adding to keep versions/1.12.2/1.12.2.jar
+[16:41:10.055][DEBUG] #############################
+[16:41:10.055][DEBUG] GameDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\
+[16:41:10.055][DEBUG] ClientDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\clients\Worlds
+[16:41:10.056][DEBUG] VersionsDir C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2
+[16:41:10.056][DEBUG] JarFile C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\1.12.2.jar
+[16:41:10.056][DEBUG] Natives C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\natives
+[16:41:10.056][DEBUG] Libraries C:\Users\Aiden\AppData\Roaming\.FoxesWorld\versions\1.12.2\libraries
+[16:41:10.056][DEBUG] Assets C:\Users\Aiden\AppData\Roaming\.FoxesWorld\assets
+[16:41:10.056][DEBUG] #############################
+[16:41:10.057][DEBUG] ~-=== Downloading 1 files ===-~
+[16:41:10.129][DEBUG] Checked 0 / 186
+[16:41:10.129][DEBUG] Checked 0 / 186
+[16:41:10.129][DEBUG] Checked 0 / 186
+[16:41:10.129][DEBUG] Deleted unlisted file: clients/Worlds/config/aether.cfg
+[16:41:10.129][DEBUG] Checked 1 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/AppliedEnergistics2/AppliedEnergistics2.cfg is checked
+[16:41:10.130][DEBUG] Checked 2 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/AppliedEnergistics2/CustomRecipes.cfg is checked
+[16:41:10.130][DEBUG] Checked 3 / 186
+[16:41:10.130][DEBUG] Checked 3 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/astralsorcery/amulet_enchantments.cfg is checked
+[16:41:10.130][DEBUG] Checked 4 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/astralsorcery/fluid_rarities.cfg is checked
+[16:41:10.130][DEBUG] Checked 5 / 186
+[16:41:10.130][DEBUG] Checked 5 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/astralsorcery.cfg is checked
+[16:41:10.130][DEBUG] Checked 6 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/baubles.cfg is checked
+[16:41:10.130][DEBUG] Checked 7 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/betteranimals.cfg is checked
+[16:41:10.130][DEBUG] Checked 8 / 186
+[16:41:10.130][DEBUG] clients/Worlds/config/betteranimalsplus.cfg is checked
+[16:41:10.130][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] Checked 9 / 186
+[16:41:10.131][DEBUG] clients/Worlds/config/buildcraft/detailed.properties is checked
+[16:41:10.131][DEBUG] Checked 10 / 186
+[16:41:10.131][DEBUG] clients/Worlds/config/buildcraft/main.cfg is checked
+[16:41:10.131][DEBUG] Checked 11 / 186
+[16:41:10.131][DEBUG] clients/Worlds/config/buildcraft/objects.cfg is checked
+[16:41:10.131][DEBUG] Checked 12 / 186
+[16:41:10.131][DEBUG] Checked 12 / 186
+[16:41:10.131][DEBUG] clients/Worlds/config/codechickenlib.cfg is checked
+[16:41:10.131][DEBUG] Checked 13 / 186
+[16:41:10.131][DEBUG] Checked 13 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/dynamictrees.cfg is checked
+[16:41:10.132][DEBUG] Checked 14 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/endercore/endercore.cfg is checked
+[16:41:10.132][DEBUG] Checked 15 / 186
+[16:41:10.132][DEBUG] Checked 15 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/enderio/enderio.cfg is checked
+[16:41:10.132][DEBUG] Checked 16 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/enderio/enderioconduits.cfg is checked
+[16:41:10.132][DEBUG] Checked 17 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/enderio/enderioendergy.cfg is checked
+[16:41:10.132][DEBUG] Checked 18 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/enderio/enderiomachines.cfg is checked
+[16:41:10.132][DEBUG] Checked 19 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/enderio/enderiopowertools.cfg is checked
+[16:41:10.132][DEBUG] Checked 20 / 186
+[16:41:10.132][DEBUG] Checked 20 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/energyconverters.cfg is checked
+[16:41:10.132][DEBUG] Checked 21 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/forestry/apiculture.cfg is checked
+[16:41:10.132][DEBUG] Checked 22 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/forestry/arboriculture.cfg is checked
+[16:41:10.132][DEBUG] Checked 23 / 186
+[16:41:10.132][DEBUG] clients/Worlds/config/forestry/backpacks.cfg is checked
+[16:41:10.133][DEBUG] Checked 24 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/common.cfg is checked
+[16:41:10.133][DEBUG] Checked 25 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/crates.cfg is checked
+[16:41:10.133][DEBUG] Checked 26 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/farm.cfg is checked
+[16:41:10.133][DEBUG] Checked 27 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/fluids.cfg is checked
+[16:41:10.133][DEBUG] Checked 28 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/gamemodes/EASY.cfg is checked
+[16:41:10.133][DEBUG] Checked 29 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/gamemodes/HARD.cfg is checked
+[16:41:10.133][DEBUG] Checked 30 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/gamemodes/NORMAL.cfg is checked
+[16:41:10.133][DEBUG] Checked 31 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/gamemodes/OP.cfg is checked
+[16:41:10.133][DEBUG] Checked 32 / 186
+[16:41:10.133][DEBUG] Checked 32 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/lepidopterology.cfg is checked
+[16:41:10.133][DEBUG] Checked 33 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forestry/modules.cfg is checked
+[16:41:10.133][DEBUG] Checked 34 / 186
+[16:41:10.133][DEBUG] Checked 34 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forge.cfg is checked
+[16:41:10.133][DEBUG] Checked 35 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/forgeChunkLoading.cfg is checked
+[16:41:10.133][DEBUG] Checked 36 / 186
+[16:41:10.133][DEBUG] clients/Worlds/config/gravisuite.cfg is checked
+[16:41:10.133][DEBUG] Checked 37 / 186
+[16:41:10.134][DEBUG] Checked 37 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/infernalmobs.cfg is checked
+[16:41:10.134][DEBUG] Checked 38 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/ironchest.cfg is checked
+[16:41:10.134][DEBUG] Checked 39 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/jei/itemBlacklist.cfg is checked
+[16:41:10.134][DEBUG] Checked 40 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/jei/jei.cfg is checked
+[16:41:10.134][DEBUG] Checked 41 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/jei/searchColors.cfg is checked
+[16:41:10.134][DEBUG] Checked 42 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/jei/worldSettings.cfg is checked
+[16:41:10.134][DEBUG] Checked 43 / 186
+[16:41:10.134][DEBUG] Checked 43 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/mekanism/BoxBlacklist.txt is checked
+[16:41:10.134][DEBUG] Checked 44 / 186
+[16:41:10.134][DEBUG] Checked 44 / 186
+[16:41:10.134][DEBUG] clients/Worlds/config/mekanism.cfg is checked
+[16:41:10.134][DEBUG] Checked 45 / 186
+[16:41:10.135][DEBUG] Checked 45 / 186
+[16:41:10.135][DEBUG] Checked 45 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/orelib.cfg is checked
+[16:41:10.135][DEBUG] Checked 46 / 186
+[16:41:10.135][DEBUG] Checked 46 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/smoothfont/smoothfont.cfg is checked
+[16:41:10.135][DEBUG] Checked 47 / 186
+[16:41:10.135][DEBUG] Checked 47 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/splash.properties is checked
+[16:41:10.135][DEBUG] Checked 48 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/tconstruct.cfg is checked
+[16:41:10.135][DEBUG] Checked 49 / 186
+[16:41:10.135][DEBUG] Checked 49 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/TinkerModules.cfg is checked
+[16:41:10.135][DEBUG] Checked 50 / 186
+[16:41:10.135][DEBUG] Checked 50 / 186
+[16:41:10.135][DEBUG] clients/Worlds/config/xaerominimap.txt is checked
+[16:41:10.136][DEBUG] Checked 51 / 186
+[16:41:10.136][DEBUG] Checked 51 / 186
+[16:41:10.136][DEBUG] Checked 51 / 186
+[16:41:10.136][DEBUG] clients/Worlds/mods/AETHER.jar is checked
+[16:41:10.136][DEBUG] Checked 52 / 186
+[16:41:10.136][DEBUG] Checked 52 / 186
+[16:41:10.136][DEBUG] Checked 52 / 186
+[16:41:10.136][DEBUG] Checked 52 / 186
+[16:41:10.137][DEBUG] Deleted unlisted file: clients/Worlds/mods/memory_repo/com/gildedgames/orbis-lib/1.12.2-0.2.0+build127/orbis-lib-1.12.2-0.2.0+build127.jar
+[16:41:10.137][DEBUG] Checked 53 / 186
+[16:41:10.137][DEBUG] Deleted unlisted file: clients/Worlds/mods/memory_repo/com/gildedgames/orbis-lib/1.12.2-0.2.0+build127/orbis-lib-1.12.2-0.2.0+build127.jar.meta
+[16:41:10.137][DEBUG] Checked 54 / 186
+[16:41:10.137][DEBUG] Checked 54 / 186
+[16:41:10.137][DEBUG] Checked 54 / 186
+[16:41:10.137][DEBUG] Checked 54 / 186
+[16:41:10.137][DEBUG] Checked 54 / 186
+[16:41:10.138][DEBUG] Deleted unlisted file: clients/Worlds/mods/memory_repo/me/jellysquid/mods/phosphor/1.12.2-0.2.6+build50/phosphor-1.12.2-0.2.6+build50.jar
+[16:41:10.138][DEBUG] Checked 55 / 186
+[16:41:10.139][DEBUG] Deleted unlisted file: clients/Worlds/mods/memory_repo/me/jellysquid/mods/phosphor/1.12.2-0.2.6+build50/phosphor-1.12.2-0.2.6+build50.jar.meta
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] Checked 56 / 186
+[16:41:10.139][DEBUG] clients/Worlds/mods/OptiFine-1.12.2_HD_U_F4.jar is checked
+[16:41:10.139][DEBUG] Checked 57 / 186
+[16:41:10.139][DEBUG] Checked 57 / 186
+[16:41:10.139][DEBUG] clients/Worlds/options.txt is checked
+[16:41:10.139][DEBUG] Checked 58 / 186
+[16:41:10.139][DEBUG] clients/Worlds/optionsof.txt is checked
+[16:41:10.139][DEBUG] Checked 59 / 186
+[16:41:10.139][DEBUG] clients/Worlds/optionsshaders.txt is checked
+[16:41:10.139][DEBUG] Checked 60 / 186
+[16:41:10.139][DEBUG] Checked 60 / 186
+[16:41:10.139][DEBUG] Checked 60 / 186
+[16:41:10.139][DEBUG] Checked 60 / 186
+[16:41:10.139][DEBUG] Checked 60 / 186
+[16:41:10.140][DEBUG] Checked 60 / 186
+[16:41:10.140][DEBUG] Checked 60 / 186
+[16:41:10.140][DEBUG] Checked 60 / 186
+[16:41:10.140][DEBUG] Checked 60 / 186
+[16:41:10.140][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.141][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] Checked 60 / 186
+[16:41:10.142][DEBUG] clients/Worlds/servers.dat is checked
+[16:41:10.142][DEBUG] Checked 61 / 186
+[16:41:10.142][DEBUG] Checked 61 / 186
+[16:41:10.142][DEBUG] versions/1.12.2/1.12.2.jar is checked
+[16:41:10.142][DEBUG] Checked 62 / 186
+[16:41:10.143][DEBUG] versions/1.12.2/libraries/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar is checked
+[16:41:10.143][DEBUG] Checked 63 / 186
+[16:41:10.143][DEBUG] Checked 63 / 186
+[16:41:10.143][DEBUG] Checked 63 / 186
+[16:41:10.143][DEBUG] Checked 63 / 186
+[16:41:10.143][DEBUG] Checked 63 / 186
+[16:41:10.143][DEBUG] versions/1.12.2/libraries/com/google/guava/guava/21.0/guava-21.0.jar is checked
+[16:41:10.143][DEBUG] Checked 64 / 186
+[16:41:10.143][DEBUG] Checked 64 / 186
+[16:41:10.143][DEBUG] Checked 64 / 186
+[16:41:10.143][DEBUG] Checked 64 / 186
+[16:41:10.143][DEBUG] Checked 64 / 186
+[16:41:10.144][DEBUG] versions/1.12.2/libraries/com/ibm/icu/icu4j-core-mojang/51.2/icu4j-core-mojang-51.2.jar is checked
+[16:41:10.144][DEBUG] Checked 65 / 186
+[16:41:10.144][DEBUG] Checked 65 / 186
+[16:41:10.144][DEBUG] Checked 65 / 186
+[16:41:10.144][DEBUG] Checked 65 / 186
+[16:41:10.144][DEBUG] Checked 65 / 186
+[16:41:10.144][DEBUG] versions/1.12.2/libraries/com/mojang/authlib/authlib-1.5.25.jar is checked
+[16:41:10.144][DEBUG] Checked 66 / 186
+[16:41:10.144][DEBUG] Checked 66 / 186
+[16:41:10.144][DEBUG] versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3-natives-windows.jar is checked
+[16:41:10.144][DEBUG] Checked 67 / 186
+[16:41:10.144][DEBUG] versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3.jar is checked
+[16:41:10.144][DEBUG] Checked 68 / 186
+[16:41:10.144][DEBUG] Checked 68 / 186
+[16:41:10.144][DEBUG] Checked 68 / 186
+[16:41:10.144][DEBUG] Checked 68 / 186
+[16:41:10.145][DEBUG] versions/1.12.2/libraries/com/paulscode/codecjorbis/20101023/codecjorbis-20101023.jar is checked
+[16:41:10.145][DEBUG] Checked 69 / 186
+[16:41:10.145][DEBUG] Checked 69 / 186
+[16:41:10.145][DEBUG] Checked 69 / 186
+[16:41:10.145][DEBUG] versions/1.12.2/libraries/com/paulscode/codecwav/20101023/codecwav-20101023.jar is checked
+[16:41:10.145][DEBUG] Checked 70 / 186
+[16:41:10.145][DEBUG] Checked 70 / 186
+[16:41:10.145][DEBUG] Checked 70 / 186
+[16:41:10.145][DEBUG] versions/1.12.2/libraries/com/paulscode/libraryjavasound/20101123/libraryjavasound-20101123.jar is checked
+[16:41:10.145][DEBUG] Checked 71 / 186
+[16:41:10.145][DEBUG] Checked 71 / 186
+[16:41:10.145][DEBUG] Checked 71 / 186
+[16:41:10.145][DEBUG] versions/1.12.2/libraries/com/paulscode/librarylwjglopenal/20100824/librarylwjglopenal-20100824.jar is checked
+[16:41:10.145][DEBUG] Checked 72 / 186
+[16:41:10.145][DEBUG] Checked 72 / 186
+[16:41:10.145][DEBUG] Checked 72 / 186
+[16:41:10.145][DEBUG] versions/1.12.2/libraries/com/paulscode/soundsystem/20120107/soundsystem-20120107.jar is checked
+[16:41:10.146][DEBUG] Checked 73 / 186
+[16:41:10.146][DEBUG] Checked 73 / 186
+[16:41:10.146][DEBUG] Checked 73 / 186
+[16:41:10.146][DEBUG] Checked 73 / 186
+[16:41:10.146][DEBUG] versions/1.12.2/libraries/com/typesafe/akka/akka-actor_2.11/2.3.3/akka-actor_2.11-2.3.3.jar is checked
+[16:41:10.146][DEBUG] Checked 74 / 186
+[16:41:10.146][DEBUG] Checked 74 / 186
+[16:41:10.146][DEBUG] Checked 74 / 186
+[16:41:10.146][DEBUG] Checked 74 / 186
+[16:41:10.146][DEBUG] versions/1.12.2/libraries/com/typesafe/config/1.2.1/config-1.2.1.jar is checked
+[16:41:10.146][DEBUG] Checked 75 / 186
+[16:41:10.146][DEBUG] Checked 75 / 186
+[16:41:10.146][DEBUG] Checked 75 / 186
+[16:41:10.146][DEBUG] Checked 75 / 186
+[16:41:10.146][DEBUG] Checked 75 / 186
+[16:41:10.146][DEBUG] versions/1.12.2/libraries/commons-codec/commons-codec/1.10/commons-codec-1.10.jar is checked
+[16:41:10.147][DEBUG] Checked 76 / 186
+[16:41:10.147][DEBUG] Checked 76 / 186
+[16:41:10.147][DEBUG] Checked 76 / 186
+[16:41:10.147][DEBUG] Checked 76 / 186
+[16:41:10.147][DEBUG] versions/1.12.2/libraries/commons-io/commons-io/2.5/commons-io-2.5.jar is checked
+[16:41:10.147][DEBUG] Checked 77 / 186
+[16:41:10.147][DEBUG] Checked 77 / 186
+[16:41:10.147][DEBUG] Checked 77 / 186
+[16:41:10.147][DEBUG] Checked 77 / 186
+[16:41:10.147][DEBUG] versions/1.12.2/libraries/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar is checked
+[16:41:10.147][DEBUG] Checked 78 / 186
+[16:41:10.147][DEBUG] Checked 78 / 186
+[16:41:10.147][DEBUG] Checked 78 / 186
+[16:41:10.147][DEBUG] Checked 78 / 186
+[16:41:10.147][DEBUG] versions/1.12.2/libraries/io/netty/netty-all/4.1.25.Final/netty-all-4.1.25.Final.jar is checked
+[16:41:10.148][DEBUG] Checked 79 / 186
+[16:41:10.148][DEBUG] Checked 79 / 186
+[16:41:10.148][DEBUG] Checked 79 / 186
+[16:41:10.148][DEBUG] Checked 79 / 186
+[16:41:10.148][DEBUG] Checked 79 / 186
+[16:41:10.148][DEBUG] versions/1.12.2/libraries/it/unimi/dsi/fastutil/7.1.0/fastutil-7.1.0.jar is checked
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] Checked 80 / 186
+[16:41:10.148][DEBUG] versions/1.12.2/libraries/java3d/vecmath/1.5.2/vecmath-1.5.2.jar is checked
+[16:41:10.148][DEBUG] Checked 81 / 186
+[16:41:10.148][DEBUG] Checked 81 / 186
+[16:41:10.148][DEBUG] Checked 81 / 186
+[16:41:10.148][DEBUG] Checked 81 / 186
+[16:41:10.149][DEBUG] versions/1.12.2/libraries/lzma/lzma/0.0.1/lzma-0.0.1.jar is checked
+[16:41:10.149][DEBUG] Checked 82 / 186
+[16:41:10.149][DEBUG] Checked 82 / 186
+[16:41:10.149][DEBUG] Checked 82 / 186
+[16:41:10.149][DEBUG] Checked 82 / 186
+[16:41:10.149][DEBUG] versions/1.12.2/libraries/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar is checked
+[16:41:10.149][DEBUG] Checked 83 / 186
+[16:41:10.149][DEBUG] Checked 83 / 186
+[16:41:10.149][DEBUG] Checked 83 / 186
+[16:41:10.150][DEBUG] versions/1.12.2/libraries/net/java/dev/jna/platform/5.8.0/jna-platform-5.8.0.jar is checked
+[16:41:10.150][DEBUG] Checked 84 / 186
+[16:41:10.150][DEBUG] Checked 84 / 186
+[16:41:10.150][DEBUG] Checked 84 / 186
+[16:41:10.150][DEBUG] Checked 84 / 186
+[16:41:10.150][DEBUG] Checked 84 / 186
+[16:41:10.150][DEBUG] versions/1.12.2/libraries/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar is checked
+[16:41:10.150][DEBUG] Checked 85 / 186
+[16:41:10.150][DEBUG] Checked 85 / 186
+[16:41:10.150][DEBUG] Checked 85 / 186
+[16:41:10.150][DEBUG] versions/1.12.2/libraries/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar is checked
+[16:41:10.150][DEBUG] Checked 86 / 186
+[16:41:10.150][DEBUG] Checked 86 / 186
+[16:41:10.150][DEBUG] Checked 86 / 186
+[16:41:10.150][DEBUG] Checked 86 / 186
+[16:41:10.150][DEBUG] versions/1.12.2/libraries/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar is checked
+[16:41:10.150][DEBUG] Checked 87 / 186
+[16:41:10.150][DEBUG] Checked 87 / 186
+[16:41:10.151][DEBUG] Checked 87 / 186
+[16:41:10.151][DEBUG] Checked 87 / 186
+[16:41:10.151][DEBUG] Checked 87 / 186
+[16:41:10.151][DEBUG] versions/1.12.2/libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar is checked
+[16:41:10.151][DEBUG] Checked 88 / 186
+[16:41:10.151][DEBUG] Checked 88 / 186
+[16:41:10.151][DEBUG] Checked 88 / 186
+[16:41:10.151][DEBUG] Checked 88 / 186
+[16:41:10.151][DEBUG] versions/1.12.2/libraries/net/minecraftforge/forge/14.23.5.2855/forge-1.12.2-14.23.5.2855-universal.jar is checked
+[16:41:10.151][DEBUG] Checked 89 / 186
+[16:41:10.151][DEBUG] Checked 89 / 186
+[16:41:10.151][DEBUG] Checked 89 / 186
+[16:41:10.151][DEBUG] Checked 89 / 186
+[16:41:10.152][DEBUG] versions/1.12.2/libraries/net/sf/jopt-simple/jopt-simple/5.0.3/jopt-simple-5.0.3.jar is checked
+[16:41:10.152][DEBUG] Checked 90 / 186
+[16:41:10.152][DEBUG] Checked 90 / 186
+[16:41:10.152][DEBUG] Checked 90 / 186
+[16:41:10.152][DEBUG] Checked 90 / 186
+[16:41:10.152][DEBUG] versions/1.12.2/libraries/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar is checked
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] Checked 91 / 186
+[16:41:10.152][DEBUG] versions/1.12.2/libraries/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar is checked
+[16:41:10.153][DEBUG] Checked 92 / 186
+[16:41:10.153][DEBUG] Checked 92 / 186
+[16:41:10.153][DEBUG] Checked 92 / 186
+[16:41:10.153][DEBUG] versions/1.12.2/libraries/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar is checked
+[16:41:10.153][DEBUG] Checked 93 / 186
+[16:41:10.153][DEBUG] Checked 93 / 186
+[16:41:10.153][DEBUG] Checked 93 / 186
+[16:41:10.153][DEBUG] Checked 93 / 186
+[16:41:10.153][DEBUG] versions/1.12.2/libraries/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar is checked
+[16:41:10.153][DEBUG] Checked 94 / 186
+[16:41:10.153][DEBUG] Checked 94 / 186
+[16:41:10.153][DEBUG] Checked 94 / 186
+[16:41:10.153][DEBUG] versions/1.12.2/libraries/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar is checked
+[16:41:10.153][DEBUG] Checked 95 / 186
+[16:41:10.153][DEBUG] Checked 95 / 186
+[16:41:10.153][DEBUG] Checked 95 / 186
+[16:41:10.153][DEBUG] Checked 95 / 186
+[16:41:10.154][DEBUG] versions/1.12.2/libraries/org/apache/logging/log4j/log4j-api/2.8.1/log4j-api-2.8.1.jar is checked
+[16:41:10.154][DEBUG] Checked 96 / 186
+[16:41:10.154][DEBUG] Checked 96 / 186
+[16:41:10.154][DEBUG] Checked 96 / 186
+[16:41:10.154][DEBUG] versions/1.12.2/libraries/org/apache/logging/log4j/log4j-core/2.8.1/log4j-core-2.8.1.jar is checked
+[16:41:10.154][DEBUG] Checked 97 / 186
+[16:41:10.154][DEBUG] Checked 97 / 186
+[16:41:10.154][DEBUG] Checked 97 / 186
+[16:41:10.154][DEBUG] Checked 97 / 186
+[16:41:10.154][DEBUG] Checked 97 / 186
+[16:41:10.154][DEBUG] versions/1.12.2/libraries/org/apache/maven/maven-artifact/3.5.3/maven-artifact-3.5.3.jar is checked
+[16:41:10.154][DEBUG] Checked 98 / 186
+[16:41:10.154][DEBUG] Checked 98 / 186
+[16:41:10.154][DEBUG] Checked 98 / 186
+[16:41:10.154][DEBUG] Checked 98 / 186
+[16:41:10.154][DEBUG] Checked 98 / 186
+[16:41:10.155][DEBUG] versions/1.12.2/libraries/org/jline/jline/3.5.1/jline-3.5.1.jar is checked
+[16:41:10.155][DEBUG] Checked 99 / 186
+[16:41:10.155][DEBUG] Checked 99 / 186
+[16:41:10.155][DEBUG] Checked 99 / 186
+[16:41:10.155][DEBUG] Checked 99 / 186
+[16:41:10.155][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209.jar is checked
+[16:41:10.155][DEBUG] Checked 100 / 186
+[16:41:10.155][DEBUG] Checked 100 / 186
+[16:41:10.155][DEBUG] Checked 100 / 186
+[16:41:10.155][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar is checked
+[16:41:10.155][DEBUG] Checked 101 / 186
+[16:41:10.155][DEBUG] Checked 101 / 186
+[16:41:10.155][DEBUG] Checked 101 / 186
+[16:41:10.155][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209.jar is checked
+[16:41:10.155][DEBUG] Checked 102 / 186
+[16:41:10.155][DEBUG] Checked 102 / 186
+[16:41:10.156][DEBUG] Checked 102 / 186
+[16:41:10.156][DEBUG] Checked 102 / 186
+[16:41:10.156][DEBUG] Checked 102 / 186
+[16:41:10.156][DEBUG] versions/1.12.2/libraries/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar is checked
+[16:41:10.156][DEBUG] Checked 103 / 186
+[16:41:10.156][DEBUG] Checked 103 / 186
+[16:41:10.156][DEBUG] Checked 103 / 186
+[16:41:10.156][DEBUG] Checked 103 / 186
+[16:41:10.156][DEBUG] Checked 103 / 186
+[16:41:10.156][DEBUG] versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2.jar is checked
+[16:41:10.156][DEBUG] Checked 104 / 186
+[16:41:10.156][DEBUG] Checked 104 / 186
+[16:41:10.156][DEBUG] Checked 104 / 186
+[16:41:10.157][DEBUG] versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-plugin_2.11.1/1.0.2/scala-continuations-plugin_2.11.1-1.0.2.jar is checked
+[16:41:10.157][DEBUG] Checked 105 / 186
+[16:41:10.157][DEBUG] Checked 105 / 186
+[16:41:10.157][DEBUG] Checked 105 / 186
+[16:41:10.157][DEBUG] Checked 105 / 186
+[16:41:10.157][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-actors-migration_2.11/1.1.0/scala-actors-migration_2.11-1.1.0.jar is checked
+[16:41:10.157][DEBUG] Checked 106 / 186
+[16:41:10.157][DEBUG] Checked 106 / 186
+[16:41:10.157][DEBUG] Checked 106 / 186
+[16:41:10.157][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-compiler/2.11.1/scala-compiler-2.11.1.jar is checked
+[16:41:10.157][DEBUG] Checked 107 / 186
+[16:41:10.157][DEBUG] Checked 107 / 186
+[16:41:10.157][DEBUG] Checked 107 / 186
+[16:41:10.157][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-library/2.11.1/scala-library-2.11.1.jar is checked
+[16:41:10.157][DEBUG] Checked 108 / 186
+[16:41:10.157][DEBUG] Checked 108 / 186
+[16:41:10.157][DEBUG] Checked 108 / 186
+[16:41:10.158][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-parser-combinators_2.11/1.0.1/scala-parser-combinators_2.11-1.0.1.jar is checked
+[16:41:10.158][DEBUG] Checked 109 / 186
+[16:41:10.158][DEBUG] Checked 109 / 186
+[16:41:10.158][DEBUG] Checked 109 / 186
+[16:41:10.158][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-reflect/2.11.1/scala-reflect-2.11.1.jar is checked
+[16:41:10.158][DEBUG] Checked 110 / 186
+[16:41:10.158][DEBUG] Checked 110 / 186
+[16:41:10.158][DEBUG] Checked 110 / 186
+[16:41:10.158][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1.jar is checked
+[16:41:10.158][DEBUG] Checked 111 / 186
+[16:41:10.158][DEBUG] Checked 111 / 186
+[16:41:10.158][DEBUG] Checked 111 / 186
+[16:41:10.158][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2.jar is checked
+[16:41:10.158][DEBUG] Checked 112 / 186
+[16:41:10.158][DEBUG] Checked 112 / 186
+[16:41:10.158][DEBUG] Checked 112 / 186
+[16:41:10.158][DEBUG] Checked 112 / 186
+[16:41:10.158][DEBUG] Checked 112 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/libraries/oshi-project/oshi-core/1.1/oshi-core-1.1.jar is checked
+[16:41:10.159][DEBUG] Checked 113 / 186
+[16:41:10.159][DEBUG] Checked 113 / 186
+[16:41:10.159][DEBUG] Checked 113 / 186
+[16:41:10.159][DEBUG] Checked 113 / 186
+[16:41:10.159][DEBUG] Checked 113 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/natives/jinput-dx8.dll is checked
+[16:41:10.159][DEBUG] Checked 114 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/natives/jinput-dx8_64.dll is checked
+[16:41:10.159][DEBUG] Checked 115 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/natives/jinput-raw.dll is checked
+[16:41:10.159][DEBUG] Checked 116 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/natives/jinput-raw_64.dll is checked
+[16:41:10.159][DEBUG] Checked 117 / 186
+[16:41:10.159][DEBUG] versions/1.12.2/natives/jinput-wintab.dll is checked
+[16:41:10.159][DEBUG] Checked 118 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/lwjgl.dll is checked
+[16:41:10.160][DEBUG] Checked 119 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/lwjgl64.dll is checked
+[16:41:10.160][DEBUG] Checked 120 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/OpenAL32.dll is checked
+[16:41:10.160][DEBUG] Checked 121 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/OpenAL64.dll is checked
+[16:41:10.160][DEBUG] Checked 122 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/SAPIWrapper_x64.dll is checked
+[16:41:10.160][DEBUG] Checked 123 / 186
+[16:41:10.160][DEBUG] versions/1.12.2/natives/SAPIWrapper_x86.dll is checked
+[16:41:10.160][DEBUG] Checked 124 / 186
+[16:41:10.160][DEBUG] Checked 124 / 186
+[16:41:10.161][DEBUG] versions/1.12.2/libraries/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar is checked
+[16:41:10.161][DEBUG] Checked 125 / 186
+[16:41:10.161][DEBUG] Checked 125 / 186
+[16:41:10.161][DEBUG] Checked 125 / 186
+[16:41:10.161][DEBUG] Checked 125 / 186
+[16:41:10.161][DEBUG] Checked 125 / 186
+[16:41:10.161][DEBUG] versions/1.12.2/libraries/com/google/guava/guava/21.0/guava-21.0.jar is checked
+[16:41:10.161][DEBUG] Checked 126 / 186
+[16:41:10.161][DEBUG] Checked 126 / 186
+[16:41:10.161][DEBUG] Checked 126 / 186
+[16:41:10.161][DEBUG] Checked 126 / 186
+[16:41:10.161][DEBUG] Checked 126 / 186
+[16:41:10.162][DEBUG] versions/1.12.2/libraries/com/ibm/icu/icu4j-core-mojang/51.2/icu4j-core-mojang-51.2.jar is checked
+[16:41:10.162][DEBUG] Checked 127 / 186
+[16:41:10.162][DEBUG] Checked 127 / 186
+[16:41:10.162][DEBUG] Checked 127 / 186
+[16:41:10.162][DEBUG] Checked 127 / 186
+[16:41:10.162][DEBUG] Checked 127 / 186
+[16:41:10.162][DEBUG] versions/1.12.2/libraries/com/mojang/authlib/authlib-1.5.25.jar is checked
+[16:41:10.162][DEBUG] Checked 128 / 186
+[16:41:10.162][DEBUG] Checked 128 / 186
+[16:41:10.163][DEBUG] versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3-natives-windows.jar is checked
+[16:41:10.163][DEBUG] Checked 129 / 186
+[16:41:10.163][DEBUG] versions/1.12.2/libraries/com/mojang/text2speech/1.10.3/text2speech-1.10.3.jar is checked
+[16:41:10.163][DEBUG] Checked 130 / 186
+[16:41:10.163][DEBUG] Checked 130 / 186
+[16:41:10.163][DEBUG] Checked 130 / 186
+[16:41:10.163][DEBUG] Checked 130 / 186
+[16:41:10.163][DEBUG] versions/1.12.2/libraries/com/paulscode/codecjorbis/20101023/codecjorbis-20101023.jar is checked
+[16:41:10.163][DEBUG] Checked 131 / 186
+[16:41:10.163][DEBUG] Checked 131 / 186
+[16:41:10.163][DEBUG] Checked 131 / 186
+[16:41:10.164][DEBUG] versions/1.12.2/libraries/com/paulscode/codecwav/20101023/codecwav-20101023.jar is checked
+[16:41:10.164][DEBUG] Checked 132 / 186
+[16:41:10.164][DEBUG] Checked 132 / 186
+[16:41:10.164][DEBUG] Checked 132 / 186
+[16:41:10.164][DEBUG] versions/1.12.2/libraries/com/paulscode/libraryjavasound/20101123/libraryjavasound-20101123.jar is checked
+[16:41:10.164][DEBUG] Checked 133 / 186
+[16:41:10.164][DEBUG] Checked 133 / 186
+[16:41:10.164][DEBUG] Checked 133 / 186
+[16:41:10.164][DEBUG] versions/1.12.2/libraries/com/paulscode/librarylwjglopenal/20100824/librarylwjglopenal-20100824.jar is checked
+[16:41:10.164][DEBUG] Checked 134 / 186
+[16:41:10.164][DEBUG] Checked 134 / 186
+[16:41:10.164][DEBUG] Checked 134 / 186
+[16:41:10.165][DEBUG] versions/1.12.2/libraries/com/paulscode/soundsystem/20120107/soundsystem-20120107.jar is checked
+[16:41:10.165][DEBUG] Checked 135 / 186
+[16:41:10.165][DEBUG] Checked 135 / 186
+[16:41:10.165][DEBUG] Checked 135 / 186
+[16:41:10.165][DEBUG] Checked 135 / 186
+[16:41:10.165][DEBUG] versions/1.12.2/libraries/com/typesafe/akka/akka-actor_2.11/2.3.3/akka-actor_2.11-2.3.3.jar is checked
+[16:41:10.165][DEBUG] Checked 136 / 186
+[16:41:10.165][DEBUG] Checked 136 / 186
+[16:41:10.165][DEBUG] Checked 136 / 186
+[16:41:10.165][DEBUG] Checked 136 / 186
+[16:41:10.166][DEBUG] versions/1.12.2/libraries/com/typesafe/config/1.2.1/config-1.2.1.jar is checked
+[16:41:10.166][DEBUG] Checked 137 / 186
+[16:41:10.166][DEBUG] Checked 137 / 186
+[16:41:10.166][DEBUG] Checked 137 / 186
+[16:41:10.166][DEBUG] Checked 137 / 186
+[16:41:10.166][DEBUG] Checked 137 / 186
+[16:41:10.166][DEBUG] versions/1.12.2/libraries/commons-codec/commons-codec/1.10/commons-codec-1.10.jar is checked
+[16:41:10.166][DEBUG] Checked 138 / 186
+[16:41:10.166][DEBUG] Checked 138 / 186
+[16:41:10.166][DEBUG] Checked 138 / 186
+[16:41:10.166][DEBUG] Checked 138 / 186
+[16:41:10.167][DEBUG] versions/1.12.2/libraries/commons-io/commons-io/2.5/commons-io-2.5.jar is checked
+[16:41:10.167][DEBUG] Checked 139 / 186
+[16:41:10.167][DEBUG] Checked 139 / 186
+[16:41:10.167][DEBUG] Checked 139 / 186
+[16:41:10.167][DEBUG] Checked 139 / 186
+[16:41:10.167][DEBUG] versions/1.12.2/libraries/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar is checked
+[16:41:10.167][DEBUG] Checked 140 / 186
+[16:41:10.167][DEBUG] Checked 140 / 186
+[16:41:10.167][DEBUG] Checked 140 / 186
+[16:41:10.167][DEBUG] Checked 140 / 186
+[16:41:10.168][DEBUG] versions/1.12.2/libraries/io/netty/netty-all/4.1.25.Final/netty-all-4.1.25.Final.jar is checked
+[16:41:10.168][DEBUG] Checked 141 / 186
+[16:41:10.168][DEBUG] Checked 141 / 186
+[16:41:10.168][DEBUG] Checked 141 / 186
+[16:41:10.168][DEBUG] Checked 141 / 186
+[16:41:10.168][DEBUG] Checked 141 / 186
+[16:41:10.168][DEBUG] versions/1.12.2/libraries/it/unimi/dsi/fastutil/7.1.0/fastutil-7.1.0.jar is checked
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.168][DEBUG] Checked 142 / 186
+[16:41:10.169][DEBUG] versions/1.12.2/libraries/java3d/vecmath/1.5.2/vecmath-1.5.2.jar is checked
+[16:41:10.169][DEBUG] Checked 143 / 186
+[16:41:10.169][DEBUG] Checked 143 / 186
+[16:41:10.169][DEBUG] Checked 143 / 186
+[16:41:10.169][DEBUG] Checked 143 / 186
+[16:41:10.169][DEBUG] versions/1.12.2/libraries/lzma/lzma/0.0.1/lzma-0.0.1.jar is checked
+[16:41:10.169][DEBUG] Checked 144 / 186
+[16:41:10.169][DEBUG] Checked 144 / 186
+[16:41:10.169][DEBUG] Checked 144 / 186
+[16:41:10.169][DEBUG] Checked 144 / 186
+[16:41:10.170][DEBUG] versions/1.12.2/libraries/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar is checked
+[16:41:10.170][DEBUG] Checked 145 / 186
+[16:41:10.170][DEBUG] Checked 145 / 186
+[16:41:10.170][DEBUG] Checked 145 / 186
+[16:41:10.170][DEBUG] versions/1.12.2/libraries/net/java/dev/jna/platform/5.8.0/jna-platform-5.8.0.jar is checked
+[16:41:10.170][DEBUG] Checked 146 / 186
+[16:41:10.170][DEBUG] Checked 146 / 186
+[16:41:10.170][DEBUG] Checked 146 / 186
+[16:41:10.170][DEBUG] Checked 146 / 186
+[16:41:10.170][DEBUG] Checked 146 / 186
+[16:41:10.170][DEBUG] versions/1.12.2/libraries/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar is checked
+[16:41:10.170][DEBUG] Checked 147 / 186
+[16:41:10.170][DEBUG] Checked 147 / 186
+[16:41:10.170][DEBUG] Checked 147 / 186
+[16:41:10.170][DEBUG] versions/1.12.2/libraries/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar is checked
+[16:41:10.171][DEBUG] Checked 148 / 186
+[16:41:10.171][DEBUG] Checked 148 / 186
+[16:41:10.171][DEBUG] Checked 148 / 186
+[16:41:10.171][DEBUG] Checked 148 / 186
+[16:41:10.171][DEBUG] versions/1.12.2/libraries/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar is checked
+[16:41:10.171][DEBUG] Checked 149 / 186
+[16:41:10.171][DEBUG] Checked 149 / 186
+[16:41:10.171][DEBUG] Checked 149 / 186
+[16:41:10.171][DEBUG] Checked 149 / 186
+[16:41:10.171][DEBUG] Checked 149 / 186
+[16:41:10.171][DEBUG] versions/1.12.2/libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar is checked
+[16:41:10.171][DEBUG] Checked 150 / 186
+[16:41:10.171][DEBUG] Checked 150 / 186
+[16:41:10.171][DEBUG] Checked 150 / 186
+[16:41:10.171][DEBUG] Checked 150 / 186
+[16:41:10.172][DEBUG] versions/1.12.2/libraries/net/minecraftforge/forge/14.23.5.2855/forge-1.12.2-14.23.5.2855-universal.jar is checked
+[16:41:10.172][DEBUG] Checked 151 / 186
+[16:41:10.172][DEBUG] Checked 151 / 186
+[16:41:10.172][DEBUG] Checked 151 / 186
+[16:41:10.172][DEBUG] Checked 151 / 186
+[16:41:10.172][DEBUG] versions/1.12.2/libraries/net/sf/jopt-simple/jopt-simple/5.0.3/jopt-simple-5.0.3.jar is checked
+[16:41:10.172][DEBUG] Checked 152 / 186
+[16:41:10.172][DEBUG] Checked 152 / 186
+[16:41:10.172][DEBUG] Checked 152 / 186
+[16:41:10.172][DEBUG] Checked 152 / 186
+[16:41:10.172][DEBUG] versions/1.12.2/libraries/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar is checked
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] Checked 153 / 186
+[16:41:10.173][DEBUG] versions/1.12.2/libraries/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar is checked
+[16:41:10.173][DEBUG] Checked 154 / 186
+[16:41:10.173][DEBUG] Checked 154 / 186
+[16:41:10.173][DEBUG] Checked 154 / 186
+[16:41:10.173][DEBUG] versions/1.12.2/libraries/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar is checked
+[16:41:10.173][DEBUG] Checked 155 / 186
+[16:41:10.173][DEBUG] Checked 155 / 186
+[16:41:10.173][DEBUG] Checked 155 / 186
+[16:41:10.173][DEBUG] Checked 155 / 186
+[16:41:10.174][DEBUG] versions/1.12.2/libraries/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar is checked
+[16:41:10.174][DEBUG] Checked 156 / 186
+[16:41:10.174][DEBUG] Checked 156 / 186
+[16:41:10.174][DEBUG] Checked 156 / 186
+[16:41:10.174][DEBUG] versions/1.12.2/libraries/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar is checked
+[16:41:10.174][DEBUG] Checked 157 / 186
+[16:41:10.174][DEBUG] Checked 157 / 186
+[16:41:10.174][DEBUG] Checked 157 / 186
+[16:41:10.174][DEBUG] Checked 157 / 186
+[16:41:10.174][DEBUG] versions/1.12.2/libraries/org/apache/logging/log4j/log4j-api/2.8.1/log4j-api-2.8.1.jar is checked
+[16:41:10.174][DEBUG] Checked 158 / 186
+[16:41:10.174][DEBUG] Checked 158 / 186
+[16:41:10.174][DEBUG] Checked 158 / 186
+[16:41:10.175][DEBUG] versions/1.12.2/libraries/org/apache/logging/log4j/log4j-core/2.8.1/log4j-core-2.8.1.jar is checked
+[16:41:10.175][DEBUG] Checked 159 / 186
+[16:41:10.175][DEBUG] Checked 159 / 186
+[16:41:10.175][DEBUG] Checked 159 / 186
+[16:41:10.175][DEBUG] Checked 159 / 186
+[16:41:10.175][DEBUG] Checked 159 / 186
+[16:41:10.175][DEBUG] versions/1.12.2/libraries/org/apache/maven/maven-artifact/3.5.3/maven-artifact-3.5.3.jar is checked
+[16:41:10.175][DEBUG] Checked 160 / 186
+[16:41:10.175][DEBUG] Checked 160 / 186
+[16:41:10.175][DEBUG] Checked 160 / 186
+[16:41:10.175][DEBUG] Checked 160 / 186
+[16:41:10.175][DEBUG] Checked 160 / 186
+[16:41:10.175][DEBUG] versions/1.12.2/libraries/org/jline/jline/3.5.1/jline-3.5.1.jar is checked
+[16:41:10.175][DEBUG] Checked 161 / 186
+[16:41:10.175][DEBUG] Checked 161 / 186
+[16:41:10.175][DEBUG] Checked 161 / 186
+[16:41:10.175][DEBUG] Checked 161 / 186
+[16:41:10.176][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209.jar is checked
+[16:41:10.176][DEBUG] Checked 162 / 186
+[16:41:10.176][DEBUG] Checked 162 / 186
+[16:41:10.176][DEBUG] Checked 162 / 186
+[16:41:10.176][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar is checked
+[16:41:10.176][DEBUG] Checked 163 / 186
+[16:41:10.176][DEBUG] Checked 163 / 186
+[16:41:10.176][DEBUG] Checked 163 / 186
+[16:41:10.176][DEBUG] versions/1.12.2/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209.jar is checked
+[16:41:10.176][DEBUG] Checked 164 / 186
+[16:41:10.176][DEBUG] Checked 164 / 186
+[16:41:10.176][DEBUG] Checked 164 / 186
+[16:41:10.176][DEBUG] Checked 164 / 186
+[16:41:10.176][DEBUG] Checked 164 / 186
+[16:41:10.177][DEBUG] versions/1.12.2/libraries/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar is checked
+[16:41:10.177][DEBUG] Checked 165 / 186
+[16:41:10.177][DEBUG] Checked 165 / 186
+[16:41:10.177][DEBUG] Checked 165 / 186
+[16:41:10.177][DEBUG] Checked 165 / 186
+[16:41:10.177][DEBUG] Checked 165 / 186
+[16:41:10.177][DEBUG] versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2.jar is checked
+[16:41:10.177][DEBUG] Checked 166 / 186
+[16:41:10.177][DEBUG] Checked 166 / 186
+[16:41:10.177][DEBUG] Checked 166 / 186
+[16:41:10.177][DEBUG] versions/1.12.2/libraries/org/scala-lang/plugins/scala-continuations-plugin_2.11.1/1.0.2/scala-continuations-plugin_2.11.1-1.0.2.jar is checked
+[16:41:10.177][DEBUG] Checked 167 / 186
+[16:41:10.177][DEBUG] Checked 167 / 186
+[16:41:10.177][DEBUG] Checked 167 / 186
+[16:41:10.177][DEBUG] Checked 167 / 186
+[16:41:10.178][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-actors-migration_2.11/1.1.0/scala-actors-migration_2.11-1.1.0.jar is checked
+[16:41:10.178][DEBUG] Checked 168 / 186
+[16:41:10.178][DEBUG] Checked 168 / 186
+[16:41:10.178][DEBUG] Checked 168 / 186
+[16:41:10.178][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-compiler/2.11.1/scala-compiler-2.11.1.jar is checked
+[16:41:10.178][DEBUG] Checked 169 / 186
+[16:41:10.178][DEBUG] Checked 169 / 186
+[16:41:10.178][DEBUG] Checked 169 / 186
+[16:41:10.178][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-library/2.11.1/scala-library-2.11.1.jar is checked
+[16:41:10.178][DEBUG] Checked 170 / 186
+[16:41:10.178][DEBUG] Checked 170 / 186
+[16:41:10.178][DEBUG] Checked 170 / 186
+[16:41:10.178][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-parser-combinators_2.11/1.0.1/scala-parser-combinators_2.11-1.0.1.jar is checked
+[16:41:10.178][DEBUG] Checked 171 / 186
+[16:41:10.178][DEBUG] Checked 171 / 186
+[16:41:10.178][DEBUG] Checked 171 / 186
+[16:41:10.178][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-reflect/2.11.1/scala-reflect-2.11.1.jar is checked
+[16:41:10.179][DEBUG] Checked 172 / 186
+[16:41:10.179][DEBUG] Checked 172 / 186
+[16:41:10.179][DEBUG] Checked 172 / 186
+[16:41:10.179][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1.jar is checked
+[16:41:10.179][DEBUG] Checked 173 / 186
+[16:41:10.179][DEBUG] Checked 173 / 186
+[16:41:10.179][DEBUG] Checked 173 / 186
+[16:41:10.179][DEBUG] versions/1.12.2/libraries/org/scala-lang/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2.jar is checked
+[16:41:10.179][DEBUG] Checked 174 / 186
+[16:41:10.179][DEBUG] Checked 174 / 186
+[16:41:10.179][DEBUG] Checked 174 / 186
+[16:41:10.179][DEBUG] Checked 174 / 186
+[16:41:10.179][DEBUG] Checked 174 / 186
+[16:41:10.179][DEBUG] versions/1.12.2/libraries/oshi-project/oshi-core/1.1/oshi-core-1.1.jar is checked
+[16:41:10.179][DEBUG] Checked 175 / 186
+[16:41:10.179][DEBUG] Checked 175 / 186
+[16:41:10.179][DEBUG] Checked 175 / 186
+[16:41:10.179][DEBUG] Checked 175 / 186
+[16:41:10.179][DEBUG] versions/1.12.2/natives/jinput-dx8.dll is checked
+[16:41:10.179][DEBUG] Checked 176 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/jinput-dx8_64.dll is checked
+[16:41:10.180][DEBUG] Checked 177 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/jinput-raw.dll is checked
+[16:41:10.180][DEBUG] Checked 178 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/jinput-raw_64.dll is checked
+[16:41:10.180][DEBUG] Checked 179 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/jinput-wintab.dll is checked
+[16:41:10.180][DEBUG] Checked 180 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/lwjgl.dll is checked
+[16:41:10.180][DEBUG] Checked 181 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/lwjgl64.dll is checked
+[16:41:10.180][DEBUG] Checked 182 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/OpenAL32.dll is checked
+[16:41:10.180][DEBUG] Checked 183 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/OpenAL64.dll is checked
+[16:41:10.180][DEBUG] Checked 184 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/SAPIWrapper_x64.dll is checked
+[16:41:10.180][DEBUG] Checked 185 / 186
+[16:41:10.180][DEBUG] versions/1.12.2/natives/SAPIWrapper_x86.dll is checked
+[16:41:10.180][DEBUG] Checked 186 / 186
+[16:41:10.197][DEBUG] 51 libraries found
+[16:41:10.236][DEBUG] TweakClass net.minecraftforge.fml.common.launcher.FMLTweaker was found!

@@ -22,7 +22,7 @@ public class ServerInfo {
     public ServerInfo(Engine engine) {
         this.engine = engine;
         this.lang = engine.getLANG();
-        serverStatusImg = ImageUtils.getLocalImage("assets/light.png");
+        serverStatusImg = ImageUtils.getLocalImage("assets/ui/icons/status.png");
     }
 
 

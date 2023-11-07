@@ -67,6 +67,11 @@ public class Game implements FileLoaderListener, FileGuardListener {
     }
 
     @Override
+    public void onFileCheck(File file) {
+
+    }
+
+    @Override
     public void onFilesChecked(int filesDeleted) {
         System.out.println("--==|Files checked|==--");
         System.out.println(filesDeleted + " removed");

@@ -123,6 +123,38 @@
       "ru": "Логин: "
     }
   },
+  "server": {
+    "updating": {
+      "en": "Updating server...",
+      "ru": "Обновление..."
+    },
+    "serverOff": {
+      "en": "Server off",
+      "ru": "Сервер выключен"
+    },
+    "serverOn": {
+      "en": "Playing %% players of ##",
+      "ru": "На сервере %% из ## игроков"
+    },
+    "serverFull": {
+      "en": "Server full! (Total slots: %%)",
+      "ru": "Сервер переполнен (Всего слотов: %%)"
+    },
+    "serverErr": {
+      "en": "Error parsing data!",
+      "ru": "Ошибка получения информации"
+    }
+  },
+  "group": {
+    "group-1": {
+      "en": "Admin",
+      "ru": "Администратор"
+    },
+    "group-4": {
+      "en": "Player",
+      "ru": "Игрок"
+    }
+  },
   "dev": {
     "token": {
       "en": "Token: ",

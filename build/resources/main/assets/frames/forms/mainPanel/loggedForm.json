@@ -16,6 +16,13 @@
           "bounds": "40,230,245,34"
         },
         {
+          "componentType": "serverBox",
+          "componentStyle": "srvStatus",
+          "color": "#bf9f2fcf",
+          "componentId": "serverStatusBox",
+          "bounds": "40,320,245,34"
+        },
+        {
           "componentType": "button",
           "componentStyle": "transparent",
           "imageIcon": "assets/ui/icons/settings.png",
@@ -54,9 +61,19 @@
                   "fontSize": 15,
                   "componentStyle": "title",
                   "localeKey": "",
-                  "componentId": "appHeader",
+                  "componentId": "userLogin",
                   "initialValue": "user#login",
-                  "bounds": "75,5,250,50"
+                  "bounds": "75,-5,250,50"
+                },
+                {
+                  "componentType": "label",
+                  "fontSize": 11,
+                  "color": "#7e8184",
+                  "componentStyle": "title",
+                  "localeKey": "",
+                  "componentId": "userGroup",
+                  "initialValue": "user#group",
+                  "bounds": "80,10,250,50"
                 },
                 {
                   "componentType": "label",
@@ -76,7 +93,7 @@
                         "visible": true,
                         "border": "0,1,0,0,#4c4f52",
                         "background": "#aea231cf",
-                        "bounds": "190,0,160,70"
+                        "bounds": "190,0,160,75"
                       },
                       "childComponents": [
                         {

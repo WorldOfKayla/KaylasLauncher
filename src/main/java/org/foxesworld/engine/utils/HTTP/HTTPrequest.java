@@ -4,6 +4,8 @@ import org.foxesworld.engine.Engine;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

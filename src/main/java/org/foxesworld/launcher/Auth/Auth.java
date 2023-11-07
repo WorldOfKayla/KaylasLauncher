@@ -76,7 +76,6 @@ public class Auth {
             for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
                 authCredentials.put(entry.getKey(), entry.getValue().toString());
             }
-
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
             this.loadUserServers();
             if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {

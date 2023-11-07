@@ -75,10 +75,11 @@ public class FileGuard {
 
         if (files != null) {
             for (File file : files) {
+                fileGuardListener.onFileCheck(file);
                 if (file.isFile()) {
                     String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
                     checkPath = checkPath.replace("\\", "/");
-                    if (!filesToKeep.contains(checkPath)) {
+                    if (!filesToKeep.contains(checkPath) && !this.isUserConfig(file)) {
                         // Removing unlisted file
                         boolean deleted = file.delete();
                         if (deleted) {
@@ -102,6 +103,13 @@ public class FileGuard {
         } else {
             logger.error(directory + " is not found!");
         }
+    }
+
+    private boolean isUserConfig(File file){
+        if(file.getName().contains(".txt")) {
+            return true;
+        }
+        return false;
     }
 
     public void setFileGuardListener(FileGuardListener fileGuardListener) {

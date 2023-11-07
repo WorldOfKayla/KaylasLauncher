@@ -12,6 +12,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     private ComponentFactory componentFactory;
 
+    private ScrollBoxListener scrollBoxListener;
     private static final long serialVersionUID = 1L;
     public String[] values;
     public static int initialy = 0;
@@ -30,7 +31,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public ScrollBox(ComponentFactory componentFactory, String[] values, int y) {
         this.componentFactory = componentFactory;
-        componentFactory.engine.getLOGGER().info("Updating combobox " + values.toString());
+        componentFactory.engine.getLOGGER().info("Updating ScrollBox " + values.toString());
         this.values = values;
         initialy = y;
         this.addMouseListener(this);
@@ -69,7 +70,6 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 } else {
                     g.drawImage(this.selectedTX, 0, this.panelTX.getHeight() * i, this);
                 }
-                //System.out.println(this.values[i]);
                 g.drawString(this.values[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2);
                 if (i != selected) continue;
                 g.drawImage(this.point, 176, this.panelTX.getHeight() * i + 3, this);
@@ -109,8 +109,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
         if (opened) {
+            scrollBoxListener.onScrollBoxClose(this.selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOff.ogg");
         } else {
+            scrollBoxListener.onScrollBoxOpen(this.selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOn.ogg");
         }
         boolean bl = opened = !opened;
@@ -157,7 +159,9 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             hover = y / this.openedTX.getHeight();
         }
         this.repaint();
-        //FrameConstructor.lore.setText(Settings.servers[hover].split("& ")[5]);
+        if(this.opened) {
+            scrollBoxListener.onServerHover(hover);
+        }
     }
 
     public static int getSelectedIndex() {
@@ -193,5 +197,9 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public static boolean isOpened() {
         return opened;
+    }
+
+    public void setScrollBoxListener(ScrollBoxListener scrollBoxListener) {
+        this.scrollBoxListener = scrollBoxListener;
     }
 }

@@ -14,6 +14,8 @@ import org.foxesworld.engine.gui.components.passfield.PassFieldStyle;
 import org.foxesworld.engine.gui.components.progressBar.ProgressBarStyle;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxStyle;
+import org.foxesworld.engine.gui.components.serverBox.ServerBox;
+import org.foxesworld.engine.gui.components.serverBox.ServerBoxStyle;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.components.textfield.Textfield;
 import org.foxesworld.engine.gui.components.textfield.TextfieldStyle;
@@ -169,6 +171,18 @@ public class ComponentFactory {
                 scrollBox.setSelectedIndex(componentAttributes.getSelectedIndex());
                 scrollBox.repaint();
                 return  scrollBox;
+            }
+
+            case "serverBox" -> {
+                ServerBoxStyle serverBoxStyle = new ServerBoxStyle(this);
+                ServerBox serverBox = new ServerBox();
+                serverBox.updateBox("test", ImageUtils.getLocalImage("assets/light.png").getSubimage(16, 0, 16, 16));
+                serverBoxStyle.apply(serverBox);
+                serverBox.setBounds(xPos,yPos, width,height);
+                serverBox.setBackground(hexToColor(componentAttributes.getColor()));
+                serverBox.setForeground(hexToColor(componentAttributes.getColor()));
+                serverBox.setName(componentAttributes.getComponentId());
+                return serverBox;
             }
 
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.getComponentType());

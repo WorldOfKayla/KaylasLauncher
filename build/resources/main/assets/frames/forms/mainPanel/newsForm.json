@@ -48,7 +48,7 @@
                   "localeKey": "dev.uuid",
                   "componentId": "userUuid",
                   "initialValue": "user#uuid",
-                  "bounds": "15,40,450,50"
+                  "bounds": "15,40,470,50"
                 }
               ]
             }

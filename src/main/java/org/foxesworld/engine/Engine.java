@@ -20,6 +20,7 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
 
@@ -37,6 +38,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final Logger LOGGER = LogManager.getLogger(APP.class);
     private final Discord discord;
     private final  LanguageProvider LANG;
+    private  final ServerInfo serverInfo;
     private final FontUtils FONTUTILS;
     private final Config CONFIG;
     private final CryptUtils CRYPTO;
@@ -62,6 +64,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
+        this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);
         Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getLogLevel()));
@@ -188,6 +191,10 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public User getUser() {
         return user;
+    }
+
+    public ServerInfo getServerInfo() {
+        return serverInfo;
     }
 
     public Discord getDiscord() {

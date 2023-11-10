@@ -1,0 +1,1104 @@
+[16:01:38.379][DEBUG] HTTP GET init
+[16:01:38.382][DEBUG] HTTP POST init
+[16:01:38.382][INFO] FrameConstructor initialization
+[16:01:38.387][INFO] Building FrameConstructor...
+[16:01:38.509][DEBUG] Authorising with existing login AidenFox
+[16:01:38.601][DEBUG] Adding request header User-Agent
+[16:01:38.601][DEBUG] Adding request header Accept-Language
+[16:01:38.601][DEBUG] Adding request header Accept
+[16:01:38.601][DEBUG] Adding request header Content-Type
+[16:01:38.818][INFO] AidenFox authorised!
+[16:01:38.818][DEBUG] Adding request header User-Agent
+[16:01:38.818][DEBUG] Adding request header Accept-Language
+[16:01:38.818][DEBUG] Adding request header Accept
+[16:01:38.819][DEBUG] Adding request header Content-Type
+[16:01:38.862][DEBUG] Loading 2 servers for user AidenFox
+[16:01:38.864][INFO] Loading engine auth(true)
+[16:01:38.864][DEBUG] === GUI BUILDER ===
+[16:01:38.874][DEBUG] Building group titleBar with parent rootPanel
+[16:01:38.877][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.886][INFO] Created font - mcfont
+[16:01:38.887][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.888][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:01:38.896][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:01:38.899][DEBUG] Building group mainFrame with parent rootPanel
+[16:01:38.901][DEBUG] Building group authForm with parent mainFrame
+[16:01:38.902][DEBUG] Loading textField style from assets/styles/textField.json
+[16:01:38.943][INFO] Created font - FSElliotPro-Heavy
+[16:01:38.944][DEBUG] Loading passField style from assets/styles/passField.json
+[16:01:38.947][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.949][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:01:38.958][INFO] Created font - Montserrat-Bold
+[16:01:38.958][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.963][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.971][DEBUG] Building group loggedForm with parent mainFrame
+[16:01:38.972][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:01:38.975][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:01:38.978][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:01:38.979][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.982][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.986][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.987][DEBUG] Building group userPane with parent loggedForm
+[16:01:38.987][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.988][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.989][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.992][DEBUG] Building group userDataForm with parent userPane
+[16:01:38.993][DEBUG] Loading label style from assets/styles/label.json
+[16:01:38.996][DEBUG] Loading button style from assets/styles/button.json
+[16:01:38.998][DEBUG] Building group newsForm with parent mainFrame
+[16:01:38.998][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.014][INFO] Created font - Sans-Black
+[16:01:39.015][DEBUG] Building group devInfo with parent newsForm
+[16:01:39.015][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.016][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.017][DEBUG] Building group settings with parent mainFrame
+[16:01:39.018][DEBUG] Building group settingsPane with parent settings
+[16:01:39.019][DEBUG] Loading button style from assets/styles/button.json
+[16:01:39.023][DEBUG] Building group generalSettings with parent settings
+[16:01:39.023][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.024][DEBUG] Building group settingsFields with parent generalSettings
+[16:01:39.025][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:01:39.026][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:01:39.027][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:01:39.028][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:01:39.029][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.030][DEBUG] Loading textField style from assets/styles/textField.json
+[16:01:39.038][DEBUG] Loading button style from assets/styles/button.json
+[16:01:39.047][DEBUG] Loading button style from assets/styles/button.json
+[16:01:39.050][DEBUG] Building group generalInfo with parent settings
+[16:01:39.051][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.053][DEBUG] Building group download with parent mainFrame
+[16:01:39.054][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:01:39.057][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.058][DEBUG] Building group downloadInfo with parent download
+[16:01:39.059][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.068][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.069][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.071][DEBUG] Building group wait with parent mainFrame
+[16:01:39.079][DEBUG] Loading label style from assets/styles/label.json
+[16:01:39.095][DEBUG] Adding request header User-Agent
+[16:01:39.095][DEBUG] Adding request header Accept-Language
+[16:01:39.095][DEBUG] Adding request header Accept
+[16:01:39.095][DEBUG] Adding request header Content-Type
+[16:01:39.209][INFO] Refreshing server state... (Hi-Tech)
+[16:01:39.222][INFO] Refreshing server done!
+[16:01:43.516][INFO] Refreshing server state... (Foxesworld)
+[16:01:43.517][INFO] Refreshing server done!
+[16:01:45.375][INFO] Refreshing server state... (Hi-Tech)
+[16:01:45.388][INFO] Refreshing server done!
+[16:01:47.215][INFO] Refreshing server state... (Foxesworld)
+[16:01:47.233][INFO] Refreshing server done!
+[16:06:02.771][DEBUG] HTTP GET init
+[16:06:02.773][DEBUG] HTTP POST init
+[16:06:02.774][INFO] FrameConstructor initialization
+[16:06:02.778][INFO] Building FrameConstructor...
+[16:06:02.892][DEBUG] Authorising with existing login AidenFox
+[16:06:02.984][DEBUG] Adding request header User-Agent
+[16:06:02.984][DEBUG] Adding request header Accept-Language
+[16:06:02.984][DEBUG] Adding request header Accept
+[16:06:02.984][DEBUG] Adding request header Content-Type
+[16:06:03.209][INFO] AidenFox authorised!
+[16:06:03.210][DEBUG] Adding request header User-Agent
+[16:06:03.210][DEBUG] Adding request header Accept-Language
+[16:06:03.210][DEBUG] Adding request header Accept
+[16:06:03.210][DEBUG] Adding request header Content-Type
+[16:06:03.256][DEBUG] Loading 2 servers for user AidenFox
+[16:06:03.257][INFO] Loading engine auth(true)
+[16:06:03.258][DEBUG] === GUI BUILDER ===
+[16:06:03.265][DEBUG] Building group titleBar with parent rootPanel
+[16:06:03.268][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.277][INFO] Created font - mcfont
+[16:06:03.277][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.279][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:06:03.285][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:06:03.288][DEBUG] Building group mainFrame with parent rootPanel
+[16:06:03.290][DEBUG] Building group authForm with parent mainFrame
+[16:06:03.291][DEBUG] Loading textField style from assets/styles/textField.json
+[16:06:03.330][INFO] Created font - FSElliotPro-Heavy
+[16:06:03.330][DEBUG] Loading passField style from assets/styles/passField.json
+[16:06:03.334][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.335][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:06:03.343][INFO] Created font - Montserrat-Bold
+[16:06:03.344][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.348][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.355][DEBUG] Building group loggedForm with parent mainFrame
+[16:06:03.355][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:06:03.358][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:06:03.360][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:06:03.362][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.365][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.367][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.368][DEBUG] Building group userPane with parent loggedForm
+[16:06:03.369][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.370][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.371][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.373][DEBUG] Building group userDataForm with parent userPane
+[16:06:03.374][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.377][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.378][DEBUG] Building group newsForm with parent mainFrame
+[16:06:03.379][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.394][INFO] Created font - Sans-Black
+[16:06:03.394][DEBUG] Building group devInfo with parent newsForm
+[16:06:03.395][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.396][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.397][DEBUG] Building group settings with parent mainFrame
+[16:06:03.398][DEBUG] Building group settingsPane with parent settings
+[16:06:03.398][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.401][DEBUG] Building group generalSettings with parent settings
+[16:06:03.402][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.403][DEBUG] Building group settingsFields with parent generalSettings
+[16:06:03.403][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:06:03.404][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:06:03.405][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:06:03.406][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:06:03.407][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.408][DEBUG] Loading textField style from assets/styles/textField.json
+[16:06:03.414][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.422][DEBUG] Loading button style from assets/styles/button.json
+[16:06:03.423][DEBUG] Building group generalInfo with parent settings
+[16:06:03.423][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.425][DEBUG] Building group download with parent mainFrame
+[16:06:03.426][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:06:03.428][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.429][DEBUG] Building group downloadInfo with parent download
+[16:06:03.429][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.437][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.438][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.439][DEBUG] Building group wait with parent mainFrame
+[16:06:03.447][DEBUG] Loading label style from assets/styles/label.json
+[16:06:03.461][DEBUG] Adding request header User-Agent
+[16:06:03.461][DEBUG] Adding request header Accept-Language
+[16:06:03.461][DEBUG] Adding request header Accept
+[16:06:03.461][DEBUG] Adding request header Content-Type
+[16:06:03.579][INFO] Refreshing server state... (Hi-Tech)
+[16:06:03.593][INFO] Refreshing server done!
+[16:06:10.857][INFO] Refreshing server state... (Hi-Tech)
+[16:06:10.871][INFO] Refreshing server done!
+[16:08:31.888][DEBUG] HTTP GET init
+[16:08:31.891][DEBUG] HTTP POST init
+[16:08:31.891][INFO] FrameConstructor initialization
+[16:08:31.896][INFO] Building FrameConstructor...
+[16:08:32.010][DEBUG] Authorising with existing login AidenFox
+[16:08:32.101][DEBUG] Adding request header User-Agent
+[16:08:32.101][DEBUG] Adding request header Accept-Language
+[16:08:32.101][DEBUG] Adding request header Accept
+[16:08:32.101][DEBUG] Adding request header Content-Type
+[16:08:32.333][INFO] AidenFox authorised!
+[16:08:32.334][DEBUG] Adding request header User-Agent
+[16:08:32.334][DEBUG] Adding request header Accept-Language
+[16:08:32.334][DEBUG] Adding request header Accept
+[16:08:32.334][DEBUG] Adding request header Content-Type
+[16:08:32.379][DEBUG] Loading 2 servers for user AidenFox
+[16:08:32.380][INFO] Loading engine auth(true)
+[16:08:32.381][DEBUG] === GUI BUILDER ===
+[16:08:32.388][DEBUG] Building group titleBar with parent rootPanel
+[16:08:32.391][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.399][INFO] Created font - mcfont
+[16:08:32.400][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.401][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:08:32.413][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:08:32.415][DEBUG] Building group mainFrame with parent rootPanel
+[16:08:32.417][DEBUG] Building group authForm with parent mainFrame
+[16:08:32.418][DEBUG] Loading textField style from assets/styles/textField.json
+[16:08:32.448][INFO] Created font - FSElliotPro-Heavy
+[16:08:32.449][DEBUG] Loading passField style from assets/styles/passField.json
+[16:08:32.452][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.453][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:08:32.461][INFO] Created font - Montserrat-Bold
+[16:08:32.462][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.466][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.472][DEBUG] Building group loggedForm with parent mainFrame
+[16:08:32.472][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:08:32.475][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:08:32.477][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:08:32.479][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.482][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.485][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.485][DEBUG] Building group userPane with parent loggedForm
+[16:08:32.486][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.487][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.487][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.490][DEBUG] Building group userDataForm with parent userPane
+[16:08:32.490][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.493][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.495][DEBUG] Building group newsForm with parent mainFrame
+[16:08:32.495][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.510][INFO] Created font - Sans-Black
+[16:08:32.510][DEBUG] Building group devInfo with parent newsForm
+[16:08:32.511][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.512][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.513][DEBUG] Building group settings with parent mainFrame
+[16:08:32.514][DEBUG] Building group settingsPane with parent settings
+[16:08:32.514][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.518][DEBUG] Building group generalSettings with parent settings
+[16:08:32.518][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.519][DEBUG] Building group settingsFields with parent generalSettings
+[16:08:32.520][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:08:32.521][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:08:32.522][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:08:32.523][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:08:32.524][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.525][DEBUG] Loading textField style from assets/styles/textField.json
+[16:08:32.532][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.539][DEBUG] Loading button style from assets/styles/button.json
+[16:08:32.541][DEBUG] Building group generalInfo with parent settings
+[16:08:32.541][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.542][DEBUG] Building group download with parent mainFrame
+[16:08:32.543][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:08:32.545][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.546][DEBUG] Building group downloadInfo with parent download
+[16:08:32.546][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.554][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.555][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.556][DEBUG] Building group wait with parent mainFrame
+[16:08:32.565][DEBUG] Loading label style from assets/styles/label.json
+[16:08:32.579][DEBUG] Adding request header User-Agent
+[16:08:32.579][DEBUG] Adding request header Accept-Language
+[16:08:32.579][DEBUG] Adding request header Accept
+[16:08:32.579][DEBUG] Adding request header Content-Type
+[16:08:32.693][INFO] Refreshing server state... (Hi-Tech)
+[16:08:32.707][INFO] Refreshing server done!
+[16:08:49.294][INFO] Refreshing server state... (Hi-Tech)
+[16:08:49.308][INFO] Refreshing server done!
+[16:10:30.555][DEBUG] HTTP GET init
+[16:10:30.557][DEBUG] HTTP POST init
+[16:10:30.558][INFO] FrameConstructor initialization
+[16:10:30.562][INFO] Building FrameConstructor...
+[16:10:30.674][DEBUG] Authorising with existing login AidenFox
+[16:10:30.763][DEBUG] Adding request header User-Agent
+[16:10:30.763][DEBUG] Adding request header Accept-Language
+[16:10:30.763][DEBUG] Adding request header Accept
+[16:10:30.763][DEBUG] Adding request header Content-Type
+[16:10:30.995][INFO] AidenFox authorised!
+[16:10:30.996][DEBUG] Adding request header User-Agent
+[16:10:30.996][DEBUG] Adding request header Accept-Language
+[16:10:30.996][DEBUG] Adding request header Accept
+[16:10:30.996][DEBUG] Adding request header Content-Type
+[16:10:31.041][DEBUG] Loading 2 servers for user AidenFox
+[16:10:31.042][INFO] Loading engine auth(true)
+[16:10:31.043][DEBUG] === GUI BUILDER ===
+[16:10:31.052][DEBUG] Building group titleBar with parent rootPanel
+[16:10:31.055][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.063][INFO] Created font - mcfont
+[16:10:31.064][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.065][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:10:31.071][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:10:31.073][DEBUG] Building group mainFrame with parent rootPanel
+[16:10:31.075][DEBUG] Building group authForm with parent mainFrame
+[16:10:31.075][DEBUG] Loading textField style from assets/styles/textField.json
+[16:10:31.109][INFO] Created font - FSElliotPro-Heavy
+[16:10:31.109][DEBUG] Loading passField style from assets/styles/passField.json
+[16:10:31.112][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.113][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:10:31.121][INFO] Created font - Montserrat-Bold
+[16:10:31.122][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.125][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.131][DEBUG] Building group loggedForm with parent mainFrame
+[16:10:31.132][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:10:31.135][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:10:31.137][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:10:31.138][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.141][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.144][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.144][DEBUG] Building group userPane with parent loggedForm
+[16:10:31.145][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.146][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.146][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.149][DEBUG] Building group userDataForm with parent userPane
+[16:10:31.149][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.152][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.154][DEBUG] Building group newsForm with parent mainFrame
+[16:10:31.154][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.169][INFO] Created font - Sans-Black
+[16:10:31.170][DEBUG] Building group devInfo with parent newsForm
+[16:10:31.170][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.171][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.172][DEBUG] Building group settings with parent mainFrame
+[16:10:31.173][DEBUG] Building group settingsPane with parent settings
+[16:10:31.174][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.177][DEBUG] Building group generalSettings with parent settings
+[16:10:31.177][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.178][DEBUG] Building group settingsFields with parent generalSettings
+[16:10:31.178][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:10:31.179][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:10:31.180][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:10:31.181][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:10:31.182][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.183][DEBUG] Loading textField style from assets/styles/textField.json
+[16:10:31.189][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.196][DEBUG] Loading button style from assets/styles/button.json
+[16:10:31.197][DEBUG] Building group generalInfo with parent settings
+[16:10:31.197][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.199][DEBUG] Building group download with parent mainFrame
+[16:10:31.199][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:10:31.202][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.202][DEBUG] Building group downloadInfo with parent download
+[16:10:31.203][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.210][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.211][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.213][DEBUG] Building group wait with parent mainFrame
+[16:10:31.221][DEBUG] Loading label style from assets/styles/label.json
+[16:10:31.235][DEBUG] Adding request header User-Agent
+[16:10:31.235][DEBUG] Adding request header Accept-Language
+[16:10:31.235][DEBUG] Adding request header Accept
+[16:10:31.235][DEBUG] Adding request header Content-Type
+[16:10:31.357][INFO] Refreshing server state... (Hi-Tech)
+[16:10:31.371][INFO] Refreshing server done!
+[16:11:27.758][DEBUG] HTTP GET init
+[16:11:27.760][DEBUG] HTTP POST init
+[16:11:27.761][INFO] FrameConstructor initialization
+[16:11:27.765][INFO] Building FrameConstructor...
+[16:11:27.884][DEBUG] Authorising with existing login AidenFox
+[16:11:27.970][DEBUG] Adding request header User-Agent
+[16:11:27.970][DEBUG] Adding request header Accept-Language
+[16:11:27.970][DEBUG] Adding request header Accept
+[16:11:27.970][DEBUG] Adding request header Content-Type
+[16:11:28.171][INFO] AidenFox authorised!
+[16:11:28.172][DEBUG] Adding request header User-Agent
+[16:11:28.172][DEBUG] Adding request header Accept-Language
+[16:11:28.172][DEBUG] Adding request header Accept
+[16:11:28.172][DEBUG] Adding request header Content-Type
+[16:11:28.218][DEBUG] Loading 2 servers for user AidenFox
+[16:11:28.219][INFO] Loading engine auth(true)
+[16:11:28.219][DEBUG] === GUI BUILDER ===
+[16:11:28.227][DEBUG] Building group titleBar with parent rootPanel
+[16:11:28.229][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.238][INFO] Created font - mcfont
+[16:11:28.238][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.240][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:11:28.248][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:11:28.252][DEBUG] Building group mainFrame with parent rootPanel
+[16:11:28.255][DEBUG] Building group authForm with parent mainFrame
+[16:11:28.256][DEBUG] Loading textField style from assets/styles/textField.json
+[16:11:28.293][INFO] Created font - FSElliotPro-Heavy
+[16:11:28.294][DEBUG] Loading passField style from assets/styles/passField.json
+[16:11:28.297][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.298][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:11:28.311][INFO] Created font - Montserrat-Bold
+[16:11:28.312][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.316][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.325][DEBUG] Building group loggedForm with parent mainFrame
+[16:11:28.326][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:11:28.329][INFO] Updating ScrollBox [Ljava.lang.String;@710bcb06
+[16:11:28.332][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:11:28.333][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.336][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.339][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.340][DEBUG] Building group userPane with parent loggedForm
+[16:11:28.340][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.341][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.342][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.345][DEBUG] Building group userDataForm with parent userPane
+[16:11:28.345][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.348][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.350][DEBUG] Building group newsForm with parent mainFrame
+[16:11:28.350][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.367][INFO] Created font - Sans-Black
+[16:11:28.367][DEBUG] Building group devInfo with parent newsForm
+[16:11:28.368][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.369][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.371][DEBUG] Building group settings with parent mainFrame
+[16:11:28.371][DEBUG] Building group settingsPane with parent settings
+[16:11:28.372][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.376][DEBUG] Building group generalSettings with parent settings
+[16:11:28.376][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.377][DEBUG] Building group settingsFields with parent generalSettings
+[16:11:28.377][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:11:28.378][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:11:28.379][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:11:28.380][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:11:28.381][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.382][DEBUG] Loading textField style from assets/styles/textField.json
+[16:11:28.389][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.396][DEBUG] Loading button style from assets/styles/button.json
+[16:11:28.398][DEBUG] Building group generalInfo with parent settings
+[16:11:28.398][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.400][DEBUG] Building group download with parent mainFrame
+[16:11:28.400][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:11:28.403][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.404][DEBUG] Building group downloadInfo with parent download
+[16:11:28.404][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.418][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.419][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.421][DEBUG] Building group wait with parent mainFrame
+[16:11:28.427][DEBUG] Loading label style from assets/styles/label.json
+[16:11:28.444][DEBUG] Adding request header User-Agent
+[16:11:28.444][DEBUG] Adding request header Accept-Language
+[16:11:28.444][DEBUG] Adding request header Accept
+[16:11:28.444][DEBUG] Adding request header Content-Type
+[16:11:28.568][INFO] Refreshing server state... (Hi-Tech)
+[16:11:28.582][INFO] Refreshing server done!
+[16:11:32.663][INFO] Refreshing server state... (Hi-Tech)
+[16:11:32.674][INFO] Refreshing server done!
+[16:12:37.463][DEBUG] HTTP GET init
+[16:12:37.465][DEBUG] HTTP POST init
+[16:12:37.465][INFO] FrameConstructor initialization
+[16:12:37.471][INFO] Building FrameConstructor...
+[16:12:37.580][DEBUG] Authorising with existing login AidenFox
+[16:12:37.671][DEBUG] Adding request header User-Agent
+[16:12:37.671][DEBUG] Adding request header Accept-Language
+[16:12:37.671][DEBUG] Adding request header Accept
+[16:12:37.671][DEBUG] Adding request header Content-Type
+[16:12:37.892][INFO] AidenFox authorised!
+[16:12:37.892][DEBUG] Adding request header User-Agent
+[16:12:37.892][DEBUG] Adding request header Accept-Language
+[16:12:37.892][DEBUG] Adding request header Accept
+[16:12:37.893][DEBUG] Adding request header Content-Type
+[16:12:37.938][DEBUG] Loading 2 servers for user AidenFox
+[16:12:37.939][INFO] Loading engine auth(true)
+[16:12:37.940][DEBUG] === GUI BUILDER ===
+[16:12:37.947][DEBUG] Building group titleBar with parent rootPanel
+[16:12:37.950][DEBUG] Loading label style from assets/styles/label.json
+[16:12:37.960][INFO] Created font - mcfont
+[16:12:37.960][DEBUG] Loading label style from assets/styles/label.json
+[16:12:37.962][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:12:37.970][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:12:37.973][DEBUG] Building group mainFrame with parent rootPanel
+[16:12:37.976][DEBUG] Building group authForm with parent mainFrame
+[16:12:37.976][DEBUG] Loading textField style from assets/styles/textField.json
+[16:12:38.015][INFO] Created font - FSElliotPro-Heavy
+[16:12:38.016][DEBUG] Loading passField style from assets/styles/passField.json
+[16:12:38.019][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.020][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.029][INFO] Created font - Montserrat-Bold
+[16:12:38.029][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.033][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.040][DEBUG] Building group loggedForm with parent mainFrame
+[16:12:38.040][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:12:38.043][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:12:38.046][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:12:38.047][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.049][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.052][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.053][DEBUG] Building group userPane with parent loggedForm
+[16:12:38.053][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.055][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.055][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.058][DEBUG] Building group userDataForm with parent userPane
+[16:12:38.059][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.061][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.063][DEBUG] Building group newsForm with parent mainFrame
+[16:12:38.063][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.077][INFO] Created font - Sans-Black
+[16:12:38.078][DEBUG] Building group devInfo with parent newsForm
+[16:12:38.078][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.079][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.080][DEBUG] Building group settings with parent mainFrame
+[16:12:38.081][DEBUG] Building group settingsPane with parent settings
+[16:12:38.082][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.085][DEBUG] Building group generalSettings with parent settings
+[16:12:38.085][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.086][DEBUG] Building group settingsFields with parent generalSettings
+[16:12:38.086][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.087][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.088][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.089][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.090][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.091][DEBUG] Loading textField style from assets/styles/textField.json
+[16:12:38.097][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.106][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.107][DEBUG] Building group generalInfo with parent settings
+[16:12:38.108][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.109][DEBUG] Building group download with parent mainFrame
+[16:12:38.110][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:12:38.112][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.113][DEBUG] Building group downloadInfo with parent download
+[16:12:38.113][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.121][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.122][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.123][DEBUG] Building group wait with parent mainFrame
+[16:12:38.129][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.143][DEBUG] Adding request header User-Agent
+[16:12:38.144][DEBUG] Adding request header Accept-Language
+[16:12:38.144][DEBUG] Adding request header Accept
+[16:12:38.144][DEBUG] Adding request header Content-Type
+[16:12:38.248][INFO] Refreshing server state... (Hi-Tech)
+[16:12:38.262][INFO] Refreshing server done!
+[16:16:24.036][DEBUG] HTTP GET init
+[16:16:24.038][DEBUG] HTTP POST init
+[16:16:24.039][INFO] FrameConstructor initialization
+[16:16:24.044][INFO] Building FrameConstructor...
+[16:16:24.163][DEBUG] Authorising with existing login AidenFox
+[16:16:24.250][DEBUG] Adding request header User-Agent
+[16:16:24.250][DEBUG] Adding request header Accept-Language
+[16:16:24.250][DEBUG] Adding request header Accept
+[16:16:24.250][DEBUG] Adding request header Content-Type
+[16:16:24.474][INFO] AidenFox authorised!
+[16:16:24.474][DEBUG] Adding request header User-Agent
+[16:16:24.474][DEBUG] Adding request header Accept-Language
+[16:16:24.474][DEBUG] Adding request header Accept
+[16:16:24.475][DEBUG] Adding request header Content-Type
+[16:16:24.519][DEBUG] Loading 2 servers for user AidenFox
+[16:16:24.520][INFO] Loading engine auth(true)
+[16:16:24.521][DEBUG] === GUI BUILDER ===
+[16:16:24.529][DEBUG] Building group titleBar with parent rootPanel
+[16:16:24.531][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.541][INFO] Created font - mcfont
+[16:16:24.542][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.543][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:16:24.551][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:16:24.554][DEBUG] Building group mainFrame with parent rootPanel
+[16:16:24.556][DEBUG] Building group authForm with parent mainFrame
+[16:16:24.557][DEBUG] Loading textField style from assets/styles/textField.json
+[16:16:24.588][INFO] Created font - FSElliotPro-Heavy
+[16:16:24.588][DEBUG] Loading passField style from assets/styles/passField.json
+[16:16:24.592][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.593][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:16:24.600][INFO] Created font - Montserrat-Bold
+[16:16:24.601][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.609][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.616][DEBUG] Building group loggedForm with parent mainFrame
+[16:16:24.617][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:16:24.620][INFO] Updating ScrollBox [Ljava.lang.String;@710bcb06
+[16:16:24.623][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:16:24.624][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.628][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.630][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.631][DEBUG] Building group userPane with parent loggedForm
+[16:16:24.631][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.632][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.633][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.635][DEBUG] Building group userDataForm with parent userPane
+[16:16:24.636][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.638][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.640][DEBUG] Building group newsForm with parent mainFrame
+[16:16:24.641][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.657][INFO] Created font - Sans-Black
+[16:16:24.657][DEBUG] Building group devInfo with parent newsForm
+[16:16:24.657][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.658][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.660][DEBUG] Building group settings with parent mainFrame
+[16:16:24.661][DEBUG] Building group settingsPane with parent settings
+[16:16:24.662][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.665][DEBUG] Building group generalSettings with parent settings
+[16:16:24.665][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.666][DEBUG] Building group settingsFields with parent generalSettings
+[16:16:24.666][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:16:24.667][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:16:24.668][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:16:24.669][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:16:24.670][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.670][DEBUG] Loading textField style from assets/styles/textField.json
+[16:16:24.677][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.684][DEBUG] Loading button style from assets/styles/button.json
+[16:16:24.686][DEBUG] Building group generalInfo with parent settings
+[16:16:24.686][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.688][DEBUG] Building group download with parent mainFrame
+[16:16:24.688][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:16:24.691][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.691][DEBUG] Building group downloadInfo with parent download
+[16:16:24.692][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.701][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.702][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.704][DEBUG] Building group wait with parent mainFrame
+[16:16:24.710][DEBUG] Loading label style from assets/styles/label.json
+[16:16:24.724][DEBUG] Adding request header User-Agent
+[16:16:24.725][DEBUG] Adding request header Accept-Language
+[16:16:24.725][DEBUG] Adding request header Accept
+[16:16:24.725][DEBUG] Adding request header Content-Type
+[16:16:24.843][INFO] Refreshing server state... (Hi-Tech)
+[16:16:24.856][INFO] Refreshing server done!
+[16:16:32.214][INFO] Refreshing server state... (Hi-Tech)
+[16:16:32.226][INFO] Refreshing server done!
+[16:17:03.055][DEBUG] HTTP GET init
+[16:17:03.057][DEBUG] HTTP POST init
+[16:17:03.058][INFO] FrameConstructor initialization
+[16:17:03.063][INFO] Building FrameConstructor...
+[16:17:03.180][DEBUG] Authorising with existing login AidenFox
+[16:17:03.267][DEBUG] Adding request header User-Agent
+[16:17:03.267][DEBUG] Adding request header Accept-Language
+[16:17:03.268][DEBUG] Adding request header Accept
+[16:17:03.268][DEBUG] Adding request header Content-Type
+[16:17:03.498][INFO] AidenFox authorised!
+[16:17:03.499][DEBUG] Adding request header User-Agent
+[16:17:03.499][DEBUG] Adding request header Accept-Language
+[16:17:03.499][DEBUG] Adding request header Accept
+[16:17:03.499][DEBUG] Adding request header Content-Type
+[16:17:03.545][DEBUG] Loading 2 servers for user AidenFox
+[16:17:03.546][INFO] Loading engine auth(true)
+[16:17:03.546][DEBUG] === GUI BUILDER ===
+[16:17:03.555][DEBUG] Building group titleBar with parent rootPanel
+[16:17:03.558][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.568][INFO] Created font - mcfont
+[16:17:03.569][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.570][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:17:03.576][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:17:03.579][DEBUG] Building group mainFrame with parent rootPanel
+[16:17:03.581][DEBUG] Building group authForm with parent mainFrame
+[16:17:03.581][DEBUG] Loading textField style from assets/styles/textField.json
+[16:17:03.618][INFO] Created font - FSElliotPro-Heavy
+[16:17:03.619][DEBUG] Loading passField style from assets/styles/passField.json
+[16:17:03.622][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.623][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:17:03.645][INFO] Created font - Montserrat-Bold
+[16:17:03.646][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.650][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.658][DEBUG] Building group loggedForm with parent mainFrame
+[16:17:03.659][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:17:03.661][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[16:17:03.663][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:17:03.665][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.667][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.670][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.671][DEBUG] Building group userPane with parent loggedForm
+[16:17:03.671][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.672][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.673][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.676][DEBUG] Building group userDataForm with parent userPane
+[16:17:03.676][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.679][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.681][DEBUG] Building group newsForm with parent mainFrame
+[16:17:03.681][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.696][INFO] Created font - Sans-Black
+[16:17:03.696][DEBUG] Building group devInfo with parent newsForm
+[16:17:03.697][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.698][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.700][DEBUG] Building group settings with parent mainFrame
+[16:17:03.701][DEBUG] Building group settingsPane with parent settings
+[16:17:03.701][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.704][DEBUG] Building group generalSettings with parent settings
+[16:17:03.705][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.706][DEBUG] Building group settingsFields with parent generalSettings
+[16:17:03.706][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:17:03.707][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:17:03.708][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:17:03.709][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:17:03.710][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.710][DEBUG] Loading textField style from assets/styles/textField.json
+[16:17:03.717][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.725][DEBUG] Loading button style from assets/styles/button.json
+[16:17:03.725][DEBUG] Building group generalInfo with parent settings
+[16:17:03.726][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.727][DEBUG] Building group download with parent mainFrame
+[16:17:03.728][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:17:03.730][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.732][DEBUG] Building group downloadInfo with parent download
+[16:17:03.732][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.740][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.741][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.742][DEBUG] Building group wait with parent mainFrame
+[16:17:03.750][DEBUG] Loading label style from assets/styles/label.json
+[16:17:03.764][DEBUG] Adding request header User-Agent
+[16:17:03.764][DEBUG] Adding request header Accept-Language
+[16:17:03.764][DEBUG] Adding request header Accept
+[16:17:03.764][DEBUG] Adding request header Content-Type
+[16:17:03.883][INFO] Refreshing server state... (Hi-Tech)
+[16:17:03.897][INFO] Refreshing server done!
+[16:17:14.610][INFO] Refreshing server state... (Hi-Tech)
+[16:17:14.625][INFO] Refreshing server done!
+[16:43:39.989][DEBUG] HTTP GET init
+[16:43:39.991][DEBUG] HTTP POST init
+[16:43:39.992][INFO] FrameConstructor initialization
+[16:43:39.997][INFO] Building FrameConstructor...
+[16:43:40.113][DEBUG] Authorising with existing login AidenFox
+[16:43:40.205][DEBUG] Adding request header User-Agent
+[16:43:40.205][DEBUG] Adding request header Accept-Language
+[16:43:40.206][DEBUG] Adding request header Accept
+[16:43:40.206][DEBUG] Adding request header Content-Type
+[16:43:40.465][INFO] AidenFox authorised!
+[16:43:40.466][DEBUG] Adding request header User-Agent
+[16:43:40.466][DEBUG] Adding request header Accept-Language
+[16:43:40.466][DEBUG] Adding request header Accept
+[16:43:40.466][DEBUG] Adding request header Content-Type
+[16:43:40.513][DEBUG] Loading 2 servers for user AidenFox
+[16:43:40.514][INFO] Loading engine auth(true)
+[16:43:40.515][DEBUG] === GUI BUILDER ===
+[16:43:40.523][DEBUG] Building group titleBar with parent rootPanel
+[16:43:40.525][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.534][INFO] Created font - mcfont
+[16:43:40.534][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.535][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:43:40.542][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:43:40.544][DEBUG] Building group mainFrame with parent rootPanel
+[16:43:40.546][DEBUG] Building group authForm with parent mainFrame
+[16:43:40.546][DEBUG] Loading textField style from assets/styles/textField.json
+[16:43:40.585][INFO] Created font - FSElliotPro-Heavy
+[16:43:40.586][DEBUG] Loading passField style from assets/styles/passField.json
+[16:43:40.589][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.591][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:43:40.599][INFO] Created font - Montserrat-Bold
+[16:43:40.600][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.604][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.611][DEBUG] Building group loggedForm with parent mainFrame
+[16:43:40.611][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[16:43:40.614][INFO] Updating ScrollBox [Ljava.lang.String;@6b4715f
+[16:43:40.617][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:43:40.618][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.622][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.625][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.626][DEBUG] Building group userPane with parent loggedForm
+[16:43:40.626][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.627][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.628][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.631][DEBUG] Building group userDataForm with parent userPane
+[16:43:40.632][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.635][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.636][DEBUG] Building group newsForm with parent mainFrame
+[16:43:40.637][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.653][INFO] Created font - Sans-Black
+[16:43:40.653][DEBUG] Building group devInfo with parent newsForm
+[16:43:40.653][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.654][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.656][DEBUG] Building group settings with parent mainFrame
+[16:43:40.657][DEBUG] Building group settingsPane with parent settings
+[16:43:40.657][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.661][DEBUG] Building group generalSettings with parent settings
+[16:43:40.661][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.662][DEBUG] Building group settingsFields with parent generalSettings
+[16:43:40.662][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:43:40.663][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:43:40.664][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:43:40.665][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:43:40.666][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.667][DEBUG] Loading textField style from assets/styles/textField.json
+[16:43:40.674][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.681][DEBUG] Loading button style from assets/styles/button.json
+[16:43:40.683][DEBUG] Building group generalInfo with parent settings
+[16:43:40.683][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.685][DEBUG] Building group download with parent mainFrame
+[16:43:40.686][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:43:40.689][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.690][DEBUG] Building group downloadInfo with parent download
+[16:43:40.690][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.699][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.700][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.702][DEBUG] Building group wait with parent mainFrame
+[16:43:40.712][DEBUG] Loading label style from assets/styles/label.json
+[16:43:40.734][DEBUG] Adding request header User-Agent
+[16:43:40.734][DEBUG] Adding request header Accept-Language
+[16:43:40.734][DEBUG] Adding request header Accept
+[16:43:40.735][DEBUG] Adding request header Content-Type
+[16:43:40.868][INFO] Refreshing server state... (Hi-Tech)
+[16:43:40.882][INFO] Refreshing server done!
+[16:43:42.665][INFO] Refreshing server state... (Hi-Tech)
+[16:43:42.677][INFO] Refreshing server done!
+[16:43:49.228][INFO] Refreshing server state... (Hi-Tech)
+[16:43:49.240][INFO] Refreshing server done!
+[17:24:04.545][DEBUG] HTTP GET init
+[17:24:04.548][DEBUG] HTTP POST init
+[17:24:04.548][INFO] FrameConstructor initialization
+[17:24:04.553][INFO] Building FrameConstructor...
+[17:24:04.702][DEBUG] Authorising with existing login AidenFox
+[17:24:04.809][DEBUG] Adding request header User-Agent
+[17:24:04.809][DEBUG] Adding request header Accept-Language
+[17:24:04.809][DEBUG] Adding request header Accept
+[17:24:04.809][DEBUG] Adding request header Content-Type
+[17:24:05.074][INFO] AidenFox authorised!
+[17:24:05.075][DEBUG] Adding request header User-Agent
+[17:24:05.075][DEBUG] Adding request header Accept-Language
+[17:24:05.075][DEBUG] Adding request header Accept
+[17:24:05.075][DEBUG] Adding request header Content-Type
+[17:24:05.121][DEBUG] Loading 2 servers for user AidenFox
+[17:24:05.123][INFO] Loading engine auth(true)
+[17:24:05.123][DEBUG] === GUI BUILDER ===
+[17:24:05.131][DEBUG] Building group titleBar with parent rootPanel
+[17:24:05.134][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.142][INFO] Created font - mcfont
+[17:24:05.143][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.144][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[17:24:05.150][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[17:24:05.152][DEBUG] Building group mainFrame with parent rootPanel
+[17:24:05.154][DEBUG] Building group authForm with parent mainFrame
+[17:24:05.154][DEBUG] Loading textField style from assets/styles/textField.json
+[17:24:05.190][INFO] Created font - FSElliotPro-Heavy
+[17:24:05.190][DEBUG] Loading passField style from assets/styles/passField.json
+[17:24:05.194][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.195][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:24:05.203][INFO] Created font - Montserrat-Bold
+[17:24:05.203][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.207][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.213][DEBUG] Building group loggedForm with parent mainFrame
+[17:24:05.214][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[17:24:05.217][INFO] Updating ScrollBox [Ljava.lang.String;@6b4715f
+[17:24:05.219][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[17:24:05.220][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.223][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.226][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.227][DEBUG] Building group userPane with parent loggedForm
+[17:24:05.227][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.228][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.229][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.232][DEBUG] Building group userDataForm with parent userPane
+[17:24:05.232][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.235][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.237][DEBUG] Building group newsForm with parent mainFrame
+[17:24:05.237][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.253][INFO] Created font - Sans-Black
+[17:24:05.253][DEBUG] Building group devInfo with parent newsForm
+[17:24:05.253][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.254][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.256][DEBUG] Building group settings with parent mainFrame
+[17:24:05.256][DEBUG] Building group settingsPane with parent settings
+[17:24:05.257][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.260][DEBUG] Building group generalSettings with parent settings
+[17:24:05.261][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.261][DEBUG] Building group settingsFields with parent generalSettings
+[17:24:05.262][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:24:05.263][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:24:05.263][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:24:05.264][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:24:05.265][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.266][DEBUG] Loading textField style from assets/styles/textField.json
+[17:24:05.272][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.281][DEBUG] Loading button style from assets/styles/button.json
+[17:24:05.283][DEBUG] Building group generalInfo with parent settings
+[17:24:05.283][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.285][DEBUG] Building group download with parent mainFrame
+[17:24:05.285][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[17:24:05.287][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.288][DEBUG] Building group downloadInfo with parent download
+[17:24:05.288][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.297][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.298][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.299][DEBUG] Building group wait with parent mainFrame
+[17:24:05.305][DEBUG] Loading label style from assets/styles/label.json
+[17:24:05.320][DEBUG] Adding request header User-Agent
+[17:24:05.320][DEBUG] Adding request header Accept-Language
+[17:24:05.320][DEBUG] Adding request header Accept
+[17:24:05.320][DEBUG] Adding request header Content-Type
+[17:24:05.426][INFO] Refreshing server state... (Hi-Tech)
+[17:24:05.439][INFO] Refreshing server done!
+[17:24:15.187][DEBUG] Wiping [autoEnter]
+[17:24:15.187][DEBUG] Wiping [fullScreen]
+[17:24:15.187][DEBUG] Wiping [loadNews]
+[17:24:15.188][DEBUG] Wiping [enableSound]
+[17:24:15.188][DEBUG] Wiping [ramAmount]
+[17:24:15.190][DEBUG] Writing {
+  "password": "Aiden2556308",
+  "logLevel": "DEBUG",
+  "enableSound": false,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "selectedServer": 1,
+  "lang": "en",
+  "login": "AidenFox",
+  "autoEnter": false,
+  "fullScreen": false
+}
+[17:24:17.444][DEBUG] Wiping [autoEnter]
+[17:24:17.444][DEBUG] Wiping [fullScreen]
+[17:24:17.444][DEBUG] Wiping [loadNews]
+[17:24:17.444][DEBUG] Wiping [enableSound]
+[17:24:17.444][DEBUG] Wiping [ramAmount]
+[17:24:17.445][DEBUG] Writing {
+  "password": "Aiden2556308",
+  "logLevel": "DEBUG",
+  "enableSound": true,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "selectedServer": 1,
+  "lang": "en",
+  "login": "AidenFox",
+  "autoEnter": false,
+  "fullScreen": false
+}
+[17:24:18.034][DEBUG] Wiping [autoEnter]
+[17:24:18.034][DEBUG] Wiping [fullScreen]
+[17:24:18.034][DEBUG] Wiping [loadNews]
+[17:24:18.035][DEBUG] Wiping [enableSound]
+[17:24:18.035][DEBUG] Wiping [ramAmount]
+[17:24:18.035][DEBUG] Writing {
+  "password": "Aiden2556308",
+  "logLevel": "DEBUG",
+  "enableSound": true,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "selectedServer": 1,
+  "lang": "en",
+  "login": "AidenFox",
+  "autoEnter": false,
+  "fullScreen": false
+}
+[17:24:18.661][DEBUG] Wiping [autoEnter]
+[17:24:18.661][DEBUG] Wiping [fullScreen]
+[17:24:18.662][DEBUG] Wiping [loadNews]
+[17:24:18.662][DEBUG] Wiping [enableSound]
+[17:24:18.662][DEBUG] Wiping [ramAmount]
+[17:24:18.662][DEBUG] Writing {
+  "password": "Aiden2556308",
+  "logLevel": "DEBUG",
+  "enableSound": true,
+  "loadNews": true,
+  "ramAmount": "4096",
+  "selectedServer": 1,
+  "lang": "en",
+  "login": "AidenFox",
+  "autoEnter": false,
+  "fullScreen": false
+}
+[17:24:21.498][DEBUG] Opened 1
+[17:24:21.887][INFO] Refreshing server state... (Hi-Tech)
+[17:24:21.899][INFO] Refreshing server done!
+[17:24:22.352][DEBUG] Opened 1
+[17:24:22.546][DEBUG] Hover Hi-Tech
+[17:24:22.674][DEBUG] Hover Foxesworld
+[17:24:23.170][INFO] Refreshing server state... (Foxesworld)
+[17:24:23.186][INFO] Refreshing server done!
+[17:24:24.239][DEBUG] Opened 0
+[17:24:24.477][DEBUG] Hover Hi-Tech
+[17:24:24.796][INFO] Refreshing server state... (Hi-Tech)
+[17:24:24.808][INFO] Refreshing server done!
+[17:24:26.482][DEBUG] Opened 1
+[17:24:27.029][INFO] Refreshing server state... (Hi-Tech)
+[17:24:27.041][INFO] Refreshing server done!
+[17:24:27.671][DEBUG] Opened 1
+[17:24:27.686][DEBUG] Hover Foxesworld
+[17:24:27.734][DEBUG] Hover Hi-Tech
+[17:24:27.928][DEBUG] Hover Foxesworld
+[17:24:28.277][INFO] Refreshing server state... (Foxesworld)
+[17:24:28.296][INFO] Refreshing server done!
+[17:24:29.099][DEBUG] Opened 0
+[17:24:29.194][DEBUG] Hover Hi-Tech
+[17:24:29.643][INFO] Refreshing server state... (Hi-Tech)
+[17:24:29.655][INFO] Refreshing server done!
+[17:24:43.498][DEBUG] Opened 1
+[17:24:43.744][INFO] Refreshing server state... (Hi-Tech)
+[17:24:43.756][INFO] Refreshing server done!
+[17:24:44.296][DEBUG] Opened 1
+[17:24:44.554][INFO] Refreshing server state... (Hi-Tech)
+[17:24:44.566][INFO] Refreshing server done!
+[17:24:44.994][DEBUG] Opened 1
+[17:24:45.310][DEBUG] Hover Foxesworld
+[17:24:45.767][DEBUG] Hover Hi-Tech
+[17:24:46.414][DEBUG] Hover Foxesworld
+[17:24:46.662][DEBUG] Hover Hi-Tech
+[17:24:46.885][DEBUG] Hover Foxesworld
+[17:24:47.155][DEBUG] Hover Hi-Tech
+[17:24:47.476][DEBUG] Hover Foxesworld
+[17:24:48.014][DEBUG] Hover Hi-Tech
+[17:24:48.381][DEBUG] Hover Foxesworld
+[17:24:49.164][DEBUG] Hover Hi-Tech
+[17:24:50.150][DEBUG] Hover Foxesworld
+[17:24:51.033][DEBUG] Hover Hi-Tech
+[17:24:51.938][INFO] Refreshing server state... (Hi-Tech)
+[17:24:51.952][INFO] Refreshing server done!
+[17:24:52.315][DEBUG] Opened 1
+[17:24:52.574][DEBUG] Hover Foxesworld
+[17:24:53.076][INFO] Refreshing server state... (Foxesworld)
+[17:24:53.088][INFO] Refreshing server done!
+[17:24:53.919][DEBUG] Opened 0
+[17:24:54.096][DEBUG] Hover Hi-Tech
+[17:24:54.189][DEBUG] Hover Foxesworld
+[17:24:54.679][DEBUG] Hover Hi-Tech
+[17:24:56.036][INFO] Refreshing server state... (Hi-Tech)
+[17:24:56.054][INFO] Refreshing server done!
+[17:24:56.637][DEBUG] Opened 1
+[17:24:56.932][DEBUG] Hover Foxesworld
+[17:24:58.142][INFO] Refreshing server state... (Foxesworld)
+[17:24:58.168][INFO] Refreshing server done!
+[17:25:00.051][DEBUG] Opened 0
+[17:25:00.447][DEBUG] Hover Hi-Tech
+[17:25:02.313][DEBUG] Hover Foxesworld
+[17:25:02.925][DEBUG] Hover Hi-Tech
+[17:25:06.086][INFO] Refreshing server state... (Foxesworld)
+[17:25:06.097][INFO] Refreshing server done!
+[17:27:09.619][DEBUG] HTTP GET init
+[17:27:09.622][DEBUG] HTTP POST init
+[17:27:09.622][INFO] FrameConstructor initialization
+[17:27:09.627][INFO] Building FrameConstructor...
+[17:27:09.742][DEBUG] Authorising with existing login AidenFox
+[17:27:09.832][DEBUG] Adding request header User-Agent
+[17:27:09.832][DEBUG] Adding request header Accept-Language
+[17:27:09.832][DEBUG] Adding request header Accept
+[17:27:09.832][DEBUG] Adding request header Content-Type
+[17:27:10.067][INFO] AidenFox authorised!
+[17:27:10.067][DEBUG] Adding request header User-Agent
+[17:27:10.068][DEBUG] Adding request header Accept-Language
+[17:27:10.068][DEBUG] Adding request header Accept
+[17:27:10.068][DEBUG] Adding request header Content-Type
+[17:27:10.113][DEBUG] Loading 2 servers for user AidenFox
+[17:27:10.114][INFO] Loading engine auth(true)
+[17:27:10.114][DEBUG] === GUI BUILDER ===
+[17:27:10.122][DEBUG] Building group titleBar with parent rootPanel
+[17:27:10.124][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.134][INFO] Created font - mcfont
+[17:27:10.134][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.135][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[17:27:10.141][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[17:27:10.144][DEBUG] Building group mainFrame with parent rootPanel
+[17:27:10.146][DEBUG] Building group authForm with parent mainFrame
+[17:27:10.146][DEBUG] Loading textField style from assets/styles/textField.json
+[17:27:10.182][INFO] Created font - FSElliotPro-Heavy
+[17:27:10.183][DEBUG] Loading passField style from assets/styles/passField.json
+[17:27:10.186][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.187][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:27:10.195][INFO] Created font - Montserrat-Bold
+[17:27:10.196][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.202][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.210][DEBUG] Building group loggedForm with parent mainFrame
+[17:27:10.210][DEBUG] Loading scrollBox style from assets/styles/scrollBox.json
+[17:27:10.213][INFO] Updating ScrollBox [Ljava.lang.String;@64d7fb62
+[17:27:10.216][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[17:27:10.217][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.220][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.223][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.224][DEBUG] Building group userPane with parent loggedForm
+[17:27:10.224][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.225][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.226][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.228][DEBUG] Building group userDataForm with parent userPane
+[17:27:10.229][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.232][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.233][DEBUG] Building group newsForm with parent mainFrame
+[17:27:10.234][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.249][INFO] Created font - Sans-Black
+[17:27:10.250][DEBUG] Building group devInfo with parent newsForm
+[17:27:10.250][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.251][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.252][DEBUG] Building group settings with parent mainFrame
+[17:27:10.253][DEBUG] Building group settingsPane with parent settings
+[17:27:10.254][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.257][DEBUG] Building group generalSettings with parent settings
+[17:27:10.257][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.258][DEBUG] Building group settingsFields with parent generalSettings
+[17:27:10.259][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:27:10.260][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:27:10.261][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:27:10.262][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[17:27:10.263][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.264][DEBUG] Loading textField style from assets/styles/textField.json
+[17:27:10.270][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.279][DEBUG] Loading button style from assets/styles/button.json
+[17:27:10.281][DEBUG] Building group generalInfo with parent settings
+[17:27:10.281][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.283][DEBUG] Building group download with parent mainFrame
+[17:27:10.283][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[17:27:10.286][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.286][DEBUG] Building group downloadInfo with parent download
+[17:27:10.287][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.294][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.295][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.297][DEBUG] Building group wait with parent mainFrame
+[17:27:10.304][DEBUG] Loading label style from assets/styles/label.json
+[17:27:10.319][DEBUG] Adding request header User-Agent
+[17:27:10.319][DEBUG] Adding request header Accept-Language
+[17:27:10.319][DEBUG] Adding request header Accept
+[17:27:10.319][DEBUG] Adding request header Content-Type
+[17:27:10.579][INFO] Refreshing server state... (Hi-Tech)
+[17:27:10.593][INFO] Refreshing server done!
+[17:27:11.818][DEBUG] Opened 1
+[17:27:12.148][DEBUG] Hover Hi-Tech
+[17:27:12.320][DEBUG] Hover Foxesworld
+[17:27:12.790][DEBUG] Hover Hi-Tech
+[17:27:13.093][DEBUG] Hover Foxesworld
+[17:27:13.615][DEBUG] Hover Hi-Tech
+[17:27:13.859][DEBUG] Hover Foxesworld
+[17:27:14.249][DEBUG] Hover Hi-Tech
+[17:27:14.478][DEBUG] Hover Foxesworld
+[17:27:14.868][DEBUG] Hover Hi-Tech
+[17:27:15.221][DEBUG] Hover Foxesworld
+[17:27:15.666][DEBUG] Hover Hi-Tech
+[17:27:16.025][DEBUG] Hover Foxesworld
+[17:27:16.511][DEBUG] Hover Hi-Tech
+[17:27:16.977][DEBUG] Hover Foxesworld
+[17:27:17.514][DEBUG] Hover Hi-Tech
+[17:27:18.104][DEBUG] Hover Foxesworld
+[17:27:18.712][DEBUG] Hover Hi-Tech
+[17:27:19.228][DEBUG] Hover Foxesworld
+[17:27:19.911][DEBUG] Hover Hi-Tech
+[17:27:20.535][DEBUG] Hover Foxesworld
+[17:27:21.169][DEBUG] Hover Hi-Tech
+[17:27:21.591][DEBUG] Hover Foxesworld
+[17:27:21.861][DEBUG] Hover Hi-Tech
+[17:27:23.200][INFO] Refreshing server state... (Hi-Tech)
+[17:27:23.211][INFO] Refreshing server done!

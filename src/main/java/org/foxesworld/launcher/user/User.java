@@ -103,7 +103,7 @@ public class User implements ScrollBoxListener {
 
     @Override
     public void onScrollBoxOpen(int index) {
-        System.out.println("Opened "+index);
+        this.auth.getEngine().getLOGGER().debug("Opened "+index);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class User implements ScrollBoxListener {
 
     @Override
     public void onServerHover(int index) {
-        System.out.println("Hover " + index);
+        this.auth.getEngine().getLOGGER().debug("Hover " + this.auth.getUserServersAttributes().get(index).getServerName());
     }
 
     private  void  updateServer(int index){
@@ -128,8 +128,8 @@ public class User implements ScrollBoxListener {
         this.auth.getEngine().getLOGGER().info("Refreshing server state... (" + this.auth.getUserServersArray()[index] + ")");
         serverPollThread[0] = new Thread(() -> {
             serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[] { null, "0", null }));
-            String ip = auth.getUserServersAttributes().get(index).host;
-            int port = auth.getUserServersAttributes().get(index).port;
+            String ip = auth.getUserServersAttributes().get(index).getHost();
+            int port = auth.getUserServersAttributes().get(index).getPort();
             String[] status = serverInfo.pollServer(ip, port);
             String text = serverInfo.genServerStatus(status);
             BufferedImage img = serverInfo.genServerIcon(status);

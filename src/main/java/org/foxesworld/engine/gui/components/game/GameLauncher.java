@@ -32,7 +32,7 @@ public class GameLauncher {
         this.actionHandler = actionHandler;
         this.config = actionHandler.getEngine().getCONFIG();
         this.selectedServer = actionHandler.getCurrentServer();
-        this.currentJre = selectedServer.jreVersion;
+        this.currentJre = selectedServer.getJreVersion();
         this.libraryScanner = new LibraryScanner(actionHandler.getEngine());
         actionHandler.getEngine().getLOGGER().debug("#############################");
         actionHandler.getEngine().getLOGGER().debug("GameDir " + buildGameDir());
@@ -95,7 +95,7 @@ public class GameLauncher {
             params.add("--accessToken=" + this.user.getToken());
             params.add("--uuid=" + this.user.getUuid());
             params.add("--userProperties={}");
-            params.add("--assetIndex=" + selectedServer.serverVersion);
+            params.add("--assetIndex=" + selectedServer.getServerVersion());
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
             params.add("--session=" + this.user.getToken());
@@ -106,7 +106,7 @@ public class GameLauncher {
         params.add("--userType=legacy");
         params.add("--versionType=release");
         params.add("--username=" + this.user.getLogin());
-        params.add("--version=" + selectedServer.serverVersion);
+        params.add("--version=" + selectedServer.getServerVersion());
         params.add("--gameDir=" + buildClientDir());
         params.add("--assetsDir=" + buildAssetsPath());
         if (config.isFullScreen()) {
@@ -114,8 +114,8 @@ public class GameLauncher {
         }
 
         if (config.isAutoEnter()) {
-            params.add("--server=" + selectedServer.host);
-            params.add("--port=" + selectedServer.port);
+            params.add("--server=" + selectedServer.getHost());
+            params.add("--port=" + selectedServer.getPort());
         }
         params.add(tweakClassVal);
     }
@@ -187,7 +187,7 @@ public class GameLauncher {
     }
 
     public String buildVersionDir() {
-        return buildGameDir() + "versions" + File.separator + selectedServer.serverVersion;
+        return buildGameDir() + "versions" + File.separator + selectedServer.getForgeVersion();
     }
 
     public String buildLibrariesPath() {
@@ -195,7 +195,7 @@ public class GameLauncher {
     }
 
     private String buildMinecraftJarPath() {
-        return buildVersionDir() + File.separator + selectedServer.serverVersion + ".jar";
+        return buildVersionDir() + File.separator + selectedServer.getServerVersion() + ".jar";
     }
 
     public String buildNativesPath() {
@@ -203,9 +203,9 @@ public class GameLauncher {
     }
 
     public String buildClientDir() {
-        File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.serverName);
+        File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.getServerName());
         if (!clientDir.isDirectory()) {
-            actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.serverName + " directory");
+            actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.getServerName() + " directory");
             clientDir.mkdirs();
         }
         return clientDir.toString();

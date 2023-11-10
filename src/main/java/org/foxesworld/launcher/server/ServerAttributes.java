@@ -3,31 +3,58 @@ package org.foxesworld.launcher.server;
 import com.google.gson.annotations.SerializedName;
 
 public class ServerAttributes {
-
     @SerializedName("id")
-    public int id;
-
+    private int id;
     @SerializedName("serverName")
-    public String serverName;
-
+    private String serverName;
     @SerializedName("serverVersion")
-    public String serverVersion;
-
+    private String serverVersion;
     @SerializedName("mainClass")
-    public String mainClass;
-
+    private String mainClass;
     @SerializedName("jreVersion")
-    public String jreVersion;
-
+    private String jreVersion;
     @SerializedName("forgeVersion")
-    public String forgeVersion;
-
+    private String forgeVersion;
     @SerializedName("client")
-    public String client;
-
+    private String client;
     @SerializedName("host")
-    public String host;
-
+    private String host;
     @SerializedName("port")
-    public int port;
+    private int port;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public String getServerVersion() {
+        return serverVersion;
+    }
+
+    public String getMainClass() {
+        return mainClass;
+    }
+
+    public String getJreVersion() {
+        return jreVersion;
+    }
+
+    public String getForgeVersion() {
+        return forgeVersion;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
 }

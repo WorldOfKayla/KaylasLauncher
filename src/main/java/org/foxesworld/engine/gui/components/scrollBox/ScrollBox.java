@@ -13,7 +13,8 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     private boolean loaded = false;
     private ComponentFactory componentFactory;
     private ScrollBoxListener scrollBoxListener;
-    private static final long serialVersionUID = 1L;
+    private int previousHover = -1;
+
     public String[] values;
     public static int initialy = 0;
     private static boolean entered = false;
@@ -156,15 +157,14 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public void mouseMoved(MouseEvent e) {
         y = e.getY();
         x = e.getX();
-        if (opened && y / this.openedTX.getHeight() < this.values.length) {
-            if (hover != y / this.openedTX.getHeight()) {
-                this.repaint();
+        int newHover = opened ? (y / this.openedTX.getHeight()) : -1;
+        if (newHover >= 0 && newHover < values.length && newHover != previousHover) {
+            if (opened) {
+                scrollBoxListener.onServerHover(newHover);
             }
+            previousHover = newHover;
+            this.repaint();
             hover = y / this.openedTX.getHeight();
-        }
-        this.repaint();
-        if(this.opened) {
-            scrollBoxListener.onServerHover(hover);
         }
     }
 

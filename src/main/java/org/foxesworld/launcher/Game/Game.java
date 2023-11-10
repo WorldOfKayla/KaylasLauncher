@@ -23,22 +23,20 @@ public class Game implements FileLoaderListener, FileGuardListener {
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
         fileLoader.setLoaderListener(this);
-        this.filesArray = fileLoader.getFilesToDownload(actionHandler.getCurrentServer().serverVersion, actionHandler.getCurrentServer().serverName);
+        this.filesArray = fileLoader.getFilesToDownload(actionHandler.getCurrentServer().getServerVersion(), actionHandler.getCurrentServer().getServerName());
     }
 
     public void start(){
-        this.actionHandler.getEngine().getDiscord().discordRpcStart(this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),this.actionHandler.getEngine().getLANG().getString("game.playing")+actionHandler.getCurrentServer().serverName,"aiden");
+        this.actionHandler.getEngine().getDiscord().discordRpcStart(
+                this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),
+                this.actionHandler.getEngine().getLANG().getString("game.playing")+actionHandler.getCurrentServer().getServerName(),"aiden");
         gameLauncher = new GameLauncher(actionHandler);
         fileGuard = new FileGuard(this.gameLauncher);
         if(!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first
             filesArray.add(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
         }
-        //if(filesArray.size() == 0){
-        //    gameLauncher.launchGame();
-        //} else {
             this.fileLoader.downloadFiles(filesArray);
-        //}
     }
 
     private  boolean hasJre(String version){

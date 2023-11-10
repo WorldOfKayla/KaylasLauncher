@@ -87,7 +87,7 @@ public class ActionHandler {
 
             case "toGame" -> {
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
-                this.getEngine().getLOGGER().info("Launching "+this.currentServer.serverName);
+                this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 game = new Game(this);

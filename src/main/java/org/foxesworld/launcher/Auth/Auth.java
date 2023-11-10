@@ -93,7 +93,7 @@ public class Auth {
         userServersAttributes = serverParser.parseServers(getAuthCredentials("login"));
         userServersArray = new String[serverParser.getServersNum()];
         for (ServerAttributes serverAttributes : userServersAttributes) {
-            userServersArray[i] = serverAttributes.serverName;
+            userServersArray[i] = serverAttributes.getServerName();
             i++;
         }
     }

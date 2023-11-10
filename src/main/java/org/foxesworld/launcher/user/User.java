@@ -39,6 +39,7 @@ public class User implements ScrollBoxListener {
             throw new RuntimeException(e);
         }
     }
+
     public void setUserSpace() throws MalformedURLException {
         if(this.auth.getEngine().getAuth().isAuthorised()) {
             auth.getEngine().displayPanel("authForm->false|loggedForm->true|devInfo->true");
@@ -103,7 +104,7 @@ public class User implements ScrollBoxListener {
 
     @Override
     public void onScrollBoxOpen(int index) {
-        this.auth.getEngine().getLOGGER().debug("Opened "+index);
+        System.out.println("Opened "+index);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class User implements ScrollBoxListener {
 
     @Override
     public void onServerHover(int index) {
-        this.auth.getEngine().getLOGGER().debug("Hover " + this.auth.getUserServersAttributes().get(index).getServerName());
+        System.out.println("Hover " + index);
     }
 
     private  void  updateServer(int index){
@@ -142,5 +143,4 @@ public class User implements ScrollBoxListener {
         serverPollThread[0].setName("Server poll thread");
         serverPollThread[0].start();
     }
-
 }

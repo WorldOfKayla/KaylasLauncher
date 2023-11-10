@@ -1,0 +1,24 @@
+{
+  "groups": {
+    "settings": {
+      "panelOptions": {
+        "opaque": true,
+        "visibility": false,
+        "background": "#373c3975",
+        "border": "1,1,1,1,#242221",
+        "bounds": "35,35,780,450"
+      },
+      "childComponents": [
+        {
+          "readFrom": "assets/frames/forms/settings/settingsPane.json"
+        },
+        {
+          "readFrom": "assets/frames/forms/settings/generalSettings.json"
+        },
+        {
+          "readFrom": "assets/frames/forms/settings/generalInfo.json"
+        }
+      ]
+    }
+  }
+}

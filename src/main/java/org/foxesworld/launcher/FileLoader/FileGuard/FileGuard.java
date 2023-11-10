@@ -14,6 +14,8 @@ public class FileGuard {
     private final GameLauncher gameLauncher;
     private final Logger logger;
     private int totalFiles = 0;
+
+    private int dirsAmount = 0;
     private int checkedFiles = 0;
     private int filesDeleted = 0;
 
@@ -35,7 +37,7 @@ public class FileGuard {
         filesDeleted = 0;
 
         for (String dir : checkList) {
-            this.logger.debug("Checking Dir " + dir);
+            logger.debug("Checking Dir " + dir);
             scanAndDeleteFilesRecursively(new File(dir), filesToKeep);
         }
     }
@@ -103,7 +105,7 @@ public class FileGuard {
         }
     }
 
-    public boolean isUserConfig(File file){
+    private boolean isUserConfig(File file){
         if(file.getName().contains(".txt")) {
             return true;
         }

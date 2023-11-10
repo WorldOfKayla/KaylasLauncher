@@ -39,9 +39,9 @@ public class Checkbox extends JCheckBox {
                 boolean isSel = Checkbox.isSelected();
                 if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
                     if (isSel) {
-                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn.ogg");
-                    } else {
                         componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff.ogg");
+                    } else {
+                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn.ogg");
                     }
                 }
             }

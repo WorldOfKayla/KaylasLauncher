@@ -1,0 +1,54 @@
+{
+  "bindUrl": "https://foxescraft.ru",
+  "appId": "712667904956432456",
+  "downloadThreads": 4,
+  "requestProperties": [
+    {
+      "propertyKey": "User-Agent",
+      "propertyValue": "FoxesWorldLauncher"
+    },
+    {
+      "propertyKey": "Accept-Language",
+      "propertyValue": "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4"
+    },
+    {
+      "propertyKey": "Accept",
+      "propertyValue": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    },
+    {
+      "propertyKey": "Content-Type",
+      "propertyValue": "application/x-www-form-urlencoded; charset=UTF-8; boundary={$boundary}"
+    }
+  ],
+  "tweakClasses": [
+    {
+      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
+    },
+    {
+      "classPath": "cpw.mods.fml.common.launcher.FMLTweaker"
+    },
+    {
+      "classPath": "com.mumfrey.liteloader.launch.LiteLoaderTweaker"
+    },
+    {
+      "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
+    },
+    {
+      "classPath": "optifine.OptiFineTweaker"
+    }
+  ],
+  "authLib": {
+    "sessionHost": {
+      "arg": "-Dminecraft.api.session.host=",
+      "value": ""
+      },
+    "accountHost": {
+      "arg": "-Dminecraft.api.account.host",
+      "value": ""
+    },
+    "authHost": {
+      "arg": "-Dminecraft.api.auth.host=",
+      "value": ""
+    }
+  }
+}

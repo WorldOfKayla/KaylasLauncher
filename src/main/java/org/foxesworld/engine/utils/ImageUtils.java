@@ -26,11 +26,11 @@ public class ImageUtils {
             imgs.put(name, img);
             return img;
         } catch (Exception e) {
-            return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            //APP.LOGGER.error("Failed to open local image: " + name);
+            return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         }
     }
 
-    @Deprecated
     public static BufferedImage createImageFromPNGString(byte[] pngBytes) {
         try {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(pngBytes);
@@ -85,7 +85,42 @@ public class ImageUtils {
         return x2 >= xx && y2 >= yy && x2 < xx + w && y2 < yy + h;
     }
 
-    @Deprecated
+    public static BufferedImage genPanel(int w, int h, BufferedImage img) {
+        BufferedImage res = new BufferedImage(w, h, 2);
+        int onew = img.getWidth() / 3;
+        int oneh = img.getHeight() / 3;
+        res.getGraphics().drawImage(img.getSubimage(0, 0, onew, oneh), 0, 0, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(onew * 2, 0, onew, oneh), w - onew, 0, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(0, oneh * 2, onew, oneh), 0, h - oneh, onew, oneh, null);
+        res.getGraphics().drawImage(img.getSubimage(onew, oneh, onew * 2, oneh * 2), w - onew, h - oneh, onew, oneh, null);
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, 0, onew, oneh), w - onew * 2, oneh), onew, 0, w - onew * 2, oneh, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(0, oneh, onew, oneh), onew, h - oneh * 2), 0, oneh, onew, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, oneh * 2, onew, oneh), w - onew * 2, oneh), onew, h - oneh, w - onew * 2, oneh, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew * 2, oneh, onew, oneh), onew, h - oneh * 2), w - onew, oneh, onew, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        try {
+            res.getGraphics().drawImage(ImageUtils.fill(img.getSubimage(onew, oneh, onew, oneh), w - onew * 2, h - oneh * 2), onew, oneh, w - onew * 2, h - oneh * 2, null);
+        } catch (Exception exception) {
+            // empty catch block
+        }
+        return res;
+    }
+
     public static BufferedImage fill(BufferedImage texture, int w, int h) {
         int sizex = texture.getWidth();
         int sizey = texture.getHeight();
@@ -102,7 +137,7 @@ public class ImageUtils {
         return img;
     }
 
-    @Deprecated
+
     public static BufferedImage fillHoriz(BufferedImage texture, int w, int h) {
         int sizex = texture.getWidth();
         BufferedImage img = new BufferedImage(w, h, 2);
@@ -155,7 +190,8 @@ public class ImageUtils {
 
     public static BufferedImage[] spriteCollsRows(BufferedImage img, int colls, int rows, int width, int height) {
         BufferedImage[] spritesOut = new BufferedImage[rows * colls];
-        int i, j;
+        int i = 0;
+        int j = 0;
         for (i = 0; i < rows; ++i) {
             for (j = 0; j < colls; ++j) {
                 spritesOut[i * colls + j] = img.getSubimage(j * width, i * height, width, height);

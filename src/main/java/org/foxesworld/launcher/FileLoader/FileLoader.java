@@ -59,7 +59,9 @@ public class FileLoader {
         totalFiles = filesToDownload.size();
         this.engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
         if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
-
+        for (FilesArray filesArray: filesToDownload){
+            System.out.println(filesArray.filename);
+        }
         engine.displayPanel("loggedForm->false|newsForm->false|download->true");
         final long totalSizeFinal = filesToDownload.stream().mapToLong(FilesArray::getSize).sum();
         filesToDownload.forEach(file -> executorService.execute(() -> {

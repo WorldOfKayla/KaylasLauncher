@@ -1,0 +1,14 @@
+{
+  "styles": {
+    "checkBox": {
+      "solid": {
+        "name": "Pumpkin Power",
+        "font": "Montserrat-Bold",
+        "fontSize": 12,
+        "color": "#ffffff",
+        "background": "#ffffff",
+        "texture": "assets/ui/checkbox/checkbox.png"
+      }
+    }
+  }
+}

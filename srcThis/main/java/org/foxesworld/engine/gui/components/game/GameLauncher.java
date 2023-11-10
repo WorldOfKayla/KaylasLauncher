@@ -1,0 +1,237 @@
+package org.foxesworld.engine.gui.components.game;
+
+import org.foxesworld.engine.action.ActionHandler;
+import org.foxesworld.engine.config.Config;
+import org.foxesworld.launcher.server.ServerAttributes;
+import org.foxesworld.launcher.user.User;
+
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameLauncher {
+    private final ActionHandler actionHandler;
+    private final Config config;
+    private final User user;
+    private final ServerAttributes selectedServer;
+    private final String currentJre;
+    private final LibraryScanner libraryScanner;
+    private URLClassLoader cl;
+    private final List<String> params = new ArrayList<>();
+    private String tweakClassVal = "";
+    boolean tweakClass = false;
+
+    public GameLauncher(ActionHandler actionHandler) {
+        this.actionHandler = actionHandler;
+        this.config = actionHandler.getEngine().getCONFIG();
+        this.selectedServer = actionHandler.getCurrentServer();
+        this.currentJre = selectedServer.getJreVersion();
+        this.libraryScanner = new LibraryScanner(actionHandler.getEngine());
+        actionHandler.getEngine().getLOGGER().debug("#############################");
+        actionHandler.getEngine().getLOGGER().debug("GameDir " + buildGameDir());
+        actionHandler.getEngine().getLOGGER().debug("ClientDir " + buildClientDir());
+        actionHandler.getEngine().getLOGGER().debug("VersionsDir " + buildVersionDir());
+        actionHandler.getEngine().getLOGGER().debug("JarFile " + buildMinecraftJarPath());
+        actionHandler.getEngine().getLOGGER().debug("Natives " + buildNativesPath());
+        actionHandler.getEngine().getLOGGER().debug("Libraries " + buildLibrariesPath());
+        actionHandler.getEngine().getLOGGER().debug("Assets " + buildAssetsPath());
+        actionHandler.getEngine().getLOGGER().debug("#############################");
+        this.user = actionHandler.getEngine().getUser();
+    }
+
+    private void collectLibraries() {
+        int num = 0;
+        params.add("-cp");
+
+        StringBuilder sb = new StringBuilder();
+        List<URL> libraryURLs = new ArrayList<>();
+
+        for (String libraryPath : libraryScanner.findLibraryPaths(buildLibrariesPath())) {
+            File libraryFile = new File(libraryPath);
+            sb.append(libraryFile.getAbsoluteFile()).append(File.pathSeparator);
+
+            if (libraryFile.isFile()) {
+                try {
+                    URL libraryURL = libraryFile.toURI().toURL();
+                    libraryURLs.add(libraryURL);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            num++;
+        }
+        sb.append(buildMinecraftJarPath()).append(File.pathSeparator);
+        params.add(sb.toString());
+
+        cl = createClassLoader(libraryURLs);
+        actionHandler.getEngine().getLOGGER().debug(num + " libraries added to classPath");
+    }
+
+    private URLClassLoader createClassLoader(List<URL> libraryURLs) {
+        List<URL> clUrl = new ArrayList();
+        for (URL url : libraryURLs) {
+            File libFile = new File(url.getPath());
+            if (libFile.getAbsolutePath().contains(this.buildLibrariesPath())) {
+                try {
+                    clUrl.add(libFile.toURI().toURL());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return new URLClassLoader(clUrl.toArray(new URL[clUrl.size()]));
+    }
+
+    private void loadAuthLib() {
+        try {
+            cl.loadClass("com.mojang.authlib.Agent");
+            params.add("--accessToken=" + this.user.getToken());
+            params.add("--uuid=" + this.user.getUuid());
+            params.add("--userProperties={}");
+            params.add("--assetIndex=" + selectedServer.getServerVersion());
+        } catch (ClassNotFoundException e2) {
+            e2.printStackTrace();
+            params.add("--session=" + this.user.getToken());
+        }
+    }
+
+    private void addArgs() {
+        params.add("--userType=legacy");
+        params.add("--versionType=release");
+        params.add("--username=" + this.user.getLogin());
+        params.add("--version=" + selectedServer.getServerVersion());
+        params.add("--gameDir=" + buildClientDir());
+        params.add("--assetsDir=" + buildAssetsPath());
+        if (config.isFullScreen()) {
+            params.add("--fullscreen=true");
+        }
+
+        if (config.isAutoEnter()) {
+            params.add("--server=" + selectedServer.getHost());
+            params.add("--port=" + selectedServer.getPort());
+        }
+        params.add(tweakClassVal);
+    }
+
+    public void launchGame() {
+        Thread gameThread = new Thread(() -> {
+            try {
+                this.setJre();
+                this.collectLibraries();
+                this.addTweakClass();
+                params.add(tweakClass ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
+                this.loadAuthLib();
+                this.addArgs();
+                ProcessBuilder processBuilder = new ProcessBuilder(params);
+                processBuilder.redirectErrorStream(true);
+                Process process = processBuilder.start();
+                actionHandler.getEngine().getFrame().getFrame().setVisible(false);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+                int exitCode = process.waitFor();
+                if (exitCode != 0) {
+                    SwingUtilities.invokeLater(() -> {
+                        actionHandler.getEngine().getLOGGER().error("Error launching minecraft. Error code: " + exitCode);
+                        JOptionPane.showMessageDialog(actionHandler.getEngine().getFrame().getFrame(), "Exit Code - " + exitCode, "Launch error", JOptionPane.ERROR_MESSAGE, null);
+                    });
+                }
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            gameThread.interrupt();
+        }));
+
+        gameThread.start();
+    }
+
+
+    private void addTweakClass() {
+        List<TweakClasses> tweakClasses = actionHandler.getEngine().getEngineData().tweakClasses;
+        for (TweakClasses aClass : tweakClasses) {
+            String className = aClass.classPath;
+            try {
+                cl.loadClass(className);
+                tweakClassVal = "--tweakClass=" + className;
+                tweakClass = true;
+                actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " was found!");
+                System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");
+                System.setProperty("fml.ignorePatchDiscrepancies", "true");
+                return;
+            } catch (ClassNotFoundException classNotFoundException) {
+                actionHandler.getEngine().getLOGGER().debug("TweakClass " + className + " not found");
+            }
+        }
+    }
+
+    public String buildGameDir() {
+        return config.getFullPath();
+    }
+
+    private void setJre() {
+        params.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
+        params.add("-Xms" + config.getRamAmount() + "m");
+        params.add("-Djava.library.path=" + buildNativesPath());
+        params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+    }
+
+    public String buildVersionDir() {
+        return buildGameDir() + "versions" + File.separator + selectedServer.getForgeVersion();
+    }
+
+    public String buildLibrariesPath() {
+        return buildVersionDir() + File.separator + "libraries";
+    }
+
+    private String buildMinecraftJarPath() {
+        return buildVersionDir() + File.separator + selectedServer.getServerVersion() + ".jar";
+    }
+
+    public String buildNativesPath() {
+        return buildVersionDir() + File.separator + "natives";
+    }
+
+    public String buildClientDir() {
+        File clientDir = new File(buildGameDir() + "clients" + File.separator + selectedServer.getServerName());
+        if (!clientDir.isDirectory()) {
+            actionHandler.getEngine().getLOGGER().debug("Creating " + selectedServer.getServerName() + " directory");
+            clientDir.mkdirs();
+        }
+        return clientDir.toString();
+    }
+
+    private String buildAssetsPath() {
+        return buildGameDir() + "assets";
+    }
+
+    public File buildRuntimeDir() {
+        File runtimeDir = new File(buildGameDir() + "runtime");
+        if (!runtimeDir.isDirectory()) {
+            runtimeDir.mkdirs();
+        }
+        return runtimeDir;
+    }
+
+    public ServerAttributes getSelectedServer() {
+        return selectedServer;
+    }
+
+    public String getCurrentJre() {
+        return currentJre;
+    }
+
+    public ActionHandler getActionHandler() {
+        return actionHandler;
+    }
+}

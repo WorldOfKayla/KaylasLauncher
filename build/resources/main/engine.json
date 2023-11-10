@@ -41,7 +41,7 @@
     "sessionHost": {
       "arg": "-Dminecraft.api.session.host=",
       "value": ""
-      },
+    },
     "accountHost": {
       "arg": "-Dminecraft.api.account.host",
       "value": ""

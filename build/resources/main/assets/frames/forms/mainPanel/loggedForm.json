@@ -24,13 +24,13 @@
         },
         {
           "componentType": "button",
-          "componentStyle": "transparent",
+          "componentStyle": "buttonWhite",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
           "iconHeight": 32,
           "componentId": "settings",
           "localeKey": "settings.settingsButt",
-          "bounds": "300,450,32,32"
+          "bounds": "290,440,52,52"
         },
         {
           "componentType": "button",

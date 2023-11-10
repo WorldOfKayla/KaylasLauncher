@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.List;
 
 public class GameLauncher {
     private final ActionHandler actionHandler;
-
     private final Config config;
     private final User user;
     private final ServerAttributes selectedServer;
@@ -44,7 +44,6 @@ public class GameLauncher {
         actionHandler.getEngine().getLOGGER().debug("Assets " + buildAssetsPath());
         actionHandler.getEngine().getLOGGER().debug("#############################");
         this.user = actionHandler.getEngine().getUser();
-
     }
 
     private void collectLibraries() {
@@ -72,41 +71,51 @@ public class GameLauncher {
         params.add(sb.toString());
 
         cl = createClassLoader(libraryURLs);
-        actionHandler.getEngine().getLOGGER().debug(num + " libraries found");
+        actionHandler.getEngine().getLOGGER().debug(num + " libraries added to classPath");
     }
 
     private URLClassLoader createClassLoader(List<URL> libraryURLs) {
-        URL[] urls = libraryURLs.toArray(new URL[0]);
-        return new URLClassLoader(urls, getClass().getClassLoader());
+        List<URL> clUrl = new ArrayList();
+        for (URL url : libraryURLs) {
+            File libFile = new File(url.getPath());
+            if (libFile.getAbsolutePath().contains(this.buildLibrariesPath())) {
+                try {
+                    clUrl.add(libFile.toURI().toURL());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return new URLClassLoader(clUrl.toArray(new URL[clUrl.size()]));
     }
 
-    private void loadAuthLib(){
+    private void loadAuthLib() {
         try {
             cl.loadClass("com.mojang.authlib.Agent");
-            params.add("--accessToken="+this.user.getToken());
-            params.add("--uuid="+this.user.getUuid());
+            params.add("--accessToken=" + this.user.getToken());
+            params.add("--uuid=" + this.user.getUuid());
             params.add("--userProperties={}");
-            params.add("--assetIndex="+selectedServer.serverVersion);
+            params.add("--assetIndex=" + selectedServer.serverVersion);
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
-            params.add("--session=65");
+            params.add("--session=" + this.user.getToken());
         }
     }
 
     private void addArgs() {
         params.add("--userType=legacy");
         params.add("--versionType=release");
-        params.add("--username="+this.user.getLogin());
-        params.add("--version="+selectedServer.serverVersion);
-        params.add("--gameDir="+buildClientDir());
-        params.add("--assetsDir="+buildAssetsPath());
-        if(config.isFullScreen()) {
+        params.add("--username=" + this.user.getLogin());
+        params.add("--version=" + selectedServer.serverVersion);
+        params.add("--gameDir=" + buildClientDir());
+        params.add("--assetsDir=" + buildAssetsPath());
+        if (config.isFullScreen()) {
             params.add("--fullscreen=true");
         }
 
-        if(config.isAutoEnter()){
-            params.add("--server="+selectedServer.host);
-            params.add("--port="+selectedServer.port);
+        if (config.isAutoEnter()) {
+            params.add("--server=" + selectedServer.host);
+            params.add("--port=" + selectedServer.port);
         }
         params.add(tweakClassVal);
     }
@@ -146,9 +155,6 @@ public class GameLauncher {
 
         gameThread.start();
     }
-
-
-
 
 
     private void addTweakClass() {
@@ -209,9 +215,9 @@ public class GameLauncher {
         return buildGameDir() + "assets";
     }
 
-    public File buildRuntimeDir(){
-        File runtimeDir =  new File(buildGameDir() + "runtime");
-        if(!runtimeDir.isDirectory()){
+    public File buildRuntimeDir() {
+        File runtimeDir = new File(buildGameDir() + "runtime");
+        if (!runtimeDir.isDirectory()) {
             runtimeDir.mkdirs();
         }
         return runtimeDir;

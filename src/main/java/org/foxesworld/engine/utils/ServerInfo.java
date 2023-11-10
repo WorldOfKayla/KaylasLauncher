@@ -13,14 +13,12 @@ import java.util.StringTokenizer;
 
 public class ServerInfo {
 
-    private final Engine engine;
     private final LanguageProvider lang;
     private BufferedImage serverStatusImg;
     private final String delimiter = "§";
     public int servtype = 2;
 
     public ServerInfo(Engine engine) {
-        this.engine = engine;
         this.lang = engine.getLANG();
         serverStatusImg = ImageUtils.getLocalImage("assets/ui/icons/status.png");
     }
@@ -49,7 +47,6 @@ public class ServerInfo {
                 return splitString(servc, this.delimiter);
             }
         } catch (Exception e) {
-             //e.printStackTrace();
             return new String[] { null, null, null };
         }
     }
@@ -94,7 +91,7 @@ public class ServerInfo {
             if (args[1] != null && args[2] != null) {
                 int i = args.length;
                 if (args[i - 2].equals(args[i - 1]))
-                    return lang.getString("server.serverOff").replace("%%", args[i - 1]);
+                    return lang.getString("server.serverFull").replace("%%", args[i - 1]);
                 return lang.getString("server.serverOn").replace("%%", args[i - 2]).replace("##", args[i - 1]);
             }
         }

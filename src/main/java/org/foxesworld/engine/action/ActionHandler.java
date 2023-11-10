@@ -43,14 +43,15 @@ public class ActionHandler {
                 }
             }
 
-            case "test" -> this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
+            case "test" -> {}//this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
 
             case "gameDir" -> openGameFolder();
 
             case "applySettings" -> {
-                for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("generalSettings")){
+                for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")){
                     if(component instanceof JCheckBox){
                         this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                        System.out.println(((JCheckBox) component).isSelected());
                     } else {
                         if(component instanceof JTextField) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
@@ -61,7 +62,7 @@ public class ActionHandler {
             }
 
             case "logOut" -> {
-                System.out.println("LoggingOut...");
+                this.engine.getLOGGER().info("LoggingOut...");
                 this.engine.getAuth().setAuthorised(false);
                 engine.getFrame().getRootPanel().removeAll();
                 this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);

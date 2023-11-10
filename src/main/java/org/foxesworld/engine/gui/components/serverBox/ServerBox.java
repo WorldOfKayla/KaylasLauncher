@@ -12,6 +12,7 @@ public class ServerBox extends JComponent {
 
     public ServerBoxStyle sb;
 
+    @Override
     protected void paintComponent(Graphics maing) {
         Graphics2D g = (Graphics2D) maing.create();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

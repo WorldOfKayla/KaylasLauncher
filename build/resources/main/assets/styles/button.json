@@ -19,6 +19,16 @@
         "align": "CENTER",
         "texture": "assets/ui/button/buttonRed.png"
       },
+      "buttonWhite": {
+        "name": "White snow",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 120,
+        "height": 34,
+        "color": "#ffffff",
+        "align": "CENTER",
+        "texture": "assets/ui/button/buttonWhite.png"
+      },
       "transparent": {
         "name": "Red Lava",
         "font": "",

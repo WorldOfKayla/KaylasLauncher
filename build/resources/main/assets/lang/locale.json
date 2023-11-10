@@ -157,8 +157,8 @@
   },
   "dev": {
     "token": {
-      "en": "Token: ",
-      "ru": "Token: "
+      "en": "accessToken: ",
+      "ru": "accessToken: "
     },
     "uuid": {
       "en": "UUID: ",

@@ -34,11 +34,9 @@ public class APP {
     public String getLOCALE() {
         return LOCALE;
     }
-
     public String getFrameTpl() {
         return frameTpl;
     }
-
     public void setLOCALE(String LOCALE) {
         this.LOCALE = LOCALE;
     }

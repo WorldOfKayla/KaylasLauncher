@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JCheckBox;
 
 public class Checkbox extends JCheckBox {
-    private static final long serialVersionUID = 1L;
     public BufferedImage defaultTX;
     public BufferedImage rolloverTX;
     public BufferedImage selectedTX;
@@ -40,9 +39,9 @@ public class Checkbox extends JCheckBox {
                 boolean isSel = Checkbox.isSelected();
                 if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
                     if (isSel) {
-                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff2.ogg");
+                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn.ogg");
                     } else {
-                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn2.ogg");
+                        componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff.ogg");
                     }
                 }
             }

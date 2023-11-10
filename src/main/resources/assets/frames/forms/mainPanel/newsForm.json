@@ -38,7 +38,7 @@
                   "localeKey": "dev.token",
                   "componentId": "userToken",
                   "initialValue": "user#token",
-                  "bounds": "15,20,450,50"
+                  "bounds": "5,15,500,50"
                 },
                 {
                   "componentType": "label",
@@ -48,7 +48,7 @@
                   "localeKey": "dev.uuid",
                   "componentId": "userUuid",
                   "initialValue": "user#uuid",
-                  "bounds": "15,40,470,50"
+                  "bounds": "5,35,470,50"
                 }
               ]
             }

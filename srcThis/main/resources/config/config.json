@@ -1,9 +1,0 @@
-{
-  "lang": "ru",
-  "logLevel": "DEBUG",
-  "autoEnter": false,
-  "fullScreen": false,
-  "loadNews": true,
-  "enableSound": true,
-  "ramAmount": "4096"
-}

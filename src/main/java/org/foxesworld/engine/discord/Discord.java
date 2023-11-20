@@ -32,6 +32,7 @@ public class Discord implements DiscordListener {
         presence.state     = state;
         presence.largeImageKey = icon;
         lib.Discord_UpdatePresence(presence);
+
         Thread t = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
@@ -43,8 +44,13 @@ public class Discord implements DiscordListener {
                 }
             }
         }, "RPC-Callback-Handler");
+
+        // Установим поток как daemon-поток
+        t.setDaemon(true);
+
         t.start();
     }
+
 
     @Override
     public DiscordRPC getDiscordLib() {

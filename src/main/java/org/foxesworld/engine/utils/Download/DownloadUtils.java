@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.zip.ZipEntry;
@@ -75,34 +76,37 @@ public class DownloadUtils {
 
     public void unpack(String path, File dir_to) {
         File fileZip = new File(path);
-        try (ZipFile zip = new ZipFile(path)) {
+        try (ZipFile zip = new ZipFile(path, StandardCharsets.UTF_8)) { // Explicitly specify UTF-8 encoding
             Enumeration entries = zip.entries();
             LinkedList<ZipEntry> zfiles = new LinkedList<>();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 if (entry.isDirectory()) {
-                    new File(dir_to + "/" + entry.getName()).mkdir();
+                    new File(dir_to + File.separator + entry.getName()).mkdirs(); // Use mkdirs() to create parent directories if they don't exist
                 } else {
                     zfiles.add(entry);
                 }
             }
             for (ZipEntry entry : zfiles) {
-                OutputStream out;
-                try (InputStream in = zip.getInputStream(entry)) {
-                    out = new FileOutputStream(dir_to + File.separator + entry.getName());
+                File outFile = new File(dir_to, entry.getName());
+                try (InputStream in = zip.getInputStream(entry);
+                     OutputStream out = new FileOutputStream(outFile)) {
+                    if (!outFile.getParentFile().exists()) {
+                        outFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
+                    }
                     byte[] buffer = new byte[1024];
                     int len;
                     while ((len = in.read(buffer)) >= 0) {
                         out.write(buffer, 0, len);
                     }
                 }
-                out.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         fileZip.delete();
     }
+
 
     private double getFileSize(String url) throws IOException {
         URL furl = new URL(url);

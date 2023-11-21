@@ -9,6 +9,7 @@ public class Discord implements DiscordListener {
     private DiscordRPC lib;
     private DiscordRichPresence presence;
     private String applicationId;
+    private Thread rpcThread;
     public Discord(Engine engine){
      this.engine = engine;
      applicationId = engine.getEngineData().appId;
@@ -24,8 +25,6 @@ public class Discord implements DiscordListener {
         lib.Discord_UpdatePresence(presence);
     }
 
-
-    @Override
     public void discordRpcStart(String state, String details, String icon) {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details   = details;
@@ -33,7 +32,7 @@ public class Discord implements DiscordListener {
         presence.largeImageKey = icon;
         lib.Discord_UpdatePresence(presence);
 
-        Thread t = new Thread(() -> {
+        rpcThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
                 try {
@@ -45,12 +44,13 @@ public class Discord implements DiscordListener {
             }
         }, "RPC-Callback-Handler");
 
-        // Установим поток как daemon-поток
-        t.setDaemon(true);
+        rpcThread.setDaemon(true);
+        rpcThread.start();
 
-        t.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            rpcThread.interrupt();
+        }));
     }
-
 
     @Override
     public DiscordRPC getDiscordLib() {

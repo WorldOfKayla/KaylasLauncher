@@ -9,18 +9,51 @@ import java.util.List;
 public class EngineData {
 
     @SerializedName("bindUrl")
-    public String bindUrl;
+    private String bindUrl;
+
+    @SerializedName("launcherBrand")
+    private String launcherBrand;
+
+    @SerializedName("launcherVersion")
+    private String launcherVersion;
 
     @SerializedName("appId")
-    public String appId;
+    private String appId;
 
     @SerializedName("downloadThreads")
-    public int downloadThreads;
+    private int downloadThreads;
 
     @SerializedName("requestProperties")
-    public List<RequestProperty> requestProperties;
+    private List<RequestProperty> requestProperties;
 
     @SerializedName("tweakClasses")
-    public List<TweakClasses> tweakClasses;
+    private List<TweakClasses> tweakClasses;
 
+    public String getBindUrl() {
+        return bindUrl;
+    }
+
+    public String getLauncherBrand() {
+        return launcherBrand;
+    }
+
+    public String getLauncherVersion() {
+        return launcherVersion;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public int getDownloadThreads() {
+        return downloadThreads;
+    }
+
+    public List<RequestProperty> getRequestProperties() {
+        return requestProperties;
+    }
+
+    public List<TweakClasses> getTweakClasses() {
+        return tweakClasses;
+    }
 }

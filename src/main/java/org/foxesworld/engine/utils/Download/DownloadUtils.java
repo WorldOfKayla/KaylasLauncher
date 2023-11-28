@@ -29,7 +29,7 @@ public class DownloadUtils {
 
     public void downloader(String downloadFile, String savePath, long totalSize) {
         this.progressBar.add(this.progressLabel);
-        String Durl = engine.getEngineData().bindUrl + downloadFile;
+        String Durl = engine.getEngineData().getBindUrl() + downloadFile;
 
         File parentDir = new File(savePath).getParentFile();
         if (!parentDir.isDirectory()) {

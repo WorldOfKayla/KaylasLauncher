@@ -66,7 +66,7 @@ public class User implements ScrollBoxListener {
         skinData.put("sysRequest", "skin");
         skinData.put("show", "head");
         skinData.put("login", this.getLogin());
-        return this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().bindUrl, skinData);
+        return this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().getBindUrl(), skinData);
     }
 
     private Map<String, Label> getLabelsMap(List<String> labeldIds){

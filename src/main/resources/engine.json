@@ -1,4 +1,6 @@
 {
+  "launcherBrand": "FoxesLauncher",
+  "launcherVersion": "1.0.0-SNAPSHOT",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
   "downloadThreads": 4,
@@ -32,6 +34,9 @@
     },
     {
       "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
+    },
+    {
+      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
     },
     {
       "classPath": "optifine.OptiFineTweaker"

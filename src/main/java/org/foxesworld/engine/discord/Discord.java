@@ -12,7 +12,7 @@ public class Discord implements DiscordListener {
     private Thread rpcThread;
     public Discord(Engine engine){
      this.engine = engine;
-     applicationId = engine.getEngineData().appId;
+     applicationId = engine.getEngineData().getAppId();
      lib = DiscordRPC.INSTANCE;
         String steamId = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
@@ -55,5 +55,9 @@ public class Discord implements DiscordListener {
     @Override
     public DiscordRPC getDiscordLib() {
         return lib;
+    }
+
+    public Thread getRpcThread() {
+        return rpcThread;
     }
 }

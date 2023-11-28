@@ -14,13 +14,12 @@ public class FileGuard {
     private final GameLauncher gameLauncher;
     private final Logger logger;
     private int totalFiles = 0;
-
-    private int dirsAmount = 0;
     private int checkedFiles = 0;
     private int filesDeleted = 0;
 
     public FileGuard(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
+        //Directories we check
         this.checkList = Arrays.asList(
                 gameLauncher.buildClientDir(),
                 gameLauncher.buildVersionDir(),
@@ -40,6 +39,8 @@ public class FileGuard {
             logger.debug("Checking Dir " + dir);
             scanAndDeleteFilesRecursively(new File(dir), filesToKeep);
         }
+
+        fileGuardListener.onFilesChecked(filesDeleted);
     }
 
     private int countTotalFiles() {
@@ -95,21 +96,14 @@ public class FileGuard {
                 } else if (file.isDirectory()) {
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
-                this.logger.debug("Checked " + checkedFiles + " / "+totalFiles);
-                if (checkedFiles == totalFiles) {
-                    fileGuardListener.onFilesChecked(filesDeleted);
-                }
             }
         } else {
             logger.error(directory + " is not found!");
         }
     }
 
-    private boolean isUserConfig(File file){
-        if(file.getName().contains(".txt")) {
-            return true;
-        }
-        return false;
+    private boolean isUserConfig(File file) {
+        return file.getName().endsWith(".txt");
     }
 
     public void setFileGuardListener(FileGuardListener fileGuardListener) {

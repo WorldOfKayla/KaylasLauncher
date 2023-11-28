@@ -37,8 +37,8 @@ public class Auth {
         //If we just initialised and are not sending a form
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             Map<String, String> authCredentials = new HashMap<>();
-            authCredentials.put("login", (String) CONFIG.getLogin());
-            authCredentials.put("password", (String) CONFIG.getPassword());
+            authCredentials.put("login",  CONFIG.getLogin());
+            authCredentials.put("password", CONFIG.getPassword());
             this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.getLogin());
             //Writing login data if it's not present
             if (!this.authorize(authCredentials)) {
@@ -65,7 +65,7 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(engine.getEngineData().bindUrl, authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
+        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
         boolean status = "success".equals(responseMap.get("type"));
 
         if (status) {
@@ -93,7 +93,7 @@ public class Auth {
         userServersAttributes = serverParser.parseServers(getAuthCredentials("login"));
         userServersArray = new String[serverParser.getServersNum()];
         for (ServerAttributes serverAttributes : userServersAttributes) {
-            userServersArray[i] = serverAttributes.getServerName();
+            userServersArray[i] = serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion();
             i++;
         }
     }

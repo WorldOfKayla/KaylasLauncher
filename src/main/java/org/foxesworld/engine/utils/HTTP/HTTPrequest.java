@@ -29,7 +29,7 @@ public class HTTPrequest {
             URL url = new URL(queryUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
-            this.setRequestProperties(httpURLConnection, engine.getEngineData().requestProperties);
+            this.setRequestProperties(httpURLConnection, engine.getEngineData().getRequestProperties());
             httpURLConnection.setUseCaches(false);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);

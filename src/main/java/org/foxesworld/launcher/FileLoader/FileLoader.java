@@ -32,7 +32,7 @@ public class FileLoader {
         this.POSTrequest = engine.getPOSTrequest();
         this.homeDir = engine.getCONFIG().getFullPath();
         this.downloadUtils = new DownloadUtils(engine);
-        this.executorService = Executors.newFixedThreadPool(this.engine.getEngineData().downloadThreads);
+        this.executorService = Executors.newFixedThreadPool(this.engine.getEngineData().getDownloadThreads());
     }
 
     public List<FilesArray> getFilesToDownload(String version, String client) {
@@ -41,12 +41,13 @@ public class FileLoader {
         request.put("version", version);
         request.put("client", client);
         request.put("platform", String.valueOf(this.getPlatformNumber()));
-        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray[].class);
+        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesArray[].class);
         for(FilesArray file: filesArray) {
             file.setReplaceMask("/uploads/files/clients/");
             addFileToKeep(file.filename.replace(file.getReplaceMask(), ""));
             this.engine.getLOGGER().debug("Adding to keep "+file.filename.replace(file.getReplaceMask(), ""));
         }
+        this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
         return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
     private boolean shouldDownloadFile(FilesArray fileSection) {
@@ -129,7 +130,7 @@ public class FileLoader {
         Map<String, String> request = new HashMap<>();
         request.put("sysRequest", "getJre");
         request.put("jreVersion", jreVersion);
-        FilesArray jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().bindUrl, request), FilesArray.class);
+        FilesArray jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesArray.class);
         jreFile.setReplaceMask("/uploads/files/");
         return  jreFile;
     }

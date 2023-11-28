@@ -8,7 +8,6 @@ import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,9 +27,10 @@ public class GameLauncher {
     private final LibraryScanner libraryScanner;
     private final int versionNumbers;
     private URLClassLoader cl;
-    private final List<String> params = new ArrayList<>();
+    private final List<String> processArgs = new ArrayList<>();
     private String tweakClassVal = "";
-    boolean tweakClass = false;
+    private boolean tweakClass = false;
+    public boolean isStarted;
 
     public GameLauncher(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
@@ -55,7 +55,7 @@ public class GameLauncher {
 
     private void collectLibraries() {
         int num = 0;
-        params.add("-cp");
+        processArgs.add("-cp");
 
         StringBuilder sb = new StringBuilder();
         List<URL> libraryURLs = new ArrayList<>();
@@ -75,7 +75,7 @@ public class GameLauncher {
             num++;
         }
         sb.append(buildMinecraftJarPath()).append(File.pathSeparator);
-        params.add(sb.toString());
+        processArgs.add(sb.toString());
 
         cl = createClassLoader(libraryURLs);
         this.logger.debug(num + " libraries found");
@@ -89,81 +89,103 @@ public class GameLauncher {
     private void loadAuthLib() {
         try {
             cl.loadClass("com.mojang.authlib.Agent");
-            params.add("--accessToken=" + this.user.getToken());
-            params.add("--uuid=" + this.user.getUuid());
-            params.add("--userProperties={}");
+            processArgs.add("--accessToken=" + this.user.getToken());
+            processArgs.add("--uuid=" + this.user.getUuid());
+            processArgs.add("--userProperties={}");
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
-            params.add("--session=" + this.user.getToken());
+            //processArgs.add("--session=" + this.user.getToken());
         }
     }
 
     private void addArgs() {
-        params.add("--userType=mojang");
-        params.add("--versionType=release");
-        params.add("--username=" + this.user.getLogin());
-        params.add("--version=" + selectedServer.getServerVersion());
-        params.add("--gameDir=" + buildClientDir());
-        params.add("--assetsDir=" + buildAssetsPath());
-        params.add("--assetIndex=" + selectedServer.getServerVersion());
+        processArgs.add("--userType=mojang");
+        processArgs.add("--versionType=release");
+        processArgs.add("--username=" + this.user.getLogin());
+        processArgs.add("--version=" + selectedServer.getServerVersion());
+        processArgs.add("--gameDir=" + buildClientDir());
+        processArgs.add("--assetsDir=" + buildAssetsPath());
+        processArgs.add("--assetIndex=" + selectedServer.getServerVersion());
         if (config.isFullScreen()) {
-            params.add("--fullscreen=true");
+            processArgs.add("--fullscreen=true");
         }
 
         if (config.isAutoEnter()) {
-            params.add("--server=" + selectedServer.getHost());
-            params.add("--port=" + selectedServer.getPort());
+            processArgs.add("--server=" + selectedServer.getHost());
+            processArgs.add("--port=" + selectedServer.getPort());
         }
-        if (Integer.parseInt(this.selectedServer.getServerVersion().replace(".", "")) > 1133) {
-            params.add("--add-opens=java.base/java.util=ALL-UNNAMED");
-            params.add("--fml.forgeVersion=" + this.selectedServer.getForgeVersion());
-            params.add("--fml.mcVersion=" + this.selectedServer.getServerVersion());
-            params.add("--launchTarget=" + this.selectedServer.getClient());
-            params.add("--fml.forgeGroup=net.minecraftforge");
-            params.add("--fml.mcpVersion=20210115.111550");
+        if (versionNumbers > 1133) {
+            processArgs.add("--fml.forgeVersion=" + this.selectedServer.getForgeVersion());
+            processArgs.add("--fml.mcVersion=" + this.selectedServer.getServerVersion());
+            processArgs.add("--launchTarget=" + this.selectedServer.getClient());
+            //processArgs.add("--add-exports=java.base/sun.security.util=ALL-UNNAMED");
+            //processArgs.add("-XX:+IgnoreUnrecognizedVMOptions");
+            //processArgs.add("--add-exports=jdk.naming.dns/com.sun.jndi.dns=java.naming");
+            //processArgs.add("--add-opens=java.base/java.util.jar=ALL-UNNAMED");
+            processArgs.add("--fml.forgeGroup=net.minecraftforge");
+            processArgs.add("--fml.mcpVersion=20210115.111550");
         }
 
-        params.add(tweakClassVal);
+        processArgs.add(tweakClassVal);
     }
 
     public void launchGame() {
+        if (isStarted) throw new IllegalStateException("Process already started");
         Thread gameThread = new Thread(() -> {
             try {
-                this.setJre();
-                this.collectLibraries();
-                //Adding --tweakclass only on versions under 1.13.3
-                if (this.versionNumbers < 1133) {
-                    this.addTweakClass();
+                setJre();
+                collectLibraries();
+
+                // Adding --tweakclass only on versions under 1.13.3
+                if (versionNumbers < 1133) {
+                    addTweakClass();
                 }
-                params.add(this.selectedServer.getMainClass());
-                this.loadAuthLib();
-                this.addArgs();
-                System.out.println(params.toString().replace(",", ""));
-                ProcessBuilder processBuilder = new ProcessBuilder(params);
+
+                processArgs.add(selectedServer.getMainClass());
+                loadAuthLib();
+                addArgs();
+
+                // Log the command that will be executed
+                logger.debug("Launching command: " + String.join(" ", processArgs));
+                ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
+                processBuilder.directory(new File(this.buildClientDir()));
                 processBuilder.redirectErrorStream(true);
+                processBuilder.command().add("--illegal-access=warn");
+
+                // Redirect error stream to the standard output
+                processBuilder.inheritIO();
+
                 Process process = processBuilder.start();
-                this.engine.getFrame().getFrame().setVisible(false);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
+                engine.getFrame().getFrame().setVisible(false);
+
                 int exitCode = process.waitFor();
-                if (exitCode != 0) {
-                    SwingUtilities.invokeLater(() -> {
-                        this.logger.error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(this.engine.getFrame().getFrame(), "Exit Code - " + exitCode, "Launch error", JOptionPane.ERROR_MESSAGE, null);
-                    });
-                }
-            } catch (IOException | InterruptedException e) {
+
+                // Using invokeLater for Swing-related actions
+                SwingUtilities.invokeLater(() -> {
+                    if (exitCode != 0) {
+                        logger.error("Error launching minecraft. Error code: " + exitCode);
+                        JOptionPane.showMessageDialog(
+                                actionHandler.getEngine().getFrame().getFrame(),
+                                "Exit Code - " + exitCode,
+                                "Launch error",
+                                JOptionPane.ERROR_MESSAGE,
+                                null
+                        );
+                    }
+                });
+            } catch (IOException | InterruptedException | RuntimeException e) {
+                // Вывод StackTrace в консоль текущего приложения
+                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         });
+
+        // Add a shutdown hook to clean up threads
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            this.engine.getDiscord().getRpcThread().interrupt();
+            engine.getDiscord().getRpcThread().interrupt();
             gameThread.interrupt();
         }));
-
+        isStarted = true;
         gameThread.start();
     }
 
@@ -190,12 +212,12 @@ public class GameLauncher {
     }
 
     private void setJre() {
-        params.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
-        params.add("-Xms" + config.getRamAmount() + "m");
-        params.add("-Djava.library.path=" + buildNativesPath());
-        params.add("-Dminecraft.launcher.brand=" + this.engine.getEngineData().getLauncherBrand());
-        params.add("-Dminecraft.launcher.version=" + this.engine.getEngineData().getLauncherVersion());
-        params.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+        processArgs.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
+        processArgs.add("-Xmx" + config.getRamAmount() + 'M');
+        processArgs.add("-Djava.library.path=" + buildNativesPath());
+        processArgs.add("-Dminecraft.launcher.brand=" + this.engine.getEngineData().getLauncherBrand());
+        processArgs.add("-Dminecraft.launcher.version=" + this.engine.getEngineData().getLauncherVersion());
+        processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
     }
 
     public String buildVersionDir() {

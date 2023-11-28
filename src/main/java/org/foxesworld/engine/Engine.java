@@ -90,7 +90,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     *   In process
     * */
     public void initialize(String login) {
-        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine","aiden");
+        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine"  + '-' + this.getEngineData().getLauncherVersion(),"aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);

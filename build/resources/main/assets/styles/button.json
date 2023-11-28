@@ -5,16 +5,18 @@
         "name": "Green Emerald",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
+        "width": 344,
+        "height": 500,
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonGreen.png"
       },
       "buttonRed": {
-        "name": "Red Lava",
+        "name": "Orcs power",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
-        "width": 120,
-        "height": 34,
+        "width": 344,
+        "height": 500,
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonRed.png"
@@ -30,7 +32,7 @@
         "texture": "assets/ui/button/buttonWhite.png"
       },
       "transparent": {
-        "name": "Red Lava",
+        "name": "Invisible",
         "font": "",
         "fontSize": 12,
         "width": 120,

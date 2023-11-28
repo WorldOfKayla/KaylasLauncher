@@ -27,7 +27,9 @@ public class Game implements FileLoaderListener, FileGuardListener {
     }
 
     public void start() {
-        this.actionHandler.getEngine().getDiscord().discordRpcStart(this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(), this.actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
+        this.actionHandler.getEngine().getDiscord().discordRpcStart(
+                this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),
+                this.actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         gameLauncher = new GameLauncher(actionHandler);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first

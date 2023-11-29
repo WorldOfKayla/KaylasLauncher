@@ -2,7 +2,7 @@
   "styles": {
     "button": {
       "buttonGreen": {
-        "name": "Green Emerald",
+        "name": "Goblin power",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "width": 344,
@@ -20,6 +20,16 @@
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonRed.png"
+      },
+      "buttonYellow": {
+        "name": "Elves power",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 344,
+        "height": 500,
+        "color": "#ffffff",
+        "align": "CENTER",
+        "texture": "assets/ui/button/buttonYellow.png"
       },
       "buttonWhite": {
         "name": "White snow",

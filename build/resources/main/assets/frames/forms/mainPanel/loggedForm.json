@@ -24,6 +24,7 @@
         },
         {
           "componentType": "button",
+          "enabled": true,
           "componentStyle": "buttonWhite",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
@@ -34,6 +35,7 @@
         },
         {
           "componentType": "button",
+          "enabled": true,
           "componentStyle": "buttonRed",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
@@ -41,6 +43,7 @@
         },
         {
           "componentType": "button",
+          "enabled": true,
           "componentStyle": "buttonGreen",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
@@ -110,7 +113,8 @@
                         },
                         {
                           "componentType": "button",
-                          "componentStyle": "buttonGreen",
+                          "enabled": false,
+                          "componentStyle": "buttonYellow",
                           "componentId": "test",
                           "localeKey": "TEST",
                           "bounds": "95,30,60,34"

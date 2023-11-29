@@ -36,6 +36,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     protected final APP APP;
     private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
+    private final  JVMHelper jvmHelper;
     private final Discord discord;
     private final  LanguageProvider LANG;
     private  final ServerInfo serverInfo;
@@ -61,6 +62,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.engineData = new EngineData();
         this.initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
+        this.jvmHelper = new JVMHelper(this);
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
@@ -193,10 +195,13 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         return user;
     }
 
+    public JVMHelper getJvmHelper() {
+        return jvmHelper;
+    }
+
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
-
     public Discord getDiscord() {
         return discord;
     }

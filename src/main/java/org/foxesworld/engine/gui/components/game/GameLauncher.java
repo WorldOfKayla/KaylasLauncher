@@ -2,6 +2,7 @@ package org.foxesworld.engine.gui.components.game;
 
 import org.apache.logging.log4j.Logger;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.JVMHelper;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.launcher.server.ServerAttributes;
@@ -10,7 +11,6 @@ import org.foxesworld.launcher.user.User;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -89,6 +89,7 @@ public class GameLauncher {
     private void loadAuthLib() {
         try {
             cl.loadClass("com.mojang.authlib.Agent");
+            processArgs.add("--userType=legacy");
             processArgs.add("--accessToken=" + this.user.getToken());
             processArgs.add("--uuid=" + this.user.getUuid());
             processArgs.add("--userProperties={}");
@@ -99,7 +100,6 @@ public class GameLauncher {
     }
 
     private void addArgs() {
-        processArgs.add("--userType=mojang");
         processArgs.add("--versionType=release");
         processArgs.add("--username=" + this.user.getLogin());
         processArgs.add("--version=" + selectedServer.getServerVersion());
@@ -124,6 +124,7 @@ public class GameLauncher {
             //processArgs.add("--add-opens=java.base/java.util.jar=ALL-UNNAMED");
             processArgs.add("--fml.forgeGroup=net.minecraftforge");
             processArgs.add("--fml.mcpVersion=20210115.111550");
+            System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
 
         processArgs.add(tweakClassVal);
@@ -150,7 +151,8 @@ public class GameLauncher {
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(this.buildClientDir()));
                 processBuilder.redirectErrorStream(true);
-                processBuilder.command().add("--illegal-access=warn");
+                processBuilder.environment().put("JAVA_HOME", buildRuntimeDir().toString());
+                //processBuilder.command().add("--illegal-access=warn");
 
                 // Redirect error stream to the standard output
                 processBuilder.inheritIO();
@@ -214,9 +216,9 @@ public class GameLauncher {
     private void setJre() {
         processArgs.add(buildRuntimeDir() + File.separator + currentJre + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
-        processArgs.add("-Djava.library.path=" + buildNativesPath());
-        processArgs.add("-Dminecraft.launcher.brand=" + this.engine.getEngineData().getLauncherBrand());
-        processArgs.add("-Dminecraft.launcher.version=" + this.engine.getEngineData().getLauncherVersion());
+        processArgs.add(this.engine.getJvmHelper().jvmProperty("java.library.path", buildNativesPath()));
+        processArgs.add(this.engine.getJvmHelper().jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
+        processArgs.add(this.engine.getJvmHelper().jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
         processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
     }
 

@@ -19,7 +19,7 @@ public class LibraryScanner {
         if (librariesDir.exists() && librariesDir.isDirectory()) {
             scanForJARs(librariesDir, libraryPaths);
         } else {
-            System.err.println("Libraries directory does not exist or is not a directory.");
+            engine.getLOGGER().error("Libraries directory does not exist or is not a directory.");
         }
 
         return libraryPaths;

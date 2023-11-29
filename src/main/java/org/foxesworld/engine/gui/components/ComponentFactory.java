@@ -98,7 +98,7 @@ public class ComponentFactory {
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.getComponentId());
-                checkbox.setEnabled(componentAttributes.isEnabled());
+                checkbox.setEnabled((boolean) componentAttributes.isEnabled());
                 if(componentAttributes.getInitialValue() != null) {
                     checkbox.setSelected(Boolean.parseBoolean(componentAttributes.getInitialValue()));
                 }
@@ -138,18 +138,28 @@ public class ComponentFactory {
 
             case "button" -> {
                 ButtonStyle buttonStyle = new ButtonStyle(this);
-                Button button = new Button(this, LANG.getString(componentAttributes.getLocaleKey()));
-                if(componentAttributes.getImageIcon() != null){
+
+                Button button;
+
+                if (componentAttributes.getImageIcon() != null) {
                     ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight()));
                     button = new Button(this, icon);
+                } else {
+                    button = new Button(this, LANG.getString(componentAttributes.getLocaleKey()));
                 }
+
                 buttonStyle.apply(button);
                 button.setName(componentAttributes.getComponentId());
                 button.setActionCommand(componentAttributes.getComponentId());
                 button.setBounds(xPos, yPos, width, height);
+                button.setEnabled(componentAttributes.isEnabled());
                 button.addActionListener(engine);
                 return button;
             }
+
+
+
+
 
             case "multiButton" -> {
                 MultiButtonStyle multiButtonStyle = new MultiButtonStyle(this, componentAttributes);

@@ -95,7 +95,7 @@ public class GuiBuilder implements ComponentFactoryListener {
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
                 thisPanel.setName(componentGroup);
-                thisPanel.setVisible(optionGroups.panelOptions.visible);
+                thisPanel.setVisible(optionGroups.panelOptions.isVisible());
                 this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
                 if (!this.getPanelsMap().containsKey(componentGroup)) {
                     parentPanel.add(thisPanel);

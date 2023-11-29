@@ -14,7 +14,9 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class Panel {
 
+    private JPanel groupPanel;
     private final FrameConstructor frameConstructor;
+
     public Panel(FrameConstructor frameConstructor) {
         this.frameConstructor = frameConstructor;
     }
@@ -27,44 +29,71 @@ public class Panel {
                 drawDarkenedBackground(g, frameAttributes);
             }
         };
-        //rootPanel.setOpaque(true);
+        rootPanel.setOpaque(false);
         rootPanel.setName("rootPanel");
 
         return rootPanel;
     }
 
     private void drawDarkenedBackground(Graphics g, FrameAttributes frameAttributes) {
-        BufferedImage background = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
-        g.drawImage(background, 0, 0, null);
-        g.setColor(hexToColor(frameAttributes.backgroundBlur));
-        g.fillRect(0, 0, this.frameConstructor.getScreenSize().width, this.frameConstructor.getScreenSize().height);
+        BufferedImage backgroundImage = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
+        g.drawImage(applyDarkening(backgroundImage, hexToColor(frameAttributes.backgroundBlur)), 0, 0, null);
+    }
+
+    private BufferedImage applyDarkening(BufferedImage image, Color darkeningColor) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        BufferedImage darkenedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = darkenedImage.createGraphics();
+
+        //Image
+        g2d.drawImage(image, 0, 0, null);
+
+        //Color
+        g2d.setColor(darkeningColor);
+        g2d.fillRect(0, 0, width, height);
+
+        g2d.dispose();
+        return darkenedImage;
     }
 
     public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
-        JPanel groupPanel = new JPanel(null, true);
+        groupPanel = new JPanel(null, true) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (panelOptions.getBackgroundImage() != null) {
+                    BufferedImage backgroundImage = ImageUtils.getLocalImage(panelOptions.getBackgroundImage());
+                    g.drawImage(applyDarkening(backgroundImage, hexToColor(panelOptions.getBackground())), 0, 0, null);
+                }
+            }
+        };
         groupPanel.setName(groupName);
-        groupPanel.setOpaque(panelOptions.opaque);
-        groupPanel.setBackground(hexToColor(panelOptions.background));
-        if(panelOptions.border != null && !panelOptions.border.equals("")) {
-            this.createBorder(groupPanel, panelOptions.border);
+        groupPanel.setOpaque(panelOptions.isOpaque());
+        groupPanel.setBackground(hexToColor(panelOptions.getBackground()));
+        if (panelOptions.getBorder() != null && !panelOptions.getBorder().equals("")) {
+            this.createBorder(groupPanel, panelOptions.getBorder());
         }
 
-        if(panelOptions.listener != null) {
+        if (panelOptions.getListener() != null) {
             DragListener dragListener = new DragListener();
-            switch (panelOptions.listener){
+            switch (panelOptions.getListener()) {
                 case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
         }
 
-        String[] bounds = panelOptions.bounds.split(",");
+        String[] bounds = panelOptions.getBounds().split(",");
         int posX = Integer.parseInt(bounds[0]);
         int posY = Integer.parseInt(bounds[1]);
         int width = Integer.parseInt(bounds[2]);
         int height = Integer.parseInt(bounds[3]);
         groupPanel.setBounds(posX, posY, width, height);
+
         return groupPanel;
     }
-    private void createBorder(JPanel groupPanel, String border){
+
+    private void createBorder(JPanel groupPanel, String border) {
         String[] borderData = border.split(",");
         int top = Integer.parseInt(borderData[0]);
         int left = Integer.parseInt(borderData[1]);

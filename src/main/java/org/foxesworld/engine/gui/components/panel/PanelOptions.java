@@ -4,18 +4,49 @@ import com.google.gson.annotations.SerializedName;
 
 public class PanelOptions {
     @SerializedName("opaque")
-    public boolean opaque = false;
+    private boolean opaque = false;
 
     @SerializedName("visible")
-    public boolean visible;
+    private boolean visible;
+
     @SerializedName("border")
-    public String border = "";
+    private String border = "";
     @SerializedName("listener")
-    public String listener = "";
+    private String listener = "";
 
     @SerializedName("background")
-    public String background = "";
+    private String background = "";
+    @SerializedName("backgroundImage")
+    private String backgroundImage;
 
     @SerializedName("bounds")
-    public String bounds = "";
+    private String bounds = "";
+
+    public boolean isOpaque() {
+        return opaque;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public String getBorder() {
+        return border;
+    }
+
+    public String getListener() {
+        return listener;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public String getBounds() {
+        return bounds;
+    }
 }

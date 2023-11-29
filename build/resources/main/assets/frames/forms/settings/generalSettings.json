@@ -85,6 +85,7 @@
                 },
                 {
                   "componentType": "button",
+                  "enabled": true,
                   "fontSize": 12,
                   "imageIcon": "assets/ui/icons/folder.png",
                   "iconWidth": 32,
@@ -96,6 +97,7 @@
                 },
                 {
                   "componentType": "button",
+                  "enabled": true,
                   "componentStyle": "buttonGreen",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",

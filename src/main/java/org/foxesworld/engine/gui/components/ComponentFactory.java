@@ -36,6 +36,7 @@ public class ComponentFactory {
     private final Map<String, Map<String, StyleProvider.StyleAttributes>> componentStyles = new HashMap<>();
 
     public StyleProvider.StyleAttributes style = null;
+    private ComponentAttributes componentAttribute;
     private String[] scrollBoxArr = {""};
     private ComponentFactoryListener componentFactoryListener;
 
@@ -56,7 +57,7 @@ public class ComponentFactory {
         int yPos = Integer.parseInt(bounds[1]);
         int width = Integer.parseInt(bounds[2]);
         int height = Integer.parseInt(bounds[3]);
-
+        this.componentAttribute = componentAttributes;
         switch (componentAttributes.getComponentType()) {
 
             case "progressBar" -> {
@@ -157,10 +158,6 @@ public class ComponentFactory {
                 return button;
             }
 
-
-
-
-
             case "multiButton" -> {
                 MultiButtonStyle multiButtonStyle = new MultiButtonStyle(this, componentAttributes);
                 MultiButton multiButton = new MultiButton(this);
@@ -209,5 +206,9 @@ public class ComponentFactory {
 
     public void setScrollBoxArr(String[] scrollBoxArr) {
         this.scrollBoxArr = scrollBoxArr;
+    }
+
+    public ComponentAttributes getComponentAttribute() {
+        return componentAttribute;
     }
 }

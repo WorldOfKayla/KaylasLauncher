@@ -27,7 +27,7 @@
                 "visible": false,
                 "background": "#bec2c5bf",
                 "border": "0,1,0,0,#3b4045",
-                "bounds": "0,10,500,80"
+                "bounds": "0,0,500,80"
               },
               "childComponents": [
                 {

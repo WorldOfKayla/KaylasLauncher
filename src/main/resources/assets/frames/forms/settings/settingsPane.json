@@ -12,7 +12,6 @@
           "componentType": "button",
           "enabled": true,
           "componentStyle": "buttonRed",
-          "imageIcon": "assets/ui/icons/back.png",
           "iconWidth": 32,
           "iconHeight": 32,
           "localeKey": "settings.back",

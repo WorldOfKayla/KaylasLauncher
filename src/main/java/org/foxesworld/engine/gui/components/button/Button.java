@@ -1,5 +1,6 @@
 package org.foxesworld.engine.gui.components.button;
 
+import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import java.awt.*;
@@ -18,9 +19,11 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public BufferedImage pressedTX;
 	public BufferedImage lockedTX;
 	private ComponentFactory componentFactory;
+	private ComponentAttributes buttonAttributes;
 
 	public Button(ComponentFactory componentFactory, String text) {
 		this.componentFactory = componentFactory;
+		this.buttonAttributes = componentFactory.getComponentAttribute();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setText(text);
@@ -35,6 +38,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public Button(ComponentFactory componentFactory, ImageIcon icon) {
 		super(icon);
 		this.componentFactory = componentFactory;
+		this.buttonAttributes = componentFactory.getComponentAttribute();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setText("");
@@ -95,7 +99,13 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			componentFactory.engine.getSOUND().playSound("button/buttonClick.ogg");
+			String sound = "";
+			if(this.buttonAttributes.getComponentId().contains("back")){
+				sound = "buttonBack.ogg";
+			} else {
+				sound = "buttonClick.ogg";
+			}
+			componentFactory.engine.getSOUND().playSound("button/"+sound);
 			pressed = true;
 			repaint();
 		}

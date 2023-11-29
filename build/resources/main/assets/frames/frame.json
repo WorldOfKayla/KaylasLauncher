@@ -13,7 +13,8 @@
         "opaque": true,
         "visible": true,
         "listener": "dragger",
-        "background": "#503030",
+        "background": "#503030c4",
+        "backgroundImage": "assets/ui/img/bg/header.png",
         "bounds": "0,0,850,30"
       },
       "childComponents": [
@@ -34,7 +35,7 @@
           "componentStyle": "title",
           "localeKey": "general.status",
           "color":  "#c98319",
-          "componentId": "appHeader",
+          "componentId": "appStatus",
           "bounds": "175,-20,250,50"
         },
         {

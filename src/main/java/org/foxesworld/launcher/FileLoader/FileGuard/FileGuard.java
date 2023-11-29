@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.FileLoader.FileGuard;
 
 import org.apache.logging.log4j.Logger;
-import org.foxesworld.engine.gui.components.game.GameLauncher;
+import org.foxesworld.engine.game.GameLauncher;
 
 import java.io.File;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class FileGuard {
                 gameLauncher.buildNativesPath()
         );
 
-        this.logger = this.gameLauncher.getActionHandler().getEngine().getLOGGER();
+        this.logger = this.gameLauncher.getLogger();
     }
 
     public void scanAndDeleteFilesInSubdirectories(Set<String> filesToKeep) {

@@ -20,6 +20,7 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.JVMHelper;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
@@ -36,7 +37,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     protected final APP APP;
     private final Sound SOUND;
     private final Logger LOGGER = LogManager.getLogger(APP.class);
-    private final  JVMHelper jvmHelper;
+    private final JVMHelper jvmHelper;
     private final Discord discord;
     private final  LanguageProvider LANG;
     private  final ServerInfo serverInfo;

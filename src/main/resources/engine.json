@@ -36,7 +36,7 @@
       "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
     },
     {
-      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
+      "classPath": "cpw.mods.modlauncher.Launcher"
     },
     {
       "classPath": "optifine.OptiFineTweaker"

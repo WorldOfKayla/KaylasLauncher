@@ -37,6 +37,7 @@ public class DownloadUtils {
         }
 
         try {
+            //TODO use our HTTP class
             URL url = new URL(Durl);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setDoOutput(false);

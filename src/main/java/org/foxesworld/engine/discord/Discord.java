@@ -3,16 +3,18 @@ package org.foxesworld.engine.discord;
 import club.minnced.discord.rpc.*;
 import org.foxesworld.engine.Engine;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Discord implements DiscordListener {
 
     private Engine engine;
-    private DiscordRPC lib;
-    private DiscordRichPresence presence;
-    private String applicationId;
-    private Thread rpcThread;
+    private final DiscordRPC lib;
+    private final DiscordRichPresence presence;
+    private final ExecutorService rpcExecutorService = Executors.newSingleThreadExecutor();
     public Discord(Engine engine){
      this.engine = engine;
-     applicationId = engine.getEngineData().getAppId();
+        String applicationId = engine.getEngineData().getAppId();
      lib = DiscordRPC.INSTANCE;
         String steamId = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
@@ -27,12 +29,12 @@ public class Discord implements DiscordListener {
 
     public void discordRpcStart(String state, String details, String icon) {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
-        presence.details   = details;
-        presence.state     = state;
+        presence.details = details;
+        presence.state = state;
         presence.largeImageKey = icon;
         lib.Discord_UpdatePresence(presence);
 
-        rpcThread = new Thread(() -> {
+        rpcExecutorService.submit(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
                 try {
@@ -42,14 +44,9 @@ public class Discord implements DiscordListener {
                     break;
                 }
             }
-        }, "RPC-Callback-Handler");
+        });
 
-        rpcThread.setDaemon(true);
-        rpcThread.start();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            rpcThread.interrupt();
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(rpcExecutorService::shutdownNow));
     }
 
     @Override
@@ -57,7 +54,7 @@ public class Discord implements DiscordListener {
         return lib;
     }
 
-    public Thread getRpcThread() {
-        return rpcThread;
+    public ExecutorService getRpcExecutorService() {
+        return rpcExecutorService;
     }
 }

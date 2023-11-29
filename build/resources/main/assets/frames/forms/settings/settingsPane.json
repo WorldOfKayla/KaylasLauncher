@@ -5,7 +5,7 @@
         "opaque": true,
         "visible": true,
         "background": "#500b0a",
-        "bounds": "0,0,780,30"
+        "bounds": "0,0,780,35"
       },
       "childComponents": [
         {

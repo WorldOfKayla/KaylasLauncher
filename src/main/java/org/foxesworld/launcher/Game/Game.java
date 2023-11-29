@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.Game;
 
 import org.foxesworld.engine.action.ActionHandler;
-import org.foxesworld.engine.gui.components.game.GameLauncher;
+import org.foxesworld.engine.game.GameLauncher;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuardListener;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
@@ -30,6 +30,7 @@ public class Game implements FileLoaderListener, FileGuardListener {
         this.actionHandler.getEngine().getDiscord().discordRpcStart(
                 this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),
                 this.actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
+
         gameLauncher = new GameLauncher(actionHandler);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first

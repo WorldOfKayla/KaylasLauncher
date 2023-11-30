@@ -3,6 +3,7 @@
     "loggedForm": {
       "panelOptions": {
         "opaque": false,
+        "focusable": true,
         "visible": false,
         "background": "",
         "bounds": "0,0,350,500"
@@ -25,6 +26,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "S",
           "componentStyle": "buttonWhite",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
@@ -36,6 +38,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "ESCAPE",
           "componentStyle": "buttonRed",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
@@ -44,6 +47,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "ENTER",
           "componentStyle": "buttonGreen",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
@@ -113,7 +117,8 @@
                         },
                         {
                           "componentType": "button",
-                          "enabled": false,
+                          "enabled": true,
+                          "keyCode": "F5",
                           "componentStyle": "buttonYellow",
                           "componentId": "test",
                           "localeKey": "TEST",

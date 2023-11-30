@@ -3,9 +3,12 @@ package org.foxesworld.engine.gui.components.checkbox;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JCheckBox;
 
 public class Checkbox extends JCheckBox {
@@ -28,15 +31,15 @@ public class Checkbox extends JCheckBox {
         super.paintComponent(g);
     }
 
-    public void listener(final JCheckBox Checkbox) {
-        this.addMouseListener(new MouseListener(){
+    public void listener(final JCheckBox checkbox) {
+        this.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseReleased(MouseEvent e) {}
 
             @Override
             public void mousePressed(MouseEvent e) {
-                boolean isSel = Checkbox.isSelected();
+                boolean isSel = checkbox.isSelected();
                 if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
                     if (isSel) {
                         componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff.ogg");
@@ -56,5 +59,13 @@ public class Checkbox extends JCheckBox {
             public void mouseClicked(MouseEvent e) {}
         });
     }
-}
 
+    public void toggleCheckbox() {
+        boolean isSel = isSelected();
+        if (isSel) {
+            componentFactory.engine.getSOUND().playSound("checkbox/checkboxOff.ogg");
+        } else {
+            componentFactory.engine.getSOUND().playSound("checkbox/checkboxOn.ogg");
+        }
+    }
+}

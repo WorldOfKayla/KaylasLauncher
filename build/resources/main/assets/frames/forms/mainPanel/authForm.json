@@ -3,6 +3,7 @@
     "authForm": {
       "panelOptions": {
         "opaque": false,
+        "focusable": true,
         "visible": true,
         "background": "",
         "bounds": "0,0,350,500"
@@ -33,6 +34,7 @@
         {
           "componentType": "checkBox",
           "enabled": true,
+          "keyCode": "SPACE",
           "componentStyle": "solid",
           "componentId": "rememberMe",
           "localeKey": "auth.rememberMe",
@@ -41,6 +43,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "ENTER",
           "componentStyle": "buttonGreen",
           "componentId": "authForm>submit",
           "localeKey": "auth.submit",

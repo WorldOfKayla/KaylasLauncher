@@ -26,6 +26,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "S",
           "componentStyle": "buttonWhite",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
@@ -116,7 +117,8 @@
                         },
                         {
                           "componentType": "button",
-                          "enabled": false,
+                          "enabled": true,
+                          "keyCode": "F5",
                           "componentStyle": "buttonYellow",
                           "componentId": "test",
                           "localeKey": "TEST",

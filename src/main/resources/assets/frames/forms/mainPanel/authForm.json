@@ -34,6 +34,7 @@
         {
           "componentType": "checkBox",
           "enabled": true,
+          "keyCode": "SPACE",
           "componentStyle": "solid",
           "componentId": "rememberMe",
           "localeKey": "auth.rememberMe",

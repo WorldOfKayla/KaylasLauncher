@@ -3,6 +3,7 @@
     "settingsPane": {
       "panelOptions": {
         "opaque": true,
+        "focusable": true,
         "visible": true,
         "background": "#500b0a",
         "bounds": "0,0,780,35"
@@ -11,6 +12,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "BACK_SPACE",
           "componentStyle": "buttonRed",
           "iconWidth": 32,
           "iconHeight": 32,

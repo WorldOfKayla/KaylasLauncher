@@ -100,9 +100,24 @@ public class ComponentFactory {
                 checkboxStyle.apply(checkbox);
                 checkbox.setBounds(xPos, yPos, width, height);
                 checkbox.setName(componentAttributes.getComponentId());
-                checkbox.setEnabled((boolean) componentAttributes.isEnabled());
+                checkbox.setEnabled(componentAttributes.isEnabled());
                 if(componentAttributes.getInitialValue() != null) {
                     checkbox.setSelected(Boolean.parseBoolean(componentAttributes.getInitialValue()));
+                }
+                if (componentAttributes.getKeyCode() != null) {
+                    checkbox.setFocusable(true);
+                    checkbox.requestFocus();
+                    KeyStroke keyStroke = KeyStroke.getKeyStroke(componentAttributes.getKeyCode());
+                    AbstractAction buttonAction = new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            checkbox.toggleCheckbox();
+                            checkbox.doClick();
+                        }
+                    };
+
+                    checkbox.getActionMap().put(componentAttributes.getComponentId(), buttonAction);
+                    checkbox.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, componentAttributes.getComponentId());
                 }
                 return checkbox;
             }
@@ -163,7 +178,6 @@ public class ComponentFactory {
                     AbstractAction buttonAction = new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            System.out.println("Действие кнопки " + componentAttributes.getComponentId() + " выполнено!");
                             button.ButtonClick();
                             button.doClick();
                             button.setPressed(false);

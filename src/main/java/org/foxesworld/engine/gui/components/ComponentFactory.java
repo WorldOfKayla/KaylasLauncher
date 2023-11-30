@@ -24,6 +24,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -155,6 +156,23 @@ public class ComponentFactory {
                 button.setBounds(xPos, yPos, width, height);
                 button.setEnabled(componentAttributes.isEnabled());
                 button.addActionListener(engine);
+                if (componentAttributes.getKeyCode() != null) {
+                    button.setFocusable(true);
+                    button.requestFocus();
+                    KeyStroke keyStroke = KeyStroke.getKeyStroke(componentAttributes.getKeyCode());
+                    AbstractAction buttonAction = new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Действие кнопки " + componentAttributes.getComponentId() + " выполнено!");
+                            button.ButtonClick();
+                            button.doClick();
+                            button.setPressed(false);
+                        }
+                    };
+
+                    button.getActionMap().put(componentAttributes.getComponentId(), buttonAction);
+                    button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, componentAttributes.getComponentId());
+                }
                 return button;
             }
 

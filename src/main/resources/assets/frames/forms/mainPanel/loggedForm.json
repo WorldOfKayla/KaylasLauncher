@@ -3,6 +3,7 @@
     "loggedForm": {
       "panelOptions": {
         "opaque": false,
+        "focusable": true,
         "visible": false,
         "background": "",
         "bounds": "0,0,350,500"
@@ -36,6 +37,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "ESCAPE",
           "componentStyle": "buttonRed",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
@@ -44,6 +46,7 @@
         {
           "componentType": "button",
           "enabled": true,
+          "keyCode": "ENTER",
           "componentStyle": "buttonGreen",
           "componentId": "toGame",
           "localeKey": "logged.toGame",

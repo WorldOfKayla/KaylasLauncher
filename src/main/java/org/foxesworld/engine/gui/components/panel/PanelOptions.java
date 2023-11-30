@@ -9,6 +9,8 @@ public class PanelOptions {
     @SerializedName("visible")
     private boolean visible;
 
+    @SerializedName("focusable")
+    private boolean focusable;
     @SerializedName("border")
     private String border = "";
     @SerializedName("listener")
@@ -28,6 +30,10 @@ public class PanelOptions {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public boolean isFocusable() {
+        return focusable;
     }
 
     public String getBorder() {

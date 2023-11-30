@@ -8,6 +8,8 @@ import org.foxesworld.engine.utils.ImageUtils;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
@@ -81,6 +83,13 @@ public class Panel {
             switch (panelOptions.getListener()) {
                 case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
+        }
+
+
+        if(panelOptions.isFocusable()) {
+            System.out.println(groupName + " is focusable");
+            groupPanel.setFocusable(true);
+            groupPanel.requestFocus();
         }
 
         String[] bounds = panelOptions.getBounds().split(",");

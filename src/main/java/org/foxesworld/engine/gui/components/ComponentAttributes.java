@@ -8,7 +8,6 @@ import java.util.Map;
 public class ComponentAttributes {
     @SerializedName("readFrom")
     private String readFrom;
-
     @SerializedName("componentType")
     private String componentType;
     @SerializedName("componentStyle")
@@ -23,6 +22,8 @@ public class ComponentAttributes {
     private int fontSize;
     @SerializedName("enabled")
     private boolean enabled;
+    @SerializedName("keyCode")
+    private String keyCode;
     @SerializedName("initialValue")
     private String initialValue;
     @SerializedName("color")
@@ -33,7 +34,6 @@ public class ComponentAttributes {
     private String imageIcon;
     @SerializedName("iconWidth")
     private int iconWidth;
-
     @SerializedName("iconHeight")
     private int iconHeight;
     @SerializedName("totalFrames")
@@ -80,6 +80,10 @@ public class ComponentAttributes {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public String getKeyCode() {
+        return keyCode;
     }
 
     public String getInitialValue() {

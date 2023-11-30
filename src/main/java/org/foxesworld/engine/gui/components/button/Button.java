@@ -4,9 +4,7 @@ import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
@@ -31,7 +29,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setContentAreaFilled(false);
 		setFocusPainted(false);
 		setOpaque(false);
-		setFocusable(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
@@ -46,7 +43,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setContentAreaFilled(false);
 		setFocusPainted(false);
 		setOpaque(false);
-		setFocusable(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
@@ -82,6 +78,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 
 		g2d.dispose();
 	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		entered = true;
@@ -96,18 +93,11 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		entered = false;
 		repaint();
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			String sound = "";
-			if(this.buttonAttributes.getComponentId().contains("back")){
-				sound = "buttonBack.ogg";
-			} else {
-				sound = "buttonClick.ogg";
-			}
-			componentFactory.engine.getSOUND().playSound("button/"+sound);
-			pressed = true;
-			repaint();
+			ButtonClick();
 		}
 	}
 
@@ -118,6 +108,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 			repaint();
 		}
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {}
 
@@ -126,4 +117,21 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseMoved(MouseEvent e) {}
+
+	public void ButtonClick() {
+		String sound = "";
+		if (this.buttonAttributes.getComponentId().contains("back")) {
+			sound = "buttonBack.ogg";
+		} else {
+			sound = "buttonClick.ogg";
+		}
+		componentFactory.engine.getSOUND().playSound("button/" + sound);
+		pressed = true;
+		repaint();
+		// Add additional logic here for the action to be performed
+	}
+
+	public void setPressed(boolean pressed) {
+		this.pressed = pressed;
+	}
 }

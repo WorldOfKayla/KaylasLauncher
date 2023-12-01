@@ -38,6 +38,9 @@ public class NewsProvider {
                 for (JsonElement postElement : posts) {
                     JsonObject post = postElement.getAsJsonObject();
                     String text = post.get("text").getAsString();
+                    int views = post.getAsJsonObject("views").get("count").getAsInt();
+                    int likes = post.getAsJsonObject("likes").get("count").getAsInt();
+                    int comments = post.getAsJsonObject("comments").get("count").getAsInt();
                     long date = post.get("date").getAsLong(); // Get the publication date in seconds
 
                     List<String> photoUrls = new ArrayList<>();
@@ -57,8 +60,7 @@ public class NewsProvider {
                     }
 
                     // Create a News object with the publication date and add it to the list
-                    News news = new News(text, photoUrls, date);
-                    newsList.add(news);
+                    newsList.add(new News(text, photoUrls, date, views, likes, comments));
                 }
             }
 

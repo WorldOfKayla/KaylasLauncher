@@ -39,13 +39,11 @@ repositories {
 dependencies {
     implementation files('lib/foxesworld/cfgProvider-1.5.0-Release.jar')
     implementation files('lib/java-discord-rpc-2.0.1-all.jar')
+    implementation files('lib/emoji-java-5.1.1.jar')
     implementation 'com.github.stephengold:j-ogg-all:1.0.4'
-
     implementation group: 'me.tongfei', name: 'progressbar', version: '0.10.0'
     implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.3.1'
-
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
-
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     implementation 'org.jetbrains:annotations:20.1.0'

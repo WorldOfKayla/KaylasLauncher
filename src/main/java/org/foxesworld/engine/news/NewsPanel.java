@@ -32,6 +32,15 @@ public class NewsPanel extends JPanel {
         JLabel dateLabel = new JLabel("Published on: " + this.getFormattedDate(news.getPublicationDate()));
         newsPanel.add(dateLabel);
 
+        JLabel viewsLabel = new JLabel("Views: " + news.getViews());
+        newsPanel.add(viewsLabel);
+
+        JLabel likesLabel = new JLabel("Likes: " + news.getLikes());
+        newsPanel.add(likesLabel);
+
+        JLabel commentsLabel = new JLabel("Comments: " + news.getComments());
+        newsPanel.add(commentsLabel);
+
         // Display photos in full size
         for (String photoUrl : news.getPhotoUrls()) {
             try {
@@ -47,6 +56,7 @@ public class NewsPanel extends JPanel {
 
         return newsPanel;
     }
+
 
     public String getFormattedDate(long publicationDate) {
         // Convert UNIX timestamp to LocalDateTime

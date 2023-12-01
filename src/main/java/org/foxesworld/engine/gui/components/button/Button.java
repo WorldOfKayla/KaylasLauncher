@@ -67,7 +67,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		super.paintComponent(g);
 		g2d.drawImage(imageToDraw, 0, 0, w, h, null);
 
-		// DrawText
 		if (getText() != null && !getText().isEmpty()) {
 			FontMetrics fm = g.getFontMetrics();
 			int textX = (w - fm.stringWidth(getText())) / 2;
@@ -122,13 +121,14 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		String sound = "";
 		if (this.buttonAttributes.getComponentId().contains("back")) {
 			sound = "buttonBack.ogg";
+		}  else if (this.buttonAttributes.getComponentId().contains("small")) {
+			sound = "buttonClickSmall.ogg";
 		} else {
 			sound = "buttonClick.ogg";
 		}
+
 		componentFactory.engine.getSOUND().playSound("button/" + sound);
 		pressed = true;
-		repaint();
-		// Add additional logic here for the action to be performed
 	}
 
 	public void setPressed(boolean pressed) {

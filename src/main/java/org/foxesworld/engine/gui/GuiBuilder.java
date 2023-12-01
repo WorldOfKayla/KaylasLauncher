@@ -93,15 +93,15 @@ public class GuiBuilder implements ComponentFactoryListener {
                 String componentGroup = entry.getKey();
                 this.frameConstructor.getAppFrame().getLOGGER().debug("Building group " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
-                JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.panelOptions, componentGroup);
+                JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.getPanelOptions(), componentGroup);
                 thisPanel.setName(componentGroup);
-                thisPanel.setVisible(optionGroups.panelOptions.isVisible());
-                this.createComponents(optionGroups.childComponents, thisPanel, thisPanel.getName());
+                thisPanel.setVisible(optionGroups.getPanelOptions().isVisible());
+                this.createComponents(optionGroups.getChildComponents(), thisPanel, thisPanel.getName());
                 if (!this.getPanelsMap().containsKey(componentGroup)) {
                     parentPanel.add(thisPanel);
                     getPanelsMap().put(componentGroup, thisPanel);
                 }
-                buildComponents(optionGroups.groups, thisPanel); // Recursive call for nested groups
+                buildComponents(optionGroups.getGroups(), thisPanel); // Recursive call for nested groups
                 childsNparents.computeIfAbsent(parentPanel.getName(), k -> new ArrayList<>()).add(thisPanel.getName());
             }
         }

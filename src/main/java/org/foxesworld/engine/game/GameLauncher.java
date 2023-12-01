@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.utils.ImageUtils;
+import org.foxesworld.engine.utils.JVMHelper;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.user.User;
@@ -105,15 +106,15 @@ public class GameLauncher {
         processArgs.add("--gameDir=" + buildClientDir());
         processArgs.add("--assetsDir=" + buildAssetsPath());
         processArgs.add("--assetIndex=" + gameClient.getServerVersion());
-                //Optional
-                if (config.isFullScreen()) {
-                    processArgs.add("--fullscreen=true");
-                }
+        //Optional
+        if (config.isFullScreen()) {
+            processArgs.add("--fullscreen=true");
+        }
 
-                if (config.isAutoEnter()) {
-                    processArgs.add("--server=" + gameClient.getHost());
-                    processArgs.add("--port=" + gameClient.getPort());
-                }
+        if (config.isAutoEnter()) {
+            processArgs.add("--server=" + gameClient.getHost());
+            processArgs.add("--port=" + gameClient.getPort());
+        }
         if (intVer > 1133) {
             processArgs.add("--fml.forgeVersion=" + this.gameClient.getForgeVersion());
             processArgs.add("--fml.mcVersion=" + this.gameClient.getServerVersion());
@@ -215,9 +216,9 @@ public class GameLauncher {
     private void setJre() {
         processArgs.add(buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
-        processArgs.add(this.engine.getJvmHelper().jvmProperty("java.library.path", buildNativesPath()));
-        processArgs.add(this.engine.getJvmHelper().jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
-        processArgs.add(this.engine.getJvmHelper().jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
+        processArgs.add(JVMHelper.jvmProperty("java.library.path", buildNativesPath()));
+        processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
+        processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
         processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
     }
 

@@ -8,14 +8,13 @@ import org.foxesworld.engine.utils.ImageUtils;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
-public class Panel {
+public class Panel extends JPanel {
 
+    private float alpha;
     private JPanel groupPanel;
     private final FrameConstructor frameConstructor;
 
@@ -102,6 +101,25 @@ public class Panel {
         return groupPanel;
     }
 
+
+   /*
+    @Override
+
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
+        super.paint(g2d);
+        g2d.dispose();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Fake the background
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+    } */
+
     private void createBorder(JPanel groupPanel, String border) {
         String[] borderData = border.split(",");
         int top = Integer.parseInt(borderData[0]);
@@ -112,3 +130,4 @@ public class Panel {
         groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
     }
 }
+

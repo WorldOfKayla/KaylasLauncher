@@ -10,11 +10,23 @@ import java.util.Map;
 public class OptionGroups {
 
     @SerializedName("panelOptions")
-    public PanelOptions panelOptions;
+    private PanelOptions panelOptions;
 
     @SerializedName("childComponents")
-    public List<ComponentAttributes> childComponents;
+    private List<ComponentAttributes> childComponents;
 
     @SerializedName("groups")
-    public Map<String, OptionGroups> groups;
+    private Map<String, OptionGroups> groups;
+
+    public PanelOptions getPanelOptions() {
+        return panelOptions;
+    }
+
+    public List<ComponentAttributes> getChildComponents() {
+        return childComponents;
+    }
+
+    public Map<String, OptionGroups> getGroups() {
+        return groups;
+    }
 }

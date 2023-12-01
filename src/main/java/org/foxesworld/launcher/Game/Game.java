@@ -62,7 +62,7 @@ public class Game implements FileLoaderListener, FileGuardListener {
         this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
 
         if (fileLoader.isInvalidFile(new File(fullPath), file.hash, file.size)) {
-            this.fileLoader.getDownloadUtils().downloader(file.filename, fullPath, totalSizeFinal);
+            this.fileLoader.getDownloadUtils().downloader(file.filename.replace(" ", "%20"), fullPath, totalSizeFinal);
         }
 
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {

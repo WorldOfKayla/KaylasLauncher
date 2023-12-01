@@ -19,21 +19,21 @@ public final class JVMHelper {
 
     // MXBeans exports
     public static final RuntimeMXBean RUNTIME_MXBEAN = ManagementFactory.getRuntimeMXBean();
-    public static final OperatingSystemMXBean OPERATING_SYSTEM_MXBEAN = ManagementFactory.getOperatingSystemMXBean();
-    public final OS OS_TYPE = OS.byName(OPERATING_SYSTEM_MXBEAN.getName());
-    public final int OS_BITS = getCorrectOSArch();
-    private Engine engine;
+    public static final OperatingSystemMXBean OPERATING_SYSTEM_MXBEAN =
+            ManagementFactory.getOperatingSystemMXBean();
+    public static final OS OS_TYPE = OS.byName(OPERATING_SYSTEM_MXBEAN.getName());
+    public static final int OS_BITS = getCorrectOSArch();
     // System properties
-    public final String OS_VERSION = OPERATING_SYSTEM_MXBEAN.getVersion();
-    public final ARCH ARCH_TYPE = getArch(System.getProperty("os.arch"));
-    public final String NATIVE_EXTENSION = getNativeExtension(OS_TYPE);
-    public final String NATIVE_PREFIX = getNativePrefix(OS_TYPE);
-    public final int JVM_BITS = Integer.parseInt(System.getProperty("sun.arch.data.model"));
+    public static final String OS_VERSION = OPERATING_SYSTEM_MXBEAN.getVersion();
+    public static final ARCH ARCH_TYPE = getArch(System.getProperty("os.arch"));
+    public static final String NATIVE_EXTENSION = getNativeExtension(OS_TYPE);
+    public static final String NATIVE_PREFIX = getNativePrefix(OS_TYPE);
+    public static final int JVM_BITS = Integer.parseInt(System.getProperty("sun.arch.data.model"));
     // Public static fields
-    public final Runtime RUNTIME = Runtime.getRuntime();
-    public final ClassLoader LOADER = ClassLoader.getSystemClassLoader();
-    public final int JVM_VERSION = getVersion();
-    public final int JVM_BUILD = getBuild();
+    public static final Runtime RUNTIME = Runtime.getRuntime();
+    public static final ClassLoader LOADER = ClassLoader.getSystemClassLoader();
+    public static final int JVM_VERSION = getVersion();
+    public static final int JVM_BUILD = getBuild();
 
     static {
         try {
@@ -43,11 +43,10 @@ public final class JVMHelper {
         }
     }
 
-    public JVMHelper(Engine engine) {
-        this.engine = engine;
+    private JVMHelper() {
     }
 
-    public ARCH getArch(String arch) {
+    public static ARCH getArch(String arch) {
         if (arch.equals("amd64") || arch.equals("x86-64") || arch.equals("x86_64")) return ARCH.X86_64;
         if (arch.equals("i386") || arch.equals("i686") || arch.equals("x86")) return ARCH.X86;
         if (arch.startsWith("armv8") || arch.startsWith("aarch64")) return ARCH.ARM64;
@@ -55,15 +54,15 @@ public final class JVMHelper {
         throw new InternalError(String.format("Unsupported arch '%s'", arch));
     }
 
-    public int getVersion() {
+    public static int getVersion() {
         return Runtime.version().feature();
     }
 
-    public int getBuild() {
+    public static int getBuild() {
         return Runtime.version().update();
     }
 
-    public String getNativeExtension(JVMHelper.OS OS_TYPE) {
+    public static String getNativeExtension(JVMHelper.OS OS_TYPE) {
         switch (OS_TYPE) {
             case WIN:
                 return ".dll";
@@ -76,7 +75,7 @@ public final class JVMHelper {
         }
     }
 
-    public String getNativePrefix(JVMHelper.OS OS_TYPE) {
+    public static String getNativePrefix(JVMHelper.OS OS_TYPE) {
         switch (OS_TYPE) {
             case LINUX:
             case MACOSX:
@@ -86,11 +85,11 @@ public final class JVMHelper {
         }
     }
 
-    public void appendVars(ProcessBuilder builder, Map<String, String> vars) {
+    public static void appendVars(ProcessBuilder builder, Map<String, String> vars) {
         builder.environment().putAll(vars);
     }
 
-    public Class<?> firstClass(String... names) throws ClassNotFoundException {
+    public static Class<?> firstClass(String... names) throws ClassNotFoundException {
         for (String name : names)
             try {
                 return Class.forName(name, false, LOADER);
@@ -100,16 +99,16 @@ public final class JVMHelper {
         throw new ClassNotFoundException(Arrays.toString(names));
     }
 
-    public void fullGC() {
+    public static void fullGC() {
         RUNTIME.gc();
-        engine.getLOGGER().debug("Used heap: %d MiB", RUNTIME.totalMemory() - RUNTIME.freeMemory() >> 20);
+       Engine.LOGGER.debug("Used heap: %d MiB", RUNTIME.totalMemory() - RUNTIME.freeMemory() >> 20);
     }
 
     public static String[] getClassPath() {
         return System.getProperty("java.class.path").split(File.pathSeparator);
     }
 
-    public URL[] getClassPathURL() {
+    public static URL[] getClassPathURL() {
         String[] cp = System.getProperty("java.class.path").split(File.pathSeparator);
         URL[] list = new URL[cp.length];
 
@@ -125,14 +124,14 @@ public final class JVMHelper {
         return list;
     }
 
-    public X509Certificate[] getCertificates(Class<?> clazz) {
+    public static X509Certificate[] getCertificates(Class<?> clazz) {
         Object[] signers = clazz.getSigners();
         if (signers == null) return null;
         return Arrays.stream(signers).filter((c) -> c instanceof X509Certificate).map((c) -> (X509Certificate) c).toArray(X509Certificate[]::new);
     }
 
-    public void checkStackTrace(Class<?> mainClass) {
-        engine.getLOGGER().debug("Testing stacktrace");
+    public static void checkStackTrace(Class<?> mainClass) {
+        Engine.LOGGER.debug("Testing stacktrace");
         Exception e = new Exception("Testing stacktrace");
         StackTraceElement[] list = e.getStackTrace();
         if (!list[list.length - 1].getClassName().equals(mainClass.getName())) {
@@ -140,7 +139,7 @@ public final class JVMHelper {
         }
     }
 
-    private int getCorrectOSArch() {
+    private static int getCorrectOSArch() {
         if (OS_TYPE == OS.WIN)
             return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;
 
@@ -152,15 +151,15 @@ public final class JVMHelper {
         return System.getenv().get(name);
     }
 
-    public boolean isJVMMatchesSystemArch() {
+    public static boolean isJVMMatchesSystemArch() {
         return JVM_BITS == OS_BITS;
     }
 
-    public String jvmProperty(String name, String value) {
+    public static String jvmProperty(String name, String value) {
         return String.format("-D%s=%s", name, value);
     }
 
-    public String systemToJvmProperty(String name) {
+    public static String systemToJvmProperty(String name) {
         return String.format("-D%s=%s", name, System.getProperties().getProperty(name));
     }
 
@@ -170,15 +169,15 @@ public final class JVMHelper {
             args.add(String.format("-D%s=%s", name, property));
     }
 
-    public void verifySystemProperties(Class<?> mainClass, boolean requireSystem) {
+    public static void verifySystemProperties(Class<?> mainClass, boolean requireSystem) {
         Locale.setDefault(Locale.US);
         // Verify class loader
-        engine.getLOGGER().debug("Verifying class loader");
+        Engine.LOGGER.debug("Verifying class loader");
         if (requireSystem && !mainClass.getClassLoader().equals(LOADER))
             throw new SecurityException("ClassLoader should be system");
 
         // Verify system and java architecture
-        engine.getLOGGER().debug("Verifying JVM architecture");
+        Engine.LOGGER.debug("Verifying JVM architecture");
     }
 
     public enum ARCH {
@@ -207,7 +206,8 @@ public final class JVMHelper {
                 return LINUX;
             if (name.startsWith("Mac OS X"))
                 return MACOSX;
-            throw new RuntimeException(String.format("Not supported: '%s'", name));
+            throw new RuntimeException(String.format("Is not yet supported: '%s'", name));
         }
     }
+
 }

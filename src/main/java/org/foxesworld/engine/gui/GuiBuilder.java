@@ -8,6 +8,9 @@ import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
+import org.foxesworld.engine.news.News;
+import org.foxesworld.engine.news.NewsPanel;
+import org.foxesworld.engine.news.NewsProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,9 +79,9 @@ public class GuiBuilder implements ComponentFactoryListener {
         return null;
     }
 
-    public void setLabelText(String componentId, String text){
+    public void setLabelText(String componentId, String text) {
         JComponent component = this.getComponentById(componentId);
-        if(component instanceof  JLabel) {
+        if (component instanceof JLabel) {
             ((JLabel) component).setText(text);
         }
     }
@@ -154,8 +157,8 @@ public class GuiBuilder implements ComponentFactoryListener {
                         this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
                         if (this.componentFactory.engine.getCONFIG().getSelectedServer() != 0) {
                             Object selectedIndex = this.componentFactory.engine.getCONFIG().getSelectedServer();
-                            if(selectedIndex != null)
-                            componentAttributes.setSelectedIndex((int) selectedIndex);
+                            if (selectedIndex != null)
+                                componentAttributes.setSelectedIndex((int) selectedIndex);
                         }
                     }
                 }

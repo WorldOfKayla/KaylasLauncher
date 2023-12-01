@@ -33,6 +33,8 @@ public class NewsProvider {
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonResponse = jsonParser.parse(reader).getAsJsonObject();
                 JsonArray posts = jsonResponse.getAsJsonObject("response").getAsJsonArray("items");
+                News.setCommunityName(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("name").getAsString());
+                News.setCommunityPhotoUrl(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("photo_50").getAsString());
 
                 // Process each post
                 for (JsonElement postElement : posts) {
@@ -43,7 +45,10 @@ public class NewsProvider {
                     int comments = post.getAsJsonObject("comments").get("count").getAsInt();
                     long date = post.get("date").getAsLong(); // Get the publication date in seconds
 
-                    List<String> photoUrls = new ArrayList<>();
+                    List<String> tooltipPhotoUrls = new ArrayList<>();
+                    List<String> originalPhotoUrls = new ArrayList<>();
+
+
                     // Process attachments
                     JsonArray attachments = post.getAsJsonArray("attachments");
                     if (attachments != null) {
@@ -52,15 +57,18 @@ public class NewsProvider {
                             String attachmentType = attachment.get("type").getAsString();
                             if (attachmentType.equals("photo")) {
                                 JsonObject photo = attachment.getAsJsonObject("photo");
-                                String photoUrl = getPhotoUrl(photo);
-                                photoUrls.add(photoUrl);
+                                String tooltipUrl = getPhotoUrl(photo);
+                                String originalUrl = getOriginalPhotoUrl(photo);
+                                tooltipPhotoUrls.add(tooltipUrl);
+                                originalPhotoUrls.add(originalUrl);
+                                System.out.println(originalUrl);
                             }
                             // Handle other attachment types (e.g., video, link) as needed
                         }
                     }
 
                     // Create a News object with the publication date and add it to the list
-                    newsList.add(new News(text, photoUrls, date, views, likes, comments));
+                    newsList.add(new News(text, tooltipPhotoUrls, originalPhotoUrls, date, views, likes, comments));
                 }
             }
 
@@ -71,6 +79,12 @@ public class NewsProvider {
         return newsList;
     }
 
+    private String getOriginalPhotoUrl(JsonObject photo) {
+        JsonArray sizes = photo.getAsJsonArray("sizes");
+        // Choose the size you need, for example "o" for the original size
+        JsonObject originalSize = sizes.get(sizes.size() - 1).getAsJsonObject();
+        return originalSize.get("url").getAsString();
+    }
     private String getPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
         // Choose the size you need, for example "z" for the medium size

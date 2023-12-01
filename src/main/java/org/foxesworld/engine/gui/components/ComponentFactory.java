@@ -24,7 +24,10 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,7 +78,11 @@ public class ComponentFactory {
                 Label label = new Label(LANG.getString(componentAttributes.getLocaleKey()));
                 labelStyle.apply(label);
                 if(componentAttributes.getImageIcon() != null) {
-                    label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight())));
+                    ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight()));
+                    if(componentAttribute.isRounded()) {
+                        icon = new ImageIcon(this.getRoundedImage(icon.getImage(), componentAttributes.getIconWidth(), componentAttributes.getIconHeight()));
+                    }
+                    label.setIcon(icon);
                 }
 
                 label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.getFontSize()));
@@ -230,6 +237,15 @@ public class ComponentFactory {
 
     public void setComponentFactoryListener(ComponentFactoryListener componentFactoryListener) {
         this.componentFactoryListener = componentFactoryListener;
+    }
+
+    private Image getRoundedImage(Image image, int width, int height) {
+        BufferedImage roundedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = roundedImage.createGraphics();
+        g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+        g2.drawImage(image, 0, 0, width, height, null);
+        g2.dispose();
+        return roundedImage;
     }
 
     public enum Align {

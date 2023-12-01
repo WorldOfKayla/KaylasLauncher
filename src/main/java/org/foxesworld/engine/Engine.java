@@ -120,7 +120,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             String panelName = parts[0];
             boolean displayValue = Boolean.parseBoolean(parts[1]);
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
-            groupPanel.setVisible(displayValue);
+            if(groupPanel != null) {
+                groupPanel.setVisible(displayValue);
+            }
         }
     }
 

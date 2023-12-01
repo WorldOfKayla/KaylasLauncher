@@ -5,55 +5,11 @@
         "opaque": true,
         "visible": true,
         "background": "#373c3975",
-        "border": "0,1,0,0,#3b4045",
+        "border": "0,2,0,0,#3b4045",
         "bounds": "350,0,500,500"
       },
       "childComponents": [
-        {
-          "componentType": "label",
-          "fontSize": 16,
-          "componentStyle": "textBold",
-          "componentId": "testImage",
-          "imageIcon": "assets/ui/img/AidenCoffee.png",
-          "iconWidth": 256,
-          "iconHeight": 256,
-          "bounds": "250,120,512,512"
-        },
-        {
-          "groups":{
-            "devInfo": {
-              "panelOptions": {
-                "opaque": true,
-                "visible": false,
-                "background": "#bec2c5bf",
-                "border": "0,1,0,0,#3b4045",
-                "bounds": "0,0,500,80"
-              },
-              "childComponents": [
-                {
-                  "componentType": "label",
-                  "fontSize": 15,
-                  "color": "#636c73bf",
-                  "componentStyle": "title",
-                  "localeKey": "dev.token",
-                  "componentId": "userToken",
-                  "initialValue": "user#token",
-                  "bounds": "5,15,500,50"
-                },
-                {
-                  "componentType": "label",
-                  "fontSize": 15,
-                  "color": "#636c73bf",
-                  "componentStyle": "title",
-                  "localeKey": "dev.uuid",
-                  "componentId": "userUuid",
-                  "initialValue": "user#uuid",
-                  "bounds": "5,35,470,50"
-                }
-              ]
-            }
-          }
-        }
+
       ]
     }
   }

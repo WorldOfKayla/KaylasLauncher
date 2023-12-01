@@ -32,6 +32,9 @@ public class ComponentAttributes {
     private String localeKey;
     @SerializedName("imageIcon")
     private String imageIcon;
+
+    @SerializedName("rounded")
+    private boolean rounded;
     @SerializedName("iconWidth")
     private int iconWidth;
     @SerializedName("iconHeight")
@@ -100,6 +103,10 @@ public class ComponentAttributes {
 
     public String getImageIcon() {
         return imageIcon;
+    }
+
+    public boolean isRounded() {
+        return rounded;
     }
 
     public int getIconWidth() {

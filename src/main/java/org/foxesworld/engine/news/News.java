@@ -10,8 +10,8 @@ public class News {
     private int views;
     private int likes;
     private int comments;
-    private static String groupName = ""; // Added field for community name
-    private static String groupPicture = ""; // Added field for community photo URL
+    private static String groupName; // Added field for community name
+    private static String groupPicture; // Added field for community photo URL
 
     public News(String text, List<String> tooltipPhotoUrls, List<String> originalPhotoUrls, long publicationDate, int views, int likes, int comments) {
         this.text = text;

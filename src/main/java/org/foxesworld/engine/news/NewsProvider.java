@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.foxesworld.engine.Engine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsProvider {
-
+    private Engine engine;
     private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
     private static final String ACCESS_TOKEN = "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39";
     private static final String GROUP_DOMAIN = "foxesworlds"; // Replace with the domain of the VK group/page
+
+    public NewsProvider(Engine engine){
+        this.engine = engine;
+    }
 
     public List<News> fetchNews() {
         List<News> newsList = new ArrayList<>();
@@ -61,7 +66,6 @@ public class NewsProvider {
                                 String originalUrl = getOriginalPhotoUrl(photo);
                                 tooltipPhotoUrls.add(tooltipUrl);
                                 originalPhotoUrls.add(originalUrl);
-                                System.out.println(originalUrl);
                             }
                             // Handle other attachment types (e.g., video, link) as needed
                         }

@@ -24,6 +24,7 @@ import java.util.*;
 
 public class GuiBuilder implements ComponentFactoryListener {
 
+    private final Engine engine;
     private final HashMap<String, List<JComponent>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
@@ -32,6 +33,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     private GuiBuilderListener guiBuilderListener;
 
     public GuiBuilder(Engine engine) {
+        this.engine = engine;
         engine.getLOGGER().debug("=== GUI BUILDER ===");
         this.frameConstructor = engine.getFrame();
         this.componentFactory = new ComponentFactory(engine);
@@ -41,20 +43,10 @@ public class GuiBuilder implements ComponentFactoryListener {
      * Method for building an interface based on a JSON file
      * Accepts the path to the file and the InputStream flag to specify the data source (resources or file)
      */
-    public void buildGui(String framePath, boolean inputStream, JPanel parent) {
-        Gson gson = new Gson();
+    public void buildGui(String framePath, JPanel parent) {
         FrameAttributes frameAttributes;
-        if (inputStream) {
-            InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameConstructor.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
-            frameAttributes = gson.fromJson(reader, FrameAttributes.class);
-        } else {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(framePath));
-                frameAttributes = gson.fromJson(reader, FrameAttributes.class);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameConstructor.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
+        frameAttributes = new Gson().fromJson(reader, FrameAttributes.class);
         // Building component group
         buildComponents(frameAttributes.groups, parent);
     }
@@ -79,6 +71,7 @@ public class GuiBuilder implements ComponentFactoryListener {
         return null;
     }
 
+    @Deprecated
     public void setLabelText(String componentId, String text) {
         JComponent component = this.getComponentById(componentId);
         if (component instanceof JLabel) {
@@ -99,10 +92,13 @@ public class GuiBuilder implements ComponentFactoryListener {
                 JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.getPanelOptions(), componentGroup);
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.getPanelOptions().isVisible());
-                this.createComponents(optionGroups.getChildComponents(), thisPanel, thisPanel.getName());
+                this.createComponents(optionGroups, thisPanel);
+                //If panel with {nanme} is not already added
                 if (!this.getPanelsMap().containsKey(componentGroup)) {
-                    parentPanel.add(thisPanel);
-                    getPanelsMap().put(componentGroup, thisPanel);
+                    //parentPanel.add(thisPanel);
+                    //getPanelsMap().put(componentGroup, thisPanel);
+                    //OnPanelAdd
+                    this.addPanelGroup(parentPanel, thisPanel);
                 }
                 buildComponents(optionGroups.getGroups(), thisPanel); // Recursive call for nested groups
                 childsNparents.computeIfAbsent(parentPanel.getName(), k -> new ArrayList<>()).add(thisPanel.getName());
@@ -113,21 +109,36 @@ public class GuiBuilder implements ComponentFactoryListener {
     /*
      * Method for building componentFactory based on a JSON structure
      */
-    private void createComponents(List<ComponentAttributes> componentList, JPanel parentPanel, String parentGroupName) {
+    private void createComponents(OptionGroups optionGroups, JPanel parentPanel) {
         this.componentFactory.setComponentFactoryListener(this);
-        for (ComponentAttributes componentAttributes : componentList) {
+        for (ComponentAttributes componentAttributes : optionGroups.getChildComponents()) {
             if (componentAttributes.getComponentType() != null) {
                 JComponent component = this.componentFactory.createComponent(componentAttributes);
                 parentPanel.add(component);
-                this.addComponentToMap(parentGroupName, component);
+                this.addComponentToMap(parentPanel.getName(), component);
             } else if (componentAttributes.getGroups() != null) {
                 // Handle nested groups
                 buildComponents(componentAttributes.getGroups(), parentPanel);
             } else if (componentAttributes.getReadFrom() != null) {
                 // Handle reading from another JSON file
-                buildGui(componentAttributes.getReadFrom(), true, parentPanel);
+                buildGui(componentAttributes.getReadFrom(), parentPanel);
+            }
+            else if(componentAttributes.getLoadFrom() != null){
+                JPanel childPanel = new NewsPanel(this.engine.getNewsProvider().fetchNews());
+                //childPanel.setOpaque(optionGroups.getPanelOptions().isOpaque());
+                childPanel.setBounds(0,
+                        30,
+                        Integer.parseInt(optionGroups.getPanelOptions().getBounds().split(",")[2]),
+                        Integer.parseInt(optionGroups.getPanelOptions().getBounds().split(",")[3]));
+                childPanel.setVisible(optionGroups.getPanelOptions().isVisible());
+                this.addPanelGroup(parentPanel, childPanel);
             }
         }
+    }
+
+    private void addPanelGroup(JPanel parent, JPanel child){
+        parent.add(child);
+        getPanelsMap().put(child.getName(), child);
     }
 
     @Override

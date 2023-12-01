@@ -1,7 +1,5 @@
 package org.foxesworld.engine.news;
 
-import org.foxesworld.engine.utils.ImageUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -13,34 +11,38 @@ import java.util.List;
 
 public class NewsPanel extends JPanel {
 
-    private final String[] statisticsLabels = {"Views", "Likes", "Comments"};
+    private JScrollPane scrollPane;
+    private JPanel contentPanel;
+
     public NewsPanel(List<News> newsList) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
         for (News news : newsList) {
-            add(createNewsPanel(news));
-            add(Box.createVerticalStrut(10)); // Add some vertical space between news items
+            contentPanel.add(createNewsPanel(news));
+            contentPanel.add(Box.createVerticalStrut(0)); // Add some vertical space between news items
         }
+        contentPanel.setOpaque(false); // Make the content panel transparent
 
-        // Add a scrollbar to the panel
-        JScrollPane scrollPane = new JScrollPane(this);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setOpaque(false); // Make the scroll pane transparent
+        scrollPane.getViewport().setOpaque(false); // Make the viewport transparent
 
-        // Create a JFrame and add the JScrollPane
-        JFrame frame = new JFrame("News Panel Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.getContentPane().add(scrollPane);
-        frame.setVisible(true);
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
+        setOpaque(false); // Make the NewsPanel transparent
     }
 
     private JPanel createNewsPanel(News news) {
         JPanel newsPanel = new JPanel();
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
+        newsPanel.setOpaque(false); // Make the newsPanel transparent
 
         // Create a separate panel for the upper part of the news
         JPanel upperPanel = new JPanel();
-        upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // Set the layout to FlowLayout.LEFT
+        upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         upperPanel.setBackground(Color.LIGHT_GRAY); // Set the background color
 
         try {
@@ -64,7 +66,7 @@ public class NewsPanel extends JPanel {
 
         // Add the publication date to the upper panel
         JLabel dateLabel = new JLabel("Published on: " + formatDate(news.getPublicationDate()));
-        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         upperPanel.add(dateLabel);
 
         // Add the upper panel to the main news panel
@@ -96,19 +98,23 @@ public class NewsPanel extends JPanel {
         statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Define the statistics labels and their values
+        String[] statisticsLabels = {"Views", "Likes", "Comments"};
         int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments()};
 
         // Create labels in a loop
         for (int i = 0; i < statisticsLabels.length; i++) {
-            ImageIcon communityIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/"+statisticsLabels[i] +".png"));
-            JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
-            label.setIcon(communityIcon);
+            JLabel label = new JLabel(statisticsLabels[i] + ": " + statisticsValues[i]);
             statisticsPanel.add(label);
         }
 
         newsPanel.add(statisticsPanel);
 
         return newsPanel;
+    }
+
+    private String formatDate(long unixTimestamp) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(unixTimestamp * 1000L); // Convert seconds to milliseconds
     }
 
     private Image getRoundedImage(Image image, int width, int height) {
@@ -118,19 +124,5 @@ public class NewsPanel extends JPanel {
         g2.drawImage(image, 0, 0, width, height, null);
         g2.dispose();
         return roundedImage;
-    }
-
-    private String formatDate(long unixTimestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dateFormat.format(unixTimestamp * 1000L); // Convert seconds to milliseconds
-    }
-
-    public static void main(String[] args) {
-        // Assuming you already have a NewsProvider instance
-        NewsProvider newsProvider = new NewsProvider();
-        List<News> newsList = newsProvider.fetchNews();
-
-        // Create a NewsPanel instance
-        new NewsPanel(newsList);
     }
 }

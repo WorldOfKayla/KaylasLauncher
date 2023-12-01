@@ -8,6 +8,10 @@ import java.util.Map;
 public class ComponentAttributes {
     @SerializedName("readFrom")
     private String readFrom;
+
+    @SerializedName("loadFrom")
+    private String loadFrom;
+
     @SerializedName("componentType")
     private String componentType;
     @SerializedName("componentStyle")
@@ -127,6 +131,10 @@ public class ComponentAttributes {
 
     public String getBounds() {
         return bounds;
+    }
+
+    public String getLoadFrom() {
+        return loadFrom;
     }
 
     public Map<String, OptionGroups> getGroups() {

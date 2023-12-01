@@ -15,12 +15,12 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.news.NewsProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
-import org.foxesworld.engine.utils.JVMHelper;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
@@ -45,6 +45,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final CryptUtils CRYPTO;
     private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
+    private final NewsProvider newsProvider;
     private StyleProvider styleProvider;
     private Auth auth;
     private User user;
@@ -72,6 +73,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
         this.frameConstructor = new FrameConstructor(this);
+        this.newsProvider = new NewsProvider(this);
         this.CRYPTO = new CryptUtils(this);
         setAuth(new Auth(this));
         initialize(this.auth.getAuthCredentials("login"));
@@ -96,7 +98,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
-        getGuiBuilder().buildGui(getAPP().getFrameTpl(), true, this.getFrame().getRootPanel());
+        getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
@@ -127,7 +129,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
 
     private void loadMainPanel(String path) {
-        this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
+        this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
 
     @Override
@@ -198,6 +200,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public ServerInfo getServerInfo() {
         return serverInfo;
+    }
+    public NewsProvider getNewsProvider() {
+        return newsProvider;
     }
     public Discord getDiscord() {
         return discord;

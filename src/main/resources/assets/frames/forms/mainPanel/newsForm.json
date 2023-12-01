@@ -9,7 +9,9 @@
         "bounds": "350,0,500,500"
       },
       "childComponents": [
-
+        {
+          "loadFrom": "newsPanel"
+        }
       ]
     }
   }

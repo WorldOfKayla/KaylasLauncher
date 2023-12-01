@@ -86,7 +86,6 @@ public class Panel extends JPanel {
 
 
         if(panelOptions.isFocusable()) {
-            System.out.println(groupName + " is focusable");
             groupPanel.setFocusable(true);
             groupPanel.requestFocus();
         }

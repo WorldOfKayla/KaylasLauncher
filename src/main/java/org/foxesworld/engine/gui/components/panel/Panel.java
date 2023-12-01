@@ -100,25 +100,6 @@ public class Panel extends JPanel {
         return groupPanel;
     }
 
-
-   /*
-    @Override
-
-    public void paint(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-        super.paint(g2d);
-        g2d.dispose();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Fake the background
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
-    } */
-
     private void createBorder(JPanel groupPanel, String border) {
         String[] borderData = border.split(",");
         int top = Integer.parseInt(borderData[0]);

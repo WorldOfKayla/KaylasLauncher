@@ -1,5 +1,7 @@
 package org.foxesworld.engine.news;
 
+import org.foxesworld.engine.utils.ImageUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -39,11 +41,14 @@ public class NewsPanel extends JPanel {
         JPanel newsPanel = new JPanel();
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false); // Make the newsPanel transparent
+        newsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add margin
 
         // Create a separate panel for the upper part of the news
         JPanel upperPanel = new JPanel();
+        upperPanel.setOpaque(false);
         upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        upperPanel.setBackground(Color.LIGHT_GRAY); // Set the background color
+        upperPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add margin
+        //upperPanel.setBackground(Color.LIGHT_GRAY); // Set the background color
 
         try {
             // Display the community photo with rounded corners
@@ -79,7 +84,7 @@ public class NewsPanel extends JPanel {
         newsPanel.add(titleLabel);
 
         // Display photos in full size
-        for (String photoUrl : news.getOriginalPhotoUrls()) {
+        for (String photoUrl : news.getTooltipPhotoUrls()) {
             try {
                 ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
                 Image image = imageIcon.getImage();
@@ -96,6 +101,7 @@ public class NewsPanel extends JPanel {
         // Display statistics (views, likes, comments) at the bottom-left
         JPanel statisticsPanel = new JPanel();
         statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        statisticsPanel.setOpaque(false);
 
         // Define the statistics labels and their values
         String[] statisticsLabels = {"Views", "Likes", "Comments"};
@@ -103,14 +109,16 @@ public class NewsPanel extends JPanel {
 
         // Create labels in a loop
         for (int i = 0; i < statisticsLabels.length; i++) {
-            JLabel label = new JLabel(statisticsLabels[i] + ": " + statisticsValues[i]);
+            ImageIcon imageIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/"+statisticsLabels[i] +".png"));
+            JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
+            label.setIcon(imageIcon);
             statisticsPanel.add(label);
         }
-
         newsPanel.add(statisticsPanel);
 
         return newsPanel;
     }
+
 
     private String formatDate(long unixTimestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

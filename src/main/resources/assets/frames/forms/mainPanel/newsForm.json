@@ -2,9 +2,9 @@
   "groups":{
     "newsForm": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "visible": true,
-        "background": "#373c3975",
+        "background": "",
         "border": "0,2,0,0,#3b4045",
         "bounds": "350,0,500,500"
       },

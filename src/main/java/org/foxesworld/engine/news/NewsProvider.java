@@ -17,7 +17,11 @@ import java.util.List;
 public class NewsProvider {
     private Engine engine;
     private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
-
+    private String text;
+    private int views, likes, comments, reposts;
+    private long date;
+    private List<String> tooltipPhotoUrls;
+    private List<String> originalPhotoUrls;
     public NewsProvider(Engine engine){
         this.engine = engine;
     }
@@ -42,17 +46,14 @@ public class NewsProvider {
                 // Process each post
                 for (JsonElement postElement : posts) {
                     JsonObject post = postElement.getAsJsonObject();
-                    String text = post.get("text").getAsString();
-                    int views = post.getAsJsonObject("views").get("count").getAsInt();
-                    int likes = post.getAsJsonObject("likes").get("count").getAsInt();
-                    int comments = post.getAsJsonObject("comments").get("count").getAsInt();
-                    int reposts = post.getAsJsonObject("reposts").get("count").getAsInt();
-                    long date = post.get("date").getAsLong(); // Get the publication date in seconds
-
-                    List<String> tooltipPhotoUrls = new ArrayList<>();
-                    List<String> originalPhotoUrls = new ArrayList<>();
-
-
+                    text = post.get("text").getAsString();
+                    views = post.getAsJsonObject("views").get("count").getAsInt();
+                    likes = post.getAsJsonObject("likes").get("count").getAsInt();
+                    comments = post.getAsJsonObject("comments").get("count").getAsInt();
+                    reposts = post.getAsJsonObject("reposts").get("count").getAsInt();
+                    date = post.get("date").getAsLong(); // Get the publication date in seconds
+                    tooltipPhotoUrls = new ArrayList<>();
+                    originalPhotoUrls = new ArrayList<>();
                     // Process attachments
                     JsonArray attachments = post.getAsJsonArray("attachments");
                     if (attachments != null) {
@@ -60,6 +61,7 @@ public class NewsProvider {
                             JsonObject attachment = attachmentElement.getAsJsonObject();
                             String attachmentType = attachment.get("type").getAsString();
                             if (attachmentType.equals("photo")) {
+
                                 JsonObject photo = attachment.getAsJsonObject("photo");
                                 String tooltipUrl = getPhotoUrl(photo);
                                 String originalUrl = getOriginalPhotoUrl(photo);
@@ -71,7 +73,7 @@ public class NewsProvider {
                     }
 
                     // Create a News object with the publication date and add it to the list
-                    newsList.add(new News(text, tooltipPhotoUrls, originalPhotoUrls, date, views, likes, comments, reposts));
+                    newsList.add(new News(this));
                 }
             }
 
@@ -84,13 +86,11 @@ public class NewsProvider {
 
     private String getOriginalPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
-        // Choose the size you need, for example "o" for the original size
         JsonObject originalSize = sizes.get(sizes.size() - 1).getAsJsonObject();
         return originalSize.get("url").getAsString();
     }
     private String getPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
-        // Choose the size you need, for example "z" for the medium size
         JsonObject mediumSize = sizes.get(0).getAsJsonObject();
         return mediumSize.get("url").getAsString();
     }
@@ -101,8 +101,40 @@ public class NewsProvider {
         urlBuilder.append("&access_token=").append(this.engine.getEngineData().getAccessToken());
         urlBuilder.append("&count=5"); // Adjust count as needed
         urlBuilder.append("&extended=1");
-        urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion()); // VK API version
+        urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion());
 
         return urlBuilder.toString();
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public int getReposts() {
+        return reposts;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public List<String> getTooltipPhotoUrls() {
+        return tooltipPhotoUrls;
+    }
+
+    public List<String> getOriginalPhotoUrls() {
+        return originalPhotoUrls;
     }
 }

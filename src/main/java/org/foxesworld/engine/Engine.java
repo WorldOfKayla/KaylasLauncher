@@ -15,6 +15,7 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.news.NewsPanel;
 import org.foxesworld.engine.news.NewsProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
@@ -88,6 +89,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         }
     }
 
+
     /* TODO
     *   Remove too many calls of GuiBuilder
     *   In process
@@ -98,11 +100,22 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
+        test();
+
         getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
+    }
+
+    @Deprecated
+    private void test(){
+        JPanel childPanel = new NewsPanel(this.getNewsProvider().fetchNews());
+        childPanel.setOpaque(false);
+        childPanel.setBounds(0,30,500,470);
+        childPanel.setName("newsFrame");
+        this.guiBuilder.addPanelToMap(childPanel);
     }
 
     public void displayPanel(String displayString) {
@@ -138,6 +151,12 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         parentPanel.repaint();
         parentPanel.revalidate();
         parentPanel.setDoubleBuffered(true);
+    }
+
+    @Override
+    public void onPanelsBuilt(){
+        Engine.LOGGER.info("ALL PANELS ARE BUILT!");
+        //createUI();
     }
 
     @Override

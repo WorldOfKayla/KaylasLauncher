@@ -9,9 +9,8 @@ public class ComponentAttributes {
     @SerializedName("readFrom")
     private String readFrom;
 
-    @SerializedName("loadFrom")
-    private String loadFrom;
-
+    @SerializedName("loadPanel")
+    private String loadPanel;
     @SerializedName("componentType")
     private String componentType;
     @SerializedName("componentStyle")
@@ -133,8 +132,8 @@ public class ComponentAttributes {
         return bounds;
     }
 
-    public String getLoadFrom() {
-        return loadFrom;
+    public String getLoadPanel() {
+        return loadPanel;
     }
 
     public Map<String, OptionGroups> getGroups() {

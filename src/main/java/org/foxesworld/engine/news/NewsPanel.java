@@ -5,6 +5,7 @@ import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -51,18 +52,17 @@ public class NewsPanel extends JPanel {
         scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         adjustScrollPaneSensitivity(scrollPane);
 
-        setLayout(new BoxLayout(this, 0));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(scrollPane, BorderLayout.CENTER);
         setOpaque(false);
     }
 
     private JPanel createNewsPanel(News news) {
         JPanel newsPanel = new JPanel();
-        newsInner = new JPanel();
+        JPanel newsInner = new JPanel();
         newsInner.setOpaque(false);
-        newsInner.setPreferredSize(new Dimension(500, 500));
-        newsInner.setBorder(new MatteBorder(2, 2, 2, 2, hexToColor("#3b4045")));
-        newsInner.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        newsInner.setBorder(new EmptyBorder(10, 10, 10, 10));
+        newsInner.setLayout(new BoxLayout(newsInner, BoxLayout.Y_AXIS));
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
@@ -90,7 +90,6 @@ public class NewsPanel extends JPanel {
             // Add the publication date to the upper panel
             JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
             dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
-            dateLabel.setBounds(900,0, 200,30);
             dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
             dateLabel.setForeground(Color.WHITE);
             upperPanel.add(dateLabel);
@@ -98,21 +97,42 @@ public class NewsPanel extends JPanel {
             // Add the upper panel to the main news panel
             newsPanel.add(upperPanel);
 
-            // Display the news text as a title
-            JLabel newsText = new JLabel(news.getText());
-            newsText.setFont(new Font("Arial", Font.BOLD, 11)); // Set the font and style as needed
-            newsText.setForeground(Color.WHITE);
-            //newsText.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
-            newsInner.add(newsText);
+            // Create a panel for the news text
+            JPanel textPanel = new JPanel(new BorderLayout());
+            textPanel.setOpaque(false);
 
-            // Display photos without resizing
-            for (String photoUrl : news.getTooltipPhotoUrls()) {
+            // Display the news text as a title
+            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px;'>" + news.getText() + "</body></html>";
+            JLabel newsText = new JLabel(labelText);
+            newsText.setFont(new Font("Arial", Font.BOLD, 11));
+            newsText.setBorder(new EmptyBorder(10, 10, 10, 10));
+            newsText.setForeground(Color.WHITE);
+
+            // Place the text on the left side of the text panel
+            textPanel.add(newsText, BorderLayout.WEST);
+            newsPanel.add(textPanel);
+
+            // Display photos without resizing or in full size if there's only one photo
+            if (news.getTooltipPhotoUrls().size() == 1) {
                 try {
-                    ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
-                    JLabel photoLabel = new JLabel(imageIcon);
+                    ImageIcon imageIcon = new ImageIcon(new URL(news.getOriginalPhotoUrls().get(0)));
+                    Image image = ImageUtils.getScaledImage(imageIcon.getImage(), 440, 300);
+                    ImageIcon fullSizeIcon = new ImageIcon(image);
+                    JLabel photoLabel = new JLabel(fullSizeIcon);
+                    photoLabel.setAlignmentX(CENTER_ALIGNMENT);
                     newsInner.add(photoLabel);
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            } else {
+                for (String photoUrl : news.getTooltipPhotoUrls()) {
+                    try {
+                        ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
+                        JLabel photoLabel = new JLabel(imageIcon);
+                        newsInner.add(photoLabel);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -139,12 +159,17 @@ public class NewsPanel extends JPanel {
 
             newsPanel.add(statisticsPanel);
             newsPanel.add(Box.createVerticalStrut(10));
+
+            // Set the preferred size of newsInner based on its content
+            newsInner.setPreferredSize(newsInner.getPreferredSize());
+
         } catch (IOException e) {
             Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
         }
 
         return newsPanel;
     }
+
 
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
@@ -158,10 +183,11 @@ public class NewsPanel extends JPanel {
 
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
-        Date C = new Date(stamp.getTime());
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM hh:mm");
-       return formatDate.format(C.getTime());
+        Date date = new Date(stamp.getTime());
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+        return formatDate.format(date);
     }
+
 
 
     private Image getRoundedImage(Image image, int width, int height) {

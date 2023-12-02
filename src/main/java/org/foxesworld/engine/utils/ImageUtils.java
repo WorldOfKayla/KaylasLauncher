@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -171,16 +172,26 @@ public class ImageUtils {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        AffineTransform at = AffineTransform.getScaleInstance((double) w / srcImg.getWidth(null), (double) h / srcImg.getHeight(null));
+        g2.drawRenderedImage(toBufferedImage(srcImg), at);
 
-        if (w > srcImg.getWidth(null) || h > srcImg.getHeight(null)) {
-            g2.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
-        } else {
-            g2.drawImage(srcImg, 0, 0, w, h, null);
-        }
         g2.dispose();
         return resizedImg;
     }
+
+    private static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bufferedImage.getGraphics();
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+
+        return bufferedImage;
+    }
+
 
     public static BufferedImage getByIndex(BufferedImage all, int d, int i) {
         return all.getSubimage(d * i, 0, d, d);

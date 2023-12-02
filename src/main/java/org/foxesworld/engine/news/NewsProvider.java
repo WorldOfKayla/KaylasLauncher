@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class NewsProvider {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             // Read the response
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                 // Parse the JSON response
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonResponse = jsonParser.parse(reader).getAsJsonObject();
@@ -52,7 +53,8 @@ public class NewsProvider {
                     text = post.get("text").getAsString();
                     statsValues = new HashMap<>();
                     for(String value: statsValuesKeys){
-                        statsValues.put(value, post.getAsJsonObject(value).get("count").getAsInt());
+                        int statVal = post.getAsJsonObject(value) != null ? post.getAsJsonObject(value).get("count").getAsInt() : 0;
+                        statsValues.put(value, statVal);
                     }
 
                     date = post.get("date").getAsLong(); // Get the publication date in seconds

@@ -5,8 +5,6 @@ import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,8 +18,6 @@ public class NewsPanel extends JPanel {
     *  That's a sample and is hardcoded
     *  Should be rewritten before merging to the PROD thread
     * */
-
-    private String[] statisticsLabels = {"views", "likes", "comments", "reposts"};
     private JScrollPane scrollPane;
     private JPanel contentPanel;
 
@@ -117,8 +113,8 @@ public class NewsPanel extends JPanel {
             int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments(), news.getReposts()};
 
             // Create labels in a loop
-            for (int i = 0; i < statisticsLabels.length; i++) {
-                ImageIcon imageIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/" + statisticsLabels[i] + ".png"));
+            for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
+                ImageIcon imageIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"));
                 JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
                 label.setIcon(imageIcon);
                 label.setForeground(Color.WHITE);
@@ -146,13 +142,10 @@ public class NewsPanel extends JPanel {
     }
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
-        scrollPane.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                Adjustable adj = scrollPane.getVerticalScrollBar();
-                int scrollAmount = e.getUnitsToScroll() * adj.getBlockIncrement();
-                adj.setValue(adj.getValue() + scrollAmount);
-            }
+        scrollPane.addMouseWheelListener(e -> {
+            Adjustable adj = scrollPane.getVerticalScrollBar();
+            int scrollAmount = e.getUnitsToScroll() * adj.getBlockIncrement();
+            adj.setValue(adj.getValue() + scrollAmount);
         });
     }
 

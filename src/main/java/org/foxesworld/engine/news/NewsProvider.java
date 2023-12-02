@@ -12,13 +12,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewsProvider {
     private Engine engine;
-    private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
+    private final String VK_API_URL = "https://api.vk.com/method/wall.get";
+    private static String[] statsValuesKeys = {"views", "likes", "comments", "reposts"};
     private String text;
-    private int views, likes, comments, reposts;
+    private Map<String, Integer> statsValues;
     private long date;
     private List<String> tooltipPhotoUrls;
     private List<String> originalPhotoUrls;
@@ -47,10 +50,11 @@ public class NewsProvider {
                 for (JsonElement postElement : posts) {
                     JsonObject post = postElement.getAsJsonObject();
                     text = post.get("text").getAsString();
-                    views = post.getAsJsonObject("views").get("count").getAsInt();
-                    likes = post.getAsJsonObject("likes").get("count").getAsInt();
-                    comments = post.getAsJsonObject("comments").get("count").getAsInt();
-                    reposts = post.getAsJsonObject("reposts").get("count").getAsInt();
+                    statsValues = new HashMap<>();
+                    for(String value: statsValuesKeys){
+                        statsValues.put(value, post.getAsJsonObject(value).get("count").getAsInt());
+                    }
+
                     date = post.get("date").getAsLong(); // Get the publication date in seconds
                     tooltipPhotoUrls = new ArrayList<>();
                     originalPhotoUrls = new ArrayList<>();
@@ -110,20 +114,12 @@ public class NewsProvider {
         return text;
     }
 
-    public int getViews() {
-        return views;
+    public Map<String, Integer> getStatsValues() {
+        return statsValues;
     }
 
-    public int getLikes() {
-        return likes;
-    }
-
-    public int getComments() {
-        return comments;
-    }
-
-    public int getReposts() {
-        return reposts;
+    public static String[] getStatsValuesKeys() {
+        return statsValuesKeys;
     }
 
     public long getDate() {

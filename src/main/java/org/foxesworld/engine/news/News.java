@@ -19,10 +19,10 @@ public class News {
         this.tooltipPhotoUrls = newsProvider.getTooltipPhotoUrls();
         this.originalPhotoUrls = newsProvider.getOriginalPhotoUrls();
         this.publicationDate = newsProvider.getDate();
-        this.views = newsProvider.getViews();
-        this.likes = newsProvider.getLikes();
-        this.comments = newsProvider.getComments();
-        this.reposts = newsProvider.getReposts();
+        this.views = newsProvider.getStatsValues().get("views");
+        this.likes = newsProvider.getStatsValues().get("likes");
+        this.comments = newsProvider.getStatsValues().get("comments");
+        this.reposts = newsProvider.getStatsValues().get("reposts");
     }
 
     public String getText() {

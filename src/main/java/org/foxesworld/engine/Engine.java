@@ -111,11 +111,17 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
     @Deprecated
     private void test(){
-        JPanel childPanel = new NewsPanel(this.getNewsProvider().fetchNews());
-        childPanel.setOpaque(false);
-        childPanel.setBounds(0,30,500,470);
-        childPanel.setName("newsFrame");
-        this.guiBuilder.addPanelToMap(childPanel);
+        /* TODO
+        * We should loadd all additional panels we find in JSON automatically
+        * That's a hardcoded SAMPLE
+        * */
+        if(this.getCONFIG().isLoadNews()) {
+            JPanel childPanel = new NewsPanel(this.getNewsProvider().fetchNews());
+            childPanel.setOpaque(false);
+            childPanel.setBounds(0, 30, 500, 470);
+            childPanel.setName("newsFrame");
+            this.guiBuilder.addPanelToMap(childPanel);
+        }
     }
 
     public void displayPanel(String displayString) {

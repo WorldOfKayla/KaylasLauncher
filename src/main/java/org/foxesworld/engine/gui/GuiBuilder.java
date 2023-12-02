@@ -22,10 +22,14 @@ public class GuiBuilder implements ComponentFactoryListener {
     private final HashMap<String, List<JComponent>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
-    private final HashMap<OptionGroups, JPanel> panelsWithOptions = new HashMap<>();
     private final FrameConstructor frameConstructor;
     private final ComponentFactory componentFactory;
     private GuiBuilderListener guiBuilderListener;
+
+    /* TODO
+    * We need to define a counter variable and onPanelsBuilt method
+    * to detevt when all panels are built
+    * */
 
     public GuiBuilder(Engine engine) {
         this.engine = engine;
@@ -88,7 +92,6 @@ public class GuiBuilder implements ComponentFactoryListener {
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.getPanelOptions().isVisible());
                 this.createComponents(optionGroups, thisPanel);
-                //this.addPanelWithOptions(optionGroups, thisPanel); //Adding all the panels before buildin
                 //If panel with {nanme} is not already added
                 if (!this.getPanelsMap().containsKey(componentGroup)) {
                     //OnPanelAdd
@@ -116,10 +119,11 @@ public class GuiBuilder implements ComponentFactoryListener {
             } else if (componentAttributes.getReadFrom() != null) {
                 // Handle reading from another JSON file
                 buildGui(componentAttributes.getReadFrom(), parentPanel);
-            }
-            else if(componentAttributes.getLoadPanel() != null && !componentAttributes.getLoadPanel().isEmpty()){
-                System.out.println("ADDING NEWS");
-                this.addPanelGroup(parentPanel, this.panelsMap.get(componentAttributes.getLoadPanel()));
+            } else if(componentAttributes.getLoadPanel() != null && !componentAttributes.getLoadPanel().isEmpty()){
+                JPanel loadingPanel = this.panelsMap.get(componentAttributes.getLoadPanel());
+                if(loadingPanel != null) {
+                    this.addPanelGroup(parentPanel, loadingPanel);
+                }
             }
         }
     }
@@ -191,10 +195,6 @@ public class GuiBuilder implements ComponentFactoryListener {
 
     public void addPanelToMap(JPanel panel) {
         this.panelsMap.put(panel.getName(), panel);
-    }
-
-    public void addPanelWithOptions(OptionGroups options, JPanel panel) {
-        this.panelsWithOptions.put(options, panel);
     }
 
     public HashMap<String, List<String>> getChildsNparents() {

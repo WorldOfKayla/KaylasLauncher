@@ -10,10 +10,11 @@ public class News {
     private int views;
     private int likes;
     private int comments;
+    private int reposts;
     private static String groupName; // Added field for community name
     private static String groupPicture; // Added field for community photo URL
 
-    public News(String text, List<String> tooltipPhotoUrls, List<String> originalPhotoUrls, long publicationDate, int views, int likes, int comments) {
+    public News(String text, List<String> tooltipPhotoUrls, List<String> originalPhotoUrls, long publicationDate, int views, int likes, int comments, int reposts) {
         this.text = text;
         this.tooltipPhotoUrls = tooltipPhotoUrls;
         this.originalPhotoUrls = originalPhotoUrls;
@@ -21,6 +22,7 @@ public class News {
         this.views = views;
         this.likes = likes;
         this.comments = comments;
+        this.reposts = reposts;
     }
 
     public String getText() {
@@ -49,6 +51,10 @@ public class News {
 
     public int getComments() {
         return comments;
+    }
+
+    public int getReposts() {
+        return reposts;
     }
 
     public String getCommunityName() {

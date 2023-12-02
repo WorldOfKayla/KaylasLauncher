@@ -48,6 +48,7 @@ public class NewsProvider {
                     int views = post.getAsJsonObject("views").get("count").getAsInt();
                     int likes = post.getAsJsonObject("likes").get("count").getAsInt();
                     int comments = post.getAsJsonObject("comments").get("count").getAsInt();
+                    int reposts = post.getAsJsonObject("reposts").get("count").getAsInt();
                     long date = post.get("date").getAsLong(); // Get the publication date in seconds
 
                     List<String> tooltipPhotoUrls = new ArrayList<>();
@@ -72,7 +73,7 @@ public class NewsProvider {
                     }
 
                     // Create a News object with the publication date and add it to the list
-                    newsList.add(new News(text, tooltipPhotoUrls, originalPhotoUrls, date, views, likes, comments));
+                    newsList.add(new News(text, tooltipPhotoUrls, originalPhotoUrls, date, views, likes, comments, reposts));
                 }
             }
 

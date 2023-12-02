@@ -1,5 +1,7 @@
 package org.foxesworld.engine.utils;
 
+import org.foxesworld.engine.Engine;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +28,7 @@ public class ImageUtils {
             imgs.put(name, img);
             return img;
         } catch (Exception e) {
-            //APP.LOGGER.error("Failed to open local image: " + name);
+            Engine.LOGGER.error("Failed to open local image: " + name);
             return new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         }
     }

@@ -15,8 +15,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class NewsPanel extends JPanel {
+    /*
+    * TODO
+    *  That's a sample and is hardcoded
+    *  Should be rewritten before merging to the PROD thread
+    * */
 
-    private String[] statisticsLabels = {"views", "likes", "comments"};
+    private String[] statisticsLabels = {"views", "likes", "comments", "reposts"};
     private JScrollPane scrollPane;
     private JPanel contentPanel;
 
@@ -28,15 +33,17 @@ public class NewsPanel extends JPanel {
 
         for (News news : newsList) {
             contentPanel.add(createNewsPanel(news));
-            contentPanel.add(Box.createVerticalStrut(10)); // Add some vertical space between news items
+            contentPanel.add(Box.createVerticalStrut(10)); // Adding some vertical space between news items
         }
-
 
         scrollPane = new JScrollPane(contentPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
+
+        // Applying custom ScrollBarStyle
+        scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         adjustScrollPaneSensitivity(scrollPane);
 
         setLayout(new BoxLayout(this, 0));
@@ -49,7 +56,7 @@ public class NewsPanel extends JPanel {
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
-        // Create a separate panel for the upper part of the news
+        // Creating a separate panel for the upper part of the news
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(false);
         upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -64,25 +71,26 @@ public class NewsPanel extends JPanel {
             upperPanel.add(communityLabel);
 
             // Display the community name
-            JLabel communityNameLabel = new JLabel(news.getCommunityName());
-            communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            communityNameLabel.setForeground(Color.WHITE);
-            upperPanel.add(communityNameLabel);
+            // Display the community name
+                        JLabel communityNameLabel = new JLabel(news.getCommunityName());
+                        communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                        communityNameLabel.setForeground(Color.WHITE);
+                        upperPanel.add(communityNameLabel);
 
             // Add the publication date to the upper panel
-            JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
-            dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
-            dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-            dateLabel.setForeground(Color.WHITE);
-            upperPanel.add(dateLabel);
+                        JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
+                        dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
+                        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
+                        dateLabel.setForeground(Color.WHITE);
+                        upperPanel.add(dateLabel);
 
             // Add the upper panel to the main news panel
-            newsPanel.add(upperPanel);
+                        newsPanel.add(upperPanel);
 
             // Display the news text as a title
             JLabel titleLabel = new JLabel(news.getText());
             titleLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set the font and style as needed
-            titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
             newsPanel.add(titleLabel);
 
             // Display photos in full size
@@ -106,7 +114,7 @@ public class NewsPanel extends JPanel {
             statisticsPanel.setOpaque(false);
 
             // Define the statistics labels and their values
-            int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments()};
+            int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments(), news.getReposts()};
 
             // Create labels in a loop
             for (int i = 0; i < statisticsLabels.length; i++) {
@@ -147,7 +155,6 @@ public class NewsPanel extends JPanel {
             }
         });
     }
-
 
     private String formatDate(long unixTimestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

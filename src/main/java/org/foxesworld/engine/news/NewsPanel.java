@@ -1,16 +1,24 @@
 package org.foxesworld.engine.news;
 
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class NewsPanel extends JPanel {
     /*
@@ -20,16 +28,17 @@ public class NewsPanel extends JPanel {
     * */
     private JScrollPane scrollPane;
     private JPanel contentPanel;
+    private JPanel newsInner;
 
     public NewsPanel(List<News> newsList) {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setOpaque(true);
-        contentPanel.setBackground(FontUtils.hexToColor("#1e1f2073"));
+        contentPanel.setBackground(hexToColor("#1e1f2073"));
 
         for (News news : newsList) {
             contentPanel.add(createNewsPanel(news));
-            contentPanel.add(Box.createVerticalStrut(10)); // Adding some vertical space between news items
+            contentPanel.add(Box.createVerticalStrut(10));
         }
 
         scrollPane = new JScrollPane(contentPanel);
@@ -49,12 +58,18 @@ public class NewsPanel extends JPanel {
 
     private JPanel createNewsPanel(News news) {
         JPanel newsPanel = new JPanel();
+        newsInner = new JPanel();
+        newsInner.setOpaque(false);
+        newsInner.setPreferredSize(new Dimension(500, 500));
+        newsInner.setBorder(new MatteBorder(2, 2, 2, 2, hexToColor("#3b4045")));
+        newsInner.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
         // Creating a separate panel for the upper part of the news
         JPanel upperPanel = new JPanel();
-        upperPanel.setOpaque(false);
+        upperPanel.setOpaque(true);
+        upperPanel.setBackground(hexToColor("#3366938a"));
         upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         try {
@@ -67,52 +82,53 @@ public class NewsPanel extends JPanel {
             upperPanel.add(communityLabel);
 
             // Display the community name
-            // Display the community name
-                        JLabel communityNameLabel = new JLabel(news.getCommunityName());
-                        communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-                        communityNameLabel.setForeground(Color.WHITE);
-                        upperPanel.add(communityNameLabel);
+            JLabel communityNameLabel = new JLabel(news.getCommunityName());
+            communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            communityNameLabel.setForeground(Color.WHITE);
+            upperPanel.add(communityNameLabel);
 
             // Add the publication date to the upper panel
-                        JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
-                        dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
-                        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
-                        dateLabel.setForeground(Color.WHITE);
-                        upperPanel.add(dateLabel);
+            JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
+            dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
+            dateLabel.setBounds(900,0, 200,30);
+            dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
+            dateLabel.setForeground(Color.WHITE);
+            upperPanel.add(dateLabel);
 
             // Add the upper panel to the main news panel
-                        newsPanel.add(upperPanel);
+            newsPanel.add(upperPanel);
 
             // Display the news text as a title
-            JLabel titleLabel = new JLabel(news.getText());
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set the font and style as needed
-            titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
-            newsPanel.add(titleLabel);
+            JLabel newsText = new JLabel(news.getText());
+            newsText.setFont(new Font("Arial", Font.BOLD, 11)); // Set the font and style as needed
+            newsText.setForeground(Color.WHITE);
+            //newsText.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
+            newsInner.add(newsText);
 
-            // Display photos in full size
+            // Display photos without resizing
             for (String photoUrl : news.getTooltipPhotoUrls()) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
-                    Image image = imageIcon.getImage();
-                    imageIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(imageIcon);
-                    // Center the photo
-                    photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    newsPanel.add(photoLabel);
+                    newsInner.add(photoLabel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
+            // Add the photo panel to the main news panel
+            newsPanel.add(newsInner);
+
             // Display statistics (views, likes, comments) at the bottom-left
             JPanel statisticsPanel = new JPanel();
             statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-            statisticsPanel.setOpaque(false);
+            statisticsPanel.setBackground(hexToColor("#df8b08bf"));
+            statisticsPanel.setOpaque(true);
 
             // Define the statistics labels and their values
             int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments(), news.getReposts()};
 
-            // Create labels in a loop
+            // Creating labels in a loop
             for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
                 ImageIcon imageIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"));
                 JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
@@ -122,24 +138,14 @@ public class NewsPanel extends JPanel {
             }
 
             newsPanel.add(statisticsPanel);
-
-            // Add spacing before the VK post icon
-            newsPanel.add(Box.createVerticalStrut(10)); // Adjust the vertical spacing as needed
-
-            // Display the VK post icon to the left at the end of the news
-            ImageIcon vkIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/post.png"));
-            JLabel vkLabel = new JLabel(vkIcon);
-            vkLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            newsPanel.add(vkLabel);
-
+            newsPanel.add(Box.createVerticalStrut(10));
         } catch (IOException e) {
-            e.printStackTrace();
-            // Debugging: Print error message if image loading fails
-            System.err.println("Error loading community photo: " + e.getMessage());
+            Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
         }
 
         return newsPanel;
     }
+
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.addMouseWheelListener(e -> {
@@ -149,10 +155,14 @@ public class NewsPanel extends JPanel {
         });
     }
 
+
     private String formatDate(long unixTimestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dateFormat.format(unixTimestamp * 1000L); // Convert seconds to milliseconds
+        Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
+        Date C = new Date(stamp.getTime());
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM hh:mm");
+       return formatDate.format(C.getTime());
     }
+
 
     private Image getRoundedImage(Image image, int width, int height) {
         BufferedImage roundedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

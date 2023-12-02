@@ -1,6 +1,7 @@
 package org.foxesworld.engine.gui.components;
 
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.components.ScrollBarUI.ScrollBar;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.button.ButtonStyle;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
@@ -21,6 +22,7 @@ import org.foxesworld.engine.gui.components.textfield.Textfield;
 import org.foxesworld.engine.gui.components.textfield.TextfieldStyle;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.news.CustomScrollBarUI;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -48,7 +50,7 @@ public class ComponentFactory {
         this.engine = engine;
         this.LANG = engine.getLANG();
     }
-    public JComponent createComponent(ComponentAttributes componentAttributes) {
+    public JComponent createComponent(ComponentAttributes componentAttributes, JPanel parentPanel) {
         componentFactoryListener.onComponentCreation(componentAttributes);
         if(componentAttributes.getComponentStyle() != null && componentAttributes.getComponentStyle() != null) {
             if(componentStyles.get(componentAttributes.getComponentStyle()) == null){
@@ -229,6 +231,17 @@ public class ComponentFactory {
                 serverBox.setForeground(hexToColor(componentAttributes.getColor()));
                 serverBox.setName(componentAttributes.getComponentId());
                 return serverBox;
+            }
+
+            case "ScrollBar" -> {
+                JScrollPane scrollPane = new JScrollPane(parentPanel);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                scrollPane.setOpaque(false);
+                scrollPane.getViewport().setOpaque(false);
+                scrollPane.getVerticalScrollBar().setUI(new ScrollBar());
+                scrollPane.setLayout(new ScrollPaneLayout());
+                return  scrollPane;
             }
 
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.getComponentType());

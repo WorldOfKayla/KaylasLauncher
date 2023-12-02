@@ -4,7 +4,7 @@
       "panelOptions": {
         "opaque": false,
         "visible": true,
-        "background": "",
+        "background": "#1e1f2073",
         "border": "0,2,0,0,#3b4045",
         "bounds": "350,0,500,500"
       },

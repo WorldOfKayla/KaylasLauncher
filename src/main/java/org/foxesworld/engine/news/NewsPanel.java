@@ -1,36 +1,28 @@
 package org.foxesworld.engine.news;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.utils.FontUtils;
-import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+import static org.foxesworld.engine.utils.ImageUtils.*;
 
 public class NewsPanel extends JPanel {
     /*
     * TODO
     *  That's a sample and is hardcoded
-    *  Should be rewritten before merging to the PROD thread
+    *  EXPERIMENTAL
     * */
     private JScrollPane scrollPane;
     private JPanel contentPanel;
-    private JPanel newsInner;
-
     public NewsPanel(List<News> newsList) {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -70,13 +62,13 @@ public class NewsPanel extends JPanel {
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(true);
         upperPanel.setBackground(hexToColor("#3366938a"));
-        upperPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         try {
             // Display the community photo with rounded corners
             ImageIcon communityIcon = new ImageIcon(new URL(news.getCommunityPhotoUrl()));
             Image communityImage = communityIcon.getImage();
-            communityIcon = new ImageIcon(getRoundedImage(communityImage, 50, 50));
+            communityIcon = new ImageIcon(getRoundedImage(communityImage, 1.2, 20));
+
             JLabel communityLabel = new JLabel(communityIcon);
             communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             upperPanel.add(communityLabel);
@@ -88,9 +80,8 @@ public class NewsPanel extends JPanel {
             upperPanel.add(communityNameLabel);
 
             // Add the publication date to the upper panel
-            JLabel dateLabel = new JLabel(formatDate(news.getPublicationDate()));
-            dateLabel.setIcon(new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/time.png")));
-            dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT); // Align to the right
+            JLabel dateLabel = new JLabel("<html><body style='width: 240px; text-align: right; padding: 0px;'>" + formatDate(news.getPublicationDate()) + "</body></html>");
+            //dateLabel.setIcon(new ImageIcon(getLocalImage("assets/ui/icons/vk/time.png")));
             dateLabel.setForeground(Color.WHITE);
             upperPanel.add(dateLabel);
 
@@ -102,7 +93,7 @@ public class NewsPanel extends JPanel {
             textPanel.setOpaque(false);
 
             // Display the news text as a title
-            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px;'>" + news.getText() + "</body></html>";
+            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + news.getText() + "</body></html>";
             JLabel newsText = new JLabel(labelText);
             newsText.setFont(new Font("Arial", Font.BOLD, 11));
             newsText.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -116,7 +107,7 @@ public class NewsPanel extends JPanel {
             if (news.getTooltipPhotoUrls().size() == 1) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(news.getOriginalPhotoUrls().get(0)));
-                    Image image = ImageUtils.getScaledImage(imageIcon.getImage(), 440, 300);
+                    Image image = getRoundedImage(imageIcon.getImage(), 2.2, 15);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
                     photoLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -150,7 +141,7 @@ public class NewsPanel extends JPanel {
 
             // Creating labels in a loop
             for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
-                ImageIcon imageIcon = new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"));
+                ImageIcon imageIcon = new ImageIcon(getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"));
                 JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
                 label.setIcon(imageIcon);
                 label.setForeground(Color.WHITE);
@@ -170,8 +161,6 @@ public class NewsPanel extends JPanel {
         return newsPanel;
     }
 
-
-
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.addMouseWheelListener(e -> {
             Adjustable adj = scrollPane.getVerticalScrollBar();
@@ -180,22 +169,10 @@ public class NewsPanel extends JPanel {
         });
     }
 
-
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
         Date date = new Date(stamp.getTime());
         SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM yyyy HH:mm");
         return formatDate.format(date);
-    }
-
-
-
-    private Image getRoundedImage(Image image, int width, int height) {
-        BufferedImage roundedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = roundedImage.createGraphics();
-        g2.setClip(new Ellipse2D.Float(0, 0, width, height));
-        g2.drawImage(image, 0, 0, width, height, null);
-        g2.dispose();
-        return roundedImage;
     }
 }

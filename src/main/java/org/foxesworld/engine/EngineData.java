@@ -20,6 +20,15 @@ public class EngineData {
     @SerializedName("appId")
     private String appId;
 
+    @SerializedName("accessToken")
+    private String accessToken;
+
+    @SerializedName("groupDomain")
+    private String groupDomain;
+
+    @SerializedName("vkAPIversion")
+    private String vkAPIversion;
+
     @SerializedName("downloadThreads")
     private int downloadThreads;
 
@@ -43,6 +52,18 @@ public class EngineData {
 
     public String getAppId() {
         return appId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getGroupDomain() {
+        return groupDomain;
+    }
+
+    public String getVkAPIversion() {
+        return vkAPIversion;
     }
 
     public int getDownloadThreads() {

@@ -17,8 +17,6 @@ import java.util.List;
 public class NewsProvider {
     private Engine engine;
     private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
-    private static final String ACCESS_TOKEN = "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39";
-    private static final String GROUP_DOMAIN = "foxesworlds"; // Replace with the domain of the VK group/page
 
     public NewsProvider(Engine engine){
         this.engine = engine;
@@ -99,11 +97,11 @@ public class NewsProvider {
 
     private String buildUrl() {
         StringBuilder urlBuilder = new StringBuilder(VK_API_URL);
-        urlBuilder.append("?domain=").append(GROUP_DOMAIN);
-        urlBuilder.append("&access_token=").append(ACCESS_TOKEN);
+        urlBuilder.append("?domain=").append(this.engine.getEngineData().getGroupDomain());
+        urlBuilder.append("&access_token=").append(this.engine.getEngineData().getAccessToken());
         urlBuilder.append("&count=5"); // Adjust count as needed
         urlBuilder.append("&extended=1");
-        urlBuilder.append("&v=5.101"); // VK API version
+        urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion()); // VK API version
 
         return urlBuilder.toString();
     }

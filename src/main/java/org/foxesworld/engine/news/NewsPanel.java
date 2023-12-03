@@ -107,7 +107,7 @@ public class NewsPanel extends JPanel {
             if (news.getTooltipPhotoUrls().size() == 1) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(news.getOriginalPhotoUrls().get(0)));
-                    Image image = getRoundedImage(imageIcon.getImage(), 2.2, 15);
+                    Image image = getRoundedImage(imageIcon.getImage(), 2.1, 15);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
                     photoLabel.setAlignmentX(CENTER_ALIGNMENT);

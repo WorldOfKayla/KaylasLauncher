@@ -64,6 +64,30 @@ public class ImageUtils {
 
         return scaledImage;
     }
+    public static Image getScaledImage(Image srcImg, int w, int h) {
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        AffineTransform at = AffineTransform.getScaleInstance((double) w / srcImg.getWidth(null), (double) h / srcImg.getHeight(null));
+        g2.drawRenderedImage(toBufferedImage(srcImg), at);
+
+        g2.dispose();
+        return resizedImg;
+    }
+
+    public static Image getScaledImage(Image srcImg, double scale) {
+        int w = (int) (srcImg.getWidth(null) * scale);
+        int h = (int) (srcImg.getHeight(null) * scale);
+
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        AffineTransform at = AffineTransform.getScaleInstance(scale, scale);
+        g2.drawRenderedImage(toBufferedImage(srcImg), at);
+
+        g2.dispose();
+        return resizedImg;
+    }
 
 
     public static BufferedImage genButton(int w, int h, BufferedImage img) {
@@ -133,30 +157,7 @@ public class ImageUtils {
         g.dispose();
         return img;
     }
-    public static Image getScaledImage(Image srcImg, int w, int h) {
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
 
-        AffineTransform at = AffineTransform.getScaleInstance((double) w / srcImg.getWidth(null), (double) h / srcImg.getHeight(null));
-        g2.drawRenderedImage(toBufferedImage(srcImg), at);
-
-        g2.dispose();
-        return resizedImg;
-    }
-
-    public static Image getScaledImage(Image srcImg, double scale) {
-        int w = (int) (srcImg.getWidth(null) * scale);
-        int h = (int) (srcImg.getHeight(null) * scale);
-
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        AffineTransform at = AffineTransform.getScaleInstance(scale, scale);
-        g2.drawRenderedImage(toBufferedImage(srcImg), at);
-
-        g2.dispose();
-        return resizedImg;
-    }
 
 
     private static BufferedImage toBufferedImage(Image img) {

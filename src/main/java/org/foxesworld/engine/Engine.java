@@ -89,30 +89,27 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         }
     }
 
-
-    /* TODO
-    *   Remove too many calls of GuiBuilder
-    *   In process
-    * */
     public void initialize(String login) {
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine"  + '-' + this.getEngineData().getLauncherVersion(),"aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
-        test();
 
-        getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
+        this.getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
+
+        //ALL PANELS ARE BUILT
+        this.getGuiBuilder().buildAdditionalPanels();
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
 
-    @Deprecated
-    private void test(){
+    @Override
+    public void onPanelsBuilt() {
         /* TODO
-        * We should loadd all additional panels we find in JSON automatically
+        * We should load all additional panels we find in JSON automatically
         * That's a hardcoded SAMPLE
         * */
         if(this.getCONFIG().isLoadNews()) {
@@ -122,6 +119,14 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             childPanel.setName("newsFrame");
             this.guiBuilder.addPanelToMap(childPanel);
         }
+    }
+    @Override
+    public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
+        parentPanel.updateUI();
+        parentPanel.repaint();
+        parentPanel.revalidate();
+        parentPanel.setDoubleBuffered(true);
+        LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
 
     public void displayPanel(String displayString) {
@@ -151,19 +156,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
 
-    @Override
-    public void onPanelBuild(Map<String, OptionGroups> groups, JPanel parentPanel) {
-        parentPanel.updateUI();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        parentPanel.setDoubleBuffered(true);
-    }
 
-    @Override
-    public void onPanelsBuilt(){
-        Engine.LOGGER.info("ALL PANELS ARE BUILT!");
-        //createUI();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

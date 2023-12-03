@@ -21,14 +21,18 @@ public class GuiBuilder implements ComponentFactoryListener {
     private final Engine engine;
     private final HashMap<String, List<JComponent>> componentsMap = new HashMap<>();
     private final HashMap<String, JPanel> panelsMap = new HashMap<>();
+    private final HashMap<JPanel, JComponent> panelsComponents = new HashMap<>();
+    private final HashMap<String, JPanel> loadPanels = new HashMap<>();
     private final HashMap<String, List<String>> childsNparents = new HashMap<>();
     private final FrameConstructor frameConstructor;
     private final ComponentFactory componentFactory;
     private GuiBuilderListener guiBuilderListener;
+    private boolean additionalPanelsBuilt = false;
+
 
     /* TODO
     * We need to define a counter variable and onPanelsBuilt method
-    * to detevt when all panels are built
+    * to deteсt when all panels are built
     * */
 
     public GuiBuilder(Engine engine) {
@@ -83,19 +87,19 @@ public class GuiBuilder implements ComponentFactoryListener {
      */
     private void buildPanels(Map<String, OptionGroups> groups, JPanel parentPanel) {
         if (groups != null) {
-            guiBuilderListener.onPanelBuild(groups, parentPanel);
             for (Map.Entry<String, OptionGroups> entry : groups.entrySet()) {
                 String componentGroup = entry.getKey();
-                this.frameConstructor.getAppFrame().getLOGGER().debug("Building panel " + componentGroup + " with parent " + parentPanel.getName());
                 OptionGroups optionGroups = entry.getValue();
                 JPanel thisPanel = frameConstructor.getPanel().createGroupPanel(optionGroups.getPanelOptions(), componentGroup);
                 thisPanel.setName(componentGroup);
                 thisPanel.setVisible(optionGroups.getPanelOptions().isVisible());
-                this.createComponents(optionGroups, thisPanel);
+                //All childElements are built here
+                this.processChildComponents(optionGroups, thisPanel);
+
                 //If panel with {nanme} is not already added
                 if (!this.getPanelsMap().containsKey(componentGroup)) {
-                    //OnPanelAdd
-                    this.addPanelGroup(parentPanel, thisPanel);
+                    addPanelGroup(parentPanel, thisPanel);
+                    guiBuilderListener.onPanelBuild(groups, componentGroup, parentPanel);
                 }
                 buildPanels(optionGroups.getGroups(), thisPanel); // Recursive call for nested groups
                 childsNparents.computeIfAbsent(parentPanel.getName(), k -> new ArrayList<>()).add(thisPanel.getName());
@@ -106,12 +110,13 @@ public class GuiBuilder implements ComponentFactoryListener {
     /*
      * Method for building componentFactory based on a JSON structure
      */
-    private void createComponents(OptionGroups optionGroups, JPanel parentPanel) {
+    private void processChildComponents(OptionGroups optionGroups, JPanel parentPanel) {
         this.componentFactory.setComponentFactoryListener(this);
         for (ComponentAttributes componentAttributes : optionGroups.getChildComponents()) {
             if (componentAttributes.getComponentType() != null) {
                 JComponent component = this.componentFactory.createComponent(componentAttributes, parentPanel);
                 parentPanel.add(component);
+                this.panelsComponents.put(parentPanel, component);
                 this.addComponentToMap(parentPanel.getName(), component);
             } else if (componentAttributes.getGroups() != null) {
                 // Handle nested groups
@@ -120,18 +125,31 @@ public class GuiBuilder implements ComponentFactoryListener {
                 // Handle reading from another JSON file
                 buildGui(componentAttributes.getReadFrom(), parentPanel);
             } else if(componentAttributes.getLoadPanel() != null && !componentAttributes.getLoadPanel().isEmpty()){
-                JPanel loadingPanel = this.panelsMap.get(componentAttributes.getLoadPanel());
-                if(loadingPanel != null) {
-                    this.addPanelGroup(parentPanel, loadingPanel);
-                }
+                //Saving to map to process when all panels are built
+                this.loadPanels.put(componentAttributes.getLoadPanel(), parentPanel);
             }
         }
     }
 
-    private void addPanelGroup(JPanel parent, JPanel child){
-        parent.add(child);
-        getPanelsMap().put(child.getName(), child);
+    public void buildAdditionalPanels() {
+        if (!additionalPanelsBuilt) {
+            guiBuilderListener.onPanelsBuilt();
+            Engine.LOGGER.debug(" == BUILDING ADDITIONAL PANELS ==");
+
+            for (Map.Entry<String, JPanel> additional : this.loadPanels.entrySet()) {
+                Engine.LOGGER.debug("Processing {}", additional.getKey());
+                JPanel loadingPanel = this.panelsMap.get(additional.getKey());
+
+                if (loadingPanel != null) {
+                    this.addPanelGroup(additional.getValue(), loadingPanel);
+                }
+            }
+
+            // Set the flag to true after building additional panels
+            additionalPanelsBuilt = true;
+        }
     }
+
 
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
@@ -142,7 +160,8 @@ public class GuiBuilder implements ComponentFactoryListener {
 
     /* INFO
      * An experimental solution
-     * Will do something with hardCoded scrollBox */
+     * Will do something with hardCoded scrollBox
+     * */
     private void getInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = componentAttributes.getInitialValue().split("#");
         switch (splitValue[0]) {
@@ -195,6 +214,11 @@ public class GuiBuilder implements ComponentFactoryListener {
 
     public void addPanelToMap(JPanel panel) {
         this.panelsMap.put(panel.getName(), panel);
+    }
+
+    private void addPanelGroup(JPanel parent, JPanel child){
+        parent.add(child);
+        getPanelsMap().put(child.getName(), child);
     }
 
     public HashMap<String, List<String>> getChildsNparents() {

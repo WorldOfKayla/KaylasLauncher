@@ -144,9 +144,9 @@ public class GuiBuilder implements ComponentFactoryListener {
                     this.addPanelGroup(additional.getValue(), loadingPanel);
                 }
             }
-
-            // Set the flag to true after building additional panels
             additionalPanelsBuilt = true;
+        } else {
+            Engine.LOGGER.error("Additional panels are already built!");
         }
     }
 

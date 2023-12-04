@@ -62,7 +62,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public Engine(APP APP) {
         this.APP = APP;
         this.engineData = new EngineData();
-        this.initEngineValues(getAPP().getEngineVars());
+        initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
@@ -80,8 +80,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         initialize(this.auth.getAuthCredentials("login"));
     }
 
-    @Deprecated
-    private void initEngineValues(String propertyPath){
+    void initEngineValues(String propertyPath){
         InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -105,7 +104,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
-
     @Override
     public void onPanelsBuilt() {
         /* TODO
@@ -128,7 +126,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         parentPanel.setDoubleBuffered(true);
         LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
-
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
@@ -139,7 +136,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             }
         }
     }
-
     private void panelVisibility(String panelElement){
         String[] parts = panelElement.split("->");
         if (parts.length == 2) {
@@ -151,12 +147,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             }
         }
     }
-
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

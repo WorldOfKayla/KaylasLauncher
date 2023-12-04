@@ -1,5 +1,6 @@
 package org.foxesworld.engine.news;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.foxesworld.engine.Engine;
 
 import javax.swing.*;
@@ -49,12 +50,22 @@ public class NewsPanel extends JPanel {
         setOpaque(false);
     }
 
+    private JPanel createStatsLabel(String text, ImageIcon icon, Color textColor, int horizontalAlignment) {
+        JPanel labelPanel = new JPanel();
+        labelPanel.setLayout(new FlowLayout(horizontalAlignment));
+        labelPanel.setOpaque(false);
+
+        JLabel label = new JLabel(text);
+        label.setIcon(icon);
+        label.setForeground(textColor);
+
+        labelPanel.add(label);
+
+        return labelPanel;
+    }
+
     private JPanel createNewsPanel(News news) {
         JPanel newsPanel = new JPanel();
-        JPanel newsInner = new JPanel();
-        newsInner.setOpaque(false);
-        newsInner.setBorder(new EmptyBorder(10, 10, 10, 10));
-        newsInner.setLayout(new BoxLayout(newsInner, BoxLayout.Y_AXIS));
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
@@ -67,7 +78,7 @@ public class NewsPanel extends JPanel {
             // Display the community photo with rounded corners
             ImageIcon communityIcon = new ImageIcon(new URL(news.getCommunityPhotoUrl()));
             Image communityImage = communityIcon.getImage();
-            communityIcon = new ImageIcon(getRoundedImage(communityImage, 1.2, 20));
+            communityIcon = new ImageIcon(getRoundedImage(communityImage, 1.2, 50));
 
             JLabel communityLabel = new JLabel(communityIcon);
             communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -81,7 +92,6 @@ public class NewsPanel extends JPanel {
 
             // Add the publication date to the upper panel
             JLabel dateLabel = new JLabel("<html><body style='width: 240px; text-align: right; padding: 0px;'>" + formatDate(news.getPublicationDate()) + "</body></html>");
-            //dateLabel.setIcon(new ImageIcon(getLocalImage("assets/ui/icons/vk/time.png")));
             dateLabel.setForeground(Color.WHITE);
             upperPanel.add(dateLabel);
 
@@ -89,14 +99,15 @@ public class NewsPanel extends JPanel {
             newsPanel.add(upperPanel);
 
             // Create a panel for the news text
-            JPanel textPanel = new JPanel(new BorderLayout());
+            JPanel textPanel = new JPanel();
             textPanel.setOpaque(false);
+            textPanel.setLayout(new BorderLayout());
 
             // Display the news text as a title
             String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + news.getText() + "</body></html>";
             JLabel newsText = new JLabel(labelText);
             newsText.setFont(new Font("Arial", Font.BOLD, 11));
-            newsText.setBorder(new EmptyBorder(10, 10, 10, 10));
+            newsText.setBorder(new EmptyBorder(10, 0, 10, 0));
             newsText.setForeground(Color.WHITE);
 
             // Place the text on the left side of the text panel
@@ -107,11 +118,12 @@ public class NewsPanel extends JPanel {
             if (news.getTooltipPhotoUrls().size() == 1) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(news.getOriginalPhotoUrls().get(0)));
-                    Image image = getRoundedImage(imageIcon.getImage(), 2.1, 15);
+                    Image image = getRoundedImage(imageIcon.getImage(), 2.7, 15);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
                     photoLabel.setAlignmentX(CENTER_ALIGNMENT);
-                    newsInner.add(photoLabel);
+                    photoLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
+                    newsPanel.add(photoLabel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -120,15 +132,12 @@ public class NewsPanel extends JPanel {
                     try {
                         ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
                         JLabel photoLabel = new JLabel(imageIcon);
-                        newsInner.add(photoLabel);
+                        newsPanel.add(photoLabel);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
-
-            // Add the photo panel to the main news panel
-            newsPanel.add(newsInner);
 
             // Display statistics (views, likes, comments) at the bottom-left
             JPanel statisticsPanel = new JPanel();
@@ -142,17 +151,20 @@ public class NewsPanel extends JPanel {
             // Creating labels in a loop
             for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
                 ImageIcon imageIcon = new ImageIcon(getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"));
-                JLabel label = new JLabel(String.valueOf(statisticsValues[i]));
-                label.setIcon(imageIcon);
-                label.setForeground(Color.WHITE);
-                statisticsPanel.add(label);
+                Color textColor = Color.WHITE;
+
+                // Adjusting alignment for the last label (views)
+                int horizontalAlignment = (i == NewsProvider.getStatsValuesKeys().length - 1) ? FlowLayout.RIGHT : FlowLayout.LEFT;
+
+                JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, horizontalAlignment);
+                statisticsPanel.add(labelPanel);
             }
 
             newsPanel.add(statisticsPanel);
             newsPanel.add(Box.createVerticalStrut(10));
 
             // Set the preferred size of newsInner based on its content
-            newsInner.setPreferredSize(newsInner.getPreferredSize());
+            // Note: If you were using newsInner for any specific purpose, you might need to adapt this part accordingly.
 
         } catch (IOException e) {
             Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
@@ -160,6 +172,8 @@ public class NewsPanel extends JPanel {
 
         return newsPanel;
     }
+
+
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.addMouseWheelListener(e -> {

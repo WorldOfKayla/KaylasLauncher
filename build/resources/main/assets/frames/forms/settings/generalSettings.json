@@ -3,6 +3,7 @@
     "generalSettings": {
       "panelOptions": {
         "opaque": true,
+        "focusable": true,
         "visible": true,
         "background": "#c0a1a0",
         "bounds": "10,60,320,240",
@@ -34,6 +35,7 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
+                  "keyCode": "1",
                   "componentStyle": "solid",
                   "componentId": "autoEnter",
                   "localeKey": "settings.autoEnter",
@@ -43,6 +45,7 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
+                  "keyCode": "2",
                   "componentStyle": "solid",
                   "componentId": "fullScreen",
                   "localeKey": "settings.fullScreen",
@@ -52,6 +55,7 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
+                  "keyCode": "3",
                   "componentStyle": "solid",
                   "componentId": "loadNews",
                   "localeKey": "settings.loadNews",
@@ -61,6 +65,7 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
+                  "keyCode": "4",
                   "componentStyle": "solid",
                   "componentId": "enableSound",
                   "localeKey": "settings.enableSound",
@@ -98,6 +103,7 @@
                 {
                   "componentType": "button",
                   "enabled": true,
+                  "keyCode": "ENTER",
                   "componentStyle": "buttonGreen",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",

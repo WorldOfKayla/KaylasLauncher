@@ -104,7 +104,7 @@ public class User implements ScrollBoxListener {
 
     @Override
     public void onScrollBoxOpen(int index) {
-        System.out.println("Opened "+index);
+        //System.out.println("Opened "+index);
     }
 
     @Override

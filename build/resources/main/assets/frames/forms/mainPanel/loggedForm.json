@@ -117,10 +117,10 @@
                         },
                         {
                           "componentType": "button",
-                          "enabled": true,
+                          "enabled": false,
                           "keyCode": "F5",
                           "componentStyle": "buttonYellow",
-                          "componentId": "test",
+                          "componentId": "smallButton",
                           "localeKey": "TEST",
                           "bounds": "95,30,60,34"
                         }

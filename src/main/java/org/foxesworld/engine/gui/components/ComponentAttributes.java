@@ -8,6 +8,9 @@ import java.util.Map;
 public class ComponentAttributes {
     @SerializedName("readFrom")
     private String readFrom;
+
+    @SerializedName("loadPanel")
+    private String loadPanel;
     @SerializedName("componentType")
     private String componentType;
     @SerializedName("componentStyle")
@@ -32,6 +35,9 @@ public class ComponentAttributes {
     private String localeKey;
     @SerializedName("imageIcon")
     private String imageIcon;
+
+    @SerializedName("rounded")
+    private boolean rounded;
     @SerializedName("iconWidth")
     private int iconWidth;
     @SerializedName("iconHeight")
@@ -102,6 +108,10 @@ public class ComponentAttributes {
         return imageIcon;
     }
 
+    public boolean isRounded() {
+        return rounded;
+    }
+
     public int getIconWidth() {
         return iconWidth;
     }
@@ -120,6 +130,10 @@ public class ComponentAttributes {
 
     public String getBounds() {
         return bounds;
+    }
+
+    public String getLoadPanel() {
+        return loadPanel;
     }
 
     public Map<String, OptionGroups> getGroups() {

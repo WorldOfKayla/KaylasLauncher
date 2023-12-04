@@ -51,7 +51,6 @@ public class ActionHandler {
                 for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")){
                     if(component instanceof JCheckBox){
                         this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
-                        System.out.println(((JCheckBox) component).isSelected());
                     } else {
                         if(component instanceof JTextField) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
@@ -102,7 +101,6 @@ public class ActionHandler {
 
     private void openGameFolder() {
         try {
-            engine.getSOUND().playSound("openFolder.ogg");
             Desktop d = Desktop.getDesktop();
             d.browse(new URI(engine.getCONFIG().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException ignored) {}

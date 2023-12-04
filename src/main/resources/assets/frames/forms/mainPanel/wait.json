@@ -2,7 +2,7 @@
   "groups": {
     "wait": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "visible": false,
         "background": "#638dbebf",
         "bounds": "0,0,850,500"
@@ -22,8 +22,8 @@
           "componentType": "label",
           "fontSize": 14,
           "componentStyle": "promptLabel",
-          "localeKey": "auth.authTitle",
-          "componentId": "appHeader",
+          "localeKey": "WAIT",
+          "componentId": "waitText",
           "bounds": "60,50,250,50"
         }
       ]

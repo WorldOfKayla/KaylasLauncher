@@ -15,12 +15,14 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.news.News;
+import org.foxesworld.engine.news.NewsPanel;
+import org.foxesworld.engine.news.provider.NewsProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
-import org.foxesworld.engine.utils.JVMHelper;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
@@ -38,6 +40,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final Sound SOUND;
     public static final Logger LOGGER = LogManager.getLogger(APP.class);
     private final Discord discord;
+    private News news;
     private final  LanguageProvider LANG;
     private  final ServerInfo serverInfo;
     private final FontUtils FONTUTILS;
@@ -60,7 +63,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public Engine(APP APP) {
         this.APP = APP;
         this.engineData = new EngineData();
-        this.initEngineValues(getAPP().getEngineVars());
+        initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
@@ -68,7 +71,8 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);
-        Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getLogLevel()));
+
+        Configurator.setLevel(getLOGGER().getName(), Level.valueOf(CONFIG.getLogLevel()));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
         this.frameConstructor = new FrameConstructor(this);
@@ -77,8 +81,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         initialize(this.auth.getAuthCredentials("login"));
     }
 
-    @Deprecated
-    private void initEngineValues(String propertyPath){
+    void initEngineValues(String propertyPath){
         InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -86,23 +89,36 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         }
     }
 
-    /* TODO
-    *   Remove too many calls of GuiBuilder
-    *   In process
-    * */
     public void initialize(String login) {
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine"  + '-' + this.getEngineData().getLauncherVersion(),"aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
-        getGuiBuilder().buildGui(getAPP().getFrameTpl(), true, this.getFrame().getRootPanel());
+        this.news = new News(this);
+        this.getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
+
+        //ALL PANELS ARE BUILT
+        this.getGuiBuilder().buildAdditionalPanels();
         user = new User(this.auth);
         this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
-
+    @Override
+    public void onPanelsBuilt() {
+        if(CONFIG.isEnableSound()) {
+            getSOUND().playSound("uiMus.ogg", true);
+        }
+    }
+    @Override
+    public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
+        parentPanel.updateUI();
+        parentPanel.repaint();
+        parentPanel.revalidate();
+        parentPanel.setDoubleBuffered(true);
+        LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
+    }
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
@@ -113,27 +129,19 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             }
         }
     }
-
     private void panelVisibility(String panelElement){
         String[] parts = panelElement.split("->");
         if (parts.length == 2) {
             String panelName = parts[0];
             boolean displayValue = Boolean.parseBoolean(parts[1]);
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
-            groupPanel.setVisible(displayValue);
+            if(groupPanel != null) {
+                groupPanel.setVisible(displayValue);
+            }
         }
     }
-
     private void loadMainPanel(String path) {
-        this.guiBuilder.buildGui(path, true, this.getFrame().getRootPanel());
-    }
-
-    @Override
-    public void onPanelBuild(Map<String, OptionGroups> groups, JPanel parentPanel) {
-        parentPanel.updateUI();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        parentPanel.setDoubleBuffered(true);
+        this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
 
     @Override

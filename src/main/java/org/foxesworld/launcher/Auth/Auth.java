@@ -59,7 +59,7 @@ public class Auth {
 
         }
         if(this.authorize(inputData)) {
-            engine.getSOUND().playSound("auth.ogg");
+            engine.getSOUND().playSound("auth.ogg", false);
         }
     }
 

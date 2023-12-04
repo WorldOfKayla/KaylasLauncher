@@ -2,9 +2,11 @@
   "groups": {
     "settings": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "visibility": false,
-        "background": "#373c3975",
+        "rounded": true,
+        "cornerRadius": 35,
+        "background": "#4a4c4fe6",
         "border": "1,1,1,1,#242221",
         "bounds": "35,35,780,450"
       },

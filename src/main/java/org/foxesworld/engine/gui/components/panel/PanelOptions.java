@@ -5,12 +5,17 @@ import com.google.gson.annotations.SerializedName;
 public class PanelOptions {
     @SerializedName("opaque")
     private boolean opaque = false;
-
     @SerializedName("visible")
     private boolean visible;
-
     @SerializedName("focusable")
     private boolean focusable;
+
+    @SerializedName("rounded")
+    private boolean rounded;
+
+    @SerializedName("cornerRadius")
+    private int cornerRadius;
+
     @SerializedName("border")
     private String border = "";
     @SerializedName("listener")
@@ -34,6 +39,14 @@ public class PanelOptions {
 
     public boolean isFocusable() {
         return focusable;
+    }
+
+    public boolean isRounded() {
+        return rounded;
+    }
+
+    public int getCornerRadius() {
+        return cornerRadius;
     }
 
     public String getBorder() {

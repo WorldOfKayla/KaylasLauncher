@@ -2,12 +2,15 @@ package org.foxesworld.engine.gui.components.panel;
 
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
+import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
@@ -64,12 +67,44 @@ public class Panel extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
                 if (panelOptions.getBackgroundImage() != null) {
                     BufferedImage backgroundImage = ImageUtils.getLocalImage(panelOptions.getBackgroundImage());
                     g.drawImage(applyDarkening(backgroundImage, hexToColor(panelOptions.getBackground())), 0, 0, null);
                 }
+
+                if(panelOptions.isRounded()){
+                    int cornerRadius = panelOptions.getCornerRadius();
+                    RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
+                    g2d.setColor(getBackground());
+                    g2d.fill(roundedRectangle);
+                    g2d.setColor(getForeground());
+                    g2d.draw(roundedRectangle);
+                    g2d.dispose();
+                }
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                if (panelOptions.isRounded()) {
+                    Graphics2D g2d = (Graphics2D) g.create();
+                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                    int cornerRadius = panelOptions.getCornerRadius();
+
+                    RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(
+                            0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
+
+                    g2d.setColor(getForeground());
+                    g2d.draw(roundedRectangle);
+
+                    g2d.dispose();
+                }
             }
         };
+
         groupPanel.setName(groupName);
         groupPanel.setOpaque(panelOptions.isOpaque());
         groupPanel.setBackground(hexToColor(panelOptions.getBackground()));
@@ -99,6 +134,7 @@ public class Panel extends JPanel {
 
         return groupPanel;
     }
+
 
     private void createBorder(JPanel groupPanel, String border) {
         String[] borderData = border.split(",");

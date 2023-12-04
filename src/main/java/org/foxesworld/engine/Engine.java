@@ -107,6 +107,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     @Override
     public void onPanelsBuilt() {
+        getSOUND().playSound("uiMus.ogg", true);
     }
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {

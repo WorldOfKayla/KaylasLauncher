@@ -82,7 +82,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public void mouseEntered(MouseEvent e) {
 		entered = true;
 		if(isEnabled()) {
-			componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg");
+			componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
 		}
 		repaint();
 	}
@@ -127,7 +127,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 			sound = "buttonClick.ogg";
 		}
 
-		componentFactory.engine.getSOUND().playSound("button/" + sound);
+		componentFactory.engine.getSOUND().playSound("button/" + sound, false);
 		pressed = true;
 	}
 

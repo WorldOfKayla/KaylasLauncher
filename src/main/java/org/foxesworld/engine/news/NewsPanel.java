@@ -1,8 +1,10 @@
 package org.foxesworld.engine.news;
 
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.components.ScrollBarUI.ScrollBarUI;
 import org.foxesworld.engine.news.provider.NewsAttributes;
 import org.foxesworld.engine.news.provider.NewsProvider;
+import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,7 +45,7 @@ public class NewsPanel extends JPanel {
         scrollPane.getViewport().setOpaque(false);
 
         // Applying custom ScrollBarStyle
-        scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
         adjustScrollPaneSensitivity(scrollPane);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -79,7 +81,7 @@ public class NewsPanel extends JPanel {
             // Display the community photo with rounded corners
             ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
             Image communityImage = communityIcon.getImage();
-            communityIcon = new ImageIcon(getRoundedImage(communityImage, 1.2, 50));
+            communityIcon = new ImageIcon(getRoundedImage(communityImage, 50));
 
             JLabel communityLabel = new JLabel(communityIcon);
             communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -108,7 +110,7 @@ public class NewsPanel extends JPanel {
             String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
             JLabel newsText = new JLabel(labelText);
             newsText.setFont(new Font("Arial", Font.BOLD, 11));
-            newsText.setBorder(new EmptyBorder(10, 0, 10, 0));
+            newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
             newsText.setForeground(Color.WHITE);
 
             // Place the text on the left side of the text panel
@@ -119,11 +121,11 @@ public class NewsPanel extends JPanel {
             if (newsAttributes.getTooltipPhotoUrls().size() == 1) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(newsAttributes.getOriginalPhotoUrls().get(0)));
-                    Image image = getRoundedImage(imageIcon.getImage(), 2.7, 15);
+                    Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 15), 475, 350);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
                     photoLabel.setAlignmentX(CENTER_ALIGNMENT);
-                    photoLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
+                    photoLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
                     newsPanel.add(photoLabel);
                 } catch (IOException e) {
                     e.printStackTrace();

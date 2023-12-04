@@ -79,7 +79,7 @@ public class Game implements FileLoaderListener, FileGuardListener {
     public void onFilesChecked(int filesDeleted) {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");
         this.actionHandler.getEngine().getLOGGER().debug(filesDeleted + " removed");
-        this.actionHandler.getEngine().getSOUND().playSound("start/start" + new Random().nextInt(4) + ".ogg");
+        this.actionHandler.getEngine().getSOUND().stopAllSounds();
         gameLauncher.launchGame();
     }
 }

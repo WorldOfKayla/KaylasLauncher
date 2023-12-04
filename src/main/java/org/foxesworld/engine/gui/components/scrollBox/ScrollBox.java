@@ -115,10 +115,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         }
         if (opened) {
             scrollBoxListener.onScrollBoxClose(this.selected);
-            componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOff.ogg");
+            componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOff.ogg", false);
         } else {
             scrollBoxListener.onScrollBoxOpen(this.selected);
-            componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOn.ogg");
+            componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOn.ogg", false);
         }
         boolean bl = opened = !opened;
 
@@ -129,7 +129,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     @Override
     public void mouseEntered(MouseEvent e) {
         if (!opened) {
-            componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg");
+            componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
         }
         entered = true;
         this.repaint();

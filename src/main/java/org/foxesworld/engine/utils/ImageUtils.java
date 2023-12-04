@@ -48,22 +48,23 @@ public class ImageUtils {
         }
     }
 
-    public static Image getRoundedImage(Image image, double scaleFactor, int cornerRadius) {
-        int scaledWidth = (int) (image.getWidth(null) / scaleFactor);
-        int scaledHeight = (int) (image.getHeight(null) / scaleFactor);
+    public static Image getRoundedImage(Image image, int cornerRadius) {
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
 
-        BufferedImage scaledImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = scaledImage.createGraphics();
+        BufferedImage roundedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = roundedImage.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-        g2.setClip(new RoundRectangle2D.Float(0, 0, scaledWidth, scaledHeight, cornerRadius, cornerRadius));
-        g2.drawImage(image, 0, 0, scaledWidth, scaledHeight, null);
+        g2.setClip(new RoundRectangle2D.Float(0, 0, width, height, cornerRadius, cornerRadius));
+        g2.drawImage(image, 0, 0, null);
         g2.dispose();
 
-        return scaledImage;
+        return roundedImage;
     }
+
     public static Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();

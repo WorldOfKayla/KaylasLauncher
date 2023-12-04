@@ -1,7 +1,8 @@
 package org.foxesworld.engine.news;
 
-import com.vdurmont.emoji.EmojiParser;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.news.provider.NewsAttributes;
+import org.foxesworld.engine.news.provider.NewsProvider;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,14 +25,14 @@ public class NewsPanel extends JPanel {
     * */
     private JScrollPane scrollPane;
     private JPanel contentPanel;
-    public NewsPanel(List<News> newsList) {
+    public NewsPanel(List<NewsAttributes> newsAttributesList) {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setOpaque(true);
         contentPanel.setBackground(hexToColor("#1e1f2073"));
 
-        for (News news : newsList) {
-            contentPanel.add(createNewsPanel(news));
+        for (NewsAttributes newsAttributes : newsAttributesList) {
+            contentPanel.add(createNewsPanel(newsAttributes));
             contentPanel.add(Box.createVerticalStrut(10));
         }
 
@@ -64,19 +65,19 @@ public class NewsPanel extends JPanel {
         return labelPanel;
     }
 
-    private JPanel createNewsPanel(News news) {
+    private JPanel createNewsPanel(NewsAttributes newsAttributes) {
         JPanel newsPanel = new JPanel();
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
-        // Creating a separate panel for the upper part of the news
+        // Creating a separate panel for the upper part of the newsAttributes
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(true);
         upperPanel.setBackground(hexToColor("#3366938a"));
 
         try {
             // Display the community photo with rounded corners
-            ImageIcon communityIcon = new ImageIcon(new URL(news.getCommunityPhotoUrl()));
+            ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
             Image communityImage = communityIcon.getImage();
             communityIcon = new ImageIcon(getRoundedImage(communityImage, 1.2, 50));
 
@@ -85,26 +86,26 @@ public class NewsPanel extends JPanel {
             upperPanel.add(communityLabel);
 
             // Display the community name
-            JLabel communityNameLabel = new JLabel(news.getCommunityName());
+            JLabel communityNameLabel = new JLabel(newsAttributes.getCommunityName());
             communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             communityNameLabel.setForeground(Color.WHITE);
             upperPanel.add(communityNameLabel);
 
             // Add the publication date to the upper panel
-            JLabel dateLabel = new JLabel("<html><body style='width: 240px; text-align: right; padding: 0px;'>" + formatDate(news.getPublicationDate()) + "</body></html>");
+            JLabel dateLabel = new JLabel("<html><body style='width: 240px; text-align: right; padding: 0px;'>" + formatDate(newsAttributes.getPublicationDate()) + "</body></html>");
             dateLabel.setForeground(Color.WHITE);
             upperPanel.add(dateLabel);
 
-            // Add the upper panel to the main news panel
+            // Add the upper panel to the main newsAttributes panel
             newsPanel.add(upperPanel);
 
-            // Create a panel for the news text
+            // Create a panel for the newsAttributes text
             JPanel textPanel = new JPanel();
             textPanel.setOpaque(false);
             textPanel.setLayout(new BorderLayout());
 
-            // Display the news text as a title
-            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + news.getText() + "</body></html>";
+            // Display the newsAttributes text as a title
+            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
             JLabel newsText = new JLabel(labelText);
             newsText.setFont(new Font("Arial", Font.BOLD, 11));
             newsText.setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -115,9 +116,9 @@ public class NewsPanel extends JPanel {
             newsPanel.add(textPanel);
 
             // Display photos without resizing or in full size if there's only one photo
-            if (news.getTooltipPhotoUrls().size() == 1) {
+            if (newsAttributes.getTooltipPhotoUrls().size() == 1) {
                 try {
-                    ImageIcon imageIcon = new ImageIcon(new URL(news.getOriginalPhotoUrls().get(0)));
+                    ImageIcon imageIcon = new ImageIcon(new URL(newsAttributes.getOriginalPhotoUrls().get(0)));
                     Image image = getRoundedImage(imageIcon.getImage(), 2.7, 15);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
@@ -128,7 +129,7 @@ public class NewsPanel extends JPanel {
                     e.printStackTrace();
                 }
             } else {
-                for (String photoUrl : news.getTooltipPhotoUrls()) {
+                for (String photoUrl : newsAttributes.getTooltipPhotoUrls()) {
                     try {
                         ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
                         JLabel photoLabel = new JLabel(imageIcon);
@@ -146,7 +147,7 @@ public class NewsPanel extends JPanel {
             statisticsPanel.setOpaque(true);
 
             // Define the statistics labels and their values
-            int[] statisticsValues = {news.getViews(), news.getLikes(), news.getComments(), news.getReposts()};
+            int[] statisticsValues = {newsAttributes.getViews(), newsAttributes.getLikes(), newsAttributes.getComments(), newsAttributes.getReposts()};
 
             // Creating labels in a loop
             for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {

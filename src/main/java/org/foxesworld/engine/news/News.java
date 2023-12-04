@@ -1,75 +1,26 @@
 package org.foxesworld.engine.news;
 
-import java.util.List;
+import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.news.provider.NewsProvider;
+
+import javax.swing.*;
 
 public class News {
-    private String text;
-    private List<String> tooltipPhotoUrls;
-    private List<String> originalPhotoUrls;
-    private long publicationDate;
-    private int views;
-    private int likes;
-    private int comments;
-    private int reposts;
-    private static String groupName;
-    private static String groupPicture;
-
-    public News(NewsProvider newsProvider) {
-        this.text = newsProvider.getText();
-        this.tooltipPhotoUrls = newsProvider.getTooltipPhotoUrls();
-        this.originalPhotoUrls = newsProvider.getOriginalPhotoUrls();
-        this.publicationDate = newsProvider.getDate();
-        this.views = newsProvider.getStatsValues().get("views");
-        this.likes = newsProvider.getStatsValues().get("likes");
-        this.comments = newsProvider.getStatsValues().get("comments");
-        this.reposts = newsProvider.getStatsValues().get("reposts");
+    private final Engine engine;
+    private NewsProvider newsProvider;
+    public News(Engine engine){
+        this.engine = engine;
+        if(engine.getCONFIG().isLoadNews()) {
+            this.newsProvider = new NewsProvider(engine);
+            buildPanel();
+        }
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public List<String> getTooltipPhotoUrls() {
-        return tooltipPhotoUrls;
-    }
-
-    public List<String> getOriginalPhotoUrls() {
-        return originalPhotoUrls;
-    }
-
-    public long getPublicationDate() {
-        return publicationDate;
-    }
-
-    public int getViews() {
-        return views;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public int getComments() {
-        return comments;
-    }
-
-    public int getReposts() {
-        return reposts;
-    }
-
-    public String getCommunityName() {
-        return groupName;
-    }
-
-    public String getCommunityPhotoUrl() {
-        return groupPicture;
-    }
-
-    public static void setCommunityName(String communityName) {
-        groupName = communityName;
-    }
-
-    public static void setCommunityPhotoUrl(String communityPhotoUrl) {
-        groupPicture = communityPhotoUrl;
+    private void buildPanel(){
+        JPanel childPanel = new NewsPanel(this.newsProvider.fetchNews());
+        childPanel.setOpaque(false);
+        childPanel.setBounds(0, 30, 500, 470);
+        childPanel.setName("newsFrame");
+        this.engine.getGuiBuilder().addPanelToMap(childPanel);
     }
 }

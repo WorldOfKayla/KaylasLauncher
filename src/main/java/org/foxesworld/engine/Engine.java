@@ -15,8 +15,9 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.news.News;
 import org.foxesworld.engine.news.NewsPanel;
-import org.foxesworld.engine.news.NewsProvider;
+import org.foxesworld.engine.news.provider.NewsProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
@@ -39,6 +40,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final Sound SOUND;
     public static final Logger LOGGER = LogManager.getLogger(APP.class);
     private final Discord discord;
+    private News news;
     private final  LanguageProvider LANG;
     private  final ServerInfo serverInfo;
     private final FontUtils FONTUTILS;
@@ -46,7 +48,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final CryptUtils CRYPTO;
     private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
-    private final NewsProvider newsProvider;
     private StyleProvider styleProvider;
     private Auth auth;
     private User user;
@@ -70,11 +71,11 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);
-        Configurator.setLevel(getLOGGER().getName(), Level.valueOf((String) CONFIG.getLogLevel()));
+
+        Configurator.setLevel(getLOGGER().getName(), Level.valueOf(CONFIG.getLogLevel()));
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
         this.frameConstructor = new FrameConstructor(this);
-        this.newsProvider = new NewsProvider(this);
         this.CRYPTO = new CryptUtils(this);
         setAuth(new Auth(this));
         initialize(this.auth.getAuthCredentials("login"));
@@ -94,7 +95,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
-
+        this.news = new News(this);
         this.getGuiBuilder().buildGui(getAPP().getFrameTpl(), this.getFrame().getRootPanel());
         this.loadMainPanel(this.APP.getMainFrame());
 
@@ -106,17 +107,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     @Override
     public void onPanelsBuilt() {
-        /* TODO
-        * We should load all additional panels we find in JSON automatically
-        * That's a hardcoded SAMPLE
-        * */
-        if(this.getCONFIG().isLoadNews()) {
-            JPanel childPanel = new NewsPanel(this.getNewsProvider().fetchNews());
-            childPanel.setOpaque(false);
-            childPanel.setBounds(0, 30, 500, 470);
-            childPanel.setName("newsFrame");
-            this.guiBuilder.addPanelToMap(childPanel);
-        }
     }
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
@@ -211,9 +201,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public ServerInfo getServerInfo() {
         return serverInfo;
-    }
-    public NewsProvider getNewsProvider() {
-        return newsProvider;
     }
     public Discord getDiscord() {
         return discord;

@@ -53,7 +53,7 @@ public class ComponentFactory {
         componentFactoryListener.onComponentCreation(componentAttributes);
         if(componentAttributes.getComponentStyle() != null && componentAttributes.getComponentStyle() != null) {
             if(componentStyles.get(componentAttributes.getComponentStyle()) == null){
-                componentStyles.put(componentAttributes.getComponentType(), engine.getStyleProvider().loadStyle(componentAttributes.getComponentType()));
+                componentStyles.put(componentAttributes.getComponentType(), engine.getStyleProvider().getElementStyles().get(componentAttributes.getComponentType()));
             }
             style = componentStyles.get(componentAttributes.getComponentType()).get(componentAttributes.getComponentStyle());
         }

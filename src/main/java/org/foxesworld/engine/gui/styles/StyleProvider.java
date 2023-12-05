@@ -8,23 +8,30 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class StyleProvider {
 
     private Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
+    private String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField"};
     private Engine engine;
 
     public StyleProvider(Engine engine) {
         this.engine = engine;
+        for(String style: this.styles){
+            loadStyle(style);
+        }
     }
+    private void loadStyle(String component) {
+        if (elementStyles.containsKey(component)) {
+            return;
+        }
 
-    public Map<String, StyleAttributes> loadStyle(String component) {
-        Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
         String stylePath = "assets/styles/" + component + ".json";
         try {
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(
-                    StyleProvider.class.getClassLoader().getResourceAsStream(stylePath),
+                    Objects.requireNonNull(StyleProvider.class.getClassLoader().getResourceAsStream(stylePath)),
                     StandardCharsets.UTF_8
             );
             engine.getLOGGER().debug("Loading " + component + " style from " + stylePath);
@@ -32,33 +39,29 @@ public class StyleProvider {
             JsonObject jsonRoot = gson.fromJson(reader, JsonObject.class);
             JsonObject stylesObject = jsonRoot.getAsJsonObject("styles");
 
-            for (Map.Entry<String, JsonElement> entry : stylesObject.entrySet()) {
-                String elementType = entry.getKey();
-                Map<String, StyleAttributes> styleMap = new HashMap<>();
+            Map<String, StyleAttributes> styleMap = new HashMap<>();
 
-                JsonObject styleBlock = entry.getValue().getAsJsonObject();
-                for (Map.Entry<String, JsonElement> styleEntry : styleBlock.entrySet()) {
-                    String styleName = styleEntry.getKey();
-                    JsonObject styleData = styleEntry.getValue().getAsJsonObject();
+            JsonObject componentStyles = stylesObject.getAsJsonObject(component);
+            for (Map.Entry<String, JsonElement> entry : componentStyles.entrySet()) {
+                String styleName = entry.getKey();
+                JsonObject styleData = entry.getValue().getAsJsonObject();
 
-                    StyleAttributes styleAttributes = gson.fromJson(styleData, StyleAttributes.class);
-                    styleMap.put(styleName, styleAttributes);
-                }
-
-                elementStyles.put(elementType, styleMap);
+                StyleAttributes styleAttributes = gson.fromJson(styleData, StyleAttributes.class);
+                styleMap.put(styleName, styleAttributes);
             }
+            elementStyles.put(component, styleMap);
 
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-        return elementStyles.get(component);
     }
+
 
     public Map<String, Map<String, StyleAttributes>> getElementStyles() {
         return elementStyles;
     }
 
-    public class StyleAttributes {
+    public static class StyleAttributes {
 
         @SerializedName("name")
         public String name;
@@ -67,6 +70,7 @@ public class StyleProvider {
 
         @SerializedName("background")
         public String background;
+
         @SerializedName("color")
         public String color;
         @SerializedName("caretColor")

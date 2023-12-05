@@ -35,7 +35,6 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
-                  "keyCode": "1",
                   "componentStyle": "solid",
                   "componentId": "autoEnter",
                   "localeKey": "settings.autoEnter",
@@ -45,7 +44,6 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
-                  "keyCode": "2",
                   "componentStyle": "solid",
                   "componentId": "fullScreen",
                   "localeKey": "settings.fullScreen",
@@ -55,7 +53,6 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
-                  "keyCode": "3",
                   "componentStyle": "solid",
                   "componentId": "loadNews",
                   "localeKey": "settings.loadNews",
@@ -65,7 +62,6 @@
                 {
                   "componentType": "checkBox",
                   "enabled": true,
-                  "keyCode": "4",
                   "componentStyle": "solid",
                   "componentId": "enableSound",
                   "localeKey": "settings.enableSound",

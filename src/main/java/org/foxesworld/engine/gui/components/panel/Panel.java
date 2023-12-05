@@ -2,12 +2,10 @@ package org.foxesworld.engine.gui.components.panel;
 
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
-import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
@@ -75,7 +73,7 @@ public class Panel extends JPanel {
                     g.drawImage(applyDarkening(backgroundImage, hexToColor(panelOptions.getBackground())), 0, 0, null);
                 }
 
-                if(panelOptions.isRounded()){
+                if(panelOptions.getCornerRadius() != 0){
                     int cornerRadius = panelOptions.getCornerRadius();
                     RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
                     g2d.setColor(getBackground());
@@ -88,7 +86,7 @@ public class Panel extends JPanel {
 
             @Override
             protected void paintBorder(Graphics g) {
-                if (panelOptions.isRounded()) {
+                if (panelOptions.getCornerRadius() != 0) {
                     Graphics2D g2d = (Graphics2D) g.create();
                     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -106,7 +104,7 @@ public class Panel extends JPanel {
         };
 
         groupPanel.setName(groupName);
-        groupPanel.setOpaque(panelOptions.isOpaque());
+        groupPanel.setOpaque(panelOptions.getCornerRadius() == 0 && panelOptions.isOpaque());
         groupPanel.setBackground(hexToColor(panelOptions.getBackground()));
         if (panelOptions.getBorder() != null && !panelOptions.getBorder().equals("")) {
             this.createBorder(groupPanel, panelOptions.getBorder());
@@ -125,16 +123,14 @@ public class Panel extends JPanel {
             groupPanel.requestFocus();
         }
 
-        String[] bounds = panelOptions.getBounds().split(",");
-        int posX = Integer.parseInt(bounds[0]);
-        int posY = Integer.parseInt(bounds[1]);
-        int width = Integer.parseInt(bounds[2]);
-        int height = Integer.parseInt(bounds[3]);
-        groupPanel.setBounds(posX, posY, width, height);
-
+        String bounds = panelOptions.getBounds();
+        groupPanel.setBounds(getPanelBounds(bounds, 0), getPanelBounds(bounds, 1), getPanelBounds(bounds, 2), getPanelBounds(bounds, 3));
         return groupPanel;
     }
 
+    private int getPanelBounds(String bounds, int index){
+        return Integer.parseInt(bounds.split(",")[index]);
+    }
 
     private void createBorder(JPanel groupPanel, String border) {
         String[] borderData = border.split(",");
@@ -146,4 +142,3 @@ public class Panel extends JPanel {
         groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
     }
 }
-

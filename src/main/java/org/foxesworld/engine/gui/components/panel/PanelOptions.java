@@ -10,9 +10,6 @@ public class PanelOptions {
     @SerializedName("focusable")
     private boolean focusable;
 
-    @SerializedName("rounded")
-    private boolean rounded;
-
     @SerializedName("cornerRadius")
     private int cornerRadius;
 
@@ -41,10 +38,6 @@ public class PanelOptions {
         return focusable;
     }
 
-    public boolean isRounded() {
-        return rounded;
-    }
-
     public int getCornerRadius() {
         return cornerRadius;
     }
@@ -67,5 +60,9 @@ public class PanelOptions {
 
     public String getBounds() {
         return bounds;
+    }
+
+    public void setOpaque(boolean opaque) {
+        this.opaque = opaque;
     }
 }

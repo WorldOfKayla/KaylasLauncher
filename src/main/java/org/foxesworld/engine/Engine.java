@@ -16,14 +16,13 @@ import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.news.News;
-import org.foxesworld.engine.news.NewsPanel;
-import org.foxesworld.engine.news.provider.NewsProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
+import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.user.User;
 
@@ -32,21 +31,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
     protected final APP APP;
     private final Sound SOUND;
-    public static final Logger LOGGER = LogManager.getLogger(APP.class);
+    public static Logger LOGGER;
     private final Discord discord;
     private News news;
     private final  LanguageProvider LANG;
     private  final ServerInfo serverInfo;
     private final FontUtils FONTUTILS;
     private final Config CONFIG;
-    private final CryptUtils CRYPTO;
-    private final FrameConstructor frameConstructor;
+    private CryptUtils CRYPTO;
+    private FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
     private Auth auth;
@@ -55,6 +58,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final HTTPrequest GETrequest, POSTrequest;
     private ActionHandler actionHandler;
     private DownloadUtils download;
+    private boolean initialised = false;
 
     /*
     * TODO
@@ -65,20 +69,27 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.engineData = new EngineData();
         initEngineValues(getAPP().getEngineVars());
         this.CONFIG = new Config(this);
+        System.setProperty("log.dir", CONFIG.getFullPath());
+        LOGGER = LogManager.getLogger(APP.class);
+        LOGGER.info("Log started...");
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
         this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
         this.discord = new Discord(this);
-
         Configurator.setLevel(getLOGGER().getName(), Level.valueOf(CONFIG.getLogLevel()));
+
         this.GETrequest = new HTTPrequest(this,"GET");
         this.POSTrequest = new HTTPrequest(this,"POST");
-        this.frameConstructor = new FrameConstructor(this);
-        this.CRYPTO = new CryptUtils(this);
-        setAuth(new Auth(this));
-        initialize(this.auth.getAuthCredentials("login"));
+        if(isLauncherValid()) {
+            this.frameConstructor = new FrameConstructor(this);
+            this.CRYPTO = new CryptUtils(this);
+            setAuth(new Auth(this));
+            initialize(this.auth.getAuthCredentials("login"));
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engineData.getLauncherBrand() + '-'+ engineData.getLauncherVersion(), JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     void initEngineValues(String propertyPath){
@@ -142,6 +153,30 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
+    }
+
+    private boolean isLauncherValid() {
+        Map<String, String> launcherRequest = new HashMap<>();
+        launcherRequest.put("sysRequest", "downloadLatest");
+        String selfMd5 = md5Func.md5(appPath());
+        LauncherAttributes launcherAttributes = new Gson().fromJson(this.POSTrequest.send(engineData.getBindUrl(), launcherRequest), LauncherAttributes.class);
+        if(!selfMd5.equals("IDE")) {
+            if(!Objects.equals(selfMd5, launcherAttributes.getFileMd5())) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public String appPath() {
+        try {
+            return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "UTF-8");
+        } catch (UnsupportedEncodingException | java.net.URISyntaxException e) {
+            return null;
+        }
     }
 
     @Override

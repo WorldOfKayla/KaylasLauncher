@@ -25,9 +25,9 @@
           "localeKey": "general.appTitle",
           "imageIcon": "assets/ui/icons/logo.png",
           "componentId": "appLogo",
-          "iconWidth": 64,
+          "iconWidth": 74,
           "iconHeight": 64,
-          "bounds": "0,0,180,30"
+          "bounds": "0,0,240,30"
         },
         {
           "componentType": "label",
@@ -36,7 +36,7 @@
           "localeKey": "general.status",
           "color":  "#c98319",
           "componentId": "appStatus",
-          "bounds": "175,-20,250,50"
+          "bounds": "185,-20,250,50"
         },
         {
           "componentType": "multiButton",

@@ -39,7 +39,7 @@ public class Auth {
             Map<String, String> authCredentials = new HashMap<>();
             authCredentials.put("login",  CONFIG.getLogin());
             authCredentials.put("password", CONFIG.getPassword());
-            this.engine.getLOGGER().debug("Authorising with existing login " + CONFIG.getLogin());
+            this.engine.getLOGGER().debug("Authorising with saved login " + CONFIG.getLogin());
             //Writing login data if it's not present
             if (!this.authorize(authCredentials)) {
                 engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);

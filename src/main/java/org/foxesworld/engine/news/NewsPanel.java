@@ -107,7 +107,7 @@ public class NewsPanel extends JPanel {
             textPanel.setLayout(new BorderLayout());
 
             // Display the newsAttributes text as a title
-            String labelText = "<html><body style='width: 370px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
+            String labelText = "<html><body style='width: 380px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
             JLabel newsText = new JLabel(labelText);
             newsText.setFont(new Font("Arial", Font.BOLD, 11));
             newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -121,7 +121,7 @@ public class NewsPanel extends JPanel {
             if (newsAttributes.getTooltipPhotoUrls().size() == 1) {
                 try {
                     ImageIcon imageIcon = new ImageIcon(new URL(newsAttributes.getOriginalPhotoUrls().get(0)));
-                    Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 15), 475, 350);
+                    Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 15), 465, 350);
                     ImageIcon fullSizeIcon = new ImageIcon(image);
                     JLabel photoLabel = new JLabel(fullSizeIcon);
                     photoLabel.setAlignmentX(CENTER_ALIGNMENT);

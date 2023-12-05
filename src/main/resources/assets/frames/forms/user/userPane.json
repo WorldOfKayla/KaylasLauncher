@@ -60,7 +60,7 @@
                 },
                 {
                   "componentType": "button",
-                  "enabled": true,
+                  "enabled": false,
                   "keyCode": "F5",
                   "componentStyle": "buttonYellow",
                   "componentId": "smallButton",

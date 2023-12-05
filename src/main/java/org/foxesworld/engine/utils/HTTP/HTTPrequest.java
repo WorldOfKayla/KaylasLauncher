@@ -1,12 +1,10 @@
 package org.foxesworld.engine.utils.HTTP;
 
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.utils.md5Func;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +14,7 @@ public class HTTPrequest {
 
     private String requestMethod;
     private Engine engine;
+    private HttpURLConnection httpURLConnection = null;
 
     public HTTPrequest(Engine engine, String requestMethod) {
         this.engine = engine;
@@ -24,7 +23,6 @@ public class HTTPrequest {
     }
 
     public String send(String queryUrl, Map<String, String> parameters) {
-        HttpURLConnection httpURLConnection = null;
         try {
             URL url = new URL(queryUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -84,8 +82,11 @@ public class HTTPrequest {
             if (value.contains("{$boundary}")) {
                 value = value.replace("{$boundary}", this.getBoundary(3, 3));
             }
-            httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
-            engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
+            if(!httpURLConnection.getRequestProperties().containsKey(requestProperty.propertyKey)) {
+                httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
+                engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
+            }
+
         }
     }
 }

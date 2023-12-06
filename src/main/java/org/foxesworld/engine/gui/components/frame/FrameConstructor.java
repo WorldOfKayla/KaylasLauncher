@@ -45,7 +45,6 @@ public class FrameConstructor {
         frame.setSize(frameAttributes.width, frameAttributes.height);
         frame.setResizable(frameAttributes.resizable);
         frame.setUndecorated(frameAttributes.undecorated);
-        frame.setContentPane(new JLabel(new ImageIcon(ImageUtils.getLocalImage(frameAttributes.backgroundImage))));
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - frame.getWidth()) / 2;

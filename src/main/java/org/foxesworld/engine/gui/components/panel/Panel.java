@@ -14,8 +14,7 @@ import java.awt.image.BufferedImage;
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class Panel extends JPanel {
-
-    private float alpha;
+    private FrameAttributes frameAttributes;
     private JPanel groupPanel;
     private final FrameConstructor frameConstructor;
 
@@ -24,11 +23,12 @@ public class Panel extends JPanel {
     }
 
     public JPanel setRootPanel(FrameAttributes frameAttributes) {
+        this.frameAttributes = frameAttributes;
         JPanel rootPanel = new JPanel(null, true) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                drawDarkenedBackground(g, frameAttributes);
+                drawDarkenedBackground(g);
             }
         };
         rootPanel.setOpaque(false);
@@ -37,7 +37,7 @@ public class Panel extends JPanel {
         return rootPanel;
     }
 
-    private void drawDarkenedBackground(Graphics g, FrameAttributes frameAttributes) {
+    private void drawDarkenedBackground(Graphics g) {
         BufferedImage backgroundImage = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
         g.drawImage(applyDarkening(backgroundImage, hexToColor(frameAttributes.backgroundBlur)), 0, 0, null);
     }
@@ -140,5 +140,9 @@ public class Panel extends JPanel {
         int right = Integer.parseInt(borderData[3]);
         Color borderColor = hexToColor(borderData[4]);
         groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
+    }
+
+    public void setFrameImage(String value) {
+        this.frameAttributes.backgroundImage = value;
     }
 }

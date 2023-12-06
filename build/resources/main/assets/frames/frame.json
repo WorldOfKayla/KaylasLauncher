@@ -1,7 +1,7 @@
 {
   "appTitle": "general.appTitle",
   "appIcon": "assets/ui/icons/logo.png",
-  "backgroundImage": "assets/ui/img/bg/bg_summer.png",
+  "backgroundImage": "assets/ui/img/bg/bg_winter.png",
   "backgroundBlur": "#494d4d54",
   "width": 850,
   "height": 500,

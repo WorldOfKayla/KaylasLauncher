@@ -1,10 +1,13 @@
 package org.foxesworld.engine.utils.HTTP;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.utils.md5Func;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +15,8 @@ import java.util.Random;
 
 public class HTTPrequest {
 
-    private String requestMethod;
-    private Engine engine;
+    private final String requestMethod;
+    private final Engine engine;
     private HttpURLConnection httpURLConnection = null;
 
     public HTTPrequest(Engine engine, String requestMethod) {
@@ -34,7 +37,7 @@ public class HTTPrequest {
             httpURLConnection.connect();
 
             try (OutputStream os = httpURLConnection.getOutputStream()) {
-                byte[] postDataBytes = this.formParams(parameters).toString().getBytes("UTF-8");
+                byte[] postDataBytes = this.formParams(parameters).toString().getBytes(StandardCharsets.UTF_8);
                 os.write(postDataBytes);
             }
 
@@ -76,7 +79,7 @@ public class HTTPrequest {
         return postData;
     }
 
-    private void setRequestProperties(HttpURLConnection httpURLConnection, List<RequestProperty> properties) {
+    public void setRequestProperties(HttpURLConnection httpURLConnection, List<RequestProperty> properties) {
         for(RequestProperty requestProperty: properties){
             String value = requestProperty.propertyValue;
             if (value.contains("{$boundary}")) {
@@ -84,9 +87,13 @@ public class HTTPrequest {
             }
             if(!httpURLConnection.getRequestProperties().containsKey(requestProperty.propertyKey)) {
                 httpURLConnection.setRequestProperty(requestProperty.propertyKey, value);
-                engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
+                //engine.getLOGGER().debug("Adding request header " + requestProperty.propertyKey);
             }
 
         }
+    }
+
+    public HttpURLConnection getHttpURLConnection() {
+        return httpURLConnection;
     }
 }

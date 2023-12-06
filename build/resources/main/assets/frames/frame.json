@@ -25,8 +25,8 @@
           "localeKey": "general.appTitle",
           "imageIcon": "assets/ui/icons/logo.png",
           "componentId": "appLogo",
-          "iconWidth": 74,
-          "iconHeight": 64,
+          "iconWidth": 68,
+          "iconHeight": 32,
           "bounds": "0,0,240,30"
         },
         {

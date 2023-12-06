@@ -71,7 +71,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(APP.class);
-        LOGGER.info("Log started...");
+        LOGGER.info(engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion() + " started...");
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);

@@ -11,7 +11,7 @@ import java.util.Formatter;
 public class md5Func {
     public static String md5(String filename) {
         if (new File(filename).isDirectory()) {
-            Engine.LOGGER.info("RUNNING IN IDE!!!");
+            Engine.LOGGER.warn("RUNNING IN IDE!!!");
             return "IDE";
         }
         FileInputStream fis = null;
@@ -32,18 +32,18 @@ public class md5Func {
             for (byte byte0 : abyte0) {
                 formatter.format("%02x", byte0);
             }
-            String string = formatter.toString();
-            return string;
+            return formatter.toString();
 
         } catch (IOException | NoSuchAlgorithmException e) {
-            String string = "0";
-            return string;
+            return "0";
         } finally {
             try {
+                assert fis != null;
                 fis.close();
             } catch (IOException ignored) {
             }
             try {
+                assert dis != null;
                 dis.close();
             } catch (IOException ignored) {
             }
@@ -52,6 +52,7 @@ public class md5Func {
             } catch (IOException ignored) {
             }
             try {
+                assert formatter != null;
                 formatter.close();
             } catch (Exception ignored) {
             }

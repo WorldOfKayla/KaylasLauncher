@@ -30,7 +30,7 @@ application {
 
 
 group 'org.foxesworld'
-version '1.0.6-EXPERIMENTAL'
+version '1.0.7-EXPERIMENTAL'
 
 repositories {
     mavenCentral()
@@ -40,8 +40,6 @@ dependencies {
     implementation files('lib/foxesworld/cfgProvider-1.5.0-Release.jar')
     implementation files('lib/java-discord-rpc-2.0.1-all.jar')
     implementation 'com.github.stephengold:j-ogg-all:1.0.4'
-    implementation group: 'me.tongfei', name: 'progressbar', version: '0.10.0'
-    implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.3.1'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
@@ -54,8 +52,8 @@ test {
 }
 
 if (System.getProperty("java.home") == null) {
-    System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...");
-    System.setProperty("java.home", new File(".").getAbsolutePath());
+    System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...")
+    System.setProperty("java.home", new File(".").getAbsolutePath())
 }
 
 task nativeDist() {

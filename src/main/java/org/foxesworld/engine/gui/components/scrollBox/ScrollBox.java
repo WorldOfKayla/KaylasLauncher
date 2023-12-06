@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 public class ScrollBox extends JComponent implements MouseListener, MouseMotionListener {
 
     private boolean loaded = false;
-    private ComponentFactory componentFactory;
+    private final ComponentFactory componentFactory;
     private ScrollBoxListener scrollBoxListener;
     private int previousHover = -1;
 
@@ -32,7 +32,6 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
 
     public ScrollBox(ComponentFactory componentFactory, String[] values, int y) {
         this.componentFactory = componentFactory;
-        componentFactory.engine.getLOGGER().info("Updating ScrollBox " + values.toString());
         this.values = values;
         initialy = y;
         this.addMouseListener(this);
@@ -114,10 +113,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
         if (opened) {
-            scrollBoxListener.onScrollBoxClose(this.selected);
+            scrollBoxListener.onScrollBoxClose(selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOff.ogg", false);
         } else {
-            scrollBoxListener.onScrollBoxOpen(this.selected);
+            scrollBoxListener.onScrollBoxOpen(selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOn.ogg", false);
         }
         boolean bl = opened = !opened;

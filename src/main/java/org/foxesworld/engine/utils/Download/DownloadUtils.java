@@ -1,6 +1,5 @@
 package org.foxesworld.engine.utils.Download;
 
-import me.tongfei.progressbar.ProgressBar;
 import org.foxesworld.engine.Engine;
 
 import javax.swing.*;
@@ -14,13 +13,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class DownloadUtils {
-    private Engine engine;
-    private JLabel progressLabel;
-    private JProgressBar progressBar;
+    private final Engine engine;
+    private final JLabel progressLabel;
+    private final JProgressBar progressBar;
     private int percent;
     private long downloaded = 0;
-    private ProgressBar consolePb;
-
     public DownloadUtils(Engine engine) {
         this.engine = engine;
         this.progressBar = (JProgressBar) engine.getGuiBuilder().getComponentById("progressBar");
@@ -37,15 +34,12 @@ public class DownloadUtils {
         }
 
         try {
-            //TODO use our HTTP class
+            //TODO use our HTTP class (Partly done)
             URL url = new URL(Durl);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setDoOutput(false);
             httpConnection.setRequestMethod("GET");
-            httpConnection.setRequestProperty("User-Agent", "FoxesCraft/64.0");
-            httpConnection.setRequestProperty("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
-            httpConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-            httpConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=jkghjgyutfvbhgvt78ty78yghb7y8");
+            engine.getGETrequest().setRequestProperties(httpConnection, engine.getEngineData().getRequestProperties());
             long fileSize = httpConnection.getContentLength();
             long chunkSize = fileSize / 100;
 
@@ -54,15 +48,13 @@ public class DownloadUtils {
 
             try (InputStream in = new BufferedInputStream(httpConnection.getInputStream())) {
 
-                int read = 0;
+                int read;
                 while ((read = in.read(buffer, 0, buffer.length)) != -1) {
                     fileOutputStream.write(buffer, 0, read);
                     downloaded += read;
                     percent = (int) (downloaded * 100 / totalSize);
                     SwingUtilities.invokeLater(() -> {
-                        this.consolePb = new ProgressBar("Exp", 100);
                         progressBar.setValue(percent);
-                        this.consolePb.stepTo(percent);
                         progressLabel.setText(getFileSize((int) downloaded) + "Mb /" + getFileSize(Math.toIntExact(totalSize)) + "Mb");
                     });
                 }
@@ -77,11 +69,11 @@ public class DownloadUtils {
 
     public void unpack(String path, File dir_to) {
         File fileZip = new File(path);
-        try (ZipFile zip = new ZipFile(path, StandardCharsets.UTF_8)) { // Explicitly specify UTF-8 encoding
-            Enumeration entries = zip.entries();
+        try (ZipFile zip = new ZipFile(path, StandardCharsets.UTF_8)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
             LinkedList<ZipEntry> zfiles = new LinkedList<>();
             while (entries.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) entries.nextElement();
+                ZipEntry entry = entries.nextElement();
                 if (entry.isDirectory()) {
                     new File(dir_to + File.separator + entry.getName()).mkdirs(); // Use mkdirs() to create parent directories if they don't exist
                 } else {

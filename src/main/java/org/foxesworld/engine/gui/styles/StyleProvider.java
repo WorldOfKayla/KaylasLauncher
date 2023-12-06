@@ -12,11 +12,12 @@ import java.util.Objects;
 
 public class StyleProvider {
 
-    private Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
-    private String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField"};
-    private Engine engine;
+    private final Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
+    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField"};
+    private final Engine engine;
 
     public StyleProvider(Engine engine) {
+        Engine.LOGGER.info("Loading styles...");
         this.engine = engine;
         for(String style: this.styles){
             loadStyle(style);

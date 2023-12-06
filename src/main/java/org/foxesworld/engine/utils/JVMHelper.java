@@ -17,7 +17,6 @@ import java.util.Map;
 
 public final class JVMHelper {
 
-    // MXBeans exports
     public static final RuntimeMXBean RUNTIME_MXBEAN = ManagementFactory.getRuntimeMXBean();
     public static final OperatingSystemMXBean OPERATING_SYSTEM_MXBEAN =
             ManagementFactory.getOperatingSystemMXBean();
@@ -63,26 +62,19 @@ public final class JVMHelper {
     }
 
     public static String getNativeExtension(JVMHelper.OS OS_TYPE) {
-        switch (OS_TYPE) {
-            case WIN:
-                return ".dll";
-            case LINUX:
-                return ".so";
-            case MACOSX:
-                return ".dylib";
-            default:
-                throw new InternalError(String.format("Unsupported OS TYPE '%s'", OS_TYPE));
-        }
+        return switch (OS_TYPE) {
+            case WIN -> ".dll";
+            case LINUX -> ".so";
+            case MACOSX -> ".dylib";
+            default -> throw new InternalError(String.format("Unsupported OS TYPE '%s'", OS_TYPE));
+        };
     }
 
     public static String getNativePrefix(JVMHelper.OS OS_TYPE) {
-        switch (OS_TYPE) {
-            case LINUX:
-            case MACOSX:
-                return "lib";
-            default:
-                return "";
-        }
+        return switch (OS_TYPE) {
+            case LINUX, MACOSX -> "lib";
+            default -> "";
+        };
     }
 
     public static void appendVars(ProcessBuilder builder, Map<String, String> vars) {

@@ -16,17 +16,11 @@ public class ClientLauncherEntryPoint {
                     .filter(path -> path.toString().endsWith(".class"))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            // Обработка ошибок, если не удалось получить пути
             e.printStackTrace();
             return Collections.emptyList();
         }
     }
 
-    // Пример метода main
     public static void main(String[] args) {
-
-
-        // Ваши дальнейшие действия с systemClassPath
-        // Например, создание URLClassLoader и использование его для загрузки классов
     }
 }

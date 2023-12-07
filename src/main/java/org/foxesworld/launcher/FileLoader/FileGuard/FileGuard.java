@@ -5,21 +5,25 @@ import org.foxesworld.engine.game.GameLauncher;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class FileGuard {
     private FileGuardListener fileGuardListener;
     private final List<String> checkList;
+    private final Set<String> ignoreList;
+    private String[] basicIgnoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
     private final GameLauncher gameLauncher;
     private final Logger logger;
+
     private int totalFiles = 0;
     private int checkedFiles = 0;
     private int filesDeleted = 0;
 
     public FileGuard(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
-        //Directories we check
+        // Directories we check
         this.checkList = Arrays.asList(
                 gameLauncher.buildClientDir(),
                 gameLauncher.buildVersionDir(),
@@ -27,6 +31,8 @@ public class FileGuard {
                 gameLauncher.buildNativesPath()
         );
 
+        this.ignoreList = new HashSet<>();
+        this.buildBasicIgnoreList();
         this.logger = this.gameLauncher.getLogger();
     }
 
@@ -80,7 +86,8 @@ public class FileGuard {
                 if (file.isFile()) {
                     String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
                     checkPath = checkPath.replace("\\", "/");
-                    if (!filesToKeep.contains(checkPath) && !this.isUserConfig(file)) {
+                    // Skip deletion if the file or its parent directory is in the ignoreList
+                    if (!filesToKeep.contains(checkPath) && !this.isUserConfig(file) && !isInIgnoreList(file)) {
                         // Removing unlisted file
                         boolean deleted = file.delete();
                         if (deleted) {
@@ -94,12 +101,34 @@ public class FileGuard {
                     }
                     checkedFiles++;
                 } else if (file.isDirectory()) {
+                    // Recursively scan and delete files in subdirectories
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
             }
         } else {
             logger.error(directory + " is not found!");
         }
+    }
+
+    private boolean isInIgnoreList(File file) {
+        String filePath = file.getPath().replace(this.gameLauncher.buildGameDir(), "").replace("\\", "/");
+        for(String mask: this.ignoreList){
+            System.out.println(filePath + " should start with " + mask.replace("\\", "/"));
+            if(filePath.startsWith(mask.replace("\\", "/"))){
+                return true;
+            }
+        }
+        return  false;
+    }
+    private void buildBasicIgnoreList(){
+        for(String dir: this.basicIgnoreDirs){
+            String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
+            this.ignoreList.add(thisDir);
+        }
+    }
+
+    public void addIgnoreDir(String mask){
+        this.ignoreList.add(mask);
     }
 
     private boolean isUserConfig(File file) {

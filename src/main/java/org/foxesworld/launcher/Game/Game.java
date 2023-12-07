@@ -9,8 +9,10 @@ import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
 import org.foxesworld.launcher.FileLoader.FilesArray;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Game implements FileLoaderListener, FileGuardListener {
 
@@ -51,9 +53,23 @@ public class Game implements FileLoaderListener, FileGuardListener {
     public void onFilesLoaded() {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files loaded|==--");
         FileGuard fileGuard = new FileGuard(this.gameLauncher);
+        //this.buildIgnoreList(fileGuard);
         fileGuard.setFileGuardListener(this);
         fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
     }
+
+    /* WILL ADD EXCEPTIONS FOR A CURRENT SERVER
+    private void buildIgnoreList(FileGuard fileGuard){
+        String[] ignoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
+        Set<String> ignoreList = new HashSet<>();
+        for(String dir: ignoreDirs){
+            String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
+            ignoreList.add(thisDir);
+        }
+        fileGuard.setIgnoreList(ignoreList);
+    }
+    */
+
 
     @Override
     public void onNewFileFound(FilesArray file, String localPath, final long totalSizeFinal) {

@@ -18,7 +18,6 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.news.News;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -57,8 +56,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private EngineData engineData;
     private final HTTPrequest GETrequest, POSTrequest;
     private ActionHandler actionHandler;
-    private DownloadUtils download;
-    private boolean initialised = false;
 
     /*
     * TODO
@@ -113,7 +110,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         user = new User(this.auth);
-        this.download = new DownloadUtils(this);
         this.actionHandler = new ActionHandler(this);
     }
     @Override
@@ -188,9 +184,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public APP getAPP() {
         return this.APP;
-    }
-    public DownloadUtils getDownload() {
-        return download;
     }
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;

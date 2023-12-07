@@ -17,7 +17,7 @@
         {
           "componentType": "label",
           "fontSize": 14,
-          "componentStyle": "textBold",
+          "componentStyle": "title",
           "componentId": "progressLabel",
           "bounds": "15,10,170,40"
         },

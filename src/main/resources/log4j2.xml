@@ -7,7 +7,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}][%p] %m%n" />
         </Console>
-        <File name="File" fileName="${logDir}/lastlog.log" append="false">
+        <File name="File" fileName="${logDir}/logs/lastlog.log" append="false">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}][%p] %m%n" />
         </File>
     </Appenders>

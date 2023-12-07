@@ -69,9 +69,13 @@ public class ImageUtils {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 
-        AffineTransform at = AffineTransform.getScaleInstance((double) w / srcImg.getWidth(null), (double) h / srcImg.getHeight(null));
-        g2.drawRenderedImage(toBufferedImage(srcImg), at);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
+        if (w > srcImg.getWidth(null) || h > srcImg.getHeight(null)) {
+            g2.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
+        } else {
+            g2.drawImage(srcImg, 0, 0, w, h, null);
+        }
         g2.dispose();
         return resizedImg;
     }

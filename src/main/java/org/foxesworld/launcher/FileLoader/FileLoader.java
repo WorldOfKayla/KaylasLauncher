@@ -19,8 +19,10 @@ import java.util.stream.Stream;
 public class FileLoader {
     private final Engine engine;
     private final HTTPrequest POSTrequest;
+
+    private List<FilesAttributes> filesAttributes;
     private final Set<String> filesToKeep = new HashSet<>();
-    private final String homeDir;
+    private final String homeDir, client, version;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
     private FileLoaderListener fileLoaderListener;
@@ -29,44 +31,44 @@ public class FileLoader {
 
     public FileLoader(ActionHandler actionHandler) {
         this.engine = actionHandler.getEngine();
+        this.client = actionHandler.getCurrentServer().getServerName();
+        this.version = actionHandler.getCurrentServer().getServerVersion();
         this.POSTrequest = engine.getPOSTrequest();
         this.homeDir = engine.getCONFIG().getFullPath();
         this.downloadUtils = new DownloadUtils(engine);
         this.executorService = Executors.newFixedThreadPool(this.engine.getEngineData().getDownloadThreads());
     }
 
-    public List<FilesArray> getFilesToDownload(String version, String client) {
+    public void getFilesToDownload() {
         Map<String, String> request = new HashMap<>();
         request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
         request.put("platform", String.valueOf(this.getPlatformNumber()));
-        FilesArray[] filesArray = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesArray[].class);
-        for(FilesArray file: filesArray) {
+        FilesAttributes[] filesAttributes = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes[].class);
+        for(FilesAttributes file: filesAttributes) {
             file.setReplaceMask("/uploads/files/clients/");
-            addFileToKeep(file.filename.replace(file.getReplaceMask(), ""));
-            this.engine.getLOGGER().debug("Adding to keep "+file.filename.replace(file.getReplaceMask(), ""));
+            addFileToKeep(file.getFilename().replace(file.getReplaceMask(), ""));
+            this.engine.getLOGGER().debug("Adding to keep "+file.getFilename().replace(file.getReplaceMask(), ""));
         }
         this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
-        return Stream.of(filesArray).filter(this::shouldDownloadFile).collect(Collectors.toList());
+        this.filesAttributes = Stream.of(filesAttributes).filter(this::shouldDownloadFile).collect(Collectors.toList());
     }
-    private boolean shouldDownloadFile(FilesArray fileSection) {
-        String localPath = fileSection.filename.replace(fileSection.getReplaceMask(), "");
+    private boolean shouldDownloadFile(FilesAttributes fileSection) {
+        String localPath = fileSection.getFilename().replace(fileSection.getReplaceMask(), "");
         File localFile = new File(homeDir, localPath);
-        return isInvalidFile(localFile, fileSection.hash, fileSection.size);
+        return isInvalidFile(localFile, fileSection.getHash(), fileSection.getSize());
     }
 
-    public void downloadFiles(List<FilesArray> filesToDownload) {
-        totalFiles = filesToDownload.size();
+    public void downloadFiles() {
+        totalFiles = filesAttributes.size();
         this.engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
         if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
-        //for (FilesArray filesArray: filesToDownload){
-        //    System.out.println(filesArray.filename);
-        //}
+
         engine.displayPanel("loggedForm->false|newsForm->false|download->true");
-        final long totalSizeFinal = filesToDownload.stream().mapToLong(FilesArray::getSize).sum();
-        filesToDownload.forEach(file -> executorService.execute(() -> {
-            String localPath = file.filename.replace(file.getReplaceMask(), "");
+        final long totalSizeFinal = filesAttributes.stream().mapToLong(FilesAttributes::getSize).sum();
+        filesAttributes.forEach(file -> executorService.execute(() -> {
+            String localPath = file.getFilename().replace(file.getReplaceMask(), "");
             fileLoaderListener.onNewFileFound(file, localPath, totalSizeFinal);
 
             // Incrementing a counter
@@ -78,8 +80,6 @@ public class FileLoader {
             }
         }));
     }
-
-
 
     public boolean isInvalidFile(File file, String expectedHash, long expectedSize) {
         if (!file.exists() || file.length() != expectedSize) {
@@ -126,11 +126,11 @@ public class FileLoader {
         }
     }
 
-    public FilesArray addJreToLoad(String jreVersion){
+    public FilesAttributes addJreToLoad(String jreVersion){
         Map<String, String> request = new HashMap<>();
         request.put("sysRequest", "getJre");
         request.put("jreVersion", jreVersion);
-        FilesArray jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesArray.class);
+        FilesAttributes jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes.class);
         jreFile.setReplaceMask("/uploads/files/");
         return  jreFile;
     }
@@ -149,6 +149,10 @@ public class FileLoader {
 
     public void addFileToKeep(String filesToKeep) {
         this.filesToKeep.add(filesToKeep);
+    }
+
+    public void addFileToDownload(FilesAttributes filesAttributes) {
+        this.filesAttributes.add(filesAttributes);
     }
 
     public String getHomeDir() {

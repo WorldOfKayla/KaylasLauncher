@@ -6,18 +6,15 @@ import org.foxesworld.launcher.FileLoader.FileGuard.FileGuardListener;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
-import org.foxesworld.launcher.FileLoader.FilesArray;
+import org.foxesworld.launcher.FileLoader.FilesAttributes;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 public class Game implements FileLoaderListener, FileGuardListener {
 
     private final ActionHandler actionHandler;
-    private final List<FilesArray> filesArray;
+    private List<FilesAttributes> filesAttributes;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
 
@@ -25,7 +22,7 @@ public class Game implements FileLoaderListener, FileGuardListener {
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
         fileLoader.setLoaderListener(this);
-        this.filesArray = fileLoader.getFilesToDownload(actionHandler.getCurrentServer().getServerVersion(), actionHandler.getCurrentServer().getServerName());
+        fileLoader.getFilesToDownload();
     }
 
     public void start() {
@@ -36,13 +33,9 @@ public class Game implements FileLoaderListener, FileGuardListener {
         gameLauncher = new GameLauncher(actionHandler);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first
-            filesArray.add(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
+            fileLoader.addFileToDownload(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
         }
-        //if(filesArray.size() == 0){
-        //    gameLauncher.launchGame();
-        //} else {
-        this.fileLoader.downloadFiles(filesArray);
-        //}
+        this.fileLoader.downloadFiles();
     }
 
     private boolean hasJre(String version) {
@@ -53,44 +46,24 @@ public class Game implements FileLoaderListener, FileGuardListener {
     public void onFilesLoaded() {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files loaded|==--");
         FileGuard fileGuard = new FileGuard(this.gameLauncher);
-        //this.buildIgnoreList(fileGuard);
         fileGuard.setFileGuardListener(this);
         fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
     }
 
-    /* WILL ADD EXCEPTIONS FOR A CURRENT SERVER
-    private void buildIgnoreList(FileGuard fileGuard){
-        String[] ignoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
-        Set<String> ignoreList = new HashSet<>();
-        for(String dir: ignoreDirs){
-            String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
-            ignoreList.add(thisDir);
-        }
-        fileGuard.setIgnoreList(ignoreList);
-    }
-    */
-
-
     @Override
-    public void onNewFileFound(FilesArray file, String localPath, final long totalSizeFinal) {
+    public void onNewFileFound(FilesAttributes file, String localPath, final long totalSizeFinal) {
         String fullPath = this.fileLoader.getHomeDir() + localPath;
         this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
         this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));
 
-        if (fileLoader.isInvalidFile(new File(fullPath), file.hash, file.size)) {
-            this.fileLoader.getDownloadUtils().downloader(file.filename.replace(" ", "%20"), fullPath, totalSizeFinal);
+        if (fileLoader.isInvalidFile(new File(fullPath), file.getHash(), file.getSize())) {
+            this.fileLoader.getDownloadUtils().downloader(file.getFilename().replace(" ", "%20"), fullPath, totalSizeFinal);
         }
 
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
             this.fileLoader.getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }
-
-    @Override
-    public void onFileCheck(File file) {
-
-    }
-
     @Override
     public void onFilesChecked(int filesDeleted) {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");

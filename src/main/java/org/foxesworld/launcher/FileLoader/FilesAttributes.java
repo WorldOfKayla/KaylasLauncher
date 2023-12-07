@@ -2,26 +2,31 @@ package org.foxesworld.launcher.FileLoader;
 
 import com.google.gson.annotations.SerializedName;
 
-public class FilesArray {
+public class FilesAttributes {
     @SerializedName("filename")
-    public String filename;
+    private String filename;
 
     @SerializedName("hash")
-    public String hash;
+    private String hash;
 
     @SerializedName("size")
-    public int size;
-
+    private int size;
     private  String replaceMask;
-
     public int getSize() {
         return size;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
     public void setReplaceMask(String replaceMask) {
         this.replaceMask = replaceMask;
     }
-
     public String getReplaceMask() {
         return replaceMask;
     }

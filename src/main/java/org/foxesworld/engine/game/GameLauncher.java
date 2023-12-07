@@ -5,8 +5,8 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.utils.ImageUtils;
-import org.foxesworld.engine.utils.JVMHelper;
 import org.foxesworld.engine.utils.LibraryScanner;
+import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.server.ServerAttributes;
 import org.foxesworld.launcher.user.User;
 
@@ -53,7 +53,8 @@ public class GameLauncher {
 
     private void collectLibraries() {
         AtomicInteger num = new AtomicInteger();
-        processArgs.add("-cp");
+        processArgs.add("-classpath");
+        //Collections.addAll(processArgs, "-classpath", IOHelper.getCodeSource(GameLauncher.class).toString(), GameLauncher.class.getName());
 
         StringBuilder sb = new StringBuilder();
         List<URL> libraryURLs = new ArrayList<>();
@@ -79,7 +80,6 @@ public class GameLauncher {
         classLoader = createClassLoader(libraryURLs);
         this.logger.debug(num.get() + " libraries found");
     }
-
 
     private URLClassLoader createClassLoader(List<URL> libraryURLs) {
         URL[] urls = libraryURLs.toArray(new URL[0]);
@@ -191,7 +191,7 @@ public class GameLauncher {
     }
 
     private String addTweakClass() {
-        String tweakClassVal = "";
+        String tweakClassVal;
         List<TweakClasses> tweakClasses = this.engine.getEngineData().getTweakClasses();
         for (TweakClasses aClass : tweakClasses) {
             String className = aClass.classPath;

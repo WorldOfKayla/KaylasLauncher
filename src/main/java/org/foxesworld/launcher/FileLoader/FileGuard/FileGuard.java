@@ -13,7 +13,7 @@ public class FileGuard {
     private FileGuardListener fileGuardListener;
     private final List<String> checkList;
     private final Set<String> ignoreList;
-    private String[] basicIgnoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
+    private final String[] basicIgnoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
     private final GameLauncher gameLauncher;
     private final Logger logger;
 
@@ -82,7 +82,6 @@ public class FileGuard {
 
         if (files != null) {
             for (File file : files) {
-                fileGuardListener.onFileCheck(file);
                 if (file.isFile()) {
                     String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
                     checkPath = checkPath.replace("\\", "/");

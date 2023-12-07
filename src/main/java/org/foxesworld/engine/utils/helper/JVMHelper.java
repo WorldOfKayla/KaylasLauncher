@@ -1,4 +1,4 @@
-package org.foxesworld.engine.utils;
+package org.foxesworld.engine.utils.helper;
 
 import org.foxesworld.engine.Engine;
 

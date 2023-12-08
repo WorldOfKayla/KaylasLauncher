@@ -92,7 +92,7 @@ public class GameLauncher {
     private void loadAuthLib() {
         try {
             classLoader.loadClass("com.mojang.authlib.Agent");
-            processArgs.add("--userType=mojang");
+            processArgs.add("--userType=legacy");
             processArgs.add("--accessToken=" + this.user.getToken());
             processArgs.add("--uuid=" + this.user.getUuid());
             processArgs.add("--userProperties={}");
@@ -117,12 +117,13 @@ public class GameLauncher {
             processArgs.add("--launchTarget="+this.gameClient.getClient());
             processArgs.add("--fml.forgeGroup="+this.gameClient.getForgeGroup());
             processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
+
             System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
-
         //Optional
         if (config.isFullScreen()) {
-            processArgs.add("--fullscreen=true");
+            processArgs.add("--fullscreen");
+
         }
 
         //Optional
@@ -131,6 +132,9 @@ public class GameLauncher {
             processArgs.add("--port=" + gameClient.getPort());
         }
 
+        //if(this.user.re)
+        //processArgs.add("--disableMultiplayer");
+        //processArgs.add("--disableChat");
         processArgs.add(tweakClassVal);
     }
 

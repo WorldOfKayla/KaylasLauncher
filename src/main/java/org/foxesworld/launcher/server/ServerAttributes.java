@@ -15,6 +15,11 @@ public class ServerAttributes {
     private String jreVersion;
     @SerializedName("forgeVersion")
     private String forgeVersion;
+
+    @SerializedName("forgeGroup")
+    private String forgeGroup;
+    @SerializedName("mcpVersion")
+    private  String mcpVersion;
     @SerializedName("client")
     private String client;
     @SerializedName("host")
@@ -44,6 +49,14 @@ public class ServerAttributes {
 
     public String getForgeVersion() {
         return forgeVersion;
+    }
+
+    public String getMcpVersion() {
+        return mcpVersion;
+    }
+
+    public String getForgeGroup() {
+        return forgeGroup;
     }
 
     public String getClient() {

@@ -13,9 +13,13 @@ import org.foxesworld.launcher.user.User;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,22 +57,21 @@ public class GameLauncher {
 
     private void collectLibraries() {
         AtomicInteger num = new AtomicInteger();
-        processArgs.add("-classpath");
-        //Collections.addAll(processArgs, "-classpath", IOHelper.getCodeSource(GameLauncher.class).toString(), GameLauncher.class.getName());
+        processArgs.add("-cp");
 
         StringBuilder sb = new StringBuilder();
-        List<URL> libraryURLs = new ArrayList<>();
+        List<URL> libraryURLs = new LinkedList<>();
 
-        new LibraryScanner(this.engine).findLibraryPaths(buildLibrariesPath()).forEach(libraryPath -> {
-            File libraryFile = new File(libraryPath);
-            sb.append(libraryFile.getAbsoluteFile()).append(File.pathSeparator);
+        new LibraryScanner(this.engine).findLibraryPaths(buildLibrariesPath()).forEach(libraryPathString -> {
+            Path libraryPath = Paths.get(libraryPathString);
+            sb.append(libraryPath.toAbsolutePath()).append(File.pathSeparator);
 
-            if (libraryFile.isFile()) {
+            if (libraryPath.toFile().isFile()) {
                 try {
-                    URL libraryURL = libraryFile.toURI().toURL();
+                    URL libraryURL = libraryPath.toUri().toURL();
                     libraryURLs.add(libraryURL);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    logger.error("Error creating URL for library: " + libraryPath, e);
                 }
             }
             num.getAndIncrement();
@@ -89,12 +92,13 @@ public class GameLauncher {
     private void loadAuthLib() {
         try {
             classLoader.loadClass("com.mojang.authlib.Agent");
-            processArgs.add("--userType=legacy");
+            processArgs.add("--userType=mojang");
             processArgs.add("--accessToken=" + this.user.getToken());
             processArgs.add("--uuid=" + this.user.getUuid());
             processArgs.add("--userProperties={}");
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
+            //if AuthLib was not found (Old versions under 1.7.3)
             processArgs.add("--session=" + this.user.getToken());
         }
     }
@@ -106,22 +110,25 @@ public class GameLauncher {
         processArgs.add("--gameDir=" + buildClientDir());
         processArgs.add("--assetsDir=" + buildAssetsPath());
         processArgs.add("--assetIndex=" + gameClient.getServerVersion());
+
+        if (getIntVer() > 1133) {
+            processArgs.add("--fml.forgeVersion="+this.gameClient.getForgeVersion());
+            processArgs.add("--fml.mcVersion="+this.gameClient.getServerVersion());
+            processArgs.add("--launchTarget="+this.gameClient.getClient());
+            processArgs.add("--fml.forgeGroup="+this.gameClient.getForgeGroup());
+            processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
+            System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
+        }
+
         //Optional
         if (config.isFullScreen()) {
             processArgs.add("--fullscreen=true");
         }
 
+        //Optional
         if (config.isAutoEnter()) {
             processArgs.add("--server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
-        }
-        if (intVer > 1133) {
-            processArgs.add("--fml.forgeVersion=" + this.gameClient.getForgeVersion());
-            processArgs.add("--fml.mcVersion=" + this.gameClient.getServerVersion());
-            processArgs.add("--launchTarget=" + this.gameClient.getClient());
-            processArgs.add("--fml.forgeGroup=net.minecraftforge");
-            processArgs.add("--fml.mcpVersion=20210115.111550");
-            System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
 
         processArgs.add(tweakClassVal);
@@ -137,7 +144,7 @@ public class GameLauncher {
                 collectLibraries();
 
                 // Adding --tweakclass only on versions under 1.13.3
-                if (intVer < 1133) {
+                if (getIntVer() < 1133) {
                     tweakClassVal = addTweakClass();
                 }
 
@@ -151,7 +158,6 @@ public class GameLauncher {
                 processBuilder.directory(new File(this.buildClientDir()));
                 processBuilder.redirectErrorStream(true);
                 processBuilder.environment().put("JAVA_HOME", buildRuntimeDir().toString());
-                //processBuilder.command().add("--illegal-access=warn");
 
                 // Redirect error stream to the standard output
                 processBuilder.inheritIO();
@@ -165,6 +171,7 @@ public class GameLauncher {
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
+                        engine.getSOUND().playSound("crash.ogg", false);
                         JOptionPane.showMessageDialog(
                                 this.engine.getFrame().getFrame(),
                                 "Exit Code - " + exitCode,
@@ -277,5 +284,9 @@ public class GameLauncher {
 
     public boolean isStarted() {
         return isStarted;
+    }
+
+    public int getIntVer() {
+        return intVer;
     }
 }

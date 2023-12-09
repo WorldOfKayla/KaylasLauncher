@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher {
     private final ServerAttributes gameClient;
+    private  GameListener gameListener;
     private final User user;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Engine engine;
@@ -167,10 +168,13 @@ public class GameLauncher {
                 processBuilder.inheritIO();
 
                 Process process = processBuilder.start();
+                if(process.isAlive()){
+                    gameListener.onGameStart(gameClient);
+                }
                 engine.getFrame().getFrame().setVisible(false);
 
                 int exitCode = process.waitFor();
-
+                gameListener.onGameExit(exitCode);
                 // Using invokeLater for Swing-related actions
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
@@ -193,10 +197,10 @@ public class GameLauncher {
         });
 
         // Add a shutdown hook to clean up threads
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            engine.getDiscord().getRpcExecutorService().shutdown();
-            executorService.shutdownNow();
-        }));
+        //Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        //    engine.getDiscord().getRpcExecutorService().shutdown();
+        //    executorService.shutdownNow();
+        //}));
 
         setStarted(true);
     }
@@ -284,10 +288,17 @@ public class GameLauncher {
 
     public void setStarted(boolean started) {
         isStarted = started;
+        if (!isStarted) {
+            executorService.shutdown();
+        }
     }
 
     public boolean isStarted() {
         return isStarted;
+    }
+
+    public void setGameListener(GameListener gameListener) {
+        this.gameListener = gameListener;
     }
 
     public int getIntVer() {

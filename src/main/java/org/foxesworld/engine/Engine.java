@@ -18,7 +18,6 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.news.News;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.CurrentMonth;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -31,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -57,6 +55,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private EngineData engineData;
     private final HTTPrequest GETrequest, POSTrequest;
     private ActionHandler actionHandler;
+    private boolean init = false;
 
     /*
     * TODO
@@ -112,11 +111,14 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.getGuiBuilder().buildAdditionalPanels();
         user = new User(this.auth);
         this.actionHandler = new ActionHandler(this);
+        init = true;
     }
     @Override
     public void onPanelsBuilt() {
         if(CONFIG.isEnableSound()) {
-            getSOUND().playSound("uiMus.ogg", true);
+            if(!isInit()) {
+                getSOUND().playSound("uiMus.ogg", true);
+            }
         }
     }
     @Override
@@ -158,28 +160,27 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         String selfMd5 = md5Func.md5(appPath());
         LauncherAttributes launcherAttributes = new Gson().fromJson(this.POSTrequest.send(engineData.getBindUrl(), launcherRequest), LauncherAttributes.class);
         if(!selfMd5.equals("IDE")) {
-            if(!Objects.equals(selfMd5, launcherAttributes.getFileMd5())) {
-                return false;
-            } else {
-                return true;
-            }
+            return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
         } else {
             return true;
         }
     }
-
     public String appPath() {
         try {
-            return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "UTF-8");
-        } catch (UnsupportedEncodingException | java.net.URISyntaxException e) {
+            return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
+        } catch (java.net.URISyntaxException e) {
             return null;
         }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
     }
+
+    public boolean isInit() {
+        return init;
+    }
+
     public FrameConstructor getFrame() {
         return this.frameConstructor;
     }

@@ -2,16 +2,18 @@ package org.foxesworld.launcher.Game;
 
 import org.foxesworld.engine.action.ActionHandler;
 import org.foxesworld.engine.game.GameLauncher;
+import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuardListener;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
 import org.foxesworld.launcher.FileLoader.FilesAttributes;
+import org.foxesworld.launcher.server.ServerAttributes;
 
 import java.io.File;
 import java.util.List;
 
-public class Game implements FileLoaderListener, FileGuardListener {
+public class Game implements FileLoaderListener, FileGuardListener, GameListener {
 
     private final ActionHandler actionHandler;
     private List<FilesAttributes> filesAttributes;
@@ -31,6 +33,7 @@ public class Game implements FileLoaderListener, FileGuardListener {
                 this.actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
 
         gameLauncher = new GameLauncher(actionHandler);
+        gameLauncher.setGameListener(this);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it the first
             fileLoader.addFileToDownload(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
@@ -70,5 +73,15 @@ public class Game implements FileLoaderListener, FileGuardListener {
         this.actionHandler.getEngine().getLOGGER().debug(filesDeleted + " removed");
         this.actionHandler.getEngine().getSOUND().stopAllSounds();
         gameLauncher.launchGame();
+    }
+
+    @Override
+    public void onGameStart(ServerAttributes serverAttributes) {
+        System.out.println("=== GAME "+serverAttributes.getServerName()+" STARTED ===");
+    }
+
+    @Override
+    public void onGameExit(int exitCode) {
+        System.exit(0);
     }
 }

@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.0.10-EXPERIMENTAL",
+  "launcherVersion": "1.0.11-STAGING",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
   "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",
@@ -44,19 +44,5 @@
     {
       "classPath": "optifine.OptiFineTweaker"
     }
-  ],
-  "authLib": {
-    "sessionHost": {
-      "arg": "-Dminecraft.api.session.host=",
-      "value": ""
-    },
-    "accountHost": {
-      "arg": "-Dminecraft.api.account.host",
-      "value": ""
-    },
-    "authHost": {
-      "arg": "-Dminecraft.api.auth.host=",
-      "value": ""
-    }
-  }
+  ]
 }

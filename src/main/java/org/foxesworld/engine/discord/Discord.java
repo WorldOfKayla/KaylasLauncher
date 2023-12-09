@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Discord implements DiscordListener {
 
@@ -12,10 +13,12 @@ public class Discord implements DiscordListener {
     private final DiscordRPC lib;
     private final DiscordRichPresence presence;
     private final ExecutorService rpcExecutorService = Executors.newSingleThreadExecutor();
-    public Discord(Engine engine){
-     this.engine = engine;
+    private final AtomicBoolean shutdownRequested = new AtomicBoolean(false);
+
+    public Discord(Engine engine) {
+        this.engine = engine;
         String applicationId = engine.getEngineData().getAppId();
-     lib = DiscordRPC.INSTANCE;
+        lib = DiscordRPC.INSTANCE;
         String steamId = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> {
@@ -23,10 +26,11 @@ public class Discord implements DiscordListener {
         };
         lib.Discord_Initialize(applicationId, handlers, true, steamId);
         presence = new DiscordRichPresence();
-
         lib.Discord_UpdatePresence(presence);
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
+    @Override
     public void discordRpcStart(String state, String details, String icon) {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details = details;
@@ -35,18 +39,23 @@ public class Discord implements DiscordListener {
         lib.Discord_UpdatePresence(presence);
 
         rpcExecutorService.submit(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
+            while (!shutdownRequested.get() && !Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    lib.Discord_Shutdown();
-                    break;
+                    // Ignore interruption during sleep
                 }
             }
         });
+    }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(rpcExecutorService::shutdownNow));
+    private void shutdown() {
+        shutdownRequested.set(true);
+        lib.Discord_Shutdown();
+        rpcExecutorService.shutdown();
+        Thread.currentThread().interrupt();
+        System.out.println("Discord shutdown completed");
     }
 
     @Override

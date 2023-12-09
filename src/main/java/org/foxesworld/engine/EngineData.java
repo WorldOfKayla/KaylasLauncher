@@ -11,25 +11,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class EngineData {
-    @SerializedName("bindUrl")
     private String bindUrl;
-    @SerializedName("launcherBrand")
     private String launcherBrand;
-    @SerializedName("launcherVersion")
     private String launcherVersion;
-    @SerializedName("appId")
+    @Deprecated
     private String appId;
-    @SerializedName("accessToken")
+    @Deprecated
     private String accessToken;
-    @SerializedName("groupDomain")
     private String groupDomain;
-    @SerializedName("vkAPIversion")
     private String vkAPIversion;
-    @SerializedName("downloadThreads")
     private int downloadThreads;
-    @SerializedName("requestProperties")
     private List<RequestProperty> requestProperties;
-    @SerializedName("tweakClasses")
     private List<TweakClasses> tweakClasses;
     public String getBindUrl() {
         return bindUrl;

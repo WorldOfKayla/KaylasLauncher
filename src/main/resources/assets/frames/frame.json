@@ -1,7 +1,10 @@
 {
   "appTitle": "general.appTitle",
   "appIcon": "assets/ui/icons/logo.png",
-  "backgroundImage": "assets/ui/img/bg/bg_winter.png",
+  "winterImage": "assets/ui/img/bg/season/winter.png",
+  "springImage": "assets/ui/img/bg/season/spring.png",
+  "summerImage": "assets/ui/img/bg/season/sunmer.png",
+  "autumnImage": "assets/ui/img/bg/season/autumn.png",
   "backgroundBlur": "#494d4d54",
   "width": 850,
   "height": 500,

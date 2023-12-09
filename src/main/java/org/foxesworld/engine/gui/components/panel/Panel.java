@@ -2,6 +2,7 @@ package org.foxesworld.engine.gui.components.panel;
 
 import org.foxesworld.engine.gui.components.frame.FrameAttributes;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
+import org.foxesworld.engine.utils.CurrentMonth;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.ImageUtils;
 
@@ -38,8 +39,25 @@ public class Panel extends JPanel {
     }
 
     private void drawDarkenedBackground(Graphics g) {
-        BufferedImage backgroundImage = ImageUtils.getLocalImage(frameAttributes.backgroundImage);
-        g.drawImage(applyDarkening(backgroundImage, hexToColor(frameAttributes.backgroundBlur)), 0, 0, null);
+        BufferedImage backgroundImage = ImageUtils.getLocalImage(getSeasonalBackground());
+        g.drawImage(applyDarkening(backgroundImage, hexToColor(frameAttributes.getBackgroundBlur())), 0, 0, null);
+    }
+
+    private String getSeasonalBackground(){
+        switch(CurrentMonth.getCurrentMonth()){
+            case DECEMBER, JANUARY, FEBRUARY:
+                return  frameAttributes.getWinterImage();
+
+            case MARCH, APRIL, MAY:
+                return  frameAttributes.getSpringImage();
+
+            case JUNE, JULY, AUGUST:
+                return  frameAttributes.getSummerImage();
+
+            case SEPTEMBER, OCTOBER, NOVEMBER:
+                return  frameAttributes.getAutumnImage();
+        }
+        return  "";
     }
 
     private BufferedImage applyDarkening(BufferedImage image, Color darkeningColor) {
@@ -142,7 +160,4 @@ public class Panel extends JPanel {
         groupPanel.setBorder(new MatteBorder(top, left, bottom, right, borderColor));
     }
 
-    public void setFrameImage(String value) {
-        this.frameAttributes.backgroundImage = value;
-    }
 }

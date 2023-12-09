@@ -5,25 +5,69 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 public class FrameAttributes {
-    @SerializedName("appTitle")
-    public String appTitle;
-    @SerializedName("appIcon")
-    public String appIcon;
+    private String appTitle;
+    private String appIcon;
+    private int width;
+    private int height;
+    private boolean resizable;
+    private String backgroundImage;
+    private String springImage;
+    private String summerImage;
+    private String autumnImage;
+    private String winterImage;
+    private String backgroundBlur;
+    private boolean undecorated;
+    private Map<String, OptionGroups> groups;
 
-    @SerializedName("width")
-    public int width;
+    public String getAppTitle() {
+        return appTitle;
+    }
 
-    @SerializedName("height")
-    public int height;
-    @SerializedName("resizable")
-    public boolean resizable;
-    @SerializedName("backgroundImage")
-    public String backgroundImage;
-    @SerializedName("backgroundBlur")
-    public String backgroundBlur;
-    @SerializedName("undecorated")
-    public boolean undecorated;
+    public String getAppIcon() {
+        return appIcon;
+    }
 
-    @SerializedName("groups")
-    public Map<String, OptionGroups> groups;
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean isResizable() {
+        return resizable;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public String getSpringImage() {
+        return springImage;
+    }
+
+    public String getSummerImage() {
+        return summerImage;
+    }
+
+    public String getAutumnImage() {
+        return autumnImage;
+    }
+
+    public String getWinterImage() {
+        return winterImage;
+    }
+
+    public String getBackgroundBlur() {
+        return backgroundBlur;
+    }
+
+    public boolean isUndecorated() {
+        return undecorated;
+    }
+
+    public Map<String, OptionGroups> getGroups() {
+        return groups;
+    }
 }

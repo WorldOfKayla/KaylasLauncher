@@ -51,7 +51,7 @@ public class GuiBuilder implements ComponentFactoryListener {
         InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(FrameConstructor.class.getClassLoader().getResourceAsStream(framePath)), StandardCharsets.UTF_8);
         frameAttributes = new Gson().fromJson(reader, FrameAttributes.class);
         // Building component group
-        buildPanels(frameAttributes.groups, parent);
+        buildPanels(frameAttributes.getGroups(), parent);
     }
 
     public List<Component> getAllChildComponents(String parentPanel) {

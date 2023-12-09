@@ -39,12 +39,12 @@ public class FrameConstructor {
     public void buildFrame(FrameAttributes frameAttributes) {
         engine.getLOGGER().info("Building FrameConstructor...");
 
-        frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.appIcon));
-        frame.setTitle(LANG.getString(frameAttributes.appTitle));
+        frame.setIconImage(ImageUtils.getLocalImage(frameAttributes.getAppIcon()));
+        frame.setTitle(LANG.getString(frameAttributes.getAppTitle()));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(frameAttributes.width, frameAttributes.height);
-        frame.setResizable(frameAttributes.resizable);
-        frame.setUndecorated(frameAttributes.undecorated);
+        frame.setSize(frameAttributes.getWidth(), frameAttributes.getHeight());
+        frame.setResizable(frameAttributes.isResizable());
+        frame.setUndecorated(frameAttributes.isUndecorated());
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - frame.getWidth()) / 2;

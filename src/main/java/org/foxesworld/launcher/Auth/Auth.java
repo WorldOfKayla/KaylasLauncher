@@ -39,7 +39,7 @@ public class Auth {
             Map<String, String> authCredentials = new HashMap<>();
             authCredentials.put("login",  CONFIG.getLogin());
             authCredentials.put("password", CONFIG.getPassword());
-            this.engine.getLOGGER().debug("Authorising with saved login " + CONFIG.getLogin());
+            this.engine.getLOGGER().debug("Trying to authorise with saved login " + CONFIG.getLogin());
             //Writing login data if it's not present
             if (!this.authorize(authCredentials)) {
                 engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
@@ -82,6 +82,7 @@ public class Auth {
                 saveAuthCredentials(authCredentials);
             }
         } else {
+            engine.getLOGGER().info("Incorrect password for "+authCredentials.get("login") + "!");
             JOptionPane.showMessageDialog(engine.getFrame().getFrame(), responseMap.get("message"));
         }
         return status;
@@ -96,6 +97,14 @@ public class Auth {
             userServersArray[i] = serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion();
             i++;
         }
+    }
+
+    public void logOut(){
+        this.engine.getLOGGER().info("LoggingOut...");
+        this.engine.getAuth().setAuthorised(false);
+        engine.getFrame().getRootPanel().removeAll();
+        this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
+        engine.initialize("");
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {

@@ -13,7 +13,7 @@ public class FileGuard {
     private FileGuardListener fileGuardListener;
     private final List<String> checkList;
     private final Set<String> ignoreList;
-    private final String[] basicIgnoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs"};
+    private final String[] basicIgnoreDirs = {"saves", "resourcepacks", "shaderpacks", "logs", "config"};
     private final GameLauncher gameLauncher;
     private final Logger logger;
 

@@ -43,7 +43,9 @@ public class ActionHandler {
                 }
             }
 
-            case "smallButton" -> { this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);}
+            case "smallButton" -> { this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                engine.getSOUND().playSound("exit.ogg", false);
+            }
 
             case "gameDir" -> openGameFolder();
 
@@ -61,11 +63,7 @@ public class ActionHandler {
             }
 
             case "logOut" -> {
-                this.engine.getLOGGER().info("LoggingOut...");
-                this.engine.getAuth().setAuthorised(false);
-                engine.getFrame().getRootPanel().removeAll();
-                this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-                engine.initialize("");
+                this.engine.getAuth().logOut();
             }
 
             case "settings" -> {
@@ -86,6 +84,7 @@ public class ActionHandler {
 
             case "toGame" -> {
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
                 this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());

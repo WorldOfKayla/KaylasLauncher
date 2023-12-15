@@ -43,7 +43,7 @@ public class ActionHandler {
                 }
             }
 
-            case "test" -> {}//this.engine.displayPanel("loggedForm->false|newsForm->false|download->true");
+            case "smallButton" -> { this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);}
 
             case "gameDir" -> openGameFolder();
 
@@ -85,12 +85,13 @@ public class ActionHandler {
             }
 
             case "toGame" -> {
+                this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
                 this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 game = new Game(this);
-                game.start();
+                //game.start();
             }
 
             case "closeButton" -> System.exit(0);

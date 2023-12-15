@@ -53,6 +53,7 @@ public class FileLoader {
         }
         this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
         this.filesAttributes = Stream.of(filesAttributes).filter(this::shouldDownloadFile).collect(Collectors.toList());
+        fileLoaderListener.onFilesRead();
     }
     private boolean shouldDownloadFile(FilesAttributes fileSection) {
         String localPath = fileSection.getFilename().replace(fileSection.getReplaceMask(), "");

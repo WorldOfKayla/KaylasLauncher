@@ -1,12 +1,13 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.0.11-STAGING",
+  "launcherVersion": "1.0.12-EXPERIMENTAL",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
   "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",
-  "groupDomain": "foxesworlds",
+  "groupDomain": "foxesworlds1",
   "vkAPIversion": "5.101",
   "downloadThreads": 4,
+  "socket": 65530,
   "requestProperties": [
     {
       "propertyKey": "User-Agent",

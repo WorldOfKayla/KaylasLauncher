@@ -27,6 +27,8 @@ public class ServerAttributes {
     @SerializedName("port")
     private int port;
 
+    private String ignoreDirs;
+
     public int getId() {
         return id;
     }
@@ -69,5 +71,9 @@ public class ServerAttributes {
 
     public int getPort() {
         return port;
+    }
+
+    public String getIgnoreDirs() {
+        return ignoreDirs;
     }
 }

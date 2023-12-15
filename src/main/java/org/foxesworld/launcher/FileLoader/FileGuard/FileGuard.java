@@ -126,8 +126,12 @@ public class FileGuard {
         }
     }
 
-    public void addIgnoreDir(String mask){
-        this.ignoreList.add(mask);
+    public void addIgnoreDirs(String dirs){
+        for(String dir: dirs.split(",")){
+            String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
+            this.ignoreList.add(thisDir);
+        }
+
     }
 
     private boolean isUserConfig(File file) {

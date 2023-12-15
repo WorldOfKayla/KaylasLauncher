@@ -43,7 +43,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     }
 
     /*
-     * Method for building an interface based on a JSON file
+     * Method for building GUI based on a JSON file
      * Accepts the path to the file and the InputStream flag to specify the data source (resources or file)
      */
     public void buildGui(String framePath, JPanel parent) {

@@ -14,6 +14,7 @@ public class EngineData {
     private String bindUrl;
     private String launcherBrand;
     private String launcherVersion;
+    private int socket;
     @Deprecated
     private String appId;
     @Deprecated
@@ -52,5 +53,9 @@ public class EngineData {
     }
     public List<TweakClasses> getTweakClasses() {
         return tweakClasses;
+    }
+    
+    public int getSocket() {
+        return socket;
     }
 }

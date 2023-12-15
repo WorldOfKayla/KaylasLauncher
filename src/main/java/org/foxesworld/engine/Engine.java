@@ -37,13 +37,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
+
     protected final APP APP;
     private final Sound SOUND;
     public static Logger LOGGER;
     private final Discord discord;
     private News news;
-    private final  LanguageProvider LANG;
-    private  final ServerInfo serverInfo;
+    private final LanguageProvider LANG;
+    private final ServerInfo serverInfo;
     private final FontUtils FONTUTILS;
     private final Config CONFIG;
     private CryptUtils CRYPTO;
@@ -58,9 +59,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private boolean init = false;
 
     /*
-    * TODO
-    *  LOMBOK
-    * */
+     * TODO
+     *  LOMBOK
+     * */
     public Engine(APP APP) {
         this.APP = APP;
         this.engineData = new EngineData();
@@ -68,7 +69,8 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(APP.class);
-        LOGGER.info(engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion() + " started...");
+        String appBoxTitle = engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion();
+        LOGGER.info(appBoxTitle + " started...");
         this.getAPP().setLOCALE(String.valueOf(CONFIG.getLang()));
         this.LANG = new LanguageProvider(this.getAPP(), this.getAPP().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
@@ -77,19 +79,20 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.discord = new Discord(this);
         Configurator.setLevel(getLOGGER().getName(), Level.valueOf(CONFIG.getLogLevel()));
 
-        this.GETrequest = new HTTPrequest(this,"GET");
-        this.POSTrequest = new HTTPrequest(this,"POST");
-        if(isLauncherValid()) {
+        this.GETrequest = new HTTPrequest(this, "GET");
+        this.POSTrequest = new HTTPrequest(this, "POST");
+        if (isLauncherValid()) {
             this.frameConstructor = new FrameConstructor(this);
             this.CRYPTO = new CryptUtils(this);
             setAuth(new Auth(this));
             initialize(this.auth.getAuthCredentials("login"));
         } else {
-            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engineData.getLauncherBrand() + '-'+ engineData.getLauncherVersion(), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", appBoxTitle, JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
         }
     }
 
-    void initEngineValues(String propertyPath){
+    void initEngineValues(String propertyPath) {
         InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
         if (inputStream != null) {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -98,8 +101,8 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
 
     public void initialize(String login) {
-        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login,"FoxesEngine"  + '-' + this.getEngineData().getLauncherVersion(),"aiden");
-        getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised()+")");
+        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login, "FoxesEngine" + '-' + this.getEngineData().getLauncherVersion(), "aiden");
+        getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised() + ")");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
@@ -113,14 +116,16 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.actionHandler = new ActionHandler(this);
         init = true;
     }
+
     @Override
     public void onPanelsBuilt() {
-        if(CONFIG.isEnableSound()) {
-            if(!isInit()) {
+        if (CONFIG.isEnableSound()) {
+            if (!isInit()) {
                 getSOUND().playSound("uiMus.ogg", true);
             }
         }
     }
+
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
         parentPanel.updateUI();
@@ -129,6 +134,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         parentPanel.setDoubleBuffered(true);
         LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
+
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
@@ -139,17 +145,19 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             }
         }
     }
-    private void panelVisibility(String panelElement){
+
+    private void panelVisibility(String panelElement) {
         String[] parts = panelElement.split("->");
         if (parts.length == 2) {
             String panelName = parts[0];
             boolean displayValue = Boolean.parseBoolean(parts[1]);
             JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
-            if(groupPanel != null) {
+            if (groupPanel != null) {
                 groupPanel.setVisible(displayValue);
             }
         }
     }
+
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
@@ -159,19 +167,23 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         launcherRequest.put("sysRequest", "downloadLatest");
         String selfMd5 = md5Func.md5(appPath());
         LauncherAttributes launcherAttributes = new Gson().fromJson(this.POSTrequest.send(engineData.getBindUrl(), launcherRequest), LauncherAttributes.class);
-        if(!selfMd5.equals("IDE")) {
+        if (!selfMd5.equals("IDE")) {
             return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
         } else {
             return true;
         }
     }
+
     public String appPath() {
         try {
-            return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
+            return URLDecoder.decode(
+                    HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(),
+                    StandardCharsets.UTF_8);
         } catch (java.net.URISyntaxException e) {
             return null;
         }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
@@ -184,57 +196,75 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public FrameConstructor getFrame() {
         return this.frameConstructor;
     }
+
     public APP getAPP() {
         return this.APP;
     }
+
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;
     }
+
     public HTTPrequest getGETrequest() {
         return GETrequest;
     }
+
     public HTTPrequest getPOSTrequest() {
         return POSTrequest;
     }
+
     public Logger getLOGGER() {
         return LOGGER;
     }
+
     public LanguageProvider getLANG() {
         return LANG;
     }
+
     public FontUtils getFONTUTILS() {
         return FONTUTILS;
     }
+
     public Config getCONFIG() {
         return CONFIG;
     }
+
     public Auth getAuth() {
         return auth;
     }
+
     public StyleProvider getStyleProvider() {
         return styleProvider;
     }
+
     public Sound getSOUND() {
         return SOUND;
     }
+
     public EngineData getEngineData() {
         return engineData;
     }
+
     public void setAuth(Auth auth) {
         this.auth = auth;
     }
+
     public void setStyleProvider(StyleProvider styleProvider) {
         this.styleProvider = styleProvider;
     }
+
     public void setEngineData(EngineData engineData) {
         this.engineData = engineData;
     }
+
     public User getUser() {
         return user;
     }
+
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
+
     public Discord getDiscord() {
         return discord;
     }

@@ -133,7 +133,7 @@ public class GameLauncher {
             processArgs.add("--port=" + gameClient.getPort());
         }
 
-        //if(this.user.re)
+        //if(this.user.re) Adding multiplayer only to an online user
         //processArgs.add("--disableMultiplayer");
         //processArgs.add("--disableChat");
         processArgs.add(tweakClassVal);
@@ -179,14 +179,9 @@ public class GameLauncher {
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
-                        engine.getSOUND().playSound("crash.ogg", false);
-                        JOptionPane.showMessageDialog(
-                                this.engine.getFrame().getFrame(),
-                                "Exit Code - " + exitCode,
-                                "FoxesEngine 1.6 crash",
-                                JOptionPane.ERROR_MESSAGE,
-                                new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png"))
-                        );
+                        engine.getSOUND().playSound("exit.ogg", false);
+                        JOptionPane.showMessageDialog(this.engine.getFrame().getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
+                        System.exit(0);
                     }
                 });
             } catch (IOException | InterruptedException | RuntimeException e) {
@@ -195,13 +190,6 @@ public class GameLauncher {
                 throw new RuntimeException(e);
             }
         });
-
-        // Add a shutdown hook to clean up threads
-        //Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        //    engine.getDiscord().getRpcExecutorService().shutdown();
-        //    executorService.shutdownNow();
-        //}));
-
         setStarted(true);
     }
 

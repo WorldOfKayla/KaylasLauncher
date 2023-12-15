@@ -16,43 +16,40 @@ import java.util.List;
 public class Game implements FileLoaderListener, FileGuardListener, GameListener {
 
     private final ActionHandler actionHandler;
-    private List<FilesAttributes> filesAttributes;
+    //private List<FilesAttributes> filesAttributes;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
 
     public Game(ActionHandler actionHandler) {
+        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getEngine().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
         fileLoader.setLoaderListener(this);
-        fileLoader.getFilesToDownload();
+        Thread downloadThread = new Thread(fileLoader::getFilesToDownload);
+        downloadThread.start();
     }
-
-    public void start() {
-        this.actionHandler.getEngine().getDiscord().discordRpcStart(
-                this.actionHandler.getEngine().getLANG().getString("game.login") + this.actionHandler.getEngine().getUser().getLogin(),
-                this.actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
-
+    private boolean hasJre(String version) {
+        return new File(gameLauncher.buildRuntimeDir() + File.separator + version).exists();
+    }
+    @Override
+    public void onFilesRead() {
+        this.actionHandler.getEngine().getLOGGER().debug("--==|Files are read|==--");
         gameLauncher = new GameLauncher(actionHandler);
         gameLauncher.setGameListener(this);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
-            //If we don't have JRE download it the first
+            //If we don't have JRE download it
             fileLoader.addFileToDownload(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
         }
         this.fileLoader.downloadFiles();
     }
-
-    private boolean hasJre(String version) {
-        return new File(gameLauncher.buildRuntimeDir() + File.separator + version).exists();
-    }
-
     @Override
     public void onFilesLoaded() {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files loaded|==--");
         FileGuard fileGuard = new FileGuard(this.gameLauncher);
         fileGuard.setFileGuardListener(this);
+        fileGuard.addIgnoreDirs(this.actionHandler.getCurrentServer().getIgnoreDirs());
         fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
     }
-
     @Override
     public void onNewFileFound(FilesAttributes file, String localPath, final long totalSizeFinal) {
         String fullPath = this.fileLoader.getHomeDir() + localPath;
@@ -77,7 +74,7 @@ public class Game implements FileLoaderListener, FileGuardListener, GameListener
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
-        System.out.println("=== GAME "+serverAttributes.getServerName()+" STARTED ===");
+        System.out.println("=== GAME " + serverAttributes.getServerName() + " STARTED ===");
     }
 
     @Override

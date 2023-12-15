@@ -2,10 +2,7 @@ package org.foxesworld.engine.config;
 
 import com.foxesworld.cfgProvider.cfgProvider;
 import com.google.gson.GsonBuilder;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.launcher.user.User;
 
 import java.io.File;
 import java.io.FileWriter;

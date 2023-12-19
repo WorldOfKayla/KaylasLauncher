@@ -67,7 +67,6 @@ public class GuiBuilder implements ComponentFactoryListener {
         return null;
     }
 
-    @Deprecated
     public void setLabelText(String componentId, String text) {
         JComponent component = this.getComponentById(componentId);
         if (component instanceof JLabel) {

@@ -66,16 +66,14 @@ public class Game implements FileLoaderListener, FileGuardListener, GameListener
     @Override
     public void onFilesChecked(int filesDeleted) {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");
-        this.actionHandler.getEngine().getLOGGER().debug(filesDeleted + " removed");
+        this.actionHandler.getEngine().getLOGGER().info(filesDeleted + " removed");
         this.actionHandler.getEngine().getSOUND().stopAllSounds();
         gameLauncher.launchGame();
     }
-
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
         System.out.println("=== GAME " + serverAttributes.getServerName() + " STARTED ===");
     }
-
     @Override
     public void onGameExit(int exitCode) {
         System.exit(0);

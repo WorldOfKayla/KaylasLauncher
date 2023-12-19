@@ -53,7 +53,7 @@ public class GameLauncher {
         this.logger.debug("Assets " + buildAssetsPath());
         this.logger.debug("#############################");
         this.user = actionHandler.getEngine().getUser();
-        this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replace(".", ""));
+        this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("[^0-9]", ""));
     }
 
     private void collectLibraries() {

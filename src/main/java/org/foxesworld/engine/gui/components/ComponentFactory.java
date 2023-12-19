@@ -12,6 +12,7 @@ import org.foxesworld.engine.gui.components.multiButton.MultiButtonStyle;
 import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.passfield.PassFieldStyle;
 import org.foxesworld.engine.gui.components.progressBar.ProgressBarStyle;
+import org.foxesworld.engine.gui.components.scrollBar.CustomScrollBar;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxStyle;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
@@ -230,6 +231,14 @@ public class ComponentFactory {
                 serverBox.setForeground(hexToColor(componentAttributes.getColor()));
                 serverBox.setName(componentAttributes.getComponentId());
                 return serverBox;
+            }
+
+            case "scrollBar" -> {
+                CustomScrollBar customScrollBar = new CustomScrollBar(0, 100, 10);
+                customScrollBar.setEnabled(componentAttributes.isEnabled());
+                customScrollBar.setBounds(xPos, yPos, width, height);
+                customScrollBar.setName(componentAttributes.getComponentId());
+                return  customScrollBar;
             }
 
             case "slider" -> {

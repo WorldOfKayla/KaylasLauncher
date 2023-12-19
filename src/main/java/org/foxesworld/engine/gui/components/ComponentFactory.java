@@ -17,6 +17,7 @@ import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxStyle;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.gui.components.serverBox.ServerBoxStyle;
+import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.components.textfield.Textfield;
 import org.foxesworld.engine.gui.components.textfield.TextfieldStyle;
@@ -86,7 +87,7 @@ public class ComponentFactory {
                     label.setIcon(icon);
                 }
 
-                label.setFont(this.engine.getFONTUTILS().getFont(style.font, componentAttributes.getFontSize()));
+                label.setFont(this.engine.getFONTUTILS().getFont(style.getFont(), componentAttributes.getFontSize()));
                 labelStyle.apply(label);
                 label.setName(componentAttributes.getComponentId());
                 label.setBounds(xPos, yPos, width, height);
@@ -147,15 +148,15 @@ public class ComponentFactory {
                 PassField passfield = new PassField(LANG.getString(componentAttributes.getLocaleKey()));
                 passfieldStyle.apply(passfield);
                 passfield.setName(componentAttributes.getComponentId());
-                passfield.setBounds(xPos, yPos, style.width, style.height);
-                passfield.setFont(this.engine.getFONTUTILS().getFont(style.font, style.fontSize));
+                passfield.setBounds(xPos, yPos, style.getWidth(), style.getHeight());
+                passfield.setFont(this.engine.getFONTUTILS().getFont(style.getFont(), style.getFontSize()));
                 passfield.setActionCommand(componentAttributes.getComponentId());
                 return passfield;
             }
 
             case "spriteImage" -> {
                 SpriteAnimation spriteAnimation = new SpriteAnimation(componentAttributes);
-                spriteAnimation.setOpaque(false);
+                spriteAnimation.setOpaque(style.isOpaque());
                 spriteAnimation.setBounds(xPos,yPos,width,height);
                 spriteAnimation.setName(componentAttributes.getComponentId());
                 return  spriteAnimation;
@@ -204,7 +205,7 @@ public class ComponentFactory {
                 multiButtonStyle.apply(multiButton);
                 multiButton.setName(componentAttributes.getComponentId());
                 multiButton.setActionCommand(componentAttributes.getComponentId());
-                multiButton.setBounds(xPos, yPos, style.width, style.height);
+                multiButton.setBounds(xPos, yPos, style.getWidth(), style.getHeight());
                 multiButton.addActionListener(engine);
                 return multiButton;
             }
@@ -230,6 +231,18 @@ public class ComponentFactory {
                 serverBox.setForeground(hexToColor(componentAttributes.getColor()));
                 serverBox.setName(componentAttributes.getComponentId());
                 return serverBox;
+            }
+
+            case "slider" -> {
+                Slider slider = new Slider(this);
+                slider.setEnabled(componentAttributes.isEnabled());
+                slider.setName(componentAttributes.getComponentId());
+                slider.setBounds(xPos, yPos, width, height);
+                slider.setOpaque(style.isOpaque());
+                if(componentAttributes.getInitialValue() != null) {
+                    slider.setValue(Integer.parseInt(componentAttributes.getInitialValue()));
+                }
+                return slider;
             }
 
             default -> throw new IllegalArgumentException("Unsupported component type: " + componentAttributes.getComponentType());

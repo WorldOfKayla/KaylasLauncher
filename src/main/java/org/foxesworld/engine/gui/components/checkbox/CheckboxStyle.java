@@ -18,10 +18,10 @@ public class CheckboxStyle {
 
     public CheckboxStyle(ComponentFactory componentFactory) {
         this.componentFactory = componentFactory;
-        this.fontName = componentFactory.style.font;
-        this.fontSize = componentFactory.style.fontSize;
-        this.color = hexToColor(componentFactory.style.color);
-        this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
+        this.fontName = componentFactory.style.getFont();
+        this.fontSize = componentFactory.style.getFontSize();
+        this.color = hexToColor(componentFactory.style.getColor());
+        this.texture = ImageUtils.getLocalImage(componentFactory.style.getTexture());
     }
 
     public void apply(Checkbox checkbox) {

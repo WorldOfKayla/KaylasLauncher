@@ -14,10 +14,10 @@ public class LabelStyle {
 	public Color activeColor;
 
 	public LabelStyle(ComponentFactory componentFactory) {
-		this.fontName = componentFactory.style.font;
-		this.fontSize = componentFactory.style.fontSize;
-		this.idleColor = hexToColor(componentFactory.style.color);
-		this.activeColor = hexToColor(componentFactory.style.color);
+		this.fontName = componentFactory.style.getFont();
+		this.fontSize = componentFactory.style.getFontSize();
+		this.idleColor = hexToColor(componentFactory.style.getColor());
+		this.activeColor = hexToColor(componentFactory.style.getColor());
 	}
 
 	public void apply(Label label) {

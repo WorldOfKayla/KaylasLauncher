@@ -23,13 +23,13 @@ public class ButtonStyle {
 
 	public ButtonStyle(ComponentFactory componentFactory) {
 		this.componentFactory = componentFactory;
-		this.width = componentFactory.style.width;
-		this.height = componentFactory.style.height;
-		this.color = componentFactory.style.color;
-		this.font = componentFactory.style.font;
-		this.fontSize = componentFactory.style.fontSize;
-		this.align = ComponentFactory.Align.valueOf(componentFactory.style.align);
-		this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
+		this.width = componentFactory.style.getWidth();
+		this.height = componentFactory.style.getHeight();
+		this.color = componentFactory.style.getColor();
+		this.font = componentFactory.style.getFont();
+		this.fontSize = componentFactory.style.getFontSize();
+		this.align = ComponentFactory.Align.valueOf(componentFactory.style.getAlign());
+		this.texture = ImageUtils.getLocalImage(componentFactory.style.getTexture());
 	}
 
 	public void apply(Button button) {

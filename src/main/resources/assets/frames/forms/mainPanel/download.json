@@ -56,15 +56,6 @@
                   "componentId": "downloadDirectory",
                   "localeKey": "download.directory",
                   "bounds": "20,50,600,40"
-                },
-                {
-                  "componentType": "label",
-                  "fontSize": 14,
-                  "color": "#636c73bf",
-                  "componentStyle": "title",
-                  "componentId": "downloadTotalSize",
-                  "localeKey": "download.totalSize",
-                  "bounds": "20,80,170,40"
                 }
               ]
             }

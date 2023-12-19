@@ -15,7 +15,6 @@ public class Sound {
     private Engine engine;
     private String baseDir = "assets/sounds/";
     private VorbisAudioFileReader vorbisAudioFileReader;
-
     private static List<Clip> activeClips = new ArrayList<>();
 
     public Sound(Engine engine) {
@@ -23,16 +22,17 @@ public class Sound {
         vorbisAudioFileReader = new VorbisAudioFileReader();
     }
 
-    public void playSound(String path, boolean loop){
-        if(engine.getCONFIG().isEnableSound()) {
+    public void playSound(String path, boolean loop) {
+        if (engine.getCONFIG().isEnableSound()) {
             String fullPath = baseDir + path;
             try {
                 InputStream inputStream = Sound.class.getClassLoader().getResourceAsStream(fullPath);
                 AudioInputStream audioInputStream = vorbisAudioFileReader.getAudioInputStream(inputStream);
-
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
-                if(loop) {
+                setVolume(clip, (float) engine.getCONFIG().getVolume() / 100.0f);
+
+                if (loop) {
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
                 }
 
@@ -43,6 +43,24 @@ public class Sound {
             }
         }
     }
+
+    private void setVolume(Clip clip, float volume) {
+        if (volume < 0.0f || volume > 1.0f) {
+            throw new IllegalArgumentException("Volume should be between 0.0 and 1.0");
+        }
+
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float range = gainControl.getMaximum() - gainControl.getMinimum();
+        float gain = (range * volume) + gainControl.getMinimum();
+        gainControl.setValue(gain);
+    }
+
+    public void changeActiveVolume(float volume) {
+        for (Clip clip : activeClips) {
+            setVolume(clip, volume);
+        }
+    }
+
 
     public void stopAllSounds() {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
@@ -62,11 +80,11 @@ public class Sound {
     }
 
     private void fadeOut(Clip clip) {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
         float currentVolume = gainControl.getValue();
-        while (currentVolume > -80.0f) {
-            currentVolume -= 0.25f;
-            gainControl.setValue(currentVolume);
+        while (currentVolume > 0.0f) {
+            currentVolume -= 0.05f;
+            gainControl.setValue(Math.max(currentVolume, 0.0f));
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

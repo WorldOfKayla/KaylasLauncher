@@ -17,6 +17,7 @@ public class Config extends ConfigAbstract {
     private Map<String, Object> CONFIG;
 
     private int selectedServer;
+    private double volume;
     private  String login, password, lang, logLevel, ramAmount;
     private  boolean autoEnter, fullScreen, loadNews, enableSound;
 
@@ -117,6 +118,10 @@ public class Config extends ConfigAbstract {
         return ramAmount;
     }
 
+    public double getVolume() {
+        return volume;
+    }
+
     public boolean isAutoEnter() {
         return autoEnter;
     }
@@ -131,6 +136,10 @@ public class Config extends ConfigAbstract {
 
     public boolean isEnableSound() {
         return enableSound;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
     }
 
     public int getSelectedServer() {

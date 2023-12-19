@@ -21,9 +21,9 @@ public class PassFieldStyle {
     public Border border;
 
     public PassFieldStyle(ComponentFactory componentFactory) {
-        this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
-        this.textColor = hexToColor(componentFactory.style.color);
-        this.caretColor = hexToColor(componentFactory.style.caretColor);
+        this.texture = ImageUtils.getLocalImage(componentFactory.style.getTexture());
+        this.textColor = hexToColor(componentFactory.style.getColor());
+        this.caretColor = hexToColor(componentFactory.style.getCaretColor());
         this.echoChar = "*";
     }
 

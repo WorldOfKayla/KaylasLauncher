@@ -53,11 +53,15 @@ public class ActionHandler {
                 for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")){
                     if(component instanceof JCheckBox){
                         this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
-                    } else {
-                        if(component instanceof JTextField) {
+                    } else if (component instanceof JTextField) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
+                        } else {
+                        if(component instanceof JSlider) {
+                            this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
                         }
                     }
+
+
                 }
                 this.engine.getCONFIG().writeCurrentConfig();
             }

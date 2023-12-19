@@ -8,7 +8,6 @@ import java.util.Map;
 public class ComponentAttributes {
     @SerializedName("readFrom")
     private String readFrom;
-
     @SerializedName("loadPanel")
     private String loadPanel;
     @SerializedName("componentType")
@@ -47,6 +46,9 @@ public class ComponentAttributes {
     private int delay;
     @SerializedName("bounds")
     private String bounds;
+
+    private  int minValue;
+    private int maxValue;
     @SerializedName("groups")
     private Map<String, OptionGroups> groups;
     private int selectedIndex = 0;
@@ -62,83 +64,69 @@ public class ComponentAttributes {
     public String getComponentType() {
         return componentType;
     }
-
     public String getComponentStyle() {
         return componentStyle;
     }
-
     public String getComponentId() {
         return componentId;
     }
-
     public int getRowNum() {
         return rowNum;
     }
-
     public int getImgCount() {
         return imgCount;
     }
-
     public int getFontSize() {
         return fontSize;
     }
-
     public boolean isEnabled() {
         return enabled;
     }
-
     public String getKeyCode() {
         return keyCode;
     }
-
     public String getInitialValue() {
         return initialValue;
     }
-
     public String getColor() {
         return color;
     }
-
     public String getLocaleKey() {
         return localeKey;
     }
-
     public String getImageIcon() {
         return imageIcon;
     }
-
     public boolean isRounded() {
         return rounded;
     }
-
     public int getIconWidth() {
         return iconWidth;
     }
-
     public int getIconHeight() {
         return iconHeight;
     }
-
     public int getTotalFrames() {
         return totalFrames;
     }
-
     public int getDelay() {
         return delay;
     }
-
     public String getBounds() {
         return bounds;
     }
-
     public String getLoadPanel() {
         return loadPanel;
     }
-
     public Map<String, OptionGroups> getGroups() {
         return groups;
     }
-
+    public int getMinValue() {
+        return minValue;
+    }
+    public int getMaxValue() {
+        return maxValue;
+    }
     public int getSelectedIndex() {
         return selectedIndex;
     }

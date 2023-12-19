@@ -22,15 +22,15 @@ public class TextfieldStyle {
 
 	public TextfieldStyle(ComponentFactory componentFactory) {
 		this.componentFactory = componentFactory;
-		this.foregroundColor = hexToColor(componentFactory.style.color);
-		this.backgroundColor = hexToColor(componentFactory.style.background);
-		this.border = hexToColor(componentFactory.style.borderColor);
-		this.caretColor = hexToColor(componentFactory.style.caretColor);
-		this.width = componentFactory.style.width;
-		this.height = componentFactory.style.height;
-		this.font = componentFactory.style.font;
-		this.fontSize = componentFactory.style.fontSize;
-		this.texture = ImageUtils.getLocalImage(componentFactory.style.texture);
+		this.foregroundColor = hexToColor(componentFactory.style.getColor());
+		this.backgroundColor = hexToColor(componentFactory.style.getBackground());
+		this.border = hexToColor(componentFactory.style.getBorderColor());
+		this.caretColor = hexToColor(componentFactory.style.getCaretColor());
+		this.width = componentFactory.style.getWidth();
+		this.height = componentFactory.style.getHeight();
+		this.font = componentFactory.style.getFont();
+		this.fontSize = componentFactory.style.getFontSize();
+		this.texture = ImageUtils.getLocalImage(componentFactory.style.getTexture());
 	}
 
 	public void apply(Textfield text) {

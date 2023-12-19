@@ -13,7 +13,7 @@ import java.util.Objects;
 public class StyleProvider {
 
     private final Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
-    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField"};
+    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField", "slider"};
     private final Engine engine;
 
     public StyleProvider(Engine engine) {
@@ -63,37 +63,70 @@ public class StyleProvider {
     }
 
     public static class StyleAttributes {
+        private String name;
+        private String backgroundImage;
+        private String background;
+        private String color;
+        private String caretColor;
+        private String align;
+        private String borderColor;
+        private int width;
+        private int height;
+        private String font;
+        private int fontSize;
+        private String texture;
+        private boolean opaque;
 
-        @SerializedName("name")
-        public String name;
-        @SerializedName("backgroundImage")
-        public String backgroundImage;
+        public String getName() {
+            return name;
+        }
 
-        @SerializedName("background")
-        public String background;
+        public String getBackgroundImage() {
+            return backgroundImage;
+        }
 
-        @SerializedName("color")
-        public String color;
-        @SerializedName("caretColor")
-        public String caretColor;
-        @SerializedName("align")
-        public String align;
-        @SerializedName("borderColor")
-        public String borderColor;
+        public String getBackground() {
+            return background;
+        }
 
-        @SerializedName("width")
-        public int width;
+        public String getColor() {
+            return color;
+        }
 
-        @SerializedName("height")
-        public int height;
+        public String getCaretColor() {
+            return caretColor;
+        }
 
-        @SerializedName("font")
-        public String font;
+        public String getAlign() {
+            return align;
+        }
 
-        @SerializedName("fontSize")
-        public int fontSize;
+        public String getBorderColor() {
+            return borderColor;
+        }
 
-        @SerializedName("texture")
-        public String texture;
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public String getFont() {
+            return font;
+        }
+
+        public int getFontSize() {
+            return fontSize;
+        }
+
+        public String getTexture() {
+            return texture;
+        }
+
+        public boolean isOpaque() {
+            return opaque;
+        }
     }
 }

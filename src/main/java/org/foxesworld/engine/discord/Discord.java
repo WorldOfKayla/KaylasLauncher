@@ -22,7 +22,7 @@ public class Discord implements DiscordListener {
         String steamId = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> {
-            //Instance.setUserLogin(user.username);
+            //Instance.setUserLogin(User.username);
         };
         lib.Discord_Initialize(applicationId, handlers, true, steamId);
         presence = new DiscordRichPresence();

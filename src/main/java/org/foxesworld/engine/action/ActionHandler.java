@@ -3,7 +3,7 @@ package org.foxesworld.engine.action;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.launcher.Game.Game;
-import org.foxesworld.launcher.server.ServerAttributes;
+import org.foxesworld.launcher.Server.ServerAttributes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ActionHandler {
@@ -60,8 +59,6 @@ public class ActionHandler {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
                         }
                     }
-
-
                 }
                 this.engine.getCONFIG().writeCurrentConfig();
             }
@@ -94,7 +91,6 @@ public class ActionHandler {
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 game = new Game(this);
-                //game.start();
             }
 
             case "closeButton" -> System.exit(0);
@@ -102,15 +98,12 @@ public class ActionHandler {
             case "hideButton" ->  engine.getFrame().getFrame().setExtendedState(1);
         }
     }
-
     private void openGameFolder() {
         try {
             Desktop d = Desktop.getDesktop();
             d.browse(new URI(engine.getCONFIG().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException ignored) {}
     }
-
-
     public ServerAttributes getCurrentServer() {
         return currentServer;
     }
@@ -119,11 +112,4 @@ public class ActionHandler {
         return engine;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
 }

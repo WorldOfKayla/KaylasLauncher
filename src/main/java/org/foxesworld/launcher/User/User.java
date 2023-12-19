@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.user;
+package org.foxesworld.launcher.User;
 
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
@@ -126,9 +126,9 @@ public class User implements ScrollBoxListener {
         } catch (Exception ignored) {
         }
 
-        this.auth.getEngine().getLOGGER().info("Refreshing server state... (" + this.auth.getUserServersArray()[index] + ")");
+        this.auth.getEngine().getLOGGER().info("Refreshing Server state... (" + this.auth.getUserServersArray()[index] + ")");
         serverPollThread[0] = new Thread(() -> {
-            serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[] { null, "0", null }));
+            serverBox.updateBox(lang.getString("Server.updating"), serverInfo.genServerIcon(new String[] { null, "0", null }));
             String ip = auth.getUserServersAttributes().get(index).getHost();
             int port = auth.getUserServersAttributes().get(index).getPort();
             String[] status = serverInfo.pollServer(ip, port);
@@ -138,7 +138,7 @@ public class User implements ScrollBoxListener {
 
             serverPollThread[0].interrupt();
             serverPollThread[0] = null;
-            this.auth.getEngine().getLOGGER().info("Refreshing server done!");
+            this.auth.getEngine().getLOGGER().info("Refreshing Server done!");
         });
         serverPollThread[0].setName("Server poll thread");
         serverPollThread[0].start();

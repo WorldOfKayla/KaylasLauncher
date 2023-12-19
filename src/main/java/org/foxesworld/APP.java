@@ -6,7 +6,6 @@ import javax.swing.*;
 
 
 public class APP {
-
     private String LOCALE;
     private String frameTpl = "assets/frames/frame.json";
     private String mainFrame = "assets/frames/mainFrame.json";
@@ -20,31 +19,24 @@ public class APP {
         System.setProperty("file.encoding", "UTF-8");
         SwingUtilities.invokeLater(() -> new Engine(APP));
     }
-
     public String getMainFrame() {
         return mainFrame;
     }
-
     public String getEngineVars() {
         return engineVars;
     }
-
     public String getLocaleFile() {
         return localeFile;
     }
-
     public String[] getConfigFiles() {
         return configFiles;
     }
-
     public String getLOCALE() {
         return LOCALE;
     }
-
     public String getFrameTpl() {
         return frameTpl;
     }
-
     public void setLOCALE(String LOCALE) {
         this.LOCALE = LOCALE;
     }

@@ -28,13 +28,6 @@ public class GuiBuilder implements ComponentFactoryListener {
     private final ComponentFactory componentFactory;
     private GuiBuilderListener guiBuilderListener;
     private boolean additionalPanelsBuilt = false;
-
-
-    /* TODO
-    * We need to define a counter variable and onPanelsBuilt method
-    * to deteсt when all panels are built
-    * */
-
     public GuiBuilder(Engine engine) {
         this.engine = engine;
         engine.getLOGGER().debug("=== GUI BUILDER ===");
@@ -199,7 +192,7 @@ public class GuiBuilder implements ComponentFactoryListener {
     }
 
     /*
-     * Getting a list of componentFactory by group name
+     * Getting a list of components attached to JPanel by group name
      */
     public HashMap<String, List<JComponent>> getComponentsMap() {
         return componentsMap;

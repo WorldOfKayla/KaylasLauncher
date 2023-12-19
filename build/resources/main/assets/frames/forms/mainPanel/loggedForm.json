@@ -19,7 +19,7 @@
         {
           "componentType": "serverBox",
           "componentStyle": "srvStatus",
-          "color": "#bf9f2fcf",
+          "color": "#ffffff",
           "componentId": "serverStatusBox",
           "bounds": "40,320,245,34"
         },

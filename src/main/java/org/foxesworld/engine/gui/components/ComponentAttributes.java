@@ -6,50 +6,30 @@ import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import java.util.Map;
 
 public class ComponentAttributes {
-    @SerializedName("readFrom")
     private String readFrom;
-    @SerializedName("loadPanel")
     private String loadPanel;
-    @SerializedName("componentType")
     private String componentType;
-    @SerializedName("componentStyle")
     private String componentStyle;
-    @SerializedName("componentId")
     private String componentId;
-    @SerializedName("rowNum")
     private int rowNum;
-    @SerializedName("imgCount")
     private int imgCount;
-    @SerializedName("fontSize")
     private int fontSize;
-    @SerializedName("enabled")
     private boolean enabled;
-    @SerializedName("keyCode")
     private String keyCode;
-    @SerializedName("initialValue")
     private String initialValue;
-    @SerializedName("color")
     private String color;
-    @SerializedName("localeKey")
     private String localeKey;
-    @SerializedName("imageIcon")
     private String imageIcon;
-    @SerializedName("rounded")
     private boolean rounded;
-    @SerializedName("iconWidth")
     private int iconWidth;
-    @SerializedName("iconHeight")
     private int iconHeight;
-    @SerializedName("totalFrames")
     private int totalFrames;
-    @SerializedName("delay")
     private int delay;
-    @SerializedName("bounds")
     private String bounds;
-
     private  int minValue;
     private int maxValue;
-    @SerializedName("groups")
+    private String thumbImage;
+    private String trackImage;
     private Map<String, OptionGroups> groups;
     private int selectedIndex = 0;
     public void setInitialValue(String initialValue) {

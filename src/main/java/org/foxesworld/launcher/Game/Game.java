@@ -8,10 +8,9 @@ import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
 import org.foxesworld.launcher.FileLoader.FilesAttributes;
-import org.foxesworld.launcher.server.ServerAttributes;
+import org.foxesworld.launcher.Server.ServerAttributes;
 
 import java.io.File;
-import java.util.List;
 
 public class Game implements FileLoaderListener, FileGuardListener, GameListener {
 

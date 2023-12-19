@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.server;
+package org.foxesworld.launcher.Server;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
@@ -27,7 +27,7 @@ public class ServerParser {
             this.serverList.add(serverAttributes);
             serversNum++;
         }
-        engine.getLOGGER().debug("Loading "+serversNum + " servers for user "+login);
+        engine.getLOGGER().debug("Loading "+serversNum + " servers for User "+login);
         return serverList;
     }
 

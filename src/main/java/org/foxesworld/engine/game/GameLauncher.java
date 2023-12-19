@@ -7,8 +7,8 @@ import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.engine.utils.helper.JVMHelper;
-import org.foxesworld.launcher.server.ServerAttributes;
-import org.foxesworld.launcher.user.User;
+import org.foxesworld.launcher.Server.ServerAttributes;
+import org.foxesworld.launcher.User.User;
 
 import javax.swing.*;
 import java.io.File;
@@ -129,11 +129,11 @@ public class GameLauncher {
 
         //Optional
         if (config.isAutoEnter()) {
-            processArgs.add("--server=" + gameClient.getHost());
+            processArgs.add("--Server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
         }
 
-        //if(this.user.re) Adding multiplayer only to an online user
+        //if(this.User.re) Adding multiplayer only to an online User
         //processArgs.add("--disableMultiplayer");
         //processArgs.add("--disableChat");
         processArgs.add(tweakClassVal);

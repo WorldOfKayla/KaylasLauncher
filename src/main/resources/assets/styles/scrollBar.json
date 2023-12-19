@@ -1,0 +1,11 @@
+{
+  "styles": {
+    "scrollBar": {
+      "scrollingDown": {
+        "name": "Other Style",
+        "thumbImage": "assets/ui/scrollPane/thumb.png",
+        "trackImage": "assets/ui/scrollPane/track.png"
+      }
+    }
+  }
+}

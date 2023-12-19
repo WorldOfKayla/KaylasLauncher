@@ -23,7 +23,7 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.Auth.Auth;
-import org.foxesworld.launcher.user.User;
+import org.foxesworld.launcher.User.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

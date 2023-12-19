@@ -3,54 +3,27 @@ package org.foxesworld.engine.gui.components.slider;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
 import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-public class Slider extends JSlider implements MouseListener, MouseMotionListener {
+public class Slider extends JSlider {
+    private Class<?> sliderListener;
     private ComponentFactory componentFactory;
 
     public Slider(ComponentFactory componentFactory){
         super(componentFactory.getComponentAttribute().getMinValue(), componentFactory.getComponentAttribute().getMaxValue());
         this.componentFactory = componentFactory;
-        addMouseListener(this);
-        addMouseMotionListener(this);
 
-        this.addChangeListener(e ->componentFactory.engine.getCONFIG().setVolume(this.getValue()));
+        /* TODO
+        *   This should be made using interface not as hardcoded as here
+        *   Engine in future will be a separate library and all it's methods will be
+        *   run external without modifying it's code ;)
+        */
+        this.addChangeListener(e -> {
+            //HARDCODING sliderListener.onSliderChange(this.getValue()); will be great!
+            componentFactory.engine.getCONFIG().setVolume(this.getValue());
+            componentFactory.engine.getSOUND().changeActiveVolume(this.getValue() / 100.0f);
+        });
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
+    public void setSliderListener(Class<?> sliderListener) {
+        this.sliderListener = sliderListener;
     }
 }

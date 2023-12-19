@@ -1,4 +1,4 @@
-package org.foxesworld.engine.gui.components.ScrollBarUI;
+package org.foxesworld.engine.gui.components.scrollBar;
 
 import org.foxesworld.engine.utils.ImageUtils;
 
@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class ScrollBarUI extends BasicScrollBarUI {
+    /* TODO
+    *   Component factory is not being used
+    *   Cause scrollBar is not an instance of JComponent */
     private Image thumbImage;
     private Image trackImage;
 

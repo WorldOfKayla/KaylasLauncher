@@ -1,7 +1,7 @@
 package org.foxesworld.engine.news;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.ScrollBarUI.ScrollBarUI;
+import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
 import org.foxesworld.engine.news.provider.NewsAttributes;
 import org.foxesworld.engine.news.provider.NewsProvider;
 import org.foxesworld.engine.utils.ImageUtils;

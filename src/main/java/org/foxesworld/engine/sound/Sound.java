@@ -15,7 +15,7 @@ public class Sound {
     private Engine engine;
     private String baseDir = "assets/sounds/";
     private VorbisAudioFileReader vorbisAudioFileReader;
-    private static List<Clip> activeClips = new ArrayList<>();
+    private List<Clip> activeClips = new ArrayList<>();
 
     public Sound(Engine engine) {
         this.engine = engine;
@@ -75,16 +75,15 @@ public class Sound {
                 return null;
             }
         };
-
         worker.execute();
     }
 
     private void fadeOut(Clip clip) {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         float currentVolume = gainControl.getValue();
-        while (currentVolume > 0.0f) {
-            currentVolume -= 0.05f;
-            gainControl.setValue(Math.max(currentVolume, 0.0f));
+        while (currentVolume > -80.0f) {
+            currentVolume -= 0.25f;
+            gainControl.setValue(currentVolume);
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

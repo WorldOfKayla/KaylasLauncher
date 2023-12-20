@@ -25,8 +25,8 @@ public class NewsPanel extends JPanel {
     *  That's a sample and is hardcoded
     *  EXPERIMENTAL
     * */
-    private JScrollPane scrollPane;
-    private JPanel contentPanel;
+    private final JScrollPane scrollPane;
+    private final JPanel contentPanel;
     public NewsPanel(List<NewsAttributes> newsAttributesList) {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -176,8 +176,6 @@ public class NewsPanel extends JPanel {
         return newsPanel;
     }
 
-
-
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.addMouseWheelListener(e -> {
             Adjustable adj = scrollPane.getVerticalScrollBar();
@@ -185,7 +183,6 @@ public class NewsPanel extends JPanel {
             adj.setValue(adj.getValue() + scrollAmount);
         });
     }
-
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
         Date date = new Date(stamp.getTime());

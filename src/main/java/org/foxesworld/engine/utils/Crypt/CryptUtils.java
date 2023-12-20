@@ -12,8 +12,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class CryptUtils {
 
-    private CryptHelper cryptHelper;
-    private Engine engine;
+    private final CryptHelper cryptHelper;
+    private final Engine engine;
 
     public CryptUtils(Engine engine) {
         this.cryptHelper = new CryptHelper();
@@ -28,8 +28,9 @@ public class CryptUtils {
             cipher.init(2, skey);
             output = cipher.doFinal(cryptHelper.getDecoder().decode(input));
         } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
-            this.engine.getLOGGER().debug("Key is not valid for: " + input);
+            this.engine.getLOGGER().error("Key is not valid for: " + input);
         }
+        assert output != null;
         return new String(output);
     }
 
@@ -42,8 +43,9 @@ public class CryptUtils {
             crypted = cipher.doFinal(input.getBytes());
         } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             e.printStackTrace();
-            this.engine.getLOGGER().debug("Key must be 16 symbols!", 0, true);
+            this.engine.getLOGGER().error("Key must be 16 symbols!", 0, true);
         }
+        assert crypted != null;
         return new String(cryptHelper.getEncoder().encode(crypted));
     }
 

@@ -15,8 +15,7 @@ public class ServerInfo {
 
     private final Engine engine;
     private final LanguageProvider lang;
-    private BufferedImage serverStatusImg;
-    private final String delimiter = "§";
+    private final BufferedImage serverStatusImg;
     public int servtype = 2;
 
     public ServerInfo(Engine engine) {
@@ -46,7 +45,8 @@ public class ServerInfo {
                 servc = servc.substring(3);
                 servtype = servc.startsWith("§1") ? 1 : 2;
 
-                return splitString(servc, this.delimiter);
+                String delimiter = "§";
+                return splitString(servc, delimiter);
             }
         } catch (Exception e) {
              //e.printStackTrace();

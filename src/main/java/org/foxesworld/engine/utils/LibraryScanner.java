@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class LibraryScanner {
 
-    private Engine engine;
+    private final Engine engine;
     public LibraryScanner(Engine engine) {
         this.engine = engine;
     }

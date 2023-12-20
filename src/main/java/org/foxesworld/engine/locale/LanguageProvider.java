@@ -14,11 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LanguageProvider {
-    private final String currentLang;
     private final Map<String, Map<String, String>> localizationData = new HashMap<>();
 
     public LanguageProvider(APP app, String langFilePath) {
-        this.currentLang = app.getLOCALE();
+        String currentLang = app.getLOCALE();
         try {
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(app.getClass().getResourceAsStream(langFilePath), StandardCharsets.UTF_8);

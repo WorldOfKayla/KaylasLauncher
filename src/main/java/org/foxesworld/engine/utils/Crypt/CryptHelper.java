@@ -12,7 +12,7 @@ public class CryptHelper {
         return new Decoder();
     }
 
-    public class Decoder {
+    public static class Decoder {
         private static final int[] fromBase64 = new int[256];
 
         public byte[] decode(byte[] src) {

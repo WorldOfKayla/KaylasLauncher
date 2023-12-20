@@ -12,10 +12,10 @@ import java.util.List;
 
 public class Sound {
 
-    private Engine engine;
-    private String baseDir = "assets/sounds/";
-    private VorbisAudioFileReader vorbisAudioFileReader;
-    private List<Clip> activeClips = new ArrayList<>();
+    private final Engine engine;
+    private final String baseDir = "assets/sounds/";
+    private final VorbisAudioFileReader vorbisAudioFileReader;
+    private final List<Clip> activeClips = new ArrayList<>();
 
     public Sound(Engine engine) {
         this.engine = engine;

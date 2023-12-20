@@ -29,7 +29,6 @@ public class Discord implements DiscordListener {
         lib.Discord_UpdatePresence(presence);
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
-
     @Override
     public void discordRpcStart(String state, String details, String icon) {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
@@ -41,11 +40,7 @@ public class Discord implements DiscordListener {
         rpcExecutorService.submit(() -> {
             while (!shutdownRequested.get() && !Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    // Ignore interruption during sleep
-                }
+                try {Thread.sleep(500); } catch (InterruptedException e) {}
             }
         });
     }
@@ -57,13 +52,8 @@ public class Discord implements DiscordListener {
         Thread.currentThread().interrupt();
         System.out.println("Discord shutdown completed");
     }
-
     @Override
     public DiscordRPC getDiscordLib() {
         return lib;
-    }
-
-    public ExecutorService getRpcExecutorService() {
-        return rpcExecutorService;
     }
 }

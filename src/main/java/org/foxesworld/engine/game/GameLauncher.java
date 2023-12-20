@@ -118,7 +118,6 @@ public class GameLauncher {
             processArgs.add("--launchTarget="+this.gameClient.getClient());
             processArgs.add("--fml.forgeGroup="+this.gameClient.getForgeGroup());
             processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
-
             System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
         //Optional
@@ -140,20 +139,24 @@ public class GameLauncher {
     }
 
     public void launchGame() {
+
         if (isStarted()) throw new IllegalStateException("Process already started");
 
         executorService.submit(() -> {
+            String mainClass;
             try {
                 String tweakClassVal = "";
                 setJre();
                 collectLibraries();
-
                 // Adding --tweakclass only on versions under 1.13.3
-                if (getIntVer() < 1133) {
+                if (getIntVer() == 1710 || getIntVer() == 1122) {
                     tweakClassVal = addTweakClass();
+                    mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
+                } else {
+                    mainClass = gameClient.getMainClass();
                 }
 
-                processArgs.add(gameClient.getMainClass());
+                processArgs.add(mainClass);
                 loadAuthLib();
                 addArgs(tweakClassVal);
 
@@ -198,6 +201,7 @@ public class GameLauncher {
         List<TweakClasses> tweakClasses = this.engine.getEngineData().getTweakClasses();
         for (TweakClasses aClass : tweakClasses) {
             String className = aClass.classPath;
+            this.engine.getLOGGER().debug("Searching " + className);
             try {
                 classLoader.loadClass(className);
                 tweakClassVal = "--tweakClass=" + className;

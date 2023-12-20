@@ -106,7 +106,7 @@ public class GuiBuilder implements ComponentFactoryListener {
         this.componentFactory.setComponentFactoryListener(this);
         for (ComponentAttributes componentAttributes : optionGroups.getChildComponents()) {
             if (componentAttributes.getComponentType() != null) {
-                JComponent component = this.componentFactory.createComponent(componentAttributes, parentPanel);
+                JComponent component = this.componentFactory.createComponent(componentAttributes);
                 parentPanel.add(component);
                 this.panelsComponents.put(parentPanel, component);
                 this.addComponentToMap(parentPanel.getName(), component);

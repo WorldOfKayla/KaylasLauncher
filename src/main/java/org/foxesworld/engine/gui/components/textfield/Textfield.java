@@ -13,9 +13,7 @@ import java.io.Serial;
 public class Textfield extends JTextField {
 	@Serial
 	private static final long serialVersionUID = 1L;
-
 	public BufferedImage texture;
-
 	public Textfield(String placeholder) {
 		setOpaque(false);
 		setText(placeholder);

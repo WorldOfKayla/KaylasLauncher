@@ -30,6 +30,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +52,7 @@ public class ComponentFactory {
         this.engine = engine;
         this.LANG = engine.getLANG();
     }
-    public JComponent createComponent(ComponentAttributes componentAttributes, JPanel parentPanel) {
+    public JComponent createComponent(ComponentAttributes componentAttributes) {
         componentFactoryListener.onComponentCreation(componentAttributes);
         if(componentAttributes.getComponentStyle() != null && componentAttributes.getComponentStyle() != null) {
             if(componentStyles.get(componentAttributes.getComponentStyle()) == null){

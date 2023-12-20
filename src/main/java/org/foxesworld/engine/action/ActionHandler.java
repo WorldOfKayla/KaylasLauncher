@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 public class ActionHandler {
     private final Engine engine;
-    private Game game;
 
     private ServerAttributes currentServer;
     public ActionHandler(Engine engine) {
@@ -90,7 +89,7 @@ public class ActionHandler {
                 this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
-                game = new Game(this);
+                new Game(this);
             }
 
             case "closeButton" -> System.exit(0);
@@ -107,7 +106,6 @@ public class ActionHandler {
     public ServerAttributes getCurrentServer() {
         return currentServer;
     }
-
     public Engine getEngine() {
         return engine;
     }

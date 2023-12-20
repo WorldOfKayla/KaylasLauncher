@@ -19,7 +19,7 @@
     },
     {
       "propertyKey": "Accept",
-      "propertyValue": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+      "propertyValue": "text/json,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
     },
     {
       "propertyKey": "Content-Type",
@@ -38,9 +38,6 @@
     },
     {
       "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
-    },
-    {
-      "classPath": "cpw.mods.modlauncher.Launcher"
     },
     {
       "classPath": "optifine.OptiFineTweaker"

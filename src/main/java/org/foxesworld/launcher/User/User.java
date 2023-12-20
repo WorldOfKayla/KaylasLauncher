@@ -8,6 +8,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
+import org.foxesworld.launcher.Config.Config;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -27,6 +28,7 @@ public class User implements ScrollBoxListener {
     private String login, password, units, token, uuid;
 
     public User(Auth auth){
+        new Config(auth.getEngine());
         this.serverInfo = auth.getEngine().getServerInfo();
         ScrollBox scrollBox = (ScrollBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
@@ -128,7 +130,7 @@ public class User implements ScrollBoxListener {
 
         this.auth.getEngine().getLOGGER().info("Refreshing Server state... (" + this.auth.getUserServersArray()[index] + ")");
         serverPollThread[0] = new Thread(() -> {
-            serverBox.updateBox(lang.getString("Server.updating"), serverInfo.genServerIcon(new String[] { null, "0", null }));
+            serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[] { null, "0", null }));
             String ip = auth.getUserServersAttributes().get(index).getHost();
             int port = auth.getUserServersAttributes().get(index).getPort();
             String[] status = serverInfo.pollServer(ip, port);

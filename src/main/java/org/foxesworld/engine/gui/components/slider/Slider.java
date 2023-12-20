@@ -5,7 +5,7 @@ import org.foxesworld.engine.gui.components.ComponentFactory;
 import javax.swing.*;
 
 public class Slider extends JSlider {
-    private Class<?> sliderListener;
+    private SliderListener sliderListener;
     private ComponentFactory componentFactory;
 
     public Slider(ComponentFactory componentFactory){
@@ -23,7 +23,8 @@ public class Slider extends JSlider {
             componentFactory.engine.getSOUND().changeActiveVolume(this.getValue() / 100.0f);
         });
     }
-    public void setSliderListener(Class<?> sliderListener) {
+    @Deprecated
+    public void setSliderListener(SliderListener sliderListener) {
         this.sliderListener = sliderListener;
     }
 }

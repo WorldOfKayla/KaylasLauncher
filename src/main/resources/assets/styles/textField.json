@@ -19,6 +19,7 @@
         "width": 200,
         "height": 25,
         "color": "#2b2826",
+        "caretColor": "#436e22",
         "texture": "assets/ui/input/inputBox.png",
         "borderColor": "#da3156"
       }

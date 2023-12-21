@@ -42,6 +42,16 @@
           "bounds": "185,-20,250,50"
         },
         {
+          "componentType": "label",
+          "fontSize": 9,
+          "componentStyle": "title",
+          "localeKey": "-",
+          "initialValue": "version",
+          "color":  "#17cc30e0",
+          "componentId": "appVersion",
+          "bounds": "215,-19,250,50"
+        },
+        {
           "componentType": "multiButton",
           "componentStyle": "frameButtons",
           "componentId": "closeButton",

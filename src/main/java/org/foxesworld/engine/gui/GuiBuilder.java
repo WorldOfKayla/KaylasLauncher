@@ -164,6 +164,10 @@ public class GuiBuilder implements ComponentFactoryListener {
                 componentAttributes.setInitialValue(this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]));
             }
 
+            case "version" -> {
+                componentAttributes.setInitialValue(this.componentFactory.engine.getEngineData().getLauncherVersion());
+            }
+
             //EXP
             case "scrollBox" -> {
                 switch (splitValue[1]) {

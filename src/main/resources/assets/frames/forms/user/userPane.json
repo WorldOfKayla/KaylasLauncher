@@ -4,7 +4,8 @@
       "panelOptions": {
         "opaque": true,
         "visible": true,
-        "background": "#aea231cf",
+        "background": "#f0b91578",
+        "backgroundImage": "assets/ui/img/info.png",
         "bounds": "0,30,350,75"
       },
       "childComponents": [
@@ -65,7 +66,7 @@
                   "componentStyle": "buttonYellow",
                   "componentId": "smallButton",
                   "localeKey": "TEST",
-                  "bounds": "95,30,60,34"
+                  "bounds": "90,30,60,34"
                 }
               ]
             }

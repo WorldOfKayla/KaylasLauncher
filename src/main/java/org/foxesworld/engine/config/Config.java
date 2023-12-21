@@ -28,7 +28,7 @@ public class Config extends ConfigAbstract {
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         cfgProvider.setDefaultConfFilesDir("config/");
-        addCfgFiles(engine.getAPP().getConfigFiles());
+        addCfgFiles(engine.getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
         this.assignConfigValues();
     }

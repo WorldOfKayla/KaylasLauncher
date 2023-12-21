@@ -16,11 +16,11 @@ import java.util.Map;
 public class LanguageProvider {
     private final Map<String, Map<String, String>> localizationData = new HashMap<>();
 
-    public LanguageProvider(APP app, String langFilePath) {
-        String currentLang = app.getLOCALE();
+    public LanguageProvider(Engine engine, String langFilePath) {
+        String currentLang = engine.getCONFIG().getLang();
         try {
             Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(app.getClass().getResourceAsStream(langFilePath), StandardCharsets.UTF_8);
+            InputStreamReader reader = new InputStreamReader(engine.getClass().getResourceAsStream(langFilePath), StandardCharsets.UTF_8);
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder jsonStringBuilder = new StringBuilder();
             String line;

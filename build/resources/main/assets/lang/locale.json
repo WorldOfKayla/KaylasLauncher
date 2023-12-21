@@ -1,168 +1,168 @@
 {
   "general": {
     "appTitle": {
-      "en": "FoxesWorld",
-      "ru": "FoxesWorld"
+      "en_US": "FoxesWorld",
+      "ru_RU": "FoxesWorld"
     },
     "status": {
-      "en": "Alpha",
-      "ru": "Alpha"
+      "en_US": "Alpha",
+      "ru_RU": "Alpha"
     }
   },
   "settings": {
     "settingsButt": {
-      "en": "Settings",
-      "ru": "Настройки"
+      "en_US": "Settings",
+      "ru_RU": "Настройки"
     },
     "back": {
-      "en": "Back",
-      "ru": "Назад"
+      "en_US": "Back",
+      "ru_RU": "Назад"
     },
     "baseOptions": {
-      "en": "Base Options",
-      "ru": "Общие параметры"
+      "en_US": "Base Options",
+      "ru_RU": "Общие параметры"
     },
     "autoEnter": {
-      "en": "Auto enter a selected server",
-      "ru": "Автозаход на сервер"
+      "en_US": "Auto enter a selected server",
+      "ru_RU": "Автозаход на сервер"
     },
     "fullScreen": {
-      "en": "Set full screen after launching",
-      "ru": "Запустить в полный экран"
+      "en_US": "Set full screen after launching",
+      "ru_RU": "Запустить в полный экран"
     },
     "loadNews": {
-      "en": "Load news",
-      "ru": "Загружать новости"
+      "en_US": "Load news",
+      "ru_RU": "Загружать новости"
     },
     "enableSound": {
-      "en": "Enable Sound",
-      "ru": "Включить звук"
+      "en_US": "Enable Sound",
+      "ru_RU": "Включить звук"
     },
     "applySettings": {
-      "en": "Apply Settings",
-      "ru": "Применить настройки"
+      "en_US": "Apply Settings",
+      "ru_RU": "Применить настройки"
     },
     "ramField": {
-      "en": "RAM amount",
-      "ru": "Выделение оперативной памяти"
+      "en_US": "RAM amount",
+      "ru_RU": "Выделение оперативной памяти"
     },
     "ramPlaceholder": {
-      "en": "RAM",
-      "ru": "ОЗУ"
+      "en_US": "RAM",
+      "ru_RU": "ОЗУ"
     },
     "info": {
-      "en": "Settings information",
-      "ru":"Информация о настройках"
+      "en_US": "Settings information",
+      "ru_RU":"Информация о настройках"
     },
     "homeDir": {
-      "en": "Game Dir",
-      "ru": "Директория игры"
+      "en_US": "Game Dir",
+      "ru_RU": "Директория игры"
     }
   },
   "auth": {
     "authTitle": {
-      "en": "Authorization",
-      "ru": "Авторизация"
+      "en_US": "Authorization",
+      "ru_RU": "Авторизация"
     },
     "passwordPlaceholder": {
-      "en": "Password",
-      "ru": "Пароль"
+      "en_US": "Password",
+      "ru_RU": "Пароль"
     },
     "loginPlaceholder": {
-      "en": "Login",
-      "ru": "Логин"
+      "en_US": "Login",
+      "ru_RU": "Логин"
     },
     "submit": {
-      "en": "Submit",
-      "ru": "Войти"
+      "en_US": "Submit",
+      "ru_RU": "Войти"
     },
     "rememberMe": {
-      "en": "Remember Me",
-      "ru": "Запомнить меня"
+      "en_US": "Remember Me",
+      "ru_RU": "Запомнить меня"
     }
   },
   "logged": {
     "loggedIn": {
-      "en": "You're in!",
-      "ru": "Привет!"
+      "en_US": "You're in!",
+      "ru_RU": "Привет!"
     },
     "logOut": {
-      "en": "Log Out",
-      "ru": "Выйти"
+      "en_US": "Log Out",
+      "ru_RU": "Выйти"
     },
     "toGame": {
-      "en": "To game",
-      "ru": "В игру"
+      "en_US": "To game",
+      "ru_RU": "В игру"
     },
     "units": {
-      "en": "Units: ",
-      "ru": "Юниты: "
+      "en_US": "Units: ",
+      "ru_RU": "Юниты: "
     }
   },
   "download": {
     "file": {
-      "en": "File: ",
-      "ru": "Файл: "
+      "en_US": "File: ",
+      "ru_RU": "Файл: "
     },
     "directory": {
-      "en": "Directory: ",
-      "ru": "Директория: "
+      "en_US": "Directory: ",
+      "ru_RU": "Директория: "
     },
     "totalSize": {
-      "en": "Total size: ",
-      "ru": "Полный размер: "
+      "en_US": "Total size: ",
+      "ru_RU": "Полный размер: "
     }
   },
   "game": {
     "playing": {
-      "en": "Playing on ",
-      "ru": "Играет на "
+      "en_US": "Playing on ",
+      "ru_RU": "Играет на "
     },
     "login": {
-      "en": "User login: ",
-      "ru": "Логин: "
+      "en_US": "User login: ",
+      "ru_RU": "Логин: "
     }
   },
   "server": {
     "updating": {
-      "en": "Updating server...",
-      "ru": "Обновление..."
+      "en_US": "Updating server...",
+      "ru_RU": "Обновление..."
     },
     "serverOff": {
-      "en": "Server off",
-      "ru": "Сервер выключен"
+      "en_US": "Server off",
+      "ru_RU": "Сервер выключен"
     },
     "serverOn": {
-      "en": "Playing %% players of ##",
-      "ru": "На сервере %% из ## игроков"
+      "en_US": "Playing %% players of ##",
+      "ru_RU": "На сервере %% из ## игроков"
     },
     "serverFull": {
-      "en": "Server full! (Total slots: %%)",
-      "ru": "Сервер переполнен (Всего слотов: %%)"
+      "en_US": "Server full! (Total slots: %%)",
+      "ru_RU": "Сервер переполнен (Всего слотов: %%)"
     },
     "serverErr": {
-      "en": "Error parsing data!",
-      "ru": "Ошибка получения информации"
+      "en_US": "Error parsing data!",
+      "ru_RU": "Ошибка получения информации"
     }
   },
   "group": {
     "group-1": {
-      "en": "Admin",
-      "ru": "Администратор"
+      "en_US": "Admin",
+      "ru_RU": "Администратор"
     },
     "group-4": {
-      "en": "Player",
-      "ru": "Игрок"
+      "en_US": "Player",
+      "ru_RU": "Игрок"
     }
   },
   "dev": {
     "token": {
-      "en": "accessToken: ",
-      "ru": "accessToken: "
+      "en_US": "accessToken: ",
+      "ru_RU": "accessToken: "
     },
     "uuid": {
-      "en": "UUID: ",
-      "ru": "UUID: "
+      "en_US": "UUID: ",
+      "ru_RU": "UUID: "
     }
   }
 }

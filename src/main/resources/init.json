@@ -1,0 +1,7 @@
+{
+  "frameTpl": "assets/frames/frame.json",
+  "mainFrame": "assets/frames/mainFrame.json",
+  "localeFile": "/assets/lang/locale.json",
+  "engineVars": "engine.json",
+  "configFiles": "config"
+}

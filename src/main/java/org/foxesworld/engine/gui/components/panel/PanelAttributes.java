@@ -1,5 +1,5 @@
 package org.foxesworld.engine.gui.components.panel;
-public class PanelOptions {
+public class PanelAttributes {
     private boolean opaque = false;
     private boolean visible;
     private boolean focusable;

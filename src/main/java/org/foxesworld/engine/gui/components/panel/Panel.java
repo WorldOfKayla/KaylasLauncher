@@ -69,7 +69,7 @@ public class Panel extends JPanel {
         return darkenedImage;
     }
 
-    public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
+    public JPanel createGroupPanel(PanelAttributes panelAttributes, String groupName) {
         JPanel groupPanel = new JPanel(null, true) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -77,13 +77,13 @@ public class Panel extends JPanel {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                if (panelOptions.getBackgroundImage() != null) {
-                    BufferedImage backgroundImage = ImageUtils.getLocalImage(panelOptions.getBackgroundImage());
-                    g.drawImage(applyDarkening(backgroundImage, hexToColor(panelOptions.getBackground())), 0, 0, null);
+                if (panelAttributes.getBackgroundImage() != null) {
+                    BufferedImage backgroundImage = ImageUtils.getLocalImage(panelAttributes.getBackgroundImage());
+                    g.drawImage(applyDarkening(backgroundImage, hexToColor(panelAttributes.getBackground())), 0, 0, null);
                 }
 
-                if (panelOptions.getCornerRadius() != 0) {
-                    int cornerRadius = panelOptions.getCornerRadius();
+                if (panelAttributes.getCornerRadius() != 0) {
+                    int cornerRadius = panelAttributes.getCornerRadius();
                     RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
                     g2d.setColor(getBackground());
                     g2d.fill(roundedRectangle);
@@ -95,11 +95,11 @@ public class Panel extends JPanel {
 
             @Override
             protected void paintBorder(Graphics g) {
-                if (panelOptions.getCornerRadius() != 0) {
+                if (panelAttributes.getCornerRadius() != 0) {
                     Graphics2D g2d = (Graphics2D) g.create();
                     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                    int cornerRadius = panelOptions.getCornerRadius();
+                    int cornerRadius = panelAttributes.getCornerRadius();
 
                     RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(
                             0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
@@ -113,26 +113,26 @@ public class Panel extends JPanel {
         };
 
         groupPanel.setName(groupName);
-        groupPanel.setOpaque(panelOptions.getCornerRadius() == 0 && panelOptions.isOpaque());
-        groupPanel.setBackground(hexToColor(panelOptions.getBackground()));
-        if (panelOptions.getBorder() != null && !panelOptions.getBorder().equals("")) {
-            this.createBorder(groupPanel, panelOptions.getBorder());
+        groupPanel.setOpaque(panelAttributes.getCornerRadius() == 0 && panelAttributes.isOpaque());
+        groupPanel.setBackground(hexToColor(panelAttributes.getBackground()));
+        if (panelAttributes.getBorder() != null && !panelAttributes.getBorder().equals("")) {
+            this.createBorder(groupPanel, panelAttributes.getBorder());
         }
 
-        if (panelOptions.getListener() != null) {
+        if (panelAttributes.getListener() != null) {
             DragListener dragListener = new DragListener();
-            switch (panelOptions.getListener()) {
+            switch (panelAttributes.getListener()) {
                 case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
             }
         }
 
 
-        if(panelOptions.isFocusable()) {
+        if(panelAttributes.isFocusable()) {
             groupPanel.setFocusable(true);
             groupPanel.requestFocus();
         }
 
-        String bounds = panelOptions.getBounds();
+        String bounds = panelAttributes.getBounds();
         groupPanel.setBounds(getPanelBounds(bounds, 0), getPanelBounds(bounds, 1), getPanelBounds(bounds, 2), getPanelBounds(bounds, 3));
         return groupPanel;
     }

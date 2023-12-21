@@ -63,7 +63,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public Engine(String bootstrapFile) {
         this.engineData = new EngineData();
         this.readBootstrapValues(bootstrapFile);
-        initEngineValues(this.engineVars);
+        setEngineData(engineData.initEngineValues(this.engineVars));
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(Engine.class);
@@ -99,14 +99,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             e.printStackTrace();
         }
 
-    }
-
-    private void initEngineValues(String propertyPath) {
-        InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
-        if (inputStream != null) {
-            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            setEngineData(new Gson().fromJson(reader, EngineData.class));
-        }
     }
 
     public void initialize(String login) {

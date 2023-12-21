@@ -7,7 +7,6 @@
   "groupDomain": "foxesworlds1",
   "vkAPIversion": "5.101",
   "downloadThreads": 4,
-  "socket": 65530,
   "requestProperties": [
     {
       "propertyKey": "User-Agent",

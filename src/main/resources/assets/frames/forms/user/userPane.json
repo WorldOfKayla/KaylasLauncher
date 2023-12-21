@@ -49,6 +49,15 @@
           "bounds": "0,80,350,32"
         },
         {
+          "componentType": "button",
+          "enabled": true,
+          "keyCode": "F5",
+          "componentStyle": "buttonYellow",
+          "componentId": "smallButton",
+          "localeKey": "TEST",
+          "bounds": "80,45,60,34"
+        },
+        {
           "groups": {
             "userDataForm": {
               "panelOptions": {
@@ -70,13 +79,16 @@
                   "bounds": "5,-8,250,50"
                 },
                 {
-                  "componentType": "button",
-                  "enabled": true,
-                  "keyCode": "F5",
-                  "componentStyle": "buttonYellow",
-                  "componentId": "smallButton",
-                  "localeKey": "TEST",
-                  "bounds": "90,30,60,34"
+                  "componentType": "label",
+                  "fontSize": 11,
+                  "componentStyle": "title",
+                  "imageIcon": "assets/ui/icons/crystals.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
+                  "localeKey": "logged.crystals",
+                  "componentId": "crystalsField",
+                  "initialValue": "0",
+                  "bounds": "0,28,250,50"
                 }
               ]
             }

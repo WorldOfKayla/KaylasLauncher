@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class Button extends JButton implements MouseListener, MouseMotionListener {
-	private final long serialVersionUID = 1L;
 	private boolean entered = false;
 	private boolean pressed = false;
 	public BufferedImage defaultTX;

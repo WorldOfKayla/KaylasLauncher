@@ -70,6 +70,8 @@ public class StyleProvider {
         private String caretColor;
         private String align;
         private String borderColor;
+        private String trackImage;
+        private String thumbImage;
         private int width;
         private int height;
         private String font;
@@ -127,6 +129,14 @@ public class StyleProvider {
 
         public boolean isOpaque() {
             return opaque;
+        }
+
+        public String getTrackImage() {
+            return trackImage;
+        }
+
+        public String getThumbImage() {
+            return thumbImage;
         }
     }
 }

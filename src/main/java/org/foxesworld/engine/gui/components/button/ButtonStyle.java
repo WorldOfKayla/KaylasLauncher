@@ -20,7 +20,6 @@ public class ButtonStyle {
 	public ComponentFactory.Align align;
 	public BufferedImage texture;
 	private ComponentFactory componentFactory;
-
 	public ButtonStyle(ComponentFactory componentFactory) {
 		this.componentFactory = componentFactory;
 		this.width = componentFactory.style.getWidth();
@@ -31,7 +30,6 @@ public class ButtonStyle {
 		this.align = ComponentFactory.Align.valueOf(componentFactory.style.getAlign());
 		this.texture = ImageUtils.getLocalImage(componentFactory.style.getTexture());
 	}
-
 	public void apply(Button button) {
 		button.setVisible(visible);
 		button.setHorizontalAlignment(align == ComponentFactory.Align.LEFT ? SwingConstants.LEFT : align == ComponentFactory.Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);

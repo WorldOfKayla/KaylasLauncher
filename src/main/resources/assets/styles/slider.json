@@ -3,10 +3,8 @@
     "slider": {
       "slidingOut": {
         "name": "Other Style",
-        "font": "Montserrat-Bold",
-        "fontSize": 12,
-        "color": "#2f3533",
-        "borderColor": "#2f3533"
+        "trackImage": "assets/ui/slider/track.png",
+        "thumbImage": "assets/ui/slider/thumb.png"
       }
     }
   }

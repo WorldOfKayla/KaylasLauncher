@@ -18,6 +18,7 @@ import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxStyle;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.gui.components.serverBox.ServerBoxStyle;
 import org.foxesworld.engine.gui.components.slider.Slider;
+import org.foxesworld.engine.gui.components.slider.TexturedSliderUI;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.components.textfield.Textfield;
 import org.foxesworld.engine.gui.components.textfield.TextfieldStyle;
@@ -252,6 +253,10 @@ public class ComponentFactory {
                 if(componentAttributes.getInitialValue() != null) {
                     slider.setValue(Integer.parseInt(componentAttributes.getInitialValue()));
                 }
+                if(style.getThumbImage() != "" & style.getTrackImage() != "") {
+                    slider.setUI(new TexturedSliderUI(slider, style.getThumbImage(), style.getTrackImage()));
+                }
+
                 return slider;
             }
 

@@ -6,7 +6,7 @@
         "visible": true,
         "background": "#f0b91578",
         "backgroundImage": "assets/ui/img/info.png",
-        "bounds": "0,30,350,75"
+        "bounds": "0,30,350,85"
       },
       "childComponents": [
         {
@@ -21,7 +21,7 @@
         {
           "componentType": "label",
           "fontSize": 11,
-          "color": "#7e8184",
+          "color": "#36230fbd",
           "componentStyle": "title",
           "localeKey": "",
           "componentId": "userGroup",
@@ -37,6 +37,16 @@
           "iconHeight": 64,
           "componentId": "userHead",
           "bounds": "5,5,64,64"
+        },
+        {
+          "componentType": "label",
+          "fontSize": 11,
+          "componentStyle": "title",
+          "imageIcon": "assets/ui/img/line.png",
+          "iconWidth": 687,
+          "iconHeight": 32,
+          "componentId": "separateLine",
+          "bounds": "0,80,350,32"
         },
         {
           "groups": {

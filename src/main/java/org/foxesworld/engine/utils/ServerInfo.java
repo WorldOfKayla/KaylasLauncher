@@ -12,14 +12,11 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 public class ServerInfo {
-
-    private final Engine engine;
     private final LanguageProvider lang;
     private final BufferedImage serverStatusImg;
     public int servtype = 2;
 
     public ServerInfo(Engine engine) {
-        this.engine = engine;
         this.lang = engine.getLANG();
         serverStatusImg = ImageUtils.getLocalImage("assets/ui/icons/status.png");
     }

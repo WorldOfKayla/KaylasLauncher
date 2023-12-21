@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class LibraryScanner {
-
     private final Engine engine;
     public LibraryScanner(Engine engine) {
         this.engine = engine;
@@ -24,7 +23,6 @@ public final class LibraryScanner {
 
         return libraryPaths;
     }
-
     private void scanForJARs(File directory, List<String> libraryPaths) {
         File[] files = directory.listFiles();
         if (files != null) {

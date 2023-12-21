@@ -3,7 +3,6 @@ package org.foxesworld.engine.locale;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.foxesworld.APP;
 import org.foxesworld.engine.Engine;
 
 import java.io.BufferedReader;

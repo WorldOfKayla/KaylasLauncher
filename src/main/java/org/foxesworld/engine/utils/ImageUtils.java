@@ -129,7 +129,6 @@ public class ImageUtils {
                 g2d.drawImage(texture, x2 * sizex, y2 * sizey, null);
             }
         }
-
         g2d.dispose();
         return img;
     }
@@ -162,8 +161,6 @@ public class ImageUtils {
         g.dispose();
         return img;
     }
-
-
 
     private static BufferedImage toBufferedImage(Image img) {
         if (img instanceof BufferedImage) {

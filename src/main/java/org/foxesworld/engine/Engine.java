@@ -21,7 +21,6 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
-import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.User.User;
 
@@ -34,15 +33,14 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
 
     //Initial CONSTANTS required for Engine loading
     private String[] bootstrapKeys = {"frameTpl", "mainFrame", "localeFile", "engineVars", "configFiles"};
     private String frameTpl, mainFrame, localeFile, engineVars,configFiles;
+    private  String appTitle;
     private final Sound SOUND;
     public static Logger LOGGER;
     private final Discord discord;
@@ -69,7 +67,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(Engine.class);
-        String appTitle = engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion();
+        appTitle = engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion();
         LOGGER.info(appTitle + " started...");
         this.LANG = new LanguageProvider(this, this.localeFile);
         this.FONTUTILS = new FontUtils(this);
@@ -80,15 +78,10 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
         this.GETrequest = new HTTPrequest(this, "GET");
         this.POSTrequest = new HTTPrequest(this, "POST");
-        if (isLauncherValid()) {
-            this.frameConstructor = new FrameConstructor(this);
-            this.CRYPTO = new CryptUtils(this);
-            setAuth(new Auth(this));
-            initialize(this.auth.getAuthCredentials("login"));
-        } else {
-            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", appTitle, JOptionPane.WARNING_MESSAGE);
-            System.exit(0);
-        }
+        this.frameConstructor = new FrameConstructor(this);
+        this.CRYPTO = new CryptUtils(this);
+        setAuth(new Auth(this));
+        initialize(this.auth.getAuthCredentials("login"));
     }
 
     private void readBootstrapValues(String jsonPath) {
@@ -172,17 +165,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
-    private boolean isLauncherValid() {
-        Map<String, String> launcherRequest = new HashMap<>();
-        launcherRequest.put("sysRequest", "downloadLatest");
-        String selfMd5 = md5Func.md5(appPath());
-        LauncherAttributes launcherAttributes = new Gson().fromJson(this.POSTrequest.send(engineData.getBindUrl(), launcherRequest), LauncherAttributes.class);
-        if (!selfMd5.equals("IDE")) {
-            return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-        } else {
-            return true;
-        }
-    }
+
     public String appPath() {
         try {
             return URLDecoder.decode(
@@ -255,5 +238,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     }
     public Discord getDiscord() {
         return discord;
+    }
+
+    public String getAppTitle() {
+        return appTitle;
     }
 }

@@ -25,12 +25,12 @@ plugins {
 }
 
 application {
-    mainClass = 'org.foxesworld.APP'
+    mainClass = 'org.foxesworld.launcher.Launcher'
 }
 
 
 group 'org.foxesworld'
-version '1.1.5-EXPERIMENTAL'
+version '1.1.6-EXPERIMENTAL'
 
 repositories {
     mavenCentral()

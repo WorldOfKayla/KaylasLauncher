@@ -1,29 +1,13 @@
 package org.foxesworld.engine.gui.components.panel;
-
-import com.google.gson.annotations.SerializedName;
-
 public class PanelOptions {
-    @SerializedName("opaque")
     private boolean opaque = false;
-    @SerializedName("visible")
     private boolean visible;
-    @SerializedName("focusable")
     private boolean focusable;
-
-    @SerializedName("cornerRadius")
     private int cornerRadius;
-
-    @SerializedName("border")
     private String border = "";
-    @SerializedName("listener")
     private String listener = "";
-
-    @SerializedName("background")
     private String background = "";
-    @SerializedName("backgroundImage")
     private String backgroundImage;
-
-    @SerializedName("bounds")
     private String bounds = "";
 
     public boolean isOpaque() {

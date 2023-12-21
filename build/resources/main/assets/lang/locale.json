@@ -97,6 +97,10 @@
     "units": {
       "en_US": "Units: ",
       "ru_RU": "Юниты: "
+    },
+    "crystals": {
+      "en_US": "Crystals: ",
+      "ru_RU": "Кристаллы: "
     }
   },
   "download": {

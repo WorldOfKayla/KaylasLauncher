@@ -44,9 +44,9 @@
           "componentStyle": "title",
           "imageIcon": "assets/ui/img/line.png",
           "iconWidth": 687,
-          "iconHeight": 32,
+          "iconHeight": 16,
           "componentId": "separateLine",
-          "bounds": "0,80,350,32"
+          "bounds": "0,80,350,16"
         },
         {
           "componentType": "button",

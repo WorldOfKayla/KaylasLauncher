@@ -1,6 +1,8 @@
 package org.foxesworld.engine.discord;
 
-import club.minnced.discord.rpc.*;
+import club.minnced.discord.rpc.DiscordEventHandlers;
+import club.minnced.discord.rpc.DiscordRPC;
+import club.minnced.discord.rpc.DiscordRichPresence;
 import org.foxesworld.engine.Engine;
 
 import java.util.concurrent.ExecutorService;

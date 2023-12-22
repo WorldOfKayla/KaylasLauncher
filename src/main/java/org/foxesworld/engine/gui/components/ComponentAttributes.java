@@ -1,6 +1,5 @@
 package org.foxesworld.engine.gui.components;
 
-import com.google.gson.annotations.SerializedName;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 
 import java.util.Map;

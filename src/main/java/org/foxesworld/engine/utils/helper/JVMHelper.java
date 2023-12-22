@@ -61,7 +61,7 @@ public final class JVMHelper {
         return Runtime.version().update();
     }
 
-    public static String getNativeExtension(JVMHelper.OS OS_TYPE) {
+    public static String getNativeExtension(OS OS_TYPE) {
         return switch (OS_TYPE) {
             case WIN -> ".dll";
             case LINUX -> ".so";
@@ -70,7 +70,7 @@ public final class JVMHelper {
         };
     }
 
-    public static String getNativePrefix(JVMHelper.OS OS_TYPE) {
+    public static String getNativePrefix(OS OS_TYPE) {
         return switch (OS_TYPE) {
             case LINUX, MACOSX -> "lib";
             default -> "";

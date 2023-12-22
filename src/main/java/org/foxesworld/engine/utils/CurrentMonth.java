@@ -1,7 +1,7 @@
 package org.foxesworld.engine.utils;
 
-import java.time.Month;
 import java.time.LocalDate;
+import java.time.Month;
 
 public enum CurrentMonth {
     JANUARY(Month.JANUARY),

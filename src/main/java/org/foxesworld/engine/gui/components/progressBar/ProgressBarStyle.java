@@ -1,13 +1,8 @@
 package org.foxesworld.engine.gui.components.progressBar;
 
 import org.foxesworld.engine.gui.components.ComponentFactory;
-import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 

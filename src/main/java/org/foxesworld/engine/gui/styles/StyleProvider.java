@@ -1,7 +1,9 @@
 package org.foxesworld.engine.gui.styles;
 
-import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import org.foxesworld.engine.Engine;
 
 import java.io.InputStreamReader;
@@ -56,12 +58,9 @@ public class StyleProvider {
             e.printStackTrace();
         }
     }
-
-
     public Map<String, Map<String, StyleAttributes>> getElementStyles() {
         return elementStyles;
     }
-
     public static class StyleAttributes {
         private String name;
         private String backgroundImage;

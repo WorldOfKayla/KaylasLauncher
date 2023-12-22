@@ -2,13 +2,14 @@ package org.foxesworld.engine.game;
 
 import org.apache.logging.log4j.Logger;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.launcher.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.engine.utils.helper.JVMHelper;
+import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;
 import org.foxesworld.launcher.User.User;
+import org.foxesworld.launcher.action.ActionHandler;
 
 import javax.swing.*;
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher {
+    private Launcher launcher;
     private final ServerAttributes gameClient;
     private  GameListener gameListener;
     private final User user;
@@ -39,6 +41,7 @@ public class GameLauncher {
     private boolean isStarted;
 
     public GameLauncher(ActionHandler actionHandler) {
+        this.launcher = actionHandler.getLauncher();
         this.config = actionHandler.getEngine().getCONFIG();
         this.gameClient = actionHandler.getCurrentServer();
         this.engine = actionHandler.getEngine();
@@ -52,7 +55,7 @@ public class GameLauncher {
         this.logger.debug("Libraries " + buildLibrariesPath());
         this.logger.debug("Assets " + buildAssetsPath());
         this.logger.debug("#############################");
-        this.user = actionHandler.getEngine().getUser();
+        this.user = launcher.getUser();
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("[^0-9]", ""));
     }
 

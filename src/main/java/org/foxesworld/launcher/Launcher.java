@@ -11,13 +11,11 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 public class Launcher {
     private static Launcher launcher;
     private Engine engine;
     private Auth auth;
     private User user;
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Engine engine;
@@ -30,15 +28,11 @@ public class Launcher {
             engine.setActionHandler(new ActionHandler(launcher));
         });
     }
-
     public Launcher(Engine engine) {
         //SOME UNWANTED VARs should be removed
         this.engine = engine;
-        this.auth = new Auth(engine);
-        engine.setAuth(this.auth);
-        engine.initialize(this.auth.getAuthCredentials("login"));
-        this.user = new User(this.auth);
-        engine.setUser(user);
+        this.auth = new Auth(this);
+        engine.initialize(this);
     }
     private static boolean isLauncherValid(Engine engine) {
         Map<String, String> launcherRequest = new HashMap<>();
@@ -51,20 +45,21 @@ public class Launcher {
             return true;
         }
     }
-
     public Launcher getLauncher() {
         return launcher;
     }
-
     public Engine getEngine() {
         return engine;
     }
-
     public Auth getAuth() {
         return auth;
     }
-
     public User getUser() {
         return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

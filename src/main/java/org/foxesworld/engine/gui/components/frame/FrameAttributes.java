@@ -1,7 +1,5 @@
 package org.foxesworld.engine.gui.components.frame;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Map;
 
 public class FrameAttributes {

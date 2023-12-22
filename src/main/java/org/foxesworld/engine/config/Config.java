@@ -58,6 +58,13 @@ public class Config extends ConfigAbstract {
             this.writeCurrentConfig();
         }
     }
+    public void clearConfigData(String dataToClear, boolean write) {
+        this.engine.getLOGGER().debug("Wiping "+dataToClear);
+            this.CONFIG.remove(dataToClear);
+        if (write) {
+            this.writeCurrentConfig();
+        }
+    }
 
     private void assignConfigValues(){
         for(Map.Entry<String, Object> configMap : this.CONFIG.entrySet()){

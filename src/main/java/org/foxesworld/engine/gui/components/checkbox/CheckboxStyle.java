@@ -3,9 +3,9 @@ package org.foxesworld.engine.gui.components.checkbox;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 

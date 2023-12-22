@@ -2,7 +2,7 @@ package org.foxesworld.engine.gui.components.label;
 
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
-import java.awt.Color;
+import java.awt.*;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 

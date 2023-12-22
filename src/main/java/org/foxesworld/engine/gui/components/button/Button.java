@@ -3,10 +3,12 @@ package org.foxesworld.engine.gui.components.button;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
 public class Button extends JButton implements MouseListener, MouseMotionListener {
 	private boolean entered = false;

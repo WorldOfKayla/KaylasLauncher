@@ -34,11 +34,11 @@ private final Launcher launcher;
         switch (key) {
             case "submit" -> {
                 if ("authForm".equals(parent)) {
-                    this.engine.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
-                    if (this.engine.getAuth().isAuthorised()) {
+                    this.launcher.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
+                    if (this.launcher.getAuth().isAuthorised()) {
                         engine.getFrame().getRootPanel().removeAll();
                         engine.displayPanel("authForm->false");
-                        this.engine.initialize(this.launcher.getAuth().getAuthCredentials("login"));
+                        this.engine.initialize(this.launcher);
                     }
                 }
             }
@@ -65,11 +65,11 @@ private final Launcher launcher;
             }
 
             case "logOut" -> {
-                this.engine.getAuth().logOut();
+                this.launcher.getAuth().logOut();
             }
 
             case "settings" -> {
-                if(!engine.getAuth().isAuthorised()) {
+                if(!launcher.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
                     engine.displayPanel("loggedForm->false|newsForm->false|settings->true");
@@ -77,7 +77,7 @@ private final Launcher launcher;
             }
 
             case "back" -> {
-                if(!engine.getAuth().isAuthorised()) {
+                if(!launcher.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->true|newsForm->true|settings->false");
                 } else {
                     engine.displayPanel("loggedForm->true|newsForm->true|settings->false");
@@ -87,7 +87,7 @@ private final Launcher launcher;
             case "toGame" -> {
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
-                this.currentServer = engine.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
+                this.currentServer = launcher.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
                 this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
@@ -112,4 +112,7 @@ private final Launcher launcher;
         return engine;
     }
 
+    public Launcher getLauncher() {
+        return launcher;
+    }
 }

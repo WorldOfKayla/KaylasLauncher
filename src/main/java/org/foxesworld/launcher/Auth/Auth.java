@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;
 import org.foxesworld.launcher.Server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -14,6 +15,7 @@ import java.util.*;
 import java.util.List;
 
 public class Auth {
+    private final Launcher launcher;
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
@@ -23,10 +25,12 @@ public class Auth {
     private final Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
 
-    public Auth(Engine engine) {
-        this.engine = engine;
+    public Auth(Launcher launcher) {
+        this.launcher = launcher;
+        this.engine = launcher.getEngine();
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = engine.getCONFIG();
+
         //If we just initialised and are not sending a form
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             Map<String, String> authCredentials = new HashMap<>();
@@ -94,10 +98,13 @@ public class Auth {
 
     public void logOut(){
         this.engine.getLOGGER().info("LoggingOut...");
-        this.engine.getAuth().setAuthorised(false);
+       setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
-        this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-        engine.initialize(this.getAuthCredentials("login"));
+        for(String clear: Arrays.asList("login", "password")){
+            this.authCredentials.remove(clear);
+            this.engine.getCONFIG().clearConfigData(clear, true);
+        }
+        engine.initialize(launcher);
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {

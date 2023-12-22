@@ -9,6 +9,7 @@ import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.Config.Config;
+import org.foxesworld.launcher.Launcher;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -20,19 +21,20 @@ import java.util.List;
 import java.util.Map;
 
 public class User implements ScrollBoxListener {
+    private final Launcher launcher;
     private final Auth auth;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private String login, password, units, token, uuid, colorScheme;
 
-    public User(Auth auth){
-        //new Config(auth.getEngine());
+    public User(Launcher launcher){
+        this.launcher = launcher;
+        auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
         ScrollBox scrollBox = (ScrollBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
         scrollBox.setScrollBoxListener(this);
-        this.auth = auth;
         this.lang = auth.getEngine().getLANG();
         try {
             this.setUserSpace();
@@ -42,7 +44,7 @@ public class User implements ScrollBoxListener {
     }
 
     public void setUserSpace() throws MalformedURLException {
-        if(this.auth.getEngine().getAuth().isAuthorised()) {
+        if(this.launcher.getAuth().isAuthorised()) {
             auth.getEngine().displayPanel("authForm->false|loggedForm->true|devInfo->true");
             List<String> userLabelsIds = Arrays.asList("userHead", "userGroup");
             Map<String, Label> userLabels = getLabelsMap(userLabelsIds);

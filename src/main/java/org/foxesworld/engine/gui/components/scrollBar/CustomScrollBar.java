@@ -4,7 +4,10 @@ import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class CustomScrollBar extends JComponent {
 

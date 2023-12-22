@@ -2,14 +2,11 @@ package org.foxesworld.engine.gui.components.checkbox;
 
 import org.foxesworld.engine.gui.components.ComponentFactory;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JCheckBox;
 
 public class Checkbox extends JCheckBox {
     public BufferedImage defaultTX;

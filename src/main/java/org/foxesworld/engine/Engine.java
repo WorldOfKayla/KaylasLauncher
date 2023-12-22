@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.foxesworld.launcher.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
@@ -22,7 +21,9 @@ import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
+import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.User.User;
+import org.foxesworld.launcher.action.ActionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     //Initial CONSTANTS required for Engine loading
     private final String[] bootstrapKeys = {"frameTpl", "mainFrame", "localeFile", "engineVars", "configFiles"};
     private String frameTpl, mainFrame, localeFile, engineVars,configFiles;
+    private Launcher launcher;
     private final String appTitle;
     private final Sound SOUND;
     public static Logger LOGGER;
@@ -53,8 +55,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
-    private Auth auth;
-    private User user;
     private EngineData engineData;
     private final HTTPrequest GETrequest, POSTrequest;
     private ActionHandler actionHandler;
@@ -102,10 +102,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         }
 
     }
-
-    public void initialize(String login) {
-        this.discord.discordRpcStart(this.getLANG().getString("game.login") + login, "FoxesEngine" + '-' + this.getEngineData().getLauncherVersion(), "aiden");
-        getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised() + ")");
+    public void initialize(Launcher launcher) {
+        setLauncher(launcher);
+        this.discord.discordRpcStart(this.getLANG().getString("game.login") + launcher.getAuth().getAuthCredentials("login"), this.appTitle, "aiden");
         setStyleProvider(new StyleProvider(this));
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
@@ -115,7 +114,9 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        //user = new User(this.auth);
+        //TODO
+        // REPLACE USER LOGIC TO LAUNCHER ONLY
+        launcher.setUser(new User(launcher));
         init = true;
     }
     @Override
@@ -202,9 +203,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public Config getCONFIG() {
         return CONFIG;
     }
-    public Auth getAuth() {
-        return auth;
-    }
     public StyleProvider getStyleProvider() {
         return styleProvider;
     }
@@ -214,23 +212,12 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public EngineData getEngineData() {
         return engineData;
     }
-    public void setAuth(Auth auth) {
-        this.auth = auth;
-    }
     public void setStyleProvider(StyleProvider styleProvider) {
         this.styleProvider = styleProvider;
     }
     public void setEngineData(EngineData engineData) {
         this.engineData = engineData;
     }
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
@@ -240,8 +227,15 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public String getAppTitle() {
         return appTitle;
     }
-
     public void setActionHandler(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
+    }
+
+    public Launcher getLauncher() {
+        return launcher;
+    }
+
+    public void setLauncher(Launcher launcher) {
+        this.launcher = launcher;
     }
 }

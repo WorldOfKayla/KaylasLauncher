@@ -3,9 +3,8 @@ package org.foxesworld.engine.gui.components.button;
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.SwingConstants;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 

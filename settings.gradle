@@ -1,2 +1,4 @@
 rootProject.name = 'NewEngine'
+include 'Engine'
+include 'Launcher'
 

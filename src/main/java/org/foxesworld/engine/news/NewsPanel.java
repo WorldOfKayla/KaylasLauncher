@@ -17,7 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
-import static org.foxesworld.engine.utils.ImageUtils.*;
+import static org.foxesworld.engine.utils.ImageUtils.getLocalImage;
+import static org.foxesworld.engine.utils.ImageUtils.getRoundedImage;
 
 public class NewsPanel extends JPanel {
     /*

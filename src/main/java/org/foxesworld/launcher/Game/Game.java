@@ -20,7 +20,7 @@ public class Game implements FileLoaderListener, FileGuardListener, GameListener
     private GameLauncher gameLauncher;
 
     public Game(ActionHandler actionHandler) {
-        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getEngine().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
+        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
         fileLoader.setLoaderListener(this);

@@ -161,7 +161,7 @@ public class GuiBuilder implements ComponentFactoryListener {
                 componentAttributes.setInitialValue(String.valueOf(this.componentFactory.engine.getCONFIG().getCONFIG().get(splitValue[1])));
             }
             case "user" -> {
-                componentAttributes.setInitialValue(this.componentFactory.engine.getAuth().getAuthCredentials(splitValue[1]));
+                componentAttributes.setInitialValue(this.componentFactory.engine.getLauncher().getAuth().getAuthCredentials(splitValue[1]));
             }
 
             case "version" -> {
@@ -172,7 +172,7 @@ public class GuiBuilder implements ComponentFactoryListener {
             case "scrollBox" -> {
                 switch (splitValue[1]) {
                     case "servers" -> {
-                        this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getAuth().getUserServersArray());
+                        this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getLauncher().getAuth().getUserServersArray());
                         if (this.componentFactory.engine.getCONFIG().getSelectedServer() != 0) {
                             Object selectedIndex = this.componentFactory.engine.getCONFIG().getSelectedServer();
                             if (selectedIndex != null)

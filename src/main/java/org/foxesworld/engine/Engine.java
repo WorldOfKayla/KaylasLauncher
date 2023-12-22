@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.foxesworld.engine.action.ActionHandler;
+import org.foxesworld.launcher.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
@@ -38,9 +38,9 @@ import java.util.Map;
 public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
 
     //Initial CONSTANTS required for Engine loading
-    private String[] bootstrapKeys = {"frameTpl", "mainFrame", "localeFile", "engineVars", "configFiles"};
+    private final String[] bootstrapKeys = {"frameTpl", "mainFrame", "localeFile", "engineVars", "configFiles"};
     private String frameTpl, mainFrame, localeFile, engineVars,configFiles;
-    private  String appTitle;
+    private final String appTitle;
     private final Sound SOUND;
     public static Logger LOGGER;
     private final Discord discord;
@@ -50,7 +50,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private final FontUtils FONTUTILS;
     private final Config CONFIG;
     private CryptUtils CRYPTO;
-    private FrameConstructor frameConstructor;
+    private final FrameConstructor frameConstructor;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
     private Auth auth;
@@ -63,7 +63,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public Engine(String bootstrapFile) {
         this.engineData = new EngineData();
         this.readBootstrapValues(bootstrapFile);
-        initEngineValues(this.engineVars);
+        setEngineData(engineData.initEngineValues(this.engineVars));
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(Engine.class);
@@ -80,8 +80,10 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.POSTrequest = new HTTPrequest(this, "POST");
         this.frameConstructor = new FrameConstructor(this);
         this.CRYPTO = new CryptUtils(this);
-        setAuth(new Auth(this));
-        initialize(this.auth.getAuthCredentials("login"));
+        //setAuth(new Auth(this));
+        //initialize(this.auth.getAuthCredentials("login"));
+        //TODO
+        // MOVING ALL LAUNCHER ACTIONS TO LAUNCHER AS WE WANT TO SEPARATE ENGINE!!!
     }
 
     private void readBootstrapValues(String jsonPath) {
@@ -101,14 +103,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
     }
 
-    private void initEngineValues(String propertyPath) {
-        InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
-        if (inputStream != null) {
-            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            setEngineData(new Gson().fromJson(reader, EngineData.class));
-        }
-    }
-
     public void initialize(String login) {
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + login, "FoxesEngine" + '-' + this.getEngineData().getLauncherVersion(), "aiden");
         getLOGGER().info("Loading engine auth(" + getAuth().isAuthorised() + ")");
@@ -121,8 +115,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        user = new User(this.auth);
-        this.actionHandler = new ActionHandler(this);
+        //user = new User(this.auth);
         init = true;
     }
     @Override
@@ -233,14 +226,22 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public User getUser() {
         return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
     public Discord getDiscord() {
         return discord;
     }
-
     public String getAppTitle() {
         return appTitle;
+    }
+
+    public void setActionHandler(ActionHandler actionHandler) {
+        this.actionHandler = actionHandler;
     }
 }

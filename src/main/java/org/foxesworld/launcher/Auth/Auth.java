@@ -97,7 +97,7 @@ public class Auth {
         this.engine.getAuth().setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
         this.engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-        engine.initialize("");
+        engine.initialize(this.getAuthCredentials("login"));
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {

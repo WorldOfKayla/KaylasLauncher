@@ -17,7 +17,6 @@ public class md5Func {
         FilterInputStream dis = null;
         BufferedInputStream bis = null;
         Formatter formatter = null;
-        System.out.println(filename);
         try {
             MessageDigest messagedigest = MessageDigest.getInstance("MD5");
             fis = new FileInputStream(filename);

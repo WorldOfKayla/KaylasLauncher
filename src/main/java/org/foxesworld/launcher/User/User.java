@@ -24,11 +24,10 @@ public class User implements ScrollBoxListener {
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
-
-    private String login, password, units, token, uuid;
+    private String login, password, units, token, uuid, colorScheme;
 
     public User(Auth auth){
-        new Config(auth.getEngine());
+        //new Config(auth.getEngine());
         this.serverInfo = auth.getEngine().getServerInfo();
         ScrollBox scrollBox = (ScrollBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
@@ -95,8 +94,16 @@ public class User implements ScrollBoxListener {
         return token;
     }
 
+    public String getColorScheme() {
+        return colorScheme;
+    }
+
     public String getUuid() {
         return uuid;
+    }
+
+    public Auth getAuth() {
+        return auth;
     }
 
     @Override

@@ -1,31 +1,22 @@
 package org.foxesworld.engine.gui.components.frame;
 
-import com.google.gson.annotations.SerializedName;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
-import org.foxesworld.engine.gui.components.panel.PanelOptions;
+import org.foxesworld.engine.gui.components.panel.PanelAttributes;
 
 import java.util.List;
 import java.util.Map;
 
 public class OptionGroups {
-
-    @SerializedName("panelOptions")
-    private PanelOptions panelOptions;
-
-    @SerializedName("childComponents")
+    private PanelAttributes panelOptions;
     private List<ComponentAttributes> childComponents;
-
-    @SerializedName("groups")
     private Map<String, OptionGroups> groups;
 
-    public PanelOptions getPanelOptions() {
+    public PanelAttributes getPanelOptions() {
         return panelOptions;
     }
-
     public List<ComponentAttributes> getChildComponents() {
         return childComponents;
     }
-
     public Map<String, OptionGroups> getGroups() {
         return groups;
     }

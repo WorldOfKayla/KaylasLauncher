@@ -52,7 +52,6 @@
         {
           "componentType": "button",
           "enabled": true,
-          "keyCode": "S",
           "componentStyle": "buttonWhite",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,

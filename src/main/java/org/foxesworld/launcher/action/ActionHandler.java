@@ -1,8 +1,9 @@
-package org.foxesworld.engine.action;
+package org.foxesworld.launcher.action;
 
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
 import org.foxesworld.launcher.Game.Game;
+import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;
 
 import javax.swing.*;
@@ -15,10 +16,11 @@ import java.util.regex.Pattern;
 
 public class ActionHandler {
     private final Engine engine;
-
+private final Launcher launcher;
     private ServerAttributes currentServer;
-    public ActionHandler(Engine engine) {
-        this.engine = engine;
+    public ActionHandler(Launcher launcher) {
+        this.launcher = launcher;
+        this.engine = launcher.getEngine();
     }
 
     public void handleAction(ActionEvent e) {
@@ -36,7 +38,7 @@ public class ActionHandler {
                     if (this.engine.getAuth().isAuthorised()) {
                         engine.getFrame().getRootPanel().removeAll();
                         engine.displayPanel("authForm->false");
-                        this.engine.initialize(this.engine.getAuth().getAuthCredentials("login"));
+                        this.engine.initialize(this.launcher.getAuth().getAuthCredentials("login"));
                     }
                 }
             }

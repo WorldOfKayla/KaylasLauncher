@@ -16,6 +16,7 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class Panel extends JPanel {
     private FrameAttributes frameAttributes;
+    private JPanel groupPanel;
     private final FrameConstructor frameConstructor;
 
     public Panel(FrameConstructor frameConstructor) {
@@ -43,12 +44,20 @@ public class Panel extends JPanel {
     }
 
     private String getSeasonalBackground(){
-        return switch (CurrentMonth.getCurrentMonth()) {
-            case DECEMBER, JANUARY, FEBRUARY -> frameAttributes.getWinterImage();
-            case MARCH, APRIL, MAY -> frameAttributes.getSpringImage();
-            case JUNE, JULY, AUGUST -> frameAttributes.getSummerImage();
-            case SEPTEMBER, OCTOBER, NOVEMBER -> frameAttributes.getAutumnImage();
-        };
+        switch(CurrentMonth.getCurrentMonth()){
+            case DECEMBER, JANUARY, FEBRUARY:
+                return  frameAttributes.getWinterImage();
+
+            case MARCH, APRIL, MAY:
+                return  frameAttributes.getSpringImage();
+
+            case JUNE, JULY, AUGUST:
+                return  frameAttributes.getSummerImage();
+
+            case SEPTEMBER, OCTOBER, NOVEMBER:
+                return  frameAttributes.getAutumnImage();
+        }
+        return  "";
     }
 
     private BufferedImage applyDarkening(BufferedImage image, Color darkeningColor) {
@@ -69,8 +78,8 @@ public class Panel extends JPanel {
         return darkenedImage;
     }
 
-    public JPanel createGroupPanel(PanelOptions panelOptions, String groupName) {
-        JPanel groupPanel = new JPanel(null, true) {
+    public JPanel createGroupPanel(PanelAttributes panelOptions, String groupName) {
+        groupPanel = new JPanel(null, true) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -82,7 +91,7 @@ public class Panel extends JPanel {
                     g.drawImage(applyDarkening(backgroundImage, hexToColor(panelOptions.getBackground())), 0, 0, null);
                 }
 
-                if (panelOptions.getCornerRadius() != 0) {
+                if(panelOptions.getCornerRadius() != 0){
                     int cornerRadius = panelOptions.getCornerRadius();
                     RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
                     g2d.setColor(getBackground());

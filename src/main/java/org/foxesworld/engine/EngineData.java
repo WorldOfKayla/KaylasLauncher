@@ -1,15 +1,18 @@
 package org.foxesworld.engine;
 
+import com.google.gson.Gson;
 import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.utils.HTTP.RequestProperty;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class EngineData {
     private String bindUrl;
     private String launcherBrand;
     private String launcherVersion;
-    private int socket;
     @Deprecated
     private String appId;
     @Deprecated
@@ -49,7 +52,12 @@ public class EngineData {
     public List<TweakClasses> getTweakClasses() {
         return tweakClasses;
     }
-    public int getSocket() {
-        return socket;
+    public EngineData initEngineValues(String propertyPath) {
+        InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(propertyPath);
+        if (inputStream != null) {
+            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            return new Gson().fromJson(reader, EngineData.class);
+        }
+        return null;
     }
 }

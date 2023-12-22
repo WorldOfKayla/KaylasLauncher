@@ -112,7 +112,6 @@ public class FileGuard {
     private boolean isInIgnoreList(File file) {
         String filePath = file.getPath().replace(this.gameLauncher.buildGameDir(), "").replace("\\", "/");
         for(String mask: this.ignoreList){
-            System.out.println(filePath + " should start with " + mask.replace("\\", "/"));
             if(filePath.startsWith(mask.replace("\\", "/"))){
                 return true;
             }

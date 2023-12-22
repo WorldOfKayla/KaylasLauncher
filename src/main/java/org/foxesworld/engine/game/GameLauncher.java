@@ -2,7 +2,7 @@ package org.foxesworld.engine.game;
 
 import org.apache.logging.log4j.Logger;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.action.ActionHandler;
+import org.foxesworld.launcher.action.ActionHandler;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;

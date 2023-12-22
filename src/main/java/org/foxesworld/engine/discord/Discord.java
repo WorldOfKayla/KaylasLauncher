@@ -50,7 +50,6 @@ public class Discord implements DiscordListener {
         lib.Discord_Shutdown();
         rpcExecutorService.shutdown();
         Thread.currentThread().interrupt();
-        System.out.println("Discord shutdown completed");
     }
     @Override
     public DiscordRPC getDiscordLib() {

@@ -123,15 +123,16 @@ public class GameLauncher {
             processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
             System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
+        System.out.println(config.isFullScreen());
         //Optional
         if (config.isFullScreen()) {
-            processArgs.add("--fullscreen");
+            processArgs.add("--fullscreen=true");
 
         }
 
         //Optional
         if (config.isAutoEnter()) {
-            processArgs.add("--Server=" + gameClient.getHost());
+            processArgs.add("--server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
         }
 

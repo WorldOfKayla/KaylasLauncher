@@ -20,7 +20,6 @@ import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Launcher;
-import org.foxesworld.launcher.User.User;
 import org.foxesworld.launcher.action.ActionHandler;
 
 import javax.swing.*;
@@ -30,11 +29,9 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
-    private final Engine engine;
+public abstract class Engine extends JFrame implements ActionListener, GuiBuilderListener {
     private final GuiProperties guiProperties;
     private final String configFiles;
-    @Deprecated
     private Launcher launcher;
     private final String appTitle;
     private final Sound SOUND;
@@ -51,11 +48,10 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private StyleProvider styleProvider;
     private EngineData engineData;
     private final HTTPrequest GETrequest, POSTrequest;
-    private ActionHandler actionHandler;
+    public ActionHandler actionHandler;
     private boolean init = false;
 
     public Engine(String configFiles) {
-        this.engine = this;
         this.engineData = new EngineData();
         this.configFiles = configFiles;
         setEngineData(engineData.initEngineValues("engine.json"));
@@ -77,37 +73,13 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.frameConstructor = new FrameConstructor(this);
         this.CRYPTO = new CryptUtils(this);
     }
-    public void initialize(Launcher launcher) {
-        setLauncher(launcher);
-        this.discord.discordRpcStart(this.getLANG().getString("game.login") + launcher.getAuth().getAuthCredentials("login"), this.appTitle, "aiden");
-        setStyleProvider(new StyleProvider(this));
-        this.guiBuilder = new GuiBuilder(this);
-        this.guiBuilder.setGuiBuilderListener(this);
-        this.news = new News(this);
-        this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
-        this.loadMainPanel(this.getGuiProperties().getMainFrame());
-
-        //ALL PANELS ARE BUILT
-        this.getGuiBuilder().buildAdditionalPanels();
-        //TODO
-        // REPLACE USER LOGIC TO LAUNCHER ONLY
-        launcher.setUser(new User(launcher));
-        init = true;
-    }
+    public abstract void initialize(Launcher launcher);
     @Override
-    public void onPanelsBuilt() {}
-
-    /* Is being called on each panel creation
-    * */
+    public abstract void onPanelsBuilt();
     @Override
-    public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
-        parentPanel.updateUI();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        // TODO WARN EXPERIMENTAL VALUE
-        // parentPanel.setDoubleBuffered(true);
-        LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
-    }
+    public abstract void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel);
+    @Override
+    public abstract void actionPerformed(ActionEvent e);
     public void displayPanel(String displayString) {
         String[] panelElements = displayString.split("\\|");
         if (panelElements.length <= 1) {
@@ -129,7 +101,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             }
         }
     }
-    private void loadMainPanel(String path) {
+    protected void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
 
@@ -142,10 +114,7 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
             return null;
         }
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        this.actionHandler.handleAction(e);
-    }
+
     public String[] getConfigFiles() {
         return configFiles.split(",");
     }
@@ -209,10 +178,16 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public void setLauncher(Launcher launcher) {
         this.launcher = launcher;
     }
+    public void setGuiBuilder(GuiBuilder guiBuilder) {
+        this.guiBuilder = guiBuilder;
+    }
+    public void setNews(News news) {
+        this.news = news;
+    }
+    public void setInit(boolean init) {
+        this.init = init;
+    }
     public GuiProperties getGuiProperties() {
         return guiProperties;
-    }
-    public Engine getEngine() {
-        return engine;
     }
 }

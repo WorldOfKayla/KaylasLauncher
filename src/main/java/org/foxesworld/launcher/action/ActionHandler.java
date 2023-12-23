@@ -16,8 +16,9 @@ import java.util.regex.Pattern;
 
 public class ActionHandler {
     private final Engine engine;
-private final Launcher launcher;
+    private final Launcher launcher;
     private ServerAttributes currentServer;
+
     public ActionHandler(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
@@ -43,20 +44,21 @@ private final Launcher launcher;
                 }
             }
 
-            case "smallButton" -> { this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+            case "smallButton" -> {
+                this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 engine.getSOUND().playSound("exit.ogg", false);
             }
 
             case "gameDir" -> openGameFolder();
 
             case "applySettings" -> {
-                for(JComponent component: this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")){
-                    if(component instanceof JCheckBox){
+                for (JComponent component : this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
+                    if (component instanceof JCheckBox) {
                         this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                     } else if (component instanceof JTextField) {
-                            this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
-                        } else {
-                        if(component instanceof JSlider) {
+                        this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
+                    } else {
+                        if (component instanceof JSlider) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
                         }
                     }
@@ -69,7 +71,7 @@ private final Launcher launcher;
             }
 
             case "settings" -> {
-                if(!launcher.getAuth().isAuthorised()) {
+                if (!launcher.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
                     engine.displayPanel("loggedForm->false|newsForm->false|settings->true");
@@ -77,7 +79,7 @@ private final Launcher launcher;
             }
 
             case "back" -> {
-                if(!launcher.getAuth().isAuthorised()) {
+                if (!launcher.getAuth().isAuthorised()) {
                     engine.displayPanel("authForm->true|newsForm->true|settings->false");
                 } else {
                     engine.displayPanel("loggedForm->true|newsForm->true|settings->false");
@@ -88,7 +90,7 @@ private final Launcher launcher;
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
                 this.currentServer = launcher.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
-                this.getEngine().getLOGGER().info("Launching "+this.currentServer.getServerName());
+                this.getEngine().getLOGGER().info("Launching " + this.currentServer.getServerName());
                 this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 new Game(this);
@@ -96,18 +98,22 @@ private final Launcher launcher;
 
             case "closeButton" -> System.exit(0);
 
-            case "hideButton" ->  engine.getFrame().getFrame().setExtendedState(1);
+            case "hideButton" -> engine.getFrame().getFrame().setExtendedState(1);
         }
     }
+
     private void openGameFolder() {
         try {
             Desktop d = Desktop.getDesktop();
             d.browse(new URI(engine.getCONFIG().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
-        } catch (IOException | URISyntaxException ignored) {}
+        } catch (IOException | URISyntaxException ignored) {
+        }
     }
+
     public ServerAttributes getCurrentServer() {
         return currentServer;
     }
+
     public Engine getEngine() {
         return engine;
     }

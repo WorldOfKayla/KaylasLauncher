@@ -30,7 +30,7 @@ application {
 
 
 group 'org.foxesworld'
-version '1.1.9-EXPERIMENTAL'
+version '1.2.0-STAGING'
 
 repositories {
     mavenCentral()

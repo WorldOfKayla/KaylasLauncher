@@ -47,22 +47,17 @@ public class Launcher extends Engine {
             return true;
         }
     }
-    /*
-    * NOW WE CAN OVERRIDE EACH METHOD FROM ENGINE ;)
-    * */
     @Override
     public void onPanelsBuilt() {
         if (!isInit()) {
             getSOUND().playSound("mus/loginMus.ogg", true);
         }
     }
-
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        // TODO WARN EXPERIMENTAL VALUE
         parentPanel.setDoubleBuffered(true);
         LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }

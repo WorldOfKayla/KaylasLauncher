@@ -2,7 +2,6 @@ package org.foxesworld.engine;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.game.TweakClasses;
-import org.foxesworld.engine.gui.GuiProperties;
 import org.foxesworld.engine.utils.HTTP.RequestProperty;
 
 import java.io.InputStream;

@@ -165,9 +165,7 @@ public class ComponentFactory {
 
             case "button" -> {
                 ButtonStyle buttonStyle = new ButtonStyle(this);
-
                 Button button;
-
                 if (componentAttributes.getImageIcon() != null) {
                     ImageIcon icon = new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage(componentAttributes.getImageIcon()), componentAttributes.getIconWidth(), componentAttributes.getIconHeight()));
                     button = new Button(this, icon);

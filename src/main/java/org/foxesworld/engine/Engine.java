@@ -52,7 +52,6 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     private final HTTPrequest GETrequest, POSTrequest;
     public ActionHandler actionHandler;
     private boolean init = false;
-
     public Engine(String configFiles) {
         this.engineData = new EngineData();
         this.configFiles = configFiles;
@@ -86,7 +85,6 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     protected void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
-
     public String appPath() {
         try {
             return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(),StandardCharsets.UTF_8);
@@ -94,7 +92,6 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
             return null;
         }
     }
-
     public String[] getConfigFiles() {
         return configFiles.split(",");
     }

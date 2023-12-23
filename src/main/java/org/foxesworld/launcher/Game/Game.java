@@ -47,6 +47,7 @@ public class Game implements FileLoaderListener, FileGuardListener, GameListener
         fileGuard.setFileGuardListener(this);
         fileGuard.addIgnoreDirs(this.actionHandler.getCurrentServer().getIgnoreDirs());
         fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
+        fileGuard.recursiveDelete(new File(this.gameLauncher.buildGameDir() + "/assets/skins"));
     }
     @Override
     public void onNewFileFound(FilesAttributes file, String localPath, final long totalSizeFinal) {

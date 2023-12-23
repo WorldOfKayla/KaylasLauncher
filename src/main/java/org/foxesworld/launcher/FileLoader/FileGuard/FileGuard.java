@@ -134,6 +134,20 @@ public class FileGuard {
         }
     }
 
+    public void recursiveDelete(File file) {
+        try {
+            if (!file.exists())
+                return;
+            if (file.isDirectory()) {
+                for (File f : file.listFiles())
+                    recursiveDelete(f);
+                file.delete();
+            } else
+                file.delete();
+        } catch (Exception ignored) {
+        }
+    }
+
     private boolean isUserConfig(File file) {
         return file.getName().endsWith(".txt");
     }

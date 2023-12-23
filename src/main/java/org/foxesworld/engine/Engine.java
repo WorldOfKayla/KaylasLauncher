@@ -1,7 +1,5 @@
 package org.foxesworld.engine;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +8,7 @@ import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.GuiBuilderListener;
+import org.foxesworld.engine.gui.GuiProperties;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
@@ -20,7 +19,6 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ServerInfo;
-import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.User.User;
 import org.foxesworld.launcher.action.ActionHandler;
@@ -28,19 +26,15 @@ import org.foxesworld.launcher.action.ActionHandler;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class Engine extends JFrame implements ActionListener, GuiBuilderListener {
-
-    //Initial CONSTANTS required for Engine loading
-    private final String[] bootstrapKeys = {"frameTpl", "mainFrame", "localeFile", "engineVars", "configFiles"};
-    private String frameTpl, mainFrame, localeFile, engineVars,configFiles;
+    private final Engine engine;
+    private final GuiProperties guiProperties;
+    private final String configFiles;
+    @Deprecated
     private Launcher launcher;
     private final String appTitle;
     private final Sound SOUND;
@@ -60,16 +54,18 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     private ActionHandler actionHandler;
     private boolean init = false;
 
-    public Engine(String bootstrapFile) {
+    public Engine(String configFiles) {
+        this.engine = this;
         this.engineData = new EngineData();
-        this.readBootstrapValues(bootstrapFile);
-        setEngineData(engineData.initEngineValues(this.engineVars));
+        this.configFiles = configFiles;
+        setEngineData(engineData.initEngineValues("engine.json"));
+        guiProperties = new GuiProperties(this);
         this.CONFIG = new Config(this);
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(Engine.class);
         appTitle = engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion();
         LOGGER.info(appTitle + " started...");
-        this.LANG = new LanguageProvider(this, this.localeFile);
+        this.LANG = new LanguageProvider(this, this.getGuiProperties().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
         this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
@@ -80,27 +76,6 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.POSTrequest = new HTTPrequest(this, "POST");
         this.frameConstructor = new FrameConstructor(this);
         this.CRYPTO = new CryptUtils(this);
-        //setAuth(new Auth(this));
-        //initialize(this.auth.getAuthCredentials("login"));
-        //TODO
-        // MOVING ALL LAUNCHER ACTIONS TO LAUNCHER AS WE WANT TO SEPARATE ENGINE!!!
-    }
-
-    private void readBootstrapValues(String jsonPath) {
-        try (InputStream inputStream = Engine.class.getClassLoader().getResourceAsStream(jsonPath)) {
-            JsonObject configJson = new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-            for (String key : bootstrapKeys) {
-                try {
-                    Field field = Engine.class.getDeclaredField(key);
-                    if(field.hashCode()!= 0) {
-                        field.set(this,  configJson.get(key).getAsString());
-                    }
-                } catch (NoSuchFieldException | IllegalAccessException ignored) {}
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
     public void initialize(Launcher launcher) {
         setLauncher(launcher);
@@ -109,8 +84,8 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         this.guiBuilder = new GuiBuilder(this);
         this.guiBuilder.setGuiBuilderListener(this);
         this.news = new News(this);
-        this.getGuiBuilder().buildGui(this.frameTpl, this.getFrame().getRootPanel());
-        this.loadMainPanel(this.mainFrame);
+        this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
+        this.loadMainPanel(this.getGuiProperties().getMainFrame());
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
@@ -120,19 +95,17 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
         init = true;
     }
     @Override
-    public void onPanelsBuilt() {
-        if (CONFIG.isEnableSound()) {
-            if (!isInit()) {
-                getSOUND().playSound("uiMus.ogg", true);
-            }
-        }
-    }
+    public void onPanelsBuilt() {}
+
+    /* Is being called on each panel creation
+    * */
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        parentPanel.setDoubleBuffered(true);
+        // TODO WARN EXPERIMENTAL VALUE
+        // parentPanel.setDoubleBuffered(true);
         LOGGER.debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
     public void displayPanel(String displayString) {
@@ -230,12 +203,16 @@ public class Engine extends JFrame implements ActionListener, GuiBuilderListener
     public void setActionHandler(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;
     }
-
     public Launcher getLauncher() {
         return launcher;
     }
-
     public void setLauncher(Launcher launcher) {
         this.launcher = launcher;
+    }
+    public GuiProperties getGuiProperties() {
+        return guiProperties;
+    }
+    public Engine getEngine() {
+        return engine;
     }
 }

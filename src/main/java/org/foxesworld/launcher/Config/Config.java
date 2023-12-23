@@ -8,7 +8,10 @@ import javax.swing.*;
 
 public class Config implements SliderListener {
 
-    private  Engine engine;
+    /* WIP
+    * UNDER CONSTRUCTION
+    * */
+    private final Engine engine;
 
     public Config(Engine engine){
         this.engine = engine;

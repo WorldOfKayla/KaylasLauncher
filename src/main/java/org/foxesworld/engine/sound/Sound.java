@@ -92,5 +92,6 @@ public class Sound {
         }
         clip.stop();
         gainControl.setValue(0.0f);
+        activeClips.remove(clip);
     }
 }

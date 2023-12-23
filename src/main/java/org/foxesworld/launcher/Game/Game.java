@@ -15,7 +15,6 @@ import java.io.File;
 public class Game implements FileLoaderListener, FileGuardListener, GameListener {
 
     private final ActionHandler actionHandler;
-    //private List<FilesAttributes> filesAttributes;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
 

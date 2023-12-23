@@ -32,7 +32,6 @@ public class Config extends ConfigAbstract {
         this.CONFIG = getCfgMaps().get("config");
         this.assignConfigValues();
     }
-
     public void addToConfig(Map<String, String> inputData, List values) {
         for (Map.Entry<String, String> configEntry : inputData.entrySet()) {
             if (values.contains(configEntry.getKey())) {
@@ -40,7 +39,6 @@ public class Config extends ConfigAbstract {
             }
         }
     }
-
     public void setConfigValue(String key, Object value){
         if(CONFIG.get(key) != null) {
             clearConfigData(Arrays.asList(key), false);
@@ -65,7 +63,6 @@ public class Config extends ConfigAbstract {
             this.writeCurrentConfig();
         }
     }
-
     private void assignConfigValues(){
         for(Map.Entry<String, Object> configMap : this.CONFIG.entrySet()){
             try {
@@ -78,7 +75,6 @@ public class Config extends ConfigAbstract {
             }
         }
     }
-
     public void writeCurrentConfig() {
         this.engine.getLOGGER().debug("Writing "+ configToJSON());
         try (FileWriter fileWriter = new FileWriter(this.getFullPath() + File.separator + "config/config.json")) {
@@ -87,68 +83,52 @@ public class Config extends ConfigAbstract {
             e.printStackTrace();
         }
     }
-
     public Map<String, Map> getCfgMaps() {
         return getAllCfgMaps();
     }
-
     public String configToJSON() {
         return new GsonBuilder().setPrettyPrinting().create().toJson(CONFIG);
     }
-
     public Map<String, Object> getCONFIG() {
         return CONFIG;
     }
-
     @Override
     public String getFullPath() {
         return cfgProvider.getGameFullPath();
     }
-
     public String getLogin() {
         return login;
     }
-
     public String getPassword() {
         return password;
     }
-
     public String getLang() {
         return lang;
     }
-
     public String getLogLevel() {
         return logLevel;
     }
-
     public String getRamAmount() {
         return ramAmount;
     }
-
     public double getVolume() {
         return volume;
     }
-
     public boolean isAutoEnter() {
         return autoEnter;
     }
-
     public boolean isFullScreen() {
         return fullScreen;
     }
-
     public boolean isLoadNews() {
         return loadNews;
     }
-
     public boolean isEnableSound() {
         return enableSound;
     }
-
     public void setVolume(double volume) {
         this.volume = volume;
     }
-
     public int getSelectedServer() {
         return selectedServer;
     }

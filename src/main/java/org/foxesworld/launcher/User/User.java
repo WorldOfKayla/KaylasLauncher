@@ -8,7 +8,6 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Auth.Auth;
-import org.foxesworld.launcher.Config.Config;
 import org.foxesworld.launcher.Launcher;
 
 import javax.swing.*;

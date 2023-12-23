@@ -11,28 +11,25 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-public class Launcher {
-    private static Launcher launcher;
-    private Engine engine;
-    private Auth auth;
+public class Launcher extends Engine {
+    private final Engine engine;
+    private final Auth auth;
     private User user;
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Engine engine;
-            engine = new Engine("init.json");
-            if (!isLauncherValid(engine)) {
-                JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
-                System.exit(0);
-            }
-            launcher = new Launcher(engine);
-            engine.setActionHandler(new ActionHandler(launcher));
-        });
+        SwingUtilities.invokeLater(Launcher::new);
     }
-    public Launcher(Engine engine) {
-        //SOME UNWANTED VARs should be removed
-        this.engine = engine;
+    public Launcher() {
+        super("config,internal/engine");
+        this.engine = this;
         this.auth = new Auth(this);
-        engine.initialize(this);
+        if (!isLauncherValid(this)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
+        } else {
+            initialize(this);
+            setActionHandler(new ActionHandler(this));
+            getLOGGER().debug("Launcher started!");
+        }
     }
     private static boolean isLauncherValid(Engine engine) {
         Map<String, String> launcherRequest = new HashMap<>();
@@ -45,8 +42,14 @@ public class Launcher {
             return true;
         }
     }
-    public Launcher getLauncher() {
-        return launcher;
+    /*
+    * NOW WE CAN OVERRIDE EACH METHOD FROM ENGINE ;)
+    * */
+    @Override
+    public void onPanelsBuilt() {
+        if (!isInit()) {
+            getSOUND().playSound("mus/loginMus.ogg", true);
+        }
     }
     public Engine getEngine() {
         return engine;
@@ -57,9 +60,7 @@ public class Launcher {
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
 }

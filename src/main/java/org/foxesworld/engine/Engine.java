@@ -11,6 +11,7 @@ import org.foxesworld.engine.gui.GuiBuilderListener;
 import org.foxesworld.engine.gui.GuiProperties;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
+import org.foxesworld.engine.gui.components.panel.PanelVisibility;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.news.News;
@@ -44,6 +45,7 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     private final Config CONFIG;
     private CryptUtils CRYPTO;
     private final FrameConstructor frameConstructor;
+    private final PanelVisibility panelVisibility;
     private GuiBuilder guiBuilder;
     private StyleProvider styleProvider;
     private EngineData engineData;
@@ -60,6 +62,7 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
         System.setProperty("log.dir", CONFIG.getFullPath());
         LOGGER = LogManager.getLogger(Engine.class);
         appTitle = engineData.getLauncherBrand() + '-' + engineData.getLauncherVersion();
+        this.panelVisibility = new PanelVisibility(this);
         LOGGER.info(appTitle + " started...");
         this.LANG = new LanguageProvider(this, this.getGuiProperties().getLocaleFile());
         this.FONTUTILS = new FontUtils(this);
@@ -80,36 +83,13 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     public abstract void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel);
     @Override
     public abstract void actionPerformed(ActionEvent e);
-    public void displayPanel(String displayString) {
-        String[] panelElements = displayString.split("\\|");
-        if (panelElements.length <= 1) {
-            this.panelVisibility(displayString);
-        } else {
-            for (String panelElement : panelElements) {
-                this.panelVisibility(panelElement);
-            }
-        }
-    }
-    private void panelVisibility(String panelElement) {
-        String[] parts = panelElement.split("->");
-        if (parts.length == 2) {
-            String panelName = parts[0];
-            boolean displayValue = Boolean.parseBoolean(parts[1]);
-            JPanel groupPanel = guiBuilder.getPanelsMap().get(panelName);
-            if (groupPanel != null) {
-                groupPanel.setVisible(displayValue);
-            }
-        }
-    }
     protected void loadMainPanel(String path) {
         this.guiBuilder.buildGui(path, this.getFrame().getRootPanel());
     }
 
     public String appPath() {
         try {
-            return URLDecoder.decode(
-                    HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(),
-                    StandardCharsets.UTF_8);
+            return URLDecoder.decode(HTTPrequest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(),StandardCharsets.UTF_8);
         } catch (java.net.URISyntaxException e) {
             return null;
         }
@@ -168,6 +148,9 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     }
     public String getAppTitle() {
         return appTitle;
+    }
+    public PanelVisibility getPanelVisibility() {
+        return panelVisibility;
     }
     public void setActionHandler(ActionHandler actionHandler) {
         this.actionHandler = actionHandler;

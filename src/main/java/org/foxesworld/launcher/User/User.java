@@ -44,7 +44,7 @@ public class User implements ScrollBoxListener {
 
     public void setUserSpace() throws MalformedURLException {
         if(this.launcher.getAuth().isAuthorised()) {
-            auth.getEngine().displayPanel("authForm->false|loggedForm->true|devInfo->true");
+            auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true|devInfo->true");
             List<String> userLabelsIds = Arrays.asList("userHead", "userGroup");
             Map<String, Label> userLabels = getLabelsMap(userLabelsIds);
             for(Map.Entry<String, String> credentials: auth.getAuthCredentials().entrySet()){
@@ -59,7 +59,7 @@ public class User implements ScrollBoxListener {
             userLabels.get("userHead").setIcon(new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead())));
             userLabels.get("userGroup").setText(this.auth.getEngine().getLANG().getString("group.group-"+this.auth.getAuthCredentials("group")));
         } else {
-            auth.getEngine().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+            auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
     }
 

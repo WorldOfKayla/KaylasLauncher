@@ -38,7 +38,7 @@ public class ActionHandler {
                     this.launcher.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
                     if (this.launcher.getAuth().isAuthorised()) {
                         engine.getFrame().getRootPanel().removeAll();
-                        engine.displayPanel("authForm->false");
+                        engine.getPanelVisibility().displayPanel("authForm->false");
                         this.engine.initialize(this.launcher);
                     }
                 }
@@ -72,17 +72,17 @@ public class ActionHandler {
 
             case "settings" -> {
                 if (!launcher.getAuth().isAuthorised()) {
-                    engine.displayPanel("authForm->false|newsForm->false|settings->true");
+                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
-                    engine.displayPanel("loggedForm->false|newsForm->false|settings->true");
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
                 }
             }
 
             case "back" -> {
                 if (!launcher.getAuth().isAuthorised()) {
-                    engine.displayPanel("authForm->true|newsForm->true|settings->false");
+                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
                 } else {
-                    engine.displayPanel("loggedForm->true|newsForm->true|settings->false");
+                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
                 }
             }
 

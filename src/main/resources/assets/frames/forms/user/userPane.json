@@ -6,7 +6,7 @@
         "visible": true,
         "background": "#f0b91578",
         "backgroundImage": "assets/ui/img/info.png",
-        "bounds": "0,30,350,85"
+        "bounds": "0,30,350,83"
       },
       "childComponents": [
         {

@@ -19,6 +19,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public BufferedImage lockedTX;
 	private final ComponentFactory componentFactory;
 	private final ComponentAttributes buttonAttributes;
+	private JLabel iconLabel;
 
 	public Button(ComponentFactory componentFactory, String text) {
 		this.componentFactory = componentFactory;
@@ -29,28 +30,35 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setBorderPainted(false);
 		setContentAreaFilled(false);
 		setFocusPainted(false);
-		setOpaque(false);
+		setOpaque(componentFactory.style.isOpaque());
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	public Button(ComponentFactory componentFactory, ImageIcon icon) {
-		super(icon);
+		super();
 		this.componentFactory = componentFactory;
 		this.buttonAttributes = componentFactory.getComponentAttribute();
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		setText("");
+
 		setBorderPainted(false);
 		setContentAreaFilled(false);
 		setFocusPainted(false);
-		setOpaque(false);
+		setOpaque(componentFactory.style.isOpaque());
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	}
 
+		// Create a label to hold the ImageIcon
+		iconLabel = new JLabel(icon);
+		iconLabel.setHorizontalAlignment(JLabel.CENTER);
+		iconLabel.setVerticalAlignment(JLabel.CENTER);
+
+		// Use BorderLayout to position the label at the center
+		setLayout(new BorderLayout());
+		add(iconLabel, BorderLayout.CENTER);
+	}
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
 
 		int w = getWidth();
 		int h = getHeight();
@@ -65,9 +73,9 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 			imageToDraw = rolloverTX;
 		}
 
-		super.paintComponent(g);
-		g2d.drawImage(imageToDraw, 0, 0, w, h, null);
+		g.drawImage(imageToDraw, 0, 0, w, h, null);
 
+		// Draw text or other components if needed...
 		if (getText() != null && !getText().isEmpty()) {
 			FontMetrics fm = g.getFontMetrics();
 			int textX = (w - fm.stringWidth(getText())) / 2;
@@ -75,9 +83,10 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 			g.setColor(getForeground());
 			g.drawString(getText(), textX, textY);
 		}
-
-		g2d.dispose();
 	}
+
+
+
 
 	@Override
 	public void mouseEntered(MouseEvent e) {

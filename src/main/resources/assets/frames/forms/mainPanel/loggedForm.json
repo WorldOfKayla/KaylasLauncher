@@ -27,13 +27,13 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "S",
-          "componentStyle": "buttonWhite",
+          "componentStyle": "buttonYellow",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
           "iconHeight": 32,
           "componentId": "settings",
           "localeKey": "settings.settingsButt",
-          "bounds": "290,440,52,52"
+          "bounds": "275,425,60,60"
         },
         {
           "componentType": "button",

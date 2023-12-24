@@ -103,10 +103,10 @@
                   "imageIcon": "assets/ui/icons/folder.png",
                   "iconWidth": 32,
                   "iconHeight": 32,
-                  "componentStyle": "transparent",
+                  "componentStyle": "buttonYellow",
                   "localeKey": "settings.homeDir",
                   "componentId": "gameDir",
-                  "bounds": "135,15,250,50"
+                  "bounds": "235,15,60,60"
                 },
                 {
                   "componentType": "button",

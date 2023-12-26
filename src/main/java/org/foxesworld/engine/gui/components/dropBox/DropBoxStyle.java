@@ -1,4 +1,4 @@
-package org.foxesworld.engine.gui.components.scrollBox;
+package org.foxesworld.engine.gui.components.dropBox;
 
 import org.foxesworld.engine.gui.components.ComponentFactory;
 import org.foxesworld.engine.utils.ImageUtils;
@@ -36,7 +36,6 @@ public class DropBoxStyle {
         dropBox.panelTX = this.texture.getSubimage(0, dropBoxH * 3, dropBoxW, dropBoxH);
         dropBox.selectedTX = this.texture.getSubimage(0, dropBoxH * 4, dropBoxW, dropBoxH);
         dropBox.point = ImageUtils.getLocalImage("assets/ui/icons/point.png");
-
     }
 }
 

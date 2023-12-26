@@ -1,4 +1,5 @@
 package org.foxesworld.engine.gui.components.slider;
+
 import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
@@ -18,26 +19,44 @@ public class TexturedSliderUI extends BasicSliderUI {
     @Override
     public void paintThumb(Graphics g) {
         Rectangle knobBounds = thumbRect;
-        int w = thumbImage.getIconWidth();
-        int h = thumbImage.getIconHeight();
+
+        int thumbWidth = thumbImage.getIconWidth();
+        int thumbHeight = thumbImage.getIconHeight();
+
+        int x = knobBounds.x + (knobBounds.width - thumbWidth) / 2;
+        int y = knobBounds.y + (knobBounds.height - thumbHeight) / 2;
 
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(thumbImage.getImage(), knobBounds.x, knobBounds.y, w, h, null);
+
+        // Draw the entire track to cover the previous thumb position
+        paintTrack(g2d);
+
+        // Draw the thumb
+        g2d.drawImage(thumbImage.getImage(), x, y, thumbWidth, thumbHeight, null);
         g2d.dispose();
+
+        // Repaint the slider to ensure proper updating
+        slider.repaint();
     }
+
 
     @Override
     public void paintTrack(Graphics g) {
         Rectangle trackBounds = trackRect;
-        int w = trackImage.getIconWidth();
-        int h = trackImage.getIconHeight();
+
+        int trackWidth = trackImage.getIconWidth();
+        int trackHeight = trackImage.getIconHeight();
+
+        int x = trackBounds.x + (trackBounds.width - trackWidth) / 2;
+        int y = trackBounds.y + (trackBounds.height - trackHeight) / 2;
 
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(trackImage.getImage(), trackBounds.x, trackBounds.y, w, h, null);
+        g2d.drawImage(trackImage.getImage(), x, y, trackWidth, trackHeight, null);
         g2d.dispose();
     }
 
     @Override
     public void paintFocus(Graphics g) {
+        // If you need to customize focus painting, implement it here
     }
 }

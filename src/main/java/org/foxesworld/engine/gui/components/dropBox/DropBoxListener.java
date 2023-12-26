@@ -1,4 +1,4 @@
-package org.foxesworld.engine.gui.components.scrollBox;
+package org.foxesworld.engine.gui.components.dropBox;
 
 public interface DropBoxListener {
 

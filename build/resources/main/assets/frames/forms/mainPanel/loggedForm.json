@@ -13,7 +13,7 @@
           "componentType": "dropBox",
           "componentStyle": "selectable",
           "componentId": "serverBox",
-          "initialValue": "scrollBox#servers",
+          "initialValue": "dropBox#servers",
           "bounds": "35,215,273,25"
         },
         {

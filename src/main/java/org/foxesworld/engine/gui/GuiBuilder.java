@@ -152,7 +152,7 @@ public class GuiBuilder implements ComponentFactoryListener {
 
     /* INFO
      * An experimental solution
-     * Will do something with hardCoded scrollBox
+     * Will do something with hardCoded dropBox
      * */
     private void getInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = componentAttributes.getInitialValue().split("#");
@@ -169,7 +169,7 @@ public class GuiBuilder implements ComponentFactoryListener {
             }
 
             //EXP
-            case "scrollBox" -> {
+            case "dropBox" -> {
                 switch (splitValue[1]) {
                     case "servers" -> {
                         this.componentFactory.setScrollBoxArr(this.componentFactory.engine.getLauncher().getAuth().getUserServersArray());

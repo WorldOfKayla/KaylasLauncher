@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.action;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.scrollBox.DropBox;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.launcher.Game.Game;
 import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;

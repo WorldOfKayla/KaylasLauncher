@@ -1,8 +1,8 @@
 package org.foxesworld.launcher.User;
 
 import org.foxesworld.engine.gui.components.label.Label;
-import org.foxesworld.engine.gui.components.scrollBox.DropBox;
-import org.foxesworld.engine.gui.components.scrollBox.DropBoxListener;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
+import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;

@@ -5,7 +5,7 @@
         "opaque": false,
         "visible": true,
         "background": "#7e696900",
-        "backgroundImage": "assets/ui/img/cringe.png",
+        "backgroundImage": "assets/ui/img/pane.png",
         "bounds": "0,30,350,85"
       },
       "childComponents": [

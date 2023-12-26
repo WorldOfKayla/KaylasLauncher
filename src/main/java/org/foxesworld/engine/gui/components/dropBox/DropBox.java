@@ -9,31 +9,31 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 public class DropBox extends JComponent implements MouseListener, MouseMotionListener {
+
+    private enum State {CLOSED, OPENED, ROLLOVER}
     private boolean loaded = false;
     private final ComponentFactory componentFactory;
     private DropBoxListener dropBoxListener;
     private int previousHover = -1;
-
     private String[] values;
-    private static int initialY = 0;
-    private static boolean entered = false;
-    private static boolean opened = false;
-    private static int x = 0;
-    private static int y = 0;
-    private static int selected;
-    private static int hover;
-
-    BufferedImage defaultTX;
-    BufferedImage openedTX;
-    BufferedImage rolloverTX;
-    BufferedImage selectedTX;
-    BufferedImage panelTX;
-    BufferedImage point;
+    private int initialY = 0;
+    private State state = State.CLOSED;
+    private int x = 0;
+    private int y = 0;
+    private int selected;
+    private int hover;
+    private boolean entered;
+    private BufferedImage defaultTX;
+    private BufferedImage openedTX;
+    private BufferedImage rolloverTX;
+    private BufferedImage selectedTX;
+    private BufferedImage panelTX;
+    private BufferedImage point;
 
     public DropBox(ComponentFactory componentFactory, String[] values, int initialY) {
         this.componentFactory = componentFactory;
         this.values = values;
-        DropBox.initialY = initialY;
+        this.initialY = initialY;
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -42,7 +42,7 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
         addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                opened = false;
+                state = State.CLOSED;
                 hover = selected;
                 componentFactory.engine.getFrame().getFrame().repaint();
                 repaint();
@@ -56,12 +56,16 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
         int w = getWidth();
         g.setColor(Color.WHITE);
 
-        if (opened) {
-            drawOpenedState(g, w);
-        } else if (entered) {
-            drawRolloverState(g, w);
-        } else {
-            drawDefaultState(g, w);
+        switch (state) {
+            case OPENED:
+                drawOpenedState(g, w);
+                break;
+            case ROLLOVER:
+                drawRolloverState(g, w);
+                break;
+            default:
+                drawDefaultState(g, w);
+                break;
         }
 
         g.dispose();
@@ -135,12 +139,12 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
 
         grabFocus();
 
-        if (opened && y / openedTX.getHeight() < values.length) {
+        if (state == State.OPENED && y / openedTX.getHeight() < values.length) {
             selected = y / openedTX.getHeight();
             entered = ImageUtils.contains(x, y, getX(), getY(), getWidth(), getHeight());
         }
 
-        if (opened) {
+        if (state == State.OPENED) {
             dropBoxListener.onScrollBoxClose(selected);
             componentFactory.engine.getSOUND().playSound("dropBox/dropBoxOpen.ogg", false);
         } else {
@@ -148,14 +152,14 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
             componentFactory.engine.getSOUND().playSound("dropBox/dropBoxClose.ogg", false);
         }
 
-        opened = !opened;
+        state = (state == State.OPENED) ? State.CLOSED : State.OPENED;
         hover = selected;
         repaint();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (!opened) {
+        if (state != State.OPENED) {
             componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
         }
         entered = true;
@@ -184,9 +188,9 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
     public void mouseMoved(MouseEvent e) {
         y = e.getY();
         x = e.getX();
-        int newHover = opened ? (y / openedTX.getHeight()) : -1;
+        int newHover = (state == State.OPENED) ? (y / openedTX.getHeight()) : -1;
         if (newHover >= 0 && newHover < values.length && newHover != previousHover) {
-            if (opened) {
+            if (state == State.OPENED) {
                 dropBoxListener.onServerHover(newHover);
             }
             previousHover = newHover;
@@ -195,18 +199,18 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
         }
     }
 
-    public static int getSelectedIndex() {
+    public int getSelectedIndex() {
         return selected;
     }
 
-    public static int getHoverIndex() {
+    public int getHoverIndex() {
         return hover;
     }
 
     public String getSelected() {
         try {
             return values[selected];
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
             return values[0];
         }
@@ -225,8 +229,8 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
         this.values = values;
     }
 
-    public static boolean isOpened() {
-        return opened;
+    public boolean isOpened() {
+        return state == State.OPENED;
     }
 
     public void setScrollBoxListener(DropBoxListener dropBoxListener) {
@@ -235,5 +239,29 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public void setDefaultTX(BufferedImage defaultTX) {
+        this.defaultTX = defaultTX;
+    }
+
+    public void setOpenedTX(BufferedImage openedTX) {
+        this.openedTX = openedTX;
+    }
+
+    public void setRolloverTX(BufferedImage rolloverTX) {
+        this.rolloverTX = rolloverTX;
+    }
+
+    public void setSelectedTX(BufferedImage selectedTX) {
+        this.selectedTX = selectedTX;
+    }
+
+    public void setPanelTX(BufferedImage panelTX) {
+        this.panelTX = panelTX;
+    }
+
+    public void setPoint(BufferedImage point) {
+        this.point = point;
     }
 }

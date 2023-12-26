@@ -30,12 +30,12 @@ public class DropBoxStyle {
         dropBox.setFont(componentFactory.engine.getFONTUTILS().getFont(this.fontName, this.fontSize));
         int dropBoxH = this.texture.getHeight() / 7;
         int dropBoxW = this.texture.getWidth();
-        dropBox.defaultTX = this.texture.getSubimage(0, 0, dropBoxW, dropBoxH);
-        dropBox.rolloverTX = this.texture.getSubimage(0, dropBoxH, dropBoxW, dropBoxH);
-        dropBox.openedTX = this.texture.getSubimage(0, dropBoxH * 2, dropBoxW, dropBoxH);
-        dropBox.panelTX = this.texture.getSubimage(0, dropBoxH * 3, dropBoxW, dropBoxH);
-        dropBox.selectedTX = this.texture.getSubimage(0, dropBoxH * 4, dropBoxW, dropBoxH);
-        dropBox.point = ImageUtils.getLocalImage("assets/ui/icons/point.png");
+        dropBox.setDefaultTX(this.texture.getSubimage(0, 0, dropBoxW, dropBoxH));
+        dropBox.setRolloverTX(this.texture.getSubimage(0, dropBoxH, dropBoxW, dropBoxH));
+        dropBox.setOpenedTX(this.texture.getSubimage(0, dropBoxH * 2, dropBoxW, dropBoxH));
+        dropBox.setPanelTX(this.texture.getSubimage(0, dropBoxH * 3, dropBoxW - 45, dropBoxH));
+        dropBox.setSelectedTX(this.texture.getSubimage(0, dropBoxH * 4, dropBoxW - 45, dropBoxH));
+        dropBox.setPoint(ImageUtils.getLocalImage("assets/ui/icons/point.png"));
     }
 }
 

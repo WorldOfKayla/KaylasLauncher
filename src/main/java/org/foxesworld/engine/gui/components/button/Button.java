@@ -11,135 +11,142 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class Button extends JButton implements MouseListener, MouseMotionListener {
-	private Color hoverColor;
-	private boolean entered = false;
-	private boolean pressed = false;
-	public BufferedImage defaultTX;
-	public BufferedImage rolloverTX;
-	public BufferedImage pressedTX;
-	public BufferedImage lockedTX;
-	private final ComponentFactory componentFactory;
-	private final ComponentAttributes buttonAttributes;
+    private Color hoverColor;
+    private boolean entered = false;
+    private boolean pressed = false;
+    public BufferedImage defaultTX;
+    public BufferedImage rolloverTX;
+    public BufferedImage pressedTX;
+    public BufferedImage lockedTX;
+    private final ComponentFactory componentFactory;
+    private final ComponentAttributes buttonAttributes;
 
-	public Button(ComponentFactory componentFactory, String text) {
-		this.componentFactory = componentFactory;
-		this.buttonAttributes = componentFactory.getComponentAttribute();
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		setText(text);
-		setBorderPainted(false);
-		setContentAreaFilled(false);
-		setFocusPainted(false);
-		setOpaque(componentFactory.style.isOpaque());
-		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	}
+    public Button(ComponentFactory componentFactory, String text) {
+        this.componentFactory = componentFactory;
+        this.buttonAttributes = componentFactory.getComponentAttribute();
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        setText(text);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setOpaque(componentFactory.style.isOpaque());
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
 
-	public Button(ComponentFactory componentFactory, ImageIcon icon) {
-		super();
-		this.componentFactory = componentFactory;
-		this.buttonAttributes = componentFactory.getComponentAttribute();
-		addMouseListener(this);
-		addMouseMotionListener(this);
+    public Button(ComponentFactory componentFactory, ImageIcon icon) {
+        super();
+        this.componentFactory = componentFactory;
+        this.buttonAttributes = componentFactory.getComponentAttribute();
+        addMouseListener(this);
+        addMouseMotionListener(this);
 
-		setBorderPainted(false);
-		setContentAreaFilled(false);
-		setFocusPainted(false);
-		setOpaque(componentFactory.style.isOpaque());
-		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setOpaque(componentFactory.style.isOpaque());
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		JLabel iconLabel = new JLabel(icon);
-		iconLabel.setHorizontalAlignment(JLabel.CENTER);
-		iconLabel.setVerticalAlignment(JLabel.CENTER);
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setHorizontalAlignment(JLabel.CENTER);
+        iconLabel.setVerticalAlignment(JLabel.CENTER);
 
-		setLayout(new BorderLayout());
-		add(iconLabel, BorderLayout.CENTER);
-	}
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+        setLayout(new BorderLayout());
+        add(iconLabel, BorderLayout.CENTER);
+    }
 
-		int w = getWidth();
-		int h = getHeight();
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-		BufferedImage imageToDraw = defaultTX;
+        int w = getWidth();
+        int h = getHeight();
 
-		if (!isEnabled()) {
-			imageToDraw = lockedTX;
-		} else if (pressed) {
-			imageToDraw = pressedTX;
-		} else if (entered) {
-			g.setColor(this.hoverColor);
-			imageToDraw = rolloverTX;
-		}
+        BufferedImage imageToDraw = defaultTX;
 
-		g.drawImage(imageToDraw, 0, 0, w, h, null);
+        if (!isEnabled()) {
+            imageToDraw = lockedTX;
+        } else if (pressed) {
+            imageToDraw = pressedTX;
+        } else if (entered) {
+            g.setColor(this.hoverColor);
+            imageToDraw = rolloverTX;
+        }
 
-		if (getText() != null && !getText().isEmpty()) {
-			FontMetrics fm = g.getFontMetrics();
-			int textX = (w - fm.stringWidth(getText())) / 2;
-			int textY = (h + fm.getAscent()) / 2;
-			g.setColor(entered ? this.hoverColor : getForeground());
-			g.drawString(getText(), textX, textY);
-		}
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		entered = true;
-		if(isEnabled()) {
-			componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
-		}
-		repaint();
-	}
+        g.drawImage(imageToDraw, 0, 0, w, h, null);
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		entered = false;
-		repaint();
-	}
+        if (getText() != null && !getText().isEmpty()) {
+            FontMetrics fm = g.getFontMetrics();
+            int textX = (w - fm.stringWidth(getText())) / 2;
+            int textY = (h + fm.getAscent()) / 2;
+            if (isEnabled()) {
+                g.setColor(entered ? this.hoverColor : getForeground());
+            }
+            g.drawString(getText(), textX, textY);
+        }
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
-			ButtonClick();
-		}
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        entered = true;
+        if (isEnabled()) {
+            componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
+        }
+        repaint();
+    }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (pressed && e.getButton() == MouseEvent.BUTTON1) {
-			pressed = false;
-			repaint();
-		}
-	}
+    @Override
+    public void mouseExited(MouseEvent e) {
+        entered = false;
+        repaint();
+    }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {}
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (isEnabled() && e.getButton() == MouseEvent.BUTTON1) {
+            ButtonClick();
+        }
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (pressed && e.getButton() == MouseEvent.BUTTON1) {
+            pressed = false;
+            repaint();
+        }
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-	public void ButtonClick() {
-		String sound;
-		if (this.buttonAttributes.getComponentId().contains("back")) {
-			sound = "buttonBack.ogg";
-		}  else if (this.buttonAttributes.getComponentId().contains("small")) {
-			sound = "buttonClickSmall.ogg";
-		} else {
-			sound = "buttonClick.ogg";
-		}
+    @Override
+    public void mouseDragged(MouseEvent e) {
+    }
 
-		componentFactory.engine.getSOUND().playSound("button/" + sound, false);
-		pressed = true;
-	}
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-	public void setPressed(boolean pressed) {
-		this.pressed = pressed;
-	}
+    public void ButtonClick() {
+        String sound;
+        if (this.buttonAttributes.getComponentId().contains("back")) {
+            sound = "buttonBack.ogg";
+        } else if (this.buttonAttributes.getComponentId().contains("small")) {
+            sound = "buttonClickSmall.ogg";
+        } else {
+            sound = "buttonClick.ogg";
+        }
 
-	public void setHoverColor(Color hoverColor) {
-		this.hoverColor = hoverColor;
-	}
+        componentFactory.engine.getSOUND().playSound("button/" + sound, false);
+        pressed = true;
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+    }
+
+    public void setHoverColor(Color hoverColor) {
+        this.hoverColor = hoverColor;
+    }
 }

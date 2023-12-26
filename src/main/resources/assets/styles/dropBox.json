@@ -3,7 +3,7 @@
     "dropBox": {
       "selectable": {
         "name": "A selectable dude!",
-        "font": "FSElliotPro-Heavy",
+        "font": "Roboto-Regular",
         "fontSize": 12,
         "color": "#08162f",
         "texture": "assets/ui/dropBox/dropBox.png"

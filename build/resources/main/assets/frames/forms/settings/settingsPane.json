@@ -14,8 +14,6 @@
           "enabled": true,
           "keyCode": "BACK_SPACE",
           "componentStyle": "btnSmallClean",
-          "iconWidth": 32,
-          "iconHeight": 32,
           "localeKey": "settings.back",
           "componentId": "back",
           "bounds": "0,0,97,34"

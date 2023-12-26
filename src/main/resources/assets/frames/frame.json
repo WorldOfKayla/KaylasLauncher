@@ -16,7 +16,7 @@
         "opaque": true,
         "visible": true,
         "listener": "dragger",
-        "background": "#503030c4",
+        "background": "#503030c6",
         "backgroundImage": "assets/ui/img/bg/header.png",
         "bounds": "0,0,850,30"
       },

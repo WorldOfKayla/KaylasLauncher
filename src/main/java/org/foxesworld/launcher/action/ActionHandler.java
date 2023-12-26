@@ -89,9 +89,10 @@ public class ActionHandler {
             case "toGame" -> {
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
-                this.currentServer = launcher.getAuth().getUserServersAttributes().get(DropBox.getSelectedIndex());
+                DropBox dropBox = (DropBox) engine.getGuiBuilder().getComponentById("serverBox");
+                this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
                 this.getEngine().getLOGGER().info("Launching " + this.currentServer.getServerName());
-                this.engine.getCONFIG().setConfigValue("selectedServer", DropBox.getSelectedIndex());
+                this.engine.getCONFIG().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 new Game(this);
             }

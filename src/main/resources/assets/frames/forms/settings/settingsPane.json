@@ -13,7 +13,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "BACK_SPACE",
-          "componentStyle": "buttonRed",
+          "componentStyle": "btnSmallClean",
           "iconWidth": 32,
           "iconHeight": 32,
           "localeKey": "settings.back",

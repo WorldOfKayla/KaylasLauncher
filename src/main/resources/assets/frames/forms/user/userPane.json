@@ -42,7 +42,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "F5",
-          "componentStyle": "buttonYellow",
+          "componentStyle": "btnSmallClean",
           "componentId": "smallButton",
           "localeKey": "TEST",
           "bounds": "80,45,60,34"

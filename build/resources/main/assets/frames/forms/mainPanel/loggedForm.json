@@ -27,7 +27,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "S",
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 16,
           "iconHeight": 16,
@@ -48,7 +48,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "ENTER",
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnBig",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
           "bounds": "165,260,120,47"

@@ -51,7 +51,7 @@
         {
           "componentType": "button",
           "enabled": true,
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 16,
           "iconHeight": 16,

@@ -27,7 +27,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "S",
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 16,
           "iconHeight": 16,

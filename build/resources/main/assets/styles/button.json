@@ -10,37 +10,29 @@
         "color": "#807159",
         "hoverColor": "#efa532",
         "align": "CENTER",
-        "texture": "assets/ui/button/btnBurnt.png"
+        "texture": "assets/ui/button/btnMain.png"
       },
-      "buttonGreen": {
-        "name": "Goblin power",
+      "btnSmallClean": {
+        "name": "Woodpecker spirit",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
-        "width": 344,
-        "height": 500,
-        "color": "#ffffff",
+        "width": 81,
+        "height": 136,
+        "color": "#807159",
+        "hoverColor": "#efa532",
         "align": "CENTER",
-        "texture": "assets/ui/button/buttonGreen.png"
+        "texture": "assets/ui/button/btnSmallClean.png"
       },
-      "buttonRed": {
-        "name": "Orcs power",
+      "btnBig": {
+        "name": "Woodpecker spirit",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
-        "width": 344,
-        "height": 500,
-        "color": "#ffffff",
+        "width": 101,
+        "height": 164,
+        "color": "#807159",
+        "hoverColor": "#efa532",
         "align": "CENTER",
-        "texture": "assets/ui/button/buttonRed.png"
-      },
-      "buttonYellow": {
-        "name": "Elves power",
-        "font": "FSElliotPro-Heavy",
-        "fontSize": 12,
-        "width": 344,
-        "height": 500,
-        "color": "#ffffff",
-        "align": "CENTER",
-        "texture": "assets/ui/button/buttonYellow.png"
+        "texture": "assets/ui/button/btnBig.png"
       }
     }
   }

@@ -6,7 +6,7 @@
         "background": "#5e6959",
         "color": "#b0976b",
         "borderColor": "#183824",
-        "texture": "assets/ui/progressBar/progressBar.png"
+        "texture": "assets/ui/progressBar/test.png"
       },
       "progressMini": {
         "name": "Let's Get",

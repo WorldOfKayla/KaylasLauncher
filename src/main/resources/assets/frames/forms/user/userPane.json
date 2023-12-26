@@ -2,10 +2,11 @@
   "groups": {
     "userPane": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "visible": true,
-        "background": "#d25e1be3",
-        "bounds": "0,30,350,83"
+        "background": "#7e696900",
+        "backgroundImage": "assets/ui/img/cringe.png",
+        "bounds": "0,30,350,85"
       },
       "childComponents": [
         {
@@ -20,7 +21,7 @@
         {
           "componentType": "label",
           "fontSize": 11,
-          "color": "#36230fbd",
+          "color": "#dda413ba",
           "componentStyle": "title",
           "localeKey": "",
           "componentId": "userGroup",
@@ -36,16 +37,6 @@
           "iconHeight": 64,
           "componentId": "userHead",
           "bounds": "5,5,64,64"
-        },
-        {
-          "componentType": "label",
-          "fontSize": 11,
-          "componentStyle": "title",
-          "imageIcon": "assets/ui/img/line.png",
-          "iconWidth": 687,
-          "iconHeight": 16,
-          "componentId": "separateLine",
-          "bounds": "0,80,350,16"
         },
         {
           "componentType": "button",

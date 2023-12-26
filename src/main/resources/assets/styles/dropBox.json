@@ -6,7 +6,7 @@
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "color": "#08162f",
-        "texture": "assets/ui/scrollBox/scrollBox.png"
+        "texture": "assets/ui/dropBox/dropBox.png"
       }
     }
   }

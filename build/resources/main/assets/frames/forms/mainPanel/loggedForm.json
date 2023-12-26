@@ -14,7 +14,7 @@
           "componentStyle": "selectable",
           "componentId": "serverBox",
           "initialValue": "scrollBox#servers",
-          "bounds": "40,230,250,25"
+          "bounds": "35,215,273,25"
         },
         {
           "componentType": "serverBox",

@@ -69,11 +69,11 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
                 } else {
                     g.drawImage(this.selectedTX, 0, this.panelTX.getHeight() * i, this);
                 }
-                g.drawString(this.values[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2);
+                g.drawString(this.values[i], 5, this.selectedTX.getHeight() * (i + 1) - g.getFontMetrics().getHeight() / 2 - 5);
                 if (i != selected) continue;
                 g.drawImage(this.point, 176, this.panelTX.getHeight() * i + 3, this);
             }
-            g.drawString(this.values[selected], 5, this.selectedTX.getHeight() * (this.values.length + 1) - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 10, this.selectedTX.getHeight() * (this.values.length + 1) - g.getFontMetrics().getHeight() / 2 - 5);
         } else if (entered) {
             int righth = this.openedTX.getHeight();
             if (this.getY() != initialy || this.getHeight() != righth) {
@@ -82,7 +82,7 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
                 return;
             }
             g.drawImage(ImageUtils.genButton(w, this.rolloverTX.getHeight(), this.rolloverTX), 0, 0, w, this.rolloverTX.getHeight(), null);
-            g.drawString(this.values[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 10, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2 - 5);
         } else {
             int righth = this.openedTX.getHeight();
             if (this.getY() != initialy || this.getHeight() != righth) {
@@ -91,7 +91,7 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
                 return;
             }
             g.drawImage(ImageUtils.genButton(w, this.defaultTX.getHeight(), this.defaultTX), 0, 0, w, this.defaultTX.getHeight(), null);
-            g.drawString(this.values[selected], 5, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2);
+            g.drawString(this.values[selected], 10, this.rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2 - 5);
         }
         g.dispose();
         if(!loaded){

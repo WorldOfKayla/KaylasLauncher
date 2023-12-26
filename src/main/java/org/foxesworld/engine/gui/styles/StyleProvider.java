@@ -73,6 +73,8 @@ public class StyleProvider {
         private String thumbImage;
         private int width;
         private int height;
+        private int paddingX;
+        private int paddingY;
         private String font;
         private int fontSize;
         private String texture;
@@ -132,6 +134,14 @@ public class StyleProvider {
 
         public String getTrackImage() {
             return trackImage;
+        }
+
+        public int getPaddingX() {
+            return paddingX;
+        }
+
+        public int getPaddingY() {
+            return paddingY;
         }
 
         public String getThumbImage() {

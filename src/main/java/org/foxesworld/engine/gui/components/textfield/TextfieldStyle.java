@@ -35,6 +35,8 @@ public class TextfieldStyle {
 
 	public void apply(Textfield text) {
 		text.texture = texture;
+		text.setPaddingX(componentFactory.style.getPaddingX());
+		text.setPaddingY(componentFactory.style.getPaddingY());
 		text.setCaretColor(caretColor);
 		text.setBackground(backgroundColor);
 		text.setForeground(foregroundColor);

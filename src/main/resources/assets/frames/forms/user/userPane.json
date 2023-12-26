@@ -4,8 +4,7 @@
       "panelOptions": {
         "opaque": true,
         "visible": true,
-        "background": "#f0b91578",
-        "backgroundImage": "assets/ui/img/info.png",
+        "background": "#d25e1be3",
         "bounds": "0,30,350,83"
       },
       "childComponents": [

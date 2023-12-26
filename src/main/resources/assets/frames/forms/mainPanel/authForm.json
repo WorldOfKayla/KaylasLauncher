@@ -14,14 +14,14 @@
           "componentStyle": "line",
           "localeKey": "auth.loginPlaceholder",
           "componentId": "login",
-          "bounds": "60,160,0,0"
+          "bounds": "45,150,0,0"
         },
         {
           "componentType": "passField",
           "componentStyle": "line",
           "localeKey": "auth.passwordPlaceholder",
           "componentId": "password",
-          "bounds": "60,230,0,0"
+          "bounds": "45,220,0,0"
         },
         {
           "componentType": "label",
@@ -37,7 +37,7 @@
           "componentStyle": "solid",
           "componentId": "rememberMe",
           "localeKey": "auth.rememberMe",
-          "bounds": "55,265,240,32"
+          "bounds": "40,265,240,32"
         },
         {
           "componentType": "button",
@@ -46,18 +46,18 @@
           "componentStyle": "buttonGreen",
           "componentId": "authForm>submit",
           "localeKey": "auth.submit",
-          "bounds": "40,295,240,47"
+          "bounds": "55,300,240,47"
         },
         {
           "componentType": "button",
           "enabled": true,
           "componentStyle": "buttonYellow",
           "imageIcon": "assets/ui/icons/settings.png",
-          "iconWidth": 32,
-          "iconHeight": 32,
+          "iconWidth": 16,
+          "iconHeight": 16,
           "componentId": "settings-small",
           "localeKey": "settings.settingsButt",
-          "bounds": "275,425,60,60"
+          "bounds": "285,435,46,46"
         }
       ]
     }

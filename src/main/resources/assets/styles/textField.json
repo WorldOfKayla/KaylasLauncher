@@ -5,12 +5,14 @@
         "name": "Pumpkin Power",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,
-        "width": 200,
-        "height": 35,
-        "color": "#08162f",
-        "caretColor": "#436e22",
+        "width": 262,
+        "height": 45,
+        "paddingX": 15,
+        "paddingY": 15,
+        "color": "#e2e7ec",
+        "caretColor": "#ffffff",
         "background": "#ffffff",
-        "texture": "assets/ui/input/line.png"
+        "texture": "assets/ui/input/textfield.png"
       },
       "inputBox": {
         "name": "Other Style",
@@ -18,6 +20,8 @@
         "fontSize": 12,
         "width": 200,
         "height": 25,
+        "paddingX": 5,
+        "paddingY": 5,
         "color": "#2b2826",
         "caretColor": "#436e22",
         "texture": "assets/ui/input/inputBox.png",

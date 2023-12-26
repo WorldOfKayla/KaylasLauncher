@@ -78,7 +78,7 @@
                 },
                 {
                   "componentType": "textField",
-                  "componentStyle": "inputBox",
+                  "componentStyle": "textFieldMain",
                   "localeKey": "settings.ramPlaceholder",
                   "initialValue": "config#ramAmount",
                   "componentId": "ramAmount",
@@ -103,7 +103,7 @@
                   "imageIcon": "assets/ui/icons/folder.png",
                   "iconWidth": 16,
                   "iconHeight": 16,
-                  "componentStyle": "buttonYellow",
+                  "componentStyle": "buttonMain",
                   "localeKey": "settings.homeDir",
                   "componentId": "gameDir-small",
                   "bounds": "235,15,46,46"
@@ -112,7 +112,7 @@
                   "componentType": "button",
                   "enabled": true,
                   "keyCode": "ENTER",
-                  "componentStyle": "buttonGreen",
+                  "componentStyle": "buttonMain",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",
                   "bounds": "40,195,210,47"

@@ -33,6 +33,7 @@ public class ButtonStyle {
 		button.setVisible(visible);
 		button.setHorizontalAlignment(align == ComponentFactory.Align.LEFT ? SwingConstants.LEFT : align == ComponentFactory.Align.CENTER ? SwingConstants.CENTER : SwingConstants.RIGHT);
 		button.setFont(componentFactory.engine.getFONTUTILS().getFont(font, fontSize));
+		button.setHoverColor(hexToColor(this.componentFactory.style.getHoverColor()));
 		button.setForeground(hexToColor(color));
 		int i = texture.getHeight() / 4;
 		button.defaultTX = texture.getSubimage(0, 0, texture.getWidth(), i);

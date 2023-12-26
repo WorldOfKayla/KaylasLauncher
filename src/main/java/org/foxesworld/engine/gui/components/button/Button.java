@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class Button extends JButton implements MouseListener, MouseMotionListener {
+	private Color hoverColor;
 	private boolean entered = false;
 	private boolean pressed = false;
 	public BufferedImage defaultTX;
@@ -19,7 +20,6 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public BufferedImage lockedTX;
 	private final ComponentFactory componentFactory;
 	private final ComponentAttributes buttonAttributes;
-	private JLabel iconLabel;
 
 	public Button(ComponentFactory componentFactory, String text) {
 		this.componentFactory = componentFactory;
@@ -47,12 +47,10 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		setOpaque(componentFactory.style.isOpaque());
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		// Create a label to hold the ImageIcon
-		iconLabel = new JLabel(icon);
+		JLabel iconLabel = new JLabel(icon);
 		iconLabel.setHorizontalAlignment(JLabel.CENTER);
 		iconLabel.setVerticalAlignment(JLabel.CENTER);
 
-		// Use BorderLayout to position the label at the center
 		setLayout(new BorderLayout());
 		add(iconLabel, BorderLayout.CENTER);
 	}
@@ -70,24 +68,20 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 		} else if (pressed) {
 			imageToDraw = pressedTX;
 		} else if (entered) {
+			g.setColor(this.hoverColor);
 			imageToDraw = rolloverTX;
 		}
 
 		g.drawImage(imageToDraw, 0, 0, w, h, null);
 
-		// Draw text or other components if needed...
 		if (getText() != null && !getText().isEmpty()) {
 			FontMetrics fm = g.getFontMetrics();
 			int textX = (w - fm.stringWidth(getText())) / 2;
 			int textY = (h + fm.getAscent()) / 2;
-			g.setColor(getForeground());
+			g.setColor(entered ? this.hoverColor : getForeground());
 			g.drawString(getText(), textX, textY);
 		}
 	}
-
-
-
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		entered = true;
@@ -128,7 +122,7 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 	public void mouseMoved(MouseEvent e) {}
 
 	public void ButtonClick() {
-		String sound = "";
+		String sound;
 		if (this.buttonAttributes.getComponentId().contains("back")) {
 			sound = "buttonBack.ogg";
 		}  else if (this.buttonAttributes.getComponentId().contains("small")) {
@@ -143,5 +137,9 @@ public class Button extends JButton implements MouseListener, MouseMotionListene
 
 	public void setPressed(boolean pressed) {
 		this.pressed = pressed;
+	}
+
+	public void setHoverColor(Color hoverColor) {
+		this.hoverColor = hoverColor;
 	}
 }

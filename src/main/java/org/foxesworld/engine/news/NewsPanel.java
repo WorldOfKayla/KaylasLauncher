@@ -76,7 +76,7 @@ public class NewsPanel extends JPanel {
         // Creating a separate panel for the upper part of the newsAttributes
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(true);
-        upperPanel.setBackground(hexToColor("#3366938a"));
+        upperPanel.setBackground(hexToColor("#3366938a")); //assets/ui/img/title.png
 
         try {
             // Display the community photo with rounded corners

@@ -11,14 +11,14 @@
       "childComponents": [
         {
           "componentType": "textField",
-          "componentStyle": "line",
+          "componentStyle": "textFieldMain",
           "localeKey": "auth.loginPlaceholder",
           "componentId": "login",
           "bounds": "45,150,0,0"
         },
         {
           "componentType": "passField",
-          "componentStyle": "line",
+          "componentStyle": "textFieldMain",
           "localeKey": "auth.passwordPlaceholder",
           "componentId": "password",
           "bounds": "45,220,0,0"
@@ -43,7 +43,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "ENTER",
-          "componentStyle": "buttonGreen",
+          "componentStyle": "buttonMain",
           "componentId": "authForm>submit",
           "localeKey": "auth.submit",
           "bounds": "55,300,240,47"
@@ -51,7 +51,7 @@
         {
           "componentType": "button",
           "enabled": true,
-          "componentStyle": "buttonYellow",
+          "componentStyle": "buttonMain",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 16,
           "iconHeight": 16,

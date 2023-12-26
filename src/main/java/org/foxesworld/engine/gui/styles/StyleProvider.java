@@ -66,6 +66,7 @@ public class StyleProvider {
         private String backgroundImage;
         private String background;
         private String color;
+        private String hoverColor;
         private String caretColor;
         private String align;
         private String borderColor;
@@ -94,6 +95,10 @@ public class StyleProvider {
 
         public String getColor() {
             return color;
+        }
+
+        public String getHoverColor() {
+            return hoverColor;
         }
 
         public String getCaretColor() {

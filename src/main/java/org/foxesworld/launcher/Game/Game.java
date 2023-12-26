@@ -65,6 +65,7 @@ public class Game implements FileLoaderListener, FileGuardListener, GameListener
     }
     @Override
     public void onFilesChecked(int filesDeleted) {
+        this.gameLauncher.getEngine().getFrame().getLoadingManager().stopLoading();
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");
         this.actionHandler.getEngine().getLOGGER().info(filesDeleted + " removed");
         this.actionHandler.getEngine().getSOUND().stopAllSounds();

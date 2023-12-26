@@ -6,7 +6,7 @@
     },
     "status": {
       "en_US": "Alpha",
-      "ru_RU": "Alpha"
+      "ru_RU": "Альфа"
     }
   },
   "settings": {
@@ -79,6 +79,16 @@
     "rememberMe": {
       "en_US": "Remember Me",
       "ru_RU": "Запомнить меня"
+    }
+  },
+  "file": {
+    "received": {
+      "en_US": "Received file ",
+      "ru_RU": "Получен файл "
+    },
+    "getting": {
+      "en_US": "Getting Files",
+      "ru_RU": "Получаю файлы"
     }
   },
   "logged": {

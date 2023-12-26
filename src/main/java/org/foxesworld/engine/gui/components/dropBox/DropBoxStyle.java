@@ -30,6 +30,8 @@ public class DropBoxStyle {
         dropBox.setFont(componentFactory.engine.getFONTUTILS().getFont(this.fontName, this.fontSize));
         int dropBoxH = this.texture.getHeight() / 7;
         int dropBoxW = this.texture.getWidth();
+        dropBox.setColor(this.color);
+        dropBox.setHoverColor(hexToColor(componentFactory.style.getHoverColor()));
         dropBox.setDefaultTX(this.texture.getSubimage(0, 0, dropBoxW, dropBoxH));
         dropBox.setRolloverTX(this.texture.getSubimage(0, dropBoxH, dropBoxW, dropBoxH));
         dropBox.setOpenedTX(this.texture.getSubimage(0, dropBoxH * 2, dropBoxW, dropBoxH));

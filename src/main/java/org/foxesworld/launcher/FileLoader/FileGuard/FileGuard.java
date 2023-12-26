@@ -81,6 +81,7 @@ public class FileGuard {
         File[] files = directory.listFiles();
 
         if (files != null) {
+            //this.gameLauncher.getEngine().getFrame().getLoadingManager().startLoading();
             for (File file : files) {
                 if (file.isFile()) {
                     String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
@@ -103,6 +104,7 @@ public class FileGuard {
                     // Recursively scan and delete files in subdirectories
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
+                this.gameLauncher.getEngine().getFrame().getLoadingManager().setLoadingText(file.getName(), "checkingFiles");
             }
         } else {
             logger.error(directory + " is not found!");

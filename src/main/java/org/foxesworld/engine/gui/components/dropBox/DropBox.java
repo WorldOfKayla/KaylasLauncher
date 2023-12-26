@@ -8,15 +8,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+
 public class DropBox extends JComponent implements MouseListener, MouseMotionListener {
 
     private enum State {CLOSED, OPENED, ROLLOVER}
+    private Color color, hoverColor;
     private boolean loaded = false;
     private final ComponentFactory componentFactory;
     private DropBoxListener dropBoxListener;
     private int previousHover = -1;
     private String[] values;
-    private int initialY = 0;
+    private int initialY;
     private State state = State.CLOSED;
     private int x = 0;
     private int y = 0;
@@ -54,22 +57,14 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
     protected void paintComponent(Graphics gmain) {
         Graphics2D g = (Graphics2D) gmain;
         int w = getWidth();
-        g.setColor(Color.WHITE);
+        g.setColor(hexToColor(componentFactory.style.getColor()));
 
         switch (state) {
-            case OPENED:
-                drawOpenedState(g, w);
-                break;
-            case ROLLOVER:
-                drawRolloverState(g, w);
-                break;
-            default:
-                drawDefaultState(g, w);
-                break;
+            case OPENED -> drawOpenedState(g, w);
+            case ROLLOVER -> drawRolloverState(g, w);
+            default -> drawDefaultState(g, w);
         }
-
         g.dispose();
-
         if (!loaded) {
             dropBoxListener.onScrollBoxCreated(selected);
             setLoaded(true);
@@ -106,7 +101,11 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
             return;
         }
 
+        // Draw the button with rollover effect
         g.drawImage(ImageUtils.genButton(w, rolloverTX.getHeight(), rolloverTX), 0, 0, w, rolloverTX.getHeight(), null);
+
+        // Draw the text
+        g.setColor(hoverColor); // Set the color for HOVER TEXT
         g.drawString(values[selected], 10, rolloverTX.getHeight() - g.getFontMetrics().getHeight() / 2 - 5);
     }
 
@@ -162,6 +161,7 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
         if (state != State.OPENED) {
             componentFactory.engine.getSOUND().playSound("button/buttonHover.ogg", false);
         }
+        state = State.ROLLOVER;
         entered = true;
         repaint();
     }
@@ -169,18 +169,28 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
     @Override
     public void mouseExited(MouseEvent e) {
         entered = false;
+        state = State.CLOSED;
         repaint();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        grabFocus();
+        handleMouseClick(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        handleMouseClick(e);
     }
 
-    @Override
+    private void handleMouseClick(MouseEvent e) {
+        if (e.getButton() != MouseEvent.BUTTON1) {
+            return;
+        }
+    }
+
+        @Override
     public void mouseDragged(MouseEvent e) {
     }
 
@@ -263,5 +273,13 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
 
     public void setPoint(BufferedImage point) {
         this.point = point;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setHoverColor(Color hoverColor) {
+        this.hoverColor = hoverColor;
     }
 }

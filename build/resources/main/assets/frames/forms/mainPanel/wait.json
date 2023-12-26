@@ -2,10 +2,10 @@
   "groups": {
     "wait": {
       "panelOptions": {
-        "opaque": false,
+        "opaque": true,
         "visible": false,
-        "background": "#638dbebf",
-        "bounds": "0,0,850,500"
+        "background": "#638dbe",
+        "bounds": "250,70,300,250"
       },
       "childComponents": [
         {
@@ -24,7 +24,7 @@
           "componentStyle": "promptLabel",
           "localeKey": "WAIT",
           "componentId": "waitText",
-          "bounds": "60,50,250,50"
+          "bounds": "0,0,250,50"
         }
       ]
     }

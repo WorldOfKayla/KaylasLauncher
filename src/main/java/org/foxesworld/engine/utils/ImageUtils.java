@@ -175,6 +175,17 @@ public class ImageUtils {
         return bufferedImage;
     }
 
+    public static void setRenderingHints(Graphics2D g2d) {
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    }
+
+    public static void drawWithTransparency(Graphics2D g2d, Image image, int x, int y, int width, int height, int transparency) {
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        g2d.drawImage(image, x, y, width, height, null);
+    }
+
 
     public static BufferedImage getByIndex(BufferedImage all, int d, int i) {
         return all.getSubimage(d * i, 0, d, d);

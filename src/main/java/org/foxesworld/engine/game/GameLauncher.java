@@ -300,4 +300,8 @@ public class GameLauncher {
     public int getIntVer() {
         return intVer;
     }
+
+    public Engine getEngine() {
+        return engine;
+    }
 }

@@ -6,6 +6,7 @@
         "font": "Roboto-Regular",
         "fontSize": 12,
         "color": "#08162f",
+        "hoverColor": "#efa532",
         "texture": "assets/ui/dropBox/dropBox.png"
       }
     }

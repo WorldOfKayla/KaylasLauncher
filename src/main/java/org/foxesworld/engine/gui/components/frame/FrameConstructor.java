@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.panel.Panel;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
+import org.foxesworld.engine.utils.LoadingManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,20 +13,22 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class FrameConstructor {
+public class FrameConstructor extends JFrame {
     private final Engine engine;
     private Panel panel;
     private Dimension screenSize;
     private JPanel rootPanel;
     private final JFrame frame;
     private final LanguageProvider LANG;
+    private final LoadingManager loadingManager;
 
     public FrameConstructor(Engine engine) {
         engine.getLOGGER().info("FrameConstructor initialization");
         this.engine = engine;
-        this.frame = new JFrame();
+        this.frame = this;
         this.LANG = engine.getLANG();
         buildFrame("assets/frames/frame.json");
+        this.loadingManager = new LoadingManager(this.engine);
     }
 
     private void buildFrame(String path){
@@ -57,6 +60,7 @@ public class FrameConstructor {
         frame.setVisible(true);
     }
 
+
     public Dimension getScreenSize() {
         return screenSize;
     }
@@ -75,5 +79,9 @@ public class FrameConstructor {
 
     public Panel getPanel() {
         return panel;
+    }
+
+    public LoadingManager getLoadingManager() {
+        return loadingManager;
     }
 }

@@ -2,6 +2,7 @@ package org.foxesworld.launcher.action;
 
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.Game.Game;
 import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;
@@ -9,6 +10,7 @@ import org.foxesworld.launcher.Server.ServerAttributes;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,7 +48,8 @@ public class ActionHandler {
 
             case "smallButton" -> {
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                engine.getSOUND().playSound("exit.ogg", false);
+                //engine.getSOUND().playSound("exit.ogg", false);
+                engine.getFrame().getLoadingManager().startLoading();
             }
 
             case "gameDir-small" -> openGameFolder();

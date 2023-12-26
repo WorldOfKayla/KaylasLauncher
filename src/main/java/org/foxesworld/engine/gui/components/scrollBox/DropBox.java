@@ -8,11 +8,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class ScrollBox extends JComponent implements MouseListener, MouseMotionListener {
-
+public class DropBox extends JComponent implements MouseListener, MouseMotionListener {
     private boolean loaded = false;
     private final ComponentFactory componentFactory;
-    private ScrollBoxListener scrollBoxListener;
+    private DropBoxListener dropBoxListener;
     private int previousHover = -1;
 
     public String[] values;
@@ -30,7 +29,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
     public BufferedImage panelTX;
     public BufferedImage point;
 
-    public ScrollBox(ComponentFactory componentFactory, String[] values, int y) {
+    public DropBox(ComponentFactory componentFactory, String[] values, int y) {
         this.componentFactory = componentFactory;
         this.values = values;
         initialy = y;
@@ -44,7 +43,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
                 opened = false;
                 hover = selected;
                 componentFactory.engine.getFrame().getFrame().repaint();
-                ScrollBox.this.repaint();
+                DropBox.this.repaint();
             }
         });
     }
@@ -96,7 +95,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         }
         g.dispose();
         if(!loaded){
-            this.scrollBoxListener.onScrollBoxCreated(selected);
+            this.dropBoxListener.onScrollBoxCreated(selected);
             setLoaded(true);
         }
     }
@@ -113,10 +112,10 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
             entered = ImageUtils.contains(x, y, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
         if (opened) {
-            scrollBoxListener.onScrollBoxClose(selected);
+            dropBoxListener.onScrollBoxClose(selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOff.ogg", false);
         } else {
-            scrollBoxListener.onScrollBoxOpen(selected);
+            dropBoxListener.onScrollBoxOpen(selected);
             componentFactory.engine.getSOUND().playSound("scrollBox/scrollBoxOn.ogg", false);
         }
         boolean bl = opened = !opened;
@@ -159,7 +158,7 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         int newHover = opened ? (y / this.openedTX.getHeight()) : -1;
         if (newHover >= 0 && newHover < values.length && newHover != previousHover) {
             if (opened) {
-                scrollBoxListener.onServerHover(newHover);
+                dropBoxListener.onServerHover(newHover);
             }
             previousHover = newHover;
             this.repaint();
@@ -202,8 +201,8 @@ public class ScrollBox extends JComponent implements MouseListener, MouseMotionL
         return opened;
     }
 
-    public void setScrollBoxListener(ScrollBoxListener scrollBoxListener) {
-        this.scrollBoxListener = scrollBoxListener;
+    public void setScrollBoxListener(DropBoxListener dropBoxListener) {
+        this.dropBoxListener = dropBoxListener;
     }
 
     public void setLoaded(boolean loaded) {

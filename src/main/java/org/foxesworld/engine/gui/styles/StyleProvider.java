@@ -15,7 +15,7 @@ import java.util.Objects;
 public class StyleProvider {
 
     private final Map<String, Map<String, StyleAttributes>> elementStyles = new HashMap<>();
-    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "scrollBox", "serverBox", "textField", "slider"};
+    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
     private final Engine engine;
 
     public StyleProvider(Engine engine) {

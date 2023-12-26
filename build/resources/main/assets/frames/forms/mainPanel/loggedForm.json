@@ -10,11 +10,11 @@
       },
       "childComponents": [
         {
-          "componentType": "scrollBox",
+          "componentType": "dropBox",
           "componentStyle": "selectable",
           "componentId": "serverBox",
           "initialValue": "scrollBox#servers",
-          "bounds": "40,230,245,34"
+          "bounds": "40,230,250,25"
         },
         {
           "componentType": "serverBox",
@@ -27,13 +27,13 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "S",
-          "componentStyle": "buttonWhite",
+          "componentStyle": "buttonYellow",
           "imageIcon": "assets/ui/icons/settings.png",
-          "iconWidth": 32,
-          "iconHeight": 32,
-          "componentId": "settings",
+          "iconWidth": 16,
+          "iconHeight": 16,
+          "componentId": "settings-small",
           "localeKey": "settings.settingsButt",
-          "bounds": "290,440,52,52"
+          "bounds": "285,435,46,46"
         },
         {
           "componentType": "button",

@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.action;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
+import org.foxesworld.engine.gui.components.scrollBox.DropBox;
 import org.foxesworld.launcher.Game.Game;
 import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.Server.ServerAttributes;
@@ -49,7 +49,7 @@ public class ActionHandler {
                 engine.getSOUND().playSound("exit.ogg", false);
             }
 
-            case "gameDir" -> openGameFolder();
+            case "gameDir-small" -> openGameFolder();
 
             case "applySettings" -> {
                 for (JComponent component : this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
@@ -70,7 +70,7 @@ public class ActionHandler {
                 this.launcher.getAuth().logOut();
             }
 
-            case "settings" -> {
+            case "settings-small" -> {
                 if (!launcher.getAuth().isAuthorised()) {
                     engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
                 } else {
@@ -89,9 +89,9 @@ public class ActionHandler {
             case "toGame" -> {
                 this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
-                this.currentServer = launcher.getAuth().getUserServersAttributes().get(ScrollBox.getSelectedIndex());
+                this.currentServer = launcher.getAuth().getUserServersAttributes().get(DropBox.getSelectedIndex());
                 this.getEngine().getLOGGER().info("Launching " + this.currentServer.getServerName());
-                this.engine.getCONFIG().setConfigValue("selectedServer", ScrollBox.getSelectedIndex());
+                this.engine.getCONFIG().setConfigValue("selectedServer", DropBox.getSelectedIndex());
                 this.engine.getCONFIG().writeCurrentConfig();
                 new Game(this);
             }

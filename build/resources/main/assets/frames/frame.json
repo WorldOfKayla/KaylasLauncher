@@ -3,7 +3,7 @@
   "appIcon": "assets/ui/icons/logo.png",
   "winterImage": "assets/ui/img/bg/season/winter.png",
   "springImage": "assets/ui/img/bg/season/spring.png",
-  "summerImage": "assets/ui/img/bg/season/sunmer.png",
+  "summerImage": "assets/ui/img/bg/season/sunmmer.png",
   "autumnImage": "assets/ui/img/bg/season/autumn.png",
   "backgroundBlur": "#494d4d54",
   "width": 850,

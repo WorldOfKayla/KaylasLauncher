@@ -55,7 +55,7 @@
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
           "iconHeight": 32,
-          "componentId": "settings",
+          "componentId": "settings-small",
           "localeKey": "settings.settingsButt",
           "bounds": "275,425,60,60"
         }

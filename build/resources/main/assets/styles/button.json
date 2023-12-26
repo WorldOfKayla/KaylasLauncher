@@ -30,26 +30,6 @@
         "color": "#ffffff",
         "align": "CENTER",
         "texture": "assets/ui/button/buttonYellow.png"
-      },
-      "buttonWhite": {
-        "name": "White snow",
-        "font": "FSElliotPro-Heavy",
-        "fontSize": 12,
-        "width": 120,
-        "height": 34,
-        "color": "#ffffff",
-        "align": "CENTER",
-        "texture": "assets/ui/button/buttonWhite.png"
-      },
-      "transparent": {
-        "name": "Invisible",
-        "font": "",
-        "fontSize": 12,
-        "width": 120,
-        "height": 34,
-        "color": "#ffffff",
-        "align": "CENTER",
-        "texture": "assets/ui/button/transparent.png"
       }
     }
   }

@@ -17,7 +17,6 @@ public class CustomScrollBar extends JComponent {
     private int extent;
     private int value;
     private boolean isDragging = false;
-
     private static final int SCROLLBAR_WIDTH = 16;
 
     private Image thumbImage;

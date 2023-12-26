@@ -1,8 +1,8 @@
 package org.foxesworld.launcher.User;
 
 import org.foxesworld.engine.gui.components.label.Label;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxListener;
+import org.foxesworld.engine.gui.components.scrollBox.DropBox;
+import org.foxesworld.engine.gui.components.scrollBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User implements ScrollBoxListener {
+public class User implements DropBoxListener {
     private final Launcher launcher;
     private final Auth auth;
     private final LanguageProvider lang;
@@ -31,9 +31,9 @@ public class User implements ScrollBoxListener {
         this.launcher = launcher;
         auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
-        ScrollBox scrollBox = (ScrollBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
+        DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
-        scrollBox.setScrollBoxListener(this);
+        dropBox.setScrollBoxListener(this);
         this.lang = auth.getEngine().getLANG();
         try {
             this.setUserSpace();

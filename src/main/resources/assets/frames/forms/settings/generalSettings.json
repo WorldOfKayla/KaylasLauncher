@@ -101,12 +101,12 @@
                   "keyCode": "F",
                   "fontSize": 12,
                   "imageIcon": "assets/ui/icons/folder.png",
-                  "iconWidth": 32,
-                  "iconHeight": 32,
+                  "iconWidth": 16,
+                  "iconHeight": 16,
                   "componentStyle": "buttonYellow",
                   "localeKey": "settings.homeDir",
-                  "componentId": "gameDir",
-                  "bounds": "235,15,60,60"
+                  "componentId": "gameDir-small",
+                  "bounds": "235,15,46,46"
                 },
                 {
                   "componentType": "button",

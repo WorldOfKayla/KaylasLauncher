@@ -13,8 +13,8 @@ import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.passfield.PassFieldStyle;
 import org.foxesworld.engine.gui.components.progressBar.ProgressBarStyle;
 import org.foxesworld.engine.gui.components.scrollBar.CustomScrollBar;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBox;
-import org.foxesworld.engine.gui.components.scrollBox.ScrollBoxStyle;
+import org.foxesworld.engine.gui.components.scrollBox.DropBox;
+import org.foxesworld.engine.gui.components.scrollBox.DropBoxStyle;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.gui.components.serverBox.ServerBoxStyle;
 import org.foxesworld.engine.gui.components.slider.Slider;
@@ -209,15 +209,15 @@ public class ComponentFactory {
                 return multiButton;
             }
 
-            case "scrollBox" -> {
-                ScrollBoxStyle scrollBoxStyle = new ScrollBoxStyle(this);
-                ScrollBox scrollBox = new ScrollBox(this, this.scrollBoxArr, yPos);
-                scrollBoxStyle.apply(scrollBox);
-                scrollBox.setBounds(xPos,yPos, width,height);
-                scrollBox.setName(componentAttributes.getComponentId());
-                scrollBox.setSelectedIndex(componentAttributes.getSelectedIndex());
-                scrollBox.repaint();
-                return  scrollBox;
+            case "dropBox" -> {
+                DropBoxStyle dropBoxStyle = new DropBoxStyle(this);
+                DropBox dropBox = new DropBox(this, this.scrollBoxArr, yPos);
+                dropBoxStyle.apply(dropBox);
+                dropBox.setBounds(xPos,yPos, width,height);
+                dropBox.setName(componentAttributes.getComponentId());
+                dropBox.setSelectedIndex(componentAttributes.getSelectedIndex());
+                dropBox.repaint();
+                return dropBox;
             }
 
             case "serverBox" -> {

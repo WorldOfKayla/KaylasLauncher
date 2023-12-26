@@ -1,6 +1,6 @@
 package org.foxesworld.engine.gui.components.scrollBox;
 
-public interface ScrollBoxListener {
+public interface DropBoxListener {
 
     void onScrollBoxCreated(int index);
     void onScrollBoxOpen(int index);

@@ -1,6 +1,6 @@
 {
   "styles": {
-    "scrollBox": {
+    "dropBox": {
       "selectable": {
         "name": "A selectable dude!",
         "font": "FSElliotPro-Heavy",

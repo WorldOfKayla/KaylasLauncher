@@ -89,6 +89,20 @@
     "getting": {
       "en_US": "Getting Files",
       "ru_RU": "Получаю файлы"
+    },
+    "amount": {
+      "en_US": "Files amount",
+      "ru_RU": "Всего файлов"
+    }
+  },
+  "loading": {
+    "title": {
+      "en_US": "Loading files",
+      "ru_RU": "Загрузка файлов"
+    },
+    "msg": {
+      "en_US": "Please wait...",
+      "ru_RU": "Пожалуйста подождите..."
     }
   },
   "logged": {

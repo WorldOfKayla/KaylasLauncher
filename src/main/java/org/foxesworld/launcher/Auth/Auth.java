@@ -80,7 +80,7 @@ public class Auth {
             }
         } else {
             engine.getLOGGER().info("Incorrect password for "+authCredentials.get("login") + "!");
-            JOptionPane.showMessageDialog(engine.getFrame().getFrame(), responseMap.get("message"));
+            JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
         }
         return status;
     }

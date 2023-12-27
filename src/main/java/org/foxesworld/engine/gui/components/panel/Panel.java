@@ -131,7 +131,7 @@ public class Panel extends JPanel {
         if (panelOptions.getListener() != null) {
             DragListener dragListener = new DragListener();
             switch (panelOptions.getListener()) {
-                case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor.getFrame());
+                case "dragger" -> dragListener.addDragListener(groupPanel, frameConstructor);
             }
         }
 

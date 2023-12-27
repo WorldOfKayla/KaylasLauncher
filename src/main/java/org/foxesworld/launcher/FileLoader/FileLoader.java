@@ -40,8 +40,9 @@ public class FileLoader {
     }
 
     public void getFilesToDownload() {
-        this.engine.getFrame().getLoadingManager().startLoading();
+        this.engine.getLoadingManager().startLoading();
         Map<String, String> request = new HashMap<>();
+        String fileWuthoutMask;
         request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
@@ -49,11 +50,13 @@ public class FileLoader {
         FilesAttributes[] filesAttributes = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes[].class);
         for(FilesAttributes file: filesAttributes) {
             file.setReplaceMask("/uploads/files/clients/");
-            addFileToKeep(file.getFilename().replace(file.getReplaceMask(), ""));
-            this.engine.getLOGGER().debug("Adding to keep "+file.getFilename().replace(file.getReplaceMask(), ""));
-            this.engine.getFrame().getLoadingManager().setLoadingText(engine.getLANG().getString("file.received")+file.getFilename(), engine.getLANG().getString("file.getting"));
+            fileWuthoutMask = file.getFilename().replace(file.getReplaceMask(), "");
+            addFileToKeep(fileWuthoutMask);
+            this.engine.getLOGGER().debug("Adding to keep "+fileWuthoutMask);
+            this.engine.getLoadingManager().setLoadingText(engine.getLANG().getString("file.received")+fileWuthoutMask, "file.getting");
         }
         this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
+        this.engine.getLoadingManager().setLoadingText(String.valueOf(filesToKeep.size()), "file.amount");
         this.filesAttributes = Stream.of(filesAttributes).filter(this::shouldDownloadFile).collect(Collectors.toList());
         fileLoaderListener.onFilesRead();
     }

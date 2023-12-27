@@ -19,6 +19,7 @@ import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.LoadingManager;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.Launcher;
 import org.foxesworld.launcher.action.ActionHandler;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 public abstract class Engine extends JFrame implements ActionListener, GuiBuilderListener {
     private final GuiProperties guiProperties;
+    private LoadingManager loadingManager;
     private final String configFiles;
     private Launcher launcher;
     private final String appTitle;
@@ -73,6 +75,7 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
         this.GETrequest = new HTTPrequest(this, "GET");
         this.POSTrequest = new HTTPrequest(this, "POST");
         this.frameConstructor = new FrameConstructor(this);
+        this.loadingManager = new LoadingManager(this);
         this.CRYPTO = new CryptUtils(this);
     }
     public abstract void initialize(Launcher launcher);
@@ -169,5 +172,8 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     }
     public GuiProperties getGuiProperties() {
         return guiProperties;
+    }
+    public LoadingManager getLoadingManager() {
+        return loadingManager;
     }
 }

@@ -47,7 +47,7 @@ public class DropBox extends JComponent implements MouseListener, MouseMotionLis
             public void focusLost(FocusEvent e) {
                 state = State.CLOSED;
                 hover = selected;
-                componentFactory.engine.getFrame().getFrame().repaint();
+                componentFactory.engine.getFrame().repaint();
                 repaint();
             }
         });

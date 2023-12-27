@@ -178,7 +178,7 @@ public class GameLauncher {
                 if(process.isAlive()){
                     gameListener.onGameStart(gameClient);
                 }
-                engine.getFrame().getFrame().setVisible(false);
+                engine.getFrame().setVisible(false);
 
                 int exitCode = process.waitFor();
                 gameListener.onGameExit(exitCode);
@@ -187,7 +187,7 @@ public class GameLauncher {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
                         engine.getSOUND().playSound("exit.ogg", false);
-                        JOptionPane.showMessageDialog(this.engine.getFrame().getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
+                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
                         System.exit(0);
                     }
                 });

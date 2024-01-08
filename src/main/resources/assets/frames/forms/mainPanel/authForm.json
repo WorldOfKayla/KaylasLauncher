@@ -25,11 +25,11 @@
         },
         {
           "componentType": "label",
-          "fontSize": 32,
-          "componentStyle": "Heading",
+          "fontSize": 25,
+          "componentStyle": "promptLabel",
           "localeKey": "auth.authTitle",
           "componentId": "appHeader",
-          "bounds": "60,50,250,50"
+          "bounds": "80,50,250,50"
         },
         {
           "componentType": "checkBox",

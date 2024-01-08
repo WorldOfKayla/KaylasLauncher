@@ -3,7 +3,7 @@
     "dropBox": {
       "selectable": {
         "name": "A selectable dude!",
-        "font": "Roboto-Regular",
+        "font": "mcfont",
         "fontSize": 12,
         "color": "#08162f",
         "hoverColor": "#efa532",

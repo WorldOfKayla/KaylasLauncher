@@ -12,14 +12,14 @@
       "childComponents": [
         {
           "componentType": "label",
-          "fontSize": 16,
-          "componentStyle": "Heading",
+          "fontSize": 15,
+          "componentStyle": "promptLabel",
           "imageIcon": "assets/ui/icons/settings.png",
           "iconWidth": 32,
           "iconHeight": 32,
           "localeKey": "settings.baseOptions",
           "componentId": "baseOptions",
-          "bounds": "5,-10,160,60"
+          "bounds": "5,-10,180,60"
         },
         {
           "groups": {

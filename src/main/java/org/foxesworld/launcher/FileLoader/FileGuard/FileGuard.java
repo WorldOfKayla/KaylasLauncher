@@ -104,7 +104,7 @@ public class FileGuard {
                     // Recursively scan and delete files in subdirectories
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
-                this.gameLauncher.getEngine().getLoadingManager().setLoadingText(file.getName(), "checkingFiles");
+                this.gameLauncher.getEngine().getLoadingManager().setLoadingText(file.getName(), "checkingFiles", 1);
             }
         } else {
             logger.error(directory + " is not found!");

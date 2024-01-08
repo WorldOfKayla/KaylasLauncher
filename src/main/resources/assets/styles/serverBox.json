@@ -3,7 +3,7 @@
     "serverBox": {
       "srvStatus": {
         "name": "Other Style",
-        "font": "Montserrat-Bold",
+        "font": "FSElliotPro-Heavy",
         "fontSize": 12,
         "color": "#2f3533",
         "borderColor": "#2f3533"

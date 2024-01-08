@@ -34,7 +34,7 @@ public class ActionHandler {
             key = command[1];
             parent = command[0];
         }
-        if(!engine.getLoadingManager().getLoadingTimer().isRunning()) {
+        //if(!engine.getLoadingManager().getLoadingTimer().isRunning()) {
             switch (key) {
                 case "submit" -> {
                     if ("authForm".equals(parent)) {
@@ -49,8 +49,13 @@ public class ActionHandler {
 
                 case "smallButton" -> {
                     this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    //engine.getSOUND().playSound("exit.ogg", false);
-                    engine.getLoadingManager().startLoading();
+                    //if(!this.engine.getLoadingManager().getLoadingTimer().isRunning()) {
+                    //    this.engine.getLoadingManager().startLoading();
+                    //} else {
+                    //    this.engine.getLoadingManager().stopLoading();
+                    //}
+
+                    engine.getSOUND().playSound("exit.ogg", false);
                 }
 
                 case "gameDir-small" -> openGameFolder();
@@ -105,7 +110,7 @@ public class ActionHandler {
 
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
-        }
+        //}
     }
 
     private void openGameFolder() {

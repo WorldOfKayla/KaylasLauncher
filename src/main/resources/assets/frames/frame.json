@@ -39,17 +39,17 @@
           "localeKey": "general.status",
           "color":  "#c98319",
           "componentId": "appStatus",
-          "bounds": "185,-20,250,50"
+          "bounds": "155,-20,250,50"
         },
         {
           "componentType": "label",
-          "fontSize": 9,
+          "fontSize": 8,
           "componentStyle": "title",
           "localeKey": "-",
           "initialValue": "version",
           "color":  "#17cc30e0",
           "componentId": "appVersion",
-          "bounds": "215,-19,250,50"
+          "bounds": "180,-19,250,50"
         },
         {
           "componentType": "multiButton",

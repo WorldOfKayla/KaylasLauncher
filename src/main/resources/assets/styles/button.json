@@ -14,7 +14,7 @@
       },
       "btnSmallClean": {
         "name": "Woodpecker spirit",
-        "font": "FSElliotPro-Heavy",
+        "font": "mcfont",
         "fontSize": 12,
         "width": 81,
         "height": 136,

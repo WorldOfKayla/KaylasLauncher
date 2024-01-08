@@ -2,6 +2,7 @@ package org.foxesworld.launcher.FileLoader;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.utils.LoadingManager;
 import org.foxesworld.launcher.action.ActionHandler;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 public class FileLoader {
     private final Engine engine;
     private final HTTPrequest POSTrequest;
-
+    private final LoadingManager loadingManager;
     private List<FilesAttributes> filesAttributes;
     private final Set<String> filesToKeep = new HashSet<>();
     private final String homeDir, client, version;
@@ -37,10 +38,12 @@ public class FileLoader {
         this.homeDir = engine.getCONFIG().getFullPath();
         this.downloadUtils = new DownloadUtils(engine);
         this.executorService = Executors.newFixedThreadPool(this.engine.getEngineData().getDownloadThreads());
+        this.loadingManager = this.engine.getLoadingManager();
     }
 
     public void getFilesToDownload() {
-        this.engine.getLoadingManager().startLoading();
+        loadingManager.startLoading();
+        loadingManager.setLoadingText("loading.msg", "loading.title", 500);
         Map<String, String> request = new HashMap<>();
         String fileWuthoutMask;
         request.put("sysRequest", "loadFiles");
@@ -48,15 +51,15 @@ public class FileLoader {
         request.put("client", client);
         request.put("platform", String.valueOf(this.getPlatformNumber()));
         FilesAttributes[] filesAttributes = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes[].class);
+        loadingManager.setLoadingText("file.gettingFiles-desc", "file.gettingFiles-title", 800);
         for(FilesAttributes file: filesAttributes) {
             file.setReplaceMask("/uploads/files/clients/");
             fileWuthoutMask = file.getFilename().replace(file.getReplaceMask(), "");
             addFileToKeep(fileWuthoutMask);
             this.engine.getLOGGER().debug("Adding to keep "+fileWuthoutMask);
-            this.engine.getLoadingManager().setLoadingText(engine.getLANG().getString("file.received")+fileWuthoutMask, "file.getting");
         }
         this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
-        this.engine.getLoadingManager().setLoadingText(String.valueOf(filesToKeep.size()), "file.amount");
+        loadingManager.setLoadingText("file.listBuilt-desc", "file.listBuilt-title", 800);
         this.filesAttributes = Stream.of(filesAttributes).filter(this::shouldDownloadFile).collect(Collectors.toList());
         fileLoaderListener.onFilesRead();
     }

@@ -16,7 +16,7 @@ public class Config extends ConfigAbstract {
     private Engine engine;
     private Map<String, Object> CONFIG;
 
-    private int selectedServer;
+    private int selectedServer, gpuIndex;
     private double volume;
     private  String login, password, lang, logLevel, ramAmount;
     private  boolean autoEnter, fullScreen, loadNews, enableSound;

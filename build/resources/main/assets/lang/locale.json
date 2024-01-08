@@ -2,7 +2,7 @@
   "general": {
     "appTitle": {
       "en_US": "FoxesWorld",
-      "ru_RU": "FoxesWorld"
+      "ru_RU": "ЛисийМир"
     },
     "status": {
       "en_US": "Alpha",
@@ -82,27 +82,35 @@
     }
   },
   "file": {
-    "received": {
-      "en_US": "Received file ",
-      "ru_RU": "Получен файл "
-    },
-    "getting": {
+    "gettingFiles-title": {
       "en_US": "Getting Files",
       "ru_RU": "Получаю файлы"
     },
-    "amount": {
-      "en_US": "Files amount",
-      "ru_RU": "Всего файлов"
+    "gettingFiles-desc": {
+      "en_US": "What should be loaded?",
+      "ru_RU": "Что нужно загрузить? "
+    },
+    "listBuilt-title": {
+      "en_US": "We got the files",
+      "ru_RU": "Список построен"
+    },
+    "listBuilt-desc": {
+      "en_US": "Now we know what to load!",
+      "ru_RU": "Теперь мы знаем что надо загрузить!"
+    },
+    "isBuilt": {
+      "en_US": "List is built",
+      "ru_RU": "Список построен"
     }
   },
   "loading": {
     "title": {
-      "en_US": "Loading files",
-      "ru_RU": "Загрузка файлов"
+      "en_US": "Loading...",
+      "ru_RU": "Идёт загрузка..."
     },
     "msg": {
-      "en_US": "Please wait...",
-      "ru_RU": "Пожалуйста подождите..."
+      "en_US": "Please wait",
+      "ru_RU": "Пожалуйста подождите"
     }
   },
   "logged": {

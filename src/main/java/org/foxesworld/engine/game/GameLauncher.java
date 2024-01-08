@@ -123,7 +123,6 @@ public class GameLauncher {
             processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
             System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
         }
-        System.out.println(config.isFullScreen());
         //Optional
         if (config.isFullScreen()) {
             processArgs.add("--fullscreen=true");

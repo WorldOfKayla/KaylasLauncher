@@ -3,12 +3,12 @@
     "label": {
       "promptLabel": {
         "name": "Pumpkin Power",
-        "font": "Montserrat-Bold",
+        "font": "FSElliotPro-Heavy",
         "color": "#ffffff"
       },
       "Heading": {
         "name": "Naming the space",
-        "font": "FSElliotPro-Heavy",
+        "font": "Primary",
         "color": "#e3e0c585"
       },
       "textBold": {

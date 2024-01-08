@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.discord.Discord;
+import org.foxesworld.engine.gpu.GPUScanner;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.GuiBuilderListener;
 import org.foxesworld.engine.gui.GuiProperties;
@@ -38,6 +39,7 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
     private Launcher launcher;
     private final String appTitle;
     private final Sound SOUND;
+    private final GPUScanner gpuScanner;
     public static Logger LOGGER;
     private final Discord discord;
     private News news;
@@ -69,6 +71,7 @@ public abstract class Engine extends JFrame implements ActionListener, GuiBuilde
         this.FONTUTILS = new FontUtils(this);
         this.serverInfo = new ServerInfo(this);
         this.SOUND = new Sound(this);
+        this.gpuScanner = new GPUScanner(this);
         this.discord = new Discord(this);
         Configurator.setLevel(getLOGGER().getName(), Level.valueOf(CONFIG.getLogLevel()));
 

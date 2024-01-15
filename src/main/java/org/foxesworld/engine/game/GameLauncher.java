@@ -224,12 +224,15 @@ public class GameLauncher {
     }
 
     private void setJre() {
+        String gpu = new GPUInfo().getPreferredGPU();
+        logger.info("Setting "+gpu + " as preferred card");
         processArgs.add(buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
         processArgs.add(JVMHelper.jvmProperty("java.library.path", buildNativesPath()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
         processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+        processArgs.add("-Dorg.lwjgl.opengl.Display.neededGPUVendor=" + gpu);
     }
 
     public String buildVersionDir() {

@@ -28,8 +28,8 @@
           "localeKey": "general.appTitle",
           "imageIcon": "assets/ui/icons/logo.png",
           "componentId": "appLogo",
-          "iconWidth": 64,
-          "iconHeight": 64,
+          "iconWidth": 52,
+          "iconHeight": 44,
           "bounds": "0,0,240,30"
         },
         {

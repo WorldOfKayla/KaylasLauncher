@@ -48,12 +48,13 @@ public class ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    //if(!this.engine.getLoadingManager().getLoadingTimer().isRunning()) {
-                    //    this.engine.getLoadingManager().startLoading();
-                    //} else {
-                    //    this.engine.getLoadingManager().stopLoading();
-                    //}
+                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    /*
+                    if(!this.engine.getLoadingManager().getLoadingTimer().isRunning()) {
+                        this.engine.getLoadingManager().startLoading();
+                    } else {
+                        this.engine.getLoadingManager().stopLoading();
+                    } */
 
                     engine.getSOUND().playSound("exit.ogg", false);
                 }

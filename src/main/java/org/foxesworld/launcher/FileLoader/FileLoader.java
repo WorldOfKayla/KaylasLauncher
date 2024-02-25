@@ -75,6 +75,7 @@ public class FileLoader {
         if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
 
         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
+        this.engine.getLoadingManager().stopLoading();
         final long totalSizeFinal = filesAttributes.stream().mapToLong(FilesAttributes::getSize).sum();
         filesAttributes.forEach(file -> executorService.execute(() -> {
             String localPath = file.getFilename().replace(file.getReplaceMask(), "");

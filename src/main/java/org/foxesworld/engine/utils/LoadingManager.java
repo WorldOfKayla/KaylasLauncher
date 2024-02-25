@@ -6,34 +6,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 public class LoadingManager extends JFrame {
 
     private final SpriteAnimation spriteAnimation;
-    private final Rectangle spriteRect = new Rectangle(30, 30, 64, 64);
     private final Engine engine;
     private String loadingText = "loading.msg";
     private String loadingTitle = "loading.title";
     private final Timer loadingTimer;
-    private int dotCount = 0;
     private final int dotLimit = 4;
     private JLabel loaderText, titleLabel;
     private final int animationSpeed = 5;
+    private boolean isAnimating = false;
 
     public LoadingManager(Engine engine) {
         this.engine = engine;
-        this.spriteAnimation = new SpriteAnimation("assets/ui/sprites/loader.png", 15, 90, 500, spriteRect);
+        this.spriteAnimation = new SpriteAnimation("assets/ui/sprites/loader.png", 15, 90, 500, new Rectangle(30, 30, 64, 64));
         this.loadingTimer = new Timer(500, e -> {
-            dotCount = (dotCount + 1) % dotLimit;
             loaderText.setText(loadingText);
         });
 
         initializeLoadingFrame();
     }
+
     private void initializeLoadingFrame() {
         setUndecorated(true);
         setSize(500, 150);
@@ -54,7 +51,7 @@ public class LoadingManager extends JFrame {
 
         backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
 
-        spriteAnimation.setBounds(spriteRect);
+        spriteAnimation.setBounds(spriteAnimation.getSpriteRect());
         backgroundPanel.add(spriteAnimation);
 
         titleLabel = createLabel(loadingTitle, 23, new Rectangle(120, 50, 300, 20), backgroundPanel);
@@ -62,9 +59,8 @@ public class LoadingManager extends JFrame {
         loaderText.setForeground(new Color(239, 165, 50));
         setAlwaysOnTop(true);
 
-        engine.getFrame().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
+        engine.getFrame().addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
                 updateLoadingFramePosition();
             }
         });
@@ -82,10 +78,12 @@ public class LoadingManager extends JFrame {
     }
 
     private void updateLoadingFramePosition() {
-        Point mainFrameCenter = getCenterPoint(engine.getFrame());
-        int offsetX = mainFrameCenter.x - getWidth() / 2;
-        int offsetY = mainFrameCenter.y - getHeight() / 2;
-        setLocation(offsetX, offsetY);
+        SwingUtilities.invokeLater(() -> {
+            Point mainFrameCenter = getCenterPoint(engine.getFrame());
+            int offsetX = mainFrameCenter.x - getWidth() / 2;
+            int offsetY = mainFrameCenter.y - getHeight() / 2;
+            setLocation(offsetX, offsetY);
+        });
     }
 
     private Point getCenterPoint(JFrame frame) {
@@ -95,6 +93,14 @@ public class LoadingManager extends JFrame {
     }
 
     public void startLoading() {
+        setVisible(true);
+        if (!isAnimating) {
+            startAnimation();
+        }
+    }
+
+    private void startAnimation() {
+        isAnimating = true;
         animateDown();
     }
 
@@ -115,20 +121,17 @@ public class LoadingManager extends JFrame {
                     setLocation(getX(), currentY);
                     currentY += acceleration * (targetY - currentY);
 
-                    // Устанавливаем прозрачность на основе текущей позиции
-                    float opacity = 0.0f + (float) (currentY - startY) / (float) (targetY - startY);
+                    float opacity = (currentY - startY) / (float) (targetY - startY);
                     setOpacity(opacity);
                 } else {
                     setLocation(getX(), targetY);
-                    setOpacity(1.0f); // Устанавливаем полную прозрачность
+                    setOpacity(1.0f);
                     ((Timer) e.getSource()).stop();
                     oscillate();
                 }
             }
         });
-
         downTimer.start();
-        setVisible(true);
     }
 
     private void oscillate() {
@@ -149,53 +152,48 @@ public class LoadingManager extends JFrame {
                 }
             }
         });
-
         oscillationTimer.setRepeats(false);
         oscillationTimer.start();
     }
 
-
     private void animateUp() {
-        int targetY = engine.getFrame().getY() - getHeight();
+        loadingTimer.start();
+        updateLoadingFramePosition();
+
         Timer upTimer = new Timer(animationSpeed, new ActionListener() {
-            int currentY = getLocation().y;
-            float opacity = 1.0f;
-            float opacityStep = 0.05f;
+            int targetHeight = 0;
+            float targetOpacity = 0.0f;
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentY > targetY) {
-                    setLocation(getX(), currentY);
+                if (getHeight() > targetHeight || getOpacity() > targetOpacity) {
+                    int newHeight = (int) (getHeight() * (1 - 0.12));
+                    float newOpacity = Math.max(0.0f, getOpacity() - 0.12f);
 
-                    opacity -= opacityStep;
-                    opacity = Math.max(0.0f, opacity);
-                    setAlphaComposite(opacity);
-                    currentY -= animationSpeed;
+                    setBounds(getX(), getY() - (getHeight() - newHeight), getWidth(), newHeight);
+                    setOpacity(newOpacity);
                 } else {
-                    setLocation(getX(), targetY);
-                    setAlphaComposite(0.0f);
                     ((Timer) e.getSource()).stop();
                     stopLoading();
+                    setVisible(false);
                 }
             }
         });
+
         upTimer.start();
     }
 
-    private void setAlphaComposite(float alpha) {
-        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-        Graphics2D g2d = (Graphics2D) getGraphics();
-        g2d.setComposite(alphaComposite);
-        paint(g2d);
-        g2d.dispose();
+    public void setOpacity(float opacity) {
+        float clampedOpacity = Math.max(0.0f, Math.min(1.0f, opacity));
+        super.setOpacity(clampedOpacity);
+        repaint();
     }
-
 
     public void setLoadingText(String loadingText, String loadingTitle, int sleep) {
         this.loadingText = engine.getLANG().getString(loadingText);
         this.loadingTitle = engine.getLANG().getString(loadingTitle);
         loaderText.setText(this.loadingText);
-        titleLabel.setText(this.loadingTitle + ".".repeat(dotCount));
+        titleLabel.setText(this.loadingTitle + ".".repeat(dotLimit));
 
         try {
             Thread.sleep(sleep);
@@ -205,9 +203,11 @@ public class LoadingManager extends JFrame {
     }
 
     public void stopLoading() {
-        //animateUp();
-        loadingTimer.stop();
-        setVisible(false);
+        if (isAnimating) {
+            animateUp();
+            loadingTimer.stop();
+            isAnimating = false;
+        }
     }
 
     public Timer getLoadingTimer() {
@@ -216,21 +216,24 @@ public class LoadingManager extends JFrame {
 
     public static class SpriteAnimation extends JComponent {
         private final BufferedImage spriteSheet;
-        private final int imgSize;
-        private final int totalFrames;
-        private int currentFrame = 0;
+        private int imgSize, totalFrames, currentFrame = 0;
+        private final Rectangle spriteRect;
 
         public SpriteAnimation(String path, int frames, int delay, int imgSize, Rectangle spriteRect) {
             this.imgSize = imgSize;
             this.spriteSheet = ImageUtils.getLocalImage(path);
             this.totalFrames = frames;
-            this.setBounds(spriteRect);
+            this.spriteRect = spriteRect;
 
             Timer timer = new Timer(delay, e -> {
                 currentFrame = (currentFrame + 1) % totalFrames;
                 repaint();
             });
             timer.start();
+        }
+
+        public Rectangle getSpriteRect() {
+            return spriteRect;
         }
 
         @Override
@@ -248,7 +251,6 @@ public class LoadingManager extends JFrame {
                     scaledHeight,
                     this
             );
-
             g.dispose();
         }
     }

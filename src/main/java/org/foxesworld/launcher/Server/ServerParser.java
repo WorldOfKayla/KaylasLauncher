@@ -2,32 +2,27 @@ package org.foxesworld.launcher.Server;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.server.ServerAttributes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class ServerParser {
-    private Engine engine;
-    private  int serversNum = 0;
-    private List<ServerAttributes> serverList = new ArrayList<>();
-    private Map<String, String> request = new HashMap<>();
+public class ServerParser extends org.foxesworld.engine.server.ServerParser {
 
     public ServerParser(Engine engine) {
         this.engine = engine;
         request.put("sysRequest", "parseServers");
     }
 
-    public List<ServerAttributes> parseServers(String login){
+    @Override
+    public List<ServerAttributes> parseServers(String login) {
         request.put("login", login);
         String serversList = engine.getPOSTrequest().send(engine.getEngineData().getBindUrl(), request);
         ServerAttributes[] serversArray = new Gson().fromJson(serversList, ServerAttributes[].class);
-        for(ServerAttributes serverAttributes: serversArray){
+        for (ServerAttributes serverAttributes : serversArray) {
             this.serverList.add(serverAttributes);
             serversNum++;
         }
-        engine.getLOGGER().debug("Loading "+serversNum + " servers for User "+login);
+        engine.getLOGGER().debug("Loading " + serversNum + " servers for User " + login);
         return serverList;
     }
 

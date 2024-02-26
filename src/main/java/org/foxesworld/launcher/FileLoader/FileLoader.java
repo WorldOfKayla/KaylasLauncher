@@ -3,7 +3,7 @@ package org.foxesworld.launcher.FileLoader;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.utils.LoadingManager;
-import org.foxesworld.launcher.action.ActionHandler;
+import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 

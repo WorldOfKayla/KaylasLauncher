@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Launcher;
-import org.foxesworld.launcher.Server.ServerAttributes;
 import org.foxesworld.launcher.Server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 

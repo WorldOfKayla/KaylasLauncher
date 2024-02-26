@@ -6,13 +6,18 @@ import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.news.News;
+import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.Auth.Auth;
 import org.foxesworld.launcher.User.User;
-import org.foxesworld.launcher.action.ActionHandler;
+import org.foxesworld.launcher.gui.ActionHandler;
+import org.foxesworld.launcher.gui.components.Components;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,10 +41,10 @@ public class Launcher extends Engine {
             getLOGGER().debug("Launcher started!");
         }
     }
-    private static boolean isLauncherValid(Engine engine) {
+    private boolean isLauncherValid(Engine engine) {
         Map<String, String> launcherRequest = new HashMap<>();
         launcherRequest.put("sysRequest", "downloadLatest");
-        String selfMd5 = md5Func.md5(engine.appPath());
+        String selfMd5 = md5Func.md5(this.appPath());
         LauncherAttributes launcherAttributes = new Gson().fromJson(engine.getPOSTrequest().send(engine.getEngineData().getBindUrl(), launcherRequest), LauncherAttributes.class);
         if (!selfMd5.equals("IDE")) {
             return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
@@ -67,11 +72,11 @@ public class Launcher extends Engine {
     }
 
     @Override
-    public void initialize(Launcher launcher) {
-        setLauncher(launcher);
-        getDiscord().discordRpcStart(this.getLANG().getString("game.login") + launcher.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
+    public void initialize(Engine engine) {
+        getDiscord().discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
         setStyleProvider(new StyleProvider(this));
         setGuiBuilder(new GuiBuilder(this));
+        this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
         getGuiBuilder().setGuiBuilderListener(this);
         setNews(new News(this));
         this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
@@ -79,8 +84,17 @@ public class Launcher extends Engine {
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        launcher.setUser(new User(launcher));
+        this.setUser(new User(this));
         setInit(true);
+    }
+
+    @Override
+    public String appPath() {
+        try {
+            return URLDecoder.decode(Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
+        } catch (URISyntaxException var2) {
+            return null;
+        }
     }
     public Engine getEngine() {
         return engine;

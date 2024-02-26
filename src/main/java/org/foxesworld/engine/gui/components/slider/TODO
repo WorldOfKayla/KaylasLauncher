@@ -1,5 +1,0 @@
-        /* TODO
-        *   This should be made using interface not as hardcoded as here
-        *   Engine in future will be a separate library and all it's methods will be
-        *   run external without modifying it's code ;)
-        */

@@ -1,14 +1,13 @@
 package org.foxesworld.launcher.Game;
 
-import org.foxesworld.launcher.action.ActionHandler;
-import org.foxesworld.engine.game.GameLauncher;
+import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuardListener;
 import org.foxesworld.launcher.FileLoader.FileLoader;
 import org.foxesworld.launcher.FileLoader.FileLoaderListener;
 import org.foxesworld.launcher.FileLoader.FileGuard.FileGuard;
 import org.foxesworld.launcher.FileLoader.FilesAttributes;
-import org.foxesworld.launcher.Server.ServerAttributes;
 
 import java.io.File;
 

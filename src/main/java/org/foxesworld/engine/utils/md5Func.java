@@ -7,7 +7,7 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
-public class md5Func {
+public final class md5Func {
     public static String md5(String filename) {
         if (new File(filename).isDirectory()) {
             Engine.LOGGER.warn("RUNNING IN IDE!!!");

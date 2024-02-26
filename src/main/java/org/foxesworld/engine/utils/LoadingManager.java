@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 
 public class LoadingManager extends JFrame {
 
@@ -21,20 +20,38 @@ public class LoadingManager extends JFrame {
     private final int animationSpeed = 5;
     private boolean isAnimating = false;
 
+    private static final int FRAME_WIDTH = 500;
+    private static final int FRAME_HEIGHT = 150;
+
     public LoadingManager(Engine engine) {
         this.engine = engine;
-        this.spriteAnimation = new SpriteAnimation("assets/ui/sprites/loader.png", 15, 90, 500, new Rectangle(30, 30, 64, 64));
-        this.loadingTimer = new Timer(500, e -> {
-            loaderText.setText(loadingText);
-        });
+        this.spriteAnimation = new SpriteAnimation("assets/ui/sprites/loaderGrid.png", 3, 5, 50, new Rectangle(30, 30, 64, 64));
+        this.loadingTimer = new Timer(500, e -> loaderText.setText(loadingText));
 
         initializeLoadingFrame();
     }
 
     private void initializeLoadingFrame() {
         setUndecorated(true);
-        setSize(500, 150);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
+        JPanel backgroundPanel = createBackgroundPanel();
+        setContentPane(backgroundPanel);
+
+        spriteAnimation.setBounds(spriteAnimation.getSpriteRect());
+        backgroundPanel.add(spriteAnimation);
+
+        titleLabel = createLabel(loadingTitle, 23, new Rectangle(120, 50, 300, 20), backgroundPanel);
+        loaderText = createLabel(loadingText, 11, new Rectangle(120, 70, 400, 20), backgroundPanel);
+        loaderText.setForeground(new Color(239, 165, 50));
+        setAlwaysOnTop(true);
+
+        addFrameComponentListener();
+
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+    }
+
+    private JPanel createBackgroundPanel() {
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -46,27 +63,8 @@ public class LoadingManager extends JFrame {
             }
         };
         backgroundPanel.setLayout(null);
-
-        setContentPane(backgroundPanel);
-
         backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
-
-        spriteAnimation.setBounds(spriteAnimation.getSpriteRect());
-        backgroundPanel.add(spriteAnimation);
-
-        titleLabel = createLabel(loadingTitle, 23, new Rectangle(120, 50, 300, 20), backgroundPanel);
-        loaderText = createLabel(loadingText, 11, new Rectangle(120, 70, 400, 20), backgroundPanel);
-        loaderText.setForeground(new Color(239, 165, 50));
-        setAlwaysOnTop(true);
-
-        engine.getFrame().addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                updateLoadingFramePosition();
-            }
-        });
-
-        int cornerRadius = 20;
-        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius));
+        return backgroundPanel;
     }
 
     private JLabel createLabel(String text, int fontSize, Rectangle bounds, JPanel panel) {
@@ -77,12 +75,19 @@ public class LoadingManager extends JFrame {
         return label;
     }
 
+    private void addFrameComponentListener() {
+        engine.getFrame().addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
+                updateLoadingFramePosition();
+            }
+        });
+    }
+
     private void updateLoadingFramePosition() {
         SwingUtilities.invokeLater(() -> {
             Point mainFrameCenter = getCenterPoint(engine.getFrame());
-            int offsetX = mainFrameCenter.x - getWidth() / 2;
-            int offsetY = mainFrameCenter.y - getHeight() / 2;
-            setLocation(offsetX, offsetY);
+            setLocation(mainFrameCenter.x - getWidth() / 2, mainFrameCenter.y - getHeight() / 2);
         });
     }
 
@@ -94,6 +99,7 @@ public class LoadingManager extends JFrame {
 
     public void startLoading() {
         setVisible(true);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         if (!isAnimating) {
             startAnimation();
         }
@@ -127,12 +133,16 @@ public class LoadingManager extends JFrame {
                     setLocation(getX(), targetY);
                     setOpacity(1.0f);
                     ((Timer) e.getSource()).stop();
-                    oscillate();
+                    if (!loadingTimer.isRunning()) {
+                        oscillate();
+                    }
                 }
             }
         });
         downTimer.start();
     }
+
+
 
     private void oscillate() {
         int startX = getX();
@@ -183,6 +193,7 @@ public class LoadingManager extends JFrame {
         upTimer.start();
     }
 
+
     public void setOpacity(float opacity) {
         float clampedOpacity = Math.max(0.0f, Math.min(1.0f, opacity));
         super.setOpacity(clampedOpacity);
@@ -210,48 +221,11 @@ public class LoadingManager extends JFrame {
         }
     }
 
-    public Timer getLoadingTimer() {
-        return loadingTimer;
-    }
-
-    public static class SpriteAnimation extends JComponent {
-        private final BufferedImage spriteSheet;
-        private int imgSize, totalFrames, currentFrame = 0;
-        private final Rectangle spriteRect;
-
-        public SpriteAnimation(String path, int frames, int delay, int imgSize, Rectangle spriteRect) {
-            this.imgSize = imgSize;
-            this.spriteSheet = ImageUtils.getLocalImage(path);
-            this.totalFrames = frames;
-            this.spriteRect = spriteRect;
-
-            Timer timer = new Timer(delay, e -> {
-                currentFrame = (currentFrame + 1) % totalFrames;
-                repaint();
-            });
-            timer.start();
-        }
-
-        public Rectangle getSpriteRect() {
-            return spriteRect;
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            int scaledWidth = getWidth();
-            int scaledHeight = getHeight();
-
-            g.drawImage(
-                    ImageUtils.getByIndex(spriteSheet, this.imgSize, currentFrame),
-                    0,
-                    0,
-                    scaledWidth,
-                    scaledHeight,
-                    this
-            );
-            g.dispose();
+    public void toggleLoader() {
+        if (loadingTimer.isRunning()) {
+            stopLoading();
+        } else {
+            startLoading();
         }
     }
 }

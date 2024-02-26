@@ -55,6 +55,7 @@ public class ActionHandler {
                     } else {
                         this.engine.getLoadingManager().stopLoading();
                     } */
+                    engine.getLoadingManager().toggleLoader();
 
                     engine.getSOUND().playSound("exit.ogg", false);
                 }

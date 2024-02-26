@@ -9,7 +9,7 @@ import java.util.Map;
 public class FontUtils {
     public static Map<String, Font> fonts = new HashMap<>();
 
-    private Engine engine;
+    private final Engine engine;
     public FontUtils(Engine engine){
         this.engine = engine;
     }

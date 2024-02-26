@@ -42,8 +42,8 @@ public class FileLoader {
     }
 
     public void getFilesToDownload() {
-        loadingManager.startLoading();
-        loadingManager.setLoadingText("loading.msg", "loading.title", 500);
+        loadingManager.toggleLoader();
+        //loadingManager.setLoadingText("loading.msg", "loading.title", 500);
         Map<String, String> request = new HashMap<>();
         String fileWuthoutMask;
         request.put("sysRequest", "loadFiles");
@@ -75,7 +75,7 @@ public class FileLoader {
         if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
 
         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
-        this.engine.getLoadingManager().stopLoading();
+        this.engine.getLoadingManager().toggleLoader();
         final long totalSizeFinal = filesAttributes.stream().mapToLong(FilesAttributes::getSize).sum();
         filesAttributes.forEach(file -> executorService.execute(() -> {
             String localPath = file.getFilename().replace(file.getReplaceMask(), "");

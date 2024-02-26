@@ -33,7 +33,7 @@ import java.util.Map;
 
 public abstract class Engine extends JFrame implements ActionListener, GuiBuilderListener {
     private final GuiProperties guiProperties;
-    private LoadingManager loadingManager;
+    private final LoadingManager loadingManager;
     private final String configFiles;
     private Launcher launcher;
     private final String appTitle;

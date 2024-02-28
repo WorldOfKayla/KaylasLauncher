@@ -1,6 +1,4 @@
-package org.foxesworld.launcher.FileLoader.FileGuard;
-
-import java.io.File;
+package org.foxesworld.launcher.fileLoader.fileGuard;
 
 public interface FileGuardListener {
     void  onFilesChecked(int filesDeleted);

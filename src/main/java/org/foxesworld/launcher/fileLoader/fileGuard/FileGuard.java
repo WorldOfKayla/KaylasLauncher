@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.FileLoader.FileGuard;
+package org.foxesworld.launcher.fileLoader.fileGuard;
 
 import org.apache.logging.log4j.Logger;
 import org.foxesworld.engine.game.GameLauncher;
@@ -23,7 +23,6 @@ public class FileGuard {
 
     public FileGuard(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
-        // Directories we check
         this.checkList = Arrays.asList(
                 gameLauncher.buildClientDir(),
                 gameLauncher.buildVersionDir(),
@@ -81,14 +80,10 @@ public class FileGuard {
         File[] files = directory.listFiles();
 
         if (files != null) {
-            //this.gameLauncher.getEngine().getFrame().getLoadingManager().startLoading();
             for (File file : files) {
                 if (file.isFile()) {
-                    String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "");
-                    checkPath = checkPath.replace("\\", "/");
-                    // Skip deletion if the file or its parent directory is in the ignoreList
+                    String checkPath = file.getPath().replace(this.gameLauncher.buildGameDir(), "").replace("\\", "/");
                     if (!filesToKeep.contains(checkPath) && !this.isUserConfig(file) && !isInIgnoreList(file)) {
-                        // Removing unlisted file
                         boolean deleted = file.delete();
                         if (deleted) {
                             logger.debug("Deleted unlisted file: " + checkPath);
@@ -101,10 +96,8 @@ public class FileGuard {
                     }
                     checkedFiles++;
                 } else if (file.isDirectory()) {
-                    // Recursively scan and delete files in subdirectories
                     scanAndDeleteFilesRecursively(file, filesToKeep);
                 }
-                this.gameLauncher.getEngine().getLoadingManager().setLoadingText(file.getName(), "checkingFiles", 1);
             }
         } else {
             logger.error(directory + " is not found!");
@@ -113,22 +106,23 @@ public class FileGuard {
 
     private boolean isInIgnoreList(File file) {
         String filePath = file.getPath().replace(this.gameLauncher.buildGameDir(), "").replace("\\", "/");
-        for(String mask: this.ignoreList){
-            if(filePath.startsWith(mask.replace("\\", "/"))){
+        for (String mask : this.ignoreList) {
+            if (filePath.startsWith(mask.replace("\\", "/"))) {
                 return true;
             }
         }
-        return  false;
+        return false;
     }
-    private void buildBasicIgnoreList(){
-        for(String dir: this.basicIgnoreDirs){
+
+    private void buildBasicIgnoreList() {
+        for (String dir : this.basicIgnoreDirs) {
             String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
             this.ignoreList.add(thisDir);
         }
     }
 
-    public void addIgnoreDirs(String dirs){
-        if(dirs != null) {
+    public void addIgnoreDirs(String dirs) {
+        if (dirs != null) {
             for (String dir : dirs.split(",")) {
                 String thisDir = gameLauncher.buildClientDir().replace(gameLauncher.buildGameDir(), "") + File.separator + dir;
                 this.ignoreList.add(thisDir);

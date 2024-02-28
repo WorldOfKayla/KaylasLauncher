@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.Server;
+package org.foxesworld.launcher.server;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;

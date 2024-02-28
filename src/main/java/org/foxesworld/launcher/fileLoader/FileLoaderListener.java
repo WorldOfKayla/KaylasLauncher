@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.FileLoader;
+package org.foxesworld.launcher.fileLoader;
 
 public interface FileLoaderListener {
 

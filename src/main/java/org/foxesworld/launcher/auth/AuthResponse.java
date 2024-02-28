@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.Auth;
+package org.foxesworld.launcher.auth;
 
 class AuthResponse {
     private String message;

@@ -1,7 +1,6 @@
-package org.foxesworld.launcher.Config;
+package org.foxesworld.launcher.config;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.slider.SliderListener;
 
 import javax.swing.*;

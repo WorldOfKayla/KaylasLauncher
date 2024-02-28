@@ -6,15 +6,15 @@ import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.news.News;
-import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.md5Func;
-import org.foxesworld.launcher.Auth.Auth;
-import org.foxesworld.launcher.User.User;
+import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.components.Components;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -84,7 +84,11 @@ public class Launcher extends Engine {
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        this.setUser(new User(this));
+        try {
+            this.setUser(new User(this));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         setInit(true);
     }
 

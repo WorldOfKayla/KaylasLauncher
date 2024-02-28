@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.Game;
+package org.foxesworld.launcher.game;
 
 import org.apache.logging.log4j.Logger;
 import org.foxesworld.engine.Engine;
@@ -11,7 +11,7 @@ import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Launcher;
-import org.foxesworld.launcher.User.User;
+import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.io.File;

@@ -3,7 +3,7 @@ package org.foxesworld.launcher.gui;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.launcher.Game.Game;
+import org.foxesworld.launcher.game.Game;
 import org.foxesworld.launcher.Launcher;
 
 import javax.swing.*;

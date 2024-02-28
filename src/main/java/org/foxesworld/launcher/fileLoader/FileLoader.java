@@ -1,4 +1,4 @@
-package org.foxesworld.launcher.FileLoader;
+package org.foxesworld.launcher.fileLoader;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
@@ -21,14 +21,13 @@ public class FileLoader {
     private final Engine engine;
     private final HTTPrequest POSTrequest;
     private final LoadingManager loadingManager;
-    private List<FilesAttributes> filesAttributes;
     private final Set<String> filesToKeep = new HashSet<>();
     private final String homeDir, client, version;
     private final DownloadUtils downloadUtils;
     private final ExecutorService executorService;
-    private FileLoaderListener fileLoaderListener;
     private final AtomicInteger filesDownloaded = new AtomicInteger(0);
-    private int totalFiles;
+    private FileLoaderListener fileLoaderListener;
+    private List<FilesAttributes> filesAttributes;
 
     public FileLoader(ActionHandler actionHandler) {
         this.engine = actionHandler.getEngine();
@@ -43,26 +42,25 @@ public class FileLoader {
 
     public void getFilesToDownload() {
         loadingManager.toggleLoader();
-        //loadingManager.setLoadingText("loading.msg", "loading.title", 500);
         Map<String, String> request = new HashMap<>();
-        String fileWuthoutMask;
         request.put("sysRequest", "loadFiles");
         request.put("version", version);
         request.put("client", client);
-        request.put("platform", String.valueOf(this.getPlatformNumber()));
+        request.put("platform", String.valueOf(getPlatformNumber()));
         FilesAttributes[] filesAttributes = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes[].class);
         loadingManager.setLoadingText("file.gettingFiles-desc", "file.gettingFiles-title", 800);
-        for(FilesAttributes file: filesAttributes) {
+        for (FilesAttributes file : filesAttributes) {
             file.setReplaceMask("/uploads/files/clients/");
-            fileWuthoutMask = file.getFilename().replace(file.getReplaceMask(), "");
-            addFileToKeep(fileWuthoutMask);
-            this.engine.getLOGGER().debug("Adding to keep "+fileWuthoutMask);
+            String fileWithoutMask = file.getFilename().replace(file.getReplaceMask(), "");
+            addFileToKeep(fileWithoutMask);
+            engine.getLOGGER().debug("Adding to keep " + fileWithoutMask);
         }
-        this.engine.getLOGGER().info("Keeping " + this.filesToKeep.size() +" files");
+        engine.getLOGGER().info("Keeping " + filesToKeep.size() + " files");
         loadingManager.setLoadingText("file.listBuilt-desc", "file.listBuilt-title", 800);
         this.filesAttributes = Stream.of(filesAttributes).filter(this::shouldDownloadFile).collect(Collectors.toList());
         fileLoaderListener.onFilesRead();
     }
+
     private boolean shouldDownloadFile(FilesAttributes fileSection) {
         String localPath = fileSection.getFilename().replace(fileSection.getReplaceMask(), "");
         File localFile = new File(homeDir, localPath);
@@ -70,12 +68,14 @@ public class FileLoader {
     }
 
     public void downloadFiles() {
-        totalFiles = filesAttributes.size();
-        this.engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
-        if(totalFiles == 0) {this.fileLoaderListener.onFilesLoaded();}
+        int totalFiles = filesAttributes.size();
+        engine.getLOGGER().debug("~-=== Downloading " + totalFiles + " files ===-~");
+        if (totalFiles == 0) {
+            fileLoaderListener.onFilesLoaded();
+        }
 
         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
-        this.engine.getLoadingManager().toggleLoader();
+        engine.getLoadingManager().toggleLoader();
         final long totalSizeFinal = filesAttributes.stream().mapToLong(FilesAttributes::getSize).sum();
         filesAttributes.forEach(file -> executorService.execute(() -> {
             String localPath = file.getFilename().replace(file.getReplaceMask(), "");
@@ -86,7 +86,7 @@ public class FileLoader {
 
             // Checking if all files are loaded
             if (filesDownloaded.get() == totalFiles) {
-                this.fileLoaderListener.onFilesLoaded();
+                fileLoaderListener.onFilesLoaded();
             }
         }));
     }
@@ -136,13 +136,13 @@ public class FileLoader {
         }
     }
 
-    public FilesAttributes addJreToLoad(String jreVersion){
+    public FilesAttributes addJreToLoad(String jreVersion) {
         Map<String, String> request = new HashMap<>();
         request.put("sysRequest", "getJre");
         request.put("jreVersion", jreVersion);
         FilesAttributes jreFile = new Gson().fromJson(POSTrequest.send(engine.getEngineData().getBindUrl(), request), FilesAttributes.class);
         jreFile.setReplaceMask("/uploads/files/");
-        return  jreFile;
+        return jreFile;
     }
 
     public void setLoaderListener(FileLoaderListener fileLoaderListener) {
@@ -157,12 +157,12 @@ public class FileLoader {
         return filesToKeep;
     }
 
-    public void addFileToKeep(String filesToKeep) {
-        this.filesToKeep.add(filesToKeep);
+    public void addFileToKeep(String fileToKeep) {
+        this.filesToKeep.add(fileToKeep);
     }
 
-    public void addFileToDownload(FilesAttributes filesAttributes) {
-        this.filesAttributes.add(filesAttributes);
+    public void addFileToDownload(FilesAttributes fileAttributes) {
+        this.filesAttributes.add(fileAttributes);
     }
 
     public String getHomeDir() {

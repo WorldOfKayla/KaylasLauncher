@@ -52,7 +52,7 @@
                 },
                 {
                   "componentType": "checkBox",
-                  "enabled": true,
+                  "enabled": false,
                   "componentStyle": "solid",
                   "componentId": "loadNews",
                   "localeKey": "settings.loadNews",

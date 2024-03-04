@@ -46,7 +46,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                     /*
                     if(!this.engine.getLoadingManager().getLoadingTimer().isRunning()) {
                         this.engine.getLoadingManager().startLoading();
@@ -75,9 +75,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.engine.getCONFIG().writeCurrentConfig();
                 }
 
-                case "logOut" -> {
-                    this.launcher.getAuth().logOut();
-                }
+                case "logOut" -> this.launcher.getAuth().logOut();
 
                 case "settings-small" -> {
                     if (!launcher.getAuth().isAuthorised()) {

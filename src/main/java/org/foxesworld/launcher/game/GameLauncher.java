@@ -269,6 +269,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         return runtimeDir;
     }
 
+    @SuppressWarnings("unused")
     public ServerAttributes getGameClient() {
         return gameClient;
     }

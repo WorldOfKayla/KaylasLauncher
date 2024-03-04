@@ -1,14 +1,14 @@
 package org.foxesworld.launcher;
 
+import org.foxesworld.engine.fileLoader.FileAttributes;
+import org.foxesworld.engine.fileLoader.FileLoader;
+import org.foxesworld.engine.fileLoader.FileLoaderListener;
+import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
+import org.foxesworld.engine.fileLoader.fileGuard.FileGuardListener;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.game.GameListener;
-import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardListener;
-import org.foxesworld.launcher.fileLoader.FileLoader;
-import org.foxesworld.launcher.fileLoader.FileLoaderListener;
-import org.foxesworld.launcher.fileLoader.fileGuard.FileGuard;
-import org.foxesworld.launcher.fileLoader.FilesAttributes;
 
 import java.io.File;
 
@@ -23,6 +23,7 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
         fileLoader.setLoaderListener(this);
+		fileLoader.setReplaceMask("/uploads/files/clients/");
         Thread downloadThread = new Thread(fileLoader::getFilesToDownload);
         downloadThread.start();
     }
@@ -36,6 +37,7 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
         gameLauncher.setGameListener(this);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
             //If we don't have JRE download it
+			fileLoader.setReplaceMask("/uploads/files/");
             fileLoader.addFileToDownload(this.fileLoader.addJreToLoad(gameLauncher.getCurrentJre()));
         }
         this.fileLoader.downloadFiles();
@@ -50,7 +52,7 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
         fileGuard.recursiveDelete(new File(this.gameLauncher.buildGameDir() + "/assets/skins"));
     }
     @Override
-    public void onNewFileFound(FilesAttributes file, String localPath, final long totalSizeFinal) {
+    public void onNewFileFound(FileAttributes file, String localPath, final long totalSizeFinal) {
         String fullPath = this.fileLoader.getHomeDir() + localPath;
         this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadFile", new File(localPath).getName());
         this.actionHandler.getEngine().getGuiBuilder().setLabelText("downloadDirectory", String.valueOf(new File(localPath).getParentFile()));

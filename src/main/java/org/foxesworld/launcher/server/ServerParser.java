@@ -12,7 +12,6 @@ public class ServerParser extends org.foxesworld.engine.server.ServerParser {
         this.engine = engine;
         request.put("sysRequest", "parseServers");
     }
-
     @Override
     public List<ServerAttributes> parseServers(String login) {
         request.put("login", login);
@@ -25,7 +24,6 @@ public class ServerParser extends org.foxesworld.engine.server.ServerParser {
         engine.getLOGGER().debug("Loading " + serversNum + " servers for User " + login);
         return serverList;
     }
-
     public int getServersNum() {
         return serversNum;
     }

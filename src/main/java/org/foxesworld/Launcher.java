@@ -90,6 +90,9 @@ public class Launcher extends Engine {
             throw new RuntimeException(e);
         }
         setInit(true);
+        //if(!this.getCONFIG().isLoadNews()) {
+        //    this.getFrame().setFrameSize(350, 500);
+        //}
     }
 
     @Override

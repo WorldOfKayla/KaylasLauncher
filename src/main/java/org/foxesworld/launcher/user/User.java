@@ -1,14 +1,14 @@
 package org.foxesworld.launcher.user;
 
-import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
+import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.Launcher;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -18,38 +18,40 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class User implements DropBoxListener {
-    private final Launcher launcher;
     private final Auth auth;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
+    @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
 
     public User(Launcher launcher) throws MalformedURLException {
-        this.launcher = launcher;
         this.auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
         dropBox.setScrollBoxListener(this);
         this.lang = auth.getEngine().getLANG();
-        if (this.launcher.getAuth().isAuthorised()) {
+        if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
         } else {
             auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
     }
 
-    public void setUserSpace() throws MalformedURLException {
+    public void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true|devInfo->true");
         Map<String, Label> userLabels = getLabelsMap(Arrays.asList("userHead", "userGroup"));
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
                 Field field = User.class.getDeclaredField(credentials.getKey());
                 field.set(this, credentials.getValue());
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {
+            }
         }
         userLabels.get("userHead").setIcon(new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead())));
         userLabels.get("userGroup").setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
@@ -75,10 +77,12 @@ public class User implements DropBoxListener {
         return login;
     }
 
+    @SuppressWarnings("unused")
     public String getPassword() {
         return password;
     }
 
+    @SuppressWarnings("unused")
     public String getUnits() {
         return units;
     }
@@ -87,6 +91,7 @@ public class User implements DropBoxListener {
         return token;
     }
 
+    @SuppressWarnings("unused")
     public String getColorScheme() {
         return colorScheme;
     }
@@ -95,6 +100,7 @@ public class User implements DropBoxListener {
         return uuid;
     }
 
+    @SuppressWarnings("unused")
     public Auth getAuth() {
         return auth;
     }
@@ -120,7 +126,8 @@ public class User implements DropBoxListener {
     }
 
     private void updateServer(int index) {
-        Thread serverPollThread = new Thread(() -> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
             try {
                 serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
                 String ip = auth.getUserServersAttributes().get(index).getHost();
@@ -134,7 +141,6 @@ public class User implements DropBoxListener {
                 auth.getEngine().getLOGGER().error("Error refreshing server: " + e.getMessage());
             }
         });
-        serverPollThread.setName("Server poll thread");
-        serverPollThread.start();
+        executor.shutdown();
     }
 }

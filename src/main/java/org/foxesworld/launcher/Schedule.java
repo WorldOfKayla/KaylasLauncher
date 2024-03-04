@@ -1,6 +1,7 @@
-package org.foxesworld.launcher.game;
+package org.foxesworld.launcher;
 
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardListener;
@@ -11,13 +12,13 @@ import org.foxesworld.launcher.fileLoader.FilesAttributes;
 
 import java.io.File;
 
-public class Game implements FileLoaderListener, FileGuardListener, GameListener {
+public class Schedule implements FileLoaderListener, FileGuardListener, GameListener {
 
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
 
-    public Game(ActionHandler actionHandler) {
+    public Schedule(ActionHandler actionHandler) {
         actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);

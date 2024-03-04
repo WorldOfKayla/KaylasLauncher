@@ -2,7 +2,7 @@ package org.foxesworld.launcher.gui.components;
 
 import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactoryListener;
-import org.foxesworld.launcher.Launcher;
+import org.foxesworld.Launcher;
 
 public class Components implements ComponentFactoryListener {
 

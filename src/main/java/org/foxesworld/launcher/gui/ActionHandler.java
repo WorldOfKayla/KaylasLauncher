@@ -3,8 +3,8 @@ package org.foxesworld.launcher.gui;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.launcher.game.Game;
-import org.foxesworld.launcher.Launcher;
+import org.foxesworld.launcher.Schedule;
+import org.foxesworld.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,7 +103,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.getEngine().getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.engine.getCONFIG().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                     this.engine.getCONFIG().writeCurrentConfig();
-                    new Game(this);
+                    new Schedule(this);
                 }
 
                 case "closeButton" -> System.exit(0);

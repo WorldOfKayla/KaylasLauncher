@@ -8,7 +8,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.launcher.Launcher;
+import org.foxesworld.Launcher;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;

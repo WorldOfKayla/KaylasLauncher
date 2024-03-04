@@ -10,7 +10,7 @@ import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.engine.utils.helper.JVMHelper;
-import org.foxesworld.launcher.Launcher;
+import org.foxesworld.Launcher;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
@@ -135,7 +135,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
 
     @Override
-    protected void launchGame() {
+    public void launchGame() {
 
         if (isStarted()) throw new IllegalStateException("Process already started");
 

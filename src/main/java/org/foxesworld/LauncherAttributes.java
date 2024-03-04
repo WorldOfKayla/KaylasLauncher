@@ -1,4 +1,4 @@
-package org.foxesworld.launcher;
+package org.foxesworld;
 class LauncherAttributes {
     private String fileMd5;
     private String filename;

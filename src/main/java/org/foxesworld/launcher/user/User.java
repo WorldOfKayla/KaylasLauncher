@@ -29,7 +29,7 @@ public class User implements DropBoxListener {
     @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
 
-    public User(Launcher launcher) throws MalformedURLException {
+    public User(Launcher launcher) {
         this.auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");

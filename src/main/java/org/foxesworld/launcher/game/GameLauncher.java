@@ -27,8 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
-    public Launcher launcher;
-    protected User user;
+    public final Launcher launcher;
+    protected final User user;
     public GameLauncher(ActionHandler actionHandler) {
         this.launcher = actionHandler.getLauncher();
         this.config = actionHandler.getEngine().getCONFIG();
@@ -45,7 +45,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.logger.debug("Assets " + buildAssetsPath());
         this.logger.debug("#############################");
         this.user = launcher.getUser();
-        this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("[^0-9]", ""));
+        this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
     }
 
     @Override
@@ -252,6 +252,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         File clientDir = new File(buildGameDir() + "clients" + File.separator + gameClient.getServerName());
         if (!clientDir.isDirectory()) {
             this.engine.getLOGGER().debug("Creating " + gameClient.getServerName() + " directory");
+            //noinspection ResultOfMethodCallIgnored
             clientDir.mkdirs();
         }
         return clientDir.toString();
@@ -260,10 +261,12 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     protected String buildAssetsPath() {
         return buildGameDir() + "assets";
     }
+
     @Override
     public File buildRuntimeDir() {
         File runtimeDir = new File(buildGameDir() + "runtime");
         if (!runtimeDir.isDirectory()) {
+            //noinspection ResultOfMethodCallIgnored
             runtimeDir.mkdirs();
         }
         return runtimeDir;

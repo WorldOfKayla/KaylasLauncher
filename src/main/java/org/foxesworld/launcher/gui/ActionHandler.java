@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
-    protected Launcher launcher;
+    protected final Launcher launcher;
     protected ServerAttributes currentServer;
     public ActionHandler(Launcher launcher) {
         this.launcher = launcher;

@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.news.News;
 import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.components.Components;
@@ -38,6 +39,7 @@ public class Launcher extends Engine {
         } else {
             initialize(this);
             setActionHandler(new ActionHandler(this));
+            new Config(this);
             getLOGGER().debug("Launcher started!");
         }
     }
@@ -84,11 +86,7 @@ public class Launcher extends Engine {
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        try {
-            this.setUser(new User(this));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        this.setUser(new User(this));
         setInit(true);
         //if(!this.getCONFIG().isLoadNews()) {
         //    this.getFrame().setFrameSize(350, 500);

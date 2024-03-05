@@ -5,7 +5,6 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.server.ServerAttributes;
 
 import java.util.List;
-
 public class ServerParser extends org.foxesworld.engine.server.ServerParser {
 
     public ServerParser(Engine engine) {

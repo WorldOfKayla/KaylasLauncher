@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.Launcher;
 import org.foxesworld.launcher.server.ServerParser;
@@ -94,6 +95,7 @@ public class Auth {
             userServersArray[i] = serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion();
             i++;
         }
+       //this.engine.getGuiBuilder().getDropBoxes().get("serverBox").setValuesAndSelectedIndex(userServersArray, this.CONFIG.getSelectedServer());
     }
 
     public void logOut(){

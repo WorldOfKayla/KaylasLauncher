@@ -3,8 +3,10 @@ package org.foxesworld;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
+import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.auth.Auth;
@@ -18,10 +20,11 @@ import java.awt.event.ActionEvent;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-public class Launcher extends Engine {
+public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
     private News news;
     private final Auth auth;
@@ -39,7 +42,6 @@ public class Launcher extends Engine {
         } else {
             initialize(this);
             setActionHandler(new ActionHandler(this));
-            new Config(this);
             getLOGGER().debug("Launcher started!");
         }
     }
@@ -57,7 +59,7 @@ public class Launcher extends Engine {
     @Override
     public void onPanelsBuilt() {
         if (!isInit()) {
-            getSOUND().playSound("mus/loginMus.ogg", true);
+            getSOUND().playSound("music", "inLauncher");
         }
     }
     @Override
@@ -87,6 +89,7 @@ public class Launcher extends Engine {
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         this.setUser(new User(this));
+        new Config(this);
         setInit(true);
         //if(!this.getCONFIG().isLoadNews()) {
         //    this.getFrame().setFrameSize(350, 500);
@@ -112,5 +115,16 @@ public class Launcher extends Engine {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public void onLogin(Map<String, String> authCredentials) {
+    }
+
+    @Override
+    public void onLoad(Auth auth, Map<String, String> authCredentials) {
+        if (!auth.authorize(authCredentials)) {
+            engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
+        }
     }
 }

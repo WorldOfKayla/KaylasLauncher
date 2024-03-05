@@ -3,16 +3,11 @@ package org.foxesworld.launcher.news.provider;
 import java.util.List;
 
 public class NewsAttributes {
-    private String text;
-    private List<String> tooltipPhotoUrls;
-    private List<String> originalPhotoUrls;
-    private long publicationDate;
-    private int views;
-    private int likes;
-    private int comments;
-    private int reposts;
-    private static String groupName;
-    private static String groupPicture;
+    private final String text;
+    private final List<String> tooltipPhotoUrls, originalPhotoUrls;
+    private final long publicationDate;
+    private final int views, likes, comments, reposts;
+    private static String groupName, groupPicture;
 
     public NewsAttributes(NewsProvider newsProvider) {
         this.text = newsProvider.getText();

@@ -4,40 +4,64 @@
       "sounds": [
         "assets/sounds/button/buttonClick.ogg"
       ]
+    },
+    "clickSmall": {
+      "sounds": [
+          "assets/sounds/button/buttonClickSmall.ogg"
+      ]
+    },
+    "back": {
+      "sounds": [
+          "assets/sounds/button/buttonBack.ogg"
+      ]
+    },
+    "hover": {
+      "sounds": [
+        "assets/sounds/button/buttonHover.ogg"
+      ]
+    },
+    "close": {
+      "sounds": [
+        "assets/sounds/button/buttonClose.ogg"
+      ]
     }
   },
-  "hover": {
-    "sounds": [
-      "assets/sounds/button/buttonHover.ogg"
-    ]
-  },
-  "close": {
-    "sounds": [
-      "assets/sounds/button/buttonClose.ogg"
-    ]
-  },
   "checkbox": {
-    "toggleOn": {
+    "checkboxOn": {
       "sounds": [
         "assets/sounds/checkbox/checkboxOn.ogg"
       ]
     },
-    "toggleOff": {
+    "checkboxOff": {
       "sounds": [
-        "assets/sounds/checkbox/checkboxOn.ogg"
+        "assets/sounds/checkbox/checkboxOff.ogg"
       ]
     }
   },
   "dropBox": {
-    "rollOn": {
+    "dropBoxOpen": {
       "sounds": [
         "assets/sounds/dropBox/dropBoxOpen.ogg"
       ]
     },
-    "rollOff": {
+    "dropBoxClose": {
       "sounds": [
         "assets/sounds/dropBox/dropBoxClose.ogg"
       ]
+    }
+  },
+  "music": {
+    "inLauncher": {
+      "sounds": [
+        "assets/sounds/mus/loginMus.ogg"
+      ]
+    }
+  },
+  "other": {
+    "loggedIn": {
+      "sounds": [
+        "assets/sounds/auth.ogg"
+    ]
     }
   }
 }

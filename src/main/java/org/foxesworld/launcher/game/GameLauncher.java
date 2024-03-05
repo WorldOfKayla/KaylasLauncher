@@ -179,7 +179,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
-                        engine.getSOUND().playSound("exit.ogg", false);
+                        //engine.getSOUND().playSound("exit.ogg", false);
                         JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
                         System.exit(0);
                     }

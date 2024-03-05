@@ -31,7 +31,7 @@ public class Config implements SliderListener, DropBoxListener {
     @Override
     public void onSliderChange(float value) {
         engine.getCONFIG().setVolume(value);
-        engine.getSOUND().changeActiveVolume(value / 100.0f);
+        engine.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
     }
 
     @Override

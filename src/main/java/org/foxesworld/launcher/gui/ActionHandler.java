@@ -47,15 +47,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "smallButton" -> {
                     this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    /*
-                    if(!this.engine.getLoadingManager().getLoadingTimer().isRunning()) {
-                        this.engine.getLoadingManager().startLoading();
-                    } else {
-                        this.engine.getLoadingManager().stopLoading();
-                    } */
-                    engine.getLoadingManager().toggleLoader();
-
-                    engine.getSOUND().playSound("exit.ogg", false);
                 }
 
                 case "gameDir-small" -> openGameFolder();

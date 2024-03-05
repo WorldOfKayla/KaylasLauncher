@@ -69,7 +69,7 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
     public void onFilesChecked(int filesDeleted) {
         this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");
         this.actionHandler.getEngine().getLOGGER().info(filesDeleted + " removed");
-        this.actionHandler.getEngine().getSOUND().stopAllSounds();
+        this.actionHandler.getEngine().getSOUND().getSoundPlayer().stopAllSounds();
         gameLauncher.launchGame();
     }
     @Override

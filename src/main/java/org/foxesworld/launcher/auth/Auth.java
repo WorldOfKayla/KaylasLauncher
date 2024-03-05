@@ -2,21 +2,24 @@ package org.foxesworld.launcher.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.Launcher;
-import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Auth {
     private final Launcher launcher;
+    private  AuthListener authListener;
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
@@ -31,7 +34,7 @@ public class Auth {
         this.engine = launcher.getEngine();
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = engine.getCONFIG();
-
+        setAuthListener(launcher);
         //If we just initialised and are not sending a form
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             Map<String, String> authCredentials = new HashMap<>();
@@ -39,9 +42,7 @@ public class Auth {
             authCredentials.put("password", CONFIG.getPassword());
             this.engine.getLOGGER().debug("Trying to authorise with saved login " + CONFIG.getLogin());
             //Writing login data if it's not present
-            if (!this.authorize(authCredentials)) {
-                engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
-            }
+            authListener.onLoad(this, authCredentials);
         }
     }
 
@@ -57,7 +58,7 @@ public class Auth {
 
         }
         if(this.authorize(inputData)) {
-            engine.getSOUND().playSound("auth.ogg", false);
+            engine.getSOUND().playSound("other", "loggedIn");
         }
     }
 
@@ -79,6 +80,7 @@ public class Auth {
             if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
                 saveAuthCredentials(authCredentials);
             }
+            authListener.onLogin(authCredentials);
         } else {
             engine.getLOGGER().info("Incorrect password for "+authCredentials.get("login") + "!");
             JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
@@ -140,6 +142,11 @@ public class Auth {
     public boolean isAuthorised() {
         return authorised;
     }
+
+    public void setAuthListener(AuthListener authListener) {
+        this.authListener = authListener;
+    }
+
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }

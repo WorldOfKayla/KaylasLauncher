@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 public class NewsProvider {
-    private Engine engine;
+    private final Engine engine;
     private final String VK_API_URL = "https://api.vk.com/method/wall.get";
-    private static String[] statsValuesKeys = {"views", "likes", "comments", "reposts"};
+    private static final String[] statsValuesKeys = {"views", "likes", "comments", "reposts"};
     private String text;
     private Map<String, Integer> statsValues;
     private long date;

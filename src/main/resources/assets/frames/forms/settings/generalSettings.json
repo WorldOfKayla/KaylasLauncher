@@ -109,6 +109,20 @@
                   "bounds": "375,55,64,64"
                 },
                 {
+                  "componentType": "label",
+                  "fontSize": 12,
+                  "componentStyle": "promptLabel",
+                  "localeKey": "settings.langBox",
+                  "componentId": "langBoxLabel",
+                  "bounds": "40,240,250,50"
+                },
+                {
+                  "componentType": "dropBox",
+                  "componentStyle": "selectable",
+                  "componentId": "lang",
+                  "bounds": "40,275,273,25"
+                },
+                {
                   "componentType": "button",
                   "enabled": true,
                   "keyCode": "ENTER",

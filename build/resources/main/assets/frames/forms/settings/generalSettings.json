@@ -6,7 +6,7 @@
         "focusable": true,
         "visible": true,
         "background": "#c0a1a0",
-        "bounds": "10,60,320,270",
+        "bounds": "0,0,490,450",
         "display": true
       },
       "childComponents": [
@@ -19,7 +19,7 @@
           "iconHeight": 32,
           "localeKey": "settings.baseOptions",
           "componentId": "baseOptions",
-          "bounds": "5,-10,180,60"
+          "bounds": "25,25,180,60"
         },
         {
           "groups": {
@@ -28,7 +28,7 @@
                 "opaque": true,
                 "visible": true,
                 "background": "#c0a1a0",
-                "bounds": "10,15,320,260",
+                "bounds": "10,15,490,450",
                 "display": true
               },
               "childComponents": [
@@ -39,7 +39,7 @@
                   "componentId": "autoEnter",
                   "localeKey": "settings.autoEnter",
                   "initialValue": "config#autoEnter",
-                  "bounds": "5,20,240,32"
+                  "bounds": "40,80,240,32"
                 },
                 {
                   "componentType": "checkBox",
@@ -48,7 +48,7 @@
                   "componentId": "fullScreen",
                   "localeKey": "settings.fullScreen",
                   "initialValue": "config#fullScreen",
-                  "bounds": "5,40,240,32"
+                  "bounds": "40,100,240,32"
                 },
                 {
                   "componentType": "checkBox",
@@ -57,7 +57,7 @@
                   "componentId": "loadNews",
                   "localeKey": "settings.loadNews",
                   "initialValue": "config#loadNews",
-                  "bounds": "5,60,240,32"
+                  "bounds": "40,120,240,32"
                 },
                 {
                   "componentType": "checkBox",
@@ -66,7 +66,7 @@
                   "componentId": "enableSound",
                   "localeKey": "settings.enableSound",
                   "initialValue": "config#enableSound",
-                  "bounds": "5,80,240,30"
+                  "bounds": "40,140,240,30"
                 },
                 {
                   "componentType": "label",
@@ -74,7 +74,7 @@
                   "componentStyle": "promptLabel",
                   "localeKey": "settings.ramField",
                   "componentId": "ramField",
-                  "bounds": "10,110,250,50"
+                  "bounds": "40,170,250,50"
                 },
                 {
                   "componentType": "textField",
@@ -82,7 +82,7 @@
                   "localeKey": "settings.ramPlaceholder",
                   "initialValue": "config#ramAmount",
                   "componentId": "ramAmount",
-                  "bounds": "10,145,0,0"
+                  "bounds": "40,205,0,0"
                 },
                 {
                   "componentType": "slider",
@@ -92,7 +92,7 @@
                   "componentStyle": "slidingOut",
                   "componentId": "volume",
                   "initialValue": "config#volume",
-                  "bounds": "10,110,214,17",
+                  "bounds": "40,170,214,17",
                   "opaque": false
                 },
                 {
@@ -101,12 +101,26 @@
                   "keyCode": "F",
                   "fontSize": 12,
                   "imageIcon": "assets/ui/icons/folder.png",
-                  "iconWidth": 16,
-                  "iconHeight": 16,
+                  "iconWidth": 32,
+                  "iconHeight": 32,
                   "componentStyle": "btnSmallClean",
                   "localeKey": "settings.homeDir",
                   "componentId": "gameDir-small",
-                  "bounds": "235,15,46,46"
+                  "bounds": "375,55,64,64"
+                },
+                {
+                  "componentType": "label",
+                  "fontSize": 12,
+                  "componentStyle": "promptLabel",
+                  "localeKey": "settings.langBox",
+                  "componentId": "langBoxLabel",
+                  "bounds": "40,240,250,50"
+                },
+                {
+                  "componentType": "dropBox",
+                  "componentStyle": "selectable",
+                  "componentId": "lang",
+                  "bounds": "40,275,273,25"
                 },
                 {
                   "componentType": "button",
@@ -115,7 +129,7 @@
                   "componentStyle": "buttonMain",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",
-                  "bounds": "40,195,210,47"
+                  "bounds": "40,340,210,47"
                 }
               ]
             }

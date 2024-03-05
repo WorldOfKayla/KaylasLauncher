@@ -1,204 +1,209 @@
 {
-  "general": {
-    "appTitle": {
-      "en_US": "FoxesWorld",
-      "ru_RU": "ЛисийМир"
+    "general": {
+      "appTitle": {
+        "en_US": "FoxesWorld",
+        "ru_RU": "ЛисийМир",
+        "pl_PL": "Lis Kurwa"
+      },
+      "status": {
+        "en_US": "Alpha",
+        "ru_RU": "Альфа"
+      }
     },
-    "status": {
-      "en_US": "Alpha",
-      "ru_RU": "Альфа"
-    }
-  },
-  "settings": {
-    "settingsButt": {
-      "en_US": "Settings",
-      "ru_RU": "Настройки"
+    "settings": {
+      "settingsButt": {
+        "en_US": "Settings",
+        "ru_RU": "Настройки"
+      },
+      "back": {
+        "en_US": "Back",
+        "ru_RU": "Назад"
+      },
+      "baseOptions": {
+        "en_US": "Base Options",
+        "ru_RU": "Общие параметры"
+      },
+      "autoEnter": {
+        "en_US": "Auto enter a selected server",
+        "ru_RU": "Автозаход на сервер"
+      },
+      "fullScreen": {
+        "en_US": "Set full screen after launching",
+        "ru_RU": "Запустить в полный экран"
+      },
+      "loadNews": {
+        "en_US": "Load news",
+        "ru_RU": "Загружать новости"
+      },
+      "enableSound": {
+        "en_US": "Enable Sound",
+        "ru_RU": "Включить звук"
+      },
+      "applySettings": {
+        "en_US": "Apply Settings",
+        "ru_RU": "Применить настройки"
+      },
+      "ramField": {
+        "en_US": "RAM amount",
+        "ru_RU": "Выделение оперативной памяти"
+      },
+      "ramPlaceholder": {
+        "en_US": "RAM",
+        "ru_RU": "ОЗУ"
+      },
+      "langBox": {
+        "en_US": "Language",
+        "ru_RU": "Язык"
+      },
+      "info": {
+        "en_US": "Settings information",
+        "ru_RU": "Информация о настройках"
+      },
+      "homeDir": {
+        "en_US": "Game Dir",
+        "ru_RU": "Директория игры"
+      }
     },
-    "back": {
-      "en_US": "Back",
-      "ru_RU": "Назад"
+    "auth": {
+      "authTitle": {
+        "en_US": "Authorization",
+        "ru_RU": "Авторизация"
+      },
+      "passwordPlaceholder": {
+        "en_US": "Password",
+        "ru_RU": "Пароль"
+      },
+      "loginPlaceholder": {
+        "en_US": "Login",
+        "ru_RU": "Логин"
+      },
+      "submit": {
+        "en_US": "Submit",
+        "ru_RU": "Войти"
+      },
+      "rememberMe": {
+        "en_US": "Remember Me",
+        "ru_RU": "Запомнить меня"
+      }
     },
-    "baseOptions": {
-      "en_US": "Base Options",
-      "ru_RU": "Общие параметры"
-    },
-    "autoEnter": {
-      "en_US": "Auto enter a selected server",
-      "ru_RU": "Автозаход на сервер"
-    },
-    "fullScreen": {
-      "en_US": "Set full screen after launching",
-      "ru_RU": "Запустить в полный экран"
-    },
-    "loadNews": {
-      "en_US": "Load news",
-      "ru_RU": "Загружать новости"
-    },
-    "enableSound": {
-      "en_US": "Enable Sound",
-      "ru_RU": "Включить звук"
-    },
-    "applySettings": {
-      "en_US": "Apply Settings",
-      "ru_RU": "Применить настройки"
-    },
-    "ramField": {
-      "en_US": "RAM amount",
-      "ru_RU": "Выделение оперативной памяти"
-    },
-    "ramPlaceholder": {
-      "en_US": "RAM",
-      "ru_RU": "ОЗУ"
-    },
-    "info": {
-      "en_US": "Settings information",
-      "ru_RU":"Информация о настройках"
-    },
-    "homeDir": {
-      "en_US": "Game Dir",
-      "ru_RU": "Директория игры"
-    }
-  },
-  "auth": {
-    "authTitle": {
-      "en_US": "Authorization",
-      "ru_RU": "Авторизация"
-    },
-    "passwordPlaceholder": {
-      "en_US": "Password",
-      "ru_RU": "Пароль"
-    },
-    "loginPlaceholder": {
-      "en_US": "Login",
-      "ru_RU": "Логин"
-    },
-    "submit": {
-      "en_US": "Submit",
-      "ru_RU": "Войти"
-    },
-    "rememberMe": {
-      "en_US": "Remember Me",
-      "ru_RU": "Запомнить меня"
-    }
-  },
-  "file": {
-    "gettingFiles-title": {
-      "en_US": "Getting Files",
-      "ru_RU": "Получаю файлы"
-    },
-    "gettingFiles-desc": {
-      "en_US": "What should be loaded?",
-      "ru_RU": "Что нужно загрузить? "
-    },
-    "listBuilt-title": {
-      "en_US": "We got the files",
-      "ru_RU": "Список построен"
-    },
-    "listBuilt-desc": {
-      "en_US": "Now we know what to load!",
-      "ru_RU": "Теперь мы знаем что надо загрузить!"
-    },
-    "isBuilt": {
-      "en_US": "List is built",
-      "ru_RU": "Список построен"
-    }
-  },
-  "loading": {
-    "title": {
-      "en_US": "Loading...",
-      "ru_RU": "Идёт загрузка..."
-    },
-    "msg": {
-      "en_US": "Please wait",
-      "ru_RU": "Пожалуйста подождите"
-    }
-  },
-  "logged": {
-    "loggedIn": {
-      "en_US": "You're in!",
-      "ru_RU": "Привет!"
-    },
-    "logOut": {
-      "en_US": "Log Out",
-      "ru_RU": "Выйти"
-    },
-    "toGame": {
-      "en_US": "To game",
-      "ru_RU": "В игру"
-    },
-    "units": {
-      "en_US": "Units: ",
-      "ru_RU": "Юниты: "
-    },
-    "crystals": {
-      "en_US": "Crystals: ",
-      "ru_RU": "Кристаллы: "
-    }
-  },
-  "download": {
     "file": {
-      "en_US": "File: ",
-      "ru_RU": "Файл: "
+      "gettingFiles-title": {
+        "en_US": "Getting Files",
+        "ru_RU": "Получаю файлы"
+      },
+      "gettingFiles-desc": {
+        "en_US": "What should be loaded?",
+        "ru_RU": "Что нужно загрузить? "
+      },
+      "listBuilt-title": {
+        "en_US": "We got the files",
+        "ru_RU": "Список построен"
+      },
+      "listBuilt-desc": {
+        "en_US": "Now we know what to load!",
+        "ru_RU": "Теперь мы знаем что надо загрузить!"
+      },
+      "isBuilt": {
+        "en_US": "List is built",
+        "ru_RU": "Список построен"
+      }
     },
-    "directory": {
-      "en_US": "Directory: ",
-      "ru_RU": "Директория: "
+    "loading": {
+      "title": {
+        "en_US": "Loading...",
+        "ru_RU": "Идёт загрузка..."
+      },
+      "msg": {
+        "en_US": "Please wait",
+        "ru_RU": "Пожалуйста подождите"
+      }
     },
-    "totalSize": {
-      "en_US": "Total size: ",
-      "ru_RU": "Полный размер: "
+    "logged": {
+      "loggedIn": {
+        "en_US": "You're in!",
+        "ru_RU": "Привет!"
+      },
+      "logOut": {
+        "en_US": "Log Out",
+        "ru_RU": "Выйти"
+      },
+      "toGame": {
+        "en_US": "To game",
+        "ru_RU": "В игру"
+      },
+      "units": {
+        "en_US": "Units: ",
+        "ru_RU": "Юниты: "
+      },
+      "crystals": {
+        "en_US": "Crystals: ",
+        "ru_RU": "Кристаллы: "
+      }
+    },
+    "download": {
+      "file": {
+        "en_US": "File: ",
+        "ru_RU": "Файл: "
+      },
+      "directory": {
+        "en_US": "Directory: ",
+        "ru_RU": "Директория: "
+      },
+      "totalSize": {
+        "en_US": "Total size: ",
+        "ru_RU": "Полный размер: "
+      }
+    },
+    "game": {
+      "playing": {
+        "en_US": "Playing on ",
+        "ru_RU": "Играет на "
+      },
+      "login": {
+        "en_US": "User login: ",
+        "ru_RU": "Логин: "
+      }
+    },
+    "server": {
+      "updating": {
+        "en_US": "Updating server...",
+        "ru_RU": "Обновление..."
+      },
+      "serverOff": {
+        "en_US": "Server off",
+        "ru_RU": "Сервер выключен"
+      },
+      "serverOn": {
+        "en_US": "Playing %% players of ##",
+        "ru_RU": "На сервере %% из ## игроков"
+      },
+      "serverFull": {
+        "en_US": "Server full! (Total slots: %%)",
+        "ru_RU": "Сервер переполнен (Всего слотов: %%)"
+      },
+      "serverErr": {
+        "en_US": "Error parsing data!",
+        "ru_RU": "Ошибка получения информации"
+      }
+    },
+    "group": {
+      "group-1": {
+        "en_US": "Administrator",
+        "ru_RU": "Администратор"
+      },
+      "group-4": {
+        "en_US": "Player",
+        "ru_RU": "Игрок"
+      }
+    },
+    "dev": {
+      "token": {
+        "en_US": "accessToken: ",
+        "ru_RU": "accessToken: "
+      },
+      "uuid": {
+        "en_US": "UUID: ",
+        "ru_RU": "UUID: "
+      }
     }
-  },
-  "game": {
-    "playing": {
-      "en_US": "Playing on ",
-      "ru_RU": "Играет на "
-    },
-    "login": {
-      "en_US": "User login: ",
-      "ru_RU": "Логин: "
-    }
-  },
-  "server": {
-    "updating": {
-      "en_US": "Updating server...",
-      "ru_RU": "Обновление..."
-    },
-    "serverOff": {
-      "en_US": "Server off",
-      "ru_RU": "Сервер выключен"
-    },
-    "serverOn": {
-      "en_US": "Playing %% players of ##",
-      "ru_RU": "На сервере %% из ## игроков"
-    },
-    "serverFull": {
-      "en_US": "Server full! (Total slots: %%)",
-      "ru_RU": "Сервер переполнен (Всего слотов: %%)"
-    },
-    "serverErr": {
-      "en_US": "Error parsing data!",
-      "ru_RU": "Ошибка получения информации"
-    }
-  },
-  "group": {
-    "group-1": {
-      "en_US": "Administrator",
-      "ru_RU": "Администратор"
-    },
-    "group-4": {
-      "en_US": "Player",
-      "ru_RU": "Игрок"
-    }
-  },
-  "dev": {
-    "token": {
-      "en_US": "accessToken: ",
-      "ru_RU": "accessToken: "
-    },
-    "uuid": {
-      "en_US": "UUID: ",
-      "ru_RU": "UUID: "
-    }
-  }
 }

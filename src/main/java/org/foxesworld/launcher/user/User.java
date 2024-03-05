@@ -13,7 +13,6 @@ import org.foxesworld.launcher.auth.Auth;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +32,20 @@ public class User implements DropBoxListener {
         this.auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
+        this.setDropBoxData(dropBox);
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
-        dropBox.setScrollBoxListener(this);
         this.lang = auth.getEngine().getLANG();
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
         } else {
             auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
+    }
+
+    private void setDropBoxData(DropBox dropBox){
+        dropBox.setValues(auth.getUserServersArray());
+        dropBox.setSelectedIndex(this.auth.getEngine().getCONFIG().getSelectedServer());
+        dropBox.setScrollBoxListener(this);
     }
 
     public void setUserSpace() {

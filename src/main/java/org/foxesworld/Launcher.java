@@ -15,7 +15,6 @@ import org.foxesworld.launcher.gui.components.Components;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;

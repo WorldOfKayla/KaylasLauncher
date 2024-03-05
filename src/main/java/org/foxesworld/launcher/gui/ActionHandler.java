@@ -70,6 +70,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             if (component instanceof JSlider) {
                                 this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
                             }
+                        } if(component instanceof DropBox){
+                            System.out.println(((DropBox) component).getSelected());
+                            this.engine.getCONFIG().setConfigValue(component.getName(), ((DropBox) component).getSelected());
                         }
                     }
                     this.engine.getCONFIG().writeCurrentConfig();

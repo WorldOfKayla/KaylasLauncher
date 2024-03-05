@@ -2,10 +2,9 @@
   "groups": {
     "generalSettings": {
       "panelOptions": {
-        "opaque": true,
+        "opaque": false,
         "focusable": true,
         "visible": true,
-        "background": "#c0a1a0",
         "bounds": "0,0,490,450",
         "display": true
       },
@@ -27,8 +26,8 @@
               "panelOptions": {
                 "opaque": true,
                 "visible": true,
-                "background": "#c0a1a0",
-                "bounds": "10,15,490,450",
+                "background": "#c0a1a0f7",
+                "bounds": "0,15,490,450",
                 "display": true
               },
               "childComponents": [

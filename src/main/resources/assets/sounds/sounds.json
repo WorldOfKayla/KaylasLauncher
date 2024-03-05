@@ -1,0 +1,43 @@
+{
+  "button": {
+    "click": {
+      "sounds": [
+        "assets/sounds/button/buttonClick.ogg"
+      ]
+    }
+  },
+  "hover": {
+    "sounds": [
+      "assets/sounds/button/buttonHover.ogg"
+    ]
+  },
+  "close": {
+    "sounds": [
+      "assets/sounds/button/buttonClose.ogg"
+    ]
+  },
+  "checkbox": {
+    "toggleOn": {
+      "sounds": [
+        "assets/sounds/checkbox/checkboxOn.ogg"
+      ]
+    },
+    "toggleOff": {
+      "sounds": [
+        "assets/sounds/checkbox/checkboxOn.ogg"
+      ]
+    }
+  },
+  "dropBox": {
+    "rollOn": {
+      "sounds": [
+        "assets/sounds/dropBox/dropBoxOpen.ogg"
+      ]
+    },
+    "rollOff": {
+      "sounds": [
+        "assets/sounds/dropBox/dropBoxClose.ogg"
+      ]
+    }
+  }
+}

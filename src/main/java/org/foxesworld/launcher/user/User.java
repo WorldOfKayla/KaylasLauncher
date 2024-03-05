@@ -31,6 +31,7 @@ public class User implements DropBoxListener {
     public User(Launcher launcher) {
         this.auth = launcher.getAuth();
         this.serverInfo = auth.getEngine().getServerInfo();
+        this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         this.setDropBoxData(dropBox);
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");

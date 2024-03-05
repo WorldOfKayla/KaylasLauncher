@@ -227,6 +227,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         processArgs.add(JVMHelper.jvmProperty("java.library.path", buildNativesPath()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
+        processArgs.add(JVMHelper.jvmProperty("user.language", this.engine.getCONFIG().getLang()));
         processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
         processArgs.add("-Dorg.lwjgl.opengl.Display.neededGPUVendor=" + gpu);
     }

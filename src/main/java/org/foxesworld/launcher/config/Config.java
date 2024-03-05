@@ -47,6 +47,7 @@ public class Config implements SliderListener, DropBoxListener {
     @Override
     public void onScrollBoxClose(int i) {
         engine.getLANG().setCurrentLang(engine.getLANG().getLocalesSet()[i]);
+        engine.getFrame().getPanel().repaint();
     }
 
     @Override

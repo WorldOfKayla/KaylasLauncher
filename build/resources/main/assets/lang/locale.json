@@ -2,8 +2,7 @@
     "general": {
       "appTitle": {
         "en_US": "FoxesWorld",
-        "ru_RU": "ЛисийМир",
-        "pl_PL": "Lis Kurwa"
+        "ru_RU": "ЛисийМир"
       },
       "status": {
         "en_US": "Alpha",

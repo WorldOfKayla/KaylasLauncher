@@ -20,7 +20,7 @@
         "height": 136,
         "color": "#807159",
         "hoverColor": "#efa532",
-        "align": "CENTER",
+        "align": "LEFT",
         "texture": "assets/ui/button/btnSmallClean.png"
       },
       "btnBig": {

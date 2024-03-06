@@ -5,6 +5,6 @@
   "fullScreen": false,
   "loadNews": true,
   "enableSound": true,
-  "ramAmount": "4096",
-  "volume": 65
+  "ramAmount": 4096,
+  "volume": 85
 }

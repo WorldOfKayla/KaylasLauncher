@@ -18,11 +18,11 @@ import java.util.Map;
 
 public class Auth {
     private final Launcher launcher;
-    private  AuthListener authListener;
+    private AuthListener authListener;
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private Map<String, String> authCredentials = new HashMap<>();
+    private final Map<String, String> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
     private final Map<String, String> inputData = new HashMap<>();
@@ -34,13 +34,14 @@ public class Auth {
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = engine.getCONFIG();
         setAuthListener(launcher);
-        //If we just initialised and are not sending a form
+        attemptAutoLogin();
+    }
+
+    private void attemptAutoLogin() {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
-            Map<String, String> authCredentials = new HashMap<>();
-            authCredentials.put("login",  CONFIG.getLogin());
+            authCredentials.put("login", CONFIG.getLogin());
             authCredentials.put("password", CONFIG.getPassword());
-            this.engine.getLOGGER().debug("Trying to authorise with saved login " + CONFIG.getLogin());
-            //Writing login data if it's not present
+            engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
             authListener.onLoad(this, authCredentials);
         }
     }
@@ -49,63 +50,64 @@ public class Auth {
         for (Component component : authCredentials) {
             if (component instanceof JTextField) {
                 inputData.put(component.getName(), ((JTextField) component).getText());
-            } else {
-                if(component instanceof JCheckBox) {
-                    inputData.put(component.getName(), String.valueOf(((JCheckBox) component).isSelected()));
-                }
+            } else if (component instanceof JCheckBox) {
+                inputData.put(component.getName(), String.valueOf(((JCheckBox) component).isSelected()));
             }
-
         }
-        if(this.authorize(inputData)) {
+        if (authorize(inputData)) {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        Map<String, Object> responseMap = new Gson().fromJson(this.POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials), new TypeToken<Map<String, Object>>(){}.getType());
+        String response = POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials);
+        Map<String, Object> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());
         boolean status = "success".equals(responseMap.get("type"));
 
         if (status) {
-            setAuthorised(true);
-            this.authCredentials = authCredentials;
-
-            // Adding all sent data to MAP
-            for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
-                authCredentials.put(entry.getKey(), entry.getValue().toString());
-            }
-            engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
-            this.loadUserServers(authCredentials.get("login"));
-            if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
-                saveAuthCredentials(authCredentials);
-            }
-            authListener.onLogin(authCredentials);
+            handleSuccessfulAuth(responseMap, authCredentials);
         } else {
-            engine.getLOGGER().info("Incorrect password for "+authCredentials.get("login") + "!");
-            JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
+            handleFailedAuth(responseMap);
         }
         return status;
     }
 
-    private void loadUserServers(String login) {
-        int i = 0;
-        ServerParser serverParser = new ServerParser(getEngine());
-        userServersAttributes = serverParser.parseServers(login);
-        userServersArray = new String[serverParser.getServersNum()];
-        for (ServerAttributes serverAttributes : userServersAttributes) {
-            userServersArray[i] = serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion();
-            i++;
+    private void handleSuccessfulAuth(Map<String, Object> responseMap, Map<String, String> authCredentials) {
+        setAuthorised(true);
+        this.authCredentials.putAll(authCredentials);
+        for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
+            authCredentials.put(entry.getKey(), entry.getValue().toString());
         }
+        engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
+        loadUserServers(authCredentials.get("login"));
+        if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
+            saveAuthCredentials(authCredentials);
+        }
+        authListener.onLogin(authCredentials);
     }
 
-    public void logOut(){
-        this.engine.getLOGGER().info("LoggingOut...");
-       setAuthorised(false);
+    private void handleFailedAuth(Map<String, Object> responseMap) {
+        engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
+        JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
+    }
+
+    private void loadUserServers(String login) {
+        ServerParser serverParser = new ServerParser(getEngine());
+        userServersAttributes = serverParser.parseServers(login);
+        userServersArray = userServersAttributes.stream()
+                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
+                .toArray(String[]::new);
+    }
+
+    public void logOut() {
+        engine.getLOGGER().info("Logging out...");
+        setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
-        for(String clear: Arrays.asList("login", "password")){
-            this.authCredentials.remove(clear);
-            this.engine.getCONFIG().clearConfigData(clear, true);
-        }
+        Arrays.asList("login", "password").forEach(clear -> {
+            authCredentials.remove(clear);
+            engine.getCONFIG().clearConfigData(clear, true);
+        });
         engine.initialize(launcher);
     }
 
@@ -127,16 +129,13 @@ public class Auth {
     }
 
     public String[] getUserServersArray() {
-        if(isAuthorised()) {
-            return userServersArray;
-        } else {
-            return new String[0];
-        }
+        return authorised ? userServersArray : new String[0];
     }
 
     public List<ServerAttributes> getUserServersAttributes() {
         return userServersAttributes;
     }
+
     public boolean isAuthorised() {
         return authorised;
     }

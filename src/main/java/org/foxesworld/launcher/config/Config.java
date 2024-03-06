@@ -18,6 +18,7 @@ public class Config implements SliderListener, DropBoxListener {
 
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
+                System.out.println(component.getName());
                 //If is slider add listener here
             }
 
@@ -29,9 +30,19 @@ public class Config implements SliderListener, DropBoxListener {
         }
     }
     @Override
-    public void onSliderChange(float value) {
-        engine.getCONFIG().setVolume(value);
-        engine.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+    public void onSliderChange(Slider slider) {
+        float value = slider.getValue();
+        switch (slider.getName()){
+            case "volume" -> {
+                engine.getCONFIG().setVolume(value);
+                engine.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+            }
+
+            case "ramAmount" -> {
+                System.out.println(value);
+            }
+        }
+
     }
 
     @Override

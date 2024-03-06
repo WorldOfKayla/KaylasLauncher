@@ -50,6 +50,10 @@
         "en_US": "RAM",
         "ru_RU": "ОЗУ"
       },
+      "soundVolume": {
+        "en_US": "Sound volume",
+        "ru_RU": "Громкость звуков"
+      },
       "langBox": {
         "en_US": "Language",
         "ru_RU": "Язык"

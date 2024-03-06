@@ -3,7 +3,6 @@ package org.foxesworld;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
-import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.launcher.auth.AuthListener;
@@ -26,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
-    private News news;
     private final Auth auth;
     private User user;
     public static void main(String[] args) {
@@ -59,7 +57,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void onPanelsBuilt() {
         if (!isInit()) {
-            getSOUND().playSound("music", "inLauncher");
+            getSOUND().playSound("music", "inLauncher", true);
         }
     }
     @Override
@@ -82,7 +80,7 @@ public class Launcher extends Engine implements AuthListener {
         setGuiBuilder(new GuiBuilder(this));
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
         getGuiBuilder().setGuiBuilderListener(this);
-        this.news = new News(this);
+       setNews(new News(this));
         this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
         loadMainPanel(this.getGuiProperties().getMainFrame());
 
@@ -91,11 +89,7 @@ public class Launcher extends Engine implements AuthListener {
         this.setUser(new User(this));
         new Config(this);
         setInit(true);
-        //if(!this.getCONFIG().isLoadNews()) {
-        //    this.getFrame().setFrameSize(350, 500);
-        //}
     }
-
     @Override
     public String appPath() {
         try {
@@ -116,7 +110,6 @@ public class Launcher extends Engine implements AuthListener {
     public void setUser(User user) {
         this.user = user;
     }
-
     @Override
     public void onLogin(Map<String, String> authCredentials) {
     }

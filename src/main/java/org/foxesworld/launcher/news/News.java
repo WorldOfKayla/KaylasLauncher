@@ -5,7 +5,7 @@ import org.foxesworld.launcher.news.provider.NewsProvider;
 
 import javax.swing.*;
 
-public class News {
+public class News extends org.foxesworld.engine.news.News {
     private final Engine engine;
     private NewsProvider newsProvider;
     public News(Engine engine){
@@ -16,7 +16,8 @@ public class News {
         }
     }
 
-    private void buildPanel(){
+    @Override
+    protected void buildPanel(){
         JPanel childPanel = new NewsPanel(this.newsProvider.fetchNews());
         childPanel.setOpaque(false);
         childPanel.setBounds(0, 30, 500, 470);

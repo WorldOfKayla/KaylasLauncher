@@ -7,12 +7,12 @@
     },
     "clickSmall": {
       "sounds": [
-          "assets/sounds/button/buttonClickSmall.ogg"
+        "assets/sounds/button/buttonClickSmall.ogg"
       ]
     },
     "back": {
       "sounds": [
-          "assets/sounds/button/buttonBack.ogg"
+        "assets/sounds/button/buttonBack.ogg"
       ]
     },
     "hover": {
@@ -61,7 +61,7 @@
     "loggedIn": {
       "sounds": [
         "assets/sounds/auth.ogg"
-    ]
+      ]
     }
   }
 }

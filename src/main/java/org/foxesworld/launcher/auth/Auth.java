@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
-import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.server.ServerParser;
@@ -76,7 +75,7 @@ public class Auth {
                 authCredentials.put(entry.getKey(), entry.getValue().toString());
             }
             engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
-            this.loadUserServers();
+            this.loadUserServers(authCredentials.get("login"));
             if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
                 saveAuthCredentials(authCredentials);
             }
@@ -88,16 +87,15 @@ public class Auth {
         return status;
     }
 
-    private void loadUserServers() {
+    private void loadUserServers(String login) {
         int i = 0;
         ServerParser serverParser = new ServerParser(getEngine());
-        userServersAttributes = serverParser.parseServers(getAuthCredentials("login"));
+        userServersAttributes = serverParser.parseServers(login);
         userServersArray = new String[serverParser.getServersNum()];
         for (ServerAttributes serverAttributes : userServersAttributes) {
             userServersArray[i] = serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion();
             i++;
         }
-       //this.engine.getGuiBuilder().getDropBoxes().get("serverBox").setValuesAndSelectedIndex(userServersArray, this.CONFIG.getSelectedServer());
     }
 
     public void logOut(){

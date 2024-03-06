@@ -59,7 +59,7 @@ public class User implements DropBoxListener {
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
             }
         }
-        userLabels.get("userHead").setIcon(new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead())));
+        userLabels.get("userHead").setIcon(new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead()), 50)));
         userLabels.get("userGroup").setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
 

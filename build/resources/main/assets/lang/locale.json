@@ -43,12 +43,16 @@
         "ru_RU": "Применить настройки"
       },
       "ramField": {
-        "en_US": "RAM amount",
-        "ru_RU": "Выделение оперативной памяти"
+        "en_US": "RAM amount (Mb)",
+        "ru_RU": "Выделение оперативной памяти (Mb)"
       },
       "ramPlaceholder": {
         "en_US": "RAM",
         "ru_RU": "ОЗУ"
+      },
+      "soundVolume": {
+        "en_US": "Sound volume",
+        "ru_RU": "Громкость звуков"
       },
       "langBox": {
         "en_US": "Language",

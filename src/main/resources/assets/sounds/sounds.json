@@ -29,12 +29,14 @@
   "checkbox": {
     "checkboxOn": {
       "sounds": [
-        "assets/sounds/checkbox/checkboxOn.ogg"
+        "assets/sounds/checkbox/on/checkboxOn.ogg",
+        "assets/sounds/checkbox/on/checkboxOn1.ogg"
       ]
     },
     "checkboxOff": {
       "sounds": [
-        "assets/sounds/checkbox/checkboxOff.ogg"
+        "assets/sounds/checkbox/off/checkboxOff.ogg",
+        "assets/sounds/checkbox/off/checkboxOff1.ogg"
       ]
     }
   },
@@ -61,6 +63,19 @@
     "loggedIn": {
       "sounds": [
         "assets/sounds/auth.ogg"
+      ]
+    },
+    "test": {
+      "sounds": [
+        "assets/sounds/test/test0.ogg",
+        "assets/sounds/test/test1.ogg",
+        "assets/sounds/test/test2.ogg",
+        "assets/sounds/test/test3.ogg",
+        "assets/sounds/test/test4.ogg",
+        "assets/sounds/test/test5.ogg",
+        "assets/sounds/test/test6.ogg",
+        "assets/sounds/test/test7.ogg",
+        "assets/sounds/test/test8.ogg"
       ]
     }
   }

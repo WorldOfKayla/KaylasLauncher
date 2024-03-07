@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Schedule;
@@ -10,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
@@ -46,13 +48,17 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    this.engine.getSOUND().playSound("other", "test");
                 }
 
                 case "gameDir-small" -> openGameFolder();
 
                 case "applySettings" -> {
                     for (JComponent component : this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
+                        Class<Config> clazz = Config.class;
+                        try {
+                            Field field = clazz.getDeclaredField(component.getName());
                         if (component instanceof JCheckBox) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                         } else if (component instanceof JTextField) {
@@ -65,6 +71,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             System.out.println(((DropBox) component).getSelected());
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((DropBox) component).getSelected());
                         }
+                        } catch (NoSuchFieldException ignored) {}
                     }
                     this.engine.getCONFIG().writeCurrentConfig();
                 }

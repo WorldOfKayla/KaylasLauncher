@@ -5,20 +5,24 @@ import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.slider.SliderListener;
+import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
+import org.foxesworld.engine.gui.components.textfield.Textfield;
 
 import javax.swing.*;
 
-public class Config implements SliderListener, DropBoxListener {
-    private final Engine engine;
+public class Config implements SliderListener, DropBoxListener, TextFieldListener {
+    private Engine engine;
 
     public Config(Engine engine) {
         this.engine = engine;
         this.engine.getLANG().setLocaleIndex(engine.getCONFIG().getLang());
+    }
+
+    public void addListeners(){
         for (JComponent component : engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
 
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
-                System.out.println(component.getName());
                 //If is slider add listener here
             }
 
@@ -27,19 +31,24 @@ public class Config implements SliderListener, DropBoxListener {
                 ((DropBox) component).setSelectedIndex(engine.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
             }
+
+            if(component instanceof  Textfield) {
+                ((Textfield) component).setTextFieldListener(this);
+            }
         }
     }
     @Override
     public void onSliderChange(Slider slider) {
-        float value = slider.getValue();
+        int value = slider.getValue();
         switch (slider.getName()){
             case "volume" -> {
                 engine.getCONFIG().setVolume(value);
                 engine.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+                ((Textfield)engine.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
             }
 
             case "ramAmount" -> {
-                System.out.println(value);
+                ((Textfield)engine.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
             }
         }
 
@@ -64,5 +73,11 @@ public class Config implements SliderListener, DropBoxListener {
     @Override
     public void onServerHover(int i) {
 
+    }
+
+    @Override
+    public void onTextChange(Textfield textfield) {
+        ((Slider)engine.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
+        //System.out.println(textfield.getName().replace("text", "") + " " + textfield.getText());
     }
 }

@@ -89,6 +89,14 @@
                   "bounds": "40,205,300,60"
                 },
                 {
+                  "componentType": "textField",
+                  "enabled": false,
+                  "componentStyle": "inputBox",
+                  "initialValue": "config#ramAmount",
+                  "componentId": "ramAmountText",
+                  "bounds": "340,205,20,17"
+                },
+                {
                   "componentType": "label",
                   "fontSize": 12,
                   "componentStyle": "promptLabel",
@@ -104,8 +112,15 @@
                   "componentStyle": "slidingOut",
                   "componentId": "volume",
                   "initialValue": "config#volume",
-                  "bounds": "40,170,214,17",
-                  "opaque": false
+                  "bounds": "40,170,214,17"
+                },
+                {
+                  "componentType": "textField",
+                  "enabled": false,
+                  "componentStyle": "inputBox",
+                  "initialValue": "config#volume",
+                  "componentId": "volumeText",
+                  "bounds": "260,165,20,17"
                 },
                 {
                   "componentType": "button",

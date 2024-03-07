@@ -39,6 +39,15 @@
           "bounds": "5,5,64,64"
         },
         {
+          "componentType": "button",
+          "enabled": true,
+          "keyCode": "F5",
+          "componentStyle": "btnSmallClean",
+          "componentId": "smallButton",
+          "localeKey": "TEST",
+          "bounds": "80,45,60,34"
+        },
+        {
           "groups": {
             "userDataForm": {
               "panelOptions": {

@@ -27,12 +27,14 @@ public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
     private final Auth auth;
     private User user;
+    private Config config;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
     public Launcher() {
         super("config");
         this.engine = this;
+        this.config = new Config(this);
         this.auth = new Auth(this);
         if (!isLauncherValid(this)) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
@@ -87,7 +89,7 @@ public class Launcher extends Engine implements AuthListener {
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         this.setUser(new User(this));
-        new Config(this);
+        this.config.addListeners();
         setInit(true);
     }
     @Override
@@ -112,6 +114,10 @@ public class Launcher extends Engine implements AuthListener {
     }
     @Override
     public void onLogin(Map<String, String> authCredentials) {
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
     @Override

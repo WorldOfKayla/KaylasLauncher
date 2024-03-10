@@ -9,7 +9,7 @@ import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.engine.utils.md5Func;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.launcher.config.Config;
+import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.components.Components;
@@ -19,22 +19,22 @@ import java.awt.event.ActionEvent;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
     private final Auth auth;
     private User user;
-    private Config config;
+    private Settings config;
+    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
     public Launcher() {
         super("config");
         this.engine = this;
-        this.config = new Config(this);
+        this.config = new Settings(this);
         this.auth = new Auth(this);
         if (!isLauncherValid(this)) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
@@ -78,7 +78,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void initialize(Engine engine) {
         getDiscord().discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
-        setStyleProvider(new StyleProvider(this));
+        setStyleProvider(new StyleProvider(this.styles));
         setGuiBuilder(new GuiBuilder(this));
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
         getGuiBuilder().setGuiBuilderListener(this);
@@ -116,7 +116,7 @@ public class Launcher extends Engine implements AuthListener {
     public void onLogin(Map<String, String> authCredentials) {
     }
 
-    public Config getConfig() {
+    public Settings getConfig() {
         return config;
     }
 

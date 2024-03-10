@@ -28,13 +28,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     public final Launcher launcher;
+    private final ClientType clientType;
     protected final User user;
+
     public GameLauncher(ActionHandler actionHandler) {
         this.launcher = actionHandler.getLauncher();
         this.config = actionHandler.getEngine().getCONFIG();
         this.gameClient = actionHandler.getCurrentServer();
         this.engine = actionHandler.getEngine();
-        this.logger = this.engine.getLOGGER();
+        this.logger = Engine.getLOGGER();
         this.getLogger().debug("#############################");
         this.logger.debug("GameDir " + buildGameDir());
         this.logger.debug("ClientDir " + buildClientDir());
@@ -45,6 +47,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.logger.debug("Assets " + buildAssetsPath());
         this.logger.debug("#############################");
         this.user = launcher.getUser();
+        this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
     }
 
@@ -70,7 +73,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             }
             num.getAndIncrement();
         });
-
         sb.append(buildMinecraftJarPath()).append(File.pathSeparator);
         processArgs.add(sb.toString());
 
@@ -86,35 +88,57 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     protected void loadAuthLib() {
+        boolean accessTokenAdded = false;
         try {
             classLoader.loadClass("com.mojang.authlib.Agent");
             processArgs.add("--userType=legacy");
-            processArgs.add("--accessToken=" + this.user.getToken());
+            for (String arg : processArgs) {
+                if (arg.startsWith("--accessToken=")) {
+                    accessTokenAdded = true;
+                    break;
+                }
+            }
+            if (!accessTokenAdded) {
+                processArgs.add("--accessToken=" + this.user.getToken());
+            }
             processArgs.add("--uuid=" + this.user.getUuid());
             processArgs.add("--userProperties={}");
         } catch (ClassNotFoundException e2) {
             e2.printStackTrace();
-            //if AuthLib was not found (Old versions under 1.7.3)
             processArgs.add("--session=" + this.user.getToken());
         }
     }
 
     @Override
     protected void addArgs(String tweakClassVal) {
+        String version = gameClient.getServerVersion();
+        if (gameClient.getServerVersion().contains("-")) {
+            version = gameClient.getServerVersion().split("-")[0];
+        }
+        Engine.getLOGGER().debug("Client version " + version);
         processArgs.add("--versionType=release");
         processArgs.add("--username=" + this.user.getLogin());
-        processArgs.add("--version=" + gameClient.getServerVersion());
+        if (this.clientType != ClientType.fabricclient) {
+            processArgs.add("--version=" + version);
+        }
         processArgs.add("--gameDir=" + buildClientDir());
         processArgs.add("--assetsDir=" + buildAssetsPath());
-        processArgs.add("--assetIndex=" + gameClient.getServerVersion());
+        processArgs.add("--assetIndex=" + version);
+        switch (this.clientType) {
+            case fmlclient -> {
+                if (getIntVer() > 1133) {
+                    processArgs.add("--fml.forgeVersion=" + this.gameClient.getForgeVersion());
+                    processArgs.add("--fml.mcVersion=" + this.gameClient.getServerVersion());
+                    processArgs.add("--launchTarget=" + this.gameClient.getClient());
+                    processArgs.add("--fml.forgeGroup=" + this.gameClient.getForgeGroup());
+                    processArgs.add("--fml.mcpVersion=" + this.gameClient.getMcpVersion());
+                    System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
+                }
+            }
 
-        if (getIntVer() > 1133) {
-            processArgs.add("--fml.forgeVersion="+this.gameClient.getForgeVersion());
-            processArgs.add("--fml.mcVersion="+this.gameClient.getServerVersion());
-            processArgs.add("--launchTarget="+this.gameClient.getClient());
-            processArgs.add("--fml.forgeGroup="+this.gameClient.getForgeGroup());
-            processArgs.add("--fml.mcpVersion="+this.gameClient.getMcpVersion());
-            System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
+            case fabricclient -> {
+
+            }
         }
         //Optional
         if (config.isFullScreen()) {
@@ -154,7 +178,9 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 }
 
                 processArgs.add(mainClass);
-                loadAuthLib();
+                if(this.clientType != ClientType.fabricclient) {
+                    loadAuthLib();
+                }
                 addArgs(tweakClassVal);
 
                 // Log the command that will be executed
@@ -168,19 +194,19 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 processBuilder.inheritIO();
 
                 Process process = processBuilder.start();
-                if(process.isAlive()){
+                if (process.isAlive()) {
                     gameListener.onGameStart(gameClient);
                 }
                 engine.getFrame().setVisible(false);
 
                 int exitCode = process.waitFor();
-                gameListener.onGameExit(exitCode);
+                gameListener.onGameExit(this);
                 // Using invokeLater for Swing-related actions
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
-                        //engine.getSOUND().playSound("exit.ogg", false);
-                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
+                        //engine.getSOUND().playSound("exit.ogg");
+                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
                         System.exit(0);
                     }
                 });
@@ -199,7 +225,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         List<TweakClasses> tweakClasses = this.engine.getEngineData().getTweakClasses();
         for (TweakClasses aClass : tweakClasses) {
             String className = aClass.classPath;
-            this.engine.getLOGGER().debug("Searching " + className);
+            Engine.getLOGGER().debug("Searching " + className);
             try {
                 classLoader.loadClass(className);
                 tweakClassVal = "--tweakClass=" + className;
@@ -208,7 +234,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 System.setProperty("fml.ignorePatchDiscrepancies", "true");
                 return tweakClassVal;
             } catch (ClassNotFoundException classNotFoundException) {
-                this.engine.getLOGGER().debug("TweakClass " + className + " not found");
+                Engine.getLOGGER().debug("TweakClass " + className + " not found");
             }
         }
         return "";
@@ -221,7 +247,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     @Override
     protected void setJre() {
         String gpu = new GPUInfo().getPreferredGPU();
-        logger.info("Setting "+gpu + " as preferred card");
+        logger.info("Setting " + gpu + " as preferred card");
         processArgs.add(buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
         processArgs.add(JVMHelper.jvmProperty("java.library.path", buildNativesPath()));
@@ -258,6 +284,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         }
         return clientDir.toString();
     }
+
     @Override
     protected String buildAssetsPath() {
         return buildGameDir() + "assets";

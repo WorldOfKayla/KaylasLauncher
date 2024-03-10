@@ -41,7 +41,7 @@ public class Auth {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             authCredentials.put("login", CONFIG.getLogin());
             authCredentials.put("password", CONFIG.getPassword());
-            engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
+            Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
             authListener.onLoad(this, authCredentials);
         }
     }
@@ -79,7 +79,7 @@ public class Auth {
         for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
             authCredentials.put(entry.getKey(), entry.getValue().toString());
         }
-        engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
+        Engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
         loadUserServers(authCredentials.get("login"));
         if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
@@ -88,7 +88,7 @@ public class Auth {
     }
 
     private void handleFailedAuth(Map<String, Object> responseMap) {
-        engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
+        Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
         JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
     }
 
@@ -96,12 +96,11 @@ public class Auth {
         ServerParser serverParser = new ServerParser(getEngine());
         userServersAttributes = serverParser.parseServers(login);
         userServersArray = userServersAttributes.stream()
-                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
-                .toArray(String[]::new);
+                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
     }
 
     public void logOut() {
-        engine.getLOGGER().info("Logging out...");
+        Engine.getLOGGER().info("Logging out...");
         setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
         Arrays.asList("login", "password").forEach(clear -> {

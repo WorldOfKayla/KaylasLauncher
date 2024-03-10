@@ -1,5 +1,6 @@
 package org.foxesworld.launcher;
 
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.fileLoader.FileAttributes;
 import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
@@ -13,7 +14,7 @@ import org.foxesworld.engine.game.GameListener;
 import java.io.File;
 
 public class Schedule implements FileLoaderListener, FileGuardListener, GameListener {
-
+    private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
@@ -32,7 +33,7 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
     }
     @Override
     public void onFilesRead() {
-        this.actionHandler.getEngine().getLOGGER().debug("--==|Files are read|==--");
+        Engine.getLOGGER().debug("--==|Files are read|==--");
         gameLauncher = new GameLauncher(actionHandler);
         gameLauncher.setGameListener(this);
         if (!this.hasJre(gameLauncher.getCurrentJre())) {
@@ -44,13 +45,14 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
     }
     @Override
     public void onFilesLoaded() {
-        this.actionHandler.getEngine().getLOGGER().debug("--==|Files loaded|==--");
-        FileGuard fileGuard = new FileGuard(this.gameLauncher);
+        Engine.getLOGGER().debug("--==|Files loaded|==--");
+        this.fileGuard = new FileGuard(this.gameLauncher);
         fileGuard.setFileGuardListener(this);
         fileGuard.addIgnoreDirs(this.actionHandler.getCurrentServer().getIgnoreDirs());
         fileGuard.scanAndDeleteFilesInSubdirectories(this.fileLoader.getFilesToKeep());
         fileGuard.recursiveDelete(new File(this.gameLauncher.buildGameDir() + "/assets/skins"));
     }
+
     @Override
     public void onNewFileFound(FileAttributes file, String localPath, final long totalSizeFinal) {
         String fullPath = this.fileLoader.getHomeDir() + localPath;
@@ -67,17 +69,23 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
     }
     @Override
     public void onFilesChecked(int filesDeleted) {
-        this.actionHandler.getEngine().getLOGGER().debug("--==|Files checked|==--");
-        this.actionHandler.getEngine().getLOGGER().info(filesDeleted + " removed");
+        Engine.getLOGGER().debug("--==|Files checked|==--");
+        Engine.getLOGGER().info(filesDeleted + " removed");
         this.actionHandler.getEngine().getSOUND().getSoundPlayer().stopAllSounds();
         gameLauncher.launchGame();
     }
+
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
-        System.out.println("=== GAME " + serverAttributes.getServerName() + " STARTED ===");
+        System.out.println("=== GAME CLIENT " + serverAttributes.getServerName()+ " STARTED ===");
     }
+
     @Override
-    public void onGameExit(int exitCode) {
-        System.exit(0);
+    public void onGameExit(org.foxesworld.engine.game.GameLauncher gameLauncher) {
+        if(this.actionHandler.getEngine().getCONFIG().isLaunchAC()) {
+            this.actionHandler.getLauncher().restartApplication(128);
+        } else {
+            System.exit(0);
+        }
     }
 }

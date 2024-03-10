@@ -58,7 +58,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     for (JComponent component : this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
                         Class<Config> clazz = Config.class;
                         try {
-                            Field field = clazz.getDeclaredField(component.getName());
+                           clazz.getDeclaredField(component.getName());
                         if (component instanceof JCheckBox) {
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                         } else if (component instanceof JTextField) {
@@ -68,7 +68,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                                 this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
                             }
                         } if(component instanceof DropBox){
-                            System.out.println(((DropBox) component).getSelected());
                             this.engine.getCONFIG().setConfigValue(component.getName(), ((DropBox) component).getSelected());
                         }
                         } catch (NoSuchFieldException ignored) {}
@@ -99,7 +98,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
                     DropBox dropBox = (DropBox) engine.getGuiBuilder().getComponentById("serverBox");
                     this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
-                    this.getEngine().getLOGGER().info("Launching " + this.currentServer.getServerName());
+                    Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.engine.getCONFIG().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                     this.engine.getCONFIG().writeCurrentConfig();
                     new Schedule(this);

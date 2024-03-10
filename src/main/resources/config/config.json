@@ -2,6 +2,7 @@
   "lang": "ru_RU",
   "logLevel": "INFO",
   "autoEnter": false,
+  "launchAC": true,
   "fullScreen": false,
   "loadNews": true,
   "enableSound": true,

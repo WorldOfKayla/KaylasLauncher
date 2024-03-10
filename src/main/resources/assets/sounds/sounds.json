@@ -2,17 +2,18 @@
   "button": {
     "click": {
       "sounds": [
-        "assets/sounds/button/buttonClick.ogg"
+        "assets/sounds/button/click/buttonClick.ogg",
+        "assets/sounds/button/click/buttonClick1.ogg"
       ]
     },
     "clickSmall": {
       "sounds": [
-        "assets/sounds/button/buttonClickSmall.ogg"
+        "assets/sounds/button/small/buttonClickSmall.ogg"
       ]
     },
     "back": {
       "sounds": [
-        "assets/sounds/button/buttonBack.ogg"
+        "assets/sounds/button/back/buttonBack.ogg"
       ]
     },
     "hover": {
@@ -55,7 +56,8 @@
   "music": {
     "inLauncher": {
       "sounds": [
-        "assets/sounds/mus/loginMus.ogg"
+        "assets/sounds/mus/loginMus.ogg",
+        "assets/sounds/mus/NewRecord.ogg"
       ]
     }
   },

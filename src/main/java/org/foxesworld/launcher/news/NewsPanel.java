@@ -2,6 +2,7 @@ package org.foxesworld.launcher.news;
 
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
+import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.launcher.news.provider.NewsAttributes;
 import org.foxesworld.launcher.news.provider.NewsProvider;
 import org.foxesworld.engine.utils.ImageUtils;
@@ -21,13 +22,17 @@ import static org.foxesworld.engine.utils.ImageUtils.getLocalImage;
 import static org.foxesworld.engine.utils.ImageUtils.getRoundedImage;
 
 public class NewsPanel extends JPanel {
+    private News news;
+    private FontUtils fontUtils;
 
-    public NewsPanel(List<NewsAttributes> newsAttributesList) {
+    public NewsPanel(News news) {
+        this.news = news;
+        this.fontUtils = news.getEngine().getFONTUTILS();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
 
         JScrollPane scrollPane = createScrollPane();
-        JPanel contentPanel = createContentPanel(newsAttributesList);
+        JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
         scrollPane.setViewportView(contentPanel);
 
         add(scrollPane);
@@ -51,7 +56,7 @@ public class NewsPanel extends JPanel {
 
         for (NewsAttributes newsAttributes : newsAttributesList) {
             contentPanel.add(createNewsPanel(newsAttributes));
-            contentPanel.add(Box.createVerticalStrut(10));
+            //contentPanel.add(Box.createVerticalStrut(10));
         }
 
         return contentPanel;
@@ -117,7 +122,7 @@ public class NewsPanel extends JPanel {
 
         String labelText = "<html><body style='width: 380px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
         JLabel newsText = new JLabel(labelText);
-        newsText.setFont(new Font("Arial", Font.BOLD, 11));
+        newsText.setFont(this.fontUtils.getFont("mcfont", 13));
         newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
         newsText.setForeground(Color.WHITE);
 
@@ -135,6 +140,8 @@ public class NewsPanel extends JPanel {
             photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             photoLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
             newsPanel.add(photoLabel);
+            newsPanel.setBackground(hexToColor("#0707079e"));
+            newsPanel.setOpaque(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

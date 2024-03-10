@@ -65,6 +65,10 @@
       "homeDir": {
         "en_US": "Game Dir",
         "ru_RU": "Директория игры"
+      },
+      "launchAC": {
+        "en_US": "Start launcher after server exit",
+        "ru_RU": "Запуск лаунчера после выхода с сервера"
       }
     },
     "auth": {

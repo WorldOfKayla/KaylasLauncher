@@ -18,7 +18,7 @@
           "iconHeight": 32,
           "localeKey": "settings.baseOptions",
           "componentId": "baseOptions",
-          "bounds": "25,25,180,60"
+          "bounds": "5,20,180,60"
         },
         {
           "groups": {
@@ -32,40 +32,7 @@
               },
               "childComponents": [
                 {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "autoEnter",
-                  "localeKey": "settings.autoEnter",
-                  "initialValue": "config#autoEnter",
-                  "bounds": "40,60,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "fullScreen",
-                  "localeKey": "settings.fullScreen",
-                  "initialValue": "config#fullScreen",
-                  "bounds": "40,80,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": false,
-                  "componentStyle": "solid",
-                  "componentId": "loadNews",
-                  "localeKey": "settings.loadNews",
-                  "initialValue": "config#loadNews",
-                  "bounds": "40,100,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "enableSound",
-                  "localeKey": "settings.enableSound",
-                  "initialValue": "config#enableSound",
-                  "bounds": "40,120,240,30"
+                  "readFrom": "assets/frames/forms/settings/checkBoxes.json"
                 },
                 {
                   "componentType": "label",
@@ -76,9 +43,9 @@
                   "bounds": "40,185,250,50"
                 },
                 {
-                  "componentType": "labeledSlider",
+                  "componentType": "slider",
                   "enabled": true,
-                  "componentStyle": "slidingTest",
+                  "componentStyle": "slidingOut",
                   "localeKey": "settings.ramPlaceholder",
                   "minValue": 1024,
                   "maxValue": 8196,
@@ -94,7 +61,7 @@
                   "componentStyle": "inputBox",
                   "initialValue": "config#ramAmount",
                   "componentId": "ramAmountText",
-                  "bounds": "340,205,20,17"
+                  "bounds": "345,210,20,17"
                 },
                 {
                   "componentType": "label",
@@ -102,17 +69,19 @@
                   "componentStyle": "promptLabel",
                   "localeKey": "settings.soundVolume",
                   "componentId": "soundVolume",
-                  "bounds": "40,140,250,50"
+                  "bounds": "40,130,250,50"
                 },
                 {
                   "componentType": "slider",
                   "enabled": true,
                   "minValue": 50,
                   "maxValue": 100,
+                  "minorSpacing": 5,
+                  "majorSpacing": 10,
                   "componentStyle": "slidingOut",
                   "componentId": "volume",
                   "initialValue": "config#volume",
-                  "bounds": "40,170,214,17"
+                  "bounds": "40,150,300,60"
                 },
                 {
                   "componentType": "textField",
@@ -120,7 +89,7 @@
                   "componentStyle": "inputBox",
                   "initialValue": "config#volume",
                   "componentId": "volumeText",
-                  "bounds": "260,165,20,17"
+                  "bounds": "345,160,20,17"
                 },
                 {
                   "componentType": "button",

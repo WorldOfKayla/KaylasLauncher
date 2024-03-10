@@ -18,10 +18,18 @@ public class News extends org.foxesworld.engine.news.News {
 
     @Override
     protected void buildPanel(){
-        JPanel childPanel = new NewsPanel(this.newsProvider.fetchNews());
+        JPanel childPanel = new NewsPanel(this);
         childPanel.setOpaque(false);
         childPanel.setBounds(0, 30, 500, 470);
         childPanel.setName("newsFrame");
         this.engine.getGuiBuilder().addPanelToMap(childPanel);
+    }
+
+    public NewsProvider getNewsProvider() {
+        return newsProvider;
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }

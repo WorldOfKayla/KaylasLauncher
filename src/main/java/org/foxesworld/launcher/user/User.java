@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.user;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
@@ -142,9 +143,9 @@ public class User implements DropBoxListener {
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
                 serverBox.updateBox(text, img);
-                auth.getEngine().getLOGGER().info("Refreshing Server done!");
+                Engine.getLOGGER().info("Refreshing Server done!");
             } catch (Exception e) {
-                auth.getEngine().getLOGGER().error("Error refreshing server: " + e.getMessage());
+                Engine.getLOGGER().error("Error refreshing server: " + e.getMessage());
             }
         });
         executor.shutdown();

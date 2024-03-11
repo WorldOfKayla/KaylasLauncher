@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
-    protected final Launcher launcher;
+    protected Launcher launcher;
     protected ServerAttributes currentServer;
     public ActionHandler(Launcher launcher) {
         this.launcher = launcher;
@@ -75,6 +75,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         }
                     }
                     this.launcher.getConfig().writeCurrentConfig();
+                    this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
+                    this.launcher.getEngine().getFrame().dispose();
+                    this.launcher = new Launcher();
                 }
 
                 case "logOut" -> this.launcher.getAuth().logOut();
@@ -88,11 +91,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "back" -> {
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
-                    }
+                    this.hideSettings();
                 }
 
                 case "toGame" -> {
@@ -111,6 +110,14 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
         //}
+    }
+
+    private void hideSettings(){
+        if (!launcher.getAuth().isAuthorised()) {
+            engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
+        } else {
+            engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
+        }
     }
 
     private void openGameFolder() {

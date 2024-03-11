@@ -33,7 +33,6 @@ public class Launcher extends Engine implements AuthListener {
     }
     public Launcher() {
         super("config");
-        postInit(getConfig().getLang(), this.getConfig().isEnableSound(), (float) this.getConfig().getVolume());
         this.engine = this;
         this.settings = new Settings(this);
 

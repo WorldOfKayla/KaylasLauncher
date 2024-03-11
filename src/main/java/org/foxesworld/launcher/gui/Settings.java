@@ -42,9 +42,9 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
             int value = slider.getValue();
             switch (slider.getName()) {
                 case "volume" -> {
-                    launcher.getConfig().setVolume(value);
-                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
-                    ((Textfield) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
+                        launcher.getConfig().setVolume(value);
+                        launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+                        ((Textfield) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 
                 case "ramAmount" -> {

@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.4.3-STABLE",
+  "launcherVersion": "1.4.5-EXPERIMENTAL",
   "logLevel": "DEBUG",
   "programRuntime": "jdk-17.0.9",
   "bindUrl": "https://foxescraft.ru",

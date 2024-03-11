@@ -13,13 +13,13 @@ import org.foxesworld.engine.game.GameListener;
 
 import java.io.File;
 
-public class Schedule implements FileLoaderListener, FileGuardListener, GameListener {
+public class Core implements FileLoaderListener, FileGuardListener, GameListener {
     private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
 
-    public Schedule(ActionHandler actionHandler) {
+    public Core(ActionHandler actionHandler) {
         actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);

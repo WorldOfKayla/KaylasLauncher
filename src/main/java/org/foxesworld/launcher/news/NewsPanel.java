@@ -134,11 +134,11 @@ public class NewsPanel extends JPanel {
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
         try {
             ImageIcon imageIcon = new ImageIcon(new URL(newsAttributes.getOriginalPhotoUrls().get(0)));
-            Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 15), 465, 350);
+            Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 15), 470, 350);
             ImageIcon fullSizeIcon = new ImageIcon(image);
             JLabel photoLabel = new JLabel(fullSizeIcon);
             photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            photoLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
+            photoLabel.setBorder(new EmptyBorder(5, 5, 5, 50));
             newsPanel.add(photoLabel);
             newsPanel.setBackground(hexToColor("#0707079e"));
             newsPanel.setOpaque(true);

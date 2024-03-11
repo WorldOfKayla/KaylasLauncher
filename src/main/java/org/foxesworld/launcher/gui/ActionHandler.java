@@ -5,14 +5,13 @@ import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.launcher.Schedule;
+import org.foxesworld.launcher.Core;
 import org.foxesworld.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
@@ -102,7 +101,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                     this.launcher.getConfig().writeCurrentConfig();
-                    new Schedule(this);
+                    new Core(this);
                 }
 
                 case "closeButton" -> System.exit(0);

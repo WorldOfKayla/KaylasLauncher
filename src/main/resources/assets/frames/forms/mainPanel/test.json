@@ -1,0 +1,50 @@
+{
+  "groups":{
+    "test":{
+      "panelOptions":{
+        "opaque":true,
+        "visibility":false,
+        "background":"#4a4c4fe6",
+        "border":"1,1,1,1,#242221",
+        "bounds":"35,35,780,450"
+      },
+      "childComponents":[
+        {
+          "groups":{
+            "testPane":{
+              "panelOptions":{
+                "opaque":true,
+                "focusable":true,
+                "visible":true,
+                "background":"#500b0a",
+                "bounds":"0,0,780,35"
+              },
+              "childComponents":[
+                {
+                  "componentType":"button",
+                  "enabled":true,
+                  "keyCode":"BACK_SPACE",
+                  "componentStyle":"btnSmallClean",
+                  "localeKey":"settings.back",
+                  "componentId":"back-test",
+                  "bounds":"0,0,97,34"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "componentType": "label",
+          "componentStyle": "title",
+          "iconWidth": 63,
+          "iconHeight": 64,
+          "fontSize": 13,
+          "imageIcon": "assets/ui/img/serum.png",
+          "localeKey": "dev.experimental",
+          "componentId": "testText",
+          "bounds": "45,45,256,64"
+        }
+      ]
+    }
+  }
+}

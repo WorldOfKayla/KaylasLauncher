@@ -20,7 +20,7 @@ public class ServerParser extends org.foxesworld.engine.server.ServerParser {
             this.serverList.add(serverAttributes);
             serversNum++;
         }
-        engine.getLOGGER().debug("Loading " + serversNum + " servers for User " + login);
+        Engine.getLOGGER().debug("Loading " + serversNum + " servers for User " + login);
         return serverList;
     }
     public int getServersNum() {

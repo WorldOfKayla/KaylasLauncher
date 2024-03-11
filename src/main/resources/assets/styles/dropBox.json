@@ -5,7 +5,7 @@
         "name": "A selectable dude!",
         "font": "mcfont",
         "fontSize": 12,
-        "color": "#08162f",
+        "color": "#807159",
         "hoverColor": "#efa532",
         "texture": "assets/ui/dropBox/dropBox.png"
       }

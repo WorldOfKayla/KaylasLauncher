@@ -211,6 +211,10 @@
       "uuid": {
         "en_US": "UUID: ",
         "ru_RU": "UUID: "
+      },
+      "experimental": {
+        "en_US": "EXPERIMENTAL",
+        "ru_RU": "ЭКСПЕРИМЕНТ"
       }
     }
 }

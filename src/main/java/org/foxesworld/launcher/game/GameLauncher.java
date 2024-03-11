@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
-    private Config config;
+    private final Config config;
     public final Launcher launcher;
     private final ClientType clientType;
     protected final User user;

@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
@@ -9,9 +10,14 @@ import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
 import org.foxesworld.engine.gui.components.textfield.Textfield;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.regex.Pattern;
 
 public class Settings implements SliderListener, DropBoxListener, TextFieldListener {
-    private Launcher launcher;
+    private final Launcher launcher;
 
     public Settings(Launcher launcher) {
         this.launcher = launcher;
@@ -36,6 +42,14 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
             }
         }
     }
+
+    public static void openGameFolder() {
+        try {
+            Desktop d = Desktop.getDesktop();
+            d.browse(new URI(Config.getFullPath().replaceAll(Pattern.quote("\\"), "/")));
+        } catch (IOException | URISyntaxException ignored) {
+        }
+    }
     @Override
     public void onSliderChange(Slider slider) {
         SwingUtilities.invokeLater(() -> {
@@ -47,9 +61,7 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
                         ((Textfield) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 
-                case "ramAmount" -> {
-                    ((Textfield) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
-                }
+                case "ramAmount" -> ((Textfield) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
             }
         });
 
@@ -78,7 +90,8 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
 
     @Override
     public void onTextChange(Textfield textfield) {
-        if(!textfield.getText().equals(""))
-        ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
+        if(!textfield.getText().equals("")) {
+            ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
+        }
     }
 }

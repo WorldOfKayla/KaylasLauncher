@@ -1,20 +1,15 @@
 package org.foxesworld.launcher.gui;
 
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
-import org.foxesworld.Launcher;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.regex.Pattern;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
@@ -48,11 +43,15 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    this.engine.getSOUND().playSound("other", "test");
+                    if (!launcher.getAuth().isAuthorised()) {
+                        engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
+                    } else {
+                        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
+                    }
+                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                 }
 
-                case "gameDir-small" -> openGameFolder();
+                case "gameDir-small" -> Settings.openGameFolder();
 
                 case "applySettings" -> {
                     for (JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
@@ -90,7 +89,19 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "back" -> {
-                    this.hideSettings();
+                    if (!launcher.getAuth().isAuthorised()) {
+                        engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
+                    } else {
+                        engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
+                    }
+                }
+
+                case "back-test" -> {
+                    if (!launcher.getAuth().isAuthorised()) {
+                        engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|test->false");
+                    } else {
+                        engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|test->false");
+                    }
                 }
 
                 case "toGame" -> {
@@ -109,22 +120,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
         //}
-    }
-
-    private void hideSettings(){
-        if (!launcher.getAuth().isAuthorised()) {
-            engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
-        } else {
-            engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
-        }
-    }
-
-    private void openGameFolder() {
-        try {
-            Desktop d = Desktop.getDesktop();
-            d.browse(new URI(Config.getFullPath().replaceAll(Pattern.quote("\\"), "/")));
-        } catch (IOException | URISyntaxException ignored) {
-        }
     }
     @Override
     public Engine getEngine() {

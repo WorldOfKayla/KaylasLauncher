@@ -1,6 +1,6 @@
 package org.foxesworld.launcher.gui;
 
-import org.foxesworld.engine.Engine;
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
@@ -11,23 +11,23 @@ import org.foxesworld.engine.gui.components.textfield.Textfield;
 import javax.swing.*;
 
 public class Settings implements SliderListener, DropBoxListener, TextFieldListener {
-    private Engine engine;
+    private Launcher launcher;
 
-    public Settings(Engine engine) {
-        this.engine = engine;
-        this.engine.getLANG().setLocaleIndex(engine.getCONFIG().getLang());
+    public Settings(Launcher launcher) {
+        this.launcher = launcher;
+        this.launcher.getLANG().setLocaleIndex(this.launcher.getConfig().getLang());
     }
 
     public void addListeners(){
-        for (JComponent component : engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
+        for (JComponent component : launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
 
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
             }
 
             if(component instanceof DropBox) {
-                ((DropBox) component).setValues(engine.getLANG().getLocalesSet());
-                ((DropBox) component).setSelectedIndex(engine.getLANG().getLocaleIndex());
+                ((DropBox) component).setValues(launcher.getLANG().getLocalesSet());
+                ((DropBox) component).setSelectedIndex(launcher.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
             }
 
@@ -42,13 +42,13 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
             int value = slider.getValue();
             switch (slider.getName()) {
                 case "volume" -> {
-                    engine.getCONFIG().setVolume(value);
-                    engine.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
-                    ((Textfield) engine.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
+                    launcher.getConfig().setVolume(value);
+                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+                    ((Textfield) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 
                 case "ramAmount" -> {
-                    ((Textfield) engine.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
+                    ((Textfield) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
                 }
             }
         });
@@ -67,8 +67,8 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
 
     @Override
     public void onScrollBoxClose(int i) {
-        engine.getLANG().setCurrentLang(engine.getLANG().getLocalesSet()[i]);
-        engine.getFrame().getPanel().repaint();
+        launcher.getLANG().setCurrentLang(launcher.getLANG().getLocalesSet()[i]);
+        launcher.getFrame().getPanel().repaint();
     }
 
     @Override
@@ -79,6 +79,6 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
     @Override
     public void onTextChange(Textfield textfield) {
         if(!textfield.getText().equals(""))
-        ((Slider)engine.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
+        ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
     }
 }

@@ -2,6 +2,7 @@ package org.foxesworld.launcher.gui;
 
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Schedule;
@@ -48,31 +49,32 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                     this.engine.getSOUND().playSound("other", "test");
                 }
 
                 case "gameDir-small" -> openGameFolder();
 
                 case "applySettings" -> {
-                    for (JComponent component : this.engine.getGuiBuilder().getComponentsMap().get("settingsFields")) {
+                    for (JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
                         Class<Config> clazz = Config.class;
                         try {
                            clazz.getDeclaredField(component.getName());
-                        if (component instanceof JCheckBox) {
-                            this.engine.getCONFIG().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
+                        if (component instanceof Checkbox) {
+                            this.launcher.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
                         } else if (component instanceof JTextField) {
-                            this.engine.getCONFIG().setConfigValue(component.getName(), ((JTextField) component).getText());
+                            this.launcher.getConfig().setConfigValue(component.getName(), ((JTextField) component).getText());
                         } else {
                             if (component instanceof JSlider) {
-                                this.engine.getCONFIG().setConfigValue(component.getName(), ((JSlider) component).getValue());
+                                this.launcher.getConfig().setConfigValue(component.getName(), ((JSlider) component).getValue());
                             }
                         } if(component instanceof DropBox){
-                            this.engine.getCONFIG().setConfigValue(component.getName(), ((DropBox) component).getSelected());
+                                this.launcher.getConfig().setConfigValue(component.getName(), ((DropBox) component).getSelected());
                         }
-                        } catch (NoSuchFieldException ignored) {}
+                        } catch (NoSuchFieldException ignored) {
+                        }
                     }
-                    this.engine.getCONFIG().writeCurrentConfig();
+                    this.launcher.getConfig().writeCurrentConfig();
                 }
 
                 case "logOut" -> this.launcher.getAuth().logOut();
@@ -99,8 +101,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     DropBox dropBox = (DropBox) engine.getGuiBuilder().getComponentById("serverBox");
                     this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
                     Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
-                    this.engine.getCONFIG().setConfigValue("selectedServer", dropBox.getSelectedIndex());
-                    this.engine.getCONFIG().writeCurrentConfig();
+                    this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
+                    this.launcher.getConfig().writeCurrentConfig();
                     new Schedule(this);
                 }
 
@@ -114,7 +116,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
     private void openGameFolder() {
         try {
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI(engine.getCONFIG().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
+            d.browse(new URI(Config.getFullPath().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException ignored) {
         }
     }

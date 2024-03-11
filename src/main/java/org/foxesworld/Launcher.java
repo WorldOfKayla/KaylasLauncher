@@ -25,7 +25,7 @@ public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
     private final Auth auth;
     private User user;
-    private Settings config;
+    private final Settings settings;
     private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
 
     public static void main(String[] args) {
@@ -33,8 +33,10 @@ public class Launcher extends Engine implements AuthListener {
     }
     public Launcher() {
         super("config");
+        postInit(getConfig().getLang(), this.getConfig().isEnableSound(), (float) this.getConfig().getVolume());
         this.engine = this;
-        this.config = new Settings(this);
+        this.settings = new Settings(this);
+
         this.auth = new Auth(this);
         if (!isLauncherValid(this)) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
@@ -89,7 +91,7 @@ public class Launcher extends Engine implements AuthListener {
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         this.setUser(new User(this));
-        this.config.addListeners();
+        this.settings.addListeners();
         setInit(true);
     }
     @Override
@@ -116,14 +118,14 @@ public class Launcher extends Engine implements AuthListener {
     public void onLogin(Map<String, String> authCredentials) {
     }
 
-    public Settings getConfig() {
-        return config;
+    public Settings getSettings() {
+        return settings;
     }
 
     @Override
     public void onLoad(Auth auth, Map<String, String> authCredentials) {
         if (!auth.authorize(authCredentials)) {
-            engine.getCONFIG().clearConfigData(Arrays.asList("login", "password"), true);
+            getConfig().clearConfigData(Arrays.asList("login", "password"), true);
         }
     }
 }

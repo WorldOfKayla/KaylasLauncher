@@ -1,17 +1,18 @@
 package org.foxesworld.launcher.news;
 
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.launcher.news.provider.NewsProvider;
 
 import javax.swing.*;
 
 public class News extends org.foxesworld.engine.news.News {
-    private final Engine engine;
+    private final Launcher launcher;
     private NewsProvider newsProvider;
-    public News(Engine engine){
-        this.engine = engine;
-        if(engine.getCONFIG().isLoadNews()) {
-            this.newsProvider = new NewsProvider(engine);
+    public News(Launcher launcher){
+        this.launcher = launcher;
+        if(this.launcher.getConfig().isLoadNews()) {
+            this.newsProvider = new NewsProvider(this.launcher);
             buildPanel();
         }
     }
@@ -22,14 +23,14 @@ public class News extends org.foxesworld.engine.news.News {
         childPanel.setOpaque(false);
         childPanel.setBounds(0, 30, 500, 470);
         childPanel.setName("newsFrame");
-        this.engine.getGuiBuilder().addPanelToMap(childPanel);
+        this.launcher.getGuiBuilder().addPanelToMap(childPanel);
     }
 
     public NewsProvider getNewsProvider() {
         return newsProvider;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public Engine getLauncher() {
+        return launcher;
     }
 }

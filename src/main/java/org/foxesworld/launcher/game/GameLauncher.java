@@ -6,6 +6,7 @@ import org.foxesworld.engine.game.GPUInfo;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.engine.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
@@ -27,13 +28,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
+    private Config config;
     public final Launcher launcher;
     private final ClientType clientType;
     protected final User user;
 
     public GameLauncher(ActionHandler actionHandler) {
         this.launcher = actionHandler.getLauncher();
-        this.config = actionHandler.getEngine().getCONFIG();
+        this.config = actionHandler.getLauncher().getConfig();
         this.gameClient = actionHandler.getCurrentServer();
         this.engine = actionHandler.getEngine();
         this.logger = Engine.getLOGGER();
@@ -87,25 +89,16 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
 
     @Override
-    protected void loadAuthLib() {
-        boolean accessTokenAdded = false;
+    protected void loadAuthLib(String accessToken, String UUID, String userProperties) {
         try {
             classLoader.loadClass("com.mojang.authlib.Agent");
             processArgs.add("--userType=legacy");
-            for (String arg : processArgs) {
-                if (arg.startsWith("--accessToken=")) {
-                    accessTokenAdded = true;
-                    break;
-                }
-            }
-            if (!accessTokenAdded) {
-                processArgs.add("--accessToken=" + this.user.getToken());
-            }
-            processArgs.add("--uuid=" + this.user.getUuid());
+            processArgs.add("--accessToken=" + accessToken);
+            processArgs.add("--uuid=" + UUID);
             processArgs.add("--userProperties={}");
         } catch (ClassNotFoundException e2) {
-            e2.printStackTrace();
-            processArgs.add("--session=" + this.user.getToken());
+            //if AuthLib was not found (Old versions under 1.7.3)
+            processArgs.add("--session=" + accessToken);
         }
     }
 
@@ -160,11 +153,10 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     public void launchGame() {
-
         if (isStarted()) throw new IllegalStateException("Process already started");
-
         executorService.submit(() -> {
             String mainClass;
+            this.checkDangerousParams();
             try {
                 String tweakClassVal = "";
                 setJre();
@@ -179,12 +171,12 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 processArgs.add(mainClass);
                 if(this.clientType != ClientType.fabricclient) {
-                    loadAuthLib();
+                    loadAuthLib(this.user.getToken(), this.user.getUuid(), "");
                 }
                 addArgs(tweakClassVal);
 
                 // Log the command that will be executed
-                logger.debug("Launching command: " + String.join(" ", processArgs));
+                logger.debug("Launch command: " + String.join(" ", processArgs));
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(this.buildClientDir()));
                 processBuilder.redirectErrorStream(true);
@@ -253,7 +245,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         processArgs.add(JVMHelper.jvmProperty("java.library.path", buildNativesPath()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.brand", this.engine.getEngineData().getLauncherBrand()));
         processArgs.add(JVMHelper.jvmProperty("minecraft.launcher.version", this.engine.getEngineData().getLauncherVersion()));
-        processArgs.add(JVMHelper.jvmProperty("user.language", this.engine.getCONFIG().getLang()));
+        processArgs.add(JVMHelper.jvmProperty("user.language", this.launcher.getConfig().getLang()));
         processArgs.add("-Dfml.ignoreInvalidMinecraftCertificates=true");
         processArgs.add("-Dorg.lwjgl.opengl.Display.neededGPUVendor=" + gpu);
     }
@@ -278,7 +270,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     public String buildClientDir() {
         File clientDir = new File(buildGameDir() + "clients" + File.separator + gameClient.getServerName());
         if (!clientDir.isDirectory()) {
-            this.engine.getLOGGER().debug("Creating " + gameClient.getServerName() + " directory");
+            Engine.getLOGGER().debug("Creating " + gameClient.getServerName() + " directory");
             //noinspection ResultOfMethodCallIgnored
             clientDir.mkdirs();
         }

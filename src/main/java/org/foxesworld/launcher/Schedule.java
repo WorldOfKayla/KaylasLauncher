@@ -82,8 +82,13 @@ public class Schedule implements FileLoaderListener, FileGuardListener, GameList
 
     @Override
     public void onGameExit(org.foxesworld.engine.game.GameLauncher gameLauncher) {
-        if(this.actionHandler.getEngine().getCONFIG().isLaunchAC()) {
-            this.actionHandler.getLauncher().restartApplication(128);
+        if(this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
+            if(!new File(this.actionHandler.getEngine().appPath()).isDirectory()) {
+                this.actionHandler.getLauncher().restartApplication(128);
+            } else {
+                Engine.getLOGGER().error("Launcher can't be a directory!");
+                System.exit(0);
+            }
         } else {
             System.exit(0);
         }

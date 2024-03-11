@@ -27,7 +27,7 @@ public class NewsPanel extends JPanel {
 
     public NewsPanel(News news) {
         this.news = news;
-        this.fontUtils = news.getEngine().getFONTUTILS();
+        this.fontUtils = news.getLauncher().getFONTUTILS();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
 

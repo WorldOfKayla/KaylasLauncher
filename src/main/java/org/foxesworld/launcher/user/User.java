@@ -45,7 +45,7 @@ public class User implements DropBoxListener {
 
     private void setDropBoxData(DropBox dropBox){
         dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(this.auth.getEngine().getCONFIG().getSelectedServer());
+        dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(this);
     }
 

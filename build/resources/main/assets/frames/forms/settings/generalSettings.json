@@ -32,7 +32,49 @@
               },
               "childComponents": [
                 {
-                  "readFrom": "assets/frames/forms/settings/checkBoxes.json"
+                  "componentType": "checkBox",
+                  "enabled": true,
+                  "componentStyle": "solid",
+                  "componentId": "autoEnter",
+                  "localeKey": "settings.autoEnter",
+                  "initialValue": "config#autoEnter",
+                  "bounds": "40,40,240,32"
+                },
+                {
+                  "componentType": "checkBox",
+                  "enabled": true,
+                  "componentStyle": "solid",
+                  "componentId": "fullScreen",
+                  "localeKey": "settings.fullScreen",
+                  "initialValue": "config#fullScreen",
+                  "bounds": "40,60,240,32"
+                },
+                {
+                  "componentType": "checkBox",
+                  "enabled": false,
+                  "componentStyle": "solid",
+                  "componentId": "loadNews",
+                  "localeKey": "settings.loadNews",
+                  "initialValue": "config#loadNews",
+                  "bounds": "40,80,240,32"
+                },
+                {
+                  "componentType": "checkBox",
+                  "enabled": true,
+                  "componentStyle": "solid",
+                  "componentId": "enableSound",
+                  "localeKey": "settings.enableSound",
+                  "initialValue": "config#enableSound",
+                  "bounds": "40,100,240,30"
+                },
+                {
+                  "componentType": "checkBox",
+                  "enabled": true,
+                  "componentStyle": "solid",
+                  "componentId": "launchAC",
+                  "localeKey": "settings.launchAC",
+                  "initialValue": "config#launchAC",
+                  "bounds": "40,120,300,30"
                 },
                 {
                   "componentType": "label",

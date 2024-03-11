@@ -32,7 +32,7 @@ public class Auth {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.POSTrequest = engine.getPOSTrequest();
-        this.CONFIG = engine.getCONFIG();
+        this.CONFIG = launcher.getConfig();
         setAuthListener(launcher);
         attemptAutoLogin();
     }
@@ -62,7 +62,8 @@ public class Auth {
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials);
-        Map<String, Object> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());
+        Map<String, Object> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, Object>>() {
+        }.getType());
         boolean status = "success".equals(responseMap.get("type"));
 
         if (status) {
@@ -105,14 +106,14 @@ public class Auth {
         engine.getFrame().getRootPanel().removeAll();
         Arrays.asList("login", "password").forEach(clear -> {
             authCredentials.remove(clear);
-            engine.getCONFIG().clearConfigData(clear, true);
+            launcher.getConfig().clearConfigData(clear, true);
         });
         engine.initialize(launcher);
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
-        engine.getCONFIG().addToConfig(authCredentials, Arrays.asList("login", "password"));
-        engine.getCONFIG().writeCurrentConfig();
+        launcher.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
+        launcher.getConfig().writeCurrentConfig();
     }
 
     public String getAuthCredentials(String key) {
@@ -125,6 +126,10 @@ public class Auth {
 
     public Engine getEngine() {
         return engine;
+    }
+
+    public Launcher getLauncher() {
+        return launcher;
     }
 
     public String[] getUserServersArray() {

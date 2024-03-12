@@ -3,8 +3,14 @@ package org.foxesworld;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
+import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.sound.Sound;
+import org.foxesworld.engine.utils.Crypt.CryptUtils;
+import org.foxesworld.engine.utils.LoadingManager;
+import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.engine.utils.md5Func;
@@ -23,9 +29,10 @@ import java.util.*;
 
 public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
-    private final Auth auth;
+    private Auth auth;
     private User user;
     private final Settings settings;
+    private final String soundsFile = "assets/sounds/sounds.json";
     private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
 
     public static void main(String[] args) {
@@ -33,18 +40,52 @@ public class Launcher extends Engine implements AuthListener {
     }
     public Launcher() {
         super("config");
+        this.preInit(this);
         this.engine = this;
         this.settings = new Settings(this);
 
-        this.auth = new Auth(this);
+
         if (!isLauncherValid(this)) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         } else {
-            initialize(this);
+            this.auth = new Auth(this);
+            init(this);
             setActionHandler(new ActionHandler(this));
             getLOGGER().debug("Launcher started!");
         }
+    }
+
+
+    /*
+    * TODO
+    *  May be merged to Engine*/
+    @Override
+    protected void preInit(Engine engine){
+        this.LANG = new LanguageProvider(engine, this.getGuiProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
+        this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.soundsFile));
+        this.frameConstructor = new FrameConstructor(engine);
+        this.loadingManager = new LoadingManager(engine);
+        this.serverInfo = new ServerInfo(this);
+        this.CRYPTO = new CryptUtils(this);
+    }
+
+    @Override
+    public void init(Engine engine) {
+        getDiscord().discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
+        setStyleProvider(new StyleProvider(this.styles));
+        setGuiBuilder(new GuiBuilder(this));
+        this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
+        getGuiBuilder().setGuiBuilderListener(this);
+        setNews(new News(this));
+        this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
+        loadMainPanel(this.getGuiProperties().getMainFrame());
+
+        //ALL PANELS ARE BUILT
+        this.getGuiBuilder().buildAdditionalPanels();
+        this.setUser(new User(this));
+        this.settings.addListeners();
+        setInit(true);
     }
     private boolean isLauncherValid(Engine engine) {
         Map<String, String> launcherRequest = new HashMap<>();
@@ -57,6 +98,31 @@ public class Launcher extends Engine implements AuthListener {
             return true;
         }
     }
+
+    @Override
+    public String appPath() {
+        try {
+            return URLDecoder.decode(Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
+        } catch (URISyntaxException var2) {
+            return null;
+        }
+    }
+
+    @Override
+    public void onLogin(Map<String, String> authCredentials) {
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    @Override
+    public void onLoad(Auth auth, Map<String, String> authCredentials) {
+        if (!auth.authorize(authCredentials)) {
+            getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+        }
+    }
+
     @Override
     public void onPanelsBuilt() {
         if (!isInit()) {
@@ -76,31 +142,6 @@ public class Launcher extends Engine implements AuthListener {
         actionHandler.handleAction(e);
     }
 
-    @Override
-    public void initialize(Engine engine) {
-        getDiscord().discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
-        setStyleProvider(new StyleProvider(this.styles));
-        setGuiBuilder(new GuiBuilder(this));
-        this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
-        getGuiBuilder().setGuiBuilderListener(this);
-       setNews(new News(this));
-        this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
-        loadMainPanel(this.getGuiProperties().getMainFrame());
-
-        //ALL PANELS ARE BUILT
-        this.getGuiBuilder().buildAdditionalPanels();
-        this.setUser(new User(this));
-        this.settings.addListeners();
-        setInit(true);
-    }
-    @Override
-    public String appPath() {
-        try {
-            return URLDecoder.decode(Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
-        } catch (URISyntaxException var2) {
-            return null;
-        }
-    }
     public Engine getEngine() {
         return engine;
     }
@@ -112,19 +153,5 @@ public class Launcher extends Engine implements AuthListener {
     }
     public void setUser(User user) {
         this.user = user;
-    }
-    @Override
-    public void onLogin(Map<String, String> authCredentials) {
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    @Override
-    public void onLoad(Auth auth, Map<String, String> authCredentials) {
-        if (!auth.authorize(authCredentials)) {
-            getConfig().clearConfigData(Arrays.asList("login", "password"), true);
-        }
     }
 }

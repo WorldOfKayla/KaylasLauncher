@@ -37,7 +37,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         if (this.launcher.getAuth().isAuthorised()) {
                             engine.getFrame().getRootPanel().removeAll();
                             engine.getPanelVisibility().displayPanel("authForm->false");
-                            this.engine.initialize(this.launcher);
+                            this.engine.init(this.launcher);
                         }
                     }
                 }

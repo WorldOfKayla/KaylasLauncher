@@ -36,7 +36,7 @@ public class User implements DropBoxListener {
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
         this.setDropBoxData(dropBox);
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
-        this.lang = auth.getEngine().getLANG();
+        this.lang = launcher.getLANG();
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
         } else {

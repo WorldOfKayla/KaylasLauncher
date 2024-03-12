@@ -129,6 +129,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 }
             }
 
+
             case fabricclient -> {
 
             }

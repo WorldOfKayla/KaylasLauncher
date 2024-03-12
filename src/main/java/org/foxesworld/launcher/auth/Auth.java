@@ -108,7 +108,7 @@ public class Auth {
             authCredentials.remove(clear);
             launcher.getConfig().clearConfigData(clear, true);
         });
-        engine.initialize(launcher);
+        engine.init(launcher);
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {

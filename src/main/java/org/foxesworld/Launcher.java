@@ -2,6 +2,8 @@ package org.foxesworld;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.launcher.config.Config;
+import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
@@ -62,6 +64,7 @@ public class Launcher extends Engine implements AuthListener {
     *  May be merged to Engine*/
     @Override
     protected void preInit(Engine engine){
+        this.config = new Config(this);
         this.LANG = new LanguageProvider(engine, this.getGuiProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
         this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.soundsFile));
         this.frameConstructor = new FrameConstructor(engine);
@@ -72,7 +75,8 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init(Engine engine) {
-        getDiscord().discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
+        this.discord = new Discord(this);
+        this.discord.discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
         setStyleProvider(new StyleProvider(this.styles));
         setGuiBuilder(new GuiBuilder(this));
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
@@ -119,7 +123,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void onLoad(Auth auth, Map<String, String> authCredentials) {
         if (!auth.authorize(authCredentials)) {
-            getConfig().clearConfigData(Arrays.asList("login", "password"), true);
+            this.config.clearConfigData(Arrays.asList("login", "password"), true);
         }
     }
 
@@ -154,4 +158,6 @@ public class Launcher extends Engine implements AuthListener {
     public void setUser(User user) {
         this.user = user;
     }
+    public  Config getConfig() { return (Config) this.config; }
+
 }

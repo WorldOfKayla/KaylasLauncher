@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
-import org.foxesworld.engine.config.Config;
+import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;

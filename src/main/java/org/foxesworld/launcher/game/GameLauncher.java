@@ -6,7 +6,7 @@ import org.foxesworld.engine.game.GPUInfo;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.engine.config.Config;
+import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;

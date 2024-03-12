@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.config.Config;
+import org.foxesworld.engine.config.ConfigAbstract;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;

@@ -1,7 +1,7 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.5.3-TwilightAdventure patch-x2",
-  "logLevel": "DEBUG",
+  "launcherVersion": "1.5.4-TwilightAdventure",
+  "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",

@@ -30,7 +30,7 @@ application {
 
 
 group 'org.foxesworld'
-version '1.5.3-TwilightAdventure patch-x2'
+version '1.5.4-TwilightAdventure'
 
 repositories {
     mavenCentral()

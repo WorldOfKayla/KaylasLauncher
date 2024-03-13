@@ -14,6 +14,7 @@ import org.foxesworld.engine.game.GameListener;
 import java.io.File;
 
 public class Core implements FileLoaderListener, FileGuardListener, GameListener {
+    private long startTime, timeElapsed;
     private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
@@ -77,11 +78,14 @@ public class Core implements FileLoaderListener, FileGuardListener, GameListener
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
-        System.out.println("=== GAME CLIENT " + serverAttributes.getServerName()+ " STARTED ===");
+        System.out.println("=== GAME CLIENT " + serverAttributes.getServerName()+ " STARTED by "+ this.gameLauncher.launcher.getUser().getLogin()+" ===");
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void onGameExit(org.foxesworld.engine.game.GameLauncher gameLauncher) {
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         if(this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if(!new File(this.actionHandler.getEngine().appPath()).isDirectory()) {
                 this.actionHandler.getLauncher().restartApplication(128);

@@ -3,7 +3,6 @@ package org.foxesworld.launcher.config;
 import com.foxesworld.cfgProvider.cfgProvider;
 import com.google.gson.GsonBuilder;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.config.ConfigAbstract;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,17 +12,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class Config extends ConfigAbstract {
-    private Engine engine;
-    private Map<String, Object> CONFIG;
+public class Config extends org.foxesworld.engine.config.Config {
+    @SuppressWarnings("unused")
     private int selectedServer, gpuIndex;
     private double volume;
+    @SuppressWarnings("unused")
     private int ramAmount;
+    @SuppressWarnings("unused")
     private  String login, password, lang;
+    @SuppressWarnings("unused")
     private  boolean autoEnter, fullScreen, loadNews, enableSound,launchAC;
 
     public Config(Engine engine) {
-        this.engine = engine;
         setCfgExportDir("config/");
         setDebug(true);
         setDirPathIndex(3);
@@ -52,7 +52,7 @@ public class Config extends ConfigAbstract {
 
     @Override
     public void clearConfigData(List<String> dataToClear, boolean write) {
-        Engine.getLOGGER().debug("Wiping "+dataToClear);
+        //Engine.getLOGGER().debug("Wiping "+dataToClear);
         for (String keyToWipe : dataToClear) {
             this.CONFIG.remove(keyToWipe);
         }
@@ -77,14 +77,13 @@ public class Config extends ConfigAbstract {
                     field.set(this, configMap.getValue());
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                //throw new RuntimeException(e);
-                this.writeCurrentConfig();
+                //this.writeCurrentConfig();
             }
         }
     }
     @Override
     public void writeCurrentConfig() {
-        //Engine.getLOGGER().debug("Writing "+ configToJSON());
+        Engine.getLOGGER().debug("Writing "+ configToJSON());
         try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "config/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
@@ -112,6 +111,7 @@ public class Config extends ConfigAbstract {
     public int getRamAmount() {
         return ramAmount;
     }
+    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
@@ -127,6 +127,7 @@ public class Config extends ConfigAbstract {
     public boolean isLaunchAC() {
         return launchAC;
     }
+    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
     }

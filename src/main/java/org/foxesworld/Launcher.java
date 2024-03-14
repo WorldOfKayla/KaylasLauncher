@@ -46,8 +46,8 @@ public class Launcher extends Engine implements AuthListener {
         this.engine = this;
         this.settings = new Settings(this);
 
-
         if (!isLauncherValid(this)) {
+            engine.getSOUND().playSound("other", "invalidLauncher");
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         } else {
@@ -57,7 +57,6 @@ public class Launcher extends Engine implements AuthListener {
             getLOGGER().debug("Launcher started!");
         }
     }
-
 
     /*
     * TODO
@@ -72,7 +71,6 @@ public class Launcher extends Engine implements AuthListener {
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
-
     @Override
     public void init(Engine engine) {
         this.discord = new Discord(this);

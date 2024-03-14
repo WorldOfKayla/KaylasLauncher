@@ -17,7 +17,8 @@ import java.util.Map;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private final Config config;
-    private Map<String, String> replaceValues = new HashMap<>();
+    private final String javaBinPath;
+    private final Map<String, String> replaceValues = new HashMap<>();
     private final ArgsReader argsReader;
     private final  AuthLib authLib;
     public final Launcher launcher;
@@ -43,6 +44,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.user = launcher.getUser();
         this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
+        javaBinPath = this.buildRuntimeDir() + File.separator + gameClient.getJreVersion() + File.separator + "bin";
         this.authLib = new AuthLib(this);
     }
 
@@ -171,4 +173,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         //processArgs.add("-Dorg.lwjgl.opengl.Display.neededGPUVendor=" + gpu);
     }
 
+    public String getJavaBinPath() {
+        return javaBinPath;
+    }
 }

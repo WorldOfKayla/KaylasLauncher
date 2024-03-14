@@ -66,6 +66,11 @@
         "assets/sounds/auth.ogg"
       ]
     },
+    "invalidLauncher": {
+      "sounds": [
+        "assets/sounds/invalid.ogg"
+      ]
+    },
     "test": {
       "sounds": [
         "assets/sounds/test/test0.ogg",

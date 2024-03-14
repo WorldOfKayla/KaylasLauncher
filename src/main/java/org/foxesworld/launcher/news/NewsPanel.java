@@ -105,7 +105,7 @@ public class NewsPanel extends JPanel {
             communityNameLabel.setForeground(Color.WHITE);
             upperPanel.add(communityNameLabel);
 
-            JLabel dateLabel = new JLabel("<html><body style='width: 240px; text-align: right; padding: 0px;'>" + formatDate(newsAttributes.getPublicationDate()) + "</body></html>");
+            JLabel dateLabel = new JLabel("<html><body style='width: 230px; text-align: right; padding: 0px;'>" + formatDate(newsAttributes.getPublicationDate()) + "</body></html>");
             dateLabel.setForeground(Color.WHITE);
             upperPanel.add(dateLabel);
         } catch (IOException e) {

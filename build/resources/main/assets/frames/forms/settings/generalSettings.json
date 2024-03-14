@@ -32,106 +32,10 @@
               },
               "childComponents": [
                 {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "autoEnter",
-                  "localeKey": "settings.autoEnter",
-                  "initialValue": "config#autoEnter",
-                  "bounds": "40,40,240,32"
+                  "readFrom": "assets/frames/forms/settings/checkBoxes.json"
                 },
                 {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "fullScreen",
-                  "localeKey": "settings.fullScreen",
-                  "initialValue": "config#fullScreen",
-                  "bounds": "40,60,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": false,
-                  "componentStyle": "solid",
-                  "componentId": "loadNews",
-                  "localeKey": "settings.loadNews",
-                  "initialValue": "config#loadNews",
-                  "bounds": "40,80,240,32"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "enableSound",
-                  "localeKey": "settings.enableSound",
-                  "initialValue": "config#enableSound",
-                  "bounds": "40,100,240,30"
-                },
-                {
-                  "componentType": "checkBox",
-                  "enabled": true,
-                  "componentStyle": "solid",
-                  "componentId": "launchAC",
-                  "localeKey": "settings.launchAC",
-                  "initialValue": "config#launchAC",
-                  "bounds": "40,120,300,30"
-                },
-                {
-                  "componentType": "label",
-                  "fontSize": 12,
-                  "componentStyle": "promptLabel",
-                  "localeKey": "settings.ramField",
-                  "componentId": "ramField",
-                  "bounds": "40,185,250,50"
-                },
-                {
-                  "componentType": "slider",
-                  "enabled": true,
-                  "componentStyle": "slidingOut",
-                  "localeKey": "settings.ramPlaceholder",
-                  "minValue": 1024,
-                  "maxValue": 8196,
-                  "minorSpacing": 512,
-                  "majorSpacing": 1024,
-                  "initialValue": "config#ramAmount",
-                  "componentId": "ramAmount",
-                  "bounds": "40,205,300,60"
-                },
-                {
-                  "componentType": "textField",
-                  "enabled": false,
-                  "componentStyle": "inputBox",
-                  "initialValue": "config#ramAmount",
-                  "componentId": "ramAmountText",
-                  "bounds": "345,210,20,17"
-                },
-                {
-                  "componentType": "label",
-                  "fontSize": 12,
-                  "componentStyle": "promptLabel",
-                  "localeKey": "settings.soundVolume",
-                  "componentId": "soundVolume",
-                  "bounds": "40,130,250,50"
-                },
-                {
-                  "componentType": "slider",
-                  "enabled": true,
-                  "minValue": 50,
-                  "maxValue": 100,
-                  "minorSpacing": 5,
-                  "majorSpacing": 10,
-                  "componentStyle": "slidingOut",
-                  "componentId": "volume",
-                  "initialValue": "config#volume",
-                  "bounds": "40,150,300,60"
-                },
-                {
-                  "componentType": "textField",
-                  "enabled": false,
-                  "componentStyle": "inputBox",
-                  "initialValue": "config#volume",
-                  "componentId": "volumeText",
-                  "bounds": "345,160,20,17"
+                  "readFrom": "assets/frames/forms/settings/sliders.json"
                 },
                 {
                   "componentType": "button",

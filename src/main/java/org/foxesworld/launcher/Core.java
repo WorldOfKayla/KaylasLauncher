@@ -5,6 +5,7 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.gui.ActionHandler;
 
@@ -21,7 +22,7 @@ public class Core implements GameListener {
         actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
         this.actionHandler = actionHandler;
         fileLoader = new FileLoader(actionHandler);
-        fileLoader.setLoaderListener(new org.foxesworld.launcher.fileLoader.FileLoader(this));
+        fileLoader.setLoaderListener(new FileLoaderImpl(this));
 		fileLoader.setReplaceMask("/uploads/files/clients/");
         Thread downloadThread = new Thread(fileLoader::getFilesToDownload);
         downloadThread.start();

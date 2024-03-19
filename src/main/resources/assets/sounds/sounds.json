@@ -2,7 +2,6 @@
   "button": {
     "click": {
       "sounds": [
-        "assets/sounds/button/click/buttonClick.ogg",
         "assets/sounds/button/click/buttonClick1.ogg"
       ]
     },
@@ -54,12 +53,14 @@
     }
   },
   "music": {
-    "inLauncher": {
+    "launcherTheme": {
       "sounds": [
-        "assets/sounds/mus/mus1.ogg"
+        "assets/sounds/mus/mus1.ogg",
+        "assets/sounds/mus/mus2.ogg"
       ]
     }
   },
+
   "other": {
     "loggedIn": {
       "sounds": [
@@ -71,17 +72,15 @@
         "assets/sounds/invalid.ogg"
       ]
     },
-    "test": {
+    "start": {
       "sounds": [
-        "assets/sounds/test/test0.ogg",
-        "assets/sounds/test/test1.ogg",
-        "assets/sounds/test/test2.ogg",
-        "assets/sounds/test/test3.ogg",
-        "assets/sounds/test/test4.ogg",
-        "assets/sounds/test/test5.ogg",
-        "assets/sounds/test/test6.ogg",
-        "assets/sounds/test/test7.ogg",
-        "assets/sounds/test/test8.ogg"
+        "assets/sounds/start/voice1.ogg",
+        "assets/sounds/start/voice2.ogg",
+        "assets/sounds/start/voice3.ogg",
+        "assets/sounds/start/voice4.ogg",
+        "assets/sounds/start/voice5.ogg",
+        "assets/sounds/start/voice6.ogg",
+        "assets/sounds/start/voice7.ogg"
       ]
     }
   }

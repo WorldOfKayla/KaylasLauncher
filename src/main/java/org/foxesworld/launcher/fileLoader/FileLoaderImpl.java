@@ -54,5 +54,4 @@ public class FileLoaderImpl implements FileLoaderListener {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }
-
 }

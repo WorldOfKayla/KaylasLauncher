@@ -22,8 +22,8 @@ import static org.foxesworld.engine.utils.ImageUtils.getLocalImage;
 import static org.foxesworld.engine.utils.ImageUtils.getRoundedImage;
 
 public class NewsPanel extends JPanel {
-    private News news;
-    private FontUtils fontUtils;
+    private final News news;
+    private final FontUtils fontUtils;
 
     public NewsPanel(News news) {
         this.news = news;

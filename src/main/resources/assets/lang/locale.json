@@ -69,6 +69,10 @@
       "launchAC": {
         "en_US": "Start launcher after server exit",
         "ru_RU": "Запуск лаунчера после выхода с сервера"
+      },
+      "backgroundMusic": {
+        "en_US": "Background music",
+        "ru_RU": "Фоновая музыка"
       }
     },
     "auth": {

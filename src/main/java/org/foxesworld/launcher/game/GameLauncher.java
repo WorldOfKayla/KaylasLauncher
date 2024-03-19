@@ -2,8 +2,9 @@ package org.foxesworld.launcher.game;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.GPUInfo;
-import org.foxesworld.engine.game.argsReader.ArgsReader;
+import org.foxesworld.engine.game.jsonLaunchProperties.argsReader.ArgsReader;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
@@ -13,16 +14,13 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private final Config config;
     private final String javaBinPath;
-    private final Map<String, String> replaceValues = new HashMap<>();
     private final ArgsReader argsReader;
-    private final  AuthLib authLib;
+    protected AuthLib authLib;
     public final Launcher launcher;
-    private final ClientType clientType;
     protected final User user;
 
     public GameLauncher(ActionHandler actionHandler) {
@@ -32,32 +30,48 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.engine = actionHandler.getEngine();
         this.logger = Engine.getLOGGER();
         this.argsReader= new ArgsReader(getArgsFile());
-        this.getLogger().debug("#############################");
-        this.logger.debug("GameDir " + buildGameDir());
-        this.logger.debug("ClientDir " + buildClientDir());
-        this.logger.debug("VersionsDir " + buildVersionDir());
-        this.logger.debug("JarFile " + buildMinecraftJarPath());
-        this.logger.debug("Natives " + buildNativesPath());
-        this.logger.debug("Libraries " + buildLibrariesPath());
-        this.logger.debug("Assets " + buildAssetsPath());
-        this.logger.debug("#############################");
+        this.logDebugInformation();
         this.user = launcher.getUser();
         this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
         javaBinPath = this.buildRuntimeDir() + File.separator + gameClient.getJreVersion() + File.separator + "bin";
         this.authLib = new AuthLib(this);
     }
+    @Override
+    protected String determineMainClass() {
+        String tweakClassVal;
+        if (getIntVer() == 1710 || getIntVer() == 1122) {
+            tweakClassVal = tweakClass();
+            return tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main";
+        }
+        return gameClient.getMainClass();
+    }
+
+    @Override
+    protected void prepareForLaunch() {
+        checkDangerousParams();
+        setJreArgs();
+        this.classLoader = collectLibraries();
+    }
 
     @Override
     protected void addArgs(String tweakClassVal) {
+        this.replaceValues = new HashMap<>();
+        //replaceValues.put("auth_player_name", this.user.getLogin());
+
         String version = gameClient.getServerVersion();
         if (gameClient.getServerVersion().contains("-")) {
             version = gameClient.getServerVersion().split("-")[0];
         }
+        //replaceValues.put("version_name", version);
+        //replaceValues.put("game_directory", buildClientDir());
+        //replaceValues.put("assets_root", buildAssetsPath());
+        //replaceValues.put("assets_index_name", version);
+        //replaceValues.put("version_type")
         Engine.getLOGGER().debug("Client version " + version);
         processArgs.add("--versionType=release");
         processArgs.add("--username=" + this.user.getLogin());
-        if (this.clientType != ClientType.fabricclient) {
+        if (!this.clientType.equals(ClientType.fabricclient)) {
             processArgs.add("--version=" + version);
         }
         processArgs.add("--gameDir=" + buildClientDir());
@@ -77,7 +91,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
 
             case fabricclient -> {
-
             }
         }
 
@@ -102,23 +115,14 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     public void launchGame() {
         if (isStarted()) throw new IllegalStateException("Process already started");
         executorService.submit(() -> {
-
-            String mainClass;
-            this.checkDangerousParams();
             try {
                 String tweakClassVal = "";
-                setJre();
+                String mainClass = this.determineMainClass();
+                this.prepareForLaunch();
                 this.classLoader = collectLibraries();
-                // Adding --tweakclass only on versions under 1.13.3
-                if (getIntVer() == 1710 || getIntVer() == 1122) {
-                    tweakClassVal = tweakClass();
-                    mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-                } else {
-                    mainClass = gameClient.getMainClass();
-                }
 
                 processArgs.add(mainClass);
-                if(this.clientType != ClientType.fabricclient) {
+                if(!this.clientType.equals(ClientType.fabricclient)) {
                     authLib.loadAuthLib();
                 }
 
@@ -134,7 +138,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 // Redirect error stream to the standard output
                 processBuilder.inheritIO();
 
-                Process process = processBuilder.start();
+                process = processBuilder.start();
                 if (process.isAlive()) {
                     gameListener.onGameStart(gameClient);
                 }
@@ -156,9 +160,9 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         });
         setStarted(true);
     }
-
     @Override
-    protected void setJre() {
+    protected void setJreArgs() {
+        this.replaceValues = new HashMap<>();
         String gpu = new GPUInfo().getPreferredGPU();
         logger.info("Setting " + gpu + " as preferred card");
 

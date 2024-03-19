@@ -48,6 +48,7 @@ public class Launcher extends Engine implements AuthListener {
 
         if (!isLauncherValid(this)) {
             engine.getSOUND().playSound("other", "invalidLauncher");
+            getLOGGER().error("Invalid MDF5!");
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         } else {
@@ -127,8 +128,8 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onPanelsBuilt() {
-        if (!isInit()) {
-            getSOUND().playSound("music", "inLauncher", true);
+        if (!isInit() && this.getConfig().isBackgroundMusic()) {
+            getSOUND().playSound("music", "launcherTheme", true);
         }
     }
     @Override

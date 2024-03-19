@@ -30,15 +30,25 @@ application {
 
 
 group 'org.foxesworld'
-version '1.5.4-TwilightAdventure'
+version '1.5.6-SecondWind'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation files('lib/foxesworld/Engine-1.2.0-ALPHA-all.jar')
+    implementation files('lib/foxesworld/Engine-1.3.0-ALPHA-all.jar')
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.foxesworld.Launcher',
+                'Premain-Class': 'org.foxesworld.LauncherAgent'
+        )
+    }
+}
+
 apply plugin: "com.github.johnrengelman.shadow"
 
 test {

@@ -6,9 +6,9 @@ import org.foxesworld.launcher.user.User;
 import java.util.List;
 
 public class AuthLib extends org.foxesworld.engine.game.AuthLib {
-    private GameLauncher gameLauncher;
-    private List<String> processArgs;
-    private User user;
+    private final GameLauncher gameLauncher;
+    private final List<String> processArgs;
+    private final User user;
 
     public AuthLib(GameLauncher gameLauncher){
         this.gameLauncher = gameLauncher;

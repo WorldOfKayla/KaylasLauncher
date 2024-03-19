@@ -43,6 +43,33 @@
           "localeKey": "dev.experimental",
           "componentId": "testText",
           "bounds": "45,45,256,64"
+        },
+        {
+          "componentType": "button",
+          "enabled": true,
+          "keyCode": "ENTER",
+          "componentStyle": "buttonMain",
+          "componentId": "testBtn",
+          "localeKey": "Default",
+          "bounds": "55,120,240,47"
+        },
+        {
+          "componentType": "button",
+          "enabled": true,
+          "componentStyle": "btnSmallClean",
+          "imageIcon": "assets/ui/icons/info.png",
+          "iconWidth": 26,
+          "iconHeight": 26,
+          "componentId": "test-small",
+          "localeKey": "settings.settingsButt",
+          "bounds": "310,110,56,56"
+        },
+        {
+          "componentType": "textField",
+          "componentStyle": "textFieldMain",
+          "localeKey": "auth.loginPlaceholder",
+          "componentId": "login",
+          "bounds": "55,170,0,0"
         }
       ]
     }

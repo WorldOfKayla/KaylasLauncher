@@ -56,13 +56,13 @@
                   "componentStyle": "promptLabel",
                   "localeKey": "settings.langBox",
                   "componentId": "langBoxLabel",
-                  "bounds": "40,250,250,50"
+                  "bounds": "40,270,250,50"
                 },
                 {
                   "componentType": "dropBox",
                   "componentStyle": "selectable",
                   "componentId": "lang",
-                  "bounds": "40,285,273,25"
+                  "bounds": "40,305,273,25"
                 },
                 {
                   "componentType": "button",
@@ -71,7 +71,7 @@
                   "componentStyle": "buttonMain",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",
-                  "bounds": "40,340,210,47"
+                  "bounds": "40,360,210,47"
                 }
               ]
             }

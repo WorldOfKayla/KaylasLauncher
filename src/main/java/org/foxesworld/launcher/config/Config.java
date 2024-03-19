@@ -21,7 +21,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     @SuppressWarnings("unused")
     private  String login, password, lang;
     @SuppressWarnings("unused")
-    private  boolean autoEnter, fullScreen, loadNews, enableSound,launchAC;
+    private  boolean autoEnter, fullScreen, loadNews, enableSound,launchAC, backgroundMusic;
 
     public Config(Engine engine) {
         setCfgExportDir("config/");
@@ -52,7 +52,7 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     @Override
     public void clearConfigData(List<String> dataToClear, boolean write) {
-        //Engine.getLOGGER().debug("Wiping "+dataToClear);
+        Engine.getLOGGER().debug("Wiping "+dataToClear);
         for (String keyToWipe : dataToClear) {
             this.CONFIG.remove(keyToWipe);
         }
@@ -78,6 +78,7 @@ public class Config extends org.foxesworld.engine.config.Config {
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 //this.writeCurrentConfig();
+                e.printStackTrace();
             }
         }
     }
@@ -111,7 +112,6 @@ public class Config extends org.foxesworld.engine.config.Config {
     public int getRamAmount() {
         return ramAmount;
     }
-    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
@@ -127,9 +127,11 @@ public class Config extends org.foxesworld.engine.config.Config {
     public boolean isLaunchAC() {
         return launchAC;
     }
-    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
+    }
+    public boolean isBackgroundMusic() {
+        return backgroundMusic;
     }
     public void setVolume(double volume) {
         this.volume = volume;

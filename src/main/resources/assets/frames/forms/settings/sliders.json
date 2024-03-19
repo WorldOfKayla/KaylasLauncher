@@ -5,7 +5,7 @@
     "componentStyle": "promptLabel",
     "localeKey": "settings.ramField",
     "componentId": "ramField",
-    "bounds": "40,185,250,50"
+    "bounds": "40,205,250,50"
   },
   {
     "componentType": "slider",
@@ -18,7 +18,7 @@
     "majorSpacing": 1024,
     "initialValue": "config#ramAmount",
     "componentId": "ramAmount",
-    "bounds": "40,205,300,60"
+    "bounds": "40,225,300,60"
   },
   {
     "componentType": "textField",
@@ -26,7 +26,7 @@
     "componentStyle": "inputBox",
     "initialValue": "config#ramAmount",
     "componentId": "ramAmountText",
-    "bounds": "345,210,20,17"
+    "bounds": "345,230,20,17"
   },
   {
     "componentType": "label",
@@ -34,7 +34,7 @@
     "componentStyle": "promptLabel",
     "localeKey": "settings.soundVolume",
     "componentId": "soundVolume",
-    "bounds": "40,130,250,50"
+    "bounds": "40,150,250,50"
   },
   {
     "componentType": "slider",
@@ -46,7 +46,7 @@
     "componentStyle": "slidingOut",
     "componentId": "volume",
     "initialValue": "config#volume",
-    "bounds": "40,150,300,60"
+    "bounds": "40,170,300,60"
   },
   {
     "componentType": "textField",
@@ -54,6 +54,6 @@
     "componentStyle": "inputBox",
     "initialValue": "config#volume",
     "componentId": "volumeText",
-    "bounds": "345,160,20,17"
+    "bounds": "345,180,20,17"
   }
 ]}

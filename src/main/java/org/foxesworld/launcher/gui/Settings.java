@@ -7,7 +7,7 @@ import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.slider.SliderListener;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
-import org.foxesworld.engine.gui.components.textfield.Textfield;
+import org.foxesworld.engine.gui.components.textfield.TextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +37,8 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
                 ((DropBox) component).setScrollBoxListener(this);
             }
 
-            if(component instanceof  Textfield) {
-                ((Textfield) component).setTextFieldListener(this);
+            if(component instanceof  TextField) {
+                ((TextField) component).setTextFieldListener(this);
             }
         }
     }
@@ -58,10 +58,10 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
                 case "volume" -> {
                         launcher.getConfig().setVolume(value);
                         launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
-                        ((Textfield) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
+                        ((TextField) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 
-                case "ramAmount" -> ((Textfield) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
+                case "ramAmount" -> ((TextField) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
             }
         });
 
@@ -89,7 +89,7 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
     }
 
     @Override
-    public void onTextChange(Textfield textfield) {
+    public void onTextChange(TextField textfield) {
         if(!textfield.getText().equals("")) {
             ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
         }

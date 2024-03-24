@@ -2,6 +2,7 @@ package org.foxesworld;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.GuiBuilder;
@@ -48,14 +49,22 @@ public class Launcher extends Engine implements AuthListener {
 
         if (!isLauncherValid(this)) {
             engine.getSOUND().playSound("other", "invalidLauncher");
-            getLOGGER().error("Invalid MDF5!");
+            getLOGGER().error("Invalid MD5!");
             JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         } else {
-            this.auth = new Auth(this);
-            init(this);
-            setActionHandler(new ActionHandler(this));
-            getLOGGER().debug("Launcher started!");
+            int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
+            if(launchingWith == Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""))) {
+                this.auth = new Auth(this);
+                init(this);
+                setActionHandler(new ActionHandler(this));
+                getLOGGER().debug("Launcher started!");
+            } else {
+                engine.getSOUND().playSound("other", "invalidJVM");
+                getLOGGER().error("Invalid JVM!");
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid JVM!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+                System.exit(0);
+            }
         }
     }
 

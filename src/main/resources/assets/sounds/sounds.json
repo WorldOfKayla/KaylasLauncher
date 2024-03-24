@@ -55,8 +55,7 @@
   "music": {
     "launcherTheme": {
       "sounds": [
-        "assets/sounds/mus/mus1.ogg",
-        "assets/sounds/mus/mus2.ogg"
+        "assets/sounds/mus/mus1.ogg"
       ]
     }
   },
@@ -70,6 +69,13 @@
     "invalidLauncher": {
       "sounds": [
         "assets/sounds/invalid.ogg"
+      ]
+    },
+    "invalidJVM": {
+      "sounds": [
+        "assets/sounds/start/voice1.ogg",
+        "assets/sounds/start/voice2.ogg",
+        "assets/sounds/start/voice3.ogg"
       ]
     },
     "start": {

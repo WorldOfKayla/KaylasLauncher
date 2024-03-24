@@ -19,6 +19,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private final Config config;
     private final String javaBinPath;
     private final ArgsReader argsReader;
+    private  String gameArgs;
     protected AuthLib authLib;
     public final Launcher launcher;
     protected final User user;
@@ -55,19 +56,19 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
 
     @Override
-    protected void addArgs(String tweakClassVal) {
+    protected void addArgs() {
         this.replaceValues = new HashMap<>();
-        //replaceValues.put("auth_player_name", this.user.getLogin());
+        replaceValues.put("auth_player_name", this.user.getLogin());
 
         String version = gameClient.getServerVersion();
         if (gameClient.getServerVersion().contains("-")) {
             version = gameClient.getServerVersion().split("-")[0];
         }
-        //replaceValues.put("version_name", version);
-        //replaceValues.put("game_directory", buildClientDir());
-        //replaceValues.put("assets_root", buildAssetsPath());
-        //replaceValues.put("assets_index_name", version);
-        //replaceValues.put("version_type")
+        replaceValues.put("version_name", version);
+        replaceValues.put("game_directory", buildClientDir());
+        replaceValues.put("assets_root", buildAssetsPath());
+        replaceValues.put("assets_index_name", version);
+        replaceValues.put("version_type", "release");
         Engine.getLOGGER().debug("Client version " + version);
         processArgs.add("--versionType=release");
         processArgs.add("--username=" + this.user.getLogin());
@@ -104,11 +105,10 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             processArgs.add("--server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
         }
-
+        gameArgs = String.valueOf(this.argsReader.replaceMask(this.argsReader.getGameArguments(), this.replaceValues));
         //if(this.User.re) Adding multiplayer only to an online User
         //processArgs.add("--disableMultiplayer");
         //processArgs.add("--disableChat");
-        processArgs.add(tweakClassVal);
     }
 
     @Override
@@ -116,7 +116,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         if (isStarted()) throw new IllegalStateException("Process already started");
         executorService.submit(() -> {
             try {
-                String tweakClassVal = "";
                 String mainClass = this.determineMainClass();
                 this.prepareForLaunch();
                 this.classLoader = collectLibraries();
@@ -126,7 +125,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     authLib.loadAuthLib();
                 }
 
-                addArgs(tweakClassVal);
+                addArgs();
 
                 // Log the command that will be executed
                 logger.debug("Launch command: " + String.join(" ", processArgs));
@@ -134,10 +133,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 processBuilder.directory(new File(this.buildClientDir()));
                 processBuilder.redirectErrorStream(true);
                 processBuilder.environment().put("JAVA_HOME", buildRuntimeDir().toString());
-
-                // Redirect error stream to the standard output
                 processBuilder.inheritIO();
-
                 process = processBuilder.start();
                 if (process.isAlive()) {
                     gameListener.onGameStart(gameClient);
@@ -180,4 +176,5 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     public String getJavaBinPath() {
         return javaBinPath;
     }
+
 }

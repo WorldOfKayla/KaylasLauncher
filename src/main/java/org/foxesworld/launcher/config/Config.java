@@ -1,6 +1,6 @@
 package org.foxesworld.launcher.config;
 
-import com.foxesworld.cfgProvider.cfgProvider;
+import org.foxesworld.cfgProvider.CfgProvider;
 import com.google.gson.GsonBuilder;
 import org.foxesworld.engine.Engine;
 
@@ -25,10 +25,10 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     public Config(Engine engine) {
         setCfgExportDir("config/");
-        setDebug(true);
         setDirPathIndex(3);
         setCfgFileExtension(".json");
-        cfgProvider.setDefaultConfFilesDir("config/");
+        CfgProvider.setDefaultConfFilesDir("config/");
+        CfgProvider.setLOGGER(engine.LOGGER);
         addCfgFiles(engine.getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
         this.assignConfigValues();
@@ -91,7 +91,7 @@ public class Config extends org.foxesworld.engine.config.Config {
             e.printStackTrace();
         }
     }
-    public Map<String, Map> getCfgMaps() {
+    public Map<String, Map<String, Object>> getCfgMaps() {
         return getAllCfgMaps();
     }
     public String configToJSON() {

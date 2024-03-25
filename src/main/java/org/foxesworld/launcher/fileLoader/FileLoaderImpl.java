@@ -23,9 +23,8 @@ public class FileLoaderImpl implements FileLoaderListener {
         Engine.getLOGGER().debug("--==|Files are read|==--");
        core.setGameLauncher(new GameLauncher(core.getActionHandler()));
         core.getGameLauncher().setGameListener(core);
-        //int localJava = Integer.parseInt(JVMHelper.getJavaVersion(core.getGameLauncher().getJavaBinPath()).replaceAll("\\D", ""));
-        //System.out.println(localJava);
-        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJavaBinPath()) == null) {
+
+        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
             //If we failed java -version command -> download it
             core.getFileLoader().setReplaceMask("/uploads/files/");
             core.getFileLoader().addFileToDownload(core.getFileLoader().addJreToLoad(core.getGameLauncher().getCurrentJre()));

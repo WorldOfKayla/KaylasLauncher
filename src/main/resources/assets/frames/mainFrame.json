@@ -4,6 +4,7 @@
       "panelOptions": {
         "opaque": false,
         "visible": true,
+        "doubleBuffered": false,
         "background": "",
         "bounds": "0,0,850,500"
       },
@@ -25,6 +26,9 @@
         },
         {
           "readFrom": "assets/frames/forms/mainPanel/test.json"
+        },
+        {
+          "readFrom": "assets/frames/forms/mainPanel/serverInfo.json"
         }
       ]
     }

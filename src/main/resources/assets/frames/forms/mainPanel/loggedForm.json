@@ -5,6 +5,7 @@
         "opaque": false,
         "focusable": true,
         "visible": false,
+        "doubleBuffered": false,
         "background": "",
         "bounds": "0,0,350,500"
       },

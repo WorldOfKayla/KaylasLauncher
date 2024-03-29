@@ -1,0 +1,37 @@
+{
+  "groups":{
+    "serverInfo": {
+      "panelOptions": {
+        "opaque": false,
+        "visible": false,
+        "doubleBuffered": true,
+        "background": "#1e1f2073",
+        "bounds": "0,0,500,500",
+        "border":"1,1,1,1,#ffffff",
+        "layout": "flow"
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "componentStyle": "title",
+          "iconWidth": 32,
+          "iconHeight": 32,
+          "fontSize": 13,
+          "imageIcon": "assets/ui/img/serum.png",
+          "componentId": "serverTitle",
+          "localeKey": "settings.settingsButt",
+          "bounds": "5,20,128,64"
+        },
+        {
+          "componentType": "label",
+          "html": true,
+          "componentStyle": "promptLabel",
+          "fontSize": 13,
+          "componentId": "serverDesc",
+          "bounds": "5,10,450,175",
+          "border": "0,0,0,0"
+        }
+      ]
+    }
+  }
+}

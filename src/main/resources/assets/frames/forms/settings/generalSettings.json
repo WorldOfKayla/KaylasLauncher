@@ -27,7 +27,7 @@
                 "opaque": true,
                 "visible": true,
                 "background": "#c0a1a0f7",
-                "bounds": "0,15,490,450",
+                "bounds": "0,20,490,450",
                 "display": true
               },
               "childComponents": [

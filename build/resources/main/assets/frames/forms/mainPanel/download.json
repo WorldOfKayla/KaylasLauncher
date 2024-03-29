@@ -3,8 +3,9 @@
     "download": {
       "panelOptions": {
         "opaque": false,
-        "background": "#373c3975",
         "visible": false,
+        "doubleBuffered": false,
+        "background": "#373c3975",
         "bounds": "20,40,800,440"
       },
       "childComponents": [

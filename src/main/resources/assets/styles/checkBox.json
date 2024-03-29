@@ -2,6 +2,7 @@
   "styles": {
     "checkBox": {
       "solid": {
+        "opaque": false,
         "name": "Pumpkin Power",
         "font": "FSElliotPro-Heavy",
         "fontSize": 12,

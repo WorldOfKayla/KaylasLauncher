@@ -30,6 +30,7 @@ public class User implements DropBoxListener {
     private final GuiBuilder guiBuilder;
     @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
+    private JPanel newsPanel;
 
     public User(Launcher launcher) {
         this.auth = launcher.getAuth();
@@ -42,6 +43,7 @@ public class User implements DropBoxListener {
         this.guiBuilder = this.auth.getLauncher().getGuiBuilder();
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
+            this.newsPanel = this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm");
         } else {
             auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
@@ -54,7 +56,7 @@ public class User implements DropBoxListener {
     }
 
     public void setUserSpace() {
-        auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true|devInfo->true");
+        auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         Map<String, Label> userLabels = getLabelsMap(Arrays.asList("userHead", "userGroup"));
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
@@ -122,11 +124,13 @@ public class User implements DropBoxListener {
 
     @Override
     public void onScrollBoxOpen(int index) {
-        System.out.println("Opened " + index);
+        auth.getEngine().getPanelVisibility().displayPanel("serverInfo->true");
     }
 
     @Override
     public void onScrollBoxClose(int index) {
+        //auth.getEngine().getPanelVisibility().displayPanel("serverInfo->false");
+        newsPanel.removeAll();
         updateServer(index);
         guiBuilder.getPanelsMap().get("newsForm").add(this.guiBuilder.getPanelsMap().get("newsFrame"));
         guiBuilder.getPanelsMap().get("newsForm").repaint();
@@ -134,14 +138,11 @@ public class User implements DropBoxListener {
 
     @Override
     public void onServerHover(int index) {
-        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").removeAll();
-        System.out.println("Hover " + index);
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel();
-        panel.add(label);
-        label.setText(String.valueOf(index));
-        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").add(panel);
-        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").repaint();
+        newsPanel.removeAll();
+        newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
+        guiBuilder.setLabelText("serverTitle", this.auth.getUserServersAttributes().get(index).getServerName());
+        guiBuilder.setLabelText("serverDesc", this.auth.getUserServersAttributes().get(index).getServerDescription());
+        newsPanel.repaint();
     }
 
     private void updateServer(int index) {
@@ -155,7 +156,6 @@ public class User implements DropBoxListener {
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
                 serverBox.updateBox(text, img);
-                Engine.getLOGGER().info("Refreshing Server done!");
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: " + e.getMessage());
             }

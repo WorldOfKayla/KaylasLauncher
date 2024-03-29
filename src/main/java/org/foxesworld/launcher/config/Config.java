@@ -78,7 +78,6 @@ public class Config extends org.foxesworld.engine.config.Config {
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 //this.writeCurrentConfig();
-                e.printStackTrace();
             }
         }
     }

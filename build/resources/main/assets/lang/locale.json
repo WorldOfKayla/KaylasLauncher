@@ -217,8 +217,20 @@
         "ru_RU": "UUID: "
       },
       "experimental": {
-        "en_US": "EXPERIMENTAL",
-        "ru_RU": "ЭКСПЕРИМЕНТ"
+        "en_US": "User-O-Info",
+        "ru_RU": "Инфо-О-Пользователе"
+      },
+      "remindMe": {
+        "en_US": "Remind Me",
+        "ru_RU": "Напомни мне"
+      },
+      "userName": {
+        "en_US": "User Name",
+        "ru_RU": "Имя пользователя"
+      },
+      "userStatus": {
+        "en_US": "It's status",
+        "ru_RU": "Его статус"
       }
     }
 }

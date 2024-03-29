@@ -4,7 +4,7 @@
       "panelOptions":{
         "opaque":true,
         "visibility":false,
-        "background":"#4a4c4fe6",
+        "background":"#c0a1a0f7",
         "border":"1,1,1,1,#242221",
         "bounds":"35,35,780,450"
       },
@@ -36,40 +36,70 @@
         {
           "componentType": "label",
           "componentStyle": "title",
-          "iconWidth": 63,
-          "iconHeight": 64,
+          "iconWidth": 32,
+          "iconHeight": 32,
           "fontSize": 13,
           "imageIcon": "assets/ui/img/serum.png",
           "localeKey": "dev.experimental",
           "componentId": "testText",
-          "bounds": "45,45,256,64"
+          "bounds": "45,20,256,64"
+        },
+        {
+          "groups": {
+            "userInfoTable": {
+              "panelOptions": {
+                "opaque": true,
+                "visible": true,
+                "background": "#524e49",
+                "bounds": "40,75,456,180",
+                "border": "1,1,1,1,#524e49"
+              },
+              "childComponents": [
+                {
+                "componentType": "label",
+                "fontSize": 11,
+                "componentStyle": "title",
+                "imageIcon": "assets/ui/img/head.png",
+                "iconWidth": 128,
+                "iconHeight": 128,
+                "componentId": "userInfoHead",
+                "bounds": "15,20,128,128"
+              },
+                {
+                  "componentType": "label",
+                  "componentStyle": "title",
+                  "fontSize": 15,
+                  "componentId": "titleText",
+                  "localeKey": "dev.userName",
+                  "bounds": "155,20,456,64"
+                },
+                {
+                  "componentType": "label",
+                  "componentStyle": "promptLabel",
+                  "fontSize": 15,
+                  "componentId": "statusText",
+                  "localeKey": "dev.userStatus",
+                  "bounds": "155,50,456,64"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "componentType": "textField",
+          "componentStyle": "textFieldMain",
+          "localeKey": "auth.loginPlaceholder",
+          "componentId": "userInfoLogin",
+          "bounds": "40,270,0,0"
         },
         {
           "componentType": "button",
           "enabled": true,
           "keyCode": "ENTER",
           "componentStyle": "buttonMain",
-          "componentId": "testBtn",
-          "localeKey": "Default",
-          "bounds": "55,120,240,47"
-        },
-        {
-          "componentType": "button",
-          "enabled": true,
-          "componentStyle": "btnSmallClean",
-          "imageIcon": "assets/ui/icons/info.png",
-          "iconWidth": 26,
-          "iconHeight": 26,
-          "componentId": "test-small",
-          "localeKey": "settings.settingsButt",
-          "bounds": "310,110,56,56"
-        },
-        {
-          "componentType": "textField",
-          "componentStyle": "textFieldMain",
-          "localeKey": "auth.loginPlaceholder",
-          "componentId": "login",
-          "bounds": "55,170,0,0"
+          "componentId": "userinfo>submit",
+          "localeKey": "dev.remindMe",
+          "bounds": "40,320,240,47"
         }
       ]
     }

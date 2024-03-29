@@ -2,6 +2,7 @@ package org.foxesworld.launcher.user;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
@@ -26,6 +27,7 @@ public class User implements DropBoxListener {
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
+    private final GuiBuilder guiBuilder;
     @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
 
@@ -37,6 +39,7 @@ public class User implements DropBoxListener {
         this.setDropBoxData(dropBox);
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
+        this.guiBuilder = this.auth.getLauncher().getGuiBuilder();
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
         } else {
@@ -125,11 +128,20 @@ public class User implements DropBoxListener {
     @Override
     public void onScrollBoxClose(int index) {
         updateServer(index);
+        guiBuilder.getPanelsMap().get("newsForm").add(this.guiBuilder.getPanelsMap().get("newsFrame"));
+        guiBuilder.getPanelsMap().get("newsForm").repaint();
     }
 
     @Override
     public void onServerHover(int index) {
+        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").removeAll();
         System.out.println("Hover " + index);
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel();
+        panel.add(label);
+        label.setText(String.valueOf(index));
+        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").add(panel);
+        this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm").repaint();
     }
 
     private void updateServer(int index) {

@@ -12,6 +12,14 @@ buildscript {
         maven {
             url "https://jitpack.io/"
         }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/FoxesWorld/FoxesLauncher")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME_GITHUB")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN_GITHUB")
+            }
+        }
     }
     dependencies {
         classpath "com.github.johnrengelman:shadow:8.1.0"
@@ -24,13 +32,16 @@ plugins {
     id "com.github.johnrengelman.shadow" version "8.1.0"
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 application {
-    mainClass = 'org.foxesworld.Launcher'
+    mainClass = properties.getProperty('project.mainclass')
 }
 
 
-group 'org.foxesworld'
-version '1.5.7-SecondWind'
+group=properties.getProperty('project.group')
+version=properties.getProperty('project.version')
 
 repositories {
     mavenCentral()
@@ -43,17 +54,13 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'org.foxesworld.Launcher',
-                'Premain-Class': 'org.foxesworld.LauncherAgent'
+                'Main-Class': properties.getProperty('project.mainclass'),
+                'Premain-Class': properties.getProperty('project.premainclass')
         )
     }
 }
 
 apply plugin: "com.github.johnrengelman.shadow"
-
-test {
-    useJUnitPlatform()
-}
 
 if (System.getProperty("java.home") == null) {
     System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...")

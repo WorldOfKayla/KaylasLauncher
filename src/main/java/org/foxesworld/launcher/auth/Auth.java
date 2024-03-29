@@ -96,8 +96,7 @@ public class Auth {
     private void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(getEngine());
         userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream()
-                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
+        userServersArray = userServersAttributes.stream().map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
     }
 
     public void logOut() {

@@ -2,6 +2,7 @@ package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
@@ -15,9 +16,11 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
     protected ServerAttributes currentServer;
+    protected  UserInfo userInfo;
     public ActionHandler(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
+        this.userInfo = new UserInfo(launcher);
     }
 
     @Override
@@ -32,12 +35,24 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
         //if(!engine.getLoadingManager().getLoadingTimer().isRunning()) {
             switch (key) {
                 case "submit" -> {
-                    if ("authForm".equals(parent)) {
-                        this.launcher.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
-                        if (this.launcher.getAuth().isAuthorised()) {
-                            engine.getFrame().getRootPanel().removeAll();
-                            engine.getPanelVisibility().displayPanel("authForm->false");
-                            this.engine.init(this.launcher);
+                    switch (parent){
+                        case "authForm" -> {
+                            this.launcher.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
+                            if (this.launcher.getAuth().isAuthorised()) {
+                                engine.getFrame().getRootPanel().removeAll();
+                                engine.getPanelVisibility().displayPanel("authForm->false");
+                                this.engine.init(this.launcher);
+                            }
+                        }
+
+                        case "userinfo" ->{
+                            TextField textField = new TextField("");
+                            for(JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("test")){
+                                if(component instanceof TextField) {
+                                   textField = (TextField) component;
+                                }
+                            }
+                            this.userInfo.sendRequest(textField.getText());
                         }
                     }
                 }

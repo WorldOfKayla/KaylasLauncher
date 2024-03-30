@@ -25,7 +25,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
 
     @Override
     public void onScrollBoxOpen(int index) {
-        user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
+        this.displayServerInfo(index);
     }
 
     @Override
@@ -38,7 +38,12 @@ public class ServerInfoDisplayer implements DropBoxListener {
 
     @Override
     public void onServerHover(int index) {
+        this.displayServerInfo(index);
+    }
+
+    private void displayServerInfo(int index){
         newsPanel.removeAll();
+        user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         guiBuilder.setLabelText("serverTitle", thisServer.getServerName() + ' ' + thisServer.getServerVersion());

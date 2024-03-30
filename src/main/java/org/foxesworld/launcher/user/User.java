@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
@@ -65,7 +66,7 @@ public class User implements DropBoxListener {
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
             }
         }
-        userLabels.get("userHead").setIcon(new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead()), 50)));
+        guiBuilder.setLabelIcon("userHead", new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead()), 50)));
         userLabels.get("userGroup").setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
 
@@ -129,7 +130,6 @@ public class User implements DropBoxListener {
 
     @Override
     public void onScrollBoxClose(int index) {
-        //auth.getEngine().getPanelVisibility().displayPanel("serverInfo->false");
         newsPanel.removeAll();
         updateServer(index);
         guiBuilder.getPanelsMap().get("newsForm").add(this.guiBuilder.getPanelsMap().get("newsFrame"));
@@ -140,8 +140,13 @@ public class User implements DropBoxListener {
     public void onServerHover(int index) {
         newsPanel.removeAll();
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
-        guiBuilder.setLabelText("serverTitle", this.auth.getUserServersAttributes().get(index).getServerName());
-        guiBuilder.setLabelText("serverDesc", this.auth.getUserServersAttributes().get(index).getServerDescription());
+        ServerAttributes thisServer = this.auth.getUserServersAttributes().get(index);
+        guiBuilder.setLabelText("serverTitle", thisServer.getServerName());
+        guiBuilder.setLabelIcon("serverImg", new ImageIcon(
+                ImageUtils.getRoundedImage(ImageUtils.getScaledImage(
+                        ImageUtils.loadImageFromUrl(
+                                this.auth.getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage()), 470, 260), 25)));
+        guiBuilder.setLabelText("serverDesc", thisServer.getServerDescription(), true);
         newsPanel.repaint();
     }
 

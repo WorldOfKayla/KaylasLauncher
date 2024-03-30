@@ -8,7 +8,7 @@
         "font": "FSElliotPro-Heavy",
         "color": "#ffffff"
       },
-      "Heading": {
+      "heading": {
         "opaque": false,
         "name": "Naming the space",
         "font": "Primary",

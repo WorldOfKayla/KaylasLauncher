@@ -7,28 +7,30 @@
         "doubleBuffered": true,
         "background": "#1e1f2073",
         "bounds": "0,0,500,500",
-        "border":"1,1,1,1,#ffffff",
-        "layout": "flow"
+        "border":"1,1,1,1,#ffffff"
       },
       "childComponents": [
         {
           "componentType": "label",
-          "componentStyle": "title",
-          "iconWidth": 32,
-          "iconHeight": 32,
-          "fontSize": 13,
-          "imageIcon": "assets/ui/img/serum.png",
+          "componentStyle": "heading",
+          "localeKey": "auth.loginPlaceholder",
+          "fontSize": 16,
           "componentId": "serverTitle",
-          "localeKey": "settings.settingsButt",
-          "bounds": "5,20,128,64"
+          "bounds": "10,-85,470,280"
         },
         {
           "componentType": "label",
-          "html": true,
+          "componentStyle": "title",
+          "componentId": "serverImg",
+          "bounds": "10,75,470,260"
+        },
+        {
+          "componentType": "label",
           "componentStyle": "promptLabel",
-          "fontSize": 13,
+          "fontSize": 14,
           "componentId": "serverDesc",
-          "bounds": "5,10,450,175",
+          "background": "#1e1f2073",
+          "bounds": "10,330,470,175",
           "border": "0,0,0,0"
         }
       ]

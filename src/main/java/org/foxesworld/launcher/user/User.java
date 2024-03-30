@@ -12,6 +12,7 @@ import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +24,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class User implements DropBoxListener {
+public class User {
     private final Auth auth;
+    private final ServerInfoDisplayer serverInfoDisplayer;
+
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
@@ -38,22 +41,25 @@ public class User implements DropBoxListener {
         this.serverInfo = auth.getEngine().getServerInfo();
         this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
-        this.setDropBoxData(dropBox);
+
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
         this.guiBuilder = this.auth.getLauncher().getGuiBuilder();
+
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
             this.newsPanel = this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm");
         } else {
             auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
+        this.serverInfoDisplayer = new ServerInfoDisplayer(this);
+        this.setDropBoxData(dropBox);
     }
 
     private void setDropBoxData(DropBox dropBox){
         dropBox.setValues(auth.getUserServersArray());
         dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
-        dropBox.setScrollBoxListener(this);
+        dropBox.setScrollBoxListener(serverInfoDisplayer);
     }
 
     public void setUserSpace() {
@@ -118,39 +124,7 @@ public class User implements DropBoxListener {
         return auth;
     }
 
-    @Override
-    public void onScrollBoxCreated(int index) {
-        updateServer(index);
-    }
-
-    @Override
-    public void onScrollBoxOpen(int index) {
-        auth.getEngine().getPanelVisibility().displayPanel("serverInfo->true");
-    }
-
-    @Override
-    public void onScrollBoxClose(int index) {
-        newsPanel.removeAll();
-        updateServer(index);
-        guiBuilder.getPanelsMap().get("newsForm").add(this.guiBuilder.getPanelsMap().get("newsFrame"));
-        guiBuilder.getPanelsMap().get("newsForm").repaint();
-    }
-
-    @Override
-    public void onServerHover(int index) {
-        newsPanel.removeAll();
-        newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
-        ServerAttributes thisServer = this.auth.getUserServersAttributes().get(index);
-        guiBuilder.setLabelText("serverTitle", thisServer.getServerName());
-        guiBuilder.setLabelIcon("serverImg", new ImageIcon(
-                ImageUtils.getRoundedImage(ImageUtils.getScaledImage(
-                        ImageUtils.loadImageFromUrl(
-                                this.auth.getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage()), 470, 260), 25)));
-        guiBuilder.setLabelText("serverDesc", thisServer.getServerDescription(), true);
-        newsPanel.repaint();
-    }
-
-    private void updateServer(int index) {
+    public void updateServer(int index) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
@@ -166,5 +140,21 @@ public class User implements DropBoxListener {
             }
         });
         executor.shutdown();
+    }
+
+    public ServerInfo getServerInfo() {
+        return serverInfo;
+    }
+
+    public ServerBox getServerBox() {
+        return serverBox;
+    }
+
+    public GuiBuilder getGuiBuilder() {
+        return guiBuilder;
+    }
+
+    public JPanel getNewsPanel() {
+        return newsPanel;
     }
 }

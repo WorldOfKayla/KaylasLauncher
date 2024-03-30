@@ -2,15 +2,16 @@
   "groups":{
     "newsForm": {
       "panelOptions": {
-        "opaque": false,
         "visible": true,
-        "doubleBuffered": false,
-        "background": "#1e1f2073",
+        "doubleBuffered": true,
         "bounds": "350,0,500,500"
       },
       "childComponents": [
         {
           "loadPanel": "newsFrame"
+        },
+        {
+          "readFrom": "assets/frames/forms/mainPanel/serverInfo.json"
         }
       ]
     }

@@ -2,10 +2,8 @@
   "groups":{
     "serverInfo": {
       "panelOptions": {
-        "opaque": false,
         "visible": false,
         "doubleBuffered": true,
-        "background": "#1e1f2073",
         "bounds": "0,0,500,500",
         "border":"1,1,1,1,#ffffff"
       },
@@ -25,13 +23,29 @@
           "bounds": "10,75,470,260"
         },
         {
-          "componentType": "label",
-          "componentStyle": "promptLabel",
-          "fontSize": 14,
-          "componentId": "serverDesc",
-          "background": "#1e1f2073",
-          "bounds": "10,330,470,175",
-          "border": "0,0,0,0"
+          "groups": {
+            "serverDesc": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": true,
+                "doubleBuffered": true,
+                "background": "#070707",
+                "bounds": "10,345,470,120",
+                "layout": "border",
+                "border": "1,1,1,1,#ffffff"
+              } ,
+              "childComponents": [
+                {
+                  "componentType": "label",
+                  "componentStyle": "promptLabel",
+                  "fontSize": 14,
+                  "border": "5,5,5,5",
+                  "componentId": "serverDescLabel",
+                  "bounds": "10,10,470,110"
+                }
+              ]
+            }
+          }
         }
       ]
     }

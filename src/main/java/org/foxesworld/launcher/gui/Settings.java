@@ -1,6 +1,8 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.gui.components.checkbox.CheckBoxListener;
+import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
@@ -16,7 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
-public class Settings implements SliderListener, DropBoxListener, TextFieldListener {
+public class Settings implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener {
     private final Launcher launcher;
 
     public Settings(Launcher launcher) {
@@ -39,6 +41,10 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
 
             if(component instanceof  TextField) {
                 ((TextField) component).setTextFieldListener(this);
+            }
+
+            if(component instanceof Checkbox) {
+                ((Checkbox) component).setCheckBoxListener(this);
             }
         }
     }
@@ -93,5 +99,22 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
         if(!textfield.getText().equals("")) {
             ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
         }
+    }
+
+    @Override
+    public void onHover(JCheckBox jCheckBox) {
+        this.launcher.getGuiBuilder().setLabelText("settingsInfo", this.launcher.getEngine().getLANG().getString("settings."+jCheckBox.getName()+"-desc"), true);
+    }
+
+    @Override
+    public void onClick(JCheckBox jCheckBox) {
+    }
+
+    @Override
+    public void onActivate(JCheckBox jCheckBox) {
+    }
+
+    @Override
+    public void onDisable(JCheckBox jCheckBox) {
     }
 }

@@ -222,6 +222,10 @@
       }
     },
     "group": {
+      "group-null": {
+        "en_US": "Solenoid",
+        "ru_RU": "Соленоид"
+      },
       "group-1": {
         "en_US": "Administrator",
         "ru_RU": "Администратор"

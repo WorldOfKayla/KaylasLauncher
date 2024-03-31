@@ -1,48 +1,121 @@
-[14:18:20.164][INFO] FoxesLauncher-1.5.11-SecondWind started...
-[14:18:20.191][DEBUG] HTTP GET init
-[14:18:20.192][DEBUG] HTTP POST init
-[14:18:20.195][DEBUG] Reading `config` from external storage C:\Users\Aiden\AppData\Roaming\.FoxesWorld\config\config.json
-[14:18:20.200][DEBUG] FoxesSound init
-[14:18:20.206][INFO] FrameConstructor initialization
-[14:18:20.209][INFO] Building FrameConstructor...
-[14:18:20.356][WARN] RUNNING IN IDE!!!
-[14:18:20.795][DEBUG] Attempting auto login with saved credentials for: AidenFox
-[14:18:20.936][INFO] AidenFox authorised!
-[14:18:20.984][DEBUG] Loading 2 servers for User AidenFox
-[14:18:21.048][INFO] Loading styles...
-[14:18:21.049][DEBUG] Loading button style from assets/styles/button.json
-[14:18:21.051][DEBUG] Loading checkBox style from assets/styles/checkBox.json
-[14:18:21.051][DEBUG] Loading label style from assets/styles/label.json
-[14:18:21.052][DEBUG] Loading multiButton style from assets/styles/multiButton.json
-[14:18:21.053][DEBUG] Loading passField style from assets/styles/passField.json
-[14:18:21.054][DEBUG] Loading progressBar style from assets/styles/progressBar.json
-[14:18:21.054][DEBUG] Loading dropBox style from assets/styles/dropBox.json
-[14:18:21.055][DEBUG] Loading serverBox style from assets/styles/serverBox.json
-[14:18:21.056][DEBUG] Loading textField style from assets/styles/textField.json
-[14:18:21.057][DEBUG] Loading slider style from assets/styles/slider.json
-[14:18:21.057][DEBUG] === GUI BUILDER ===
-[14:18:21.360][INFO] Created font - mcfont
-[14:18:22.140][DEBUG] Built panel titleBar with parent rootPanel
-[14:18:22.160][INFO] Created font - FSElliotPro-Heavy
-[14:18:22.176][DEBUG] Built panel authForm with parent mainFrame
-[14:18:22.195][DEBUG] Built panel userDataForm with parent userPane
-[14:18:22.195][DEBUG] Built panel userPane with parent loggedForm
-[14:18:22.195][DEBUG] Built panel loggedForm with parent mainFrame
-[14:18:22.200][INFO] Created font - Primary
-[14:18:22.201][DEBUG] Built panel serverDesc with parent serverInfo
-[14:18:22.201][DEBUG] Built panel serverInfo with parent newsForm
-[14:18:22.201][DEBUG] Built panel newsForm with parent mainFrame
-[14:18:22.203][DEBUG] Built panel settingsPane with parent settings
-[14:18:22.225][DEBUG] Built panel settingsFields with parent generalSettings
-[14:18:22.226][DEBUG] Built panel generalSettings with parent settings
-[14:18:22.226][DEBUG] Built panel generalInfo with parent settings
-[14:18:22.226][DEBUG] Built panel settings with parent mainFrame
-[14:18:22.238][DEBUG] Built panel downloadInfo with parent download
-[14:18:22.238][DEBUG] Built panel download with parent mainFrame
-[14:18:22.241][DEBUG] Built panel testPane with parent test
-[14:18:22.245][DEBUG] Built panel userInfoTable with parent test
-[14:18:22.246][DEBUG] Built panel test with parent mainFrame
-[14:18:22.263][DEBUG] Built panel mainFrame with parent rootPanel
-[14:18:23.547][DEBUG]  == BUILDING ADDITIONAL PANELS ==
-[14:18:23.547][DEBUG] Processing newsFrame
-[14:18:23.654][DEBUG] Launcher started!
+[16:12:31.949][INFO] FoxesLauncher-1.5.11-SecondWind started...
+[16:12:31.971][DEBUG] HTTP GET init
+[16:12:31.971][DEBUG] HTTP POST init
+[16:12:31.975][DEBUG] Reading `config` from external storage C:\Users\Aiden\AppData\Roaming\.FoxesWorld\config\config.json
+[16:12:31.980][DEBUG] FoxesSound init
+[16:12:31.985][INFO] FrameConstructor initialization
+[16:12:31.988][INFO] Building FrameConstructor...
+[16:12:32.128][WARN] RUNNING IN IDE!!!
+[16:12:32.577][DEBUG] Attempting auto login with saved credentials for: AidenFox
+[16:12:32.733][INFO] AidenFox authorised!
+[16:12:32.781][DEBUG] Loading 2 servers for User AidenFox
+[16:12:32.830][INFO] Loading styles...
+[16:12:32.831][DEBUG] Loading button style from assets/styles/button.json
+[16:12:32.833][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:32.833][DEBUG] Loading label style from assets/styles/label.json
+[16:12:32.834][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:12:32.835][DEBUG] Loading passField style from assets/styles/passField.json
+[16:12:32.836][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:12:32.836][DEBUG] Loading dropBox style from assets/styles/dropBox.json
+[16:12:32.837][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:12:32.837][DEBUG] Loading textField style from assets/styles/textField.json
+[16:12:32.838][DEBUG] Loading slider style from assets/styles/slider.json
+[16:12:32.839][DEBUG] === GUI BUILDER ===
+[16:12:33.173][INFO] Created font - mcfont
+[16:12:33.977][DEBUG] Built panel titleBar with parent rootPanel
+[16:12:34.001][INFO] Created font - FSElliotPro-Heavy
+[16:12:34.022][DEBUG] Built panel authForm with parent mainFrame
+[16:12:34.042][DEBUG] Built panel userDataForm with parent userPane
+[16:12:34.042][DEBUG] Built panel userPane with parent loggedForm
+[16:12:34.042][DEBUG] Built panel loggedForm with parent mainFrame
+[16:12:34.047][INFO] Created font - Primary
+[16:12:34.048][DEBUG] Built panel serverDesc with parent serverInfo
+[16:12:34.048][DEBUG] Built panel serverInfo with parent newsForm
+[16:12:34.048][DEBUG] Built panel newsForm with parent mainFrame
+[16:12:34.050][DEBUG] Built panel settingsPane with parent settings
+[16:12:34.071][DEBUG] Built panel settingsFields with parent generalSettings
+[16:12:34.071][DEBUG] Built panel generalSettings with parent settings
+[16:12:34.072][DEBUG] Built panel generalInfo with parent settings
+[16:12:34.072][DEBUG] Built panel settings with parent mainFrame
+[16:12:34.085][DEBUG] Built panel downloadInfo with parent download
+[16:12:34.085][DEBUG] Built panel download with parent mainFrame
+[16:12:34.088][DEBUG] Built panel testPane with parent test
+[16:12:34.092][DEBUG] Built panel userInfoTable with parent test
+[16:12:34.094][DEBUG] Built panel test with parent mainFrame
+[16:12:34.108][DEBUG] Built panel mainFrame with parent rootPanel
+[16:12:35.219][DEBUG]  == BUILDING ADDITIONAL PANELS ==
+[16:12:35.219][DEBUG] Processing newsFrame
+[16:12:35.328][DEBUG] Launcher started!
+[16:12:38.149][INFO] Logging out...
+[16:12:38.168][DEBUG] Wiping login
+[16:12:38.168][DEBUG] Writing Config
+[16:12:38.170][DEBUG] Wiping password
+[16:12:38.170][DEBUG] Writing Config
+[16:12:38.172][INFO] Loading styles...
+[16:12:38.172][DEBUG] Loading button style from assets/styles/button.json
+[16:12:38.172][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:38.173][DEBUG] Loading label style from assets/styles/label.json
+[16:12:38.173][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:12:38.174][DEBUG] Loading passField style from assets/styles/passField.json
+[16:12:38.174][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:12:38.175][DEBUG] Loading dropBox style from assets/styles/dropBox.json
+[16:12:38.175][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:12:38.176][DEBUG] Loading textField style from assets/styles/textField.json
+[16:12:38.176][DEBUG] Loading slider style from assets/styles/slider.json
+[16:12:38.176][DEBUG] === GUI BUILDER ===
+[16:12:38.389][DEBUG] Built panel titleBar with parent rootPanel
+[16:12:38.394][DEBUG] Built panel authForm with parent mainFrame
+[16:12:38.400][DEBUG] Built panel userDataForm with parent userPane
+[16:12:38.400][DEBUG] Built panel userPane with parent loggedForm
+[16:12:38.400][DEBUG] Built panel loggedForm with parent mainFrame
+[16:12:38.403][DEBUG] Built panel serverDesc with parent serverInfo
+[16:12:38.403][DEBUG] Built panel serverInfo with parent newsForm
+[16:12:38.403][DEBUG] Built panel newsForm with parent mainFrame
+[16:12:38.405][DEBUG] Built panel settingsPane with parent settings
+[16:12:38.413][DEBUG] Built panel settingsFields with parent generalSettings
+[16:12:38.413][DEBUG] Built panel generalSettings with parent settings
+[16:12:38.414][DEBUG] Built panel generalInfo with parent settings
+[16:12:38.414][DEBUG] Built panel settings with parent mainFrame
+[16:12:38.416][DEBUG] Built panel downloadInfo with parent download
+[16:12:38.416][DEBUG] Built panel download with parent mainFrame
+[16:12:38.418][DEBUG] Built panel testPane with parent test
+[16:12:38.419][DEBUG] Built panel userInfoTable with parent test
+[16:12:38.420][DEBUG] Built panel test with parent mainFrame
+[16:12:38.422][DEBUG] Built panel mainFrame with parent rootPanel
+[16:12:38.422][DEBUG]  == BUILDING ADDITIONAL PANELS ==
+[16:12:38.422][DEBUG] Processing newsFrame
+[16:12:54.504][INFO] AidenFox authorised!
+[16:12:54.543][DEBUG] Loading 2 servers for User AidenFox
+[16:12:54.594][INFO] Loading styles...
+[16:12:54.594][DEBUG] Loading button style from assets/styles/button.json
+[16:12:54.595][DEBUG] Loading checkBox style from assets/styles/checkBox.json
+[16:12:54.595][DEBUG] Loading label style from assets/styles/label.json
+[16:12:54.596][DEBUG] Loading multiButton style from assets/styles/multiButton.json
+[16:12:54.597][DEBUG] Loading passField style from assets/styles/passField.json
+[16:12:54.597][DEBUG] Loading progressBar style from assets/styles/progressBar.json
+[16:12:54.598][DEBUG] Loading dropBox style from assets/styles/dropBox.json
+[16:12:54.599][DEBUG] Loading serverBox style from assets/styles/serverBox.json
+[16:12:54.599][DEBUG] Loading textField style from assets/styles/textField.json
+[16:12:54.600][DEBUG] Loading slider style from assets/styles/slider.json
+[16:12:54.600][DEBUG] === GUI BUILDER ===
+[16:12:54.807][DEBUG] Built panel titleBar with parent rootPanel
+[16:12:54.811][DEBUG] Built panel authForm with parent mainFrame
+[16:12:54.817][DEBUG] Built panel userDataForm with parent userPane
+[16:12:54.817][DEBUG] Built panel userPane with parent loggedForm
+[16:12:54.817][DEBUG] Built panel loggedForm with parent mainFrame
+[16:12:54.819][DEBUG] Built panel serverDesc with parent serverInfo
+[16:12:54.820][DEBUG] Built panel serverInfo with parent newsForm
+[16:12:54.820][DEBUG] Built panel newsForm with parent mainFrame
+[16:12:54.821][DEBUG] Built panel settingsPane with parent settings
+[16:12:54.828][DEBUG] Built panel settingsFields with parent generalSettings
+[16:12:54.828][DEBUG] Built panel generalSettings with parent settings
+[16:12:54.828][DEBUG] Built panel generalInfo with parent settings
+[16:12:54.829][DEBUG] Built panel settings with parent mainFrame
+[16:12:54.830][DEBUG] Built panel downloadInfo with parent download
+[16:12:54.830][DEBUG] Built panel download with parent mainFrame
+[16:12:54.832][DEBUG] Built panel testPane with parent test
+[16:12:54.833][DEBUG] Built panel userInfoTable with parent test
+[16:12:54.834][DEBUG] Built panel test with parent mainFrame
+[16:12:54.835][DEBUG] Built panel mainFrame with parent rootPanel
+[16:12:54.835][DEBUG]  == BUILDING ADDITIONAL PANELS ==
+[16:12:54.835][DEBUG] Processing newsFrame

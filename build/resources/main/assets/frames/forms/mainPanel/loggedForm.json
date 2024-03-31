@@ -26,14 +26,22 @@
         {
           "componentType": "button",
           "enabled": true,
-          "keyCode": "S",
+          "componentStyle": "btnSmallClean",
+          "imageIcon": "assets/ui/icons/info.png",
+          "iconWidth": 25,
+          "iconHeight": 25,
+          "componentId": "info-small",
+          "bounds": "230,435,55,50"
+        },
+        {
+          "componentType": "button",
+          "enabled": true,
           "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.png",
-          "iconWidth": 16,
-          "iconHeight": 16,
+          "iconWidth": 25,
+          "iconHeight": 25,
           "componentId": "settings-small",
-          "localeKey": "settings.settingsButt",
-          "bounds": "285,435,46,46"
+          "bounds": "290,435,55,50"
         },
         {
           "componentType": "button",

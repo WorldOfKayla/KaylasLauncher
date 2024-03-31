@@ -32,7 +32,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             key = command[1];
             parent = command[0];
         }
-        //if(!engine.getLoadingManager().getLoadingTimer().isRunning()) {
             switch (key) {
                 case "submit" -> {
                     switch (parent){
@@ -134,7 +133,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
-        //}
     }
     @Override
     public Engine getEngine() {

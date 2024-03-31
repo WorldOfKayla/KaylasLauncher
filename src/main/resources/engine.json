@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.5.10-SecondWind",
+  "launcherVersion": "1.5.11-SecondWind",
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
   "bindUrl": "https://foxescraft.ru",
@@ -9,10 +9,11 @@
   "groupDomain": "foxesworlds1",
   "vkAPIversion": "5.101",
   "downloadThreads": 4,
-  "gui": {
+  "files": {
     "frameTpl": "assets/frames/frame.json",
     "mainFrame": "assets/frames/mainFrame.json",
-    "localeFile": "/assets/lang/locale.json"
+    "localeFile": "/assets/lang/locale.json",
+    "soundsFile": "assets/sounds/sounds.json"
   },
   "requestProperties": [
     {

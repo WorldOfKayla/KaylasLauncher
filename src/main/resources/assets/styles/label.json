@@ -3,7 +3,7 @@
     "label": {
       "promptLabel": {
         "opaque": false,
-        "float": "left",
+        "float": "right",
         "name": "Pumpkin Power",
         "font": "FSElliotPro-Heavy",
         "color": "#ffffff"

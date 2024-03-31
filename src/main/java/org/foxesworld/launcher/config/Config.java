@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class Config extends org.foxesworld.engine.config.Config {
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         CfgProvider.setDefaultConfFilesDir("config/");
-        CfgProvider.setLOGGER(engine.LOGGER);
+        CfgProvider.setLOGGER(Engine.LOGGER);
         addCfgFiles(engine.getConfigFiles());
         this.CONFIG = getCfgMaps().get("config");
         this.assignConfigValues();
@@ -70,20 +71,26 @@ public class Config extends org.foxesworld.engine.config.Config {
     }
     @Override
     public void assignConfigValues(){
-        for(Map.Entry<String, Object> configMap : this.CONFIG.entrySet()){
+        Iterator<Map.Entry<String, Object>> iterator = CONFIG.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> configMap = iterator.next();
             try {
                 Field field = Config.class.getDeclaredField(configMap.getKey());
-                if(field.hashCode()!= 0) {
-                    field.set(this, configMap.getValue());
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                //this.writeCurrentConfig();
+                field.setAccessible(true);
+                field.set(this, configMap.getValue());
+            } catch (NoSuchFieldException e) {
+                Engine.LOGGER.warn("Removing '" + configMap.getKey() + "' as it doesn't exist!");
+                iterator.remove();
+                this.writeCurrentConfig();
+            } catch (IllegalAccessException e) {
+                Engine.LOGGER.error("Failed to access field " + configMap.getKey() + " in Config class!");
             }
         }
     }
+
     @Override
     public void writeCurrentConfig() {
-        Engine.getLOGGER().debug("Writing "+ configToJSON());
+        Engine.getLOGGER().debug("Writing Config");
         try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "config/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
@@ -111,6 +118,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     public int getRamAmount() {
         return ramAmount;
     }
+    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
@@ -126,6 +134,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     public boolean isLaunchAC() {
         return launchAC;
     }
+    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
     }

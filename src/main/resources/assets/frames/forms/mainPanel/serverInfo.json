@@ -4,8 +4,9 @@
       "panelOptions": {
         "visible": false,
         "doubleBuffered": true,
+        "opaque": true,
         "bounds": "0,0,500,500",
-        "border":"1,1,1,1,#ffffff"
+        "background": "#0707079e"
       },
       "childComponents": [
         {
@@ -29,7 +30,7 @@
                 "visible": true,
                 "opaque": true,
                 "doubleBuffered": true,
-                "background": "#070707",
+                "background": "#4a4c4f",
                 "bounds": "10,345,470,120",
                 "layout": "border",
                 "border": "1,1,1,1,#ffffff"
@@ -37,9 +38,10 @@
               "childComponents": [
                 {
                   "componentType": "label",
-                  "componentStyle": "promptLabel",
-                  "fontSize": 14,
+                  "componentStyle": "title",
+                  "fontSize": 13,
                   "border": "5,5,5,5",
+                  "color": "#ffffff",
                   "componentId": "serverDescLabel",
                   "bounds": "10,10,470,110"
                 }

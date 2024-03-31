@@ -89,7 +89,7 @@ public class NewsPanel extends JPanel {
     private JPanel createUpperPanel(NewsAttributes newsAttributes) {
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(true);
-        upperPanel.setBackground(hexToColor("#4a4c4fe6"));
+        upperPanel.setBackground(hexToColor("#4a4c4f"));
 
         try {
             ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));

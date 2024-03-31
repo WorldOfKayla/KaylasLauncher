@@ -35,7 +35,7 @@ public class Launcher extends Engine implements AuthListener {
     private Auth auth;
     private User user;
     private final Settings settings;
-    private final String soundsFile = "assets/sounds/sounds.json";
+    private String soundsFile;
     private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
 
     public static void main(String[] args) {
@@ -43,6 +43,7 @@ public class Launcher extends Engine implements AuthListener {
     }
     public Launcher() {
         super("config");
+        this.soundsFile = getFileProperties().getSoundsFile();
         this.preInit(this);
         this.engine = this;
         this.settings = new Settings(this);
@@ -74,7 +75,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     protected void preInit(Engine engine){
         this.config = new Config(this);
-        this.LANG = new LanguageProvider(engine, this.getGuiProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
+        this.LANG = new LanguageProvider(engine, this.getFileProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
         this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.soundsFile));
         this.frameConstructor = new FrameConstructor(engine);
         this.loadingManager = new LoadingManager(engine);
@@ -90,8 +91,8 @@ public class Launcher extends Engine implements AuthListener {
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
         getGuiBuilder().setGuiBuilderListener(this);
         setNews(new News(this));
-        this.getGuiBuilder().buildGui(this.getGuiProperties().getFrameTpl(), this.getFrame().getRootPanel());
-        loadMainPanel(this.getGuiProperties().getMainFrame());
+        this.getGuiBuilder().buildGui(this.getFileProperties().getFrameTpl(), this.getFrame().getRootPanel());
+        loadMainPanel(this.getFileProperties().getMainFrame());
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();

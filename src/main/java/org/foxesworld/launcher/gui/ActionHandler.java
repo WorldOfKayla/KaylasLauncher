@@ -16,7 +16,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
     protected ServerAttributes currentServer;
-    protected  UserInfo userInfo;
+    protected  final UserInfo userInfo;
     public ActionHandler(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
@@ -40,17 +40,18 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             if (this.launcher.getAuth().isAuthorised()) {
                                 engine.getFrame().getRootPanel().removeAll();
                                 engine.getPanelVisibility().displayPanel("authForm->false");
-                                this.engine.init(this.launcher);
+                                this.engine.init();
                             }
                         }
 
                         case "userinfo" ->{
-                            TextField textField = new TextField("");
+                            TextField textField = null;
                             for(JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("test")){
                                 if(component instanceof TextField) {
                                    textField = (TextField) component;
                                 }
                             }
+                            assert textField != null;
                             this.userInfo.sendRequest(textField.getText());
                         }
                     }
@@ -100,6 +101,11 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     } else {
                         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
                     }
+                }
+
+
+                case "info-small" -> {
+                    Engine.LOGGER.warn("Not implemented yet!");
                 }
 
                 case "back" -> {

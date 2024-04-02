@@ -10,8 +10,9 @@
         "paddingX": 10,
         "paddingY": 15,
         "color": "#e2e7ec",
-        "caretColor": "#ffffff",
+        "caretColor": "#ff0000",
         "background": "#ffffff",
+        "selectionColor": "#2dc5bb",
         "texture": "assets/ui/input/textfield.png"
       },
       "inputBox": {
@@ -24,8 +25,9 @@
         "paddingY": 5,
         "color": "#2b2826",
         "caretColor": "#436e22",
-        "texture": "assets/ui/input/inputBox.png",
-        "borderColor": "#da3156"
+        "borderColor": "0,#917f7f,#917f7f",
+        "selectionColor": "#bdb165",
+        "texture": "assets/ui/input/inputBox.png"
       }
     }
   }

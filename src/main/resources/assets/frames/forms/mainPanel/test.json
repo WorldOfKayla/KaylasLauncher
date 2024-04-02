@@ -97,7 +97,6 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "ENTER",
-          "coolDown": 2000,
           "componentStyle": "buttonMain",
           "componentId": "userinfo>submit",
           "localeKey": "dev.remindMe",

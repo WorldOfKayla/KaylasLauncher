@@ -36,7 +36,7 @@
           "iconWidth": 64,
           "iconHeight": 64,
           "componentId": "userHead",
-          "bounds": "5,5,64,64"
+          "bounds": "5,10,64,64"
         },
         {
           "componentType": "button",

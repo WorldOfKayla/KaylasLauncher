@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class UserInfo {
 
-    private Launcher launcher;
-    private Map<String, Label> components = new HashMap<>();
+    private final Launcher launcher;
+    private final Map<String, Label> components = new HashMap<>();
     private final HTTPrequest POSTrequest;
     private Map<String, String> requestBody;
     private UserAttributes[] userAttributes;
@@ -54,7 +54,7 @@ public class UserInfo {
         requestBody.put("selectKey", "login");
     }
 
-    public class UserAttributes {
+    public static class UserAttributes {
         private  String realname, profilePhoto, userStatus, land, colorScheme;
 
         public String getRealname() {

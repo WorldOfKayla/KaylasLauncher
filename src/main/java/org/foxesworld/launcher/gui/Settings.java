@@ -63,7 +63,7 @@ public class Settings implements SliderListener, DropBoxListener, TextFieldListe
             switch (slider.getName()) {
                 case "volume" -> {
                         launcher.getConfig().setVolume(value);
-                        launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f);
+                        launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
                         ((TextField) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 

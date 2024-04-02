@@ -4,11 +4,9 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
-import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
@@ -24,10 +22,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class User {
+public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final ServerInfoDisplayer serverInfoDisplayer;
-
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
@@ -38,6 +35,7 @@ public class User {
 
     public User(Launcher launcher) {
         this.auth = launcher.getAuth();
+        this.engine = launcher.getEngine();
         this.serverInfo = auth.getEngine().getServerInfo();
         this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
@@ -56,13 +54,14 @@ public class User {
         this.setDropBoxData(dropBox);
     }
 
-    private void setDropBoxData(DropBox dropBox){
+    private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
         dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(serverInfoDisplayer);
     }
 
-    public void setUserSpace() {
+    @Override
+    protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         Map<String, Label> userLabels = getLabelsMap(Arrays.asList("userHead", "userGroup"));
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
@@ -72,16 +71,8 @@ public class User {
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
             }
         }
-        guiBuilder.setLabelIcon("userHead", new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead()), 50)));
+        guiBuilder.setLabelIcon("userHead", new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())), 15)));
         userLabels.get("userGroup").setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
-    }
-
-    private String getUserHead() {
-        Map<String, String> skinData = new HashMap<>();
-        skinData.put("sysRequest", "skin");
-        skinData.put("show", "head");
-        skinData.put("login", this.getLogin());
-        return this.auth.getEngine().getPOSTrequest().send(this.auth.getEngine().getEngineData().getBindUrl(), skinData);
     }
 
     private Map<String, Label> getLabelsMap(List<String> labelIds) {

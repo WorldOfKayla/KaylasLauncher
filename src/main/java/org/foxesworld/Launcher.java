@@ -35,7 +35,7 @@ public class Launcher extends Engine implements AuthListener {
     private Auth auth;
     private User user;
     private final Settings settings;
-    private String soundsFile;
+    private final String soundsFile;
     private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
 
     public static void main(String[] args) {
@@ -44,26 +44,28 @@ public class Launcher extends Engine implements AuthListener {
     public Launcher() {
         super("config");
         this.soundsFile = getFileProperties().getSoundsFile();
-        this.preInit(this);
+        this.preInit();
         this.engine = this;
         this.settings = new Settings(this);
-
+        String error;
         if (!isLauncherValid(this)) {
-            engine.getSOUND().playSound("other", "invalidLauncher");
-            getLOGGER().error("Invalid MD5!");
-            JOptionPane.showMessageDialog(new JFrame(), "Invalid MD5!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+            error = "invalidLauncher";
+            engine.getSOUND().playSound("other", error);
+            getLOGGER().error(error);
+            JOptionPane.showMessageDialog(new JFrame(), error, engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         } else {
             int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
             if(launchingWith == Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""))) {
                 this.auth = new Auth(this);
-                init(this);
+                init();
                 setActionHandler(new ActionHandler(this));
                 getLOGGER().debug("Launcher started!");
             } else {
-                engine.getSOUND().playSound("other", "invalidJVM");
-                getLOGGER().error("Invalid JVM!");
-                JOptionPane.showMessageDialog(new JFrame(), "Invalid JVM!", engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+                error = "invalidJVM";
+                engine.getSOUND().playSound("other", error);
+                getLOGGER().error(error);
+                JOptionPane.showMessageDialog(new JFrame(), error, engine.getAppTitle(), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             }
         }
@@ -71,19 +73,20 @@ public class Launcher extends Engine implements AuthListener {
 
     /*
     * TODO
-    *  May be merged to Engine*/
+    *  May be merged to Engine
+    * */
     @Override
-    protected void preInit(Engine engine){
+    protected void preInit(){
         this.config = new Config(this);
-        this.LANG = new LanguageProvider(engine, this.getFileProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
+        this.LANG = new LanguageProvider(this, this.getFileProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
         this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.soundsFile));
-        this.frameConstructor = new FrameConstructor(engine);
-        this.loadingManager = new LoadingManager(engine);
+        this.frameConstructor = new FrameConstructor(this);
+        this.loadingManager = new LoadingManager(this);
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
     @Override
-    public void init(Engine engine) {
+    public void init() {
         this.discord = new Discord(this);
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
         setStyleProvider(new StyleProvider(this.styles));

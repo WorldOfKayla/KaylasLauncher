@@ -3,6 +3,7 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -46,7 +47,7 @@ public class Auth {
 
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
-        if (authorize(formAuth.getAuthCredentials())) {
+        if (authorize(formAuth.getFormCredentials())) {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
@@ -102,6 +103,14 @@ public class Auth {
         });
         engine.init();
     }
+
+    static class FormAuth extends ComponentsAccessor {
+
+        public FormAuth(Auth auth) {
+            super(auth.getEngine().getGuiBuilder(), "authForm");
+        }
+    }
+
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
         launcher.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));

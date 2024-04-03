@@ -2,7 +2,9 @@ package org.foxesworld.launcher.gui;
 
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.ImageUtils;
 
@@ -11,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserInfo {
+public class UserInfo extends ComponentsAccessor {
 
     private final Launcher launcher;
     private final Map<String, Label> components = new HashMap<>();
@@ -20,14 +22,15 @@ public class UserInfo {
     private UserAttributes[] userAttributes;
 
     public UserInfo(Launcher launcher){
+        super(launcher.getGuiBuilder(), "test");
         this.launcher = launcher;
         this.POSTrequest = launcher.getPOSTrequest();
         this.getComponents();
     }
 
-    public void sendRequest(String login){
+    public void sendRequest(){
         this.setRequest();
-        requestBody.put("selectValue", login);
+        requestBody.put("selectValue", ((TextField) this.getComponent("userInfoLogin")).getText());
         String response = POSTrequest.send(launcher.getEngineData().getBindUrl(), requestBody);
         this.userAttributes = new Gson().fromJson(response, UserAttributes[].class);
         if(this.userAttributes.length > 0) {

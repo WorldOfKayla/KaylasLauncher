@@ -2,16 +2,11 @@ package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.components.textfield.TextField;
-import org.foxesworld.launcher.config.Config;
-import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
@@ -36,7 +31,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "submit" -> {
                     switch (parent){
                         case "authForm" -> {
-                            this.launcher.getAuth().formAuth(engine.getGuiBuilder().getComponentsMap().get(parent));
+                            this.launcher.getAuth().formAuth();
                             if (this.launcher.getAuth().isAuthorised()) {
                                 engine.getFrame().getRootPanel().removeAll();
                                 engine.getPanelVisibility().displayPanel("authForm->false");
@@ -44,16 +39,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             }
                         }
 
-                        case "userinfo" ->{
-                            TextField textField = null;
-                            for(JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("test")){
-                                if(component instanceof TextField) {
-                                   textField = (TextField) component;
-                                }
-                            }
-                            assert textField != null;
-                            this.userInfo.sendRequest(textField.getText());
-                        }
+                        case "userinfo" -> this.userInfo.sendRequest();
                     }
                 }
 
@@ -67,33 +53,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
-
-                case "applySettings" -> {
-                    for (JComponent component : this.launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
-                        Class<Config> clazz = Config.class;
-                        try {
-                           clazz.getDeclaredField(component.getName());
-                        if (component instanceof Checkbox) {
-                            this.launcher.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
-                        } else if (component instanceof JTextField) {
-                            this.launcher.getConfig().setConfigValue(component.getName(), ((JTextField) component).getText());
-                        } else {
-                            if (component instanceof JSlider) {
-                                this.launcher.getConfig().setConfigValue(component.getName(), ((JSlider) component).getValue());
-                            }
-                        } if(component instanceof DropBox){
-                                this.launcher.getConfig().setConfigValue(component.getName(), ((DropBox) component).getSelected());
-                        }
-                        } catch (NoSuchFieldException ignored) {
-                        }
-                    }
-                    this.launcher.getConfig().writeCurrentConfig();
-                    this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
-                    this.launcher.getEngine().getFrame().dispose();
-                    this.launcher = new Launcher();
-                }
-
+                case "applySettings" -> this.launcher.getSettings().applySettings();
                 case "logOut" -> this.launcher.getAuth().logOut();
+                case "info-small" -> Engine.LOGGER.warn("Not implemented yet!");
 
                 case "settings-small" -> {
                     if (!launcher.getAuth().isAuthorised()) {
@@ -101,11 +63,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     } else {
                         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
                     }
-                }
-
-
-                case "info-small" -> {
-                    Engine.LOGGER.warn("Not implemented yet!");
                 }
 
                 case "back" -> {
@@ -136,7 +93,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "closeButton" -> System.exit(0);
-
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
     }

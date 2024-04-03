@@ -1,7 +1,6 @@
 package org.foxesworld.launcher.auth;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.launcher.config.Config;
@@ -10,7 +9,6 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,7 @@ public class Auth {
     private final Map<String, String> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
-    private final Map<String, String> inputData = new HashMap<>();
+    private Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
 
     public Auth(Launcher launcher) {
@@ -46,15 +44,9 @@ public class Auth {
         }
     }
 
-    public void formAuth(List<JComponent> authCredentials) {
-        for (Component component : authCredentials) {
-            if (component instanceof JTextField) {
-                inputData.put(component.getName(), ((JTextField) component).getText());
-            } else if (component instanceof JCheckBox) {
-                inputData.put(component.getName(), String.valueOf(((JCheckBox) component).isSelected()));
-            }
-        }
-        if (authorize(inputData)) {
+    public void formAuth() {
+        FormAuth formAuth = new FormAuth(this);
+        if (authorize(formAuth.getAuthCredentials())) {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
@@ -62,41 +54,42 @@ public class Auth {
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials);
-        Map<String, Object> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        boolean status = "success".equals(responseMap.get("type"));
+        AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
 
-        if (status) {
-            handleSuccessfulAuth(responseMap, authCredentials);
+        if ("success".equals(authResponse.getType())) {
+            handleSuccessfulAuth(authResponse, authCredentials);
+            return true;
         } else {
-            handleFailedAuth(responseMap);
+            handleFailedAuth(authResponse);
+            return false;
         }
-        return status;
     }
 
-    private void handleSuccessfulAuth(Map<String, Object> responseMap, Map<String, String> authCredentials) {
+    private void handleSuccessfulAuth(AuthResponse authResponse, Map<String, String> authCredentials) {
         setAuthorised(true);
         this.authCredentials.putAll(authCredentials);
-        for (Map.Entry<String, Object> entry : responseMap.entrySet()) {
-            authCredentials.put(entry.getKey(), entry.getValue().toString());
-        }
-        Engine.getLOGGER().info(authCredentials.get("login") + " authorised!");
-        loadUserServers(authCredentials.get("login"));
+        this.authCredentials.put("uuid", authResponse.getUuid());
+        this.authCredentials.put("token", authResponse.getToken());
+        this.authCredentials.put("units", authResponse.getUnits());
+        Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
+        loadUserServers(authResponse.getLogin());
         if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
         authListener.onLogin(authCredentials);
     }
 
-    private void handleFailedAuth(Map<String, Object> responseMap) {
-        Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
-        JOptionPane.showMessageDialog(engine.getFrame(), responseMap.get("message"));
+    private void handleFailedAuth(AuthResponse authResponse) {
+        Engine.getLOGGER().info("Incorrect password for " + authResponse.getLogin() + "!");
+        JOptionPane.showMessageDialog(engine.getFrame(), authResponse.getMessage());
     }
 
     private void loadUserServers(String login) {
-        ServerParser serverParser = new ServerParser(getEngine());
+        ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream().map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
+        userServersArray = userServersAttributes.stream()
+                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
+                .toArray(String[]::new);
     }
 
     public void logOut() {

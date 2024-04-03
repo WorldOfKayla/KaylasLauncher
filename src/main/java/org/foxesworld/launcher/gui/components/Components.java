@@ -17,7 +17,7 @@ public class Components implements ComponentFactoryListener {
         }
     }
 
-    private void getInitialData(ComponentAttributes componentAttributes) {
+    protected void getInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = componentAttributes.getInitialValue().split("#");
         switch (splitValue[0]) {
             case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getCONFIG().get(splitValue[1])));

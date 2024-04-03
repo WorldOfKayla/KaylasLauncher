@@ -49,7 +49,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.logger.debug("Libraries " + buildLibrariesPath());
         this.logger.debug("Assets " + buildAssetsPath());
         this.logger.debug("#############################");
-        this.user = launcher.getUser();
+        this.user = actionHandler.getLauncher().getUser();
         this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
     }
@@ -195,7 +195,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 int exitCode = process.waitFor();
                 gameListener.onGameExit(this);
-                // Using invokeLater for Swing-related actions
+                // Using invokeLater for ssdd-related actions
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);

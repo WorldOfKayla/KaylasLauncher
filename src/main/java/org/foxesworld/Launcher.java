@@ -34,8 +34,9 @@ public class Launcher extends Engine implements AuthListener {
     private final Engine engine;
     private Auth auth;
     private User user;
-    private final Settings settings;
+    private Settings settings;
     private final String soundsFile;
+    private final String THEME = "default";
     private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
 
     public static void main(String[] args) {
@@ -46,7 +47,6 @@ public class Launcher extends Engine implements AuthListener {
         this.soundsFile = getFileProperties().getSoundsFile();
         this.preInit();
         this.engine = this;
-        this.settings = new Settings(this);
         String error;
         if (!isLauncherValid(this)) {
             error = "invalidLauncher";
@@ -85,21 +85,26 @@ public class Launcher extends Engine implements AuthListener {
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
+
+    public void buildGui(String[] styles){
+        setStyleProvider(new StyleProvider(styles));
+        setGuiBuilder(new GuiBuilder(this));
+        this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
+        getGuiBuilder().setGuiBuilderListener(this);
+        this.getGuiBuilder().buildGui(this.getFileProperties().getFrameTpl(), this.getFrame().getRootPanel());
+    }
     @Override
     public void init() {
         this.discord = new Discord(this);
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
-        setStyleProvider(new StyleProvider(this.styles));
-        setGuiBuilder(new GuiBuilder(this));
-        this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new Components(this));
-        getGuiBuilder().setGuiBuilderListener(this);
+        this.buildGui(this.styles);
         setNews(new News(this));
-        this.getGuiBuilder().buildGui(this.getFileProperties().getFrameTpl(), this.getFrame().getRootPanel());
         loadMainPanel(this.getFileProperties().getMainFrame());
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         this.setUser(new User(this));
+        this.settings = new Settings(this);
         this.settings.addListeners();
         setInit(true);
     }
@@ -171,6 +176,7 @@ public class Launcher extends Engine implements AuthListener {
         this.user = user;
     }
     public  Config getConfig() { return (Config) this.config; }
+
 
     static class LauncherAttributes {
         @SuppressWarnings("unused")

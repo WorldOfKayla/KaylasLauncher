@@ -63,7 +63,7 @@
   "other": {
     "loggedIn": {
       "sounds": [
-        "assets/sounds/auth.ogg"
+        "assets/sounds/auth2.ogg"
       ]
     },
     "invalidLauncher": {
@@ -86,7 +86,10 @@
         "assets/sounds/start/voice4.ogg",
         "assets/sounds/start/voice5.ogg",
         "assets/sounds/start/voice6.ogg",
-        "assets/sounds/start/voice7.ogg"
+        "assets/sounds/start/voice7.ogg",
+        "assets/sounds/start/voice8.ogg",
+        "assets/sounds/start/voice9.ogg",
+        "assets/sounds/start/voice10.ogg"
       ]
     }
   }

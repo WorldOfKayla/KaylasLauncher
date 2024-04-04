@@ -2,6 +2,7 @@ package org.foxesworld;
 
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.FileProperties;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.discord.Discord;
@@ -35,16 +36,13 @@ public class Launcher extends Engine implements AuthListener {
     private Auth auth;
     private User user;
     private Settings settings;
-    private final String soundsFile;
-    private final String THEME = "default";
-    private final String[] styles = {"button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"};
-
+    private final FileProperties fileProperties;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
     public Launcher() {
         super("config");
-        this.soundsFile = getFileProperties().getSoundsFile();
+        this.fileProperties = getFileProperties();
         this.preInit();
         this.engine = this;
         String error;
@@ -78,8 +76,8 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     protected void preInit(){
         this.config = new Config(this);
-        this.LANG = new LanguageProvider(this, this.getFileProperties().getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
-        this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.soundsFile));
+        this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
+        this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
         this.loadingManager = new LoadingManager(this);
         this.serverInfo = new ServerInfo(this);
@@ -97,9 +95,9 @@ public class Launcher extends Engine implements AuthListener {
     public void init() {
         this.discord = new Discord(this);
         this.discord.discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
-        this.buildGui(this.styles);
+        this.buildGui(this.getEngineData().getStyles());
         setNews(new News(this));
-        loadMainPanel(this.getFileProperties().getMainFrame());
+        loadMainPanel(this.fileProperties.getMainFrame());
 
         //ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
@@ -119,7 +117,6 @@ public class Launcher extends Engine implements AuthListener {
             return true;
         }
     }
-
     @Override
     public String appPath() {
         try {

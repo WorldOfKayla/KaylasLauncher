@@ -1,0 +1,16 @@
+                {
+                  "componentType": "textField",
+                  "componentStyle": "inputBox",
+                  "localeKey": "settings.width",
+                  "initialValue":"config#width",
+                  "componentId": "width",
+                  "bounds": "40,280,0,0"
+                },
+                {
+                  "componentType": "textField",
+                  "componentStyle": "inputBox",
+                  "localeKey": "settings.height",
+                  "initialValue":"config#height",
+                  "componentId": "height",
+                  "bounds": "90,280,0,0"
+                },

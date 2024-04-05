@@ -20,6 +20,8 @@ public class Config extends org.foxesworld.engine.config.Config {
     @SuppressWarnings("unused")
     private int ramAmount;
     @SuppressWarnings("unused")
+    private Object width, height;
+    @SuppressWarnings("unused")
     private  String login, password, lang;
     @SuppressWarnings("unused")
     private  boolean autoEnter, fullScreen, loadNews, enableSound,launchAC, backgroundMusic;
@@ -146,5 +148,13 @@ public class Config extends org.foxesworld.engine.config.Config {
     }
     public int getSelectedServer() {
         return selectedServer;
+    }
+
+    public Object getWidth() {
+        return width;
+    }
+
+    public Object getHeight() {
+        return height;
     }
 }

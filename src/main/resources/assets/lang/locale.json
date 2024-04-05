@@ -97,6 +97,14 @@
       "homeDir": {
         "en_US": "Game Dir",
         "ru_RU": "Директория игры"
+      },
+      "width": {
+        "en_US": "Width",
+        "ru_RU": ""
+      },
+      "height": {
+        "en_US": "Height",
+        "ru_RU": ""
       }
     },
     "auth": {

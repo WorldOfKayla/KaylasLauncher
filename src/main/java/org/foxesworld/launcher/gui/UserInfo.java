@@ -31,7 +31,7 @@ public class UserInfo extends ComponentsAccessor {
     public void sendRequest(){
         this.setRequest();
         requestBody.put("selectValue", ((TextField) this.getComponent("userInfoLogin")).getText());
-        String response = POSTrequest.send(launcher.getEngineData().getBindUrl(), requestBody);
+        String response = POSTrequest.send(requestBody);
         this.userAttributes = new Gson().fromJson(response, UserAttributes[].class);
         if(this.userAttributes.length > 0) {
             this.updateInfo();

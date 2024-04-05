@@ -14,7 +14,7 @@ public class ServerParser extends org.foxesworld.engine.server.ServerParser {
     @Override
     public List<ServerAttributes> parseServers(String login) {
         request.put("login", login);
-        String serversList = engine.getPOSTrequest().send(engine.getEngineData().getBindUrl(), request);
+        String serversList = engine.getPOSTrequest().send(request);
         ServerAttributes[] serversArray = new Gson().fromJson(serversList, ServerAttributes[].class);
         for (ServerAttributes serverAttributes : serversArray) {
             this.serverList.add(serverAttributes);

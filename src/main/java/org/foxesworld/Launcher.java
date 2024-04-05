@@ -110,7 +110,7 @@ public class Launcher extends Engine implements AuthListener {
         Map<String, String> launcherRequest = new HashMap<>();
         launcherRequest.put("sysRequest", "downloadLatest");
         String selfMd5 = md5Func.md5(this.appPath());
-        LauncherAttributes launcherAttributes = new Gson().fromJson(engine.getPOSTrequest().send(engine.getEngineData().getBindUrl(), launcherRequest), LauncherAttributes.class);
+        LauncherAttributes launcherAttributes = new Gson().fromJson(engine.getPOSTrequest().send(launcherRequest), LauncherAttributes.class);
         if (!selfMd5.equals("IDE")) {
             return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
         } else {

@@ -10,6 +10,8 @@ import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileLoaderImpl implements FileLoaderListener {
 
@@ -34,7 +36,13 @@ public class FileLoaderImpl implements FileLoaderListener {
     @Override
     public void onFilesLoaded() {
         Engine.getLOGGER().debug("--==|Files loaded|==--");
-        core.setFileGuard(new FileGuard(core.getGameLauncher()));
+        List<String> checkList = Arrays.asList(
+                core.getGameLauncher().buildClientDir(),
+                core.getGameLauncher().buildVersionDir(),
+                core.getGameLauncher().buildLibrariesPath(),
+                core.getGameLauncher().buildNativesPath()
+        );
+        core.setFileGuard(new FileGuard(core.getGameLauncher(), checkList));
         core.getFileGuard().setFileGuardListener(new FileGuardImpl(core));
         core.getFileGuard().addIgnoreDirs(core.getActionHandler().getCurrentServer().getIgnoreDirs());
         core.getFileGuard().scanAndDeleteFilesInSubdirectories(core.getFileLoader().getFilesToKeep());

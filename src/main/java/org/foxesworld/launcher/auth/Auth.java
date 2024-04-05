@@ -54,7 +54,7 @@ public class Auth {
 
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
-        String response = POSTrequest.send(engine.getEngineData().getBindUrl(), authCredentials);
+        String response = POSTrequest.send(authCredentials);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
 
         if ("success".equals(authResponse.getType())) {

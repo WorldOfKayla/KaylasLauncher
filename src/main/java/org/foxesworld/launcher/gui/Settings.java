@@ -66,8 +66,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                 ((DropBox) component).setScrollBoxListener(this);
             }
 
-            if(component instanceof  TextField) {
-                ((TextField) component).setTextFieldListener(this);
+            if(component instanceof TextField) {
+                if(!component.isEnabled()) {
+                    ((TextField) component).setTextFieldListener(this);
+                }
             }
 
             if(component instanceof Checkbox) {
@@ -124,7 +126,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onTextChange(TextField textfield) {
         if(!textfield.getText().equals("")) {
-            ((Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""))).setValue(Integer.parseInt(textfield.getText()));
+            Slider slider = (Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""));
+            if(slider != null) {
+                slider.setValue(Integer.parseInt(textfield.getText()));
+            }
         }
     }
 

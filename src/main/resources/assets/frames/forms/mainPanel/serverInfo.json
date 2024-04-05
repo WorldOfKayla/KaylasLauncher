@@ -32,7 +32,7 @@
                 "doubleBuffered": true,
                 "background": "#4a4c4f",
                 "bounds": "10,345,470,120",
-                "layout": "border",
+                "layout": "box",
                 "border": "1,1,1,1,#ffffff"
               } ,
               "childComponents": [

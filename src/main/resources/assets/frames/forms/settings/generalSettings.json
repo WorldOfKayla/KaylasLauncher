@@ -48,7 +48,7 @@
                   "componentStyle": "btnSmallClean",
                   "localeKey": "settings.homeDir",
                   "componentId": "gameDir-small",
-                  "bounds": "375,55,64,64"
+                  "bounds": "410,20,64,64"
                 },
                 {
                   "componentType": "label",
@@ -56,13 +56,13 @@
                   "componentStyle": "promptLabel",
                   "localeKey": "settings.langBox",
                   "componentId": "langBoxLabel",
-                  "bounds": "40,270,250,50"
+                  "bounds": "40,290,250,50"
                 },
                 {
                   "componentType": "dropBox",
                   "componentStyle": "selectable",
                   "componentId": "lang",
-                  "bounds": "40,305,273,25"
+                  "bounds": "40,325,273,25"
                 },
                 {
                   "componentType": "button",
@@ -71,7 +71,7 @@
                   "componentStyle": "buttonMain",
                   "componentId": "applySettings",
                   "localeKey": "settings.applySettings",
-                  "bounds": "40,360,210,47"
+                  "bounds": "40,380,210,47"
                 }
               ]
             }

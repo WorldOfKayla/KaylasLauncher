@@ -7,6 +7,7 @@ import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class ServerInfoDisplayer implements DropBoxListener {
 
@@ -42,15 +43,17 @@ public class ServerInfoDisplayer implements DropBoxListener {
     }
 
     private void displayServerInfo(int index){
+        BufferedImage serverImg = ImageUtils.getLocalImage("assets/ui/img/noimg.jpg");
         newsPanel.removeAll();
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         guiBuilder.setLabelText("serverTitle", thisServer.getServerName() + ' ' + thisServer.getServerVersion());
+        if( thisServer.getServerImage() != null) {
+            serverImg = ImageUtils.loadImageFromUrl(user.getAuth().getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage());
+        }
         guiBuilder.setLabelIcon("serverImg", new ImageIcon(
-                ImageUtils.getRoundedImage(ImageUtils.getScaledImage(
-                        ImageUtils.loadImageFromUrl(
-                                user.getAuth().getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage()), 470, 260), 25)));
+                ImageUtils.getRoundedImage(ImageUtils.getScaledImage(serverImg, 470, 260), 25)));
         guiBuilder.setLabelText("serverDescLabel", thisServer.getServerDescription(), true);
         newsPanel.repaint();
     }

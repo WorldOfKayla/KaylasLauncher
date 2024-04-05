@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.5.12-SecondWind",
+  "launcherVersion": "1.5.13-SecondWind",
   "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",

@@ -37,16 +37,16 @@ public class FileLoaderImpl implements FileLoaderListener {
     public void onFilesLoaded() {
         Engine.getLOGGER().debug("--==|Files loaded|==--");
         List<String> checkList = Arrays.asList(
-                core.getGameLauncher().buildClientDir(),
-                core.getGameLauncher().buildVersionDir(),
-                core.getGameLauncher().buildLibrariesPath(),
-                core.getGameLauncher().buildNativesPath()
+                core.getGameLauncher().getPathBuilders().buildClientDir(),
+                core.getGameLauncher().getPathBuilders().buildVersionDir(),
+                core.getGameLauncher().getPathBuilders().buildLibrariesPath(),
+                core.getGameLauncher().getPathBuilders().buildNativesPath()
         );
         core.setFileGuard(new FileGuard(core.getGameLauncher(), checkList));
         core.getFileGuard().setFileGuardListener(new FileGuardImpl(core));
         core.getFileGuard().addIgnoreDirs(core.getActionHandler().getCurrentServer().getIgnoreDirs());
         core.getFileGuard().scanAndDeleteFilesInSubdirectories(core.getFileLoader().getFilesToKeep());
-        core.getFileGuard().recursiveDelete(new File(core.getGameLauncher().buildGameDir() + "/assets/skins"));
+        core.getFileGuard().recursiveDelete(new File(core.getGameLauncher().getPathBuilders().buildGameDir() + "/assets/skins"));
     }
 
     @Override

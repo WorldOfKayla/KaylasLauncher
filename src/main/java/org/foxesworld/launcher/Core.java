@@ -5,11 +5,14 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.gui.ActionHandler;
 
 import java.io.File;
+
+import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 
 public class Core implements GameListener {
     private long startTime;
@@ -40,7 +43,7 @@ public class Core implements GameListener {
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         if(this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if(!new File(this.actionHandler.getEngine().appPath()).isDirectory()) {
-                this.actionHandler.getLauncher().restartApplication(128);
+                this.actionHandler.getLauncher().restartApplication(128, this.actionHandler.getLauncher().getEngineData().getProgramRuntime()+"-x"+getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
                 System.exit(0);
@@ -48,6 +51,13 @@ public class Core implements GameListener {
         } else {
             System.exit(0);
         }
+    }
+
+    public static int getCorrectOSArch() {
+        if (OS_TYPE == JVMHelper.OS.WIN) {
+            return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;
+        }
+        return System.getProperty("os.arch").contains("64") ? 64 : 32;
     }
 
     public ActionHandler getActionHandler() {

@@ -17,7 +17,6 @@ import java.util.List;
 public class FileLoaderImpl implements FileLoaderListener {
 
     private final Core core;
-    private GameLauncher gameLauncher;
     public FileLoaderImpl(Core core){
         this.core = core;
     }
@@ -26,7 +25,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
        core.setGameLauncher(new GameLauncher(core.getActionHandler()));
-        core.getGameLauncher().setGameListener(core);
+       core.getGameLauncher().setGameListener(core);
 
         if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
             //If we failed java -version command -> download it

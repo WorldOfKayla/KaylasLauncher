@@ -6,6 +6,7 @@ import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.GPUInfo;
 import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
+import org.foxesworld.engine.game.argsReader.libraries.Library;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.launcher.config.Config;
@@ -223,7 +224,8 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
         this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
         this.replaceValues.put("classpath_separator", File.pathSeparator);
-        this.replaceValues.put("classpath", collectLibraries().toString());
+        this.replaceValues.put("classpath", this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath() + File.separator));
+        this.classLoader = createClassLoader(this.argsReader.getLibraryReader().getLibraryURLs());
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
     }

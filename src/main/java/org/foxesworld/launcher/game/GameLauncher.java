@@ -4,7 +4,6 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.GPUInfo;
-import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.utils.ImageUtils;
@@ -30,8 +29,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     private final Config config;
+    private String mainClass, tweakClassVal = "";
     public final Launcher launcher;
-    private final Map<String, String> replaceValues = new HashMap<>();
+    private Map<String, String> replaceValues = new HashMap<>();
     private final ClientType clientType;
     protected final User user;
 
@@ -46,8 +46,8 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.user = actionHandler.getLauncher().getUser();
         this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
-        if(this.getArgsFile() != null){
-            argsReader = new ArgsReader(this.getArgsFile());
+        if(this.pathBuilders.getArgsFile() != null){
+            argsReader = new ArgsReader(this.pathBuilders.getArgsFile());
         }
     }
     @Override
@@ -80,47 +80,29 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         logger.info("Setting " + gpu + " as preferred card");
         processArgs.add(getPathBuilders().buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
-        processArgs.addAll(getJvmArgs());
+        List<String> jvmArgs = getJvmArgs();
+        logger.debug(jvmArgs.toString());
+        this.addArgsToProcess(jvmArgs);
     }
 
     @Override
     protected void setGameArgs() {
-        String version = gameClient.getServerVersion();
-        if (gameClient.getServerVersion().contains("-")) {
-            version = gameClient.getServerVersion().split("-")[0];
-        }
-        Engine.getLOGGER().debug("Client version " + version);
-        processArgs.add("--versionType=release");
-        processArgs.add("--username=" + this.user.getLogin());
-        if (this.clientType != ClientType.fabricclient) {
-            processArgs.add("--version=" + version);
-        }
-        processArgs.add("--gameDir=" + getPathBuilders().buildClientDir());
-        processArgs.add("--assetsDir=" + getPathBuilders().buildAssetsPath());
-        processArgs.add("--assetIndex=" + version);
+        Engine.getLOGGER().debug("Client version " + getVersion());
+        List<String> gameArgs = getGameArgs();
+        logger.debug("GameArgs " + gameArgs.toString());
+        this.addArgsToProcess(gameArgs);
         switch (this.clientType) {
             case forgeclient:
             case fmlclient:
-                if (getIntVer() > 1133) {
-                    processArgs.add("--fml.forgeVersion=" + this.gameClient.getForgeVersion());
-                    processArgs.add("--fml.mcVersion=" + version);
-                    processArgs.add("--launchTarget=" + this.gameClient.getClient());
-                    processArgs.add("--fml.forgeGroup=" + this.gameClient.getForgeGroup());
-                    processArgs.add("--fml.mcpVersion=" + this.gameClient.getMcpVersion());
-                    System.setProperty("org.objectweb.asm.util.traceClassVisitors", "true");
-                break;
-            }
-
-
+            break;
             case fabricclient:
-                break;
+            break;
         }
         //Optional
         if (config.isFullScreen()) {
             processArgs.add("--fullscreen=true");
 
         }
-
         //Optional
         if (config.isAutoEnter()) {
             processArgs.add("--server=" + gameClient.getHost());
@@ -139,7 +121,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     public void launchGame() {
         if (isStarted()) throw new IllegalStateException("Process already started");
         executorService.submit(() -> {
-            String mainClass, tweakClassVal = "";
             this.checkDangerousParams();
             setJreArgs();
             try {
@@ -151,15 +132,24 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     mainClass = gameClient.getMainClass();
                 }
 
+                if(this.argsReader.getMainClass() != null){
+                    mainClass = argsReader.getMainClass();
+                }
+
                 processArgs.add(mainClass);
-                processArgs.add(tweakClassVal);
-                if(this.clientType != ClientType.fabricclient) {
-                    loadAuthLib(this.user.getToken(), this.user.getUuid(), "");
+                if(Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
+                    try {
+                        this.classLoader.loadClass("com.mojang.authlib.Agent");
+                    } catch (ClassNotFoundException e) {
+                        Engine.LOGGER.error(e);
+                    }
+                } else {
+                    Engine.LOGGER.info("Launching without AuthLib loaded!");
                 }
                 setGameArgs();
 
                 // Log the command that will be executed
-                logger.debug("Launch command: " + String.join(" ", processArgs));
+                //logger.debug("Launch command: " + String.join(" ", processArgs));
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(getPathBuilders().buildClientDir()));
                 processBuilder.redirectErrorStream(true);
@@ -211,7 +201,23 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         }
         return "";
     }
-    private List<String> getJvmArgs(){
+
+    private List<String> getGameArgs(){
+        this.replaceValues = new HashMap<>();
+        this.replaceValues.put("tweakClass", this.tweakClassVal);
+        this.replaceValues.put("auth_player_name", this.user.getLogin());
+        this.replaceValues.put("version_name", this.getVersion());
+        this.replaceValues.put("game_directory", getPathBuilders().buildClientDir());
+        this.replaceValues.put("assets_root", getPathBuilders().buildAssetsPath());
+        this.replaceValues.put("assets_index_name", this.getVersion());
+        this.replaceValues.put("auth_uuid", this.user.getUuid());
+        this.replaceValues.put("auth_access_token", this.user.getToken());
+        this.replaceValues.put("user_type", "legacy");
+        this.replaceValues.put("version_type", "release");
+        return this.argsReader.replaceMask(this.argsReader.getGameArguments(), this.replaceValues);
+    }
+    private List<String> getJvmArgs() {
+        this.replaceValues = new HashMap<>();
         this.replaceValues.put("natives_directory", getPathBuilders().buildNativesPath());
         this.replaceValues.put("library_directory", getPathBuilders().buildLibrariesPath());
         this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
@@ -221,7 +227,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
     }
-    public  String getJreBin(){
+    public String getJreBin(){
         return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() +  File.separator +  "bin";
     }
 }

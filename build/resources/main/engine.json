@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.6.1-Manufacture",
+  "launcherVersion": "1.6.2-PreCreate",
   "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
@@ -9,7 +9,6 @@
   "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",
   "groupDomain": "foxesworlds1",
   "vkAPIversion": "5.101",
-  "downloadThreads": 4,
   "files": {
     "frameTpl": "assets/frames/frame.json",
     "mainFrame": "assets/frames/mainFrame.json",
@@ -50,5 +49,18 @@
     {
       "classPath": "optifine.OptiFineTweaker"
     }
-  ]
+  ],
+  "downloadManager": {
+    "downloadThreads": 4,
+    "replaceMasks": [
+      {
+        "mask": "/uploads/files/clients/",
+        "replace": "/uploads/files/clients/"
+      },
+      {
+        "mask": "/uploads/files/clients/versions/${version}/libraries/",
+        "replace": "/uploads/files/clients/versions/${version}/"
+      }
+    ]
+  }
 }

@@ -4,11 +4,10 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.GPUInfo;
-import org.foxesworld.engine.game.TweakClasses;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.game.argsReader.libraries.Library;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.LibraryScanner;
+import org.foxesworld.engine.utils.TweakClasses;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
@@ -48,7 +47,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
         if(this.pathBuilders.getArgsFile() != null){
-            argsReader = new ArgsReader(this.pathBuilders.getArgsFile());
+            argsReader = new ArgsReader(this);
         }
     }
     @Override
@@ -120,7 +119,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     public void launchGame() {
-        if (isStarted()) throw new IllegalStateException("Process already started");
+        //if (isStarted()) throw new IllegalStateException("Process already started");
         executorService.submit(() -> {
             this.checkDangerousParams();
             setJreArgs();
@@ -180,7 +179,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 throw new RuntimeException(e);
             }
         });
-        setStarted(true);
+        //setStarted(true);
     }
     @Override
     protected String addTweakClass() {
@@ -225,11 +224,15 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
         this.replaceValues.put("classpath_separator", File.pathSeparator);
         this.replaceValues.put("classpath", this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath() + File.separator));
-        this.classLoader = createClassLoader(this.argsReader.getLibraryReader().getLibraryURLs());
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
     }
     public String getJreBin(){
         return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() +  File.separator +  "bin";
+    }
+
+    @Override
+    public org.foxesworld.engine.game.GameLauncher.pathBuilders getPathBuilders() {
+        return this.pathBuilders;
     }
 }

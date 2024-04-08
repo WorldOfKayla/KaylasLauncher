@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.6.2-PreCreate",
+  "launcherVersion": "1.6.3-Celestial",
   "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
@@ -34,21 +34,11 @@
     }
   ],
   "tweakClasses": [
-    {
-      "classPath": "net.minecraftforge.fml.common.launcher.FMLTweaker"
-    },
-    {
-      "classPath": "cpw.mods.fml.common.launcher.FMLTweaker"
-    },
-    {
-      "classPath": "com.mumfrey.liteloader.launch.LiteLoaderTweaker"
-    },
-    {
-      "classPath": "org.dimdev.riftloader.launch.RiftLoaderClientTweaker"
-    },
-    {
-      "classPath": "optifine.OptiFineTweaker"
-    }
+     "net.minecraftforge.fml.common.launcher.FMLTweaker",
+     "cpw.mods.fml.common.launcher.FMLTweaker",
+     "com.mumfrey.liteloader.launch.LiteLoaderTweaker",
+     "org.dimdev.riftloader.launch.RiftLoaderClientTweaker",
+     "optifine.OptiFineTweaker"
   ],
   "downloadManager": {
     "downloadThreads": 4,

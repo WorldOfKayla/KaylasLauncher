@@ -48,7 +48,7 @@ public class Core implements GameListener {
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         if(this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if(!new File(this.actionHandler.getEngine().appPath()).isDirectory()) {
-                this.actionHandler.getLauncher().restartApplication(128, this.actionHandler.getLauncher().getEngineData().getProgramRuntime()+"-x"+getCorrectOSArch());
+                this.actionHandler.getLauncher().restartApplication(512, this.actionHandler.getLauncher().getEngineData().getProgramRuntime()+"-x"+getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
                 System.exit(0);

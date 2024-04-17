@@ -5,7 +5,6 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.utils.ImageUtils;
-import org.foxesworld.engine.utils.LibraryScanner;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
@@ -13,15 +12,9 @@ import org.foxesworld.launcher.user.User;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
@@ -29,8 +22,9 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private String mainClass, tweakClassVal = "";
     public final Launcher launcher;
     private Map<String, String> replaceValues = new HashMap<>();
-    private final ClientType clientType;
+    //private final ClientType clientType;
     protected final User user;
+    private  AuthLib authLib;
 
     public GameLauncher(ActionHandler actionHandler) {
         this.launcher = actionHandler.getLauncher();
@@ -41,41 +35,16 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.logger = Engine.getLOGGER();
         this.printDebug();
         this.user = actionHandler.getLauncher().getUser();
-        this.clientType = ClientType.getType(this.gameClient.getClient());
+        this.authLib = new AuthLib(this);
+        //this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
         if(this.pathBuilders.getArgsFile() != null){
             argsReader = new ArgsReader(this);
         }
     }
-    @Override
-    @Deprecated
-    protected StringBuilder collectLibraries() {
-        AtomicInteger num = new AtomicInteger();
-        StringBuilder sb = new StringBuilder();
-        List<URL> libraryURLs = new LinkedList<>();
 
-        new LibraryScanner(this.engine).findLibraryPaths(getPathBuilders().buildLibrariesPath()).forEach(libraryPathString -> {
-            Path libraryPath = Paths.get(libraryPathString);
-            sb.append(libraryPath.toAbsolutePath()).append(File.pathSeparator);
-            if (libraryPath.toFile().isFile()) {
-                try {
-                    URL libraryURL = libraryPath.toUri().toURL();
-                    libraryURLs.add(libraryURL);
-                } catch (MalformedURLException e) {
-                    logger.error("Error creating URL for library: " + libraryPath, e);
-                }
-            }
-            num.getAndIncrement();
-        });
-        sb.append(getPathBuilders().buildMinecraftJarPath()).append(File.pathSeparator);
-        createClassLoader(libraryURLs);
-        this.logger.debug(num.get() + " libraries found");
-        return sb;
-    }
     @Override
     protected void setJreArgs() {
-        //String gpu = new GPUInfo().getPreferredGPU();
-        //logger.info("Setting " + gpu + " as preferred card");
         processArgs.add(getPathBuilders().buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
         List<String> jvmArgs = getJvmArgs();
@@ -88,6 +57,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         List<String> gameArgs = getGameArgs();
         logger.debug("GameArgs " + gameArgs.toString());
         this.addArgsToProcess(gameArgs);
+        /*
         switch (this.clientType) {
             case forgeclient:
             case fmlclient:
@@ -95,6 +65,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             case fabricclient:
                 break;
         }
+        */
         //Optional
         if (config.isFullScreen()) {
             processArgs.add("--fullscreen=true");
@@ -125,7 +96,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     tweakClassVal = addTweakClass();
                     mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
                 } else {
-                    mainClass = gameClient.getMainClass();
+                    //mainClass = gameClient.getMainClass();
                 }
 
                 if(this.argsReader.getMainClass() != null){
@@ -134,18 +105,13 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 processArgs.add(mainClass);
                 if(Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
-                    try {
-                        this.classLoader.loadClass("com.mojang.authlib.Agent");
-                    } catch (ClassNotFoundException e) {
-                        Engine.LOGGER.error(e);
-                    }
+                   authLib.loadAuthLib();
                 } else {
                     Engine.LOGGER.info("Launching without AuthLib loaded!");
                 }
                 setGameArgs();
 
                 // Log the command that will be executed
-                //logger.debug("Launch command: " + String.join(" ", processArgs));
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(getPathBuilders().buildClientDir()));
                 processBuilder.redirectErrorStream(true);
@@ -175,7 +141,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 throw new RuntimeException(e);
             }
         });
-        //setStarted(true);
     }
     @Override
     protected String addTweakClass() {
@@ -219,10 +184,8 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
         this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
         this.replaceValues.put("classpath_separator", File.pathSeparator);
-        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath()) + File.pathSeparator + this.pathBuilders.buildMinecraftJarPath();
-
+        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath()) +  this.pathBuilders.buildMinecraftJarPath();
         this.replaceValues.put("classpath",cp);
-        System.out.println(cp);
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
     }

@@ -6,10 +6,14 @@ import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.launcher.news.provider.NewsAttributes;
 import org.foxesworld.launcher.news.provider.NewsProvider;
 import org.foxesworld.engine.utils.ImageUtils;
+import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -132,19 +136,15 @@ public class NewsPanel extends JPanel {
     }
 
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
-        try {
-            ImageIcon imageIcon = new ImageIcon(new URL(newsAttributes.getOriginalPhotoUrls().get(0)));
-            Image image = ImageUtils.getScaledImage(getRoundedImage(imageIcon.getImage(), 25), 470, 350);
-            ImageIcon fullSizeIcon = new ImageIcon(image);
-            JLabel photoLabel = new JLabel(fullSizeIcon);
-            photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            photoLabel.setBorder(new EmptyBorder(5, 5, 5, 50));
-            newsPanel.add(photoLabel);
-            newsPanel.setBackground(hexToColor("#0707079e"));
-            newsPanel.setOpaque(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage img = (BufferedImage) ImageUtils.getRoundedImage(ImageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", ImageUtils.getLocalImage("")), 25);
+        Image image = ImageUtils.getScaledImage(img, 470, 350);
+        ImageIcon fullSizeIcon = new ImageIcon(image);
+        JLabel photoLabel = new JLabel(fullSizeIcon);
+        photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        photoLabel.setBorder(new EmptyBorder(5, 5, 5, 50));
+        newsPanel.add(photoLabel);
+        newsPanel.setBackground(hexToColor("#0707079e"));
+        newsPanel.setOpaque(true);
     }
 
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
@@ -200,6 +200,7 @@ public class NewsPanel extends JPanel {
             adj.setValue(adj.getValue() + scrollAmount);
         });
     }
+
 
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);

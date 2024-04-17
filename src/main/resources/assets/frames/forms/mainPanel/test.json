@@ -1,5 +1,5 @@
 {
-  "groups":{
+  "panels":{
     "test":{
       "panelOptions": {
         "opaque":true,
@@ -11,7 +11,7 @@
       },
       "childComponents":[
         {
-          "groups":{
+          "panels":{
             "testPane":{
               "panelOptions":{
                 "opaque":true,
@@ -46,7 +46,7 @@
           "bounds": "45,20,256,64"
         },
         {
-          "groups": {
+          "panels": {
             "userInfoTable": {
               "panelOptions": {
                 "opaque": true,

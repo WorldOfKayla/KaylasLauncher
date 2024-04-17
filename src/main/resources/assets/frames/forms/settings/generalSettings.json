@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "panels": {
     "generalSettings": {
       "panelOptions": {
         "opaque": false,
@@ -21,7 +21,7 @@
           "bounds": "5,20,180,60"
         },
         {
-          "groups": {
+          "panels": {
             "settingsFields": {
               "panelOptions": {
                 "opaque": true,
@@ -42,7 +42,7 @@
                   "enabled": true,
                   "keyCode": "F",
                   "fontSize": 12,
-                  "imageIcon": "assets/ui/icons/folder.png",
+                  "imageIcon": "assets/ui/icons/files/folder.png",
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "componentStyle": "btnSmallClean",

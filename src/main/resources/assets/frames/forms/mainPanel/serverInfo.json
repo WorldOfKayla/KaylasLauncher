@@ -1,5 +1,5 @@
 {
-  "groups":{
+  "panels":{
     "serverInfo": {
       "panelOptions": {
         "visible": false,
@@ -24,7 +24,7 @@
           "bounds": "10,75,470,260"
         },
         {
-          "groups": {
+          "panels": {
             "serverDesc": {
               "panelOptions": {
                 "visible": true,

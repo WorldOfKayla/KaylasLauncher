@@ -158,5 +158,4 @@ public class Config extends org.foxesworld.engine.config.Config {
         return height;
     }
 
-
 }

@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "panels": {
     "userPane": {
       "panelOptions": {
         "opaque": false,
@@ -48,7 +48,7 @@
           "bounds": "80,45,60,34"
         },
         {
-          "groups": {
+          "panels": {
             "userDataForm": {
               "panelOptions": {
                 "opaque": false,

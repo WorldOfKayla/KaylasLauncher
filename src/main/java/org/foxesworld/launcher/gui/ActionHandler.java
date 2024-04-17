@@ -44,6 +44,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    System.out.println(this.engine.getPanelVisibility().getActivePanels());
                     if (!launcher.getAuth().isAuthorised()) {
                         engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
                     } else {

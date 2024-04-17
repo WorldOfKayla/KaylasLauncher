@@ -1,16 +1,21 @@
 package org.foxesworld.launcher.server;
 
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.security.MessageDigest;
 
 public class ServerInfoDisplayer implements DropBoxListener {
-
     private final User user;
     private final JPanel newsPanel;
     private final GuiBuilder guiBuilder;
@@ -43,18 +48,17 @@ public class ServerInfoDisplayer implements DropBoxListener {
     }
 
     private void displayServerInfo(int index){
-        BufferedImage serverImg = ImageUtils.getLocalImage("assets/ui/img/noimg.jpg");
+        BufferedImage serverImg;//ImageUtils.getLocalImage(SERVER_IMG);
         newsPanel.removeAll();
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         guiBuilder.setLabelText("serverTitle", thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-        if( thisServer.getServerImage() != null) {
-            serverImg = ImageUtils.loadImageFromUrl(user.getAuth().getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage());
-        }
+        serverImg = ImageUtils.getCachedUrlImg(user.getAuth().getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage(), "serverImg", ImageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
         guiBuilder.setLabelIcon("serverImg", new ImageIcon(
                 ImageUtils.getRoundedImage(ImageUtils.getScaledImage(serverImg, 470, 260), 25)));
         guiBuilder.setLabelText("serverDescLabel", thisServer.getServerDescription(), true);
         newsPanel.repaint();
     }
+
 }

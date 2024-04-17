@@ -31,7 +31,6 @@ public class Core implements GameListener {
         FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
         fileLoader.setLoaderListener(fileLoaderImpl);
-		//fileLoader.setReplaceMask("/uploads/files/clients/");
         Thread downloadThread = new Thread(fileLoader::getFilesToDownload);
         downloadThread.start();
     }
@@ -57,7 +56,6 @@ public class Core implements GameListener {
             System.exit(0);
         }
     }
-
     public static int getCorrectOSArch() {
         if (OS_TYPE == JVMHelper.OS.WIN) {
             return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;
@@ -83,6 +81,10 @@ public class Core implements GameListener {
 
     public FileGuard getFileGuard() {
         return fileGuard;
+    }
+
+    public Launcher getLauncher() {
+        return launcher;
     }
 
     public void setGameLauncher(GameLauncher gameLauncher) {

@@ -10,7 +10,7 @@
   "height": 500,
   "resizable": false,
   "undecorated": true,
-  "groups": {
+  "panels": {
     "titleBar": {
       "panelOptions": {
         "opaque": true,

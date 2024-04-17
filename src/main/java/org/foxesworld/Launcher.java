@@ -3,6 +3,7 @@ package org.foxesworld;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.FileProperties;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.discord.Discord;
@@ -17,7 +18,7 @@ import org.foxesworld.engine.utils.LoadingManager;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.news.News;
-import org.foxesworld.engine.utils.md5Func;
+import org.foxesworld.engine.utils.HashUtils;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.user.User;
@@ -111,7 +112,7 @@ public class Launcher extends Engine implements AuthListener {
     private boolean isLauncherValid(Engine engine) {
         Map<String, String> launcherRequest = new HashMap<>();
         launcherRequest.put("sysRequest", "downloadLatest");
-        String selfMd5 = md5Func.md5(this.appPath());
+        String selfMd5 = HashUtils.md5(this.appPath());
         LauncherAttributes launcherAttributes = new Gson().fromJson(engine.getPOSTrequest().send(launcherRequest), LauncherAttributes.class);
         if (!selfMd5.equals("IDE")) {
             return Objects.equals(selfMd5, launcherAttributes.getFileMd5());

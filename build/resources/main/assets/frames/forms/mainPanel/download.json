@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "panels": {
     "download": {
       "panelOptions": {
         "opaque": false,
@@ -24,7 +24,7 @@
           "bounds": "15,10,170,40"
         },
         {
-          "groups": {
+          "panels": {
             "downloadInfo": {
               "panelOptions": {
                 "opaque": true,
@@ -40,8 +40,8 @@
                   "color": "#636c73bf",
                   "componentStyle": "title",
                   "imageIcon": "assets/ui/icons/file.png",
-                  "iconWidth": 32,
-                  "iconHeight": 32,
+                  "iconWidth": 36,
+                  "iconHeight": 36,
                   "componentId": "downloadFile",
                   "localeKey": "download.file",
                   "bounds": "20,10,600,40"
@@ -51,9 +51,9 @@
                   "fontSize": 14,
                   "color": "#636c73bf",
                   "componentStyle": "title",
-                  "imageIcon": "assets/ui/icons/folder.png",
-                  "iconWidth": 32,
-                  "iconHeight": 32,
+                  "imageIcon": "assets/ui/icons/files/folder.png",
+                  "iconWidth": 36,
+                  "iconHeight": 36,
                   "componentId": "downloadDirectory",
                   "localeKey": "download.directory",
                   "bounds": "20,50,600,40"

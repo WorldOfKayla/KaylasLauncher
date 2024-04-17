@@ -4,6 +4,7 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.checkbox.CheckBoxListener;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
@@ -43,6 +44,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                     }
                 } if(component instanceof DropBox){
                     this.launcher.getConfig().setConfigValue(component.getName(), ((DropBox) component).getValue());
+                    ((DropBox) component).setPoint(ImageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
                 }
             } catch (NoSuchFieldException ignored) {
             }

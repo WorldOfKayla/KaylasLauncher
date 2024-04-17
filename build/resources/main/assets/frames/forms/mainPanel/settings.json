@@ -1,5 +1,5 @@
 {
-  "groups": {
+  "panels": {
     "settings": {
       "panelOptions": {
         "opaque": true,
@@ -11,7 +11,7 @@
       },
       "childComponents": [
         {
-          "groups": {
+          "panels": {
             "settingsPane": {
               "panelOptions": {
                 "opaque": true,
@@ -38,7 +38,7 @@
           "readFrom": "assets/frames/forms/settings/generalSettings.json"
         },
         {
-          "groups": {
+          "panels": {
             "generalInfo": {
               "panelOptions": {
                 "opaque": false,

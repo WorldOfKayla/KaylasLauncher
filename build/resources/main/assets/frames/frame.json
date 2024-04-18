@@ -27,6 +27,7 @@
           "fontSize": 15,
           "localeKey": "general.appTitle",
           "componentId": "appLogo",
+          "color": "#f78600",
           "imageIcon": "assets/ui/icons/logo.png",
           "iconWidth": 47,
           "iconHeight": 42,
@@ -45,11 +46,11 @@
           "componentType": "label",
           "fontSize": 8,
           "componentStyle": "title",
-          "localeKey": "-",
+          "localeKey": "",
           "initialValue": "version",
           "color":  "#17cc30e0",
           "componentId": "appVersion",
-          "bounds": "180,-19,250,50"
+          "bounds": "187,-20,250,50"
         },
         {
           "componentType": "multiButton",

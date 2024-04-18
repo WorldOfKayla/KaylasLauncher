@@ -48,8 +48,7 @@ repositories {
 }
 
 dependencies {
-    //implementation group: 'me.tongfei', name: 'progressbar', version: '0.9.2'
-    implementation files('lib/foxesworld/fox-engine-1.5.5-BETA-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.6.2-BETA-all.jar')
 }
 
 jar {

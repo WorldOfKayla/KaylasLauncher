@@ -24,7 +24,6 @@ public class Auth {
     private final Map<String, String> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
-    private Map<String, String> inputData = new HashMap<>();
     private boolean authorised = false;
 
     public Auth(Launcher launcher) {
@@ -72,6 +71,7 @@ public class Auth {
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("units", authResponse.getUnits());
+        this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
         if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
@@ -92,7 +92,6 @@ public class Auth {
                 .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
                 .toArray(String[]::new);
     }
-
     public void logOut() {
         Engine.getLOGGER().info("Logging out...");
         setAuthorised(false);
@@ -103,14 +102,12 @@ public class Auth {
         });
         engine.init();
     }
-
     static class FormAuth extends ComponentsAccessor {
 
         public FormAuth(Auth auth) {
             super(auth.getEngine().getGuiBuilder(), "authForm");
         }
     }
-
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
         launcher.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));

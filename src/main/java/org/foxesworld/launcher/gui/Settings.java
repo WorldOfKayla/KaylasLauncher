@@ -29,7 +29,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         this.launcher.getLANG().setLocaleIndex(this.launcher.getConfig().getLang());
     }
 
-    public void applySettings(){
+    public void applySettings() {
         for (JComponent component : this.getComponentList()) {
             Class<Config> clazz = Config.class;
             try {
@@ -42,7 +42,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                     if (component instanceof JSlider) {
                         this.launcher.getConfig().setConfigValue(component.getName(), ((JSlider) component).getValue());
                     }
-                } if(component instanceof DropBox){
+                }
+                if (component instanceof DropBox) {
                     this.launcher.getConfig().setConfigValue(component.getName(), ((DropBox) component).getValue());
                     ((DropBox) component).setPoint(ImageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
                 }
@@ -55,26 +56,26 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         this.launcher = new Launcher();
     }
 
-    public void addListeners(){
+    public void addListeners() {
         for (JComponent component : launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
 
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
             }
 
-            if(component instanceof DropBox) {
+            if (component instanceof DropBox) {
                 ((DropBox) component).setValues(launcher.getLANG().getLocalesSet());
                 ((DropBox) component).setSelectedIndex(launcher.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
             }
 
-            if(component instanceof TextField) {
-                if(!component.isEnabled()) {
+            if (component instanceof TextField) {
+                if (!component.isEnabled()) {
                     ((TextField) component).setTextFieldListener(this);
                 }
             }
 
-            if(component instanceof Checkbox) {
+            if (component instanceof Checkbox) {
                 ((Checkbox) component).setCheckBoxListener(this);
             }
         }
@@ -87,18 +88,20 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         } catch (IOException | URISyntaxException ignored) {
         }
     }
+
     @Override
     public void onSliderChange(Slider slider) {
         SwingUtilities.invokeLater(() -> {
             int value = slider.getValue();
             switch (slider.getName()) {
                 case "volume" -> {
-                        launcher.getConfig().setVolume(value);
-                        launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                        ((TextField) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
+                    launcher.getConfig().setVolume(value);
+                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
+                    ((TextField) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
                 }
 
-                case "ramAmount" -> ((TextField) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
+                case "ramAmount" ->
+                        ((TextField) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
             }
         });
 
@@ -127,9 +130,9 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onTextChange(TextField textfield) {
-        if(!textfield.getText().equals("")) {
+        if (!textfield.getText().equals("")) {
             Slider slider = (Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""));
-            if(slider != null) {
+            if (slider != null) {
                 slider.setValue(Integer.parseInt(textfield.getText()));
             }
         }
@@ -137,7 +140,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        this.launcher.getGuiBuilder().setLabelText("settingsInfo", this.launcher.getEngine().getLANG().getString("settings."+jCheckBox.getName()+"-desc"), true);
+        JLabel infoLabel = (JLabel) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
+        infoLabel.setText("<html>" + this.launcher.getEngine().getLANG().getString("settings." + jCheckBox.getName() + "-desc") + "</html>");
     }
 
     @Override

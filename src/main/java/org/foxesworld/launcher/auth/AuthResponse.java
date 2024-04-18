@@ -2,6 +2,7 @@ package org.foxesworld.launcher.auth;
 
 class AuthResponse {
     private String message,units,uuid,token,type,login;
+    private int group;
 
     public String getMessage() {
         return message;
@@ -25,5 +26,9 @@ class AuthResponse {
 
     public String getLogin() {
         return login;
+    }
+
+    public int getGroup() {
+        return group;
     }
 }

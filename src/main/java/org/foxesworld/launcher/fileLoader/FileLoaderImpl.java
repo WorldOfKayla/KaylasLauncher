@@ -6,7 +6,7 @@ import org.foxesworld.engine.fileLoader.FileAttributes;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
@@ -25,11 +25,9 @@ import java.util.regex.Pattern;
 
 public class FileLoaderImpl implements FileLoaderListener {
     private final Core core;
-    private final GuiBuilder guiBuilder;
 
     public FileLoaderImpl(Core core) {
         this.core = core;
-        this.guiBuilder = core.getActionHandler().getEngine().getGuiBuilder();
     }
 
     private final Map<String, String> replaceMasks = new HashMap<>();
@@ -124,10 +122,11 @@ public class FileLoaderImpl implements FileLoaderListener {
 
     @Override
     public void onNewFileFound(FileAttributes file, String localPath, final long totalSizeFinal) {
+        ComponentsAccessor componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
         String fullPath = core.getFileLoader().getHomeDir() + localPath;
         Label downloadFile, downloadDirectory;
-        downloadFile = (Label) guiBuilder.getComponentById("downloadFile");
-        downloadDirectory = (Label) guiBuilder.getComponentById("downloadDirectory");
+        downloadFile = (Label) componentsAccessor.getComponentMap().get("downloadFile");
+        downloadDirectory = (Label) componentsAccessor.getComponentMap().get("downloadDirectory");
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
         setFileIcon(localPath, downloadFile);

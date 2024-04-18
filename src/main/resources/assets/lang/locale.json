@@ -1,8 +1,8 @@
 {
     "general": {
       "appTitle": {
-        "en_US": "FoxesWorld",
-        "ru_RU": "ЛисийМир"
+        "en_US": "<b>FoxesWorld</b>",
+        "ru_RU": "<b>ЛисийМир</b>"
       },
       "status": {
         "en_US": "Alpha",
@@ -19,8 +19,8 @@
         "ru_RU": "Назад"
       },
       "baseOptions": {
-        "en_US": "Base Options",
-        "ru_RU": "Общие параметры"
+        "en_US": "<b>Base Options</b>",
+        "ru_RU": "<b>Общие параметры</b>"
       },
       "autoEnter": {
         "en_US": "Auto enter a selected server",
@@ -75,24 +75,24 @@
         "ru_RU": "Применить настройки"
       },
       "ramField": {
-        "en_US": "RAM amount (Mb)",
-        "ru_RU": "Выделение оперативной памяти (Mb)"
+        "en_US": "<b>RAM amount (Mb)</b>",
+        "ru_RU": "<b>Выделение оперативной памяти (Mb)</b>"
       },
       "ramPlaceholder": {
         "en_US": "RAM",
         "ru_RU": "ОЗУ"
       },
       "soundVolume": {
-        "en_US": "Sound volume",
-        "ru_RU": "Громкость звуков"
+        "en_US": "<b>Sound volume</b>",
+        "ru_RU": "<b>Громкость звуков</b>"
       },
       "langBox": {
-        "en_US": "Language",
-        "ru_RU": "Язык"
+        "en_US": "<b>Language</b>",
+        "ru_RU": "<b>Язык</b>"
       },
       "info": {
-        "en_US": "Settings information",
-        "ru_RU": "Информация о настройках"
+        "en_US": "<b>Settings information</b>",
+        "ru_RU": "<b>Информация о настройках</b>"
       },
       "homeDir": {
         "en_US": "Game Dir",

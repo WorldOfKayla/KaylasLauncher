@@ -2,9 +2,9 @@ package org.foxesworld.launcher.user;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
-import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
@@ -15,9 +15,6 @@ import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,6 +28,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final GuiBuilder guiBuilder;
     @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
+    private final ComponentsAccessor componentsAccessor;
     private JPanel newsPanel;
 
     public User(Launcher launcher) {
@@ -39,10 +37,10 @@ public class User extends org.foxesworld.engine.user.User {
         this.serverInfo = auth.getEngine().getServerInfo();
         this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
         DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
-
         this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
         this.guiBuilder = this.auth.getLauncher().getGuiBuilder();
+        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane");
 
         if (launcher.getAuth().isAuthorised()) {
             setUserSpace();
@@ -63,30 +61,19 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        Map<String, Label> userLabels = getLabelsMap(Arrays.asList("userHead", "userGroup"));
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
                 Field field = User.class.getDeclaredField(credentials.getKey());
                 field.set(this, credentials.getValue());
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {
-            }
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {}
         }
-        guiBuilder.setLabelIcon("userHead", new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())), 15)));
-        userLabels.get("userGroup").setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
+        ImageIcon icon = new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())), 25));
+        ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
+        ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
-
-    private Map<String, Label> getLabelsMap(List<String> labelIds) {
-        Map<String, Label> labelsMap = new HashMap<>();
-        for (String labelId : labelIds) {
-            labelsMap.put(labelId, (Label) this.auth.getEngine().getGuiBuilder().getComponentById(labelId));
-        }
-        return labelsMap;
-    }
-
     public String getLogin() {
         return login;
     }
-
     @SuppressWarnings("unused")
     public String getPassword() {
         return password;

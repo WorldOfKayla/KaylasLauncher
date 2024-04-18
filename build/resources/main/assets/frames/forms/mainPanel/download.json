@@ -43,7 +43,6 @@
                   "iconWidth": 36,
                   "iconHeight": 36,
                   "componentId": "downloadFile",
-                  "localeKey": "download.file",
                   "bounds": "20,10,600,40"
                 },
                 {
@@ -55,7 +54,6 @@
                   "iconWidth": 36,
                   "iconHeight": 36,
                   "componentId": "downloadDirectory",
-                  "localeKey": "download.directory",
                   "bounds": "20,50,600,40"
                 }
               ]

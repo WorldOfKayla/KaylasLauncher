@@ -26,7 +26,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
     private final User user;
     private final JPanel newsPanel;
     private final GuiBuilder guiBuilder;
-    private ComponentsAccessor componentsAccessor;
+    private final ComponentsAccessor componentsAccessor;
     public ServerInfoDisplayer(User user){
         this.user = user;
         this.newsPanel = user.getNewsPanel();
@@ -57,7 +57,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
     }
 
     private void displayServerInfo(int index){
-        BufferedImage serverImg;//ImageUtils.getLocalImage(SERVER_IMG);
+        BufferedImage serverImg;
         newsPanel.removeAll();
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
@@ -88,9 +88,6 @@ public class ServerInfoDisplayer implements DropBoxListener {
                 String modDesc = jsonObject.get("modDesc").getAsString();
 
                 System.out.println("Mod Name: " + modName);
-                //System.out.println("Mod Picture: " + modPicture);
-                //System.out.println("Mod Description: " + modDesc);
-                //System.out.println();
             }
         }
     }

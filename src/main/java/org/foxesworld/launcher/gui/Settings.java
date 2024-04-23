@@ -22,11 +22,13 @@ import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener {
     private Launcher launcher;
+    private final ComponentsAccessor componentsAccessor;
 
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), "settingsFields");
         this.launcher = launcher;
         this.launcher.getLANG().setLocaleIndex(this.launcher.getConfig().getLang());
+        this.componentsAccessor = new ComponentsAccessor(launcher.getGuiBuilder(), "settingsFields");
     }
 
     public void applySettings() {
@@ -96,12 +98,13 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
             switch (slider.getName()) {
                 case "volume" -> {
                     launcher.getConfig().setVolume(value);
+                    launcher.getEngine().getConfig().getCONFIG().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                    ((TextField) launcher.getGuiBuilder().getComponentById("volumeText")).setText(String.valueOf(value));
+                    ((TextField) componentsAccessor.getComponent("volumeText")).setText(String.valueOf(value));
                 }
 
                 case "ramAmount" ->
-                        ((TextField) launcher.getGuiBuilder().getComponentById("ramAmountText")).setText(String.valueOf(value));
+                        ((TextField) componentsAccessor.getComponent("ramAmountText")).setText(String.valueOf(value));
             }
         });
 
@@ -141,6 +144,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onHover(JCheckBox jCheckBox) {
         JLabel infoLabel = (JLabel) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
+        //TODO
+        // We should add al inner panels to mainPanel
         infoLabel.setText("<html>" + this.launcher.getEngine().getLANG().getString("settings." + jCheckBox.getName() + "-desc") + "</html>");
     }
 

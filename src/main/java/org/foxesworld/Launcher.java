@@ -3,7 +3,6 @@ package org.foxesworld;
 import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.FileProperties;
-import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.discord.Discord;

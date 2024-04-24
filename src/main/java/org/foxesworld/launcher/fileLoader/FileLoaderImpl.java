@@ -3,11 +3,13 @@ package org.foxesworld.launcher.fileLoader;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.EngineData;
 import org.foxesworld.engine.fileLoader.FileAttributes;
+import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
@@ -25,9 +27,13 @@ import java.util.regex.Pattern;
 
 public class FileLoaderImpl implements FileLoaderListener {
     private final Core core;
+    private final  ComponentsAccessor componentsAccessor;
+    private final DownloadUtils downloadUtils;
 
     public FileLoaderImpl(Core core) {
         this.core = core;
+        this.downloadUtils = core.getFileLoader().getDownloadUtils();
+        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download");
     }
 
     private final Map<String, String> replaceMasks = new HashMap<>();
@@ -35,6 +41,8 @@ public class FileLoaderImpl implements FileLoaderListener {
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
+        downloadUtils.setProgressBar((JProgressBar) componentsAccessor.getComponent("progressBar"));
+        downloadUtils.setProgressLabel((JLabel) componentsAccessor.getComponent("progressLabel"));
         core.setGameLauncher(new GameLauncher(core.getActionHandler()));
         core.getGameLauncher().setGameListener(core);
         if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
@@ -59,7 +67,7 @@ public class FileLoaderImpl implements FileLoaderListener {
 
     //Will merge to original
     private String replaceVariableValue(String variableName, String originalValue, String newValue) {
-        Pattern pattern = Pattern.compile("\\$\\{" + variableName + "\\}");
+        Pattern pattern = Pattern.compile("\\$\\{" + variableName + "}");
         Matcher matcher = pattern.matcher(originalValue);
         return matcher.replaceAll(newValue);
     }
@@ -121,35 +129,26 @@ public class FileLoaderImpl implements FileLoaderListener {
     }
 
     @Override
-    public void onNewFileFound(FileAttributes file, String localPath, final long totalSizeFinal) {
+    public void onNewFileFound(FileLoader fileLoader) {
+        FileAttributes currentFile = fileLoader.getCurrentFile();
         ComponentsAccessor componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
+        String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
         String fullPath = core.getFileLoader().getHomeDir() + localPath;
         Label downloadFile, downloadDirectory;
         downloadFile = (Label) componentsAccessor.getComponentMap().get("downloadFile");
         downloadDirectory = (Label) componentsAccessor.getComponentMap().get("downloadDirectory");
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
-        setFileIcon(localPath, downloadFile);
+        downloadFile.setIcon(new ImageIcon(
+                ImageUtils.getScaledImage(
+                        ImageUtils.getLocalImage("assets/ui/icons/files/"+ core.getFileLoader().getFileType() +".png"), 36, 38)));
 
-        if (core.getFileLoader().isInvalidFile(new File(fullPath), file.getHash(), file.getSize())) {
-            core.getFileLoader().getDownloadUtils().downloader(file.getFilename().replace(" ", "%20"), fullPath, totalSizeFinal);
+        if (core.getFileLoader().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
+            core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, fileLoader.getTotalSize());
         }
 
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
-        }
-    }
-
-    @Deprecated
-    private void setFileIcon(String filePath, Label label){
-        if(filePath.endsWith(".jar")){
-            label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage("assets/ui/icons/files/jar.png"), 36, 36)));
-        } else if(filePath.endsWith(".json")) {
-            label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage("assets/ui/icons/files/json.png"), 36, 36)));
-        } else if(filePath.endsWith(".zip")) {
-            label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage("assets/ui/icons/files/zip.png"), 36, 36)));
-        } else {
-            label.setIcon(new ImageIcon(ImageUtils.getScaledImage(ImageUtils.getLocalImage("assets/ui/icons/files/file.png"), 36, 36)));
         }
     }
 }

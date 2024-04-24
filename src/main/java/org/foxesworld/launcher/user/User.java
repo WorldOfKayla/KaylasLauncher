@@ -13,6 +13,7 @@ import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class User extends org.foxesworld.engine.user.User {
                 field.set(this, credentials.getValue());
             } catch (NoSuchFieldException | IllegalAccessException ignored) {}
         }
-        ImageIcon icon = new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())), 25));
+        ImageIcon icon = new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())));
         ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
         ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }

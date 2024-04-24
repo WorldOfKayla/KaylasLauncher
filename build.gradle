@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.6.3-DEV-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.6.4-TRETA-all.jar')
 }
 
 jar {

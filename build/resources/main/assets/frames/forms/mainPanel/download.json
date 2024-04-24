@@ -21,7 +21,7 @@
           "componentStyle": "title",
           "color": "#2f3533",
           "componentId": "progressLabel",
-          "bounds": "15,10,170,40"
+          "bounds": "15,10,250,40"
         },
         {
           "panels": {

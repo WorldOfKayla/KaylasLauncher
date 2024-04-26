@@ -1,0 +1,1 @@
+# Foxes Launcher ![Java Badge](https://img.shields.io/static/v1?label=Powered%20by&message=Java%2017&color=darkorange&style=for-the-badge) <img src="https://img.shields.io/badge/version-1.7.4--TETRA-yellow" alt="version - 1.1.3">

@@ -15,6 +15,18 @@
     "localeFile": "/assets/lang/locale.json",
     "soundsFile": "assets/sounds/sounds.json"
   },
+  "loadManager": [
+    {
+	  "path": "assets/ui/sprites/loaderGrid.png",
+	  "rows": 3,
+	  "cols": 5,
+	  "delay": 50,
+	  "x": 30,
+	  "y": 30,
+	  "width": 64,
+	  "height": 64
+  }
+  ],
   "requestProperties": [
     {
       "propertyKey": "User-Agent",

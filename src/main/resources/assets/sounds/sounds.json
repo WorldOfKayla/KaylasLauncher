@@ -17,9 +17,7 @@
     },
     "hover": {
       "sounds": [
-        "assets/sounds/button/hover/hover0.ogg",
-        "assets/sounds/button/hover/hover1.ogg",
-        "assets/sounds/button/hover/hover2.ogg"
+        "assets/sounds/button/buttonHover.ogg"
       ]
     },
     "close": {

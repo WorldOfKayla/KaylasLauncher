@@ -7,7 +7,12 @@
       "componentId":"autoEnter",
       "localeKey":"settings.autoEnter",
       "initialValue":"config#autoEnter",
-      "bounds":"30,40,240,32"
+      "bounds": {
+        "x": 30,
+        "y": 40,
+        "width": 240,
+        "height": 32
+      }
     },
     {
       "componentType":"checkBox",
@@ -16,7 +21,12 @@
       "componentId":"fullScreen",
       "localeKey":"settings.fullScreen",
       "initialValue":"config#fullScreen",
-      "bounds":"30,60,240,32"
+      "bounds": {
+        "x": 30,
+        "y": 60,
+        "width": 240,
+        "height": 32
+      }
     },
     {
       "componentType":"checkBox",
@@ -25,7 +35,12 @@
       "componentId":"loadNews",
       "localeKey":"settings.loadNews",
       "initialValue":"config#loadNews",
-      "bounds":"30,80,240,32"
+      "bounds": {
+        "x": 30,
+        "y": 80,
+        "width": 240,
+        "height": 32
+      }
     },
     {
       "componentType":"checkBox",
@@ -34,7 +49,12 @@
       "componentId":"enableSound",
       "localeKey":"settings.enableSound",
       "initialValue":"config#enableSound",
-      "bounds":"30,100,240,30"
+      "bounds": {
+        "x": 30,
+        "y": 100,
+        "width": 240,
+        "height": 32
+      }
     },
     {
       "componentType":"checkBox",
@@ -43,7 +63,12 @@
       "componentId":"backgroundMusic",
       "localeKey":"settings.backgroundMusic",
       "initialValue":"config#backgroundMusic",
-      "bounds":"30,120,240,30"
+      "bounds": {
+        "x": 30,
+        "y": 120,
+        "width": 240,
+        "height": 32
+      }
     },
     {
       "componentType":"checkBox",
@@ -52,7 +77,12 @@
       "componentId":"launchAC",
       "localeKey":"settings.launchAC",
       "initialValue":"config#launchAC",
-      "bounds":"30,140,300,30"
+      "bounds": {
+        "x": 30,
+        "y": 140,
+        "width": 320,
+        "height": 32
+      }
     }
   ]
 }

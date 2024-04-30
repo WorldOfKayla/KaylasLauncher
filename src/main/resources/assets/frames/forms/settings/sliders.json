@@ -5,7 +5,12 @@
     "componentStyle": "promptLabel",
     "localeKey": "settings.ramField",
     "componentId": "ramField",
-    "bounds": "40,205,250,50"
+    "bounds": {
+      "x": 40,
+      "y": 205,
+      "width": 250,
+      "height": 50
+    }
   },
   {
     "componentType": "slider",
@@ -18,7 +23,12 @@
     "majorSpacing": 1024,
     "initialValue": "config#ramAmount",
     "componentId": "ramAmount",
-    "bounds": "40,225,300,60"
+    "bounds": {
+      "x": 40,
+      "y": 225,
+      "width": 300,
+      "height": 60
+    }
   },
   {
     "componentType": "textField",
@@ -26,7 +36,12 @@
     "componentStyle": "inputBox",
     "initialValue": "config#ramAmount",
     "componentId": "ramAmountText",
-    "bounds": "345,230,20,17"
+    "bounds": {
+      "x": 345,
+      "y": 230,
+      "width": 50,
+      "height": 25
+    }
   },
   {
     "componentType": "label",
@@ -34,7 +49,12 @@
     "componentStyle": "promptLabel",
     "localeKey": "settings.soundVolume",
     "componentId": "soundVolume",
-    "bounds": "40,150,250,50"
+    "bounds": {
+      "x": 40,
+      "y": 150,
+      "width": 250,
+      "height": 50
+    }
   },
   {
     "componentType": "slider",
@@ -46,7 +66,12 @@
     "componentStyle": "slidingOut",
     "componentId": "volume",
     "initialValue": "config#volume",
-    "bounds": "40,170,300,60"
+    "bounds": {
+      "x": 40,
+      "y": 170,
+      "width": 300,
+      "height": 60
+    }
   },
   {
     "componentType": "textField",
@@ -54,6 +79,11 @@
     "componentStyle": "inputBox",
     "initialValue": "config#volume",
     "componentId": "volumeText",
-    "bounds": "345,180,20,17"
+    "bounds": {
+      "x": 345,
+      "y": 180,
+      "width": 50,
+      "height": 25
+    }
   }
 ]}

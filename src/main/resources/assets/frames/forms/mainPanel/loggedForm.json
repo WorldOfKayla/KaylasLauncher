@@ -7,21 +7,36 @@
         "visible": false,
         "doubleBuffered": false,
         "background": "",
-        "bounds": "0,0,350,500"
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 350,
+          "height": 500
+        }
       },
       "childComponents": [
         {
           "componentType": "dropBox",
           "componentStyle": "selectable",
           "componentId": "serverBox",
-          "bounds": "35,215,273,25"
+          "bounds": {
+            "x": 35,
+            "y": 215,
+            "width": 273,
+            "height": 25
+          }
         },
         {
           "componentType": "serverBox",
           "componentStyle": "srvStatus",
           "color": "#ffffff",
           "componentId": "serverStatusBox",
-          "bounds": "40,320,245,34"
+          "bounds": {
+            "x": 40,
+            "y": 320,
+            "width": 245,
+            "height": 34
+          }
         },
         {
           "componentType": "button",
@@ -31,7 +46,12 @@
           "iconWidth": 25,
           "iconHeight": 25,
           "componentId": "info-small",
-          "bounds": "230,435,55,50"
+          "bounds": {
+            "x": 230,
+            "y": 435,
+            "width": 55,
+            "height": 50
+          }
         },
         {
           "componentType": "button",
@@ -41,7 +61,12 @@
           "iconWidth": 25,
           "iconHeight": 25,
           "componentId": "settings-small",
-          "bounds": "290,435,55,50"
+          "bounds": {
+            "x": 290,
+            "y": 435,
+            "width": 55,
+            "height": 50
+          }
         },
         {
           "componentType": "button",
@@ -50,7 +75,12 @@
           "componentStyle": "buttonMain",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
-          "bounds": "40,260,120,47"
+          "bounds": {
+            "x": 40,
+            "y": 260,
+            "width": 120,
+            "height": 47
+          }
         },
         {
           "componentType": "button",
@@ -59,7 +89,12 @@
           "componentStyle": "buttonMain",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
-          "bounds": "165,260,120,47"
+          "bounds": {
+            "x": 165,
+            "y": 260,
+            "width": 120,
+            "height": 47
+          }
         },
         {
           "readFrom": "assets/frames/forms/user/userPane.json"

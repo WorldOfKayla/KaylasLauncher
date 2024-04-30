@@ -6,7 +6,12 @@
         "visible": true,
         "background": "#7e696900",
         "backgroundImage": "assets/ui/img/pane.png",
-        "bounds": "0,30,350,85"
+        "bounds": {
+          "x": 0,
+          "y": 30,
+          "width": 350,
+          "height": 85
+        }
       },
       "childComponents": [
         {
@@ -16,7 +21,12 @@
           "localeKey": "",
           "componentId": "userLogin",
           "initialValue": "user#login",
-          "bounds": "75,-5,250,50"
+          "bounds": {
+            "x": 75,
+            "y": -5,
+            "width": 250,
+            "height": 50
+          }
         },
         {
           "componentType": "label",
@@ -26,7 +36,12 @@
           "localeKey": "",
           "componentId": "userGroup",
           "initialValue": "user#group",
-          "bounds": "80,10,250,50"
+          "bounds": {
+            "x": 80,
+            "y": 10,
+            "width": 250,
+            "height": 50
+          }
         },
         {
           "componentType": "label",
@@ -36,7 +51,12 @@
           "iconWidth": 64,
           "iconHeight": 64,
           "componentId": "userHead",
-          "bounds": "5,10,64,64"
+          "bounds": {
+            "x": 5,
+            "y": 10,
+            "width": 64,
+            "height": 64
+          }
         },
         {
           "componentType": "button",
@@ -45,7 +65,12 @@
           "componentStyle": "btnSmallClean",
           "componentId": "smallButton",
           "localeKey": "TEST",
-          "bounds": "80,45,60,34"
+          "bounds": {
+            "x": 80,
+            "y": 45,
+            "width": 60,
+            "height": 34
+          }
         },
         {
           "panels": {
@@ -53,7 +78,12 @@
               "panelOptions": {
                 "opaque": false,
                 "visible": true,
-                "bounds": "190,0,160,75"
+                "bounds": {
+                  "x": 190,
+                  "y": 0,
+                  "width": 160,
+                  "height": 75
+                }
               },
               "childComponents": [
                 {
@@ -66,7 +96,12 @@
                   "localeKey": "logged.units",
                   "componentId": "unitsField",
                   "initialValue": "user#units",
-                  "bounds": "5,-8,250,50"
+                  "bounds": {
+                    "x": 5,
+                    "y": -8,
+                    "width": 250,
+                    "height": 50
+                  }
                 },
                 {
                   "componentType": "label",
@@ -78,7 +113,12 @@
                   "localeKey": "logged.crystals",
                   "componentId": "crystalsField",
                   "initialValue": "0",
-                  "bounds": "0,28,250,50"
+                  "bounds": {
+                    "x": 0,
+                    "y": 28,
+                    "width": 250,
+                    "height": 50
+                  }
                 }
               ]
             }

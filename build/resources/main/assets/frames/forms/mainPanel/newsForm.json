@@ -4,7 +4,12 @@
       "panelOptions": {
         "visible": true,
         "doubleBuffered": true,
-        "bounds": "350,0,500,500"
+        "bounds": {
+          "x": 350,
+          "y": 0,
+          "width": 500,
+          "height": 500
+        }
       },
       "childComponents": [
         {

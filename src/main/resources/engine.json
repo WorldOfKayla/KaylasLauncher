@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.7.4-Treta",
+  "launcherVersion": "1.7.5-Treta",
   "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
@@ -17,14 +17,28 @@
   },
   "loadManager": [
     {
-	  "path": "assets/ui/sprites/loaderGrid.png",
+	  "path": "assets/ui/sprites/loaderFox.png",
 	  "rows": 3,
 	  "cols": 5,
 	  "delay": 50,
-	  "x": 30,
-	  "y": 30,
-	  "width": 64,
-	  "height": 64
+      "bounds": {
+        "x": 30,
+        "y": 30,
+        "width": 64,
+        "height": 64
+      }
+  },
+    {
+	  "path": "assets/ui/sprites/default.png",
+	  "rows": 1,
+	  "cols": 12,
+	  "delay": 40,
+      "bounds": {
+        "x": 30,
+        "y": 30,
+        "width": 64,
+        "height": 64
+      }
   }
   ],
   "requestProperties": [

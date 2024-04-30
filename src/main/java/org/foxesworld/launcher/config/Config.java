@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class Config extends org.foxesworld.engine.config.Config {
     @SuppressWarnings("unused")
-    private int selectedServer, gpuIndex;
+    private int selectedServer, loaderIndex;
     private double volume;
     @SuppressWarnings("unused")
     private int ramAmount;
@@ -72,7 +72,7 @@ public class Config extends org.foxesworld.engine.config.Config {
         }
     }
     @Override
-    public void assignConfigValues(){
+    public void assignConfigValues() {
         Iterator<Map.Entry<String, Object>> iterator = CONFIG.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> configMap = iterator.next();
@@ -88,7 +88,23 @@ public class Config extends org.foxesworld.engine.config.Config {
                 Engine.LOGGER.error("Failed to access field " + configMap.getKey() + " in Config class!");
             }
         }
+
+        for (Field field : Config.class.getDeclaredFields()) {
+            String fieldName = field.getName();
+            if (!CONFIG.containsKey(fieldName)) {
+                try {
+                    Object defaultValue = field.get(this);
+                    CONFIG.put(fieldName, defaultValue);
+                    Engine.LOGGER.info("Adding default value for '" + fieldName + "' to config.");
+                } catch (IllegalAccessException e) {
+                    Engine.LOGGER.error("Failed to access field " + fieldName + " in Config class!");
+                }
+            }
+        }
+
+        this.writeCurrentConfig();
     }
+
 
     @Override
     public void writeCurrentConfig() {
@@ -148,6 +164,10 @@ public class Config extends org.foxesworld.engine.config.Config {
     }
     public int getSelectedServer() {
         return selectedServer;
+    }
+
+    public int getLoaderIndex() {
+        return loaderIndex;
     }
 
     public Object getWidth() {

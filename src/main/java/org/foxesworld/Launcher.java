@@ -32,6 +32,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Launcher extends Engine implements AuthListener {
+    /* TODO
+    * Bounds in componentFactory
+    * */
     private final Engine engine;
     private Auth auth;
     private User user;
@@ -79,7 +82,7 @@ public class Launcher extends Engine implements AuthListener {
         this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
         this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
-        this.loadingManager = new LoadingManager(this);
+        this.loadingManager = new LoadingManager(this, this.getConfig().getLoaderIndex());
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }

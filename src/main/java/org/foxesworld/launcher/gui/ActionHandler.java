@@ -44,12 +44,16 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    /*
                     if (!launcher.getAuth().isAuthorised()) {
                         engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
                     } else {
                         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
                     }
+                    */
+
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
+                    this.engine.getLoadingManager().toggleLoader();
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

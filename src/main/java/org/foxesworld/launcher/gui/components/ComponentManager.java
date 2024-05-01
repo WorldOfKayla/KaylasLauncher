@@ -4,10 +4,10 @@ import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 import org.foxesworld.Launcher;
 
-public class Components implements ComponentFactoryListener {
+public class ComponentManager implements ComponentFactoryListener {
 
     private final Launcher launcher;
-    public Components(Launcher launcher) {
+    public ComponentManager(Launcher launcher) {
         this.launcher = launcher;
     }
     @Override

@@ -3,17 +3,14 @@ package org.foxesworld.launcher.news;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
 import org.foxesworld.engine.utils.FontUtils;
+import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.news.provider.NewsAttributes;
 import org.foxesworld.launcher.news.provider.NewsProvider;
-import org.foxesworld.engine.utils.ImageUtils;
-import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;

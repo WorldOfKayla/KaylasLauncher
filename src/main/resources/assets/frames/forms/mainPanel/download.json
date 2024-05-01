@@ -6,14 +6,25 @@
         "visible": false,
         "doubleBuffered": false,
         "background": "#373c3975",
-        "bounds": "20,40,800,440"
+        "bounds": {
+          "x": 20,
+          "y": 40,
+          "width": 800,
+          "height": 440
+        }
       },
       "childComponents": [
         {
           "componentType": "progressBar",
           "componentStyle": "progress",
           "componentId": "progressBar",
-          "bounds": "5,370,790,60"
+          "opaque": false,
+          "bounds": {
+            "x": 5,
+            "y": 370,
+            "width": 790,
+            "height": 60
+          }
         },
         {
           "componentType": "label",
@@ -21,7 +32,12 @@
           "componentStyle": "title",
           "color": "#2f3533",
           "componentId": "progressLabel",
-          "bounds": "15,10,250,40"
+          "bounds": {
+            "x": 15,
+            "y": 10,
+            "width": 250,
+            "height": 40
+          }
         },
         {
           "panels": {
@@ -31,7 +47,12 @@
                 "border": "1,1,1,1,#3b4045",
                 "background": "#b0c1c1",
                 "visible": true,
-                "bounds": "40,40,700,300"
+                "bounds": {
+                  "x": 40,
+                  "y": 40,
+                  "width": 700,
+                  "height": 300
+                }
               },
               "childComponents": [
                 {
@@ -43,7 +64,12 @@
                   "iconWidth": 36,
                   "iconHeight": 36,
                   "componentId": "downloadFile",
-                  "bounds": "20,10,600,40"
+                  "bounds": {
+                    "x": 20,
+                    "y": 10,
+                    "width": 600,
+                    "height": 40
+                  }
                 },
                 {
                   "componentType": "label",
@@ -54,7 +80,12 @@
                   "iconWidth": 36,
                   "iconHeight": 36,
                   "componentId": "downloadDirectory",
-                  "bounds": "20,50,600,40"
+                  "bounds": {
+                    "x": 20,
+                    "y": 50,
+                    "width": 600,
+                    "height": 40
+                  }
                 }
               ]
             }

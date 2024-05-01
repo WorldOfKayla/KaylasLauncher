@@ -13,7 +13,6 @@ import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -119,14 +118,6 @@ public class User extends org.foxesworld.engine.user.User {
             }
         });
         executor.shutdown();
-    }
-
-    public ServerInfo getServerInfo() {
-        return serverInfo;
-    }
-
-    public ServerBox getServerBox() {
-        return serverBox;
     }
 
     public GuiBuilder getGuiBuilder() {

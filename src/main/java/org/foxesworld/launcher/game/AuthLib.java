@@ -21,10 +21,6 @@ public class AuthLib extends org.foxesworld.engine.game.AuthLib {
     protected void loadAuthLib() {
         try {
             gameLauncher.getClassLoader().loadClass("com.mojang.authlib.Agent");
-            //processArgs.add("--userType=legacy");
-            //processArgs.add("--accessToken=" + user.getToken());
-            //processArgs.add("--uuid=" + user.getUuid());
-            //processArgs.add("--userProperties={}");
         } catch (ClassNotFoundException e2) {
             Engine.LOGGER.warn("Couldn't load AuthLib! ");
             Engine.LOGGER.error(e2);

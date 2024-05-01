@@ -7,7 +7,6 @@ import org.foxesworld.launcher.Core;
 import java.io.File;
 
 public class FileGuardImpl implements FileGuardListener {
-
     private final Core core;
 
     public FileGuardImpl(Core core) {

@@ -2,7 +2,6 @@ package org.foxesworld.launcher.game;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.game.ClientType;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.config.Config;
@@ -24,7 +23,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private Map<String, String> replaceValues = new HashMap<>();
     //private final ClientType clientType;
     protected final User user;
-    private  AuthLib authLib;
+    private final AuthLib authLib;
 
     public GameLauncher(ActionHandler actionHandler) {
         this.launcher = actionHandler.getLauncher();
@@ -98,8 +97,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 if (getIntVer() == 1710 || getIntVer() == 1122) {
                     tweakClassVal = addTweakClass();
                     mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-                } else {
-                    //mainClass = gameClient.getMainClass();
                 }
 
                 if(this.argsReader.getMainClass() != null){

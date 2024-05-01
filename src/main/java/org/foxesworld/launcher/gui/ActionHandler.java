@@ -53,7 +53,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     */
 
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    this.engine.getLoadingManager().toggleLoader();
+                    //this.engine.getLoadingManager().toggleLoader();
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
@@ -95,7 +95,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.launcher.getConfig().writeCurrentConfig();
                     new Core(this);
                 }
-
                 case "closeButton" -> System.exit(0);
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }

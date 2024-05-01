@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.7.5-Treta",
+  "launcherVersion": "1.7.6-Berta",
   "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
@@ -17,25 +17,33 @@
   },
   "loadManager": [
     {
-	  "path": "assets/ui/sprites/loaderFox.png",
+	  "spritePath": "assets/ui/sprites/loaderFox.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "blurColor": "#b3a8998a",
+      "titleColor": "#000000",
+      "descColor": "#dd9711ed",
 	  "rows": 3,
 	  "cols": 5,
 	  "delay": 50,
       "bounds": {
         "x": 30,
-        "y": 30,
+        "y": 40,
         "width": 64,
         "height": 64
       }
   },
     {
-	  "path": "assets/ui/sprites/default.png",
+	  "spritePath": "assets/ui/sprites/default.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "blurColor": "#bfede587",
+      "titleColor": "#000000",
+      "descColor": "#8d6a00",
 	  "rows": 1,
 	  "cols": 12,
 	  "delay": 40,
       "bounds": {
         "x": 30,
-        "y": 30,
+        "y": 40,
         "width": 64,
         "height": 64
       }

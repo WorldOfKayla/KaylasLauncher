@@ -32,9 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Launcher extends Engine implements AuthListener {
-    /* TODO
-    * Bounds in componentFactory
-    * */
     private final Engine engine;
     private Auth auth;
     private User user;
@@ -72,10 +69,6 @@ public class Launcher extends Engine implements AuthListener {
         }
     }
 
-    /*
-    * TODO
-    *  May be merged to Engine
-    * */
     @Override
     protected void preInit(){
         this.config = new Config(this);
@@ -115,13 +108,22 @@ public class Launcher extends Engine implements AuthListener {
         Map<String, String> launcherRequest = new HashMap<>();
         launcherRequest.put("sysRequest", "downloadLatest");
         String selfMd5 = HashUtils.md5(this.appPath());
-        LauncherAttributes launcherAttributes = new Gson().fromJson(engine.getPOSTrequest().send(launcherRequest), LauncherAttributes.class);
-        if (!selfMd5.equals("IDE")) {
-            return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-        } else {
-            return true;
+
+        try {
+            String response = engine.getPOSTrequest().send(launcherRequest);
+            LauncherAttributes launcherAttributes = new Gson().fromJson(response, LauncherAttributes.class);
+
+            if (!selfMd5.equals("IDE")) {
+                return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println("Unable to reach server for launcher validation: " + e.getMessage());
+            return false;
         }
     }
+
     @Override
     public String appPath() {
         try {

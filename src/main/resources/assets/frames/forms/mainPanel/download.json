@@ -18,6 +18,7 @@
           "componentType": "progressBar",
           "componentStyle": "progress",
           "componentId": "progressBar",
+          "opaque": false,
           "bounds": {
             "x": 5,
             "y": 370,

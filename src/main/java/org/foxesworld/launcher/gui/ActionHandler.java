@@ -53,7 +53,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     */
 
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    //this.engine.getLoadingManager().toggleLoader();
+                    this.engine.getLoadingManager().toggleLoader();
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

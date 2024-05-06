@@ -47,6 +47,22 @@
         "width": 64,
         "height": 64
       }
+  },
+    {
+	  "spritePath": "assets/ui/sprites/banjo.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "blurColor": "#bfede587",
+      "titleColor": "#000000",
+      "descColor": "#fffffd",
+	  "rows": 7,
+	  "cols": 5,
+	  "delay": 50,
+      "bounds": {
+        "x": -5,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      }
   }
   ],
   "requestProperties": [

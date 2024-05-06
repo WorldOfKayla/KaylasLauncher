@@ -47,9 +47,9 @@
           "iconHeight": 25,
           "componentId": "info-small",
           "bounds": {
-            "x": 230,
+            "x": 225,
             "y": 435,
-            "width": 55,
+            "width": 60,
             "height": 50
           }
         },
@@ -64,7 +64,7 @@
           "bounds": {
             "x": 290,
             "y": 435,
-            "width": 55,
+            "width": 60,
             "height": 50
           }
         },

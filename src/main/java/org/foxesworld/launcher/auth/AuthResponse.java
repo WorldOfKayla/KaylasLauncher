@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.auth;
 
 import java.util.List;
+import java.util.Map;
 
 class AuthResponse {
     private String message;
@@ -8,7 +9,7 @@ class AuthResponse {
     private String token;
     private String type;
     private String login;
-    private List<Balance> balance;
+    private List<Map<String, Integer>> balance;
     private int group;
     private String colorScheme;
 
@@ -16,7 +17,7 @@ class AuthResponse {
         return message;
     }
 
-    public List<Balance> getBalance() {
+    public List<Map<String, Integer>> getBalance() {
         return balance;
     }
 

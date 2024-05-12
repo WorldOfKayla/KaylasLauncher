@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.auth;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.ComponentsAccessor;
@@ -19,7 +20,7 @@ public class Auth {
     private final Launcher launcher;
     private AuthListener authListener;
     private Map<String, Integer> balanceMap = new HashMap<>();
-    private List<Balance> balance;
+    private List<Map<String, Integer>> balance;
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
@@ -74,21 +75,13 @@ public class Auth {
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
-        /* TODO
-        HARDCODING!!1!1!11!!
-        * */
+
         this.balance = authResponse.getBalance();
-        for (Balance balance : balance) {
-            if (balance.getCrystals() != 0) {
-                balanceMap.put("crystals", balance.getCrystals());
-            }
-            if (balance.getUnits() != 0) {
-                balanceMap.put("units", balance.getUnits());
+        if (balance != null) {
+            for (Map<String, Integer> balanceEntry : balance) {
+                balanceMap.putAll(balanceEntry);
             }
         }
-
-        // Выводим содержимое Map
-        System.out.println(balanceMap);
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
         if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {

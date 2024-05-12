@@ -1,7 +1,6 @@
 package org.foxesworld.launcher.auth;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.ComponentsAccessor;
@@ -19,8 +18,7 @@ import java.util.Map;
 public class Auth {
     private final Launcher launcher;
     private AuthListener authListener;
-    private Map<String, Integer> balanceMap = new HashMap<>();
-    private List<Map<String, Integer>> balance;
+    private final Map<String, Integer> balanceMap = new HashMap<>();
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
@@ -57,7 +55,6 @@ public class Auth {
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
-        System.out.println(response);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
 
         if ("success".equals(authResponse.getType())) {
@@ -75,8 +72,7 @@ public class Auth {
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
-
-        this.balance = authResponse.getBalance();
+        List<Map<String, Integer>> balance = authResponse.getBalance();
         if (balance != null) {
             for (Map<String, Integer> balanceEntry : balance) {
                 balanceMap.putAll(balanceEntry);

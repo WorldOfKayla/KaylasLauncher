@@ -22,6 +22,7 @@ public class ComponentManager implements ComponentFactoryListener {
         switch (splitValue[0]) {
             case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getCONFIG().get(splitValue[1])));
             case "user" -> componentAttributes.setInitialValue(this.launcher.getAuth().getAuthCredentials(splitValue[1]));
+            case "balance" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getAuth().getBalanceMap().get(splitValue[1])));
             case "version" -> componentAttributes.setInitialValue(this.launcher.getEngineData().getLauncherVersion());
         }
     }

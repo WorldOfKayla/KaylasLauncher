@@ -18,6 +18,8 @@ import java.util.Map;
 public class Auth {
     private final Launcher launcher;
     private AuthListener authListener;
+    private Map<String, Integer> balanceMap = new HashMap<>();
+    private List<Balance> balance;
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
@@ -54,6 +56,7 @@ public class Auth {
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
+        System.out.println(response);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
 
         if ("success".equals(authResponse.getType())) {
@@ -70,8 +73,22 @@ public class Auth {
         this.authCredentials.putAll(authCredentials);
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
-        this.authCredentials.put("units", authResponse.getUnits());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
+        /* TODO
+        HARDCODING!!1!1!11!!
+        * */
+        this.balance = authResponse.getBalance();
+        for (Balance balance : balance) {
+            if (balance.getCrystals() != 0) {
+                balanceMap.put("crystals", balance.getCrystals());
+            }
+            if (balance.getUnits() != 0) {
+                balanceMap.put("units", balance.getUnits());
+            }
+        }
+
+        // Выводим содержимое Map
+        System.out.println(balanceMap);
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
         if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
@@ -148,5 +165,9 @@ public class Auth {
 
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
+    }
+
+    public Map<String, Integer> getBalanceMap() {
+        return balanceMap;
     }
 }

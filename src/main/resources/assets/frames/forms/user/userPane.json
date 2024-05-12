@@ -95,7 +95,7 @@
                   "iconHeight": 32,
                   "localeKey": "logged.units",
                   "componentId": "unitsField",
-                  "initialValue": "user#units",
+                  "initialValue": "balance#units",
                   "bounds": {
                     "x": 5,
                     "y": -8,
@@ -112,7 +112,7 @@
                   "iconHeight": 32,
                   "localeKey": "logged.crystals",
                   "componentId": "crystalsField",
-                  "initialValue": "0",
+                  "initialValue": "balance#crystals",
                   "bounds": {
                     "x": 0,
                     "y": 28,

@@ -1,15 +1,23 @@
 package org.foxesworld.launcher.auth;
 
+import java.util.List;
+
 class AuthResponse {
-    private String message,units,uuid,token,type,login;
+    private String message;
+    private String uuid;
+    private String token;
+    private String type;
+    private String login;
+    private List<Balance> balance;
     private int group;
+    private String colorScheme;
 
     public String getMessage() {
         return message;
     }
 
-    public String getUnits() {
-        return units;
+    public List<Balance> getBalance() {
+        return balance;
     }
 
     public String getUuid() {
@@ -30,5 +38,9 @@ class AuthResponse {
 
     public int getGroup() {
         return group;
+    }
+
+    public String getColorScheme() {
+        return colorScheme;
     }
 }

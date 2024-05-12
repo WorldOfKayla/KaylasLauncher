@@ -10,6 +10,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.auth.Balance;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ import java.util.concurrent.Executors;
 
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
+    private Balance userBalance;
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
@@ -126,5 +128,9 @@ public class User extends org.foxesworld.engine.user.User {
 
     public JPanel getNewsPanel() {
         return newsPanel;
+    }
+
+    public void setUserBalance(Balance userBalance) {
+        this.userBalance = userBalance;
     }
 }

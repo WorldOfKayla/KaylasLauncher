@@ -63,7 +63,23 @@
         "width": 128,
         "height": 128
       }
-  }
+  },
+    {
+      "spritePath": "assets/ui/sprites/loading.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "blurColor": "#258f668f",
+      "titleColor": "#000000",
+      "descColor": "#fffffd",
+      "rows": 2,
+      "cols": 5,
+      "delay": 50,
+      "bounds": {
+        "x": 45,
+        "y": 40,
+        "width": 64,
+        "height": 64
+      }
+    }
   ],
   "requestProperties": [
     {

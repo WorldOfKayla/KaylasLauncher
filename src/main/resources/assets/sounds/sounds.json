@@ -68,11 +68,13 @@
     },
     "invalidLauncher": {
       "sounds": [
-        "assets/sounds/invalid.ogg"
+        "assets/sounds/other/invalid.ogg",
+        "assets/sounds/other/invalidLauncher/invalidLauncher.ogg"
       ]
     },
     "invalidJVM": {
       "sounds": [
+        "assets/sounds/other/invalidJRE.ogg",
         "assets/sounds/start/voice1.ogg",
         "assets/sounds/start/voice2.ogg",
         "assets/sounds/start/voice3.ogg"

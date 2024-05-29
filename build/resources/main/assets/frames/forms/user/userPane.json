@@ -1,0 +1,130 @@
+{
+  "panels": {
+    "userPane": {
+      "panelOptions": {
+        "opaque": false,
+        "visible": true,
+        "background": "#7e696900",
+        "backgroundImage": "assets/ui/img/pane.png",
+        "bounds": {
+          "x": 0,
+          "y": 30,
+          "width": 350,
+          "height": 85
+        }
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "fontSize": 15,
+          "componentStyle": "title",
+          "localeKey": "",
+          "componentId": "userLogin",
+          "initialValue": "user#login",
+          "bounds": {
+            "x": 75,
+            "y": -5,
+            "width": 250,
+            "height": 50
+          }
+        },
+        {
+          "componentType": "label",
+          "fontSize": 11,
+          "color": "#dda413ba",
+          "componentStyle": "title",
+          "localeKey": "",
+          "componentId": "userGroup",
+          "initialValue": "user#group",
+          "bounds": {
+            "x": 80,
+            "y": 10,
+            "width": 250,
+            "height": 50
+          }
+        },
+        {
+          "componentType": "label",
+          "fontSize": 11,
+          "componentStyle": "title",
+          "imageIcon": "assets/ui/img/head.png",
+          "iconWidth": 64,
+          "iconHeight": 64,
+          "componentId": "userHead",
+          "bounds": {
+            "x": 5,
+            "y": 10,
+            "width": 64,
+            "height": 64
+          }
+        },
+        {
+          "componentType": "button",
+          "enabled": true,
+          "keyCode": "F5",
+          "componentStyle": "btnSmallClean",
+          "componentId": "smallButton",
+          "localeKey": "TEST",
+          "bounds": {
+            "x": 80,
+            "y": 45,
+            "width": 60,
+            "height": 34
+          }
+        },
+        {
+          "panels": {
+            "userDataForm": {
+              "panelOptions": {
+                "opaque": false,
+                "visible": true,
+                "bounds": {
+                  "x": 190,
+                  "y": 0,
+                  "width": 160,
+                  "height": 75
+                }
+              },
+              "childComponents": [
+                {
+                  "componentType": "label",
+                  "fontSize": 11,
+                  "componentStyle": "title",
+                  "imageIcon": "assets/ui/icons/units.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
+                  "localeKey": "logged.units",
+                  "componentId": "unitsField",
+                  "initialValue": "balance#units",
+                  "bounds": {
+                    "x": 5,
+                    "y": -8,
+                    "width": 250,
+                    "height": 50
+                  }
+                },
+                {
+                  "componentType": "label",
+                  "fontSize": 11,
+                  "componentStyle": "title",
+                  "imageIcon": "assets/ui/icons/crystals.png",
+                  "iconWidth": 32,
+                  "iconHeight": 32,
+                  "localeKey": "logged.crystals",
+                  "componentId": "crystalsField",
+                  "initialValue": "balance#crystals",
+                  "bounds": {
+                    "x": 0,
+                    "y": 28,
+                    "width": 250,
+                    "height": 50
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

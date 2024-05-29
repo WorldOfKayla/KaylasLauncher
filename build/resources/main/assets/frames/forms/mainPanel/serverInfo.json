@@ -1,0 +1,80 @@
+{
+  "panels":{
+    "serverInfo": {
+      "panelOptions": {
+        "visible": false,
+        "doubleBuffered": true,
+        "opaque": true,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 500,
+          "height": 500
+        },
+        "background": "#0707079e"
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "componentStyle": "heading",
+          "localeKey": "auth.loginPlaceholder",
+          "fontSize": 16,
+          "componentId": "serverTitle",
+          "bounds": {
+            "x": 10,
+            "y": -85,
+            "width": 470,
+            "height": 280
+          }
+        },
+        {
+          "componentType": "label",
+          "componentStyle": "title",
+          "componentId": "serverImg",
+          "bounds": {
+            "x": 10,
+            "y": 75,
+            "width": 470,
+            "height": 260
+          }
+        },
+        {
+          "panels": {
+            "serverDesc": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": true,
+                "doubleBuffered": true,
+                "background": "#4a4c4f",
+                "bounds": {
+                  "x": 10,
+                  "y": 345,
+                  "width": 470,
+                  "height": 120
+                },
+                "layout": "box",
+                "border": "1,1,1,1,#ffffff"
+              },
+              "childComponents": [
+                {
+                  "componentType": "label",
+                  "componentStyle": "title",
+                  "fontSize": 13,
+                  "border": "5,5,5,5",
+                  "color": "#ffffff",
+                  "componentId": "serverDescLabel",
+                  "bounds": {
+                    "x": 10,
+                    "y": 10,
+                    "width": 470,
+                    "height": 110
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

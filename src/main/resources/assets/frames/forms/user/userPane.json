@@ -59,20 +59,6 @@
           }
         },
         {
-          "componentType": "button",
-          "enabled": true,
-          "keyCode": "F5",
-          "componentStyle": "btnSmallClean",
-          "componentId": "smallButton",
-          "localeKey": "TEST",
-          "bounds": {
-            "x": 80,
-            "y": 45,
-            "width": 60,
-            "height": 34
-          }
-        },
-        {
           "panels": {
             "userDataForm": {
               "panelOptions": {

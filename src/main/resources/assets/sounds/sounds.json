@@ -55,7 +55,8 @@
   "music": {
     "launcherTheme": {
       "sounds": [
-        "assets/sounds/mus/mus1.ogg"
+        "assets/sounds/mus/mus1.ogg",
+        "assets/sounds/mus/mus2.ogg"
       ]
     }
   },
@@ -74,27 +75,10 @@
     },
     "invalidJVM": {
       "sounds": [
-        "assets/sounds/other/invalidJRE.ogg",
-        "assets/sounds/start/voice1.ogg",
-        "assets/sounds/start/voice2.ogg",
-        "assets/sounds/start/voice3.ogg"
-      ]
-    },
-    "start": {
-      "sounds": [
-        "assets/sounds/start/voice1.ogg",
-        "assets/sounds/start/voice2.ogg",
-        "assets/sounds/start/voice3.ogg",
-        "assets/sounds/start/voice4.ogg",
-        "assets/sounds/start/voice5.ogg",
-        "assets/sounds/start/voice6.ogg",
-        "assets/sounds/start/voice7.ogg",
-        "assets/sounds/start/voice8.ogg",
-        "assets/sounds/start/voice9.ogg",
-        "assets/sounds/start/voice10.ogg",
-        "assets/sounds/start/voice11.ogg",
-        "assets/sounds/start/voice12.ogg",
-        "assets/sounds/start/voice13.ogg"
+        "assets/sounds/other/invalidJre/invalidJRE1.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE2.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE3.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE4.ogg"
       ]
     }
   }

@@ -46,9 +46,9 @@
         {
           "componentType": "label",
           "fontSize": 8,
-          "componentStyle": "title",
+          "componentStyle": "titleBold",
           "localeKey": "general.status",
-          "color":  "#c98319",
+          "color": "#c98319",
           "componentId": "appStatus",
           "bounds": {
             "x": 155,

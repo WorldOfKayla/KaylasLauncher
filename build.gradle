@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.6.7-BERTA-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.6.8-BERTA-all.jar')
 }
 
 jar {
@@ -67,7 +67,7 @@ if (System.getProperty("java.home") == null) {
     System.setProperty("java.home", new File(".").getAbsolutePath())
 }
 
-task nativeDist() {
+tasks.register('nativeDist') {
     doLast {
         copy {
             mkdir 'build/dist'

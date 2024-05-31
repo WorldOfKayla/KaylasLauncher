@@ -27,6 +27,7 @@ public class FileGuardImpl implements FileGuardListener {
 
     @Override
     public void onFileCheck(File file) {
+        core.getLauncher().getEngine().getLoadingManager().setLoadingText(file.getName(), "file.checkingFiles", 150);
     }
 }
 

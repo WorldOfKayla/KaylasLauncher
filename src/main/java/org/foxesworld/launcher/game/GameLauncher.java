@@ -127,7 +127,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 engine.getFrame().setVisible(false);
 
                 int exitCode = process.waitFor();
-                gameListener.onGameExit(this);
+                gameListener.onGameExit(this.gameClient);
                 // Using invokeLater for ssdd-related actions
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
@@ -184,13 +184,14 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
         this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
         this.replaceValues.put("classpath_separator", File.pathSeparator);
-        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath()) +  this.pathBuilders.buildMinecraftJarPath();
-        this.replaceValues.put("classpath",cp);
+        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath()) + this.pathBuilders.buildMinecraftJarPath();
+        this.replaceValues.put("classpath", cp);
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
     }
-    public String getJreBin(){
-        return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() +  File.separator +  "bin";
+
+    public String getJreBin() {
+        return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() + File.separator + "bin";
     }
 
     @Override

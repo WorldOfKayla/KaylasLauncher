@@ -4,7 +4,7 @@
       "panelOptions": {
         "opaque": false,
         "visible": false,
-        "doubleBuffered": false,
+        "doubleBuffered": true,
         "background": "#373c3975",
         "bounds": {
           "x": 20,
@@ -18,7 +18,7 @@
           "componentType": "progressBar",
           "componentStyle": "progress",
           "componentId": "progressBar",
-          "opaque": false,
+          "color": "#ffffff",
           "bounds": {
             "x": 5,
             "y": 370,
@@ -30,7 +30,7 @@
           "componentType": "label",
           "fontSize": 14,
           "componentStyle": "title",
-          "color": "#2f3533",
+          "color": "#ffffff",
           "componentId": "progressLabel",
           "bounds": {
             "x": 15,

@@ -1,8 +1,8 @@
 {
     "general": {
       "appTitle": {
-        "en_US": "<b>FoxesWorld</b>",
-        "ru_RU": "<b>ЛисийМир</b>"
+        "en_US": "FoxesWorld",
+        "ru_RU": "ЛисийМир"
       },
       "status": {
         "en_US": "Alpha",
@@ -141,6 +141,10 @@
       "listBuilt-title": {
         "en_US": "We got the files",
         "ru_RU": "Список построен"
+      },
+      "checkingFiles": {
+        "en_US": "Checking files",
+        "ru_RU": "Проверка файлов"
       },
       "listBuilt-desc": {
         "en_US": "Now we know what to load!",

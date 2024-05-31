@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.ComponentsAccessor;
-import org.foxesworld.launcher.config.Config;
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class Auth {
     private final Map<String, String> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
+    private final CryptUtils cryptUtils;
     private boolean authorised = false;
 
     public Auth(Launcher launcher) {
@@ -32,6 +34,7 @@ public class Auth {
         this.engine = launcher.getEngine();
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
+        this.cryptUtils = launcher.getCRYPTO();
         setAuthListener(launcher);
         attemptAutoLogin();
     }
@@ -39,7 +42,9 @@ public class Auth {
     private void attemptAutoLogin() {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             authCredentials.put("login", CONFIG.getLogin());
-            authCredentials.put("password", CONFIG.getPassword());
+            String encryptedPassword = CONFIG.getPassword();
+            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, getEncryptionKey());
+            authCredentials.put("password", decryptedPassword);
             Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
             authListener.onLoad(this, authCredentials);
         }
@@ -51,12 +56,10 @@ public class Auth {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
-
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
-
         if ("success".equals(authResponse.getType())) {
             handleSuccessfulAuth(authResponse, authCredentials);
             return true;
@@ -94,10 +97,9 @@ public class Auth {
     private void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream()
-                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
-                .toArray(String[]::new);
+        userServersArray = userServersAttributes.stream().map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
     }
+
     public void logOut() {
         Engine.getLOGGER().info("Logging out...");
         setAuthorised(false);
@@ -108,15 +110,18 @@ public class Auth {
         });
         engine.init();
     }
-    static class FormAuth extends ComponentsAccessor {
 
+    static class FormAuth extends ComponentsAccessor {
         public FormAuth(Auth auth) {
             super(auth.getEngine().getGuiBuilder(), "authForm");
         }
     }
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
-        launcher.getConfig().addToConfig(authCredentials, Arrays.asList("login", "password"));
+        Map<String, String> encryptedCredentials = new HashMap<>(authCredentials);
+        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), getEncryptionKey());
+        encryptedCredentials.put("password", encryptedPassword);
+        launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
         launcher.getConfig().writeCurrentConfig();
     }
 
@@ -158,5 +163,9 @@ public class Auth {
 
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
+    }
+
+    private String getEncryptionKey() {
+        return "vghj87ghyumklgfF";
     }
 }

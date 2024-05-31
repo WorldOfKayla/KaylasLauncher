@@ -5,7 +5,7 @@
   "springImage": "assets/ui/img/bg/season/spring.png",
   "summerImage": "assets/ui/img/bg/season/sunmmer.png",
   "autumnImage": "assets/ui/img/bg/season/autumn.png",
-  "backgroundBlur": "#494d4d54",
+  "backgroundBlur": "#494d4d52",
   "width": 850,
   "height": 500,
   "resizable": false,
@@ -28,7 +28,7 @@
       "childComponents": [
         {
           "componentType": "label",
-          "componentStyle": "title",
+          "componentStyle": "titleBold",
           "fontSize": 15,
           "localeKey": "general.appTitle",
           "componentId": "appLogo",
@@ -48,7 +48,7 @@
           "fontSize": 8,
           "componentStyle": "title",
           "localeKey": "general.status",
-          "color":  "#c98319",
+          "color": "#c98319",
           "componentId": "appStatus",
           "bounds": {
             "x": 155,
@@ -59,7 +59,7 @@
         },
         {
           "componentType": "label",
-          "fontSize": 8,
+          "fontSize": 10,
           "componentStyle": "title",
           "localeKey": "",
           "initialValue": "version",

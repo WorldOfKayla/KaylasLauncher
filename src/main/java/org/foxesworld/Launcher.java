@@ -29,7 +29,10 @@ import java.awt.event.ActionEvent;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Launcher extends Engine implements AuthListener {
 
@@ -146,6 +149,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLogin(Map<String, String> authCredentials) {
+        //this.getPanelVisibility().displayPanel("authForm->false");
     }
 
     @Override

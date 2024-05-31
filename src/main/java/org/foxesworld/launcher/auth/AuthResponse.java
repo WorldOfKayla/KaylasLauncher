@@ -3,6 +3,7 @@ package org.foxesworld.launcher.auth;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 class AuthResponse {
     private String message;
     private String uuid;

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private Balance userBalance;
@@ -28,7 +29,6 @@ public class User extends org.foxesworld.engine.user.User {
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
-    @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
     private final ComponentsAccessor componentsAccessor;
     private JPanel newsPanel;
@@ -73,15 +73,15 @@ public class User extends org.foxesworld.engine.user.User {
         ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
         ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
+
     public String getLogin() {
         return login;
     }
-    @SuppressWarnings("unused")
+
     public String getPassword() {
         return password;
     }
 
-    @SuppressWarnings("unused")
     public String getUnits() {
         return units;
     }
@@ -90,7 +90,6 @@ public class User extends org.foxesworld.engine.user.User {
         return token;
     }
 
-    @SuppressWarnings("unused")
     public String getColorScheme() {
         return colorScheme;
     }
@@ -99,7 +98,6 @@ public class User extends org.foxesworld.engine.user.User {
         return uuid;
     }
 
-    @SuppressWarnings("unused")
     public Auth getAuth() {
         return auth;
     }

@@ -19,6 +19,7 @@ import java.util.Map;
 public class Auth {
     private final Launcher launcher;
     private AuthListener authListener;
+    private final EncryptionKeyManager encryptionKeyManager;
     private final Map<String, Integer> balanceMap = new HashMap<>();
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
@@ -32,6 +33,7 @@ public class Auth {
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
+        encryptionKeyManager = new EncryptionKeyManager(launcher);
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
@@ -43,7 +45,7 @@ public class Auth {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             authCredentials.put("login", CONFIG.getLogin());
             String encryptedPassword = CONFIG.getPassword();
-            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, getEncryptionKey());
+            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey());
             authCredentials.put("password", decryptedPassword);
             Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
             authListener.onLoad(this, authCredentials);
@@ -56,6 +58,7 @@ public class Auth {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
+
     public boolean authorize(Map<String, String> authCredentials) {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
@@ -97,7 +100,9 @@ public class Auth {
     private void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream().map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
+        userServersArray = userServersAttributes.stream()
+                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
+                .toArray(String[]::new);
     }
 
     public void logOut() {
@@ -119,7 +124,7 @@ public class Auth {
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
         Map<String, String> encryptedCredentials = new HashMap<>(authCredentials);
-        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), getEncryptionKey());
+        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), encryptionKeyManager.getEncryptionKey());
         encryptedCredentials.put("password", encryptedPassword);
         launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
         launcher.getConfig().writeCurrentConfig();
@@ -163,9 +168,5 @@ public class Auth {
 
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
-    }
-
-    private String getEncryptionKey() {
-        return "vghj87ghyumklgfF";
     }
 }

@@ -1,7 +1,18 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.8.0-Elixir",
-  "styles": ["button",  "checkBox", "label", "multiButton", "passField", "progressBar", "dropBox", "serverBox", "textField", "slider"],
+  "launcherVersion": "1.8.2-Elixir",
+  "styles": [
+    "button",
+    "checkBox",
+    "label",
+    "multiButton",
+    "passField",
+    "progressBar",
+    "dropBox",
+    "serverBox",
+    "textField",
+    "slider"
+  ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.9",
   "bindUrl": "https://foxescraft.ru",

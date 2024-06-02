@@ -86,11 +86,13 @@ public class Auth {
         }
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
-        if (CONFIG.getLogin() == null && "true".equals(authCredentials.get("rememberMe"))) {
+        // Save credentials if rememberMe is true during initial authorization
+        if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
         authListener.onLogin(authCredentials);
     }
+
 
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authResponse.getLogin() + "!");

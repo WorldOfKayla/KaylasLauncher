@@ -20,6 +20,16 @@ public class EncryptionKeyManager {
 
     EncryptionKeyManager(Launcher launcher) {
         this.launcher = launcher;
+        createEncryptionDirectory(); // Call the method to create the directory
+    }
+
+    private void createEncryptionDirectory() {
+        File directory = new File("cache");
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                Launcher.LOGGER.error("Failed to create encryption directory");
+            }
+        }
     }
 
     String getEncryptionKey() {

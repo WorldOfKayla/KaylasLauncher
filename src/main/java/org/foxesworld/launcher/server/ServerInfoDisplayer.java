@@ -1,8 +1,5 @@
 package org.foxesworld.launcher.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
@@ -18,12 +15,14 @@ public class ServerInfoDisplayer implements DropBoxListener {
     private final JPanel newsPanel;
     private final GuiBuilder guiBuilder;
     private final ComponentsAccessor componentsAccessor;
-    public ServerInfoDisplayer(User user){
+
+    public ServerInfoDisplayer(User user) {
         this.user = user;
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
         this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "serverInfo");
     }
+
     @Override
     public void onScrollBoxCreated(int index) {
         user.updateServer(index);
@@ -39,7 +38,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
         newsPanel.removeAll();
         user.updateServer(index);
         guiBuilder.getPanelsMap().get("newsForm").add(user.getGuiBuilder().getPanelsMap().get("newsFrame"));
-       guiBuilder.getPanelsMap().get("newsForm").repaint();
+        guiBuilder.getPanelsMap().get("newsForm").repaint();
     }
 
     @Override
@@ -47,27 +46,28 @@ public class ServerInfoDisplayer implements DropBoxListener {
         this.displayServerInfo(index);
     }
 
-    private void displayServerInfo(int index){
+    private void displayServerInfo(int index) {
         newsPanel.removeAll();
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         ((JLabel) componentsAccessor.getComponentMap().get("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
         ((JLabel) componentsAccessor.getComponentMap().get("serverImg")).setIcon(new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
-        ((JLabel) guiBuilder.getComponentById("serverDescLabel")).setText("<html>"+thisServer.getServerDescription() + "</html>");
+        ((JLabel) guiBuilder.getComponentById("serverDescLabel")).setText("<html>" + thisServer.getServerDescription() + "</html>");
         //modsInfoArr(thisServer.getModsInfo());
         newsPanel.repaint();
     }
 
-    private BufferedImage getServerImage(String url){
-       return ImageUtils.getCachedUrlImg(
-              user.getAuth().getLauncher().getEngineData().getBindUrl() + url,
-               "serverImg",
-               ImageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
+    private BufferedImage getServerImage(String url) {
+        return ImageUtils.getCachedUrlImg(
+                user.getAuth().getLauncher().getEngineData().getBindUrl() + url,
+                "serverImg",
+                ImageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
     }
 
-    private void modsInfoArr(String json){
-        if(!json.isEmpty()) {
+    /*
+    private void modsInfoArr(String json) {
+        if (!json.isEmpty()) {
             Gson gson = new Gson();
             JsonArray jsonArray = gson.fromJson(json, JsonArray.class);
 
@@ -81,5 +81,5 @@ public class ServerInfoDisplayer implements DropBoxListener {
             }
         }
     }
-
+    */
 }

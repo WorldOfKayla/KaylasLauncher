@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.8.2-Elixir",
+  "launcherVersion": "1.8.3-Elixir",
   "styles": [
     "button",
     "checkBox",
@@ -77,7 +77,7 @@
   },
     {
       "spritePath": "assets/ui/sprites/loading.png",
-      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "bgPath": "assets/ui/img/bg/season/winter.png",
       "blurColor": "#258f668f",
       "titleColor": "#000000",
       "descColor": "#fffffd",

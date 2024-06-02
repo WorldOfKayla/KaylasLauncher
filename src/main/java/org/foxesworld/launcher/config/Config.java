@@ -15,9 +15,8 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class Config extends org.foxesworld.engine.config.Config {
-    private int selectedServer, loaderIndex;
+    private int selectedServer, loaderIndex, ramAmount;
     private double volume;
-    private int ramAmount;
     private Object width, height;
     private String login, password, lang;
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
@@ -101,7 +100,6 @@ public class Config extends org.foxesworld.engine.config.Config {
         this.writeCurrentConfig();
     }
 
-
     @Override
     public void writeCurrentConfig() {
         Engine.getLOGGER().debug("Writing Config");
@@ -132,7 +130,6 @@ public class Config extends org.foxesworld.engine.config.Config {
     public int getRamAmount() {
         return ramAmount;
     }
-    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
@@ -148,7 +145,6 @@ public class Config extends org.foxesworld.engine.config.Config {
     public boolean isLaunchAC() {
         return launchAC;
     }
-    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
     }
@@ -161,17 +157,13 @@ public class Config extends org.foxesworld.engine.config.Config {
     public int getSelectedServer() {
         return selectedServer;
     }
-
     public int getLoaderIndex() {
         return loaderIndex;
     }
-
     public Object getWidth() {
         return width;
     }
-
     public Object getHeight() {
         return height;
     }
-
 }

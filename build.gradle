@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.6.8-BERTA-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.6.9-BERTA-all.jar')
 }
 
 jar {

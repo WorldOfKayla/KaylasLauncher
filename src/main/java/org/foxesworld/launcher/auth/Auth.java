@@ -46,9 +46,16 @@ public class Auth {
             authCredentials.put("login", CONFIG.getLogin());
             String encryptedPassword = CONFIG.getPassword();
             String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey());
-            authCredentials.put("password", decryptedPassword);
-            Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
-            authListener.onLoad(this, authCredentials);
+            if (decryptedPassword != null) {
+                authCredentials.put("password", decryptedPassword);
+                Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
+                authListener.onLoad(this, authCredentials);
+            } else {
+                Arrays.asList("login", "password").forEach(clear -> {
+                    authCredentials.remove(clear);
+                    launcher.getConfig().clearConfigData(clear, true);
+                });
+            }
         }
     }
 

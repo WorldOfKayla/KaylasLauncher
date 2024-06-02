@@ -97,7 +97,6 @@ public class FileLoaderImpl implements FileLoaderListener {
         List<String> checkList = Arrays.asList(
                 core.getGameLauncher().getPathBuilders().buildClientDir(),
                 core.getGameLauncher().getPathBuilders().buildVersionDir(),
-                //core.getGameLauncher().getPathBuilders().buildLibrariesPath(),
                 core.getGameLauncher().getPathBuilders().buildNativesPath(),
                 core.getGameLauncher().getPathBuilders().buildAssetsPath()
         );

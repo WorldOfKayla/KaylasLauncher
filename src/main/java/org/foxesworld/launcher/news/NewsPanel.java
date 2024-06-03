@@ -32,15 +32,13 @@ public class NewsPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
 
-        JScrollPane scrollPane = createScrollPane();
         JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
-        scrollPane.setViewportView(contentPanel);
-
+        JScrollPane scrollPane = createScrollPane(contentPanel);
         add(scrollPane);
     }
 
-    private JScrollPane createScrollPane() {
-        JScrollPane scrollPane = new JScrollPane();
+    private JScrollPane createScrollPane(JPanel contentPanel) {
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);

@@ -21,7 +21,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private String mainClass, tweakClassVal = "";
     public final Launcher launcher;
     private Map<String, String> replaceValues = new HashMap<>();
-    //private final ClientType clientType;
     protected final User user;
     private final AuthLib authLib;
 
@@ -105,7 +104,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 processArgs.add(mainClass);
                 if(Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
-                   authLib.loadAuthLib();
+                    authLib.loadAuthLib();
                 } else {
                     Engine.LOGGER.info("Launching without AuthLib loaded!");
                 }
@@ -142,6 +141,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             }
         });
     }
+
     @Override
     protected String addTweakClass() {
         String tweakClassVal;

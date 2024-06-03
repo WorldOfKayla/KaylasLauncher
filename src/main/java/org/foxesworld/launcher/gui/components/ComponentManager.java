@@ -1,8 +1,8 @@
 package org.foxesworld.launcher.gui.components;
 
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactoryListener;
-import org.foxesworld.Launcher;
 
 public class ComponentManager implements ComponentFactoryListener {
 
@@ -10,6 +10,7 @@ public class ComponentManager implements ComponentFactoryListener {
     public ComponentManager(Launcher launcher) {
         this.launcher = launcher;
     }
+
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
         if (componentAttributes.getInitialValue() != null) {

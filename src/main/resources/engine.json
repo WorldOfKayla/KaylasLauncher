@@ -28,53 +28,53 @@
   },
   "loadManager": [
     {
-	  "spritePath": "assets/ui/sprites/loaderFox.png",
+      "spritePath": "assets/ui/sprites/loaderFox.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
       "blurColor": "#b3a8998a",
       "titleColor": "#ffffff",
       "descColor": "#473c3c",
-	  "rows": 3,
-	  "cols": 5,
-	  "delay": 50,
+      "rows": 3,
+      "cols": 5,
+      "delay": 50,
       "bounds": {
         "x": 30,
         "y": 40,
         "width": 64,
         "height": 64
       }
-  },
+    },
     {
-	  "spritePath": "assets/ui/sprites/default.png",
+      "spritePath": "assets/ui/sprites/default.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
       "blurColor": "#bfede587",
       "titleColor": "#000000",
       "descColor": "#8d6a00",
-	  "rows": 1,
-	  "cols": 12,
-	  "delay": 40,
+      "rows": 1,
+      "cols": 12,
+      "delay": 40,
       "bounds": {
         "x": 30,
         "y": 40,
         "width": 64,
         "height": 64
       }
-  },
+    },
     {
-	  "spritePath": "assets/ui/sprites/banjo.png",
+      "spritePath": "assets/ui/sprites/banjo.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
       "blurColor": "#bfede587",
       "titleColor": "#000000",
       "descColor": "#fffffd",
-	  "rows": 7,
-	  "cols": 5,
-	  "delay": 50,
+      "rows": 7,
+      "cols": 5,
+      "delay": 50,
       "bounds": {
         "x": -5,
         "y": 0,
         "width": 128,
         "height": 128
       }
-  },
+    },
     {
       "spritePath": "assets/ui/sprites/loading.png",
       "bgPath": "assets/ui/img/bg/season/winter.png",
@@ -89,6 +89,22 @@
         "y": 40,
         "width": 64,
         "height": 64
+      }
+    },
+    {
+      "spritePath": "assets/ui/sprites/waitFire.png",
+      "bgPath": "assets/ui/img/bg/season/autumn.png",
+      "blurColor": "#b3a8998a",
+      "titleColor": "#ffffff",
+      "descColor": "#473c3c",
+      "rows": 8,
+      "cols": 8,
+      "delay": 40,
+      "bounds": {
+        "x": 30,
+        "y": 10,
+        "width": 78,
+        "height": 78
       }
     }
   ],
@@ -111,11 +127,11 @@
     }
   ],
   "tweakClasses": [
-     "net.minecraftforge.fml.common.launcher.FMLTweaker",
-     "cpw.mods.fml.common.launcher.FMLTweaker",
-     "com.mumfrey.liteloader.launch.LiteLoaderTweaker",
-     "org.dimdev.riftloader.launch.RiftLoaderClientTweaker",
-     "optifine.OptiFineTweaker"
+    "net.minecraftforge.fml.common.launcher.FMLTweaker",
+    "cpw.mods.fml.common.launcher.FMLTweaker",
+    "com.mumfrey.liteloader.launch.LiteLoaderTweaker",
+    "org.dimdev.riftloader.launch.RiftLoaderClientTweaker",
+    "optifine.OptiFineTweaker"
   ],
   "downloadManager": {
     "downloadThreads": 4,

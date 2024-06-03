@@ -6,6 +6,7 @@ import org.foxesworld.launcher.user.User;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class AuthLib extends org.foxesworld.engine.game.AuthLib {
     private final GameLauncher gameLauncher;
     private final List<String> processArgs;

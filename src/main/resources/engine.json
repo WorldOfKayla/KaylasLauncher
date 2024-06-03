@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.8.3-Elixir",
+  "launcherVersion": "1.8.4-Elixir",
   "styles": [
     "button",
     "checkBox",
@@ -23,7 +23,7 @@
   "files": {
     "frameTpl": "assets/frames/frame.json",
     "mainFrame": "assets/frames/mainFrame.json",
-    "localeFile": "/assets/lang/locale.json",
+    "localeFile": "assets/lang/locale.json",
     "soundsFile": "assets/sounds/sounds.json"
   },
   "loadManager": [

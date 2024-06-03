@@ -31,6 +31,7 @@
           "componentStyle": "titleBold",
           "fontSize": 15,
           "localeKey": "general.appTitle",
+          "initialValue": "FoxesWorld",
           "componentId": "appLogo",
           "color": "#f78600",
           "imageIcon": "assets/ui/icons/logo.png",
@@ -45,28 +46,14 @@
         },
         {
           "componentType": "label",
-          "fontSize": 8,
-          "componentStyle": "title",
-          "localeKey": "general.status",
-          "color": "#c98319",
-          "componentId": "appStatus",
-          "bounds": {
-            "x": 155,
-            "y": -20,
-            "width": 250,
-            "height": 50
-          }
-        },
-        {
-          "componentType": "label",
           "fontSize": 10,
-          "componentStyle": "title",
-          "localeKey": "",
+          "componentStyle": "titleBold",
+          "localeKey": "Build",
           "initialValue": "version",
           "color": "#17cc30e0",
           "componentId": "appVersion",
           "bounds": {
-            "x": 187,
+            "x": 180,
             "y": -20,
             "width": 250,
             "height": 50

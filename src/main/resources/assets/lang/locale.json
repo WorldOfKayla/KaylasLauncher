@@ -5,8 +5,8 @@
         "ru_RU": "ЛисийМир"
       },
       "status": {
-        "en_US": "Alpha",
-        "ru_RU": "Альфа"
+        "en_US": "",
+        "ru_RU": ""
       }
     },
     "settings": {
@@ -19,8 +19,8 @@
         "ru_RU": "Назад"
       },
       "baseOptions": {
-        "en_US": "<b>Base Options</b>",
-        "ru_RU": "<b>Общие параметры</b>"
+        "en_US": "Base Options",
+        "ru_RU": "Общие параметры"
       },
       "autoEnter": {
         "en_US": "Auto enter a selected server",
@@ -75,24 +75,24 @@
         "ru_RU": "Применить настройки"
       },
       "ramField": {
-        "en_US": "<b>RAM amount (Mb)</b>",
-        "ru_RU": "<b>Выделение оперативной памяти (Mb)</b>"
+        "en_US": "RAM amount (Mb)",
+        "ru_RU": "Выделение оперативной памяти (Mb)"
       },
       "ramPlaceholder": {
         "en_US": "RAM",
         "ru_RU": "ОЗУ"
       },
       "soundVolume": {
-        "en_US": "<b>Sound volume</b>",
-        "ru_RU": "<b>Громкость звуков</b>"
+        "en_US": "Sound volume",
+        "ru_RU": "Громкость звуков"
       },
       "langBox": {
-        "en_US": "<b>Language</b>",
-        "ru_RU": "<b>Язык</b>"
+        "en_US": "Language",
+        "ru_RU": "Язык"
       },
       "info": {
-        "en_US": "<b>Settings information</b>",
-        "ru_RU": "<b>Информация о настройках</b>"
+        "en_US": "Settings information",
+        "ru_RU": "Информация о настройках"
       },
       "homeDir": {
         "en_US": "Game Dir",

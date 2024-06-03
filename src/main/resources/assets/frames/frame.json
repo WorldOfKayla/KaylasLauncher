@@ -35,12 +35,12 @@
           "componentId": "appLogo",
           "color": "#f78600",
           "imageIcon": "assets/ui/icons/logo.png",
-          "iconWidth": 47,
-          "iconHeight": 42,
+          "iconWidth": 40,
+          "iconHeight": 40,
           "bounds": {
-            "x": 0,
+            "x": 5,
             "y": 0,
-            "width": 240,
+            "width": 180,
             "height": 30
           }
         },

@@ -26,6 +26,7 @@ import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +37,7 @@ import java.util.Objects;
 
 public class Launcher extends Engine implements AuthListener {
 
+    private final File launcher;
     private Auth auth;
     private User user;
     private Settings settings;
@@ -48,20 +50,31 @@ public class Launcher extends Engine implements AuthListener {
     public Launcher() {
         super("config");
         this.fileProperties = getFileProperties();
+        launcher = new File(this.appPath());
         this.preInit();
 
         if (!isLauncherValid()) {
             handleInvalidLauncher();
         } else {
             int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
-            if (launchingWith != Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""))) {
-                handleInvalidJVM();
-            } else {
-                this.auth = new Auth(this);
-                init();
-                setActionHandler(new ActionHandler(this));
-                getLOGGER().debug("Launcher started!");
+            int expectedJRE = Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""));
+
+            if (launchingWith != expectedJRE) {
+                if (launcher.isFile()) {
+                    Engine.LOGGER.warn("Using incorrect JRE {}", launchingWith);
+                    handleInvalidJVM();
+                    return;
+                } else if (launcher.isDirectory()) {
+                    Engine.LOGGER.warn("Using a JRE different from {}", getEngineData().getProgramRuntime());
+                    Engine.LOGGER.warn("If you'll launch it not in IDE using {} will get an exception!", JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin"));
+                } else {
+                    Engine.LOGGER.warn("Launcher path is neither a file nor a directory. Unexpected behavior.");
+                }
             }
+            this.auth = new Auth(this);
+            init();
+            setActionHandler(new ActionHandler(this));
+            getLOGGER().debug("Launcher started!");
         }
     }
 

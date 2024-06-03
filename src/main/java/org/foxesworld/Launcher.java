@@ -107,9 +107,6 @@ public class Launcher extends Engine implements AuthListener {
         // ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
         this.setUser(new User(this));
-        if (this.user.getLogin() != null) {
-            this.discord.discordRpcStart(this.getLANG().getString("game.login") + this.getAuth().getAuthCredentials("login"), getAppTitle(), "aiden");
-        }
         this.settings = new Settings(this);
         this.settings.addListeners();
         setInit(true);

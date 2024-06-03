@@ -20,9 +20,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
+    private final Launcher launcher;
     private Balance userBalance;
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
@@ -34,44 +34,71 @@ public class User extends org.foxesworld.engine.user.User {
     private JPanel newsPanel;
 
     public User(Launcher launcher) {
+        this.launcher = launcher;
         this.auth = launcher.getAuth();
         this.engine = launcher.getEngine();
-        this.serverInfo = auth.getEngine().getServerInfo();
+        this.serverInfo = engine.getServerInfo();
         this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
-        DropBox dropBox = (DropBox) auth.getEngine().getGuiBuilder().getComponentById("serverBox");
-        this.serverBox = (ServerBox) auth.getEngine().getGuiBuilder().getComponentById("serverStatusBox");
+        this.serverBox = (ServerBox) engine.getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
-        this.guiBuilder = this.auth.getLauncher().getGuiBuilder();
+        this.guiBuilder = launcher.getGuiBuilder();
         this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane");
 
-        if (launcher.getAuth().isAuthorised()) {
-            setUserSpace();
-            this.newsPanel = this.auth.getLauncher().getGuiBuilder().getPanelsMap().get("newsForm");
-        } else {
-            auth.getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
-        }
+        initializeUser();
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-        this.setDropBoxData(dropBox);
+        setDropBoxData((DropBox) engine.getGuiBuilder().getComponentById("serverBox"));
+    }
+
+    private void initializeUser() {
+        if (auth.isAuthorised()) {
+            setUserSpace();
+            this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
+            launcher.getDiscord().discordRpcStart(
+                    lang.getString("game.login") + auth.getAuthCredentials("login"),
+                    launcher.getAppTitle(),
+                    "aiden"
+            );
+        } else {
+            engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+        }
     }
 
     private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
+        dropBox.setSelectedIndex(launcher.getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(serverInfoDisplayer);
     }
 
     @Override
     protected void setUserSpace() {
-        auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
+        engine.getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
+        populateUserCredentials();
+        setUserHeadIcon();
+        setUserGroupLabel();
+    }
+
+    private void populateUserCredentials() {
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
                 Field field = User.class.getDeclaredField(credentials.getKey());
                 field.set(this, credentials.getValue());
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {
+            }
         }
-        ImageIcon icon = new ImageIcon(ImageUtils.base64ToBufferedImage(this.getUserHead(this.getLogin())));
-        ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
-        ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
+    }
+
+    private void setUserHeadIcon() {
+        BufferedImage userHead = ImageUtils.base64ToBufferedImage(getUserHead(getLogin()));
+        ImageIcon icon = new ImageIcon(userHead);
+        JLabel userHeadLabel = (JLabel) componentsAccessor.getComponentMap().get("userHead");
+        userHeadLabel.setIcon(icon);
+    }
+
+    private void setUserGroupLabel() {
+        String userGroupKey = "group.group-" + auth.getAuthCredentials("group");
+        String userGroup = lang.getString(userGroupKey);
+        JLabel userGroupLabel = (JLabel) componentsAccessor.getComponentMap().get("userGroup");
+        userGroupLabel.setText(userGroup);
     }
 
     public String getLogin() {
@@ -106,18 +133,22 @@ public class User extends org.foxesworld.engine.user.User {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
-                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
-                String ip = auth.getUserServersAttributes().get(index).getHost();
-                int port = auth.getUserServersAttributes().get(index).getPort();
-                String[] status = serverInfo.pollServer(ip, port);
-                String text = serverInfo.genServerStatus(status);
-                BufferedImage img = serverInfo.genServerIcon(status);
-                serverBox.updateBox(text, img);
+                updateServerBox(index);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: " + e.getMessage());
             }
         });
         executor.shutdown();
+    }
+
+    private void updateServerBox(int index) {
+        serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
+        String ip = auth.getUserServersAttributes().get(index).getHost();
+        int port = auth.getUserServersAttributes().get(index).getPort();
+        String[] status = serverInfo.pollServer(ip, port);
+        String text = serverInfo.genServerStatus(status);
+        BufferedImage img = serverInfo.genServerIcon(status);
+        serverBox.updateBox(text, img);
     }
 
     public GuiBuilder getGuiBuilder() {

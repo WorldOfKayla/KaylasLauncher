@@ -33,7 +33,7 @@ public class Auth {
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        encryptionKeyManager = new EncryptionKeyManager(launcher);
+        this.encryptionKeyManager = new EncryptionKeyManager(launcher);
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
@@ -51,17 +51,15 @@ public class Auth {
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
                 authListener.onLoad(this, authCredentials);
             } else {
-                Arrays.asList("login", "password").forEach(clear -> {
-                    authCredentials.remove(clear);
-                    launcher.getConfig().clearConfigData(clear, true);
-                });
+                clearCredentials();
             }
         }
     }
 
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
-        if (authorize(formAuth.getFormCredentials())) {
+        Map<String, String> credentials = formAuth.getFormCredentials();
+        if (authorize(credentials)) {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
@@ -70,6 +68,7 @@ public class Auth {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
+
         if ("success".equals(authResponse.getType())) {
             handleSuccessfulAuth(authResponse, authCredentials);
             return true;
@@ -85,21 +84,22 @@ public class Auth {
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
+
         List<Map<String, Integer>> balance = authResponse.getBalance();
         if (balance != null) {
             for (Map<String, Integer> balanceEntry : balance) {
                 balanceMap.putAll(balanceEntry);
             }
         }
+
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
-        // Save credentials if rememberMe is true during initial authorization
+
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
         authListener.onLogin(authCredentials);
     }
-
 
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authResponse.getLogin() + "!");
@@ -118,10 +118,7 @@ public class Auth {
         Engine.getLOGGER().info("Logging out...");
         setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
-        Arrays.asList("login", "password").forEach(clear -> {
-            authCredentials.remove(clear);
-            launcher.getConfig().clearConfigData(clear, true);
-        });
+        clearCredentials();
         engine.init();
     }
 
@@ -137,6 +134,13 @@ public class Auth {
         encryptedCredentials.put("password", encryptedPassword);
         launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
         launcher.getConfig().writeCurrentConfig();
+    }
+
+    private void clearCredentials() {
+        Arrays.asList("login", "password").forEach(clear -> {
+            authCredentials.remove(clear);
+            launcher.getConfig().clearConfigData(clear, true);
+        });
     }
 
     public String getAuthCredentials(String key) {

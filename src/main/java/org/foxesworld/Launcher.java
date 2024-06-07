@@ -37,11 +37,11 @@ import java.util.Objects;
 
 public class Launcher extends Engine implements AuthListener {
 
-    private final File launcher;
     private Auth auth;
     private User user;
     private Settings settings;
     private final FileProperties fileProperties;
+    private final File launcher;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
@@ -49,8 +49,8 @@ public class Launcher extends Engine implements AuthListener {
 
     public Launcher() {
         super("config");
+        this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
-        launcher = new File(this.appPath());
         this.preInit();
 
         if (!isLauncherValid()) {
@@ -66,11 +66,14 @@ public class Launcher extends Engine implements AuthListener {
                     return;
                 } else if (launcher.isDirectory()) {
                     Engine.LOGGER.warn("Using a JRE different from {}", getEngineData().getProgramRuntime());
-                    Engine.LOGGER.warn("If you'll launch it not in IDE using {} will get an exception!", JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin"));
+                    if (isRunningInIDE()) {
+                        Engine.LOGGER.warn("If you'll launch it not in IDE using {} will get an exception!", JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin"));
+                    }
                 } else {
-                    Engine.LOGGER.warn("Launcher path is neither a file nor a directory. Unexpected behavior.");
+                    Engine.LOGGER.warn("Launcher path is neither a file nor a directory. 0_0");
                 }
             }
+
             this.auth = new Auth(this);
             init();
             setActionHandler(new ActionHandler(this));
@@ -78,11 +81,16 @@ public class Launcher extends Engine implements AuthListener {
         }
     }
 
+    private boolean isRunningInIDE() {
+        String classPath = System.getProperty("java.class.path");
+        return classPath != null && classPath.contains("build");
+    }
+
     @Override
     protected void preInit() {
         this.config = new Config(this);
         this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
-        this.SOUND = new Sound(this, Engine.class.getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
+        this.SOUND = new Sound(this, this.getClass().getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
         this.loadingManager = new LoadingManager(this, this.getConfig().getLoaderIndex());
         this.serverInfo = new ServerInfo(this);
@@ -106,7 +114,6 @@ public class Launcher extends Engine implements AuthListener {
 
         // ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
-        this.setUser(new User(this));
         this.settings = new Settings(this);
         this.settings.addListeners();
         setInit(true);
@@ -159,7 +166,6 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLogin(Map<String, String> authCredentials) {
-        //this.getPanelVisibility().displayPanel("authForm->false");
     }
 
     @Override
@@ -171,6 +177,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onPanelsBuilt() {
+        this.setUser(new User(this));
         if (!isInit() && this.getConfig().isBackgroundMusic()) {
             this.getSOUND().playSound("music", "launcherTheme", true);
         }
@@ -181,7 +188,7 @@ public class Launcher extends Engine implements AuthListener {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        parentPanel.setDoubleBuffered(true);
+        //parentPanel.setDoubleBuffered(true);
         getLOGGER().debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
 

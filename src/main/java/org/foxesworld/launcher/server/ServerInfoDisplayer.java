@@ -1,5 +1,8 @@
 package org.foxesworld.launcher.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
@@ -13,6 +16,7 @@ import java.awt.image.BufferedImage;
 public class ServerInfoDisplayer implements DropBoxListener {
     private final User user;
     private final JPanel newsPanel;
+    private final ImageUtils imageUtils;
     private final GuiBuilder guiBuilder;
     private final ComponentsAccessor componentsAccessor;
 
@@ -20,6 +24,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
         this.user = user;
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
+        this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
         this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "serverInfo");
     }
 
@@ -52,20 +57,19 @@ public class ServerInfoDisplayer implements DropBoxListener {
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         ((JLabel) componentsAccessor.getComponentMap().get("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-        ((JLabel) componentsAccessor.getComponentMap().get("serverImg")).setIcon(new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
+        ((JLabel) componentsAccessor.getComponentMap().get("serverImg")).setIcon(new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
         ((JLabel) guiBuilder.getComponentById("serverDescLabel")).setText("<html>" + thisServer.getServerDescription() + "</html>");
         //modsInfoArr(thisServer.getModsInfo());
         newsPanel.repaint();
     }
 
     private BufferedImage getServerImage(String url) {
-        return ImageUtils.getCachedUrlImg(
+        return imageUtils.getCachedUrlImg(
                 user.getAuth().getLauncher().getEngineData().getBindUrl() + url,
                 "serverImg",
-                ImageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
+                imageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
     }
 
-    /*
     private void modsInfoArr(String json) {
         if (!json.isEmpty()) {
             Gson gson = new Gson();
@@ -81,5 +85,5 @@ public class ServerInfoDisplayer implements DropBoxListener {
             }
         }
     }
-    */
+
 }

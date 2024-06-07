@@ -7,10 +7,8 @@ import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.launcher.auth.Balance;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 
 import javax.swing.*;
@@ -23,12 +21,12 @@ import java.util.concurrent.Executors;
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final Launcher launcher;
-    private Balance userBalance;
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
+    @SuppressWarnings("unused")
     private String login, password, units, token, uuid, colorScheme;
     private final ComponentsAccessor componentsAccessor;
     private JPanel newsPanel;
@@ -38,7 +36,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.auth = launcher.getAuth();
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
-        this.serverInfo.setServerStatusImg(ImageUtils.getLocalImage("assets/ui/icons/status.png"));
+        this.serverInfo.setServerStatusImg(this.engine.getImageUtils().getLocalImage("assets/ui/icons/status.png"));
         this.serverBox = (ServerBox) engine.getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
@@ -65,19 +63,13 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(launcher.getConfig().getSelectedServer());
+        dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(serverInfoDisplayer);
     }
 
     @Override
     protected void setUserSpace() {
-        engine.getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        populateUserCredentials();
-        setUserHeadIcon();
-        setUserGroupLabel();
-    }
-
-    private void populateUserCredentials() {
+        auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
                 Field field = User.class.getDeclaredField(credentials.getKey());
@@ -85,10 +77,13 @@ public class User extends org.foxesworld.engine.user.User {
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
             }
         }
+        ImageIcon icon = new ImageIcon(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())));
+        ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
+        ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
 
     private void setUserHeadIcon() {
-        BufferedImage userHead = ImageUtils.base64ToBufferedImage(getUserHead(getLogin()));
+        BufferedImage userHead = launcher.getImageUtils().base64ToBufferedImage(getUserHead(getLogin()));
         ImageIcon icon = new ImageIcon(userHead);
         JLabel userHeadLabel = (JLabel) componentsAccessor.getComponentMap().get("userHead");
         userHeadLabel.setIcon(icon);
@@ -105,10 +100,12 @@ public class User extends org.foxesworld.engine.user.User {
         return login;
     }
 
+    @SuppressWarnings("unused")
     public String getPassword() {
         return password;
     }
 
+    @SuppressWarnings("unused")
     public String getUnits() {
         return units;
     }
@@ -117,6 +114,7 @@ public class User extends org.foxesworld.engine.user.User {
         return token;
     }
 
+    @SuppressWarnings("unused")
     public String getColorScheme() {
         return colorScheme;
     }
@@ -125,6 +123,7 @@ public class User extends org.foxesworld.engine.user.User {
         return uuid;
     }
 
+    @SuppressWarnings("unused")
     public Auth getAuth() {
         return auth;
     }
@@ -133,22 +132,18 @@ public class User extends org.foxesworld.engine.user.User {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
-                updateServerBox(index);
+                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
+                String ip = auth.getUserServersAttributes().get(index).getHost();
+                int port = auth.getUserServersAttributes().get(index).getPort();
+                String[] status = serverInfo.pollServer(ip, port);
+                String text = serverInfo.genServerStatus(status);
+                BufferedImage img = serverInfo.genServerIcon(status);
+                serverBox.updateBox(text, img);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: " + e.getMessage());
             }
         });
         executor.shutdown();
-    }
-
-    private void updateServerBox(int index) {
-        serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
-        String ip = auth.getUserServersAttributes().get(index).getHost();
-        int port = auth.getUserServersAttributes().get(index).getPort();
-        String[] status = serverInfo.pollServer(ip, port);
-        String text = serverInfo.genServerStatus(status);
-        BufferedImage img = serverInfo.genServerIcon(status);
-        serverBox.updateBox(text, img);
     }
 
     public GuiBuilder getGuiBuilder() {
@@ -157,9 +152,5 @@ public class User extends org.foxesworld.engine.user.User {
 
     public JPanel getNewsPanel() {
         return newsPanel;
-    }
-
-    public void setUserBalance(Balance userBalance) {
-        this.userBalance = userBalance;
     }
 }

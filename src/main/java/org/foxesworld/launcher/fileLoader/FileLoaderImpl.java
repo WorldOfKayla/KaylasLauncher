@@ -10,7 +10,6 @@ import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
-import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
@@ -27,8 +26,11 @@ import java.util.regex.Pattern;
 
 public class FileLoaderImpl implements FileLoaderListener {
     private final Core core;
-    private final  ComponentsAccessor componentsAccessor;
+    private final ComponentsAccessor componentsAccessor;
     private final DownloadUtils downloadUtils;
+
+    private final Map<String, String> replaceMasks = new HashMap<>();
+    private final Map<String, String> varsToReplace = new HashMap<>();
 
     public FileLoaderImpl(Core core) {
         this.core = core;
@@ -36,70 +38,51 @@ public class FileLoaderImpl implements FileLoaderListener {
         this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download");
     }
 
-    private final Map<String, String> replaceMasks = new HashMap<>();
-    private final Map<String, String> varsToReplace = new HashMap<>();
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        downloadUtils.setProgressBar((JProgressBar) componentsAccessor.getComponent("progressBar"));
-        downloadUtils.setProgressLabel((JLabel) componentsAccessor.getComponent("progressLabel"));
-        core.setGameLauncher(new GameLauncher(core.getActionHandler()));
-        core.getGameLauncher().setGameListener(core);
-        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
-            //If we failed java -version command -> download it
-            core.getFileLoader().setReplaceMask("/uploads/files/");
-            core.getFileLoader().addFileToDownload(core.getFileLoader().addJreToLoad(core.getGameLauncher().getCurrentJre()));
-        }
+        initializeDownloadComponents();
+        setupGameLauncher();
+        checkAndDownloadJre();
         core.getFileLoader().downloadFiles();
     }
 
-    //Will merge to original
-    public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
-        addReplaceVars();
-        for (EngineData.ReplaceMask mask : replaceTemplate) {
-            for (Map.Entry<String, String> vars : this.varsToReplace.entrySet()) {
-                String key = replaceVariableValue(vars.getKey(), mask.getMask(), vars.getValue());
-                String val = replaceVariableValue(vars.getKey(), mask.getReplace(), vars.getValue());
-                replaceMasks.put(key, val);
-            }
+    private void initializeDownloadComponents() {
+        downloadUtils.setProgressBar((JProgressBar) componentsAccessor.getComponent("progressBar"));
+        downloadUtils.setProgressLabel((JLabel) componentsAccessor.getComponent("progressLabel"));
+    }
+
+    private void setupGameLauncher() {
+        core.setGameLauncher(new GameLauncher(core.getActionHandler()));
+        core.getGameLauncher().setGameListener(core);
+    }
+
+    private void checkAndDownloadJre() {
+        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
+            core.getFileLoader().setReplaceMask("/uploads/files/");
+            core.getFileLoader().addFileToDownload(core.getFileLoader().addJreToLoad(core.getGameLauncher().getCurrentJre()));
         }
-    }
-
-    //Will merge to original
-    private String replaceVariableValue(String variableName, String originalValue, String newValue) {
-        Pattern pattern = Pattern.compile("\\$\\{" + variableName + "}");
-        Matcher matcher = pattern.matcher(originalValue);
-        return matcher.replaceAll(newValue);
-    }
-
-    //Will merge to original
-    private void addReplaceVars() {
-        this.varsToReplace.put("version", core.getActionHandler().getCurrentServer().getServerVersion());
     }
 
     @Override
     public void onDownloadStart() {
-        /* for(Map.Entry<String, Boolean> panel: this.core.getLauncher().getEngine().getPanelVisibility().getActivePanels().entrySet()){
-            if(panel.getValue() == true) {
-                this.core.getLauncher().getEngine().getPanelVisibility().displayPanel(panel.getKey() + "->false");
-            }
-        }
-         */
         core.getLauncher().getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getEngine().getLoadingManager().toggleLoader();
     }
 
-
     @Override
     public void onFilesLoaded() {
         Engine.getLOGGER().debug("--==|Files loaded|==--");
-        this.core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher()));
-        List<String> checkList = Arrays.asList(
-                core.getGameLauncher().getPathBuilders().buildClientDir(),
-                core.getGameLauncher().getPathBuilders().buildVersionDir(),
-                core.getGameLauncher().getPathBuilders().buildNativesPath(),
-                core.getGameLauncher().getPathBuilders().buildAssetsPath()
-        );
+        initializeArgsReader();
+        setupFileGuard();
+    }
+
+    private void initializeArgsReader() {
+        core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher()));
+    }
+
+    private void setupFileGuard() {
+        List<String> checkList = getFileGuardCheckList();
         core.setFileGuard(new FileGuard(core.getGameLauncher(), checkList));
         core.getFileGuard().setFileGuardListener(new FileGuardImpl(core));
         core.getFileGuard().addIgnoreDirs(core.getActionHandler().getCurrentServer().getIgnoreDirs());
@@ -107,47 +90,93 @@ public class FileLoaderImpl implements FileLoaderListener {
         core.getFileGuard().recursiveDelete(new File(core.getGameLauncher().getPathBuilders().buildGameDir() + "/assets/skins"));
     }
 
+    private List<String> getFileGuardCheckList() {
+        return Arrays.asList(
+                core.getGameLauncher().getPathBuilders().buildClientDir(),
+                core.getGameLauncher().getPathBuilders().buildVersionDir(),
+                core.getGameLauncher().getPathBuilders().buildNativesPath(),
+                core.getGameLauncher().getPathBuilders().buildAssetsPath()
+        );
+    }
+
     @Override
     public void onFileAdd(FileAttributes fileAttributes) {
+        String bestMatch = findBestMatch(fileAttributes.getFilename());
+        if (bestMatch != null) {
+            processFileAttributes(fileAttributes, bestMatch);
+        }
+    }
+
+    private String findBestMatch(String filename) {
         String bestMatch = null;
-        for (Map.Entry<String, String> masksWeReplace : this.replaceMasks.entrySet()) {
-            String maskKey = masksWeReplace.getKey();
-            if (fileAttributes.getFilename().startsWith(maskKey)) {
-                if (bestMatch == null || maskKey.length() > bestMatch.length()) {
-                    bestMatch = masksWeReplace.getValue();
-                }
+        for (Map.Entry<String, String> entry : replaceMasks.entrySet()) {
+            String maskKey = entry.getKey();
+            if (filename.startsWith(maskKey) && (bestMatch == null || maskKey.length() > bestMatch.length())) {
+                bestMatch = entry.getValue();
             }
         }
-        if (bestMatch != null) {
-            fileAttributes.setReplaceMask(bestMatch);
-            String fileWithoutMask = fileAttributes.getFilename().replace(bestMatch, "");
-            String fullPath = core.getFileLoader().getHomeDir() + fileWithoutMask;
-            core.getFileLoader().addFileToKeep(fileWithoutMask);
-            Engine.getLOGGER().debug("Adding to keep " + fullPath);
-        }
+        return bestMatch;
+    }
+
+    private void processFileAttributes(FileAttributes fileAttributes, String bestMatch) {
+        fileAttributes.setReplaceMask(bestMatch);
+        String fileWithoutMask = fileAttributes.getFilename().replace(bestMatch, "");
+        String fullPath = core.getFileLoader().getHomeDir() + fileWithoutMask;
+        core.getFileLoader().addFileToKeep(fileWithoutMask);
+        Engine.getLOGGER().debug("Adding to keep " + fullPath);
     }
 
     @Override
     public void onNewFileFound(FileLoader fileLoader) {
         FileAttributes currentFile = fileLoader.getCurrentFile();
-        ComponentsAccessor componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
-        String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        String fullPath = core.getFileLoader().getHomeDir() + localPath;
-        Label downloadFile, downloadDirectory;
-        downloadFile = (Label) componentsAccessor.getComponentMap().get("downloadFile");
-        downloadDirectory = (Label) componentsAccessor.getComponentMap().get("downloadDirectory");
-        downloadFile.setText(new File(localPath).getName());
-        downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
-        downloadFile.setIcon(new ImageIcon(
-                ImageUtils.getScaledImage(
-                        ImageUtils.getLocalImage("assets/ui/icons/files/"+ core.getFileLoader().getFileType() +".png"), 36, 38)));
-
+        updateDownloadInfoComponents(currentFile);
+        String fullPath = core.getFileLoader().getHomeDir() + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
         if (core.getFileLoader().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
             core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, fileLoader.getTotalSize());
         }
+        unpackRuntimeZipIfNeeded(fullPath);
+    }
 
+    private void updateDownloadInfoComponents(FileAttributes currentFile) {
+        ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
+        String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
+        String fullPath = core.getFileLoader().getHomeDir() + localPath;
+
+        Label downloadFile = (Label) downloadInfoAccessor.getComponentMap().get("downloadFile");
+        Label downloadDirectory = (Label) downloadInfoAccessor.getComponentMap().get("downloadDirectory");
+        Label filesAmount = (Label) downloadInfoAccessor.getComponentMap().get("filesAmount");
+
+        downloadFile.setText(new File(localPath).getName());
+        downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
+        //filesAmount.setText();
+        downloadFile.setIcon(new ImageIcon(
+                this.core.getLauncher().getImageUtils().getScaledImage(
+                        this.core.getLauncher().getImageUtils().getLocalImage("assets/ui/icons/files/" + core.getFileLoader().getFileType() + ".png"), 36, 38)
+        ));
+    }
+
+    private void unpackRuntimeZipIfNeeded(String fullPath) {
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
+    }
+
+    public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
+        addReplaceVars();
+        replaceTemplate.forEach(mask -> varsToReplace.forEach((key, value) -> {
+            String maskKey = replaceVariableValue(key, mask.getMask(), value);
+            String maskValue = replaceVariableValue(key, mask.getReplace(), value);
+            replaceMasks.put(maskKey, maskValue);
+        }));
+    }
+
+    private String replaceVariableValue(String variableName, String originalValue, String newValue) {
+        Pattern pattern = Pattern.compile("\\$\\{" + variableName + "}");
+        Matcher matcher = pattern.matcher(originalValue);
+        return matcher.replaceAll(newValue);
+    }
+
+    private void addReplaceVars() {
+        this.varsToReplace.put("version", core.getActionHandler().getCurrentServer().getServerVersion());
     }
 }

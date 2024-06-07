@@ -53,13 +53,19 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     */
 
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    this.engine.getLoadingManager().toggleLoader();
+                    //this.engine.getLoadingManager().toggleLoader();
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
                 case "applySettings" -> this.launcher.getSettings().applySettings();
                 case "logOut" -> this.launcher.getAuth().logOut();
-                case "info-small" -> Engine.LOGGER.warn("Not implemented yet!");
+                case "info-small" -> {
+                    if (!launcher.getAuth().isAuthorised()) {
+                        engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
+                    } else {
+                        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
+                    }
+                }
 
                 case "settings-small" -> {
                     if (!launcher.getAuth().isAuthorised()) {

@@ -19,31 +19,33 @@ import java.util.Date;
 import java.util.List;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
-import static org.foxesworld.engine.utils.ImageUtils.getLocalImage;
-import static org.foxesworld.engine.utils.ImageUtils.getRoundedImage;
 
 public class NewsPanel extends JPanel {
     private final News news;
+    private final ImageUtils imageUtils;
     private final FontUtils fontUtils;
 
     public NewsPanel(News news) {
         this.news = news;
         this.fontUtils = news.getLauncher().getFONTUTILS();
+        this.imageUtils = news.getLauncher().getImageUtils();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
 
+        JScrollPane scrollPane = createScrollPane();
         JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
-        JScrollPane scrollPane = createScrollPane(contentPanel);
+        scrollPane.setViewportView(contentPanel);
+
         add(scrollPane);
     }
 
-    private JScrollPane createScrollPane(JPanel contentPanel) {
-        JScrollPane scrollPane = new JScrollPane(contentPanel);
+    private JScrollPane createScrollPane() {
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        scrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(new ScrollBarUI(this.news.getLauncher()));
         adjustScrollPaneSensitivity(scrollPane);
         return scrollPane;
     }
@@ -93,7 +95,7 @@ public class NewsPanel extends JPanel {
         try {
             ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
             Image communityImage = communityIcon.getImage();
-            communityIcon = new ImageIcon(getRoundedImage(communityImage, 50));
+            communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImage, 50));
 
             JLabel communityLabel = new JLabel(communityIcon);
             communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -131,8 +133,8 @@ public class NewsPanel extends JPanel {
     }
 
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
-        BufferedImage img = ImageUtils.getRoundedImage(ImageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", ImageUtils.getLocalImage("")), 25);
-        Image image = ImageUtils.getScaledImage(img, 470, 350);
+        BufferedImage img = imageUtils.getRoundedImage(imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", imageUtils.getLocalImage("")), 25);
+        Image image = imageUtils.getScaledImage(img, 470, 350);
         ImageIcon fullSizeIcon = new ImageIcon(image);
         JLabel photoLabel = new JLabel(fullSizeIcon);
         photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -163,7 +165,7 @@ public class NewsPanel extends JPanel {
         int[] statisticsValues = {newsAttributes.getViews(), newsAttributes.getLikes(), newsAttributes.getComments(), newsAttributes.getReposts()};
 
         for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
-            ImageIcon imageIcon = new ImageIcon(ImageUtils.getScaledImage(getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"), 16, 16));
+            ImageIcon imageIcon = new ImageIcon(imageUtils.getScaledImage(imageUtils.getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"), 16, 16));
             Color textColor = Color.WHITE;
             int horizontalAlignment = (i == NewsProvider.getStatsValuesKeys().length - 1) ? FlowLayout.RIGHT : FlowLayout.LEFT;
 

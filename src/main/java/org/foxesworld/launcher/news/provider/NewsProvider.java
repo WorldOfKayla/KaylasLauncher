@@ -26,8 +26,6 @@ public class NewsProvider {
     private long date;
     private List<String> tooltipPhotoUrls;
     private List<String> originalPhotoUrls;
-    private int newsCount;
-
     public NewsProvider(Engine engine) {
         this.engine = engine;
     }
@@ -48,7 +46,6 @@ public class NewsProvider {
                 JsonArray posts = jsonResponse.getAsJsonObject("response").getAsJsonArray("items");
                 NewsAttributes.setCommunityName(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("name").getAsString());
                 NewsAttributes.setCommunityPhotoUrl(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("photo_50").getAsString());
-                newsCount = posts.size();
 
                 // Process each post
                 for (JsonElement postElement : posts) {
@@ -98,7 +95,6 @@ public class NewsProvider {
         JsonObject originalSize = sizes.get(sizes.size() - 1).getAsJsonObject();
         return originalSize.get("url").getAsString();
     }
-
     private String getPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
         JsonObject mediumSize = sizes.get(0).getAsJsonObject();
@@ -109,7 +105,7 @@ public class NewsProvider {
         StringBuilder urlBuilder = new StringBuilder(VK_API_URL);
         urlBuilder.append("?domain=").append(this.engine.getEngineData().getGroupDomain());
         urlBuilder.append("&access_token=").append(this.engine.getEngineData().getAccessToken());
-        urlBuilder.append("&count=" + newsCount);
+        urlBuilder.append("&count=5"); // Adjust count as needed
         urlBuilder.append("&extended=1");
         urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion());
 
@@ -138,9 +134,5 @@ public class NewsProvider {
 
     public List<String> getOriginalPhotoUrls() {
         return originalPhotoUrls;
-    }
-
-    public int getNewsCount() {
-        return newsCount;
     }
 }

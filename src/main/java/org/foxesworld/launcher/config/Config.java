@@ -13,16 +13,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class Config extends org.foxesworld.engine.config.Config {
-    private int selectedServer, loaderIndex, ramAmount;
+    @SuppressWarnings("unused")
+    private int selectedServer, loaderIndex;
     private double volume;
+    @SuppressWarnings("unused")
+    private int ramAmount;
+    @SuppressWarnings("unused")
     private Object width, height;
+    @SuppressWarnings("unused")
     private String login, password, lang;
+    @SuppressWarnings("unused")
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
 
     public Config(Engine engine) {
-        setCfgExportDir("config/");
+        setCfgExportDir("cache/config/");
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         CfgProvider.setDefaultConfFilesDir("config/");
@@ -100,10 +105,11 @@ public class Config extends org.foxesworld.engine.config.Config {
         this.writeCurrentConfig();
     }
 
+
     @Override
     public void writeCurrentConfig() {
         Engine.getLOGGER().debug("Writing Config");
-        try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "config/config.json")) {
+        try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "cache/config/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,49 +127,67 @@ public class Config extends org.foxesworld.engine.config.Config {
     public String getLogin() {
         return login;
     }
+
     public String getPassword() {
         return password;
     }
+
     public String getLang() {
         return lang;
     }
+
     public int getRamAmount() {
         return ramAmount;
     }
+
+    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
+
     public boolean isAutoEnter() {
         return autoEnter;
     }
+
     public boolean isFullScreen() {
         return fullScreen;
     }
+
     public boolean isLoadNews() {
         return loadNews;
     }
+
     public boolean isLaunchAC() {
         return launchAC;
     }
+
+    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
     }
+
     public boolean isBackgroundMusic() {
         return backgroundMusic;
     }
+
     public void setVolume(double volume) {
         this.volume = volume;
     }
+
     public int getSelectedServer() {
         return selectedServer;
     }
+
     public int getLoaderIndex() {
         return loaderIndex;
     }
+
     public Object getWidth() {
         return width;
     }
+
     public Object getHeight() {
         return height;
     }
+
 }

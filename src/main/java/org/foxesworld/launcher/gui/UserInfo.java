@@ -6,7 +6,6 @@ import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
-import org.foxesworld.engine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -39,10 +38,10 @@ public class UserInfo extends ComponentsAccessor {
     }
 
     public void updateInfo(){
-        BufferedImage userPic = ImageUtils.loadImageFromUrl(this.launcher.getEngineData().getBindUrl() + this.userAttributes[0].getProfilePhoto());
+        BufferedImage userPic = this.launcher.getImageUtils().loadImageFromUrl(this.launcher.getEngineData().getBindUrl() + this.userAttributes[0].getProfilePhoto());
         this.components.get("titleText").setText(this.userAttributes[0].getRealname());
         this.components.get("statusText").setText(this.userAttributes[0].getUserStatus());
-        this.components.get("userInfoHead").setIcon(new ImageIcon(ImageUtils.getRoundedImage(ImageUtils.getScaledImage(userPic, 128, 128), 50)));
+        this.components.get("userInfoHead").setIcon(new ImageIcon(this.launcher.getImageUtils().getRoundedImage(this.launcher.getImageUtils().getScaledImage(userPic, 128, 128), 50)));
     }
 
     private void getComponents(){

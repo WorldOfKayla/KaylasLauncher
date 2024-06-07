@@ -3,7 +3,6 @@ package org.foxesworld.launcher.game;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
@@ -21,6 +20,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     private String mainClass, tweakClassVal = "";
     public final Launcher launcher;
     private Map<String, String> replaceValues = new HashMap<>();
+    //private final ClientType clientType;
     protected final User user;
     private final AuthLib authLib;
 
@@ -131,7 +131,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageUtils.getLocalImage("assets/ui/icons/bug.png")));
+                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash", JOptionPane.ERROR_MESSAGE, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/bug.png")));
                         System.exit(0);
                     }
                 });
@@ -141,7 +141,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             }
         });
     }
-
     @Override
     protected String addTweakClass() {
         String tweakClassVal;

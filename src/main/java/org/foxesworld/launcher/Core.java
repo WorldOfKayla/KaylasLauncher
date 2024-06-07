@@ -36,15 +36,15 @@ public class Core implements GameListener {
     }
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
-        //this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
-        System.out.println("=== GAME CLIENT " + serverAttributes.getServerName()+ " STARTED by "+ this.gameLauncher.launcher.getUser().getLogin()+" ===");
+        this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
+        System.out.println("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.gameLauncher.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
     }
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin() + " on " + serverAttributes.getServerName());
+        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory()) {
                 this.actionHandler.getLauncher().restartApplication(512, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());

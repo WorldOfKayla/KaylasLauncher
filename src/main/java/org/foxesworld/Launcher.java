@@ -49,20 +49,20 @@ public class Launcher extends Engine implements AuthListener {
 
     public Launcher() {
         super("config");
+        long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
         this.preInit();
 
         if (!isLauncherValid()) {
-            handleInvalidLauncher();
+            showErrorDialog("invalidLauncher");
         } else {
             int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
             int expectedJRE = Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""));
-
             if (launchingWith != expectedJRE) {
                 if (launcher.isFile()) {
                     Engine.LOGGER.warn("Using incorrect JRE {}", launchingWith);
-                    handleInvalidJVM();
+                    showErrorDialog("invalidJVM");
                     return;
                 } else if (launcher.isDirectory()) {
                     Engine.LOGGER.warn("Using a JRE different from {}", getEngineData().getProgramRuntime());
@@ -77,7 +77,9 @@ public class Launcher extends Engine implements AuthListener {
             this.auth = new Auth(this);
             init();
             setActionHandler(new ActionHandler(this));
-            getLOGGER().debug("Launcher started!");
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+            getLOGGER().info(this.getAppTitle() + " started in " + String.format("%d ms", duration) + "!");
         }
     }
 
@@ -97,7 +99,7 @@ public class Launcher extends Engine implements AuthListener {
         this.CRYPTO = new CryptUtils(this);
     }
 
-    public void buildGui(String[] styles) {
+    private void buildGui(String[] styles) {
         setStyleProvider(new StyleProvider(styles));
         setGuiBuilder(new GuiBuilder(this));
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
@@ -139,19 +141,13 @@ public class Launcher extends Engine implements AuthListener {
         }
     }
 
-    private void handleInvalidLauncher() {
-        String error = "invalidLauncher";
-        this.getSOUND().playSound("other", error);
-        getLOGGER().error(error);
-        JOptionPane.showMessageDialog(new JFrame(), error, this.getAppTitle(), JOptionPane.WARNING_MESSAGE);
-        System.exit(0);
-    }
-
-    private void handleInvalidJVM() {
-        String error = "invalidJVM";
-        this.getSOUND().playSound("other", error);
-        getLOGGER().error(error);
-        JOptionPane.showMessageDialog(new JFrame(), error, this.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+    private void showErrorDialog(String errorKey) {
+        String errorMessage = this.getLANG().getString("error." + errorKey);
+        this.getSOUND().playSound("other", errorKey);
+        getLOGGER().error(errorKey);
+        UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12));
+        UIManager.put("OptionPane.buttonFont", this.getFONTUTILS().getFont("mcfontBold", 12));
+        JOptionPane.showMessageDialog(this.getFrame(), errorMessage, this.getAppTitle(), JOptionPane.WARNING_MESSAGE);
         System.exit(0);
     }
 
@@ -188,7 +184,6 @@ public class Launcher extends Engine implements AuthListener {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        //parentPanel.setDoubleBuffered(true);
         getLOGGER().debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
 
@@ -220,6 +215,7 @@ public class Launcher extends Engine implements AuthListener {
     public Config getConfig() {
         return (Config) this.config;
     }
+
     @SuppressWarnings("unused")
     static class LauncherAttributes {
         private String fileMd5;

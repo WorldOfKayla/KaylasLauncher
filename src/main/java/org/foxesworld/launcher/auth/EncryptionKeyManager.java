@@ -20,7 +20,7 @@ public class EncryptionKeyManager {
 
     EncryptionKeyManager(Launcher launcher) {
         this.launcher = launcher;
-        createEncryptionDirectory(); // Call the method to create the directory
+        createEncryptionDirectory();
     }
 
     private void createEncryptionDirectory() {

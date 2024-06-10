@@ -1,24 +1,34 @@
 {
-    "general": {
-      "appTitle": {
-        "en_US": "FoxesWorld",
-        "ru_RU": "ЛисийМир"
-      },
-      "status": {
-        "en_US": "Alpha",
-        "ru_RU": "Альфа"
-      }
+  "general": {
+    "appTitle": {
+      "en_US": "FoxesWorld",
+      "ru_RU": "ЛисийМир"
     },
-    "settings": {
-      "settingsButt": {
-        "en_US": "Settings",
-        "ru_RU": "Настройки"
-      },
-      "back": {
-        "en_US": "Back",
-        "ru_RU": "Назад"
-      },
-      "baseOptions": {
+    "status": {
+      "en_US": "Alpha",
+      "ru_RU": "Альфа"
+    }
+  },
+  "error": {
+    "invalidJVM": {
+      "en_US": "The JVM is invalid!",
+      "ru_RU": "Ваша JVM не является валидной!"
+    },
+    "invalidLauncher": {
+      "en_US": "The launcher is invalid!",
+      "ru_RU": "Ваш лаунчер нуждается в обновлении!"
+    }
+  },
+  "settings": {
+    "settingsButt": {
+      "en_US": "Settings",
+      "ru_RU": "Настройки"
+    },
+    "back": {
+      "en_US": "Back",
+      "ru_RU": "Назад"
+    },
+    "baseOptions": {
         "en_US": "Base Options",
         "ru_RU": "Общие параметры"
       },

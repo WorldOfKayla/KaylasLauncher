@@ -67,6 +67,11 @@
         "assets/sounds/auth.ogg"
       ]
     },
+    "loggedOut": {
+      "sounds": [
+        "assets/sounds/logout.ogg"
+      ]
+    },
     "invalidLauncher": {
       "sounds": [
         "assets/sounds/other/invalid.ogg",

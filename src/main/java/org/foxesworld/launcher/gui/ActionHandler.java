@@ -58,7 +58,10 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "gameDir-small" -> Settings.openGameFolder();
                 case "applySettings" -> this.launcher.getSettings().applySettings();
-                case "logOut" -> this.launcher.getAuth().logOut();
+                case "logOut" -> {
+                    this.launcher.getSOUND().playSound("other", "loggedOut");
+                    this.launcher.getAuth().logOut();
+                }
                 case "info-small" -> {
                     if (!launcher.getAuth().isAuthorised()) {
                         engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");

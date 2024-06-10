@@ -98,14 +98,13 @@ public class NewsProvider {
     }
 
     private String buildUrl() {
-        StringBuilder urlBuilder = new StringBuilder(VK_API_URL);
-        urlBuilder.append("?domain=").append(this.engine.getEngineData().getGroupDomain());
-        urlBuilder.append("&access_token=").append(this.engine.getEngineData().getAccessToken());
-        urlBuilder.append("&count=" + this.newsCount);
-        urlBuilder.append("&extended=1");
-        urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion());
+        String urlBuilder = VK_API_URL + "?domain=" + this.engine.getEngineData().getGroupDomain() +
+                "&access_token=" + this.engine.getEngineData().getAccessToken() +
+                "&count=" + this.newsCount +
+                "&extended=1" +
+                "&v=" + this.engine.getEngineData().getVkAPIversion();
 
-        return urlBuilder.toString();
+        return urlBuilder;
     }
 
     public String getText() {

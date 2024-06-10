@@ -24,8 +24,10 @@ public class NewsProvider {
     private String text;
     private Map<String, Integer> statsValues;
     private long date;
+    private int newsCount = 0;
     private List<String> tooltipPhotoUrls;
     private List<String> originalPhotoUrls;
+
     public NewsProvider(Engine engine) {
         this.engine = engine;
     }
@@ -34,20 +36,16 @@ public class NewsProvider {
         List<NewsAttributes> newsAttributesList = new ArrayList<>();
 
         try {
-            // Construct the URL for VK API request
             URL url = new URL(buildUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            // Read the response
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                // Parse the JSON response
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonResponse = jsonParser.parse(reader).getAsJsonObject();
                 JsonArray posts = jsonResponse.getAsJsonObject("response").getAsJsonArray("items");
                 NewsAttributes.setCommunityName(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("name").getAsString());
                 NewsAttributes.setCommunityPhotoUrl(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("photo_50").getAsString());
 
-                // Process each post
                 for (JsonElement postElement : posts) {
                     JsonObject post = postElement.getAsJsonObject();
                     text = post.get("text").getAsString();
@@ -57,29 +55,26 @@ public class NewsProvider {
                         statsValues.put(value, statVal);
                     }
 
-                    date = post.get("date").getAsLong(); // Get the publication date in seconds
+                    date = post.get("date").getAsLong();
                     tooltipPhotoUrls = new ArrayList<>();
                     originalPhotoUrls = new ArrayList<>();
-                    // Process attachments
                     JsonArray attachments = post.getAsJsonArray("attachments");
                     if (attachments != null) {
                         for (JsonElement attachmentElement : attachments) {
                             JsonObject attachment = attachmentElement.getAsJsonObject();
                             String attachmentType = attachment.get("type").getAsString();
                             if (attachmentType.equals("photo")) {
-
                                 JsonObject photo = attachment.getAsJsonObject("photo");
                                 String tooltipUrl = getPhotoUrl(photo);
                                 String originalUrl = getOriginalPhotoUrl(photo);
                                 tooltipPhotoUrls.add(tooltipUrl);
                                 originalPhotoUrls.add(originalUrl);
                             }
-                            // Handle other attachment types (e.g., video, link) as needed
                         }
                     }
 
-                    // Create a NewsAttributes object with the publication date and add it to the list
                     newsAttributesList.add(new NewsAttributes(this));
+                    newsCount += 1;
                 }
             }
 
@@ -95,6 +90,7 @@ public class NewsProvider {
         JsonObject originalSize = sizes.get(sizes.size() - 1).getAsJsonObject();
         return originalSize.get("url").getAsString();
     }
+
     private String getPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
         JsonObject mediumSize = sizes.get(0).getAsJsonObject();
@@ -105,7 +101,7 @@ public class NewsProvider {
         StringBuilder urlBuilder = new StringBuilder(VK_API_URL);
         urlBuilder.append("?domain=").append(this.engine.getEngineData().getGroupDomain());
         urlBuilder.append("&access_token=").append(this.engine.getEngineData().getAccessToken());
-        urlBuilder.append("&count=5"); // Adjust count as needed
+        urlBuilder.append("&count=" + this.newsCount);
         urlBuilder.append("&extended=1");
         urlBuilder.append("&v=").append(this.engine.getEngineData().getVkAPIversion());
 

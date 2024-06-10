@@ -33,7 +33,7 @@ public class Auth {
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        this.encryptionKeyManager = new EncryptionKeyManager(launcher);
+        this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
@@ -45,7 +45,7 @@ public class Auth {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             authCredentials.put("login", CONFIG.getLogin());
             String encryptedPassword = CONFIG.getPassword();
-            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey());
+            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
@@ -131,7 +131,7 @@ public class Auth {
 
     private void saveAuthCredentials(Map<String, String> authCredentials) {
         Map<String, String> encryptedCredentials = new HashMap<>(authCredentials);
-        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), encryptionKeyManager.getEncryptionKey());
+        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), encryptionKeyManager.getEncryptionKey(16));
         encryptedCredentials.put("password", encryptedPassword);
         launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
         launcher.getConfig().writeCurrentConfig();

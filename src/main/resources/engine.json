@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.9.2-Rage",
+  "launcherVersion": "1.9.2-Rage Rev 0.3",
   "styles": [
     "button",
     "checkBox",
@@ -31,8 +31,8 @@
       "spritePath": "assets/ui/sprites/loaderFox.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
       "blurColor": "#b3a8998a",
-      "titleColor": "#000000",
-      "descColor": "#dd9711ed",
+      "titleColor": "#ffffff",
+      "descColor": "#473c3c",
       "rows": 3,
       "cols": 5,
       "delay": 50,
@@ -57,6 +57,54 @@
         "y": 40,
         "width": 64,
         "height": 64
+      }
+    },
+    {
+      "spritePath": "assets/ui/sprites/banjo.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "blurColor": "#bfede587",
+      "titleColor": "#000000",
+      "descColor": "#fffffd",
+      "rows": 7,
+      "cols": 5,
+      "delay": 50,
+      "bounds": {
+        "x": -5,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "spritePath": "assets/ui/sprites/load.png",
+      "bgPath": "assets/ui/img/bg/season/winter.png",
+      "blurColor": "#258f668f",
+      "titleColor": "#000000",
+      "descColor": "#fffffd",
+      "rows": 1,
+      "cols": 15,
+      "delay": 55,
+      "bounds": {
+        "x": 45,
+        "y": 40,
+        "width": 64,
+        "height": 64
+      }
+    },
+    {
+      "spritePath": "assets/ui/sprites/waitFire.png",
+      "bgPath": "assets/ui/img/bg/season/autumn.png",
+      "blurColor": "#b3a8998a",
+      "titleColor": "#ffffff",
+      "descColor": "#473c3c",
+      "rows": 8,
+      "cols": 8,
+      "delay": 40,
+      "bounds": {
+        "x": 30,
+        "y": 10,
+        "width": 78,
+        "height": 78
       }
     }
   ],

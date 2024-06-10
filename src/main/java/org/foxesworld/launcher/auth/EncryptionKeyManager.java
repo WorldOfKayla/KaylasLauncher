@@ -2,6 +2,7 @@ package org.foxesworld.launcher.auth;
 
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.Engine;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -15,11 +16,10 @@ import java.util.Map;
 public class EncryptionKeyManager {
 
     private final String FILE_PATH = "cache/encryption";
-    private final int KEY_LENGTH = 16;
-    private final Launcher launcher;
+    private final Engine engine;
 
-    EncryptionKeyManager(Launcher launcher) {
-        this.launcher = launcher;
+    EncryptionKeyManager(Engine engine) {
+        this.engine = engine;
         createEncryptionDirectory();
     }
 
@@ -32,12 +32,12 @@ public class EncryptionKeyManager {
         }
     }
 
-    String getEncryptionKey() {
+    String getEncryptionKey(Integer keyLength) {
         Map<String, Object> cipherFile = new HashMap<>();
         File file = new File(FILE_PATH);
 
         if (!file.exists()) {
-            String newKey = generateRandomString(KEY_LENGTH);
+            String newKey = generateRandomString(keyLength);
             cipherFile.put("hashCode", newKey);
             writeJson(file, cipherFile);
         }
@@ -47,7 +47,7 @@ public class EncryptionKeyManager {
             Map<String, String> json = gson.fromJson(bufferedReader, Map.class);
             return json.get("hashCode");
         } catch (IOException e) {
-            Launcher.LOGGER.error("Error reading the encryption key file {}", e);
+            Engine.LOGGER.error("Error reading the encryption key file {}", e);
         }
         return "";
     }
@@ -64,7 +64,7 @@ public class EncryptionKeyManager {
             Gson gson = new Gson();
             gson.toJson(data, writer);
         } catch (IOException e) {
-            Launcher.LOGGER.error("Error writing the encryption key file {}", e);
+            Engine.LOGGER.error("Error writing the encryption key file {}", e);
         }
     }
 }

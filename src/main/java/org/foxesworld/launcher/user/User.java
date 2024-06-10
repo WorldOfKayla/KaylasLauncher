@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final Launcher launcher;
@@ -26,9 +27,8 @@ public class User extends org.foxesworld.engine.user.User {
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
-    @SuppressWarnings("unused")
-    private String login, password, units, token, uuid, colorScheme;
     private final ComponentsAccessor componentsAccessor;
+    private final UserAttributes userAttributes;
     private JPanel newsPanel;
 
     public User(Launcher launcher) {
@@ -41,6 +41,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
         this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane");
+        this.userAttributes = new UserAttributes(this);
 
         initializeUser();
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
@@ -72,9 +73,10 @@ public class User extends org.foxesworld.engine.user.User {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
             try {
-                Field field = User.class.getDeclaredField(credentials.getKey());
-                field.set(this, credentials.getValue());
+                Field field = this.userAttributes.getClass().getDeclaredField(credentials.getKey());
+                field.set(this.userAttributes, credentials.getValue());
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                ignored.printStackTrace();
             }
         }
         ImageIcon icon = new ImageIcon(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())));
@@ -82,48 +84,30 @@ public class User extends org.foxesworld.engine.user.User {
         ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
     }
 
-    private void setUserHeadIcon() {
-        BufferedImage userHead = launcher.getImageUtils().base64ToBufferedImage(getUserHead(getLogin()));
-        ImageIcon icon = new ImageIcon(userHead);
-        JLabel userHeadLabel = (JLabel) componentsAccessor.getComponentMap().get("userHead");
-        userHeadLabel.setIcon(icon);
-    }
-
-    private void setUserGroupLabel() {
-        String userGroupKey = "group.group-" + auth.getAuthCredentials("group");
-        String userGroup = lang.getString(userGroupKey);
-        JLabel userGroupLabel = (JLabel) componentsAccessor.getComponentMap().get("userGroup");
-        userGroupLabel.setText(userGroup);
-    }
-
     public String getLogin() {
-        return login;
+        return this.userAttributes.login;
     }
 
-    @SuppressWarnings("unused")
     public String getPassword() {
-        return password;
+        return this.userAttributes.password;
     }
 
-    @SuppressWarnings("unused")
     public String getUnits() {
-        return units;
+        return this.userAttributes.units;
     }
 
     public String getToken() {
-        return token;
+        return this.userAttributes.token;
     }
 
-    @SuppressWarnings("unused")
     public String getColorScheme() {
-        return colorScheme;
+        return this.userAttributes.colorScheme;
     }
 
     public String getUuid() {
-        return uuid;
+        return this.userAttributes.uuid;
     }
 
-    @SuppressWarnings("unused")
     public Auth getAuth() {
         return auth;
     }

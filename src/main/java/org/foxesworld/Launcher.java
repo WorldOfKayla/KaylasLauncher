@@ -52,6 +52,7 @@ public class Launcher extends Engine implements AuthListener {
         long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
+        //System.out.println(String.valueOf(this.getFreeMemory() * 0.35));
         this.preInit();
 
         if (!isLauncherValid()) {

@@ -18,7 +18,7 @@
           "componentType": "label",
           "fontSize": 15,
           "componentStyle": "promptLabel",
-          "imageIcon": "assets/ui/icons/settings.png",
+          "imageIcon": "assets/ui/icons/settings.svg",
           "iconWidth": 32,
           "iconHeight": 32,
           "localeKey": "settings.baseOptions",

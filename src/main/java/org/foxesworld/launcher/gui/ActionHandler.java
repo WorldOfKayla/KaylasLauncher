@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
+import raven.toast.Notifications;
 
 import java.awt.event.ActionEvent;
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
@@ -54,6 +55,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                     //this.engine.getLoadingManager().toggleLoader();
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Hello");
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

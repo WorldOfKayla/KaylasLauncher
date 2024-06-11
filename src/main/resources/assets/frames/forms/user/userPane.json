@@ -59,6 +59,20 @@
           }
         },
         {
+          "componentType": "button",
+          "enabled": true,
+          "keyCode": "F5",
+          "componentStyle": "btnSmallClean",
+          "componentId": "smallButton",
+          "localeKey": "TEST",
+          "bounds": {
+            "x": 80,
+            "y": 45,
+            "width": 60,
+            "height": 34
+          }
+        },
+        {
           "panels": {
             "userDataForm": {
               "panelOptions": {
@@ -76,7 +90,7 @@
                   "componentType": "label",
                   "fontSize": 11,
                   "componentStyle": "title",
-                  "imageIcon": "assets/ui/icons/units.png",
+                  "imageIcon": "assets/ui/icons/units.svg",
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "localeKey": "logged.units",
@@ -93,7 +107,7 @@
                   "componentType": "label",
                   "fontSize": 11,
                   "componentStyle": "title",
-                  "imageIcon": "assets/ui/icons/crystals.png",
+                  "imageIcon": "assets/ui/icons/crystals.svg",
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "localeKey": "logged.crystals",

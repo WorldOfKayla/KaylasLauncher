@@ -137,6 +137,14 @@
       "rememberMe": {
         "en_US": "Remember Me",
         "ru_RU": "Запомнить меня"
+      },
+      "loggedIn": {
+        "en_US": "Successful login for ",
+        "ru_RU": "Успешная авторизация"
+      },
+      "loggedOut": {
+        "en_US": " logged out",
+        "ru_RU": " успешно разлогинился"
       }
     },
     "file": {

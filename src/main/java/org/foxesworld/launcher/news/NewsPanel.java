@@ -124,7 +124,7 @@ public class NewsPanel extends JPanel {
         String labelText = "<html><body style='width: 380px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
         JLabel newsText = new JLabel(labelText);
         newsText.setFont(this.fontUtils.getFont("mcfont", 13));
-        newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
+        //newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
         newsText.setForeground(Color.WHITE);
 
         textPanel.add(newsText, BorderLayout.WEST);

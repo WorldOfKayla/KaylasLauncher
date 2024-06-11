@@ -147,39 +147,30 @@ public class Auth {
     public String getAuthCredentials(String key) {
         return authCredentials.get(key);
     }
-
     public Map<String, String> getAuthCredentials() {
         return authCredentials;
     }
-
     public Engine getEngine() {
         return engine;
     }
-
     public Launcher getLauncher() {
         return launcher;
     }
-
     public String[] getUserServersArray() {
         return authorised ? userServersArray : new String[0];
     }
-
     public List<ServerAttributes> getUserServersAttributes() {
         return userServersAttributes;
     }
-
     public boolean isAuthorised() {
         return authorised;
     }
-
     public void setAuthListener(AuthListener authListener) {
         this.authListener = authListener;
     }
-
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
-
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
     }

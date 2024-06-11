@@ -66,27 +66,21 @@ public class Core implements GameListener {
     public ActionHandler getActionHandler() {
         return actionHandler;
     }
-
     public GameLauncher getGameLauncher() {
         return gameLauncher;
     }
-
     public FileLoader getFileLoader() {
         return fileLoader;
     }
-
     public void setFileGuard(FileGuard fileGuard) {
         this.fileGuard = fileGuard;
     }
-
     public FileGuard getFileGuard() {
         return fileGuard;
     }
-
     public Launcher getLauncher() {
         return launcher;
     }
-
     public void setGameLauncher(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }

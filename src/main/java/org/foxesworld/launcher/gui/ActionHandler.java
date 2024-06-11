@@ -55,13 +55,14 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                     //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
                     //this.engine.getLoadingManager().toggleLoader();
-                    Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Hello");
+                    this.getEngine().getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Hello " + this.launcher.getUser().getLogin());
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
                 case "applySettings" -> this.launcher.getSettings().applySettings();
                 case "logOut" -> {
                     this.launcher.getSOUND().playSound("other", "loggedOut");
+                    this.launcher.getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
                     this.launcher.getAuth().logOut();
                 }
                 case "info-small" -> {

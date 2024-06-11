@@ -10,6 +10,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -57,6 +58,7 @@ public class User extends org.foxesworld.engine.user.User {
                     launcher.getAppTitle(),
                     "aiden"
             );
+            this.getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_LEFT, this.launcher.getLANG().getString("auth.loggedIn") + this.getLogin());
         } else {
             engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
@@ -76,7 +78,6 @@ public class User extends org.foxesworld.engine.user.User {
                 Field field = this.userAttributes.getClass().getDeclaredField(credentials.getKey());
                 field.set(this.userAttributes, credentials.getValue());
             } catch (NoSuchFieldException | IllegalAccessException ignored) {
-                ignored.printStackTrace();
             }
         }
         ImageIcon icon = new ImageIcon(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())));

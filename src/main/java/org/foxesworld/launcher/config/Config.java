@@ -13,17 +13,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class Config extends org.foxesworld.engine.config.Config {
-    @SuppressWarnings("unused")
+
     private int selectedServer, loaderIndex;
     private double volume;
-    @SuppressWarnings("unused")
     private int ramAmount;
-    @SuppressWarnings("unused")
     private Object width, height;
-    @SuppressWarnings("unused")
     private String login, password, lang;
-    @SuppressWarnings("unused")
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
 
     public Config(Engine engine) {

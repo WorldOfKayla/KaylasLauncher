@@ -85,7 +85,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     public void launchGame() {
-        if(this.launcher.getEngine().getLoadingManager().getLoadingTimer().isRunning()) {
+        if (this.launcher.getEngine().getLoadingManager().getLoadingTimer().isRunning()) {
             this.launcher.getEngine().getLoadingManager().toggleLoader();
         }
         executorService.submit(() -> {
@@ -98,7 +98,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
                 }
 
-                if(this.argsReader.getMainClass() != null){
+                if (this.argsReader.getMainClass() != null) {
                     mainClass = argsReader.getMainClass();
                 }
 
@@ -131,7 +131,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, "FoxesEngine 1.6 crash", JOptionPane.ERROR_MESSAGE, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/bug.png")));
+                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, this.launcher.getAppTitle() + " Crash", JOptionPane.ERROR_MESSAGE, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/bug.svg", 64, 64));
                         System.exit(0);
                     }
                 });

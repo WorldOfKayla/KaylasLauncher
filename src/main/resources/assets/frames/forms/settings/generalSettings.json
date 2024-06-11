@@ -57,7 +57,7 @@
                   "enabled": true,
                   "keyCode": "F",
                   "fontSize": 12,
-                  "imageIcon": "assets/ui/icons/files/folder.png",
+                  "imageIcon": "assets/ui/icons/files/folder.svg",
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "componentStyle": "btnSmallClean",

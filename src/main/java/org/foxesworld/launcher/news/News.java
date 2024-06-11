@@ -1,7 +1,6 @@
 package org.foxesworld.launcher.news;
 
 import org.foxesworld.Launcher;
-import org.foxesworld.engine.Engine;
 import org.foxesworld.launcher.news.provider.NewsProvider;
 
 import javax.swing.*;
@@ -11,10 +10,10 @@ public class News extends org.foxesworld.engine.news.News {
     private NewsProvider newsProvider;
     public News(Launcher launcher){
         this.launcher = launcher;
-        if(this.launcher.getConfig().isLoadNews()) {
+        if (this.launcher.getConfig().isLoadNews()) {
             this.newsProvider = new NewsProvider(this.launcher);
-            buildPanel();
         }
+        buildPanel();
     }
 
     @Override
@@ -30,7 +29,7 @@ public class News extends org.foxesworld.engine.news.News {
         return newsProvider;
     }
 
-    public Engine getLauncher() {
+    public Launcher getLauncher() {
         return launcher;
     }
 }

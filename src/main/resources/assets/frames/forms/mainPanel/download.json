@@ -76,7 +76,7 @@
                   "fontSize": 14,
                   "color": "#636c73bf",
                   "componentStyle": "title",
-                  "imageIcon": "assets/ui/icons/files/folder.png",
+                  "imageIcon": "assets/ui/icons/files/folder.svg",
                   "iconWidth": 36,
                   "iconHeight": 36,
                   "componentId": "downloadDirectory",

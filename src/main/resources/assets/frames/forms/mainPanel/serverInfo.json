@@ -46,6 +46,7 @@
                 "opaque": true,
                 "doubleBuffered": true,
                 "background": "#4a4c4f",
+                "cornerRadius": 10,
                 "bounds": {
                   "x": 10,
                   "y": 345,

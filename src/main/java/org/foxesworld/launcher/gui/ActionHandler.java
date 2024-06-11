@@ -5,8 +5,10 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
-import raven.toast.Notifications;
+import org.foxesworld.notification.Notification;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
@@ -28,6 +30,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             key = command[1];
             parent = command[0];
         }
+        JComponent component = this.getEngine().getGuiBuilder().getComponentById(key);
             switch (key) {
                 case "submit" -> {
                     switch (parent){
@@ -45,24 +48,14 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    /*
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
-                    }
-                    */
-
-                    //this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    //this.engine.getLoadingManager().toggleLoader();
-                    this.getEngine().getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Hello " + this.launcher.getUser().getLogin());
+                    this.getEngine().getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(component.getX() + 20, component.getY(), 140, 45), 1200, "Hello " + this.launcher.getUser().getLogin());
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
                 case "applySettings" -> this.launcher.getSettings().applySettings();
                 case "logOut" -> {
                     this.launcher.getSOUND().playSound("other", "loggedOut");
-                    this.launcher.getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
+                    this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
                     this.launcher.getAuth().logOut();
                 }
                 case "info-small" -> {

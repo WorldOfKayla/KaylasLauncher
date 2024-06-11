@@ -3,6 +3,7 @@ package org.foxesworld.launcher.news;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
 import org.foxesworld.engine.utils.FontUtils;
+import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.news.provider.NewsAttributes;
 import org.foxesworld.launcher.news.provider.NewsProvider;
@@ -23,20 +24,23 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 public class NewsPanel extends JPanel {
     private final News news;
     private final ImageUtils imageUtils;
+    private final IconUtils iconUtils;
     private final FontUtils fontUtils;
 
     public NewsPanel(News news) {
         this.news = news;
         this.fontUtils = news.getLauncher().getFONTUTILS();
         this.imageUtils = news.getLauncher().getImageUtils();
+        this.iconUtils = news.getLauncher().getIconUtils();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
 
-        JScrollPane scrollPane = createScrollPane();
-        JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
-        scrollPane.setViewportView(contentPanel);
-
-        add(scrollPane);
+        if (this.news.getLauncher().getConfig().isLoadNews()) {
+            JScrollPane scrollPane = createScrollPane();
+            JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
+            scrollPane.setViewportView(contentPanel);
+            add(scrollPane);
+        }
     }
 
     private JScrollPane createScrollPane() {
@@ -57,7 +61,6 @@ public class NewsPanel extends JPanel {
 
         for (NewsAttributes newsAttributes : newsAttributesList) {
             contentPanel.add(createNewsPanel(newsAttributes));
-            //contentPanel.add(Box.createVerticalStrut(10));
         }
 
         return contentPanel;
@@ -91,6 +94,7 @@ public class NewsPanel extends JPanel {
         JPanel upperPanel = new JPanel();
         upperPanel.setOpaque(true);
         upperPanel.setBackground(hexToColor("#4a4c4f"));
+        upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.LINE_AXIS));
 
         try {
             ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
@@ -99,16 +103,32 @@ public class NewsPanel extends JPanel {
 
             JLabel communityLabel = new JLabel(communityIcon);
             communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            upperPanel.add(communityLabel);
+            communityLabel.setText(newsAttributes.getCommunityName());
+            communityLabel.setForeground(Color.WHITE);
+            communityLabel.setBorder(new EmptyBorder(5, 10, 0, 0));
+            communityLabel.setFont(this.fontUtils.getFont("mcfontBold", 13));
 
-            JLabel communityNameLabel = new JLabel(newsAttributes.getCommunityName());
-            communityNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            communityNameLabel.setForeground(Color.WHITE);
-            upperPanel.add(communityNameLabel);
+            // Create a panel for the community label
+            JPanel communityPanel = new JPanel();
+            communityPanel.setOpaque(false);
+            communityPanel.setLayout(new BoxLayout(communityPanel, BoxLayout.LINE_AXIS));
+            communityPanel.add(communityLabel);
+            communityPanel.add(Box.createHorizontalGlue()); // Fills the remaining space
 
-            JLabel dateLabel = new JLabel("<html><body style='width: 230px; text-align: right; padding: 0px;'>" + formatDate(newsAttributes.getPublicationDate()) + "</body></html>");
+            JLabel dateLabel = new JLabel(formatDate(newsAttributes.getPublicationDate()));
             dateLabel.setForeground(Color.WHITE);
-            upperPanel.add(dateLabel);
+            dateLabel.setFont(this.fontUtils.getFont("mcfont", 13));
+
+            // Create a panel for the date label
+            JPanel datePanel = new JPanel();
+            datePanel.setOpaque(false);
+            datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
+            datePanel.add(Box.createHorizontalGlue());
+            datePanel.setBorder(new EmptyBorder(0, 0, 0, 50));
+            datePanel.add(dateLabel);
+
+            upperPanel.add(communityPanel);
+            upperPanel.add(datePanel);
         } catch (IOException e) {
             Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
         }
@@ -116,12 +136,13 @@ public class NewsPanel extends JPanel {
         return upperPanel;
     }
 
+
     private JPanel createTextPanel(NewsAttributes newsAttributes) {
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
         textPanel.setLayout(new BorderLayout());
 
-        String labelText = "<html><body style='width: 380px; text-align: left; padding: 0px; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
+        String labelText = "<html><body style='width: 370px; text-align: left; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
         JLabel newsText = new JLabel(labelText);
         newsText.setFont(this.fontUtils.getFont("mcfont", 13));
         //newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -165,7 +186,7 @@ public class NewsPanel extends JPanel {
         int[] statisticsValues = {newsAttributes.getViews(), newsAttributes.getLikes(), newsAttributes.getComments(), newsAttributes.getReposts()};
 
         for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
-            ImageIcon imageIcon = new ImageIcon(imageUtils.getScaledImage(imageUtils.getLocalImage("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".png"), 16, 16));
+            ImageIcon imageIcon = this.iconUtils.getVectorIcon("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".svg", 16, 16);
             Color textColor = Color.WHITE;
             int horizontalAlignment = (i == NewsProvider.getStatsValuesKeys().length - 1) ? FlowLayout.RIGHT : FlowLayout.LEFT;
 
@@ -184,7 +205,7 @@ public class NewsPanel extends JPanel {
         JLabel label = new JLabel(text);
         label.setIcon(icon);
         label.setForeground(textColor);
-
+        label.setFont(this.fontUtils.getFont("mcfontBold", 14));
         labelPanel.add(label);
 
         return labelPanel;
@@ -197,7 +218,6 @@ public class NewsPanel extends JPanel {
             adj.setValue(adj.getValue() + scrollAmount);
         });
     }
-
 
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);

@@ -2,7 +2,7 @@
   "general": {
     "appTitle": {
       "en_US": "FoxesWorld",
-      "ru_RU": "ЛисийМир"
+      "ru_RU": "FoxesWorld"
     },
     "status": {
       "en_US": "Alpha",
@@ -140,7 +140,7 @@
       },
       "loggedIn": {
         "en_US": "Successful login for ",
-        "ru_RU": "Успешная авторизация"
+        "ru_RU": "Успешная авторизация "
       },
       "loggedOut": {
         "en_US": " logged out",

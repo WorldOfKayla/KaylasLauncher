@@ -12,6 +12,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HashUtils;
+import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.engine.utils.loadManager.LoadingManager;
@@ -41,6 +42,7 @@ public class Launcher extends Engine implements AuthListener {
     private User user;
     private Settings settings;
     private final FileProperties fileProperties;
+    private IconUtils iconUtils;
     private final File launcher;
 
     public static void main(String[] args) {
@@ -105,6 +107,7 @@ public class Launcher extends Engine implements AuthListener {
         this.getGuiBuilder().getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
         getGuiBuilder().setGuiBuilderListener(this);
         this.getGuiBuilder().buildGui(this.getFileProperties().getFrameTpl(), this.getFrame().getRootPanel());
+        this.iconUtils = new IconUtils(this);
     }
 
     @Override
@@ -147,7 +150,7 @@ public class Launcher extends Engine implements AuthListener {
         getLOGGER().error(errorKey);
         UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12));
         UIManager.put("OptionPane.buttonFont", this.getFONTUTILS().getFont("mcfontBold", 12));
-        JOptionPane.showMessageDialog(this.getFrame(), errorMessage, this.getAppTitle(), JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this.getFrame(), errorMessage, this.getAppTitle() + "Guard", JOptionPane.WARNING_MESSAGE);
         System.exit(0);
     }
 
@@ -199,7 +202,6 @@ public class Launcher extends Engine implements AuthListener {
     public Auth getAuth() {
         return auth;
     }
-
     public User getUser() {
         return user;
     }
@@ -216,6 +218,10 @@ public class Launcher extends Engine implements AuthListener {
         return (Config) this.config;
     }
 
+    public IconUtils getIconUtils() {
+        return iconUtils;
+    }
+
     @SuppressWarnings("unused")
     static class LauncherAttributes {
         private String fileMd5;
@@ -224,6 +230,7 @@ public class Launcher extends Engine implements AuthListener {
         public String getFileMd5() {
             return fileMd5;
         }
+
         public String getFilename() {
             return filename;
         }

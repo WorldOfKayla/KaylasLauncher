@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.7.0-ASTEX-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.7.1-ASTEX-all.jar')
 }
 
 jar {

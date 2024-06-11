@@ -10,9 +10,10 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
-import raven.toast.Notifications;
+import org.foxesworld.notification.Notification;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class User extends org.foxesworld.engine.user.User {
                     launcher.getAppTitle(),
                     "aiden"
             );
-            this.getGuiBuilder().getNotifications().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_LEFT, this.launcher.getLANG().getString("auth.loggedIn") + this.getLogin());
+            this.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, this.serverBox.getY() + 80, 340, 45), 3000, this.launcher.getLANG().getString("auth.loggedIn") + this.getLogin());
         } else {
             engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }

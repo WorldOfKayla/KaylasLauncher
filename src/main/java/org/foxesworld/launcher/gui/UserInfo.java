@@ -56,6 +56,7 @@ public class UserInfo extends ComponentsAccessor {
         requestBody.put("selectKey", "login");
     }
 
+    @SuppressWarnings("unused")
     public static class UserAttributes {
         private  String realname, profilePhoto, userStatus, land, colorScheme;
 

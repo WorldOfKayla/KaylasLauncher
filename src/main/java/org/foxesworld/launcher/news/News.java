@@ -20,7 +20,7 @@ public class News extends org.foxesworld.engine.news.News {
     protected void buildPanel(){
         JPanel childPanel = new NewsPanel(this);
         childPanel.setOpaque(false);
-        childPanel.setBounds(0, 30, 500, 470);
+        childPanel.setBounds(0, 0, 505, 480);
         childPanel.setName("newsFrame");
         this.launcher.getGuiBuilder().addPanelToMap(childPanel);
     }

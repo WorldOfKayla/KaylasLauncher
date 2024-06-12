@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class EncryptionKeyManager {
 
     private final String FILE_PATH = "cache/encryption";

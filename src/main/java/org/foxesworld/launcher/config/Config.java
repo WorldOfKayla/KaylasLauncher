@@ -124,67 +124,49 @@ public class Config extends org.foxesworld.engine.config.Config {
     public String getLogin() {
         return login;
     }
-
     public String getPassword() {
         return password;
     }
-
     public String getLang() {
         return lang;
     }
-
     public int getRamAmount() {
         return ramAmount;
     }
-
-    @SuppressWarnings("unused")
     public double getVolume() {
         return volume;
     }
-
     public boolean isAutoEnter() {
         return autoEnter;
     }
-
     public boolean isFullScreen() {
         return fullScreen;
     }
-
     public boolean isLoadNews() {
         return loadNews;
     }
-
     public boolean isLaunchAC() {
         return launchAC;
     }
-
-    @SuppressWarnings("unused")
     public boolean isEnableSound() {
         return enableSound;
     }
-
     public boolean isBackgroundMusic() {
         return backgroundMusic;
     }
-
     public void setVolume(double volume) {
         this.volume = volume;
     }
-
     public int getSelectedServer() {
         return selectedServer;
     }
-
     public int getLoaderIndex() {
         return loaderIndex;
     }
-
     public Object getWidth() {
         return width;
     }
-
     public Object getHeight() {
         return height;
     }
-
 }

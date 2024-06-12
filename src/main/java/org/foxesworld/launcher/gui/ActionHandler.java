@@ -8,7 +8,6 @@ import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
@@ -48,7 +47,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.getEngine().getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(component.getX() + 20, component.getY(), 140, 45), 1200, "Hello " + this.launcher.getUser().getLogin());
+                    //this.getEngine().getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(component.getX() + 20, component.getY(), 140, 45), 1200, "Hello " + this.launcher.getUser().getLogin());
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

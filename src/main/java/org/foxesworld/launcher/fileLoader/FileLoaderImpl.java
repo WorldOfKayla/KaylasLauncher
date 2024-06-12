@@ -140,7 +140,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
         ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        String fullPath = core.getFileLoader().getHomeDir() + localPath;
+        //String fullPath = core.getFileLoader().getHomeDir() + localPath;
 
         Label downloadFile = (Label) downloadInfoAccessor.getComponentMap().get("downloadFile");
         Label downloadDirectory = (Label) downloadInfoAccessor.getComponentMap().get("downloadDirectory");

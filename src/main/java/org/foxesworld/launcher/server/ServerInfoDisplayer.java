@@ -13,6 +13,7 @@ import org.foxesworld.launcher.user.User;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings("unused")
 public class ServerInfoDisplayer implements DropBoxListener {
     private final User user;
     private final JPanel newsPanel;

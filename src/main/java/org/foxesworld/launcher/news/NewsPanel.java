@@ -108,7 +108,6 @@ public class NewsPanel extends JPanel {
             communityLabel.setBorder(new EmptyBorder(5, 10, 0, 0));
             communityLabel.setFont(this.fontUtils.getFont("mcfontBold", 13));
 
-            // Create a panel for the community label
             JPanel communityPanel = new JPanel();
             communityPanel.setOpaque(false);
             communityPanel.setLayout(new BoxLayout(communityPanel, BoxLayout.LINE_AXIS));
@@ -180,9 +179,8 @@ public class NewsPanel extends JPanel {
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
         JPanel statisticsPanel = new JPanel();
         statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        statisticsPanel.setBackground(hexToColor("#df8b08bf"));
+        statisticsPanel.setBackground(hexToColor("#9a9fa5"));
         statisticsPanel.setOpaque(true);
-
         int[] statisticsValues = {newsAttributes.getViews(), newsAttributes.getLikes(), newsAttributes.getComments(), newsAttributes.getReposts()};
 
         for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
@@ -190,23 +188,41 @@ public class NewsPanel extends JPanel {
             Color textColor = Color.WHITE;
             int horizontalAlignment = (i == NewsProvider.getStatsValuesKeys().length - 1) ? FlowLayout.RIGHT : FlowLayout.LEFT;
 
-            JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, horizontalAlignment);
+            JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, 0);
             statisticsPanel.add(labelPanel);
         }
 
         return statisticsPanel;
     }
 
-    private JPanel createStatsLabel(String text, ImageIcon icon, Color textColor, int horizontalAlignment) {
-        JPanel labelPanel = new JPanel();
-        labelPanel.setLayout(new FlowLayout(horizontalAlignment));
+    public JPanel createStatsLabel(String text, ImageIcon icon, Color textColor, int horizontalAlignment) {
+        JPanel labelPanel = new JPanel(new FlowLayout(horizontalAlignment, 0, 0));
         labelPanel.setOpaque(false);
 
-        JLabel label = new JLabel(text);
-        label.setIcon(icon);
-        label.setForeground(textColor);
-        label.setFont(this.fontUtils.getFont("mcfontBold", 14));
-        labelPanel.add(label);
+        JLabel iconLabel = new JLabel(icon); // Create a label for the icon
+        JLabel textLabel = new JLabel(text);
+        textLabel.setForeground(textColor);
+        textLabel.setFont(fontUtils.getFont("mcfontBold", 14));
+
+        // Use an anonymous inner class to create a custom layout manager for the labels
+        labelPanel.setLayout(new FlowLayout() {
+            @Override
+            public void layoutContainer(Container parent) {
+                // Get the components
+                Component[] components = parent.getComponents();
+
+                // Calculate preferred sizes
+                int iconWidth = components[0].getPreferredSize().width;
+                int textWidth = components[1].getPreferredSize().width;
+
+                // Set positions for components
+                components[0].setBounds(0, 0, iconWidth, parent.getHeight());
+                components[1].setBounds(iconWidth + 5, 3, textWidth, parent.getHeight());
+            }
+        });
+
+        labelPanel.add(iconLabel);
+        labelPanel.add(textLabel);
 
         return labelPanel;
     }

@@ -1,5 +1,7 @@
 package org.foxesworld.launcher.gui;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
@@ -47,6 +49,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    FlatAnimatedLafChange.showSnapshot();
+                    FlatLaf.updateUI();
+                    FlatAnimatedLafChange.hideSnapshotWithAnimation();
                     //this.getEngine().getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(component.getX() + 20, component.getY(), 140, 45), 1200, "Hello " + this.launcher.getUser().getLogin());
                 }
 

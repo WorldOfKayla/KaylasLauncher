@@ -181,30 +181,24 @@ public class Launcher extends Engine implements AuthListener {
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
     }
-
     public Engine getEngine() {
         return this;
     }
-
     public Auth getAuth() {
         return auth;
     }
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
     public Settings getSettings() {
         return settings;
     }
-
     public Config getConfig() {
         return (Config) this.config;
     }
-
     public IconUtils getIconUtils() {
         return iconUtils;
     }

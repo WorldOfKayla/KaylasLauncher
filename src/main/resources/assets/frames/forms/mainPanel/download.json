@@ -44,7 +44,7 @@
             "downloadInfo": {
               "panelOptions": {
                 "opaque": true,
-                "border": "1,1,1,1,#3b4045",
+                "cornerRadius": 10,
                 "background": "#b0c1c1",
                 "visible": true,
                 "bounds": {

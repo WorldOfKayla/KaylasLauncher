@@ -153,7 +153,7 @@ public class NewsPanel extends JPanel {
     }
 
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
-        BufferedImage img = imageUtils.getRoundedImage(imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", imageUtils.getLocalImage("")), 25);
+        BufferedImage img = imageUtils.getRoundedImage(imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", imageUtils.getLocalImage("assets/ui/img/noimg.jpg")), 25);
         Image image = imageUtils.getScaledImage(img, 470, 350);
         ImageIcon fullSizeIcon = new ImageIcon(image);
         JLabel photoLabel = new JLabel(fullSizeIcon);

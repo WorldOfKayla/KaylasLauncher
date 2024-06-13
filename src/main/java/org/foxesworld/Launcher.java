@@ -31,10 +31,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Launcher extends Engine implements AuthListener {
 
@@ -44,27 +41,28 @@ public class Launcher extends Engine implements AuthListener {
     private final FileProperties fileProperties;
     private IconUtils iconUtils;
     private final File launcher;
+    private static final List<String> configFiles = List.of("config");
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
 
     public Launcher() {
-        super("config");
+        super(configFiles);
         long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
         this.preInit();
 
         if (!isLauncherValid()) {
-            showErrorDialog("invalidLauncher");
+            showDialog("error.invalidLauncher", this.getAppTitle() + "Guard", JOptionPane.WARNING_MESSAGE, true);
         } else {
             int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
             int expectedJRE = Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""));
             if (launchingWith != expectedJRE) {
                 if (launcher.isFile()) {
                     Engine.LOGGER.warn("Using incorrect JRE {}", launchingWith);
-                    showErrorDialog("invalidJVM");
+                    showDialog("error.invalidJVM", this.getAppTitle() + "Guard", JOptionPane.WARNING_MESSAGE, true);
                     return;
                 } else if (launcher.isDirectory()) {
                     Engine.LOGGER.warn("Using a JRE different from {}", getEngineData().getProgramRuntime());
@@ -75,7 +73,6 @@ public class Launcher extends Engine implements AuthListener {
                     Engine.LOGGER.warn("Launcher path is neither a file nor a directory. 0_0");
                 }
             }
-
             this.auth = new Auth(this);
             init();
             setActionHandler(new ActionHandler(this));
@@ -87,7 +84,7 @@ public class Launcher extends Engine implements AuthListener {
 
     private boolean isRunningInIDE() {
         String classPath = System.getProperty("java.class.path");
-        return classPath != null && classPath.contains("build");
+        return classPath.contains("build");
     }
 
     @Override
@@ -142,16 +139,6 @@ public class Launcher extends Engine implements AuthListener {
             System.err.println("Unable to reach server for launcher validation: " + e.getMessage());
             return false;
         }
-    }
-
-    private void showErrorDialog(String errorKey) {
-        String errorMessage = this.getLANG().getString("error." + errorKey);
-        this.getSOUND().playSound("other", errorKey);
-        getLOGGER().error(errorKey);
-        UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12));
-        UIManager.put("OptionPane.buttonFont", this.getFONTUTILS().getFont("mcfontBold", 12));
-        JOptionPane.showMessageDialog(this.getFrame(), errorMessage, this.getAppTitle() + "Guard", JOptionPane.WARNING_MESSAGE);
-        System.exit(0);
     }
 
     @Override

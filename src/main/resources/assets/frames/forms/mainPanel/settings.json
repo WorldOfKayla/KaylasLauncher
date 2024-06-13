@@ -57,8 +57,9 @@
             "generalInfo": {
               "panelOptions": {
                 "opaque": false,
+                "doubleBuffered": true,
                 "visible": true,
-                "layout": "grid",
+                "layout": "gridbag",
                 "bounds": {
                   "x": 490,
                   "y": 0,
@@ -68,18 +69,20 @@
               },
               "childComponents": [
                 {
-                  "componentType": "label",
+                  "componentType": "textArea",
+                  "opaque": false,
                   "fontSize": 12,
-                  "componentStyle": "promptLabel",
+                  "componentStyle": "title",
+                  "color": "#ffffff",
                   "localeKey": "settings.info",
                   "componentId": "settingsInfo",
+                  "border": "5,5,5,5",
                   "bounds": {
                     "x": 5,
                     "y": 70,
                     "width": 280,
                     "height": 70
-                  },
-                  "border": "5,5,5,5"
+                  }
                 }
               ]
             }

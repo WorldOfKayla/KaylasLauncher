@@ -22,9 +22,10 @@ public class Config extends org.foxesworld.engine.config.Config {
     private Object width, height;
     private String login, password, lang;
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
+    private static final String exportDir = "cache/config/";
 
     public Config(Engine engine) {
-        setCfgExportDir("cache/config/");
+        setCfgExportDir(exportDir);
         setDirPathIndex(3);
         setCfgFileExtension(".json");
         CfgProvider.setDefaultConfFilesDir("config/");
@@ -49,7 +50,6 @@ public class Config extends org.foxesworld.engine.config.Config {
         CONFIG.put(key, value);
         assignConfigValues();
     }
-
     @Override
     public void clearConfigData(List<String> dataToClear, boolean write) {
         Engine.getLOGGER().debug("Wiping "+dataToClear);
@@ -101,17 +101,16 @@ public class Config extends org.foxesworld.engine.config.Config {
 
         this.writeCurrentConfig();
     }
-
-
     @Override
     public void writeCurrentConfig() {
         Engine.getLOGGER().debug("Writing Config");
-        try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "cache/config/config.json")) {
+        try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + exportDir + "/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public Map<String, Map<String, Object>> getCfgMaps() {
         return getAllCfgMaps();
     }

@@ -45,8 +45,8 @@
         "ru_RU": "Запустить в полный экран"
       },
       "fullScreen-desc": {
-        "en_US": "When the game launches, it will be in full-screen mode. To exit full-screen mode, use <b style=\"color: orange\">F11</b>",
-        "ru_RU": "При запуске игры она будет открыта в полный экран (Чтобы выйти из полноэкранного режима используйте <b style=\"color: orange\">F11</b>)"
+        "en_US": "When the game launches, it will be in full-screen mode. To exit full-screen mode, use F11",
+        "ru_RU": "При запуске игры она будет открыта в полный экран (Чтобы выйти из полноэкранного режима используйте F11)"
       },
       "loadNews": {
         "en_US": "Load news",

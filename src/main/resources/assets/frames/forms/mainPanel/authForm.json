@@ -31,7 +31,7 @@
           "componentType": "passField",
           "componentStyle": "textFieldMain",
           "localeKey": "auth.passwordPlaceholder",
-          "showPass": true,
+          "revealButton": true,
           "componentId": "password",
           "bounds": {
             "x": 45,

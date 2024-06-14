@@ -33,7 +33,7 @@
           "localeKey": "general.appTitle",
           "componentId": "appLogo",
           "color": "#f78600",
-          "imageIcon": "assets/ui/icons/logo.png",
+          "imageIcon": "assets/ui/icons/logo.svg",
           "iconWidth": 40,
           "iconHeight": 40,
           "bounds": {

@@ -1,6 +1,7 @@
 package org.foxesworld;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -122,24 +123,37 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     private boolean isLauncherValid() {
+        getLOGGER().info("Starting launcher validation");
+
         Map<String, String> launcherRequest = new HashMap<>();
         launcherRequest.put("sysRequest", "downloadLatest");
+
         String selfMd5 = HashUtils.md5(this.appPath());
+        getLOGGER().info("Calculated self MD5: " + selfMd5);
+
+        if ("IDE".equals(selfMd5)) {
+            return true;
+        }
 
         try {
             String response = this.getPOSTrequest().send(launcherRequest);
             LauncherAttributes launcherAttributes = new Gson().fromJson(response, LauncherAttributes.class);
+            getLOGGER().info("Server response MD5: " + launcherAttributes.getFileMd5());
 
-            if (!selfMd5.equals("IDE")) {
-                return Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-            } else {
-                return true;
+            boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
+            if (!isValid) {
+                getLOGGER().warn("Launcher validation failed: MD5 mismatch");
             }
+
+            return isValid;
+        } catch (JsonSyntaxException e) {
+            getLOGGER().error("JSON parsing error during launcher validation: " + e.getMessage(), e);
         } catch (Exception e) {
-            System.err.println("Unable to reach server for launcher validation: " + e.getMessage());
-            return false;
+            getLOGGER().error("Unexpected error during launcher validation: " + e.getMessage(), e);
         }
+        return false;
     }
+
 
     @Override
     public String appPath() {

@@ -1,6 +1,6 @@
 {
   "appTitle": "general.appTitle",
-  "appIcon": "assets/ui/icons/logo.png",
+  "appIcon": "assets/ui/icons/logo.svg",
   "winterImage": "assets/ui/img/bg/season/winter.png",
   "springImage": "assets/ui/img/bg/season/spring.png",
   "summerImage": "assets/ui/img/bg/season/summer.png",
@@ -34,8 +34,8 @@
           "componentId": "appLogo",
           "color": "#f78600",
           "imageIcon": "assets/ui/icons/logo.svg",
-          "iconWidth": 40,
-          "iconHeight": 40,
+          "iconWidth": 50,
+          "iconHeight": 45,
           "bounds": {
             "x": 5,
             "y": 0,
@@ -52,7 +52,7 @@
           "color": "#17cc30e0",
           "componentId": "appVersion",
           "bounds": {
-            "x": 155,
+            "x": 160,
             "y": -20,
             "width": 250,
             "height": 50

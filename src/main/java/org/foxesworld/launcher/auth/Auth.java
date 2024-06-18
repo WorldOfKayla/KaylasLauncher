@@ -68,7 +68,6 @@ public class Auth {
         authCredentials.put("userAction", "auth");
         String response = POSTrequest.send(authCredentials);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
-
         if ("success".equals(authResponse.getType())) {
             handleSuccessfulAuth(authResponse, authCredentials);
             return true;

@@ -144,6 +144,10 @@
       {
         "mask": "/uploads/files/clients/versions/${version}/libraries/",
         "replace": "/uploads/files/clients/versions/${version}/"
+      },
+      {
+        "mask": "/uploads/files/clients/versions/${version}/assets/",
+        "replace": "/uploads/files/clients/versions/${version}/"
       }
     ]
   }

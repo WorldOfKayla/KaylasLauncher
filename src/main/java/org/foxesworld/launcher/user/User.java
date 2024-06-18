@@ -38,7 +38,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.auth = launcher.getAuth();
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
-        this.serverInfo.setServerStatusImg(this.engine.getImageUtils().getLocalImage("assets/ui/icons/status.png"));
+        this.serverInfo.setServerStatusImg(this.engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
         this.serverBox = (ServerBox) engine.getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();

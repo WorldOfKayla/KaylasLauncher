@@ -24,7 +24,8 @@ public class Core implements GameListener {
     private GameLauncher gameLauncher;
 
     public Core(ActionHandler actionHandler) {
-        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + actionHandler.getCurrentServer().getServerName(), "aiden");
+        ServerAttributes currentServer = actionHandler.getCurrentServer();
+        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + currentServer.getServerName() + ' ' + currentServer.getServerVersion(), "aiden");
         this.actionHandler = actionHandler;
         this.launcher = actionHandler.getLauncher();
         fileLoader = new FileLoader(actionHandler);

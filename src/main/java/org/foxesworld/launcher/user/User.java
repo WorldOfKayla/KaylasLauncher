@@ -84,6 +84,7 @@ public class User extends org.foxesworld.engine.user.User {
         ImageIcon icon = new ImageIcon(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())));
         ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
         ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
+        engine.getGuiBuilder().getPanelsMap().get("userPane").setForeground(Color.BLUE);
     }
 
     public String getLogin() {

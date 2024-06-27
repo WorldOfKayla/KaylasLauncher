@@ -2,7 +2,7 @@
   "panels": {
     "userPane": {
       "panelOptions": {
-        "opaque": false,
+        "opaque": true,
         "visible": true,
         "background": "#7e696900",
         "backgroundImage": "assets/ui/img/pane.png",

@@ -270,6 +270,10 @@
         "en_US": "UUID: ",
         "ru_RU": "UUID: "
       },
+      "TEST": {
+        "en_US": "TEST occurs!",
+        "ru_RU": "Произошёл тест!"
+      },
       "experimental": {
         "en_US": "User-O-Info",
         "ru_RU": "Инфо-О-Пользователе"

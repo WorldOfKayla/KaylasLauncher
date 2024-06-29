@@ -26,12 +26,15 @@ import org.foxesworld.launcher.gui.components.ComponentManager;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
 
+import javax.swing.Timer;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.*;
 
 public class Launcher extends Engine implements AuthListener {
@@ -154,7 +157,6 @@ public class Launcher extends Engine implements AuthListener {
         return false;
     }
 
-
     @Override
     public String appPath() {
         try {
@@ -195,24 +197,31 @@ public class Launcher extends Engine implements AuthListener {
     public void actionPerformed(ActionEvent e) {
         this.actionHandler.handleAction(e);
     }
+
     public Engine getEngine() {
         return this;
     }
+
     public Auth getAuth() {
         return auth;
     }
+
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
+
     public Settings getSettings() {
         return settings;
     }
+
     public Config getConfig() {
         return (Config) this.config;
     }
+
     public IconUtils getIconUtils() {
         return iconUtils;
     }
@@ -228,6 +237,33 @@ public class Launcher extends Engine implements AuthListener {
 
         public String getFilename() {
             return filename;
+        }
+    }
+
+    static class SplashScreenWindow {
+        private final JWindow window;
+        private final JLabel label;
+
+        public SplashScreenWindow() {
+            window = new JWindow();
+            label = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("assets/ui/img/serum.png")));
+            window.getContentPane().add(label, BorderLayout.CENTER);
+            window.setSize(500, 300); // Размер окна сплэш-экрана
+            window.setLocationRelativeTo(null);
+        }
+
+        public void showSplashScreen() {
+            window.setVisible(true);
+            Timer timer = new Timer(3000, e -> {
+                window.setVisible(false);
+                window.dispose();
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+
+        public void dispose() {
+            window.dispose();
         }
     }
 }

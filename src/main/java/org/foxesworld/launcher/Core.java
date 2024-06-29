@@ -57,6 +57,7 @@ public class Core implements GameListener {
             System.exit(0);
         }
     }
+
     public static int getCorrectOSArch() {
         if (OS_TYPE == JVMHelper.OS.WIN) {
             return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;

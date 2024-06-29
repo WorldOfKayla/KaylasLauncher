@@ -10,8 +10,10 @@
         "bounds": {
           "x": 0,
           "y": 0,
-          "width": 350,
-          "height": 500
+          "size": {
+            "width": 350,
+            "height": 500
+          }
         }
       },
       "childComponents": [
@@ -22,8 +24,10 @@
           "bounds": {
             "x": 35,
             "y": 215,
-            "width": 273,
-            "height": 25
+            "size": {
+              "width": 273,
+              "height": 25
+            }
           }
         },
         {
@@ -34,8 +38,10 @@
           "bounds": {
             "x": 40,
             "y": 320,
-            "width": 245,
-            "height": 34
+            "size": {
+              "width": 245,
+              "height": 34
+            }
           }
         },
         {
@@ -50,8 +56,10 @@
           "bounds": {
             "x": 225,
             "y": 435,
-            "width": 60,
-            "height": 50
+            "size": {
+              "width": 60,
+              "height": 50
+            }
           }
         },
         {
@@ -66,8 +74,10 @@
           "bounds": {
             "x": 290,
             "y": 435,
-            "width": 60,
-            "height": 50
+            "size": {
+              "width": 60,
+              "height": 50
+            }
           }
         },
         {
@@ -80,8 +90,10 @@
           "bounds": {
             "x": 40,
             "y": 260,
-            "width": 120,
-            "height": 47
+            "size": {
+              "width": 120,
+              "height": 47
+            }
           }
         },
         {
@@ -94,8 +106,10 @@
           "bounds": {
             "x": 165,
             "y": 260,
-            "width": 120,
-            "height": 47
+            "size": {
+              "width": 120,
+              "height": 47
+            }
           }
         },
         {

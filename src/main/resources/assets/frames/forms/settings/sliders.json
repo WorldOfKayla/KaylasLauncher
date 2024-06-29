@@ -8,8 +8,10 @@
     "bounds": {
       "x": 40,
       "y": 205,
-      "width": 250,
-      "height": 50
+      "size": {
+        "width": 250,
+        "height": 50
+      }
     }
   },
   {
@@ -26,8 +28,10 @@
     "bounds": {
       "x": 40,
       "y": 225,
-      "width": 300,
-      "height": 60
+      "size": {
+        "width": 300,
+        "height": 60
+      }
     }
   },
   {
@@ -39,8 +43,10 @@
     "bounds": {
       "x": 345,
       "y": 230,
-      "width": 50,
-      "height": 25
+      "size": {
+        "width": 50,
+        "height": 25
+      }
     }
   },
   {
@@ -52,8 +58,10 @@
     "bounds": {
       "x": 40,
       "y": 150,
-      "width": 250,
-      "height": 50
+      "size": {
+        "width": 250,
+        "height": 50
+      }
     }
   },
   {
@@ -69,8 +77,10 @@
     "bounds": {
       "x": 40,
       "y": 170,
-      "width": 300,
-      "height": 60
+      "size": {
+        "width": 300,
+        "height": 60
+      }
     }
   },
   {
@@ -82,8 +92,10 @@
     "bounds": {
       "x": 345,
       "y": 180,
-      "width": 50,
-      "height": 25
+      "size": {
+        "width": 50,
+        "height": 25
+      }
     }
   }
 ]}

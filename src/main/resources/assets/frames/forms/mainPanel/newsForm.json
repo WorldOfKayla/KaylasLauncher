@@ -8,8 +8,10 @@
         "bounds": {
           "x": 348,
           "y": 27,
-          "width": 500,
-          "height": 500
+          "size": {
+            "width": 500,
+            "height": 500
+          }
         }
       },
       "childComponents": [

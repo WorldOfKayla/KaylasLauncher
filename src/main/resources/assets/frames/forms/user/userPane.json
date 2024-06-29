@@ -9,8 +9,10 @@
         "bounds": {
           "x": 0,
           "y": 30,
-          "width": 350,
-          "height": 85
+          "size": {
+            "width": 350,
+            "height": 85
+          }
         }
       },
       "childComponents": [
@@ -24,8 +26,10 @@
           "bounds": {
             "x": 75,
             "y": -5,
-            "width": 250,
-            "height": 50
+            "size": {
+              "width": 250,
+              "height": 50
+            }
           }
         },
         {
@@ -39,8 +43,10 @@
           "bounds": {
             "x": 80,
             "y": 10,
-            "width": 250,
-            "height": 50
+            "size": {
+              "width": 250,
+              "height": 50
+            }
           }
         },
         {
@@ -54,8 +60,10 @@
           "bounds": {
             "x": 5,
             "y": 10,
-            "width": 64,
-            "height": 64
+            "size": {
+              "width": 64,
+              "height": 64
+            }
           }
         },
         {
@@ -68,8 +76,10 @@
           "bounds": {
             "x": 80,
             "y": 45,
-            "width": 60,
-            "height": 34
+            "size": {
+              "width": 60,
+              "height": 34
+            }
           }
         },
         {
@@ -81,8 +91,10 @@
                 "bounds": {
                   "x": 190,
                   "y": 0,
-                  "width": 160,
-                  "height": 75
+                  "size": {
+                    "width": 160,
+                    "height": 75
+                  }
                 }
               },
               "childComponents": [
@@ -99,8 +111,10 @@
                   "bounds": {
                     "x": 5,
                     "y": -8,
-                    "width": 250,
-                    "height": 50
+                    "size": {
+                      "width": 250,
+                      "height": 50
+                    }
                   }
                 },
                 {
@@ -116,8 +130,10 @@
                   "bounds": {
                     "x": 0,
                     "y": 28,
-                    "width": 250,
-                    "height": 50
+                    "size": {
+                      "width": 250,
+                      "height": 50
+                    }
                   }
                 }
               ]

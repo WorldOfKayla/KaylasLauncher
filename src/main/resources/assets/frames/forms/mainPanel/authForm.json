@@ -10,8 +10,10 @@
         "bounds": {
           "x": 0,
           "y": 0,
-          "width": 350,
-          "height": 500
+          "size": {
+            "width": 350,
+            "height": 500
+          }
         }
       },
       "childComponents": [
@@ -23,8 +25,10 @@
           "bounds": {
             "x": 45,
             "y": 150,
-            "width": 262,
-            "height": 45
+            "size": {
+              "width": 262,
+              "height": 45
+            }
           }
         },
         {
@@ -36,8 +40,10 @@
           "bounds": {
             "x": 45,
             "y": 220,
-            "width": 262,
-            "height": 45
+            "size": {
+              "width": 262,
+              "height": 45
+            }
           }
         },
         {
@@ -49,8 +55,10 @@
           "bounds": {
             "x": 80,
             "y": 50,
-            "width": 250,
-            "height": 50
+            "size": {
+              "width": 250,
+              "height": 50
+            }
           }
         },
         {
@@ -62,8 +70,10 @@
           "bounds": {
             "x": 40,
             "y": 265,
-            "width": 240,
-            "height": 32
+            "size": {
+              "width": 240,
+              "height": 32
+            }
           }
         },
         {
@@ -76,8 +86,10 @@
           "bounds": {
             "x": 55,
             "y": 300,
-            "width": 240,
-            "height": 47
+            "size": {
+              "width": 240,
+              "height": 47
+            }
           }
         },
         {
@@ -91,8 +103,10 @@
           "bounds": {
             "x": 225,
             "y": 435,
-            "width": 60,
-            "height": 50
+            "size": {
+              "width": 60,
+              "height": 50
+            }
           }
         },
         {
@@ -106,8 +120,10 @@
           "bounds": {
             "x": 290,
             "y": 435,
-            "width": 60,
-            "height": 50
+            "size": {
+              "width": 60,
+              "height": 50
+            }
           }
         }
       ]

@@ -10,8 +10,10 @@
         "bounds": {
           "x": 0,
           "y": 0,
-          "width": 500,
-          "height": 500
+          "size": {
+            "width": 500,
+            "height": 500
+          }
         }
       },
       "childComponents": [
@@ -24,8 +26,10 @@
           "bounds": {
             "x": 80,
             "y": 50,
-            "width": 250,
-            "height": 50
+            "size": {
+              "width": 250,
+              "height": 50
+            }
           }
         }
       ]

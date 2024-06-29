@@ -8,8 +8,10 @@
         "bounds": {
           "x": 0,
           "y": 0,
-          "width": 500,
-          "height": 500
+          "size": {
+            "width": 500,
+            "height": 500
+          }
         },
         "background": "#0707079e"
       },
@@ -23,8 +25,10 @@
           "bounds": {
             "x": 10,
             "y": -85,
-            "width": 470,
-            "height": 280
+            "size": {
+              "width": 470,
+              "height": 280
+            }
           }
         },
         {
@@ -34,8 +38,10 @@
           "bounds": {
             "x": 10,
             "y": 75,
-            "width": 470,
-            "height": 260
+            "size": {
+              "width": 470,
+              "height": 260
+            }
           }
         },
         {
@@ -50,8 +56,10 @@
                 "bounds": {
                   "x": 10,
                   "y": 345,
-                  "width": 470,
-                  "height": 120
+                  "size": {
+                    "width": 470,
+                    "height": 120
+                  }
                 },
                 "layout": "box",
                 "border": "1,1,1,1,#ffffff"
@@ -67,8 +75,10 @@
                   "bounds": {
                     "x": 10,
                     "y": 10,
-                    "width": 470,
-                    "height": 110
+                    "size": {
+                      "width": 470,
+                      "height": 110
+                    }
                   }
                 }
               ]

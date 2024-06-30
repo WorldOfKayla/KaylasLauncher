@@ -17,6 +17,7 @@ import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.engine.utils.loadManager.LoadingManager;
+import org.foxesworld.launcher.NotificationPopup;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
@@ -45,6 +46,7 @@ public class Launcher extends Engine implements AuthListener {
     private final FileProperties fileProperties;
     private IconUtils iconUtils;
     private final File launcher;
+    private final NotificationPopup notification;
     private static final List<String> configFiles = List.of("config");
 
     public static void main(String[] args) {
@@ -56,6 +58,7 @@ public class Launcher extends Engine implements AuthListener {
         long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
+        this.notification = new NotificationPopup();
         this.preInit();
 
         if (!isLauncherValid()) {
@@ -79,6 +82,7 @@ public class Launcher extends Engine implements AuthListener {
             }
             this.auth = new Auth(this);
             init();
+            notification.display("FoxesWorld", "Добро пожаловать и чувствуйте себя как дома!", imageUtils.getLocalImage("assets/ui/icons/logo.png"));
             setActionHandler(new ActionHandler(this));
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;

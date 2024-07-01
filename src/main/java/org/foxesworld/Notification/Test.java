@@ -20,7 +20,7 @@ public class Test {
             BufferedImage image = loadImageFromFile("/assets/ui/icons/logo.png");
             FlatIntelliJLaf.setup();
             NotificationPopup notification = new NotificationPopup();
-            notification.display("Custom Title", "Custom Description", image);
+            notification.display("Привет, как дела?", "Давай сегодня сходим в бар!", image);
         });
     }
 

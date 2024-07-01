@@ -17,7 +17,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     private static final int WIDTH = 600;
     public static final int HEIGHT = 100;
     private static final int DISPLAY_DURATION = 25000; // Duration in milliseconds
-    private static final int ANIMATION_DURATION = 500; // Animation duration in milliseconds
+    private static final int ANIMATION_DURATION = 400; // Animation duration in milliseconds
     private static final int TIMER_DELAY = 10; // Delay for timer in milliseconds
     private static final int INITIAL_X = Toolkit.getDefaultToolkit().getScreenSize().width;
 
@@ -26,11 +26,13 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     private int initialX;
     private int initialY;
     private boolean hasSwipedRight;
+    private Timer autoCloseTimer;
 
     public NotificationPopup() {
         this.notificationUI = new NotificationUI(this); // Pass the instance of NotificationPopup to NotificationUI
         initializeUI();
         setContentPane(new BackgroundPanel());
+        setAlwaysOnTop(true);
 
         // Add mouse listener for dragging
         addMouseListener(new MouseAdapter() {
@@ -56,6 +58,11 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
                     setLocation(initialX, initialY);
                     setOpacity(1.0f);
                 }
+            }
+
+
+            public void mouseClicked(MouseEvent e) {
+                resetAutoCloseTimer(); // Reset the timer on mouse click
             }
         });
 
@@ -114,72 +121,82 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
             }
 
             notificationUI.setupContent(title, description, image);
-            setOpacity(0.9f);
+            setOpacity(0.0f); // Start with 0 opacity
             startSlideInAnimation();
-            startAutoCloseTimer();
 
+            // Fade in animation
+            Timer fadeInTimer = new Timer(TIMER_DELAY, new ActionListener() {
+                float opacity = 0.0f;
+                float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    opacity += fadeSpeed * TIMER_DELAY;
+                    if (opacity >= 1.0f) {
+                        opacity = 1.0f;
+                        ((Timer) e.getSource()).stop();
+                    }
+                    setOpacity(opacity);
+                }
+            });
+            fadeInTimer.start();
+
+            startAutoCloseTimer();
             setVisible(true);
         });
     }
 
     void startAutoCloseTimer() {
-        Timer timer = new Timer(DISPLAY_DURATION, e -> startFadeOutAnimation());
-        timer.setRepeats(false);
-        timer.start();
+        autoCloseTimer = new Timer(DISPLAY_DURATION, e -> startFadeOutAnimation());
+        autoCloseTimer.setRepeats(false);
+        autoCloseTimer.start();
     }
 
-    /*
-    private void startFadeInAnimation() {
-        Timer fadeInTimer = new Timer(TIMER_DELAY, new ActionListener() {
-            float opacity = 0;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                opacity += (float) TIMER_DELAY / ANIMATION_DURATION;
-                if (opacity >= 1) {
-                    opacity = 1;
-                    ((Timer) e.getSource()).stop();
-                }
-                setOpacity(opacity);
-            }
-        });
-        fadeInTimer.start();
-    } */
-
-    private void startSlideInAnimation() {
-        Timer slideInTimer = new Timer(TIMER_DELAY, new ActionListener() {
-            int currentX = INITIAL_X;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentX -= WIDTH / (ANIMATION_DURATION / TIMER_DELAY);
-                if (currentX <= Toolkit.getDefaultToolkit().getScreenSize().width - WIDTH - 10) {
-                    currentX = Toolkit.getDefaultToolkit().getScreenSize().width - WIDTH - 10;
-                    ((Timer) e.getSource()).stop();
-                }
-                setLocation(currentX, getLocation().y);
-            }
-        });
-        slideInTimer.start();
+    void resetAutoCloseTimer() {
+        if (autoCloseTimer != null) {
+            autoCloseTimer.stop();
+            startAutoCloseTimer(); // Restart the timer
+        }
     }
 
     void startFadeOutAnimation() {
         Timer fadeOutTimer = new Timer(TIMER_DELAY, new ActionListener() {
-            float opacity = 1;
+            float opacity = 1.0f;
+            float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                opacity -= (float) TIMER_DELAY / ANIMATION_DURATION;
+                opacity -= fadeSpeed * TIMER_DELAY;
                 if (opacity <= 0) {
                     opacity = 0;
                     ((Timer) e.getSource()).stop();
                     dispose();
                 }
                 setOpacity(opacity);
+                fadeSpeed *= 1.1; // Accelerate the fade-out towards the end
             }
         });
         fadeOutTimer.start();
     }
+
+    void startSlideInAnimation() {
+        Timer slideInTimer = new Timer(TIMER_DELAY, new ActionListener() {
+            int currentX = INITIAL_X;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentX -= (WIDTH / 2) / (ANIMATION_DURATION / TIMER_DELAY / 1.5);
+                setLocation(currentX, getLocation().y);
+
+                if (currentX <= Toolkit.getDefaultToolkit().getScreenSize().width - WIDTH - 10) {
+                    currentX = Toolkit.getDefaultToolkit().getScreenSize().width - WIDTH - 10;
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+        slideInTimer.start();
+    }
+
 
     private class BackgroundPanel extends JPanel {
         public BackgroundPanel() {

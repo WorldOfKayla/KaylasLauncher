@@ -33,7 +33,7 @@ public class Auth {
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
+        this.encryptionKeyManager = new EncryptionKeyManager(this.launcher);
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
@@ -45,7 +45,7 @@ public class Auth {
         if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
             authCredentials.put("login", CONFIG.getLogin());
             String encryptedPassword = CONFIG.getPassword();
-            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
+            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(32));
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());

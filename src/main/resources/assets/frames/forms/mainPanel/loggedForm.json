@@ -84,7 +84,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "ESCAPE",
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnTest",
           "componentId": "logOut",
           "localeKey": "logged.logOut",
           "bounds": {

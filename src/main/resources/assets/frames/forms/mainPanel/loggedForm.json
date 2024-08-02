@@ -100,7 +100,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "ENTER",
-          "componentStyle": "buttonMain",
+          "componentStyle": "btnTestGreen",
           "componentId": "toGame",
           "localeKey": "logged.toGame",
           "bounds": {

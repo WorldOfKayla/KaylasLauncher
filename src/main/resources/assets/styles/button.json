@@ -47,6 +47,17 @@
         "hoverColor": "#efa532",
         "align": "CENTER",
         "texture": "assets/ui/components/button/bttn.png"
+      },
+      "btnTestGreen": {
+        "name": "Woodpecker spirit",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 335,
+        "height": 379,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/btnTestGreen.png"
       }
     }
   }

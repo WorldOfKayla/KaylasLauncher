@@ -102,7 +102,7 @@ public class Auth {
 
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
-        this.launcher.getSOUND().playSound("other", "loggedOut");
+        this.launcher.getSOUND().playSound("other", "alert");
         this.launcher.showDialog(authResponse.getMessage(), this.launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
     }
 

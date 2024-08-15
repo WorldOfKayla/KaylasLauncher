@@ -3,6 +3,7 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.config.Config;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -16,11 +17,12 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class EncryptionKeyManager {
 
-    private final String FILE_PATH = "cache/encryption";
+    private final String FILE_PATH;
     private final Engine engine;
 
     EncryptionKeyManager(Engine engine) {
         this.engine = engine;
+        FILE_PATH = Config.getFullPath() + "/cache/encryption";
         createEncryptionDirectory();
     }
 

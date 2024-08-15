@@ -85,6 +85,11 @@
         "assets/sounds/other/invalidJre/invalidJRE3.ogg",
         "assets/sounds/other/invalidJre/invalidJRE4.ogg"
       ]
+    },
+    "alert": {
+      "sounds": [
+        "assets/sounds/alert.ogg"
+      ]
     }
   }
 }

@@ -1,0 +1,64 @@
+{
+  "styles": {
+    "button": {
+      "buttonMain": {
+        "name": "Woodpecker spirit",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 101,
+        "height": 164,
+        "borderRadius": 10,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/btnMain.png"
+      },
+      "btnSmallClean": {
+        "name": "Woodpecker spirit",
+        "font": "mcfont",
+        "fontSize": 12,
+        "width": 81,
+        "height": 136,
+        "borderRadius": 5,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "LEFT",
+        "texture": "assets/ui/components/button/btnSmallClean.png"
+
+      },
+      "btnBig": {
+        "name": "Woodpecker spirit",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 101,
+        "height": 164,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/btnBig.png"
+      },
+      "btnTest": {
+        "name": "Woodpecker spirit",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 335,
+        "height": 379,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/bttn.png"
+      },
+      "btnTestGreen": {
+        "name": "Woodpecker spirit",
+        "font": "FSElliotPro-Heavy",
+        "fontSize": 12,
+        "width": 335,
+        "height": 379,
+        "color": "#807159",
+        "hoverColor": "#efa532",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/btnTestGreen.png"
+      }
+    }
+  }
+}

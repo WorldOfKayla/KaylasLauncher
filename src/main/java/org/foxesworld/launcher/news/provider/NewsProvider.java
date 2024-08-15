@@ -100,7 +100,7 @@ public class NewsProvider {
     private String buildUrl() {
         String urlBuilder = VK_API_URL + "?domain=" + this.engine.getEngineData().getGroupDomain() +
                 "&access_token=" + this.engine.getEngineData().getAccessToken() +
-                "&count=" + this.newsCount +
+                "&count=3" +
                 "&extended=1" +
                 "&v=" + this.engine.getEngineData().getVkAPIversion();
 

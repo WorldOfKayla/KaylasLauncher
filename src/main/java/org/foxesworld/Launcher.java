@@ -82,7 +82,7 @@ public class Launcher extends Engine implements AuthListener {
             }
             this.auth = new Auth(this);
             init();
-            notification.display("FoxesWorld", "Добро пожаловать и чувствуйте себя как дома!", imageUtils.getLocalImage("assets/ui/icons/logo.png"));
+            //notification.display("FoxesWorld", "Добро пожаловать и чувствуйте себя как дома!", imageUtils.getLocalImage("assets/ui/icons/logo.png"));
             setActionHandler(new ActionHandler(this));
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
@@ -176,7 +176,8 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLoad(Auth auth, Map<String, String> authCredentials) {
-        if (!auth.authorize(authCredentials)) {
+        auth.setAuthCredentials(authCredentials);
+        if (!auth.authorize()) {
             this.config.clearConfigData(Arrays.asList("login", "password"), true);
         }
     }

@@ -40,6 +40,9 @@ public class Core implements GameListener {
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
         System.out.println("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.gameLauncher.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
+        if (getLauncher().getLoadingManager().isActive()) {
+            getLauncher().getLoadingManager().toggleLoader();
+        }
     }
 
     @Override

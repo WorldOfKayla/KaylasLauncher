@@ -66,8 +66,8 @@ public class FileLoaderImpl implements FileLoaderListener {
 
     @Override
     public void onDownloadStart() {
-        core.getLauncher().getEngine().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
-        core.getLauncher().getEngine().getLoadingManager().toggleLoader();
+        core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
+        core.getLauncher().getLoadingManager().toggleLoader();
     }
 
     @Override

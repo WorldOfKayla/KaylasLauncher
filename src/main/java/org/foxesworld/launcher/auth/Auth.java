@@ -24,7 +24,7 @@ public class Auth {
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private final Map<String, String> authCredentials = new HashMap<>();
+    private Map<String, String> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
     private final CryptUtils cryptUtils;
@@ -58,15 +58,15 @@ public class Auth {
 
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
-        Map<String, String> credentials = formAuth.getFormCredentials();
-        if (authorize(credentials)) {
+        this.authCredentials = formAuth.getFormCredentials();
+        if (authorize()) {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
 
-    public boolean authorize(Map<String, String> authCredentials) {
-        authCredentials.put("userAction", "auth");
-        String response = POSTrequest.send(authCredentials);
+    public boolean authorize() {
+        this.authCredentials.put("userAction", "auth");
+        String response = POSTrequest.send(this.authCredentials);
         AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
         if ("success".equals(authResponse.getType())) {
             handleSuccessfulAuth(authResponse, authCredentials);
@@ -101,7 +101,7 @@ public class Auth {
     }
 
     private void handleFailedAuth(AuthResponse authResponse) {
-        Engine.getLOGGER().info("Incorrect password for " + authResponse.getLogin() + "!");
+        Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
         this.launcher.getSOUND().playSound("other", "loggedOut");
         this.launcher.showDialog(authResponse.getMessage(), this.launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
     }
@@ -164,13 +164,20 @@ public class Auth {
     public boolean isAuthorised() {
         return authorised;
     }
+
     public void setAuthListener(AuthListener authListener) {
         this.authListener = authListener;
     }
+
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
+
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
+    }
+
+    public void setAuthCredentials(Map<String, String> authCredentials) {
+        this.authCredentials = authCredentials;
     }
 }

@@ -117,7 +117,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
-        this.discord = new Discord(this);
+        this.discord = new Discord(this, "aiden");
         this.buildGui(this.getEngineData().getStyles());
         setNews(new News(this));
         loadMainPanel(this.fileProperties.getMainFrame());

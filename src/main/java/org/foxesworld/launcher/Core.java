@@ -12,6 +12,7 @@ import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.gui.ActionHandler;
 
 import java.io.File;
+import java.util.Locale;
 
 import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 
@@ -25,7 +26,8 @@ public class Core implements GameListener {
 
     public Core(ActionHandler actionHandler) {
         ServerAttributes currentServer = actionHandler.getCurrentServer();
-        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + currentServer.getServerName() + ' ' + currentServer.getServerVersion(), "aiden");
+        actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
+        actionHandler.getEngine().getDiscord().discordRpcStart(actionHandler.getEngine().getLANG().getString("game.login") + actionHandler.getLauncher().getUser().getLogin(), actionHandler.getEngine().getLANG().getString("game.playing") + currentServer.getServerName() + ' ' + currentServer.getServerVersion(), currentServer.getServerName().toLowerCase(Locale.ROOT));
         this.actionHandler = actionHandler;
         this.launcher = actionHandler.getLauncher();
         fileLoader = new FileLoader(actionHandler);
@@ -41,7 +43,7 @@ public class Core implements GameListener {
         System.out.println("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.gameLauncher.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
         if (getLauncher().getLoadingManager().isActive()) {
-            getLauncher().getLoadingManager().toggleLoader();
+            //getLauncher().getLoadingManager().toggleLoader();
         }
     }
 

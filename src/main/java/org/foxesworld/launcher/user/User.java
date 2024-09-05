@@ -57,7 +57,7 @@ public class User extends org.foxesworld.engine.user.User {
             launcher.getDiscord().discordRpcStart(
                     lang.getString("game.login") + auth.getAuthCredentials("login"),
                     launcher.getAppTitle(),
-                    "aiden"
+                    "home"
             );
             this.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, this.serverBox.getY() + 80, 340, 45), 3000, this.launcher.getLANG().getString("auth.loggedIn") + this.getLogin());
         } else {
@@ -106,6 +106,10 @@ public class User extends org.foxesworld.engine.user.User {
 
     public String getColorScheme() {
         return this.userAttributes.colorScheme;
+    }
+
+    public Object getUserGroup() {
+        return this.userAttributes.group;
     }
 
     public String getUuid() {

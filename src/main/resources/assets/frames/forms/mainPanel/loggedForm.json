@@ -46,7 +46,7 @@
         },
         {
           "componentType": "button",
-          "enabled": true,
+          "enabled": false,
           "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/info.svg",
           "keyCode": "I",

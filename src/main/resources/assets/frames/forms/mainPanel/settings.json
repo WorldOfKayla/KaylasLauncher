@@ -76,7 +76,7 @@
               },
               "childComponents": [
                 {
-                  "componentType": "textArea",
+                  "componentType": "label",
                   "fontSize": 11,
                   "componentStyle": "title",
                   "color": "#ffffff",

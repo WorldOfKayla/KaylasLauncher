@@ -142,12 +142,12 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        JTextArea infoArea = (JTextArea) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
-        infoArea.setLineWrap(true);
-        infoArea.setEditable(false);
+        JLabel infoArea = (JLabel) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
+        //infoArea.setLineWrap(true);
+        //infoArea.setEditable(false);
         //TODO
         // We should add all inner components to parent panel
-        infoArea.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
+        infoArea.setText("<html>" + this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc") + "</html>");
     }
 
     @Override

@@ -1,11 +1,10 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.9.8-Rage",
+  "launcherVersion": "1.9.10-Rage",
   "styles": [
     "button",
     "checkBox",
     "label",
-    "textArea",
     "multiButton",
     "passField",
     "progressBar",
@@ -15,7 +14,7 @@
     "slider"
   ],
   "logLevel": "INFO",
-  "programRuntime": "jdk-17.0.9",
+  "programRuntime": "jdk-17.0.11",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
   "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",

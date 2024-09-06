@@ -7,6 +7,14 @@
     "status": {
       "en_US": "Alpha",
       "ru_RU": "Альфа"
+    },
+    "website": {
+      "en_US": "Website {key}",
+      "ru_RU": "Наш сайт {key}"
+    },
+    "launcher": {
+      "en_US": "In launcher",
+      "ru_RU": "В лаунчере"
     }
   },
   "error": {
@@ -217,12 +225,12 @@
     },
     "game": {
       "playing": {
-        "en_US": "Playing on ",
-        "ru_RU": "Играет на "
+        "en_US": "Playing on {server}",
+        "ru_RU": "Играет на {server}"
       },
       "login": {
-        "en_US": "User login: ",
-        "ru_RU": "Логин: "
+        "en_US": "User login: {login}",
+        "ru_RU": "Логин: {login}"
       }
     },
     "server": {

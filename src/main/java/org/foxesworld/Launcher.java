@@ -118,6 +118,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void init() {
         this.discord = new Discord(this, "aiden");
+        this.discord.setLargeImageText(this.getLANG().getStringWithKey("general.website", "key", getEngineData().getBindUrl()));
         this.buildGui(this.getEngineData().getStyles());
         setNews(new News(this));
         loadMainPanel(this.fileProperties.getMainFrame());
@@ -233,11 +234,11 @@ public class Launcher extends Engine implements AuthListener {
 
     @SuppressWarnings("unused")
     static class LauncherAttributes {
-        private String fileMd5;
+        private String hash;
         private String filename;
 
         public String getFileMd5() {
-            return fileMd5;
+            return hash;
         }
 
         public String getFilename() {

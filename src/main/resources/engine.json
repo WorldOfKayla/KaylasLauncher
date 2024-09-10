@@ -30,6 +30,7 @@
     {
       "spritePath": "assets/ui/sprites/loaderFox.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
+      "font": "FSElliotPro-Heavy",
       "blurColor": "#b3a8998a",
       "titleColor": "#ffffff",
       "descColor": "#473c3c",

@@ -54,12 +54,12 @@ public class User extends org.foxesworld.engine.user.User {
         if (auth.isAuthorised()) {
             setUserSpace();
             this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
+            launcher.getDiscord().setSmallImageText(this.launcher.getLANG().getString("general.launcher"));
             launcher.getDiscord().discordRpcStart(
-                    lang.getStringWithKey("game.login", "login", auth.getAuthCredentials("login")),
+                    lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
                     launcher.getAppTitle(),
                     "launcher"
             );
-            launcher.getDiscord().setSmallImageText(this.launcher.getLANG().getString("general.launcher"));
             this.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, this.serverBox.getY() + 80, 340, 45), 3000, this.launcher.getLANG().getString("auth.loggedIn") + this.getLogin());
         } else {
             engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");

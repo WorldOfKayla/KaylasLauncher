@@ -28,8 +28,8 @@ public class Core implements GameListener {
         ServerAttributes currentServer = actionHandler.getCurrentServer();
         actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(
-                actionHandler.getEngine().getLANG().getStringWithKey("game.login", "login", actionHandler.getLauncher().getUser().getLogin()),
-                actionHandler.getEngine().getLANG().getStringWithKey("game.playing", "server", currentServer.getServerName() + ' ' + currentServer.getServerVersion()),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.login", new String[]{"login"}, new String[]{actionHandler.getLauncher().getUser().getLogin()}),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.playing", new String[]{"server"}, new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
                 currentServer.getServerName().toLowerCase(Locale.ROOT)
         );
         this.actionHandler = actionHandler;
@@ -46,8 +46,8 @@ public class Core implements GameListener {
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
         System.out.println("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.gameLauncher.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
-        if (getLauncher().getLoadingManager().isActive()) {
-            //getLauncher().getLoadingManager().toggleLoader();
+        if (getLauncher().getLoadingManager().isVisible()) {
+            getLauncher().getLoadingManager().toggleLoader();
         }
     }
 

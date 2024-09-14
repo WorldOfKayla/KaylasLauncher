@@ -35,7 +35,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     public FileLoaderImpl(Core core) {
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
-        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download");
+        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download", Arrays.asList(Label.class, JProgressBar.class));
     }
 
     @Override
@@ -138,7 +138,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     }
 
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
-        ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo");
+        ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo", Arrays.asList(Label.class, JProgressBar.class));
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
         //String fullPath = core.getFileLoader().getHomeDir() + localPath;
 

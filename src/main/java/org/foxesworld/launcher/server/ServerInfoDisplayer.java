@@ -6,14 +6,15 @@ import com.google.gson.JsonObject;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
+import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
-@SuppressWarnings("unused")
 public class ServerInfoDisplayer implements DropBoxListener {
     private final User user;
     private final JPanel newsPanel;
@@ -26,7 +27,7 @@ public class ServerInfoDisplayer implements DropBoxListener {
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
         this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
-        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "serverInfo");
+        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "serverInfo", Arrays.asList(Label.class));
     }
 
     @Override

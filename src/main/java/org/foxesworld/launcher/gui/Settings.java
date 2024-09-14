@@ -17,17 +17,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener {
     private Launcher launcher;
-    private final ComponentsAccessor componentsAccessor;
 
     public Settings(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "settingsFields");
+        super(launcher.getGuiBuilder(), "settingsFields", Arrays.asList(Checkbox.class, TextField.class, Slider.class));
         this.launcher = launcher;
         this.launcher.getLANG().setLocaleIndex(this.launcher.getConfig().getLang());
-        this.componentsAccessor = new ComponentsAccessor(launcher.getGuiBuilder(), "settingsFields");
     }
 
     public void applySettings() {
@@ -99,11 +98,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                     launcher.getConfig().setVolume(value);
                     launcher.getEngine().getConfig().getCONFIG().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                    ((TextField) componentsAccessor.getComponent("volumeText")).setText(String.valueOf(value));
+                    ((TextField) this.getComponent("volumeText")).setText(String.valueOf(value));
                 }
 
-                case "ramAmount" ->
-                        ((TextField) componentsAccessor.getComponent("ramAmountText")).setText(String.valueOf(value));
+                case "ramAmount" -> ((TextField) this.getComponent("ramAmountText")).setText(String.valueOf(value));
             }
         });
 

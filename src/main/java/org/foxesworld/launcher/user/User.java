@@ -5,6 +5,7 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
+import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -16,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +44,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.serverBox = (ServerBox) engine.getGuiBuilder().getComponentById("serverStatusBox");
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
-        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane");
+        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane", Arrays.asList(Label.class));
         this.userAttributes = new UserAttributes(this);
 
         initializeUser();

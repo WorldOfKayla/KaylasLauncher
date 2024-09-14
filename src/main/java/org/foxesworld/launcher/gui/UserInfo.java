@@ -9,6 +9,7 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class UserInfo extends ComponentsAccessor {
     private UserAttributes[] userAttributes;
 
     public UserInfo(Launcher launcher){
-        super(launcher.getGuiBuilder(), "test");
+        super(launcher.getGuiBuilder(), "test", Arrays.asList(Label.class));
         this.launcher = launcher;
         this.POSTrequest = launcher.getPOSTrequest();
         this.getComponents();

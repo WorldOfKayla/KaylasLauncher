@@ -72,13 +72,13 @@
           "keyCode": "F5",
           "componentStyle": "btnSmallClean",
           "componentId": "smallButton",
-          "localeKey": "TEST",
+          "localeKey": "T",
           "bounds": {
             "x": 80,
             "y": 45,
             "size": {
-              "width": 60,
-              "height": 34
+              "width": 30,
+              "height": 30
             }
           }
         },

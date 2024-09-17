@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.10.0-REVEL-IO",
+  "launcherVersion": "1.9.11-RAGE",
   "styles": [
     "button",
     "checkBox",
@@ -36,6 +36,26 @@
       "descColor": "#473c3c",
       "rows": 3,
       "cols": 5,
+      "delay": 50,
+      "animSpeed": 65,
+      "bounds": {
+        "x": 30,
+        "y": 40,
+        "size": {
+          "width": 64,
+          "height": 64
+        }
+      }
+    },
+    {
+      "spritePath": "assets/ui/sprites/exp.png",
+      "bgPath": "assets/ui/img/bg/season/summer.png",
+      "font": "mcfont",
+      "blurColor": "#b3a8998a",
+      "titleColor": "#ffffff",
+      "descColor": "#473c3c",
+      "rows": 7,
+      "cols": 6,
       "delay": 50,
       "animSpeed": 65,
       "bounds": {

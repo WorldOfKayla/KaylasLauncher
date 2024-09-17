@@ -47,11 +47,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    //FlatAnimatedLafChange.showSnapshot();
-                    //FlatLaf.updateUI();
-                    //FlatAnimatedLafChange.hideSnapshotWithAnimation();
-                    this.getEngine().getLoadingManager().toggleLoader();
-                    //this.getEngine().getGuiBuilder().getNotification().show(Notification.Type.WARNING, new Rectangle(component.getX() - 70, component.getY() + 300, 240, 45), 2000, this.launcher.getLANG().getString("dev.TEST"));
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

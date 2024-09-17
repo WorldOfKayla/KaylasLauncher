@@ -11,23 +11,15 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Value;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Auth {
     private final Launcher launcher;
-    private final Context context;
     private AuthListener authListener;
     private final EncryptionKeyManager encryptionKeyManager;
     private final Map<String, Integer> balanceMap = new HashMap<>();
@@ -43,7 +35,6 @@ public class Auth {
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        this.context = launcher.getJsContext();
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
         this.POSTrequest = engine.getPOSTrequest();
         this.CONFIG = launcher.getConfig();
@@ -66,7 +57,6 @@ public class Auth {
             }
         }
     }
-
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
@@ -74,57 +64,21 @@ public class Auth {
             engine.getSOUND().playSound("other", "loggedIn");
         }
     }
-
     public boolean authorize() {
-        try {
-            // Convert authCredentials to a JSON string
-            String jsonAuthCredentials = new Gson().toJson(this.authCredentials);
-
-            // Pass the converted authCredentials JSON and POSTrequest to the JavaScript context
-            context.getBindings("js").putMember("authCredentialsJson", jsonAuthCredentials);
-            context.getBindings("js").putMember("POSTrequest", this.POSTrequest);
-
-            // Load and read the JavaScript file from resources
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("script/auth.js");
-            if (inputStream == null) {
-                throw new RuntimeException("JavaScript file not found in resources");
-            }
-
-            // Convert InputStream to String
-            String scriptContent;
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                scriptContent = reader.lines().collect(Collectors.joining("\n"));
-            }
-
-            // Evaluate the JavaScript code
-            context.eval("js", scriptContent);
-
-            // Call the authorize function from the JavaScript file
-            Value jsAuthorizeFunction = context.getBindings("js").getMember("authorize");
-            Value authResponseValue = jsAuthorizeFunction.execute(jsonAuthCredentials, this.POSTrequest);
-
-            // Convert the JavaScript object to a JSON string
-            String jsonResponse = authResponseValue.asString();
-
-            // Parse the JSON response using Gson
-            AuthResponse authResponse = new Gson().fromJson(jsonResponse, AuthResponse.class);
-
-            if ("success".equals(authResponse.getType())) {
-                handleSuccessfulAuth(authResponse);
-                return true;
-            } else {
-                handleFailedAuth(authResponse);
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        this.authCredentials.put("userAction", "auth");
+        String response = POSTrequest.send(this.authCredentials);
+        AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
+        if ("success".equals(authResponse.getType())) {
+            handleSuccessfulAuth(authResponse);
+            return true;
+        } else {
+            handleFailedAuth(authResponse);
             return false;
         }
     }
-
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);
-        this.authCredentials.putAll(authCredentials);
+        //this.authCredentials.putAll(authCredentials);
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
@@ -169,7 +123,7 @@ public class Auth {
 
     static class FormAuth extends ComponentsAccessor {
         public FormAuth(Auth auth) {
-            super(auth.getEngine().getGuiBuilder(), "authForm", Arrays.asList(TextField.class, PassField.class));
+            super(auth.getEngine().getGuiBuilder(), "authForm", Arrays.asList(TextField.class, PassField.class, JCheckBox.class));
         }
     }
 

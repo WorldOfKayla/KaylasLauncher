@@ -98,6 +98,26 @@
                       "height": 40
                     }
                   }
+                },
+                {
+                  "repeat": true,
+                  "opaque": false,
+                  "componentId": "statusSprite",
+                  "componentType": "spriteImage",
+                  "colNum": 6,
+                  "rowNum": 7,
+                  "delay": 50,
+                  "imageIcon": "assets/ui/sprites/exp.png",
+                  "iconWidth": 128,
+                  "iconHeight": 128,
+                  "bounds": {
+                    "x": 20,
+                    "y": 120,
+                    "size": {
+                      "width": 128,
+                      "height": 128
+                    }
+                  }
                 }
               ]
             }

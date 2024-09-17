@@ -11,12 +11,14 @@ import org.foxesworld.launcher.news.provider.NewsProvider;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
@@ -83,7 +85,7 @@ public class NewsPanel extends JPanel {
             addMultiplePhotos(newsPanel, newsAttributes);
         }
 
-        JPanel statisticsPanel = createStatisticsPanel(newsAttributes);
+        JPanel statisticsPanel = this.createStatisticsPanel(newsAttributes);
         newsPanel.add(statisticsPanel);
         newsPanel.add(Box.createVerticalStrut(10));
 
@@ -135,7 +137,6 @@ public class NewsPanel extends JPanel {
         return upperPanel;
     }
 
-
     private JPanel createTextPanel(NewsAttributes newsAttributes) {
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
@@ -153,27 +154,87 @@ public class NewsPanel extends JPanel {
     }
 
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
-        BufferedImage img = imageUtils.getRoundedImage(imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", imageUtils.getLocalImage("assets/ui/img/noimg.jpg")), 25);
-        Image image = imageUtils.getScaledImage(img, 470, 350);
-        ImageIcon fullSizeIcon = new ImageIcon(image);
-        JLabel photoLabel = new JLabel(fullSizeIcon);
-        photoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        photoLabel.setBorder(new EmptyBorder(5, 5, 5, 50));
-        newsPanel.add(photoLabel);
+        BufferedImage image = this.imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", this.imageUtils.getLocalImage(""));
+
+        int panelWidth = newsPanel.getWidth();
+        if (panelWidth == 0) {
+            panelWidth = 200;
+        }
+        int scaledHeight = (int) ((double) image.getHeight() / image.getWidth() * panelWidth);
+        Image scaledImage = image.getScaledInstance(panelWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JLabel photoLabel = new JLabel(scaledIcon);
+
+        /*
+        photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                System.out.println("Photo clicked: " + newsAttributes.getOriginalPhotoUrls().get(0));
+                openFullPhoto(newsAttributes.getOriginalPhotoUrls().get(0));
+            }
+        }); */
+
+        // Центрируем изображение
+        JPanel photoPanel = new JPanel();
+        photoPanel.setLayout(new BoxLayout(photoPanel, BoxLayout.X_AXIS));
+        photoPanel.setOpaque(false);
+        photoPanel.add(Box.createHorizontalGlue());
+        photoPanel.add(photoLabel);
+        photoPanel.add(Box.createHorizontalGlue());
+
+        photoPanel.setBorder(new EmptyBorder(10, 5, 10, 0));
+        newsPanel.add(photoPanel);
         newsPanel.setBackground(hexToColor("#0707079e"));
         newsPanel.setOpaque(true);
+        newsPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int panelWidth = newsPanel.getWidth();
+                if (panelWidth > 0) {
+                    int scaledHeight = (int) ((double) image.getHeight() / image.getWidth() * panelWidth);
+                    Image scaledImage = image.getScaledInstance(panelWidth, scaledHeight, Image.SCALE_SMOOTH);
+                    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+                    photoLabel.setIcon(scaledIcon);
+                    newsPanel.removeComponentListener(this);
+                }
+            }
+        });
     }
 
+
+
+
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
+        JPanel photosPanel = new JPanel();
+        photosPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        photosPanel.setOpaque(false);
+
         for (String photoUrl : newsAttributes.getTooltipPhotoUrls()) {
             try {
                 ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
-                JLabel photoLabel = new JLabel(imageIcon);
-                newsPanel.add(photoLabel);
+                Image image = imageIcon.getImage();
+                ImageIcon scaledIcon = new ImageIcon(image.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                JLabel photoLabel = new JLabel(scaledIcon);
+
+                // Set tooltip text with HTML content
+                //photoLabel.setToolTipText("<html><img src='" + photoUrl + "' width='200' height='200'></html>");
+
+                // Add click event listener
+                photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        System.out.println("Photo clicked: " + photoUrl);
+                        openFullPhoto(photoUrl);
+                    }
+                });
+
+                photoLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
+                photosPanel.add(photoLabel);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        newsPanel.add(photosPanel);
     }
 
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
@@ -194,6 +255,7 @@ public class NewsPanel extends JPanel {
 
         return statisticsPanel;
     }
+
 
     public JPanel createStatsLabel(String text, ImageIcon icon, Color textColor, int horizontalAlignment) {
         JPanel labelPanel = new JPanel(new FlowLayout(horizontalAlignment, 0, 0));
@@ -227,18 +289,35 @@ public class NewsPanel extends JPanel {
         return labelPanel;
     }
 
-    private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
-        scrollPane.addMouseWheelListener(e -> {
-            Adjustable adj = scrollPane.getVerticalScrollBar();
-            int scrollAmount = e.getUnitsToScroll() * adj.getBlockIncrement();
-            adj.setValue(adj.getValue() + scrollAmount);
-        });
-    }
-
     private String formatDate(long unixTimestamp) {
         Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
         Date date = new Date(stamp.getTime());
         SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM yyyy HH:mm");
         return formatDate.format(date);
+    }
+
+    private void openFullPhoto(String photoUrl) {
+        System.out.println("Opening full photo: " + photoUrl);
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+
+        try {
+            ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
+            JLabel fullPhotoLabel = new JLabel(imageIcon);
+            JScrollPane scrollPane = new JScrollPane(fullPhotoLabel);
+
+            frame.add(scrollPane, BorderLayout.CENTER);
+            frame.setTitle(photoUrl);
+            frame.setResizable(false);
+            frame.setSize(imageIcon.getIconWidth() + imageIcon.getIconWidth() / 8, imageIcon.getIconHeight() + imageIcon.getIconHeight() / 5);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
     }
 }

@@ -21,6 +21,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,7 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 public class NewsPanel extends JPanel {
     private static final Pattern EMOJI_ALIAS_PATTERN = Pattern.compile(":[a-zA-Z0-9_+\\-]+:");
 
+    private final JFrame resizeFrame = new JFrame();
     private final News news;
     private final ImageUtils imageUtils;
     private final IconUtils iconUtils;
@@ -181,7 +183,7 @@ public class NewsPanel extends JPanel {
     }
 
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
-        BufferedImage image = this.imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", this.imageUtils.getLocalImage(""));
+        BufferedImage image = this.imageUtils.getRoundedImage(this.imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", this.imageUtils.getLocalImage("")), 15);
 
         int panelWidth = newsPanel.getWidth();
         if (panelWidth == 0) {
@@ -223,19 +225,46 @@ public class NewsPanel extends JPanel {
         JPanel multiPhotoPanel = new JPanel();
         multiPhotoPanel.setLayout(new GridLayout(0, 3, 5, 5));
         multiPhotoPanel.setOpaque(false);
-
+        int amount = 0;
         for (String photoUrl : newsAttributes.getOriginalPhotoUrls()) {
-            BufferedImage image = this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
-            ImageIcon photoIcon = new ImageIcon(image.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+            BufferedImage tooltipImage = this.imageUtils.getCachedUrlImg(newsAttributes.getTooltipPhotoUrls().get(amount), "vk/tooltips", this.imageUtils.getLocalImage(""));
+            BufferedImage fullImage =  this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
+            ImageIcon photoIcon = new ImageIcon(tooltipImage.getScaledInstance(tooltipImage.getWidth(), tooltipImage.getHeight(), Image.SCALE_SMOOTH));
             JLabel photoLabel = new JLabel(photoIcon);
             multiPhotoPanel.add(photoLabel);
+
+            photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    openFullPhoto(fullImage);
+                }
+            });
+            amount+=1;
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(10, 5, 10, 0));
+        multiPhotoPanel.setBorder(new EmptyBorder(0, 5, 0, 0));
         newsPanel.add(multiPhotoPanel);
         newsPanel.setBackground(hexToColor("#0707079e"));
         newsPanel.setOpaque(true);
     }
+    private void openFullPhoto(BufferedImage photo) {
+        resizeFrame.getContentPane().removeAll();
+        resizeFrame.revalidate();
+        resizeFrame.repaint();
+
+        resizeFrame.setLayout(new BorderLayout());
+        resizeFrame.setResizable(false);
+
+        ImageIcon imageIcon = new ImageIcon(photo);
+        JLabel fullPhotoLabel = new JLabel(imageIcon);
+        resizeFrame.add(fullPhotoLabel, BorderLayout.CENTER);
+
+        resizeFrame.setSize(photo.getWidth() + 40, photo.getHeight() + photo.getHeight() / 4);
+        resizeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        resizeFrame.setVisible(true);
+        resizeFrame.setLocationRelativeTo(this.news.getLauncher());
+    }
+
+
 
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
         JPanel statisticsPanel = new JPanel();
@@ -247,7 +276,6 @@ public class NewsPanel extends JPanel {
         for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
             ImageIcon imageIcon = this.iconUtils.getVectorIcon("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".svg", 16, 16);
             Color textColor = Color.WHITE;
-            int horizontalAlignment = (i == NewsProvider.getStatsValuesKeys().length - 1) ? FlowLayout.RIGHT : FlowLayout.LEFT;
 
             JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, 0);
             statisticsPanel.add(labelPanel);

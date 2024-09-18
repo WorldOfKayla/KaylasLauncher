@@ -49,6 +49,7 @@ repositories {
 
 dependencies {
     implementation files('lib/foxesworld/fox-engine-1.7.5-ASTEX-all.jar')
+    implementation files('lib/emoji-java-6.0i.jar')
 }
 
 jar {

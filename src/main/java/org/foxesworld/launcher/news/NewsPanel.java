@@ -1,8 +1,10 @@
 package org.foxesworld.launcher.news;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
 import org.foxesworld.engine.utils.FontUtils;
+import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.news.provider.NewsAttributes;
@@ -20,14 +22,21 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class NewsPanel extends JPanel {
+    private static final Pattern EMOJI_ALIAS_PATTERN = Pattern.compile(":[a-zA-Z0-9_+\\-]+:");
+
     private final News news;
     private final ImageUtils imageUtils;
     private final IconUtils iconUtils;
     private final FontUtils fontUtils;
+    private final Map<String, String> emojiUrlCache = new ConcurrentHashMap<>();
 
     public NewsPanel(News news) {
         this.news = news;
@@ -73,11 +82,8 @@ public class NewsPanel extends JPanel {
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         newsPanel.setOpaque(false);
 
-        JPanel upperPanel = createUpperPanel(newsAttributes);
-        newsPanel.add(upperPanel);
-
-        JPanel textPanel = createTextPanel(newsAttributes);
-        newsPanel.add(textPanel);
+        newsPanel.add(createUpperPanel(newsAttributes));
+        newsPanel.add(createTextPanel(newsAttributes));
 
         if (newsAttributes.getTooltipPhotoUrls().size() == 1) {
             addSinglePhoto(newsPanel, newsAttributes);
@@ -85,8 +91,7 @@ public class NewsPanel extends JPanel {
             addMultiplePhotos(newsPanel, newsAttributes);
         }
 
-        JPanel statisticsPanel = this.createStatisticsPanel(newsAttributes);
-        newsPanel.add(statisticsPanel);
+        newsPanel.add(createStatisticsPanel(newsAttributes));
         newsPanel.add(Box.createVerticalStrut(10));
 
         return newsPanel;
@@ -99,37 +104,15 @@ public class NewsPanel extends JPanel {
         upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.LINE_AXIS));
 
         try {
-            ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
-            Image communityImage = communityIcon.getImage();
-            communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImage, 50));
-
-            JLabel communityLabel = new JLabel(communityIcon);
-            communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            communityLabel.setText(newsAttributes.getCommunityName());
-            communityLabel.setForeground(Color.WHITE);
-            communityLabel.setBorder(new EmptyBorder(5, 10, 0, 0));
-            communityLabel.setFont(this.fontUtils.getFont("mcfontBold", 13));
-
-            JPanel communityPanel = new JPanel();
-            communityPanel.setOpaque(false);
-            communityPanel.setLayout(new BoxLayout(communityPanel, BoxLayout.LINE_AXIS));
-            communityPanel.add(communityLabel);
-            communityPanel.add(Box.createHorizontalGlue()); // Fills the remaining space
+            JLabel communityLabel = createCommunityLabel(newsAttributes);
+            upperPanel.add(communityLabel);
+            upperPanel.add(Box.createHorizontalGlue());
 
             JLabel dateLabel = new JLabel(formatDate(newsAttributes.getPublicationDate()));
             dateLabel.setForeground(Color.WHITE);
             dateLabel.setFont(this.fontUtils.getFont("mcfont", 13));
-
-            // Create a panel for the date label
-            JPanel datePanel = new JPanel();
-            datePanel.setOpaque(false);
-            datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
-            datePanel.add(Box.createHorizontalGlue());
-            datePanel.setBorder(new EmptyBorder(0, 0, 0, 50));
-            datePanel.add(dateLabel);
-
-            upperPanel.add(communityPanel);
-            upperPanel.add(datePanel);
+            dateLabel.setBorder(new EmptyBorder(0, 0, 0, 50));
+            upperPanel.add(dateLabel);
         } catch (IOException e) {
             Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
         }
@@ -137,18 +120,62 @@ public class NewsPanel extends JPanel {
         return upperPanel;
     }
 
+    private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
+        ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
+        Image communityImage = communityIcon.getImage();
+        communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImage, 50));
+
+        JLabel communityLabel = new JLabel(communityIcon);
+        communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        communityLabel.setText(newsAttributes.getCommunityName());
+        communityLabel.setForeground(Color.WHITE);
+        communityLabel.setBorder(new EmptyBorder(5, 10, 0, 0));
+        communityLabel.setFont(this.fontUtils.getFont("mcfontBold", 13));
+        return communityLabel;
+    }
+
+    private String getEmoticonUrl(String key) {
+        return emojiUrlCache.computeIfAbsent(key, k -> {
+            HTTPrequest httPrequest = this.news.getLauncher().getPOSTrequest();
+            Map<String, String> emoData = Map.of("sysRequest", "getEmoticon", "emoKey", k);
+            return httPrequest.send(emoData);
+        });
+    }
+
     private JPanel createTextPanel(NewsAttributes newsAttributes) {
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
         textPanel.setLayout(new BorderLayout());
 
-        String labelText = "<html><body style='width: 370px; text-align: left; margin-left: 5px; margin-right: 5px;'>" + newsAttributes.getText() + "</body></html>";
-        JLabel newsText = new JLabel(labelText);
-        newsText.setFont(this.fontUtils.getFont("mcfont", 13));
-        //newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
-        newsText.setForeground(Color.WHITE);
+        String originalText = EmojiParser.parseToAliases(newsAttributes.getText());
+        String[] lines = originalText.split("\n");
+        StringBuilder processedText = new StringBuilder("<html><body style='width: 380px; text-align: left; margin-left: 5px; margin-right: 5px;'>");
 
-        textPanel.add(newsText, BorderLayout.WEST);
+        for (String line : lines) {
+            Matcher matcher = EMOJI_ALIAS_PATTERN.matcher(line);
+            StringBuilder result = new StringBuilder();
+            while (matcher.find()) {
+                String alias = matcher.group();
+                String imageUrl = this.getEmoticonUrl(alias);
+                String imgTag = "<img src=\"" + this.news.getLauncher().getEngineData().getBindUrl() + imageUrl + "\" width=\"32\" height=\"32\" alt=\"" + alias + "\" />";
+                matcher.appendReplacement(result, imgTag);
+            }
+            matcher.appendTail(result);
+
+            if (line.contains("#")) {
+                processedText.append("<span style='color: #2e95d3'>").append(result).append("</span><br>");
+            } else {
+                processedText.append(result).append("<br>");
+            }
+        }
+
+        processedText.append("</body></html>");
+        JLabel newsText = new JLabel(processedText.toString());
+        newsText.setFont(this.fontUtils.getFont("mcfont", 13));
+        newsText.setForeground(Color.WHITE);
+        newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
+
+        textPanel.add(newsText, BorderLayout.CENTER);
 
         return textPanel;
     }
@@ -166,15 +193,6 @@ public class NewsPanel extends JPanel {
 
         JLabel photoLabel = new JLabel(scaledIcon);
 
-        /*
-        photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                System.out.println("Photo clicked: " + newsAttributes.getOriginalPhotoUrls().get(0));
-                openFullPhoto(newsAttributes.getOriginalPhotoUrls().get(0));
-            }
-        }); */
-
-        // Центрируем изображение
         JPanel photoPanel = new JPanel();
         photoPanel.setLayout(new BoxLayout(photoPanel, BoxLayout.X_AXIS));
         photoPanel.setOpaque(false);
@@ -201,40 +219,22 @@ public class NewsPanel extends JPanel {
         });
     }
 
-
-
-
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
-        JPanel photosPanel = new JPanel();
-        photosPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        photosPanel.setOpaque(false);
+        JPanel multiPhotoPanel = new JPanel();
+        multiPhotoPanel.setLayout(new GridLayout(0, 3, 5, 5));
+        multiPhotoPanel.setOpaque(false);
 
-        for (String photoUrl : newsAttributes.getTooltipPhotoUrls()) {
-            try {
-                ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
-                Image image = imageIcon.getImage();
-                ImageIcon scaledIcon = new ImageIcon(image.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                JLabel photoLabel = new JLabel(scaledIcon);
-
-                // Set tooltip text with HTML content
-                //photoLabel.setToolTipText("<html><img src='" + photoUrl + "' width='200' height='200'></html>");
-
-                // Add click event listener
-                photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        System.out.println("Photo clicked: " + photoUrl);
-                        openFullPhoto(photoUrl);
-                    }
-                });
-
-                photoLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-                photosPanel.add(photoLabel);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for (String photoUrl : newsAttributes.getOriginalPhotoUrls()) {
+            BufferedImage image = this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
+            ImageIcon photoIcon = new ImageIcon(image.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+            JLabel photoLabel = new JLabel(photoIcon);
+            multiPhotoPanel.add(photoLabel);
         }
 
-        newsPanel.add(photosPanel);
+        multiPhotoPanel.setBorder(new EmptyBorder(10, 5, 10, 0));
+        newsPanel.add(multiPhotoPanel);
+        newsPanel.setBackground(hexToColor("#0707079e"));
+        newsPanel.setOpaque(true);
     }
 
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
@@ -261,23 +261,16 @@ public class NewsPanel extends JPanel {
         JPanel labelPanel = new JPanel(new FlowLayout(horizontalAlignment, 0, 0));
         labelPanel.setOpaque(false);
 
-        JLabel iconLabel = new JLabel(icon); // Create a label for the icon
+        JLabel iconLabel = new JLabel(icon);
         JLabel textLabel = new JLabel(text);
         textLabel.setForeground(textColor);
         textLabel.setFont(fontUtils.getFont("mcfontBold", 14));
-
-        // Use an anonymous inner class to create a custom layout manager for the labels
         labelPanel.setLayout(new FlowLayout() {
             @Override
             public void layoutContainer(Container parent) {
-                // Get the components
                 Component[] components = parent.getComponents();
-
-                // Calculate preferred sizes
                 int iconWidth = components[0].getPreferredSize().width;
                 int textWidth = components[1].getPreferredSize().width;
-
-                // Set positions for components
                 components[0].setBounds(0, 0, iconWidth, parent.getHeight());
                 components[1].setBounds(iconWidth + 5, 3, textWidth, parent.getHeight());
             }
@@ -288,33 +281,11 @@ public class NewsPanel extends JPanel {
 
         return labelPanel;
     }
-
-    private String formatDate(long unixTimestamp) {
-        Timestamp stamp = new Timestamp(unixTimestamp * 1000L);
+    private String formatDate(long timestamp) {
+        Timestamp stamp = new Timestamp(timestamp * 1000L);
         Date date = new Date(stamp.getTime());
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMMM yyyy HH:mm");
-        return formatDate.format(date);
-    }
-
-    private void openFullPhoto(String photoUrl) {
-        System.out.println("Opening full photo: " + photoUrl);
-        JFrame frame = new JFrame();
-        frame.setLayout(new BorderLayout());
-
-        try {
-            ImageIcon imageIcon = new ImageIcon(new URL(photoUrl));
-            JLabel fullPhotoLabel = new JLabel(imageIcon);
-            JScrollPane scrollPane = new JScrollPane(fullPhotoLabel);
-
-            frame.add(scrollPane, BorderLayout.CENTER);
-            frame.setTitle(photoUrl);
-            frame.setResizable(false);
-            frame.setSize(imageIcon.getIconWidth() + imageIcon.getIconWidth() / 8, imageIcon.getIconHeight() + imageIcon.getIconHeight() / 5);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setVisible(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        return formatter.format(date);
     }
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {

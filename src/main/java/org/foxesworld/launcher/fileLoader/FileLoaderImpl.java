@@ -94,8 +94,8 @@ public class FileLoaderImpl implements FileLoaderListener {
         return Arrays.asList(
                 core.getGameLauncher().getPathBuilders().buildClientDir(),
                 core.getGameLauncher().getPathBuilders().buildVersionDir(),
-                core.getGameLauncher().getPathBuilders().buildNativesPath()
-                //core.getGameLauncher().getPathBuilders().buildAssetsPath()
+                core.getGameLauncher().getPathBuilders().buildNativesPath(),
+                core.getGameLauncher().getPathBuilders().buildAssetsPath()
         );
     }
 

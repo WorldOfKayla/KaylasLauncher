@@ -36,8 +36,8 @@
       "descColor": "#473c3c",
       "rows": 3,
       "cols": 5,
-      "delay": 50,
-      "animSpeed": 65,
+      "delay": 55,
+      "animSpeed": 40,
       "bounds": {
         "x": 30,
         "y": 40,

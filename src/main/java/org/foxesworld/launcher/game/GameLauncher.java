@@ -89,9 +89,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     public void launchGame() {
-        if (this.launcher.getEngine().getLoadingManager().getLoadingTimer().isRunning()) {
-            //this.launcher.getEngine().getLoadingManager();
-        }
+
         executorService.submit(() -> {
             this.checkDangerousParams();
             setJreArgs();

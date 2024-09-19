@@ -41,54 +41,11 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
                 initialX = getLocation().x;
                 initialY = getLocation().y;
                 hasSwipedRight = false;
+                startFadeOutAnimation();
             }
-
-            public void mouseReleased(MouseEvent e) {
-                if (hasSwipedRight) {
-                    if (getX() > initialX + WIDTH / 4) {
-                        // Swipe right - close notification
-                        startFadeOutAnimation();
-                    } else {
-                        // Swipe left after swiping right - cancel close (reset position)
-                        setLocation(initialX, initialY);
-                        setOpacity(1.0f);
-                    }
-                } else {
-                    // No significant swipe - reset position and opacity
-                    setLocation(initialX, initialY);
-                    setOpacity(1.0f);
-                }
-            }
-
 
             public void mouseClicked(MouseEvent e) {
                 resetAutoCloseTimer(); // Reset the timer on mouse click
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                int thisX = initialX + e.getX() - initialClick.x;
-
-                if (thisX > initialX) {
-                    hasSwipedRight = true;
-                } else if (thisX < initialX && !hasSwipedRight) {
-                    // Prevent moving left if not swiped right first
-                    thisX = initialX;
-                }
-
-                // Ensure the notification stays within the bounds of initialX
-                if (thisX < initialX) {
-                    thisX = initialX;
-                }
-
-                setLocation(thisX, initialY);
-
-                // Adjust opacity based on drag distance
-                float dragDistance = Math.abs(initialX - thisX);
-                float maxDistance = WIDTH / 4.0f;
-                float opacity = 1.0f - Math.min(dragDistance / maxDistance, 1.0f);
-                setOpacity(opacity);
             }
         });
     }
@@ -155,7 +112,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     void resetAutoCloseTimer() {
         if (autoCloseTimer != null) {
             autoCloseTimer.stop();
-            startAutoCloseTimer(); // Restart the timer
+            startAutoCloseTimer();
         }
     }
 
@@ -198,7 +155,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     }
 
 
-    private class BackgroundPanel extends JPanel {
+    private static class BackgroundPanel extends JPanel {
         public BackgroundPanel() {
             setBackground(new Color(34, 34, 34, 230));
             setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.DARK_GRAY));

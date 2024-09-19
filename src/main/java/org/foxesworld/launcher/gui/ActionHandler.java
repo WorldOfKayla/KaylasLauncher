@@ -47,7 +47,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
+                    //engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
+                    this.launcher.getLoadingManager().toggleLoader();
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

@@ -15,13 +15,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +47,7 @@ public class NewsPanel extends JPanel {
         this.iconUtils = news.getLauncher().getIconUtils();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
+        resizeFrame.setLocationRelativeTo(this.news.getLauncher());
 
         if (this.news.getLauncher().getConfig().isLoadNews()) {
             JScrollPane scrollPane = createScrollPane();
@@ -223,29 +224,52 @@ public class NewsPanel extends JPanel {
 
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
         JPanel multiPhotoPanel = new JPanel();
-        multiPhotoPanel.setLayout(new GridLayout(0, 3, 5, 5));
+        multiPhotoPanel.setLayout(new GridLayout(0, 3, 0, 0));
         multiPhotoPanel.setOpaque(false);
+
         int amount = 0;
         for (String photoUrl : newsAttributes.getOriginalPhotoUrls()) {
             BufferedImage tooltipImage = this.imageUtils.getCachedUrlImg(newsAttributes.getTooltipPhotoUrls().get(amount), "vk/tooltips", this.imageUtils.getLocalImage(""));
             BufferedImage fullImage =  this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
-            ImageIcon photoIcon = new ImageIcon(tooltipImage.getScaledInstance(tooltipImage.getWidth(), tooltipImage.getHeight(), Image.SCALE_SMOOTH));
-            JLabel photoLabel = new JLabel(photoIcon);
-            multiPhotoPanel.add(photoLabel);
 
+            int targetWidth = tooltipImage.getWidth();
+            int targetHeight = tooltipImage.getHeight();
+            BufferedImage scaledImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D graphics = scaledImage.createGraphics();
+            graphics.drawImage(tooltipImage, 0, 0, targetWidth, targetHeight, null);
+            graphics.dispose();
+
+            ImageIcon photoIcon = new ImageIcon(scaledImage);
+            JLabel photoLabel = new JLabel(photoIcon);
+            photoLabel.setOpaque(true);
+            multiPhotoPanel.add(photoLabel);
             photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     openFullPhoto(fullImage);
                 }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    //photoLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.DARK_GRAY));
+                    photoLabel.setLocation(photoLabel.getX(), photoLabel.getY() - 5);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    //photoLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.DARK_GRAY));
+                    photoLabel.setLocation(photoLabel.getX(), photoLabel.getY() + 5);
+                }
             });
-            amount+=1;
+
+            amount += 1;
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(0, 5, 0, 0));
+        multiPhotoPanel.setBorder(new EmptyBorder(0, 5, 0, 0)); // Установка границ для панели с изображениями
         newsPanel.add(multiPhotoPanel);
-        newsPanel.setBackground(hexToColor("#0707079e"));
+        newsPanel.setBackground(hexToColor("#0707079e")); // Установка цвета фона панели новостей
         newsPanel.setOpaque(true);
     }
+
     private void openFullPhoto(BufferedImage photo) {
         resizeFrame.getContentPane().removeAll();
         resizeFrame.revalidate();
@@ -261,7 +285,6 @@ public class NewsPanel extends JPanel {
         resizeFrame.setSize(photo.getWidth() + 40, photo.getHeight() + photo.getHeight() / 4);
         resizeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         resizeFrame.setVisible(true);
-        resizeFrame.setLocationRelativeTo(this.news.getLauncher());
     }
 
 
@@ -279,6 +302,7 @@ public class NewsPanel extends JPanel {
 
             JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, 0);
             statisticsPanel.add(labelPanel);
+
         }
 
         return statisticsPanel;

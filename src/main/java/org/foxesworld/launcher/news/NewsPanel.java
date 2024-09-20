@@ -125,9 +125,8 @@ public class NewsPanel extends JPanel {
     }
 
     private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
-        ImageIcon communityIcon = new ImageIcon(new URL(newsAttributes.getCommunityPhotoUrl()));
-        Image communityImage = communityIcon.getImage();
-        communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImage, 50));
+        BufferedImage communityImg = this.imageUtils.getCachedUrlImg(newsAttributes.getCommunityPhotoUrl(), "vk", this.imageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
+        ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImg, 50));
 
         JLabel communityLabel = new JLabel(communityIcon);
         communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -225,25 +224,24 @@ public class NewsPanel extends JPanel {
 
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
         JPanel multiPhotoPanel = new JPanel();
-        multiPhotoPanel.setLayout(new GridLayout(0, 3, 0, 0));
+        multiPhotoPanel.setLayout(new GridLayout(0, 3, 0, 1));
         multiPhotoPanel.setOpaque(false);
 
-        int amount = 0;
-        for (String photoUrl : newsAttributes.getOriginalPhotoUrls()) {
-            BufferedImage tooltipImage = this.imageUtils.getCachedUrlImg(newsAttributes.getTooltipPhotoUrls().get(amount), "vk/tooltips", this.imageUtils.getLocalImage(""));
-            BufferedImage fullImage =  this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
+        List<String> photoUrls = newsAttributes.getOriginalPhotoUrls();
+        List<String> tooltipPhotoUrls = newsAttributes.getTooltipPhotoUrls();
 
-            int targetWidth = tooltipImage.getWidth();
-            int targetHeight = tooltipImage.getHeight();
-            BufferedImage scaledImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D graphics = scaledImage.createGraphics();
-            graphics.drawImage(tooltipImage, 0, 0, targetWidth, targetHeight, null);
-            graphics.dispose();
+        for (int i = 0; i < photoUrls.size(); i++) {
+            String photoUrl = photoUrls.get(i);
+            BufferedImage tooltipImage = this.imageUtils.getCachedUrlImg(tooltipPhotoUrls.get(i), "vk/tooltips", this.imageUtils.getLocalImage(""));
+            BufferedImage fullImage = this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
 
-            ImageIcon photoIcon = new ImageIcon(scaledImage);
+            ImageIcon photoIcon = new ImageIcon(resizeImage(tooltipImage));
             JLabel photoLabel = new JLabel(photoIcon);
-            photoLabel.setOpaque(true);
-            multiPhotoPanel.add(photoLabel);
+            photoLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            photoLabel.setBackground(new Color(0, 0, 0, 0)); // Полная прозрачность
+            photoLabel.setOpaque(false); // Обеспечение полной прозрачности
+
             photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     openFullPhoto(fullImage);
@@ -251,24 +249,34 @@ public class NewsPanel extends JPanel {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    //photoLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.DARK_GRAY));
-                    photoLabel.setLocation(photoLabel.getX(), photoLabel.getY() - 5);
+                    photoLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    //photoLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.DARK_GRAY));
-                    photoLabel.setLocation(photoLabel.getX(), photoLabel.getY() + 5);
+                    photoLabel.setBorder(null);
                 }
             });
 
-            amount += 1;
+            multiPhotoPanel.add(photoLabel);
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(0, 5, 0, 0)); // Установка границ для панели с изображениями
+        multiPhotoPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+        multiPhotoPanel.setBackground(new Color(0, 0, 0, 0));
         newsPanel.add(multiPhotoPanel);
-        newsPanel.setBackground(hexToColor("#0707079e")); // Установка цвета фона панели новостей
+        newsPanel.setBackground(hexToColor("#0707079e"));
         newsPanel.setOpaque(true);
+    }
+
+
+    private BufferedImage resizeImage(BufferedImage originalImage) {
+        int targetWidth = originalImage.getWidth();
+        int targetHeight = originalImage.getHeight();
+        BufferedImage scaledImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = scaledImage.createGraphics();
+        graphics.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        graphics.dispose();
+        return scaledImage;
     }
 
     private void openFullPhoto(BufferedImage photo) {

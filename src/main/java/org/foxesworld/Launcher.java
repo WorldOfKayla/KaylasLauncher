@@ -119,8 +119,9 @@ public class Launcher extends Engine implements AuthListener {
         this.discord = new Discord(this, "aiden");
         this.discord.setLargeImageText(this.getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
         this.buildGui(this.getEngineData().getStyles());
-        setNews(new News(this));
+
         loadMainPanel(this.fileProperties.getMainFrame());
+        setNews(new News(this));
 
         // ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();

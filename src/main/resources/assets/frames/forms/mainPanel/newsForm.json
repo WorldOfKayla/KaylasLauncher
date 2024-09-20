@@ -19,9 +19,6 @@
           "loadPanel": "newsFrame"
         },
         {
-          "readFrom": "assets/frames/forms/mainPanel/newsEntry.json"
-        },
-        {
           "readFrom": "assets/frames/forms/mainPanel/serverInfo.json"
         }
       ]

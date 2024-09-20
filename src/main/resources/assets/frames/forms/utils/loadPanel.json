@@ -1,0 +1,54 @@
+{
+  "panels": {
+    "loadPanel": {
+      "panelOptions": {
+        "opaque": true,
+        "focusable": true,
+        "visible": false,
+        "background": "#c0a1a0f7",
+        "backgroundImage": "assets/ui/img/bg/season/summer.png+",
+        "border": "1,1,1,1,#242221",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "size": {
+            "width": 500,
+            "height": 200
+          }
+        }
+      },
+      "childComponents": [
+        {
+          "componentType": "label",
+          "fontSize": 23,
+          "componentStyle": "promptLabel",
+          "localeKey": "loading.title",
+          "componentId": "titleLabel",
+          "bounds": {
+            "x": 120,
+            "y": 50,
+            "size": {
+              "width": 300,
+              "height": 35
+            }
+          }
+        },
+        {
+          "componentType": "label",
+          "fontSize": 11,
+          "componentStyle": "title",
+          "localeKey": "loading.msg",
+          "componentId": "loaderText",
+          "bounds": {
+            "x": 120,
+            "y": 75,
+            "size": {
+              "width": 400,
+              "height": 20
+            }
+          }
+        }
+      ]
+    }
+  }
+}

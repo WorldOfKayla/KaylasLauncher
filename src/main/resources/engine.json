@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.9.13-RAGE",
+  "launcherVersion": "1.9.14-RAGE",
   "styles": [
     "button",
     "checkBox",
@@ -30,7 +30,6 @@
     {
       "spritePath": "assets/ui/sprites/loaderFox.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
-      "font": "FSElliotPro-Heavy",
       "blurColor": "#b3a8998a",
       "titleColor": "#ffffff",
       "descColor": "#473c3c",
@@ -50,7 +49,6 @@
     {
       "spritePath": "assets/ui/sprites/exp.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
-      "font": "mcfont",
       "blurColor": "#b3a8998a",
       "titleColor": "#ffffff",
       "descColor": "#473c3c",

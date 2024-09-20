@@ -17,13 +17,13 @@ import org.foxesworld.engine.utils.HashUtils;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.engine.utils.helper.JVMHelper;
-import org.foxesworld.engine.utils.loadManager.LoadingManager;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.components.ComponentManager;
+import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
 
@@ -101,7 +101,6 @@ public class Launcher extends Engine implements AuthListener {
         this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
         this.SOUND = new Sound(this, this.getClass().getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
-        this.loadingManager = new LoadingManager(this, this.getConfig().getLoaderIndex());
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
@@ -125,6 +124,7 @@ public class Launcher extends Engine implements AuthListener {
 
         // ALL PANELS ARE BUILT
         this.getGuiBuilder().buildAdditionalPanels();
+        this.loadingManager = new LoadStatus(this, this.getConfig().getLoaderIndex());
         this.settings = new Settings(this);
         this.settings.addListeners();
         setInit(true);

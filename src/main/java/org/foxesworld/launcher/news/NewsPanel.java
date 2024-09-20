@@ -23,6 +23,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -336,9 +337,10 @@ public class NewsPanel extends JPanel {
     private String formatDate(long timestamp) {
         Timestamp stamp = new Timestamp(timestamp * 1000L);
         Date date = new Date(stamp.getTime());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm", new Locale("ru", "RU"));
         return formatter.format(date);
     }
+
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);

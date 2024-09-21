@@ -7,27 +7,31 @@ import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.gui.components.panel.Panel;
+import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class ServerInfoDisplayer implements DropBoxListener {
+public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
     private final User user;
     private final JPanel newsPanel;
     private final ImageUtils imageUtils;
     private final GuiBuilder guiBuilder;
-    private final ComponentsAccessor componentsAccessor;
 
     public ServerInfoDisplayer(User user) {
+        super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class));
         this.user = user;
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
         this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
-        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "serverInfo", Arrays.asList(Label.class));
     }
 
     @Override
@@ -58,9 +62,12 @@ public class ServerInfoDisplayer implements DropBoxListener {
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
-        ((JLabel) componentsAccessor.getComponentMap().get("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-        ((JLabel) componentsAccessor.getComponentMap().get("serverImg")).setIcon(new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
-        ((JLabel) guiBuilder.getComponentById("serverDescLabel")).setText("<html>" + thisServer.getServerDescription() + "</html>");
+        ((JLabel) this.getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
+        ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
+        //USING deprecasted UNTIL panel GuiBuilderFix
+        TextArea textArea = ((TextArea) this.guiBuilder.getComponentById("serverDescLabel"));
+        textArea.setWrapStyleWord(true);
+        textArea.setText(thisServer.getServerDescription());
         //modsInfoArr(thisServer.getModsInfo());
         newsPanel.repaint();
     }

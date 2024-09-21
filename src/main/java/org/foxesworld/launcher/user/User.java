@@ -148,4 +148,8 @@ public class User extends org.foxesworld.engine.user.User {
     public JPanel getNewsPanel() {
         return newsPanel;
     }
+
+    public Launcher getLauncher() {
+        return launcher;
+    }
 }

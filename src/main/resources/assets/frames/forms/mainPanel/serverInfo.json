@@ -66,8 +66,9 @@
               },
               "childComponents": [
                 {
-                  "componentType": "label",
-                  "componentStyle": "title",
+                  "componentType": "textArea",
+                  "lineWrap": true,
+                  "componentStyle": "textFieldMain",
                   "fontSize": 13,
                   "border": "5,5,5,5",
                   "color": "#ffffff",

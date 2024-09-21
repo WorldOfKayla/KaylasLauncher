@@ -239,8 +239,8 @@ public class NewsPanel extends JPanel {
             JLabel photoLabel = new JLabel(photoIcon);
             photoLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-            photoLabel.setBackground(new Color(0, 0, 0, 0)); // Полная прозрачность
-            photoLabel.setOpaque(false); // Обеспечение полной прозрачности
+            photoLabel.setBackground(new Color(0, 0, 0, 0));
+            photoLabel.setOpaque(false);
 
             photoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {

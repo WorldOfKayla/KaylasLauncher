@@ -193,6 +193,11 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     @Override
+    public void onAdditionalPanelBuild(JPanel jPanel) {
+
+    }
+
+    @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
         parentPanel.updateUI();
         parentPanel.repaint();

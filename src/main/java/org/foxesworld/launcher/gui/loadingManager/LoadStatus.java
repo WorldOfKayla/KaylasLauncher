@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.gui.loadingManager;
 
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.ComponentsAccessor;
+import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.loadingManager.LoadManagerAttributes;
@@ -12,7 +12,6 @@ import org.foxesworld.engine.utils.animation.AnimationStats;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
@@ -30,7 +29,7 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
 
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
         this.animationManager.setAnimationStats(this);
-        this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", Arrays.asList(Label.class, SpriteAnimation.class));
+        this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class));
         initializeLoadingFrame(index);
     }
 

@@ -2,7 +2,7 @@ package org.foxesworld.launcher.gui;
 
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
-import org.foxesworld.engine.gui.ComponentsAccessor;
+import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserInfo extends ComponentsAccessor {
@@ -22,7 +23,7 @@ public class UserInfo extends ComponentsAccessor {
     private UserAttributes[] userAttributes;
 
     public UserInfo(Launcher launcher){
-        super(launcher.getGuiBuilder(), "test", Arrays.asList(Label.class));
+        super(launcher.getGuiBuilder(), "test", List.of(Label.class));
         this.launcher = launcher;
         this.POSTrequest = launcher.getPOSTrequest();
         this.getComponents();

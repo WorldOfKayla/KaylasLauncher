@@ -7,7 +7,7 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.gui.ComponentsAccessor;
+import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
@@ -35,7 +35,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     public FileLoaderImpl(Core core) {
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
-        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download", Arrays.asList(Label.class, JProgressBar.class));
+        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download", List.of(Label.class, JProgressBar.class));
     }
 
     @Override

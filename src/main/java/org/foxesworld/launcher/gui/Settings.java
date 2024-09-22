@@ -1,7 +1,7 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
-import org.foxesworld.engine.gui.ComponentsAccessor;
+import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.checkbox.CheckBoxListener;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
@@ -18,36 +18,26 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener {
     private Launcher launcher;
 
     public Settings(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "settingsFields", Arrays.asList(Checkbox.class, TextField.class, Slider.class));
+        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, Checkbox.class, DropBox.class, TextField.class, Slider.class));
         this.launcher = launcher;
-        this.launcher.getLANG().setLocaleIndex(this.launcher.getConfig().getLang());
+        //this.launcher.getLANG().setLocaleIndex(this.launcher.getLANG().getLocalesSet()[this.launcher.getConfig().getLang()]);
     }
 
-    public void applySettings() {
-        for (JComponent component : this.getComponentsForPanel("settingsFields")) {
+    public void applySettings(String panelId) {
+        for (Map.Entry<String, String> map : this.collectFormCredentialsForPanel(panelId).entrySet()) {
             Class<Config> clazz = Config.class;
             try {
-                clazz.getDeclaredField(component.getName());
-                if (component instanceof Checkbox) {
-                    this.launcher.getConfig().setConfigValue(component.getName(), ((JCheckBox) component).isSelected());
-                } else if (component instanceof TextField) {
-                    this.launcher.getConfig().setConfigValue(component.getName(), ((TextField) component).getValue());
-                } else {
-                    if (component instanceof JSlider) {
-                        this.launcher.getConfig().setConfigValue(component.getName(), ((JSlider) component).getValue());
-                    }
-                }
-                if (component instanceof DropBox) {
-                    this.launcher.getConfig().setConfigValue(component.getName(), ((DropBox) component).getValue());
-                    ((DropBox) component).setPoint(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/srvIcons/forge.png"));
-                }
+                clazz.getDeclaredField(map.getKey());
+                System.out.println(map.getKey() + ' ' + map.getValue());
+                this.launcher.getConfig().setConfigValue(map.getKey(), map.getValue());
             } catch (NoSuchFieldException ignored) {
             }
         }
@@ -58,26 +48,23 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     }
 
     public void addListeners() {
-        for (JComponent component : launcher.getGuiBuilder().getComponentsMap().get("settingsFields")) {
-
+        for(JComponent component: this.getComponentsForPanel("settingsFields")){
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
+            }
+
+            if (component instanceof TextField) {
+                ((TextField) component).setTextFieldListener(this);
+            }
+
+            if (component instanceof Checkbox) {
+                ((Checkbox) component).setCheckBoxListener(this);
             }
 
             if (component instanceof DropBox) {
                 ((DropBox) component).setValues(launcher.getLANG().getLocalesSet());
                 ((DropBox) component).setSelectedIndex(launcher.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
-            }
-
-            if (component instanceof TextField) {
-                if (!component.isEnabled()) {
-                    ((TextField) component).setTextFieldListener(this);
-                }
-            }
-
-            if (component instanceof Checkbox) {
-                ((Checkbox) component).setCheckBoxListener(this);
             }
         }
     }
@@ -120,7 +107,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onScrollBoxClose(int i) {
-        launcher.getLANG().setCurrentLang(launcher.getLANG().getLocalesSet()[i]);
+        launcher.getLANG().setLocaleIndex(i);
         launcher.getFrame().getPanel().repaint();
     }
 
@@ -132,7 +119,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onTextChange(TextField textfield) {
         if (!textfield.getText().equals("")) {
-            Slider slider = (Slider) launcher.getGuiBuilder().getComponentById(textfield.getName().replace("Text", ""));
+            Slider slider = (Slider) this.getComponent(textfield.getName().replace("Text", ""));
             if (slider != null) {
                 slider.setValue(Integer.parseInt(textfield.getText()));
             }
@@ -141,12 +128,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        TextArea infoArea = (TextArea) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
+        TextArea infoArea = (TextArea) this.getComponent("settingsInfo");
         infoArea.setWrapStyleWord(true);
-        /* TODO
-        *  We should add all inner components to parent panel
-        *  Partly done :3
-        */
         infoArea.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
     }
 

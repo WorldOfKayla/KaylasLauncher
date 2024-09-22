@@ -98,7 +98,7 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     protected void preInit() {
         this.config = new Config(this);
-        this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), String.valueOf(this.getConfig().getCONFIG().get("lang")));
+        this.LANG = new LanguageProvider(this, this.fileProperties.getLocaleFile(), this.getConfig().getLang());
         this.SOUND = new Sound(this, this.getClass().getClassLoader().getResourceAsStream(this.fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
         this.serverInfo = new ServerInfo(this);

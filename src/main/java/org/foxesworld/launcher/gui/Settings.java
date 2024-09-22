@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.slider.SliderListener;
+import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
 import org.foxesworld.launcher.config.Config;
@@ -30,7 +31,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     }
 
     public void applySettings() {
-        for (JComponent component : this.getComponentList()) {
+        for (JComponent component : this.getComponentsForPanel("settingsFields")) {
             Class<Config> clazz = Config.class;
             try {
                 clazz.getDeclaredField(component.getName());
@@ -140,12 +141,13 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        JLabel infoArea = (JLabel) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
-        //infoArea.setLineWrap(true);
-        //infoArea.setEditable(false);
-        //TODO
-        // We should add all inner components to parent panel
-        infoArea.setText("<html>" + this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc") + "</html>");
+        TextArea infoArea = (TextArea) this.launcher.getGuiBuilder().getComponentById("settingsInfo");
+        infoArea.setWrapStyleWord(true);
+        /* TODO
+        *  We should add all inner components to parent panel
+        *  Partly done :3
+        */
+        infoArea.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
     }
 
     @Override

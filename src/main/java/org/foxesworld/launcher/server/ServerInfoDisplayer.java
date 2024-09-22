@@ -64,8 +64,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
         ((JLabel) this.getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
         ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
-        //USING deprecasted UNTIL panel GuiBuilderFix
-        TextArea textArea = ((TextArea) this.guiBuilder.getComponentById("serverDescLabel"));
+        TextArea textArea = ((TextArea) this.getComponent("serverDescLabel"));
         textArea.setWrapStyleWord(true);
         textArea.setText(thisServer.getServerDescription());
         //modsInfoArr(thisServer.getModsInfo());

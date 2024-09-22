@@ -2,7 +2,6 @@ package org.foxesworld.launcher.user;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.ComponentsAccessor;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
@@ -17,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,31 +24,32 @@ import java.util.concurrent.Executors;
 @SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
+    private final UserServers userServers;
     private final Launcher launcher;
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
-    private final ComponentsAccessor componentsAccessor;
     private final UserAttributes userAttributes;
     private JPanel newsPanel;
 
     public User(Launcher launcher) {
+        super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
         this.launcher = launcher;
         this.auth = launcher.getAuth();
+        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(ServerBox.class, DropBox.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.serverInfo.setServerStatusImg(this.engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
-        this.serverBox = (ServerBox) engine.getGuiBuilder().getComponentById("serverStatusBox");
+        this.serverBox = userServers.getServerBox();
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
-        this.componentsAccessor = new ComponentsAccessor(this.guiBuilder, "userPane", Arrays.asList(Label.class));
         this.userAttributes = new UserAttributes(this);
 
         initializeUser();
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-        setDropBoxData((DropBox) engine.getGuiBuilder().getComponentById("serverBox"));
+        setDropBoxData(this.userServers.getServerListBox());
     }
 
     private void initializeUser() {
@@ -86,8 +86,8 @@ public class User extends org.foxesworld.engine.user.User {
         }
 
         ImageIcon icon = new ImageIcon(this.engine.getImageUtils().getRoundedImage(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())), 5));
-        ((JLabel) this.componentsAccessor.getComponentMap().get("userHead")).setIcon(icon);
-        ((JLabel) this.componentsAccessor.getComponentMap().get("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
+        ((JLabel) this.getComponent("userHead")).setIcon(icon);
+        ((JLabel) this.getComponent("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
         engine.getGuiBuilder().getPanelsMap().get("userPane").setForeground(Color.BLUE);
     }
 
@@ -151,5 +151,9 @@ public class User extends org.foxesworld.engine.user.User {
 
     public Launcher getLauncher() {
         return launcher;
+    }
+
+    public UserServers getUserServers() {
+        return userServers;
     }
 }

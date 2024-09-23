@@ -9,11 +9,11 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class UserInfo extends ComponentsAccessor {
 
     private final Launcher launcher;

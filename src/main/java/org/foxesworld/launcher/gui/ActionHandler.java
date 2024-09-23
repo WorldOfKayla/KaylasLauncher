@@ -2,19 +2,26 @@ package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
+import org.foxesworld.engine.gui.components.multiButton.MultiButton;
+import org.foxesworld.engine.gui.components.passfield.PassField;
+import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
 
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
+
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
     protected ServerAttributes currentServer;
     protected  final UserInfo userInfo;
     public ActionHandler(Launcher launcher) {
+        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.userInfo = new UserInfo(launcher);
@@ -29,7 +36,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             key = command[1];
             parent = command[0];
         }
-        JComponent component = this.getEngine().getGuiBuilder().getComponentById(key);
+
             switch (key) {
                 case "submit" -> {
                     switch (parent){
@@ -39,6 +46,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                                 engine.getFrame().getRootPanel().removeAll();
                                 engine.getPanelVisibility().displayPanel("authForm->false");
                                 this.engine.init();
+                            } else {
+                                ((TextField)this.getComponent("login")).resetText();
+                                ((PassField)this.getComponent("password")).resetText();
                             }
                         }
 
@@ -47,7 +57,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    //engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
                     this.launcher.getEngine().getLoadingManager().toggleLoader();
                 }
 
@@ -91,9 +100,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "toGame" -> {
-                    this.engine.getGuiBuilder().getComponentById(key).setEnabled(false);
-                    this.engine.getGuiBuilder().getComponentById("logOut").setEnabled(false);
-                    DropBox dropBox = (DropBox) engine.getGuiBuilder().getComponentById("serverBox");
+                    this.getComponent(key).setEnabled(false);
+                    this.getComponent("logOut").setEnabled(false);
+                    DropBox dropBox = (DropBox) this.getComponent("serverBox");
                     this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
                     Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());

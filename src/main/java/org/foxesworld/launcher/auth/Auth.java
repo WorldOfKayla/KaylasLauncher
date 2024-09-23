@@ -3,9 +3,6 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
-import org.foxesworld.engine.gui.components.passfield.PassField;
-import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -78,7 +75,6 @@ public class Auth {
     }
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);
-        //this.authCredentials.putAll(authCredentials);
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
@@ -121,12 +117,6 @@ public class Auth {
         engine.init();
     }
 
-    static class FormAuth extends ComponentsAccessor {
-        public FormAuth(Auth auth) {
-            super(auth.getEngine().getGuiBuilder(), "authForm", Arrays.asList(TextField.class, PassField.class, JCheckBox.class));
-        }
-    }
-
     private void saveAuthCredentials(Map<String, String> authCredentials) {
         Map<String, String> encryptedCredentials = new HashMap<>(authCredentials);
         String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), encryptionKeyManager.getEncryptionKey(16));
@@ -163,19 +153,15 @@ public class Auth {
     public boolean isAuthorised() {
         return authorised;
     }
-
     public void setAuthListener(AuthListener authListener) {
         this.authListener = authListener;
     }
-
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
-
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
     }
-
     public void setAuthCredentials(Map<String, String> authCredentials) {
         this.authCredentials = authCredentials;
     }

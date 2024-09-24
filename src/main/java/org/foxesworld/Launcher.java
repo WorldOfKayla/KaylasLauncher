@@ -22,14 +22,13 @@ import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.Settings;
+import org.foxesworld.launcher.gui.SplashScreenWindow;
 import org.foxesworld.launcher.gui.components.ComponentManager;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
 
-import javax.swing.Timer;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URISyntaxException;
@@ -55,6 +54,8 @@ public class Launcher extends Engine implements AuthListener {
 
     public Launcher() {
         super(configFiles);
+        SplashScreenWindow splashScreen = new SplashScreenWindow();
+        splashScreen.showSplashScreen();
         long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();
@@ -249,33 +250,6 @@ public class Launcher extends Engine implements AuthListener {
 
         public String getFilename() {
             return filename;
-        }
-    }
-
-    static class SplashScreenWindow {
-        private final JWindow window;
-        private final JLabel label;
-
-        public SplashScreenWindow() {
-            window = new JWindow();
-            label = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("assets/ui/img/serum.png")));
-            window.getContentPane().add(label, BorderLayout.CENTER);
-            window.setSize(500, 300); // Размер окна сплэш-экрана
-            window.setLocationRelativeTo(null);
-        }
-
-        public void showSplashScreen() {
-            window.setVisible(true);
-            Timer timer = new Timer(3000, e -> {
-                window.setVisible(false);
-                window.dispose();
-            });
-            timer.setRepeats(false);
-            timer.start();
-        }
-
-        public void dispose() {
-            window.dispose();
         }
     }
 }

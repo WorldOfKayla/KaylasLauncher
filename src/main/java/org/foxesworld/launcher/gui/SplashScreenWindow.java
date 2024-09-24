@@ -3,26 +3,32 @@ package org.foxesworld.launcher.gui;
 import javax.swing.*;
 import java.awt.*;
 
+import org.foxesworld.Launcher;
+
 public class SplashScreenWindow {
     private final JWindow window;
+    private final ImageIcon imageIcon;
     private final JLabel imageLabel;
-    private final JLabel messageLabel;
-    private Timer dotTimer;
-    private String baseMessage = "Loading";
+    private float opacity = 0f;
+    private final int fadeDuration = 2000;
+    private final int fadeInterval = 40;
 
     public SplashScreenWindow() {
         window = new JWindow();
-        imageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("assets/ui/icons/fwBanner.png")));
-        messageLabel = new JLabel(baseMessage, JLabel.CENTER);
-
-        messageLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        messageLabel.setBorder(BorderFactory.createEmptyBorder(0, 0,0,0));
-        messageLabel.setForeground(Color.BLACK);
+        imageIcon = new ImageIcon(getClass().getClassLoader().getResource("assets/ui/icons/fwBanner.png"));
+        imageLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+                g2d.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), null);
+                g2d.dispose();
+            }
+        };
 
         JPanel content = new JPanel(new BorderLayout());
         content.setOpaque(false);
-        content.add(imageLabel, BorderLayout.NORTH);
-        content.add(messageLabel, BorderLayout.CENTER);
+        content.add(imageLabel, BorderLayout.CENTER);
 
         window.getContentPane().add(content);
         window.setSize(500, 350);
@@ -31,40 +37,54 @@ public class SplashScreenWindow {
     }
 
     public void showSplashScreen() {
-        window.setVisible(true);
+        window.setVisible(true); // Show the window immediately
 
-        dotTimer = new Timer(500, e -> {
-            String currentText = messageLabel.getText();
-            if (currentText.endsWith("...")) {
-                messageLabel.setText(baseMessage);
-            } else {
-                messageLabel.setText(currentText + ".");
+        // Calculate steps and the opacity increment
+        int steps = fadeDuration / fadeInterval;
+        float opacityStep = 1.0f / steps;
+
+        // Create a SwingWorker for the fade effect
+        SwingWorker<Void, Float> fadeWorker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                for (int i = 0; i <= steps; i++) {
+                    opacity += opacityStep;
+                    if (opacity > 1f) {
+                        opacity = 1f;
+                    }
+                    publish(opacity); // Publish the current opacity
+                    /*
+                    try {
+                        Thread.sleep(fadeInterval); // Sleep for the duration of the fade interval
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    */
+                }
+                return null; // Return null as the result is not needed
             }
-        });
-        dotTimer.start();
 
-        Timer timer = new Timer(3000, e -> {
-            window.setVisible(false);
-            window.dispose();
-            dotTimer.stop();
-        });
-        timer.setRepeats(false);
-        timer.start();
+            @Override
+            protected void process(java.util.List<Float> chunks) {
+                // Update the UI with the latest opacity
+                float latestOpacity = chunks.get(chunks.size() - 1);
+                imageLabel.repaint(); // Repaint with the latest opacity
+            }
+
+            @Override
+            protected void done() {
+                // Set up a timer to close the splash screen after fading
+                Timer closeTimer = new Timer(fadeDuration + fadeInterval, e -> {
+                    window.setVisible(false);
+                    window.dispose();
+                });
+                closeTimer.setRepeats(false);
+                closeTimer.start();
+            }
+        };
+
+        // Execute the SwingWorker
+        fadeWorker.execute();
     }
 
-    public void dispose() {
-        window.dispose();
-    }
-
-    public void setMessage(String message) {
-        baseMessage = message;
-        messageLabel.setText(baseMessage);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            SplashScreenWindow splashScreen = new SplashScreenWindow();
-            splashScreen.showSplashScreen();
-        });
-    }
 }

@@ -49,13 +49,13 @@ public class Launcher extends Engine implements AuthListener {
     private static final List<String> configFiles = List.of("config");
 
     public static void main(String[] args) {
+        SplashScreenWindow splashScreen = new SplashScreenWindow();
+        splashScreen.showSplashScreen();
         SwingUtilities.invokeLater(Launcher::new);
     }
 
     public Launcher() {
         super(configFiles);
-        SplashScreenWindow splashScreen = new SplashScreenWindow();
-        splashScreen.showSplashScreen();
         long startTime = System.currentTimeMillis();
         this.launcher = new File(this.appPath());
         this.fileProperties = getFileProperties();

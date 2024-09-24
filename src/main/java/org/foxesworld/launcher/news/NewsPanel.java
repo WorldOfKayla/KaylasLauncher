@@ -126,7 +126,7 @@ public class NewsPanel extends JPanel {
 
     private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
         BufferedImage communityImg = this.imageUtils.getCachedUrlImg(newsAttributes.getCommunityPhotoUrl(), "vk", this.imageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
-        ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(communityImg, 50));
+        ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(communityImg, 64, 64), 25));
 
         JLabel communityLabel = new JLabel(communityIcon);
         communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);

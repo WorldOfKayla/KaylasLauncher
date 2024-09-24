@@ -57,7 +57,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.launcher.getEngine().getLoadingManager().toggleLoader();
+                    this.launcher.getSOUND().playSound("other", "invalidJVM");
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

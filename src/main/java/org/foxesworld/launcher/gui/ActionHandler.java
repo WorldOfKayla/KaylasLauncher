@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.multiButton.MultiButton;
 import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
+import org.foxesworld.engine.sound.PlaybackStatusListener;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
 
@@ -57,7 +58,25 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.launcher.getSOUND().playSound("other", "invalidJVM");
+                    Button button = (Button) this.getComponent(key);
+                    PlaybackStatusListener listener = new PlaybackStatusListener() {
+                        @Override
+                        public void onPlaybackStarted(String path) {
+                            button.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onPlaybackStopped(String path) {
+                            button.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {
+                            //System.out.println("Playback progress for: " + path + " - " + (microsecondPosition / 1000000) + "s/" + (microsecondLength / 1000000) + "s");
+                        }
+                    };
+                    this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
+
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

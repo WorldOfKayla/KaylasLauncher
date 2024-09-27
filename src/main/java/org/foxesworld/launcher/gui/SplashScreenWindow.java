@@ -2,21 +2,23 @@ package org.foxesworld.launcher.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
-public class SplashScreenWindow {
-    private final JWindow window;
+public class SplashScreenWindow extends JWindow {
     private final ImageIcon imageIcon;
+    private final ImageIcon backgroundImage;
     private final JLabel imageLabel;
-    private float opacity = 1f;
+    private float opacity = 1f; // Start with full transparency
     private final int fadeDuration = 2000;
     private final int fadeInterval = 40;
 
     public SplashScreenWindow() {
-        window = new JWindow();
+        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("assets/ui/img/bg/launch.jpg"));
         imageIcon = new ImageIcon(getClass().getClassLoader().getResource("assets/ui/icons/fwBanner.png"));
         imageLabel = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
                 g2d.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), null);
@@ -27,11 +29,8 @@ public class SplashScreenWindow {
         JPanel content = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(getBackground());
-                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-                g2d.dispose();
+                super.paintComponent(g);
+                createBackgroundWithOverlayAndRoundedCorners(g, getWidth(), getHeight());
             }
 
             @Override
@@ -43,14 +42,33 @@ public class SplashScreenWindow {
         content.setBackground(Color.LIGHT_GRAY);
         content.add(imageLabel, BorderLayout.CENTER);
 
-        window.getContentPane().add(content);
-        window.setSize(500, 350);
-        window.setLocationRelativeTo(null);
-        window.setBackground(new Color(0, 0, 0, 0));
+        getContentPane().add(content);
+        setSize(500, 350);
+        setLocationRelativeTo(null);
+        setBackground(new Color(0, 0, 0, 0)); // Transparent background
+    }
+
+    private void createBackgroundWithOverlayAndRoundedCorners(Graphics g, int width, int height) {
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        // Create a rounded rectangle for the clipping mask
+        Shape roundedRect = new RoundRectangle2D.Double(0, 0, width, height, 30, 30);
+        g2d.setClip(roundedRect);
+
+        // Draw the background image
+        g2d.drawImage(backgroundImage.getImage(), 0, 0, width, height, null);
+
+        // Create the dimming overlay with rounded corners
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)); // Semi-transparent overlay
+        g2d.setColor(Color.BLACK); // Dimming color
+        g2d.fill(roundedRect); // Fill the overlay with rounded corners
+
+        g2d.dispose();
     }
 
     public void showSplashScreen() {
-        window.setVisible(true);
+        setVisible(true);
 
         int steps = fadeDuration / fadeInterval;
         float opacityStep = 1.0f / steps;
@@ -70,7 +88,7 @@ public class SplashScreenWindow {
                         Thread.currentThread().interrupt();
                     }
                 }
-                return null; // Return null as the result is not needed
+                return null;
             }
 
             @Override
@@ -82,8 +100,8 @@ public class SplashScreenWindow {
             @Override
             protected void done() {
                 Timer closeTimer = new Timer(fadeDuration + fadeInterval, e -> {
-                    window.setVisible(false);
-                    window.dispose();
+                    setVisible(false);
+                    dispose();
                 });
                 closeTimer.setRepeats(false);
                 closeTimer.start();

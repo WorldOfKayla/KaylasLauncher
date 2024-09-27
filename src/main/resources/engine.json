@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.10.3-AVANGUARD",
+  "launcherVersion": "1.10.4-AVANGUARD",
   "styles": [
     "button",
     "checkBox",
@@ -12,7 +12,8 @@
     "serverBox",
     "textField",
     "textArea",
-    "slider"
+    "slider",
+    "spinner"
   ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",

@@ -37,6 +37,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             key = command[1];
             parent = command[0];
         }
+        Component pressedComponent = this.getComponent(key);
 
             switch (key) {
                 case "submit" -> {
@@ -58,22 +59,19 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    Button button = (Button) this.getComponent(key);
                     PlaybackStatusListener listener = new PlaybackStatusListener() {
                         @Override
                         public void onPlaybackStarted(String path) {
-                            button.setEnabled(false);
+                            pressedComponent.setEnabled(false);
                         }
 
                         @Override
                         public void onPlaybackStopped(String path) {
-                            button.setEnabled(true);
+                            pressedComponent.setEnabled(true);
                         }
 
                         @Override
-                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {
-                            //System.out.println("Playback progress for: " + path + " - " + (microsecondPosition / 1000000) + "s/" + (microsecondLength / 1000000) + "s");
-                        }
+                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {}
                     };
                     this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
 

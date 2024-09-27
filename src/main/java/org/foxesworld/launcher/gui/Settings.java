@@ -8,6 +8,8 @@ import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.slider.SliderListener;
+import org.foxesworld.engine.gui.components.spinner.Spinner;
+import org.foxesworld.engine.gui.components.spinner.SpinnerListener;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
@@ -22,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener {
+public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
     private Launcher launcher;
 
     public Settings(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, Checkbox.class, DropBox.class, TextField.class, Slider.class));
+        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class));
         this.launcher = launcher;
         //this.launcher.getLANG().setLocaleIndex(this.launcher.getLANG().getLocalesSet()[this.launcher.getConfig().getLang()]);
     }
@@ -66,6 +68,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                 ((DropBox) component).setSelectedIndex(launcher.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
             }
+
+            if(component instanceof Spinner) {
+                ((Spinner) component).setSpinnerListener(this);
+            }
         }
     }
 
@@ -82,14 +88,14 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         SwingUtilities.invokeLater(() -> {
             int value = slider.getValue();
             switch (slider.getName()) {
-                case "volume" -> {
+                case "volumeSlider" -> {
                     launcher.getConfig().setVolume(value);
                     launcher.getEngine().getConfig().getCONFIG().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                    ((TextField) this.getComponent("volumeText")).setText(String.valueOf(value));
+                    ((JSpinner) this.getComponent("volumeText")).setValue(value);
                 }
 
-                case "ramAmount" -> ((TextField) this.getComponent("ramAmountText")).setText(String.valueOf(value));
+                case "ramAmountSlider" -> ((JSpinner) this.getComponent("ramAmountText")).setValue(value);
             }
         });
 
@@ -119,7 +125,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onTextChange(TextField textfield) {
         if (!textfield.getText().equals("")) {
-            Slider slider = (Slider) this.getComponent(textfield.getName().replace("Text", ""));
+            Slider slider = (Slider) this.getComponent(textfield.getName().replace("Text", "Slider"));
             if (slider != null) {
                 slider.setValue(Integer.parseInt(textfield.getText()));
             }
@@ -143,5 +149,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onDisable(JCheckBox jCheckBox) {
+    }
+
+    @Override
+    public void onSpinnerChange(Spinner customJSpinner) {
+        ((Slider)this.getComponent(customJSpinner.getName().replace("Text", "Slider"))).setValue((Integer) customJSpinner.getValue());
     }
 }

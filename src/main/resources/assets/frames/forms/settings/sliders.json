@@ -24,7 +24,7 @@
     "minorSpacing": 512,
     "majorSpacing": 1024,
     "initialValue": "config#ramAmount",
-    "componentId": "ramAmount",
+    "componentId": "ramAmountSlider",
     "bounds": {
       "x": 40,
       "y": 225,
@@ -35,16 +35,19 @@
     }
   },
   {
-    "componentType": "textField",
+    "componentType": "spinner",
     "enabled": false,
     "componentStyle": "inputBox",
+    "minValue": 1024,
+    "maxValue": 8196,
+    "majorSpacing": 1024,
     "initialValue": "config#ramAmount",
     "componentId": "ramAmountText",
     "bounds": {
       "x": 345,
       "y": 230,
       "size": {
-        "width": 50,
+        "width": 80,
         "height": 25
       }
     }
@@ -72,7 +75,7 @@
     "minorSpacing": 5,
     "majorSpacing": 10,
     "componentStyle": "slidingOut",
-    "componentId": "volume",
+    "componentId": "volumeSlider",
     "initialValue": "config#volume",
     "bounds": {
       "x": 40,
@@ -84,16 +87,19 @@
     }
   },
   {
-    "componentType": "textField",
+    "componentType": "spinner",
     "enabled": false,
     "componentStyle": "inputBox",
     "initialValue": "config#volume",
     "componentId": "volumeText",
+    "minValue": 50,
+    "maxValue": 100,
+    "majorSpacing": 5,
     "bounds": {
       "x": 345,
       "y": 180,
       "size": {
-        "width": 50,
+        "width": 80,
         "height": 25
       }
     }

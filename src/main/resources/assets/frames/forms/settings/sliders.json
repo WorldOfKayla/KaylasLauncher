@@ -40,7 +40,7 @@
     "componentStyle": "inputBox",
     "minValue": 1024,
     "maxValue": 8196,
-    "majorSpacing": 1024,
+    "majorSpacing": 512,
     "initialValue": "config#ramAmount",
     "componentId": "ramAmountText",
     "bounds": {

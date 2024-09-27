@@ -18,17 +18,7 @@
       },
       "childComponents": [
         {
-          "componentType": "dropBox",
-          "componentStyle": "selectable",
-          "componentId": "serverBox",
-          "bounds": {
-            "x": 35,
-            "y": 215,
-            "size": {
-              "width": 273,
-              "height": 25
-            }
-          }
+          "readFrom": "assets/frames/forms/user/userActions.json"
         },
         {
           "componentType": "serverBox",
@@ -36,8 +26,8 @@
           "color": "#ffffff",
           "componentId": "serverStatusBox",
           "bounds": {
-            "x": 40,
-            "y": 320,
+            "x": 80,
+            "y": 350,
             "size": {
               "width": 245,
               "height": 34
@@ -77,38 +67,6 @@
             "size": {
               "width": 60,
               "height": 50
-            }
-          }
-        },
-        {
-          "componentType": "button",
-          "enabled": true,
-          "keyCode": "ESCAPE",
-          "componentStyle": "btnTest",
-          "componentId": "logOut",
-          "localeKey": "logged.logOut",
-          "bounds": {
-            "x": 40,
-            "y": 260,
-            "size": {
-              "width": 120,
-              "height": 47
-            }
-          }
-        },
-        {
-          "componentType": "button",
-          "enabled": true,
-          "keyCode": "ENTER",
-          "componentStyle": "btnTestGreen",
-          "componentId": "toGame",
-          "localeKey": "logged.toGame",
-          "bounds": {
-            "x": 165,
-            "y": 260,
-            "size": {
-              "width": 120,
-              "height": 47
             }
           }
         },

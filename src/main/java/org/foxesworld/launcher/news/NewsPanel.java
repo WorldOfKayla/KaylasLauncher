@@ -345,7 +345,8 @@ public class NewsPanel extends JPanel {
     private String formatDate(long timestamp) {
         Timestamp stamp = new Timestamp(timestamp * 1000L);
         Date date = new Date(stamp.getTime());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm", new Locale("ru", "RU"));
+        String[] locale = this.news.getLauncher().getLANG().getLocalesSet()[this.news.getLauncher().getLANG().getLocaleIndex()].split("_");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm", new Locale(locale[0], locale[1]));
         return formatter.format(date);
     }
 

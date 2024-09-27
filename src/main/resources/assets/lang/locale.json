@@ -2,301 +2,387 @@
   "general": {
     "appTitle": {
       "en_US": "FoxesWorld",
-      "ru_RU": "FoxesWorld"
+      "ru_RU": "FoxesWorld",
+      "pl_PL": "FoxesWorld"
     },
     "status": {
       "en_US": "Alpha",
-      "ru_RU": "Альфа"
+      "ru_RU": "Альфа",
+      "pl_PL": "Alfa"
     },
     "website": {
       "en_US": "Website {key}",
-      "ru_RU": "Наш сайт {key}"
+      "ru_RU": "Наш сайт {key}",
+      "pl_PL": "Strona {key}"
     },
     "launcher": {
       "en_US": "In launcher",
-      "ru_RU": "В лаунчере"
+      "ru_RU": "В лаунчере",
+      "pl_PL": "W launcherze"
     }
   },
   "error": {
     "invalidJVM": {
       "en_US": "The JVM is invalid!",
-      "ru_RU": "Ваша JVM не является валидной!"
+      "ru_RU": "Ваша JVM не является валидной!",
+      "pl_PL": "JVM jest nieważna!"
     },
     "invalidLauncher": {
       "en_US": "The launcher is invalid!",
-      "ru_RU": "Ваш лаунчер нуждается в обновлении!"
+      "ru_RU": "Ваш лаунчер нуждается в обновлении!",
+      "pl_PL": "Launcher jest nieważny!"
     }
   },
   "settings": {
     "settingsButt": {
       "en_US": "Settings",
-      "ru_RU": "Настройки"
+      "ru_RU": "Настройки",
+      "pl_PL": "Ustawienia"
     },
     "back": {
       "en_US": "Back",
-      "ru_RU": "Назад"
+      "ru_RU": "Назад",
+      "pl_PL": "Wstecz"
     },
     "baseOptions": {
-        "en_US": "Base Options",
-        "ru_RU": "Общие параметры"
-      },
-      "autoEnter": {
-        "en_US": "Auto enter a selected server",
-        "ru_RU": "Автозаход на сервер"
-      },
-      "autoEnter-desc": {
-        "en_US": "After enabling this option you will go straight to server without visiting main menu",
-        "ru_RU": "Включив данную опцию ты попадёшь на сервер сразу после запуска игры, минуя главное меню"
-      },
-      "fullScreen": {
-        "en_US": "Set full screen after launching",
-        "ru_RU": "Запустить в полный экран"
-      },
-      "fullScreen-desc": {
-        "en_US": "When the game launches, it will be in full-screen mode. To exit full-screen mode, use F11",
-        "ru_RU": "При запуске игры она будет открыта в полный экран (Чтобы выйти из полноэкранного режима используйте F11)"
-      },
-      "loadNews": {
-        "en_US": "Load news",
-        "ru_RU": "Загружать новости"
-      },
-      "loadNews-desc": {
-        "en_US": "Loads the news block (Can be disabled to save traffic)",
-        "ru_RU": "Загружает блок с новостями (Можно отключить для экономии трафика)"
-      },
-      "enableSound": {
-        "en_US": "Enable Sound",
-        "ru_RU": "Включить звук"
-      },
-      "enableSound-desc": {
-        "en_US": "Enable sound effects in the launcher",
-        "ru_RU": "Включить звуковое сопровождение в лаунчере"
-      },
-      "backgroundMusic": {
-        "en_US": "Background music",
-        "ru_RU": "Фоновая музыка"
-      },
-      "backgroundMusic-desc": {
-        "en_US": "Enable background music in the launcher",
-        "ru_RU": "Включить фоновую музыку в лаунчере"
-      },
-      "launchAC": {
-        "en_US": "Start launcher after server exit",
-        "ru_RU": "Запуск лаунчера после выхода с сервера"
-      },
-      "launchAC-desc": {
-        "en_US": "When this option is enabled, the launcher will automatically start after exiting the game",
-        "ru_RU": "При включении данной опции - запускает лаунчер автоматически после выхода из игры"
-      },
-      "applySettings": {
-        "en_US": "Apply Settings",
-        "ru_RU": "Применить настройки"
-      },
-      "ramField": {
-        "en_US": "RAM amount (Mb)",
-        "ru_RU": "Выделение оперативной памяти (Mb)"
-      },
-      "ramPlaceholder": {
-        "en_US": "RAM",
-        "ru_RU": "ОЗУ"
-      },
-      "soundVolume": {
-        "en_US": "Sound volume",
-        "ru_RU": "Громкость звуков"
-      },
-      "langBox": {
-        "en_US": "Language",
-        "ru_RU": "Язык"
-      },
-      "info": {
-        "en_US": "Settings information",
-        "ru_RU": "Информация о настройках"
-      },
-      "homeDir": {
-        "en_US": "Game Dir",
-        "ru_RU": "Директория игры"
-      },
-      "width": {
-        "en_US": "Width",
-        "ru_RU": ""
-      },
-      "height": {
-        "en_US": "Height",
-        "ru_RU": ""
-      }
+      "en_US": "Base Options",
+      "ru_RU": "Общие параметры",
+      "pl_PL": "Podstawowe opcje"
     },
-    "auth": {
-      "authTitle": {
-        "en_US": "Authorization",
-        "ru_RU": "Авторизация"
-      },
-      "passwordPlaceholder": {
-        "en_US": "Password",
-        "ru_RU": "Пароль"
-      },
-      "loginPlaceholder": {
-        "en_US": "Login",
-        "ru_RU": "Логин"
-      },
-      "submit": {
-        "en_US": "Submit",
-        "ru_RU": "Войти"
-      },
-      "rememberMe": {
-        "en_US": "Remember Me",
-        "ru_RU": "Запомнить меня"
-      },
-      "loggedIn": {
-        "en_US": "Successful login for ",
-        "ru_RU": "Успешная авторизация "
-      },
-      "loggedOut": {
-        "en_US": " logged out",
-        "ru_RU": " успешно разлогинился"
-      }
+    "autoEnter": {
+      "en_US": "Auto enter a selected server",
+      "ru_RU": "Автозаход на сервер",
+      "pl_PL": "Automatyczne wejście na wybrany serwer"
     },
-    "file": {
-      "gettingFiles-title": {
-        "en_US": "Getting Files",
-        "ru_RU": "Получаю файлы"
-      },
-      "gettingFiles-desc": {
-        "en_US": "What should be loaded?",
-        "ru_RU": "Что нужно загрузить? "
-      },
-      "listBuilt-title": {
-        "en_US": "We got the files",
-        "ru_RU": "Список построен"
-      },
-      "listBuilt-desc": {
-        "en_US": "Now we know what to load!",
-        "ru_RU": "Теперь мы знаем что надо загрузить!"
-      },
-      "isBuilt": {
-        "en_US": "List is built",
-        "ru_RU": "Список построен"
-      }
+    "autoEnter-desc": {
+      "en_US": "After enabling this option you will go straight to server without visiting main menu",
+      "ru_RU": "Включив данную опцию ты попадёшь на сервер сразу после запуска игры, минуя главное меню",
+      "pl_PL": "Po włączeniu tej opcji przejdziesz bezpośrednio na serwer bez odwiedzania głównego menu"
     },
-    "loading": {
-      "title": {
-        "en_US": "Loading...",
-        "ru_RU": "Идёт загрузка..."
-      },
-      "msg": {
-        "en_US": "Please wait",
-        "ru_RU": "Пожалуйста подождите"
-      }
+    "fullScreen": {
+      "en_US": "Set full screen after launching",
+      "ru_RU": "Запустить в полный экран",
+      "pl_PL": "Uruchom w trybie pełnoekranowym"
     },
-    "logged": {
-      "loggedIn": {
-        "en_US": "You're in!",
-        "ru_RU": "Привет!"
-      },
-      "logOut": {
-        "en_US": "Log Out",
-        "ru_RU": "Выйти"
-      },
-      "toGame": {
-        "en_US": "To game",
-        "ru_RU": "В игру"
-      },
-      "units": {
-        "en_US": "Units: ",
-        "ru_RU": "Юниты: "
-      },
-      "crystals": {
-        "en_US": "Crystals: ",
-        "ru_RU": "Кристаллы: "
-      }
+    "fullScreen-desc": {
+      "en_US": "When the game launches, it will be in full-screen mode. To exit full-screen mode, use F11",
+      "ru_RU": "При запуске игры она будет открыта в полный экран (Чтобы выйти из полноэкранного режима используйте F11)",
+      "pl_PL": "Po uruchomieniu gra będzie w trybie pełnoekranowym. Aby wyjść z trybu pełnoekranowego, użyj F11"
     },
-    "download": {
-      "file": {
-        "en_US": "File: ",
-        "ru_RU": "Файл: "
-      },
-      "directory": {
-        "en_US": "Directory: ",
-        "ru_RU": "Директория: "
-      },
-      "totalSize": {
-        "en_US": "Total size: ",
-        "ru_RU": "Полный размер: "
-      }
+    "loadNews": {
+      "en_US": "Load news",
+      "ru_RU": "Загружать новости",
+      "pl_PL": "Ładuj wiadomości"
     },
-    "game": {
-      "playing": {
-        "en_US": "Playing on {server}",
-        "ru_RU": "Играет на {server}"
-      },
-      "login": {
-        "en_US": "User login: {login}",
-        "ru_RU": "Логин: {login}"
-      }
+    "loadNews-desc": {
+      "en_US": "Loads the news block (Can be disabled to save traffic)",
+      "ru_RU": "Загружает блок с новостями (Можно отключить для экономии трафика)",
+      "pl_PL": "Ładuje blok wiadomości (Można wyłączyć, aby oszczędzać ruch)"
     },
-    "server": {
-      "updating": {
-        "en_US": "Updating server...",
-        "ru_RU": "Обновление..."
-      },
-      "serverOff": {
-        "en_US": "Server off",
-        "ru_RU": "Сервер выключен"
-      },
-      "serverOn": {
-        "en_US": "Playing %% players of ##",
-        "ru_RU": "На сервере %% из ## игроков"
-      },
-      "serverFull": {
-        "en_US": "Server full! (Total slots: %%)",
-        "ru_RU": "Сервер переполнен (Всего слотов: %%)"
-      },
-      "serverErr": {
-        "en_US": "Error parsing data!",
-        "ru_RU": "Ошибка получения информации"
-      }
+    "enableSound": {
+      "en_US": "Enable Sound",
+      "ru_RU": "Включить звук",
+      "pl_PL": "Włącz dźwięk"
     },
-    "group": {
-      "group-null": {
-        "en_US": "Solenoid",
-        "ru_RU": "Соленоид"
-      },
-      "group-1": {
-        "en_US": "Administrator",
-        "ru_RU": "Администратор"
-      },
-      "group-4": {
-        "en_US": "Player",
-        "ru_RU": "Игрок"
-      }
+    "enableSound-desc": {
+      "en_US": "Enable sound effects in the launcher",
+      "ru_RU": "Включить звуковое сопровождение в лаунчере",
+      "pl_PL": "Włącz efekty dźwiękowe w launcherze"
     },
-    "dev": {
-      "token": {
-        "en_US": "accessToken: ",
-        "ru_RU": "accessToken: "
-      },
-      "uuid": {
-        "en_US": "UUID: ",
-        "ru_RU": "UUID: "
-      },
-      "TEST": {
-        "en_US": "TEST occurs!",
-        "ru_RU": "Произошёл тест!"
-      },
-      "experimental": {
-        "en_US": "User-O-Info",
-        "ru_RU": "Инфо-О-Пользователе"
-      },
-      "remindMe": {
-        "en_US": "Remind Me",
-        "ru_RU": "Напомни мне"
-      },
-      "userName": {
-        "en_US": "User Name",
-        "ru_RU": "Имя пользователя"
-      },
-      "userStatus": {
-        "en_US": "It's status",
-        "ru_RU": "Его статус"
-      }
+    "backgroundMusic": {
+      "en_US": "Background music",
+      "ru_RU": "Фоновая музыка",
+      "pl_PL": "Muzyka w tle"
+    },
+    "backgroundMusic-desc": {
+      "en_US": "Enable background music in the launcher",
+      "ru_RU": "Включить фоновую музыку в лаунчере",
+      "pl_PL": "Włącz muzykę w tle w launcherze"
+    },
+    "launchAC": {
+      "en_US": "Start launcher after server exit",
+      "ru_RU": "Запуск лаунчера после выхода с сервера",
+      "pl_PL": "Uruchom launcher po wyjściu z serwera"
+    },
+    "launchAC-desc": {
+      "en_US": "When this option is enabled, the launcher will automatically start after exiting the game",
+      "ru_RU": "При включении данной опции - запускает лаунчер автоматически после выхода из игры",
+      "pl_PL": "Gdy ta opcja jest włączona, launcher uruchomi się automatycznie po wyjściu z gry"
+    },
+    "applySettings": {
+      "en_US": "Apply Settings",
+      "ru_RU": "Применить настройки",
+      "pl_PL": "Zastosuj ustawienia"
+    },
+    "ramField": {
+      "en_US": "RAM amount (Mb)",
+      "ru_RU": "Выделение оперативной памяти (Mb)",
+      "pl_PL": "Ilość RAM (Mb)"
+    },
+    "ramPlaceholder": {
+      "en_US": "RAM",
+      "ru_RU": "ОЗУ",
+      "pl_PL": "RAM"
+    },
+    "soundVolume": {
+      "en_US": "Sound volume",
+      "ru_RU": "Громкость звуков",
+      "pl_PL": "Głośność dźwięku"
+    },
+    "langBox": {
+      "en_US": "Language",
+      "ru_RU": "Язык",
+      "pl_PL": "Język"
+    },
+    "info": {
+      "en_US": "Settings information",
+      "ru_RU": "Информация о настройках",
+      "pl_PL": "Informacje o ustawieniach"
+    },
+    "homeDir": {
+      "en_US": "Game Dir",
+      "ru_RU": "Директория игры",
+      "pl_PL": "Katalog gry"
+    },
+    "width": {
+      "en_US": "Width",
+      "ru_RU": "",
+      "pl_PL": "Szerokość"
+    },
+    "height": {
+      "en_US": "Height",
+      "ru_RU": "",
+      "pl_PL": "Wysokość"
     }
+  },
+  "auth": {
+    "authTitle": {
+      "en_US": "Authorization",
+      "ru_RU": "Авторизация",
+      "pl_PL": "Autoryzacja"
+    },
+    "passwordPlaceholder": {
+      "en_US": "Password",
+      "ru_RU": "Пароль",
+      "pl_PL": "Hasło"
+    },
+    "loginPlaceholder": {
+      "en_US": "Login",
+      "ru_RU": "Логин",
+      "pl_PL": "Login"
+    },
+    "submit": {
+      "en_US": "Submit",
+      "ru_RU": "Войти",
+      "pl_PL": "Zaloguj się"
+    },
+    "rememberMe": {
+      "en_US": "Remember Me",
+      "ru_RU": "Запомнить меня",
+      "pl_PL": "Zapamiętaj mnie"
+    },
+    "loggedIn": {
+      "en_US": "Successful login for {login}",
+      "ru_RU": "Успешная авторизация {login}",
+      "pl_PL": "Pomyślne logowanie dla {login}"
+    },
+    "loggedOut": {
+      "en_US": " logged out",
+      "ru_RU": " успешно разлогинился",
+      "pl_PL": " wylogowany"
+    }
+  },
+  "file": {
+    "gettingFiles-title": {
+      "en_US": "Getting Files",
+      "ru_RU": "Получаю файлы",
+      "pl_PL": "Pobieranie plików"
+    },
+    "gettingFiles-desc": {
+      "en_US": "What should be loaded?",
+      "ru_RU": "Что нужно загрузить? ",
+      "pl_PL": "Co należy załadować?"
+    },
+    "listBuilt-title": {
+      "en_US": "We got the files",
+      "ru_RU": "Список построен",
+      "pl_PL": "Mamy pliki"
+    },
+    "listBuilt-desc": {
+      "en_US": "Now we know what to load!",
+      "ru_RU": "Теперь мы знаем что надо загрузить!",
+      "pl_PL": "Teraz wiemy, co załadować!"
+    },
+    "isBuilt": {
+      "en_US": "List is built",
+      "ru_RU": "Список построен",
+      "pl_PL": "Lista zbudowana"
+    }
+  },
+  "loading": {
+    "title": {
+      "en_US": "Loading...",
+      "ru_RU": "Идёт загрузка...",
+      "pl_PL": "Ładowanie..."
+    },
+    "msg": {
+      "en_US": "Please wait",
+      "ru_RU": "Пожалуйста подождите",
+      "pl_PL": "Proszę czekać"
+    }
+  },
+  "logged": {
+    "loggedIn": {
+      "en_US": "You're in!",
+      "ru_RU": "Привет!",
+      "pl_PL": "Jesteś zalogowany!"
+    },
+    "logOut": {
+      "en_US": "Log Out",
+      "ru_RU": "Выйти",
+      "pl_PL": "Wyloguj się"
+    },
+    "toGame": {
+      "en_US": "To game",
+      "ru_RU": "В игру",
+      "pl_PL": "Do gry"
+    },
+    "forceUpdate": {
+      "en_US": "Force Update",
+      "ru_RU": "Принудительное обновление",
+      "pl_PL": "Obnovite menia plz"
+    },
+    "units": {
+      "en_US": "Units: ",
+      "ru_RU": "Юниты: ",
+      "pl_PL": "Jednostki: "
+    },
+    "crystals": {
+      "en_US": "Crystals: ",
+      "ru_RU": "Кристаллы: ",
+      "pl_PL": "Kryształy: "
+    }
+  },
+  "download": {
+    "file": {
+      "en_US": "File: ",
+      "ru_RU": "Файл: ",
+      "pl_PL": "Plik: "
+    },
+    "directory": {
+      "en_US": "Directory: ",
+      "ru_RU": "Директория: ",
+      "pl_PL": "Katalog: "
+    },
+    "totalSize": {
+      "en_US": "Total size: ",
+      "ru_RU": "Полный размер: ",
+      "pl_PL": "Całkowity rozmiar: "
+    }
+  },
+  "game": {
+    "playing": {
+      "en_US": "Playing on {server}",
+      "ru_RU": "Играет на {server}",
+      "pl_PL": "Granie na {server}"
+    },
+    "login": {
+      "en_US": "User login: {login}",
+      "ru_RU": "Логин: {login}",
+      "pl_PL": "Login użytkownika: {login}"
+    }
+  },
+  "server": {
+    "updating": {
+      "en_US": "Updating server...",
+      "ru_RU": "Обновление...",
+      "pl_PL": "Aktualizowanie serwera..."
+    },
+    "serverOff": {
+      "en_US": "Server off",
+      "ru_RU": "Сервер выключен",
+      "pl_PL": "Serwer wyłączony"
+    },
+    "serverOn": {
+      "en_US": "Playing %% players of ##",
+      "ru_RU": "На сервере %% из ## игроков",
+      "pl_PL": "Granie %% graczy z ##"
+    },
+    "serverFull": {
+      "en_US": "Server full! (Total slots: %%)",
+      "ru_RU": "Сервер переполнен (Всего слотов: %%)",
+      "pl_PL": "Serwer pełny! (Całkowita liczba slotów: %%)"
+    },
+    "serverErr": {
+      "en_US": "Error parsing data!",
+      "ru_RU": "Ошибка получения информации",
+      "pl_PL": "Błąd analizowania danych!"
+    }
+  },
+  "group": {
+    "group-null": {
+      "en_US": "Solenoid",
+      "ru_RU": "Соленоид",
+      "pl_PL": "Solenoid"
+    },
+    "group-1": {
+      "en_US": "Administrator",
+      "ru_RU": "Администратор",
+      "pl_PL": "Administrator"
+    },
+    "group-4": {
+      "en_US": "Player",
+      "ru_RU": "Игрок",
+      "pl_PL": "Gracz"
+    }
+  },
+  "tooltip": {
+  "gameTooltip": {
+    "en_US": "Let's Play!",
+    "ru_RU": "Давай играть!",
+    "pl_PL": "Zagrajmy!"
+  },
+  "logOutToolTip": {
+    "en_US": "Exit an account",
+    "ru_RU": "Сменить аккаунт",
+    "pl_PL": "Wyloguj się"
+  }
+  },
+  "dev": {
+    "token": {
+      "en_US": "accessToken: ",
+      "ru_RU": "accessToken: ",
+      "pl_PL": "token dostępu: "
+    },
+    "uuid": {
+      "en_US": "UUID: ",
+      "ru_RU": "UUID: ",
+      "pl_PL": "UUID: "
+    },
+    "TEST": {
+      "en_US": "TEST occurs!",
+      "ru_RU": "Произошёл тест!",
+      "pl_PL": "Test się powiódł!"
+    },
+    "experimental": {
+      "en_US": "User-O-Info",
+      "ru_RU": "Инфо-О-Пользователе",
+      "pl_PL": "Info-O-Użytkowniku"
+    },
+    "remindMe": {
+      "en_US": "Remind Me",
+      "ru_RU": "Напомни мне",
+      "pl_PL": "Przypomnij mi"
+    },
+    "userName": {
+      "en_US": "User Name",
+      "ru_RU": "Имя пользователя",
+      "pl_PL": "Nazwa użytkownika"
+    },
+    "userStatus": {
+      "en_US": "It's status",
+      "ru_RU": "Его статус",
+      "pl_PL": "Jego status"
+    }
+  }
 }

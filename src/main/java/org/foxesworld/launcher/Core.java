@@ -23,8 +23,10 @@ public class Core implements GameListener {
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
+    private final boolean forceUpdate;
 
-    public Core(ActionHandler actionHandler) {
+    public Core(ActionHandler actionHandler, boolean forceUpdate) {
+        this.forceUpdate = forceUpdate;
         ServerAttributes currentServer = actionHandler.getCurrentServer();
         actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(
@@ -38,9 +40,12 @@ public class Core implements GameListener {
         FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
         fileLoader.setLoaderListener(fileLoaderImpl);
-        Thread downloadThread = new Thread(fileLoader::getFilesToDownload);
+
+        Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
         downloadThread.start();
+
     }
+
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
@@ -77,21 +82,27 @@ public class Core implements GameListener {
     public ActionHandler getActionHandler() {
         return actionHandler;
     }
+
     public GameLauncher getGameLauncher() {
         return gameLauncher;
     }
+
     public FileLoader getFileLoader() {
         return fileLoader;
     }
+
     public void setFileGuard(FileGuard fileGuard) {
         this.fileGuard = fileGuard;
     }
+
     public FileGuard getFileGuard() {
         return fileGuard;
     }
+
     public Launcher getLauncher() {
         return launcher;
     }
+
     public void setGameLauncher(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }

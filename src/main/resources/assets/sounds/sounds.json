@@ -57,7 +57,8 @@
       "sounds": [
         "assets/sounds/mus/mus1.ogg",
         "assets/sounds/mus/mus2.ogg",
-        "assets/sounds/mus/mus3.ogg"
+        "assets/sounds/mus/mus3.ogg",
+        "assets/sounds/mus/mus4.ogg"
       ]
     }
   },
@@ -84,7 +85,10 @@
         "assets/sounds/other/invalidJre/invalidJRE1.ogg",
         "assets/sounds/other/invalidJre/invalidJRE2.ogg",
         "assets/sounds/other/invalidJre/invalidJRE3.ogg",
-        "assets/sounds/other/invalidJre/invalidJRE4.ogg"
+        "assets/sounds/other/invalidJre/invalidJRE4.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE5.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE6.ogg",
+        "assets/sounds/other/invalidJre/invalidJRE7.ogg"
       ]
     },
     "alert": {

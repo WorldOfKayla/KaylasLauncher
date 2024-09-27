@@ -83,6 +83,21 @@
           }
         },
         {
+          "componentType": "progressBar",
+          "visible": false,
+          "componentStyle": "progress",
+          "componentId": "sndBar",
+          "color": "#ffffff",
+          "bounds": {
+            "x": 190,
+            "y": 70,
+            "size": {
+              "width": 150,
+              "height": 10
+            }
+          }
+        },
+        {
           "panels": {
             "userDataForm": {
               "panelOptions": {

@@ -1,17 +1,21 @@
 package org.foxesworld.launcher.gui;
 
+import com.formdev.flatlaf.ui.FlatProgressBarUI;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.button.Button;
+import org.foxesworld.engine.gui.components.checkbox.Checkbox;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.multiButton.MultiButton;
 import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.PlaybackStatusListener;
+import org.foxesworld.engine.sound.SoundPlayer;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -22,7 +26,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
     protected ServerAttributes currentServer;
     protected  final UserInfo userInfo;
     public ActionHandler(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
+        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.userInfo = new UserInfo(launcher);
@@ -59,19 +63,28 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    SoundPlayer.setUPDATE_RATE(10);
+                    JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
+                    sndBar.setUI(new FlatProgressBarUI());
                     PlaybackStatusListener listener = new PlaybackStatusListener() {
                         @Override
                         public void onPlaybackStarted(String path) {
                             pressedComponent.setEnabled(false);
+                            sndBar.setVisible(true);
                         }
 
                         @Override
                         public void onPlaybackStopped(String path) {
                             pressedComponent.setEnabled(true);
+                            sndBar.setValue(0);
+                            sndBar.setVisible(false);
                         }
 
                         @Override
-                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {}
+                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {
+                            int progress = (int) ((double) microsecondPosition / microsecondLength * 100);
+                            SwingUtilities.invokeLater(() -> sndBar.setValue(progress));
+                        }
                     };
                     this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
 
@@ -122,11 +135,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.getComponent(key).setEnabled(false);
                     this.getComponent("logOut").setEnabled(false);
                     DropBox dropBox = (DropBox) this.getComponent("serverBox");
+                    Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
                     this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
                     Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                     this.launcher.getConfig().writeCurrentConfig();
-                    new Core(this);
+                    new Core(this, forceUpdate.isSelected());
                 }
                 case "closeButton" -> System.exit(0);
                 case "hideButton" -> engine.getFrame().setExtendedState(1);

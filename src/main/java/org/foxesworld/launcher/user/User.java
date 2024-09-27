@@ -63,7 +63,7 @@ public class User extends org.foxesworld.engine.user.User {
                     "launcher"
             );
             this.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, this.serverBox.getY() + 80, 340, 45), 3000,
-                    this.launcher.getLANG().getStringWithKey("auth.loggedIn", new String[]{this.getLogin()}, new String[]{"login"}));
+                    this.launcher.getLANG().getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{this.getLogin()}));
         } else {
             engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }

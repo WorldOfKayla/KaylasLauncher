@@ -90,6 +90,7 @@ public class User extends org.foxesworld.engine.user.User {
         ((JLabel) this.getComponent("userHead")).setIcon(icon);
         ((JLabel) this.getComponent("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
         engine.getGuiBuilder().getPanelsMap().get("userPane").setForeground(Color.BLUE);
+        showUserInformationWindow();
     }
 
     public String getLogin() {
@@ -140,6 +141,32 @@ public class User extends org.foxesworld.engine.user.User {
             }
         });
         executor.shutdown();
+    }
+
+    private void showUserInformationWindow() {
+        JFrame window = new JFrame("User Information");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        window.setSize(350, 200);
+        window.setLocation(120, 120);
+
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+
+        for (Map.Entry<String, String> entry : auth.getAuthCredentials().entrySet()) {
+            JLabel keyLabel = new JLabel(entry.getKey());
+            keyLabel.setForeground(Color.BLACK);
+            keyLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfontBold", 11));
+            panel.add(keyLabel);
+
+            JTextArea valueLabel = new JTextArea(entry.getValue());
+            valueLabel.setForeground(Color.GRAY);
+            valueLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfont", 11));
+            panel.add(valueLabel);
+        }
+
+        window.add(panel);
+        window.pack();
+        window.setResizable(false);
+        window.setVisible(true);
     }
 
     public GuiBuilder getGuiBuilder() {

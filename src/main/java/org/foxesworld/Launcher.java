@@ -34,7 +34,10 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Launcher extends Engine implements AuthListener {
 
@@ -143,7 +146,7 @@ public class Launcher extends Engine implements AuthListener {
     private boolean isLauncherValid() {
         getLOGGER().info("Starting launcher validation");
 
-        Map<String, String> launcherRequest = Map.of("sysRequest", "downloadLatest");
+        Map<String, Object> launcherRequest = Map.of("sysRequest", "downloadLatest");
         String selfMd5 = HashUtils.md5(appPath());
         getLOGGER().info("Calculated self MD5: {}", selfMd5);
 
@@ -181,12 +184,12 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     @Override
-    public void onLogin(Map<String, String> authCredentials) {
+    public void onLogin(Map<String, Object> authCredentials) {
         // Implementation
     }
 
     @Override
-    public void onLoad(Auth auth, Map<String, String> authCredentials) {
+    public void onLoad(Auth auth, Map<String, Object> authCredentials) {
         auth.setAuthCredentials(authCredentials);
         if (!auth.authorize()) {
             config.clearConfigData(Arrays.asList("login", "password"), true);

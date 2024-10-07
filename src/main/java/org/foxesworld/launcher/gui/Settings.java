@@ -30,27 +30,41 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class));
         this.launcher = launcher;
-        //this.launcher.getLANG().setLocaleIndex(this.launcher.getLANG().getLocalesSet()[this.launcher.getConfig().getLang()]);
     }
 
     public void applySettings(String panelId) {
-        for (Map.Entry<String, String> map : this.collectFormCredentialsForPanel(panelId).entrySet()) {
-            Class<Config> clazz = Config.class;
-            try {
-                clazz.getDeclaredField(map.getKey());
-                System.out.println(map.getKey() + ' ' + map.getValue());
-                this.launcher.getConfig().setConfigValue(map.getKey(), map.getValue());
-            } catch (NoSuchFieldException ignored) {
-            }
+        for (Map.Entry<String, Object> entry : this.collectFormCredentialsForPanel(panelId).entrySet()) {
+            Object value = determineValueType(entry.getValue());
+            this.launcher.getConfig().setConfigValue(entry.getKey(), value);
         }
+
         this.launcher.getConfig().writeCurrentConfig();
         this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
         this.launcher.getEngine().getFrame().dispose();
         this.launcher = new Launcher();
     }
 
+    private Object determineValueType(Object value) {
+        if (value instanceof String stringValue) {
+            if ("true".equalsIgnoreCase(stringValue) || "false".equalsIgnoreCase(stringValue)) {
+                return Boolean.parseBoolean(stringValue);
+            }
+            try {
+                return Integer.parseInt(stringValue);
+            } catch (NumberFormatException ignored) {
+            }
+            try {
+                return Double.parseDouble(stringValue);
+            } catch (NumberFormatException ignored) {
+            }
+            return stringValue;
+        }
+        return value;
+    }
+
+
     public void addListeners() {
-        for(JComponent component: this.getComponentsForPanel("settingsFields")){
+        for (JComponent component : this.getComponentsForPanel("settingsFields")) {
             if (component instanceof Slider) {
                 ((Slider) component).setSliderListener(this);
             }
@@ -90,12 +104,15 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
             switch (slider.getName()) {
                 case "volumeSlider" -> {
                     launcher.getConfig().setVolume(value);
-                    launcher.getEngine().getConfig().getCONFIG().put("volume", value);
+                    launcher.getEngine().getConfig().getConfig().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
                     ((JSpinner) this.getComponent("volumeText")).setValue(value);
                 }
 
-                case "ramAmountSlider" -> ((JSpinner) this.getComponent("ramAmountText")).setValue(value);
+                case "ramAmountSlider" -> {
+                    ((JSpinner) this.getComponent("ramAmountText")).setValue(value);
+                    launcher.getEngine().getConfig().getConfig().put("ramAmount", value);
+                }
             }
         });
 

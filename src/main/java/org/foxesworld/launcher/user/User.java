@@ -78,7 +78,7 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        for (Map.Entry<String, String> credentials : auth.getAuthCredentials().entrySet()) {
+        for (Map.Entry<String, Object> credentials : auth.getAuthCredentials().entrySet()) {
             try {
                 Field field = this.userAttributes.getClass().getDeclaredField(credentials.getKey());
                 field.set(this.userAttributes, credentials.getValue());
@@ -90,7 +90,7 @@ public class User extends org.foxesworld.engine.user.User {
         ((JLabel) this.getComponent("userHead")).setIcon(icon);
         ((JLabel) this.getComponent("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
         engine.getGuiBuilder().getPanelsMap().get("userPane").setForeground(Color.BLUE);
-        showUserInformationWindow();
+        //showUserInformationWindow();
     }
 
     public String getLogin() {
@@ -151,13 +151,13 @@ public class User extends org.foxesworld.engine.user.User {
 
         JPanel panel = new JPanel(new GridLayout(0, 2));
 
-        for (Map.Entry<String, String> entry : auth.getAuthCredentials().entrySet()) {
+        for (Map.Entry<String, Object> entry : auth.getAuthCredentials().entrySet()) {
             JLabel keyLabel = new JLabel(entry.getKey());
             keyLabel.setForeground(Color.BLACK);
             keyLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfontBold", 11));
             panel.add(keyLabel);
 
-            JTextArea valueLabel = new JTextArea(entry.getValue());
+            JTextArea valueLabel = new JTextArea(String.valueOf(entry.getValue()));
             valueLabel.setForeground(Color.GRAY);
             valueLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfont", 11));
             panel.add(valueLabel);

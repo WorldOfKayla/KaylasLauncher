@@ -23,7 +23,7 @@ public class Auth {
     private final Engine engine;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private Map<String, String> authCredentials = new HashMap<>();
+    private Map<String, Object> authCredentials = new HashMap<>();
     private final Config CONFIG;
     private final HTTPrequest POSTrequest;
     private final CryptUtils cryptUtils;
@@ -117,9 +117,9 @@ public class Auth {
         engine.init();
     }
 
-    private void saveAuthCredentials(Map<String, String> authCredentials) {
-        Map<String, String> encryptedCredentials = new HashMap<>(authCredentials);
-        String encryptedPassword = cryptUtils.encrypt(authCredentials.get("password"), encryptionKeyManager.getEncryptionKey(16));
+    private void saveAuthCredentials(Map<String, Object> authCredentials) {
+        Map<String, Object> encryptedCredentials = new HashMap<>(authCredentials);
+        String encryptedPassword = cryptUtils.encrypt(String.valueOf(authCredentials.get("password")), encryptionKeyManager.getEncryptionKey(16));
         encryptedCredentials.put("password", encryptedPassword);
         launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
         launcher.getConfig().writeCurrentConfig();
@@ -133,11 +133,13 @@ public class Auth {
     }
 
     public String getAuthCredentials(String key) {
-        return authCredentials.get(key);
+        return String.valueOf(authCredentials.get(key));
     }
-    public Map<String, String> getAuthCredentials() {
+
+    public Map<String, Object> getAuthCredentials() {
         return authCredentials;
     }
+
     public Engine getEngine() {
         return engine;
     }
@@ -159,10 +161,12 @@ public class Auth {
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
+
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
     }
-    public void setAuthCredentials(Map<String, String> authCredentials) {
+
+    public void setAuthCredentials(Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
     }
 }

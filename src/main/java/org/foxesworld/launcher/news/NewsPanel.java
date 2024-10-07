@@ -18,7 +18,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -140,7 +139,7 @@ public class NewsPanel extends JPanel {
     private String getEmoticonUrl(String key) {
         return emojiUrlCache.computeIfAbsent(key, k -> {
             HTTPrequest httPrequest = this.news.getLauncher().getPOSTrequest();
-            Map<String, String> emoData = Map.of("sysRequest", "getEmoticon", "emoKey", k);
+            Map<String, Object> emoData = Map.of("sysRequest", "getEmoticon", "emoKey", k);
             return httPrequest.send(emoData);
         });
     }

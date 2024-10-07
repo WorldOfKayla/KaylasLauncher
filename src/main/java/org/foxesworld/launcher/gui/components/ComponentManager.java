@@ -4,9 +4,6 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 
-import javax.swing.text.*;
-import java.awt.*;
-
 public class ComponentManager implements ComponentFactoryListener {
 
     private final Launcher launcher;
@@ -24,7 +21,7 @@ public class ComponentManager implements ComponentFactoryListener {
     protected void getInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = componentAttributes.getInitialValue().split("#");
         switch (splitValue[0]) {
-            case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getCONFIG().get(splitValue[1])));
+            case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getConfig().get(splitValue[1])));
             case "user" -> componentAttributes.setInitialValue(this.launcher.getAuth().getAuthCredentials(splitValue[1]));
             case "balance" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getAuth().getBalanceMap().get(splitValue[1])));
             case "version" -> componentAttributes.setInitialValue(this.launcher.getEngineData().getLauncherVersion());

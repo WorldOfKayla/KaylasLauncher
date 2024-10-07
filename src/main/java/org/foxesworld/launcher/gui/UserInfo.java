@@ -19,7 +19,7 @@ public class UserInfo extends ComponentsAccessor {
     private final Launcher launcher;
     private final Map<String, Label> components = new HashMap<>();
     private final HTTPrequest POSTrequest;
-    private Map<String, String> requestBody;
+    private Map<String, Object> requestBody;
     private UserAttributes[] userAttributes;
 
     public UserInfo(Launcher launcher){

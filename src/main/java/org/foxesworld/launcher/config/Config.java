@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder;
 import org.foxesworld.cfgProvider.CfgProvider;
 import org.foxesworld.engine.Engine;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,8 +17,7 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     private int selectedServer, lang, loaderIndex;
     private double volume;
-    private int ramAmount;
-    private Object width, height;
+    private int width, height, ramAmount;
     private String login, password;
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
 
@@ -30,76 +28,67 @@ public class Config extends org.foxesworld.engine.config.Config {
         CfgProvider.setDefaultConfFilesDir("config/");
         CfgProvider.setLOGGER(Engine.LOGGER);
         addCfgFiles(engine.getConfigFiles());
-        this.CONFIG = getCfgMaps().get("config");
+        this.config = getCfgMaps().get("config");
         this.assignConfigValues();
     }
 
     @Override
-    public void addToConfig(Map<String, String> inputData, List values) {
-        for (Map.Entry<String, String> configEntry : inputData.entrySet()) {
-            if (values.contains(configEntry.getKey())) {
-                this.getCONFIG().put(configEntry.getKey(), configEntry.getValue());
+    public void addToConfig(Map<String, Object> inputData, List<?> values) {
+        inputData.forEach((key, value) -> {
+            if (values.contains(key)) {
+                this.getConfig().put(key, value);
             }
-        }
+        });
     }
 
     @Override
     public void setConfigValue(String key, Object value) {
-        if (CONFIG.get(key) != null) {
+        if (config.get(key) != null) {
             clearConfigData(Collections.singletonList(key), false);
         }
-        CONFIG.put(key, value);
+        config.put(key, value);
         assignConfigValues();
     }
 
     @Override
     public void clearConfigData(List<String> dataToClear, boolean write) {
         Engine.getLOGGER().debug("Wiping " + dataToClear);
-        for (String keyToWipe : dataToClear) {
-            this.CONFIG.remove(keyToWipe);
-        }
+        dataToClear.forEach(config::remove);
         if (write) {
-            this.writeCurrentConfig();
+            writeCurrentConfig();
         }
     }
 
     @Override
     public void clearConfigData(String dataToClear, boolean write) {
         Engine.getLOGGER().debug("Wiping " + dataToClear);
-        this.CONFIG.remove(dataToClear);
+        config.remove(dataToClear);
         if (write) {
-            this.writeCurrentConfig();
+            writeCurrentConfig();
         }
     }
 
     @Override
     public void assignConfigValues() {
-        Iterator<Map.Entry<String, Object>> iterator = CONFIG.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> iterator = config.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, Object> configMap = iterator.next();
-            String key = configMap.getKey();
-            Object value = configMap.getValue();
+            Map.Entry<String, Object> configEntry = iterator.next();
+            String key = configEntry.getKey();
+            Object value = configEntry.getValue();
 
             try {
                 Field field = Config.class.getDeclaredField(key);
                 field.setAccessible(true);
                 Object castedValue = castValue(field.getType(), value);
 
-                // Проверка корректности значения
                 if (isValidValue(field.getType(), castedValue)) {
                     field.set(this, castedValue);
                 } else {
-                    // Установка стандартного значения
-                    Object defaultValue = field.get(this);
-                    CONFIG.put(key, defaultValue);
-                    Engine.LOGGER.warn("Invalid value for '" + key + "', setting default: " + defaultValue);
-                    field.set(this, defaultValue);
+                    handleInvalidValue(field, key, iterator);
                 }
-
             } catch (NoSuchFieldException e) {
                 Engine.LOGGER.warn("Removing '" + key + "' as it doesn't exist!");
                 iterator.remove();
-                this.writeCurrentConfig();
             } catch (IllegalAccessException e) {
                 Engine.LOGGER.error("Failed to access field " + key + " in Config class!");
             } catch (IllegalArgumentException e) {
@@ -107,13 +96,14 @@ public class Config extends org.foxesworld.engine.config.Config {
             }
         }
 
-        // Добавление недостающих значений по умолчанию
+        // Second pass: Ensure all fields in the Config class have a value in the config map
         for (Field field : Config.class.getDeclaredFields()) {
             String fieldName = field.getName();
-            if (!CONFIG.containsKey(fieldName)) {
+            if (!config.containsKey(fieldName)) {
                 try {
+                    field.setAccessible(true);
                     Object defaultValue = field.get(this);
-                    CONFIG.put(fieldName, defaultValue);
+                    config.put(fieldName, defaultValue);
                     Engine.LOGGER.info("Adding default value for '" + fieldName + "' to config.");
                 } catch (IllegalAccessException e) {
                     Engine.LOGGER.error("Failed to access field " + fieldName + " in Config class!");
@@ -124,22 +114,33 @@ public class Config extends org.foxesworld.engine.config.Config {
         this.writeCurrentConfig();
     }
 
+    private void handleInvalidValue(Field field, String key, Iterator<Map.Entry<String, Object>> iterator) {
+        try {
+            Object defaultValue = field.get(this);
+            config.put(key, defaultValue);
+            Engine.LOGGER.warn("Invalid value for '" + key + "', setting default: " + defaultValue);
+            field.set(this, defaultValue);
+        } catch (IllegalAccessException e) {
+            Engine.LOGGER.error("Failed to access field " + key + " in Config class!");
+        }
+    }
+
+
     private boolean isValidValue(Class<?> fieldType, Object value) {
         if (value == null) {
             return false;
         }
 
-        // Проверка корректности для примитивных типов и строк
         if (fieldType == boolean.class || fieldType == Boolean.class) {
             return value instanceof Boolean;
         } else if (fieldType == int.class || fieldType == Integer.class) {
-            return value instanceof Integer || value instanceof String && isInteger((String) value);
+            return value instanceof Integer || (value instanceof String && isInteger((String) value));
         } else if (fieldType == double.class || fieldType == Double.class) {
-            return value instanceof Double || value instanceof String && isDouble((String) value);
+            return value instanceof Double || (value instanceof String && isDouble((String) value));
         } else if (fieldType == float.class || fieldType == Float.class) {
-            return value instanceof Float || value instanceof String && isFloat((String) value);
+            return value instanceof Float || (value instanceof String && isFloat((String) value));
         } else if (fieldType == long.class || fieldType == Long.class) {
-            return value instanceof Long || value instanceof String && isLong((String) value);
+            return value instanceof Long || (value instanceof String && isLong((String) value));
         } else if (fieldType == String.class) {
             return value instanceof String;
         }
@@ -208,7 +209,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     @Override
     public void writeCurrentConfig() {
         Engine.getLOGGER().debug("Writing Config");
-        try (FileWriter fileWriter = new FileWriter(getFullPath() + File.separator + "cache/config/" + "/config.json")) {
+        try (FileWriter fileWriter = new FileWriter(getFullPath() + "cache/config/config.json")) {
             fileWriter.write(configToJSON());
         } catch (IOException e) {
             e.printStackTrace();
@@ -220,11 +221,11 @@ public class Config extends org.foxesworld.engine.config.Config {
     }
 
     public String configToJSON() {
-        return new GsonBuilder().setPrettyPrinting().create().toJson(CONFIG);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(config);
     }
 
-    public Map<String, Object> getCONFIG() {
-        return CONFIG;
+    public Map<String, Object> getConfig() {
+        return config;
     }
 
     public String getLogin() {
@@ -283,11 +284,11 @@ public class Config extends org.foxesworld.engine.config.Config {
         return loaderIndex;
     }
 
-    public Object getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public Object getHeight() {
+    public int getHeight() {
         return height;
     }
 }

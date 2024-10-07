@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.8.3-VANGUARD-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.8.4-VANGUARD-all.jar')
 }
 
 jar {

@@ -1,6 +1,5 @@
 package org.foxesworld.launcher.fileLoader;
 
-import com.formdev.flatlaf.ui.FlatProgressBarUI;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.EngineData;
 import org.foxesworld.engine.fileLoader.FileAttributes;
@@ -50,7 +49,6 @@ public class FileLoaderImpl implements FileLoaderListener {
 
     private void initializeDownloadComponents() {
         downloadUtils.setProgressBar((JProgressBar) componentsAccessor.getComponent("progressBar"));
-        ((JProgressBar) componentsAccessor.getComponent("progressBar")).setUI(new FlatProgressBarUI());
         downloadUtils.setProgressLabel((JLabel) componentsAccessor.getComponent("progressLabel"));
     }
 

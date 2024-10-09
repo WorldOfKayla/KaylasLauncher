@@ -132,7 +132,7 @@ public class FileLoaderImpl implements FileLoaderListener {
         updateDownloadInfoComponents(currentFile);
         String fullPath = core.getFileLoader().getHomeDir() + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
         if (core.getFileLoader().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
-            core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, fileLoader.getTotalSize());
+            core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, core.getFileLoader().getTotalSize());
         }
         unpackRuntimeZipIfNeeded(fullPath);
     }

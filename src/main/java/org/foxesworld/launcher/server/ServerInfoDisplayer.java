@@ -58,11 +58,8 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
-        BufferedImage serverImage = imageUtils.getRoundedImage(imageUtils.getScaledImage(
-                imageUtils.getCachedUrlImg(this.user.getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage(), "serverImg", imageUtils.getLocalImage("assets/ui/img/noimg.jpg"))
-                , 470, 260), 25);
         ((JLabel) this.getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-        ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(serverImage));
+        ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
         TextArea textArea = ((TextArea) this.getComponent("serverDescLabel"));
         textArea.setWrapStyleWord(true);
         textArea.setText(thisServer.getServerDescription());
@@ -71,10 +68,9 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     private BufferedImage getServerImage(String url) {
-        return imageUtils.getCachedUrlImg(
-                user.getAuth().getLauncher().getEngineData().getBindUrl() + url,
-                "serverImg",
-                imageUtils.getLocalImage("assets/ui/img/noimg.jpg"));
+        return imageUtils.getRoundedImage(imageUtils.getScaledImage(
+                imageUtils.getCachedUrlImg(this.user.getLauncher().getEngineData().getBindUrl() + url, "serverImg", imageUtils.getLocalImage("assets/ui/img/noimg.jpg"))
+                , 470, 260), 25);
     }
 
     private void modsInfoArr(String json) {

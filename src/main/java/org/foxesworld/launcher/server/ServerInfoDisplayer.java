@@ -37,7 +37,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxOpen(int index) {
-        this.displayServerInfo(index);
+        //this.displayServerInfo(index);
     }
 
     @Override
@@ -58,8 +58,11 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
         newsPanel.add(guiBuilder.getPanelsMap().get("serverInfo"));
         ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
+        BufferedImage serverImage = imageUtils.getRoundedImage(imageUtils.getScaledImage(
+                imageUtils.getCachedUrlImg(this.user.getLauncher().getEngineData().getBindUrl() + thisServer.getServerImage(), "serverImg", imageUtils.getLocalImage("assets/ui/img/noimg.jpg"))
+                , 470, 260), 25);
         ((JLabel) this.getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-        ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(getServerImage(thisServer.getServerImage()), 470, 260), 25)));
+        ((JLabel) this.getComponent("serverImg")).setIcon(new ImageIcon(serverImage));
         TextArea textArea = ((TextArea) this.getComponent("serverDescLabel"));
         textArea.setWrapStyleWord(true);
         textArea.setText(thisServer.getServerDescription());

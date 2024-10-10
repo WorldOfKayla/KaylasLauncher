@@ -161,11 +161,9 @@ public class Auth {
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
-
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
     }
-
     public void setAuthCredentials(Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
     }

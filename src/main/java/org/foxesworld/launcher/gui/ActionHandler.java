@@ -86,7 +86,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         }
                     };
                     String sound = this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
-                    this.launcher.getNotification().display("Sound Test", sound, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
+                    //this.launcher.getNotification().display("Sound Test", sound, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

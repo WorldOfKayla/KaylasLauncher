@@ -109,11 +109,4 @@ public class SplashScreenWindow extends JWindow {
         };
         fadeWorker.execute();
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            SplashScreenWindow splashScreen = new SplashScreenWindow();
-            splashScreen.showSplashScreen();
-        });
-    }
 }

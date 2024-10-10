@@ -24,12 +24,11 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
     protected ServerAttributes currentServer;
-    protected  final UserInfo userInfo;
+
     public ActionHandler(Launcher launcher) {
         super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        this.userInfo = new UserInfo(launcher);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             }
                         }
 
-                        case "userinfo" -> this.userInfo.sendRequest();
+                        case "userinfo" -> Engine.getLOGGER().warn("TEST");
                     }
                 }
 
@@ -86,14 +85,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             SwingUtilities.invokeLater(() -> sndBar.setValue(progress));
                         }
                     };
-                    this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
-
+                    String sound = this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
+                    this.launcher.getNotification().display("Sound Test", sound, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
-                case "applySettings" -> {
-                    this.launcher.getSettings().applySettings("settingsFields");
-                }
+                case "applySettings" -> this.launcher.getSettings().applySettings("settingsFields");
                 case "logOut" -> {
                     this.launcher.getSOUND().playSound("other", "loggedOut");
                     this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
@@ -150,10 +147,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
     public Engine getEngine() {
         return engine;
     }
+
     @Override
     public ServerAttributes getCurrentServer() {
         return currentServer;
     }
+
     public Launcher getLauncher() {
         return launcher;
     }

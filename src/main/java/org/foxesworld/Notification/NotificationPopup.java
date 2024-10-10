@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class NotificationPopup extends JDialog implements NotificationDisplay {
 
@@ -69,7 +68,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     }
 
     @Override
-    public void display(String title, String description, BufferedImage image) {
+    public void display(String title, String description, ImageIcon image) {
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -84,7 +83,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
             // Fade in animation
             Timer fadeInTimer = new Timer(TIMER_DELAY, new ActionListener() {
                 float opacity = 0.0f;
-                float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
+                final float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
 
                 @Override
                 public void actionPerformed(ActionEvent e) {

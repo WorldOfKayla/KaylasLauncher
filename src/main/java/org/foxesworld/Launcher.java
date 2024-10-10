@@ -73,7 +73,6 @@ public class Launcher extends Engine implements AuthListener {
 
         this.auth = new Auth(this);
         init();
-        setActionHandler(new ActionHandler(this));
         long duration = System.currentTimeMillis() - startTime;
         getLOGGER().info(getAppTitle() + " started in " + String.format("%d ms", duration) + "!");
     }
@@ -140,6 +139,7 @@ public class Launcher extends Engine implements AuthListener {
         this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
         this.settings = new Settings(this);
         this.settings.addListeners();
+        setActionHandler(new ActionHandler(this));
         setInit(true);
     }
 
@@ -248,6 +248,10 @@ public class Launcher extends Engine implements AuthListener {
 
     public IconUtils getIconUtils() {
         return iconUtils;
+    }
+
+    public NotificationPopup getNotification() {
+        return notification;
     }
 
     @SuppressWarnings("unused")

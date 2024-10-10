@@ -1,7 +1,7 @@
 package org.foxesworld.Notification;
 
-import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 interface NotificationDisplay {
-    void display(String title, String description, BufferedImage image);
+    void display(String title, String description, ImageIcon image);
 }

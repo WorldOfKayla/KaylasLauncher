@@ -5,7 +5,6 @@ import com.formdev.flatlaf.extras.components.FlatLabel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 class NotificationUI {
 
@@ -20,7 +19,7 @@ class NotificationUI {
         this.closeButtonIcon = closeButtonIcon;
     }
 
-    public void setupContent(String title, String description, BufferedImage image) {
+    public void setupContent(String title, String description, ImageIcon image) {
         Container contentPane = notificationPopup.getContentPane(); // Get content pane of NotificationPopup
 
         // Remove all existing components
@@ -33,7 +32,7 @@ class NotificationUI {
 
         // Image label
         JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(resizeImageIcon(new ImageIcon(image)));
+        imageLabel.setIcon(resizeImageIcon(image));
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridheight = 2;

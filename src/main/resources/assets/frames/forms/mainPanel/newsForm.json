@@ -16,6 +16,24 @@
       },
       "childComponents": [
         {
+          "repeat": true,
+          "opaque": false,
+          "componentId": "newsLoading",
+          "componentType": "spriteImage",
+          "colNum": 6,
+          "rowNum": 7,
+          "delay": 55,
+          "imageIcon": "assets/ui/sprites/exp.png",
+          "bounds": {
+            "x": 200,
+            "y": 200,
+            "size": {
+              "width": 500,
+              "height": 500
+            }
+          }
+        },
+        {
           "loadPanel": "newsFrame"
         },
         {

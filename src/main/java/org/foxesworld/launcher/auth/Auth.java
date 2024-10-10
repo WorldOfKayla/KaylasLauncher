@@ -114,6 +114,7 @@ public class Auth {
         setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
+        this.getLauncher().getConfig().writeCurrentConfig();
         engine.init();
     }
 

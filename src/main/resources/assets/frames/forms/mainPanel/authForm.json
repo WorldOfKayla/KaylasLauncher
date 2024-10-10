@@ -114,6 +114,7 @@
           "enabled": true,
           "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.svg",
+          "keyCode": "S",
           "iconWidth": 25,
           "iconHeight": 25,
           "componentId": "settings-small",

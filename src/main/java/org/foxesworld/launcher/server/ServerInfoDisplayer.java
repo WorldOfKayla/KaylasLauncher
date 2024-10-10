@@ -44,8 +44,10 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     public void onScrollBoxClose(int index) {
         newsPanel.removeAll();
         user.updateServer(index);
-        guiBuilder.getPanelsMap().get("newsForm").add(user.getGuiBuilder().getPanelsMap().get("newsFrame"));
-        guiBuilder.getPanelsMap().get("newsForm").repaint();
+        if (this.user.getLauncher().getConfig().isLoadNews()) {
+            guiBuilder.getPanelsMap().get("newsForm").add(user.getGuiBuilder().getPanelsMap().get("newsFrame"));
+            guiBuilder.getPanelsMap().get("newsForm").repaint();
+        }
     }
 
     @Override

@@ -1,9 +1,9 @@
 package org.foxesworld.launcher.news.provider;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.foxesworld.engine.Engine;
 
 import java.io.BufferedReader;
@@ -12,122 +12,112 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NewsProvider {
     private final Engine engine;
-    private final String VK_API_URL = "https://api.vk.com/method/wall.get";
-    private static final String[] statsValuesKeys = {"views", "likes", "comments", "reposts"};
-    private String text;
-    private Map<String, Integer> statsValues;
-    private long date;
-    private int newsCount = 0;
-    private List<String> tooltipPhotoUrls;
-    private List<String> originalPhotoUrls;
+    private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
+    private static final String[] STATS_VALUES_KEYS = {"views", "likes", "comments", "reposts"};
+    private final Gson gson = new Gson();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public NewsProvider(Engine engine) {
         this.engine = engine;
     }
 
-    public List<NewsAttributes> fetchNews() {
-        List<NewsAttributes> newsAttributesList = new ArrayList<>();
+    public static String[] getStatsValuesKeys() {
+        return STATS_VALUES_KEYS;
+    }
 
-        try {
-            URL url = new URL(buildUrl());
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    public void fetchNews(NewsFetchCallback callback) {
+        executorService.submit(() -> {
+            List<NewsAttributes> newsAttributesList = new ArrayList<>();
+            try {
+                URL url = new URL(buildUrl());
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonResponse = jsonParser.parse(reader).getAsJsonObject();
-                JsonArray posts = jsonResponse.getAsJsonObject("response").getAsJsonArray("items");
-                NewsAttributes.setCommunityName(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("name").getAsString());
-                NewsAttributes.setCommunityPhotoUrl(jsonResponse.getAsJsonObject("response").getAsJsonArray("groups").get(0).getAsJsonObject().get("photo_50").getAsString());
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    JsonObject jsonResponse = gson.fromJson(reader, JsonObject.class);
+                    parseResponse(jsonResponse, newsAttributesList);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            callback.onNewsFetched(newsAttributesList);
+        });
+    }
 
-                for (JsonElement postElement : posts) {
-                    JsonObject post = postElement.getAsJsonObject();
-                    text = post.get("text").getAsString();
-                    statsValues = new HashMap<>();
-                    for (String value : statsValuesKeys) {
-                        int statVal = post.getAsJsonObject(value) != null ? post.getAsJsonObject(value).get("count").getAsInt() : 0;
-                        statsValues.put(value, statVal);
-                    }
+    private void parseResponse(JsonObject jsonResponse, List<NewsAttributes> newsAttributesList) {
+        JsonArray posts = jsonResponse.getAsJsonObject("response").getAsJsonArray("items");
+        String communityName = jsonResponse.getAsJsonObject("response").getAsJsonArray("groups")
+                .get(0).getAsJsonObject().get("name").getAsString();
+        String communityPhotoUrl = jsonResponse.getAsJsonObject("response").getAsJsonArray("groups")
+                .get(0).getAsJsonObject().get("photo_50").getAsString();
 
-                    date = post.get("date").getAsLong();
-                    tooltipPhotoUrls = new ArrayList<>();
-                    originalPhotoUrls = new ArrayList<>();
-                    JsonArray attachments = post.getAsJsonArray("attachments");
-                    if (attachments != null) {
-                        for (JsonElement attachmentElement : attachments) {
-                            JsonObject attachment = attachmentElement.getAsJsonObject();
-                            String attachmentType = attachment.get("type").getAsString();
-                            if (attachmentType.equals("photo")) {
-                                JsonObject photo = attachment.getAsJsonObject("photo");
-                                String tooltipUrl = getPhotoUrl(photo);
-                                String originalUrl = getOriginalPhotoUrl(photo);
-                                tooltipPhotoUrls.add(tooltipUrl);
-                                originalPhotoUrls.add(originalUrl);
-                            }
-                        }
-                    }
+        NewsAttributes.setCommunityName(communityName);
+        NewsAttributes.setCommunityPhotoUrl(communityPhotoUrl);
 
-                    newsAttributesList.add(new NewsAttributes(this));
-                    newsCount += 1;
+        for (JsonElement postElement : posts) {
+            JsonObject post = postElement.getAsJsonObject();
+            NewsAttributes newsAttributes = createNewsAttributes(post);
+            newsAttributesList.add(newsAttributes);
+        }
+    }
+
+    private NewsAttributes createNewsAttributes(JsonObject post) {
+        String text = post.get("text").getAsString();
+        Map<String, Integer> statsValues = extractStatsValues(post);
+        long date = post.get("date").getAsLong();
+        List<String> tooltipPhotoUrls = new ArrayList<>();
+        List<String> originalPhotoUrls = new ArrayList<>();
+        extractPhotoUrls(post, tooltipPhotoUrls, originalPhotoUrls);
+
+        return new NewsAttributes(text, statsValues, date, tooltipPhotoUrls, originalPhotoUrls);
+    }
+
+    private Map<String, Integer> extractStatsValues(JsonObject post) {
+        Map<String, Integer> statsValues = new HashMap<>();
+        for (String key : STATS_VALUES_KEYS) {
+            Optional<JsonElement> statElement = Optional.ofNullable(post.getAsJsonObject(key));
+            int statVal = statElement.map(e -> e.getAsJsonObject().get("count").getAsInt()).orElse(0);
+            statsValues.put(key, statVal);
+        }
+        return statsValues;
+    }
+
+    private void extractPhotoUrls(JsonObject post, List<String> tooltipPhotoUrls, List<String> originalPhotoUrls) {
+        JsonArray attachments = post.getAsJsonArray("attachments");
+        if (attachments != null) {
+            for (JsonElement attachmentElement : attachments) {
+                JsonObject attachment = attachmentElement.getAsJsonObject();
+                if ("photo".equals(attachment.get("type").getAsString())) {
+                    JsonObject photo = attachment.getAsJsonObject("photo");
+                    tooltipPhotoUrls.add(getPhotoUrl(photo));
+                    originalPhotoUrls.add(getOriginalPhotoUrl(photo));
                 }
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        return newsAttributesList;
     }
 
     private String getOriginalPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
-        JsonObject originalSize = sizes.get(sizes.size() - 1).getAsJsonObject();
-        return originalSize.get("url").getAsString();
+        return sizes.get(sizes.size() - 1).getAsJsonObject().get("url").getAsString();
     }
 
     private String getPhotoUrl(JsonObject photo) {
         JsonArray sizes = photo.getAsJsonArray("sizes");
-        JsonObject mediumSize = sizes.get(0).getAsJsonObject();
-        return mediumSize.get("url").getAsString();
+        return sizes.get(0).getAsJsonObject().get("url").getAsString();
     }
 
     private String buildUrl() {
-        String urlBuilder = VK_API_URL + "?domain=" + this.engine.getEngineData().getGroupDomain() +
+        return VK_API_URL + "?domain=" + this.engine.getEngineData().getGroupDomain() +
                 "&access_token=" + this.engine.getEngineData().getAccessToken() +
-                "&count=3" +
-                "&extended=1" +
-                "&v=" + this.engine.getEngineData().getVkAPIversion();
-
-        return urlBuilder;
+                "&count=100&extended=1&v=" + this.engine.getEngineData().getVkAPIversion();
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public Map<String, Integer> getStatsValues() {
-        return statsValues;
-    }
-
-    public static String[] getStatsValuesKeys() {
-        return statsValuesKeys;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public List<String> getTooltipPhotoUrls() {
-        return tooltipPhotoUrls;
-    }
-
-    public List<String> getOriginalPhotoUrls() {
-        return originalPhotoUrls;
+    public interface NewsFetchCallback {
+        void onNewsFetched(List<NewsAttributes> newsAttributesList);
     }
 }

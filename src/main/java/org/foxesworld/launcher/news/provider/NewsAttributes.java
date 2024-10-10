@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.news.provider;
 
 import java.util.List;
+import java.util.Map;
 
 public class NewsAttributes {
     private final String text;
@@ -9,16 +10,18 @@ public class NewsAttributes {
     private final int views, likes, comments, reposts;
     private static String groupName, groupPicture;
 
-    public NewsAttributes(NewsProvider newsProvider) {
-        this.text = newsProvider.getText();
-        this.tooltipPhotoUrls = newsProvider.getTooltipPhotoUrls();
-        this.originalPhotoUrls = newsProvider.getOriginalPhotoUrls();
-        this.publicationDate = newsProvider.getDate();
-        this.views = newsProvider.getStatsValues().get("views");
-        this.likes = newsProvider.getStatsValues().get("likes");
-        this.comments = newsProvider.getStatsValues().get("comments");
-        this.reposts = newsProvider.getStatsValues().get("reposts");
+    public NewsAttributes(String text, Map<String, Integer> statsValues, long publicationDate,
+                          List<String> tooltipPhotoUrls, List<String> originalPhotoUrls) {
+        this.text = text;
+        this.tooltipPhotoUrls = tooltipPhotoUrls;
+        this.originalPhotoUrls = originalPhotoUrls;
+        this.publicationDate = publicationDate;
+        this.views = statsValues.getOrDefault("views", 0);
+        this.likes = statsValues.getOrDefault("likes", 0);
+        this.comments = statsValues.getOrDefault("comments", 0);
+        this.reposts = statsValues.getOrDefault("reposts", 0);
     }
+
 
     public String getText() {
         return text;

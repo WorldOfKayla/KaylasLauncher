@@ -3,6 +3,7 @@ package org.foxesworld.launcher.news;
 import com.vdurmont.emoji.EmojiParser;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.scrollBar.ScrollBarUI;
+import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.utils.FontUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.IconUtils;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
-public class NewsPanel extends JPanel {
+public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback {
     private static final Pattern EMOJI_ALIAS_PATTERN = Pattern.compile(":[a-zA-Z0-9_+\\-]+:");
 
     private final JFrame resizeFrame = new JFrame();
@@ -39,22 +40,19 @@ public class NewsPanel extends JPanel {
     private final IconUtils iconUtils;
     private final FontUtils fontUtils;
     private final Map<String, String> emojiUrlCache = new ConcurrentHashMap<>();
+    private final NewsComponents newsComponents;
 
     public NewsPanel(News news) {
         this.news = news;
         this.fontUtils = news.getLauncher().getFONTUTILS();
         this.imageUtils = news.getLauncher().getImageUtils();
         this.iconUtils = news.getLauncher().getIconUtils();
+        this.newsComponents = new NewsComponents(this.news.getLauncher().getGuiBuilder(), "newsForm", List.of(SpriteAnimation.class));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
         resizeFrame.setLocationRelativeTo(this.news.getLauncher());
+        news.getNewsProvider().fetchNews(this);
 
-        if (this.news.getLauncher().getConfig().isLoadNews()) {
-            JScrollPane scrollPane = createScrollPane();
-            JPanel contentPanel = createContentPanel(news.getNewsProvider().fetchNews());
-            scrollPane.setViewportView(contentPanel);
-            add(scrollPane);
-        }
     }
 
     private JScrollPane createScrollPane() {
@@ -296,7 +294,6 @@ public class NewsPanel extends JPanel {
     }
 
 
-
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
         JPanel statisticsPanel = new JPanel();
         statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -341,6 +338,7 @@ public class NewsPanel extends JPanel {
 
         return labelPanel;
     }
+
     private String formatDate(long timestamp) {
         Timestamp stamp = new Timestamp(timestamp * 1000L);
         Date date = new Date(stamp.getTime());
@@ -352,5 +350,16 @@ public class NewsPanel extends JPanel {
 
     private void adjustScrollPaneSensitivity(JScrollPane scrollPane) {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+    }
+
+    @Override
+    public void onNewsFetched(List<NewsAttributes> newsAttributesList) {
+        JScrollPane scrollPane = createScrollPane();
+        JPanel contentPanel = createContentPanel(newsAttributesList);
+        scrollPane.setViewportView(contentPanel);
+        add(scrollPane);
+        this.newsComponents.turnOffLoader();
+        repaint();
+        revalidate();
     }
 }

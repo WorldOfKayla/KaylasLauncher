@@ -10,8 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class NotificationPopup extends JDialog implements NotificationDisplay {
 
@@ -23,20 +21,30 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     private static final int INITIAL_X = Toolkit.getDefaultToolkit().getScreenSize().width;
 
     private final NotificationUI notificationUI;
+    private Point initialClick;
+    private int initialX;
+    private int initialY;
+    private boolean hasSwipedRight;
     private Timer autoCloseTimer;
 
-    private static final ExecutorService notificationExecutor = Executors.newCachedThreadPool();
-
     public NotificationPopup() {
-        this.notificationUI = new NotificationUI(this);
+        this.notificationUI = new NotificationUI(this); // Pass the instance of NotificationPopup to NotificationUI
         initializeUI();
         setContentPane(new BackgroundPanel());
         setAlwaysOnTop(true);
-        setFocusable(false);
 
+        // Add mouse listener for dragging
         addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getPoint();
+                initialX = getLocation().x;
+                initialY = getLocation().y;
+                hasSwipedRight = false;
+                startFadeOutAnimation();
+            }
+
             public void mouseClicked(MouseEvent e) {
-                resetAutoCloseTimer();
+                resetAutoCloseTimer(); // Reset the timer on mouse click
             }
         });
     }
@@ -48,6 +56,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
         notificationUI.setCloseButtonIcon(closeButtonIcon);
         setUndecorated(true);
         setSize(WIDTH, HEIGHT);
+        setLocationRelativeTo(null);
         setLocationOnScreen();
     }
 
@@ -60,30 +69,46 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
 
     @Override
     public void display(String title, String description, ImageIcon image) {
-        notificationExecutor.execute(() -> {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                notificationUI.setupContent(title, description, image);
-                setOpacity(0.0f);
-                startSlideInAnimation();
-                startAutoCloseTimer();
-                setVisible(true);
+            notificationUI.setupContent(title, description, image);
+            setOpacity(0.0f); // Start with 0 opacity
+            startSlideInAnimation();
+
+            // Fade in animation
+            Timer fadeInTimer = new Timer(TIMER_DELAY, new ActionListener() {
+                final float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
+                float opacity = 0.0f;
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    opacity += fadeSpeed * TIMER_DELAY;
+                    if (opacity >= 1.0f) {
+                        opacity = 1.0f;
+                        ((Timer) e.getSource()).stop();
+                    }
+                    setOpacity(opacity);
+                }
             });
+            fadeInTimer.start();
+
+            startAutoCloseTimer();
+            setVisible(true);
         });
     }
 
-    private void startAutoCloseTimer() {
+    void startAutoCloseTimer() {
         autoCloseTimer = new Timer(DISPLAY_DURATION, e -> startFadeOutAnimation());
         autoCloseTimer.setRepeats(false);
         autoCloseTimer.start();
     }
 
-    private void resetAutoCloseTimer() {
+    void resetAutoCloseTimer() {
         if (autoCloseTimer != null) {
             autoCloseTimer.stop();
             startAutoCloseTimer();
@@ -93,7 +118,7 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
     void startFadeOutAnimation() {
         Timer fadeOutTimer = new Timer(TIMER_DELAY, new ActionListener() {
             float opacity = 1.0f;
-            final float fadeSpeed = 1.0f / ANIMATION_DURATION;
+            float fadeSpeed = 1.0f / ANIMATION_DURATION; // Speed of opacity change
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -104,12 +129,13 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
                     dispose();
                 }
                 setOpacity(opacity);
+                fadeSpeed *= 1.1; // Accelerate the fade-out towards the end
             }
         });
         fadeOutTimer.start();
     }
 
-    private void startSlideInAnimation() {
+    void startSlideInAnimation() {
         Timer slideInTimer = new Timer(TIMER_DELAY, new ActionListener() {
             int currentX = INITIAL_X;
 
@@ -127,10 +153,11 @@ public class NotificationPopup extends JDialog implements NotificationDisplay {
         slideInTimer.start();
     }
 
+
     private static class BackgroundPanel extends JPanel {
         public BackgroundPanel() {
-            setBackground(new Color(255, 228, 196, 230)); // Light color for a friendly vibe
-            setBorder(new BevelBorder(BevelBorder.RAISED, Color.LIGHT_GRAY, Color.GRAY));
+            setBackground(new Color(34, 34, 34, 230));
+            setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.DARK_GRAY));
         }
     }
 

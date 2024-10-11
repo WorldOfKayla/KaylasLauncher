@@ -25,7 +25,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final UserServers userServers;
     private final Launcher launcher;
-    private final ServerInfoDisplayer serverInfoDisplayer;
+    private ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
@@ -48,7 +48,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
 
         initializeUser();
-        this.serverInfoDisplayer = new ServerInfoDisplayer(this);
+        //this.serverInfoDisplayer = new ServerInfoDisplayer(this);
         setDropBoxData(userServers.getServerListBox());
     }
 
@@ -67,7 +67,7 @@ public class User extends org.foxesworld.engine.user.User {
     private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
         dropBox.setSelectedIndex(auth.getLauncher().getConfig().getSelectedServer());
-        dropBox.setScrollBoxListener(serverInfoDisplayer);
+        dropBox.setScrollBoxListener(new ServerInfoDisplayer(this));
     }
 
     @Override

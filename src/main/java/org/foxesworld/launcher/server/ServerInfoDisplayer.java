@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
@@ -34,28 +35,37 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     @Override
-    public void onScrollBoxCreated(int index) {
-        user.updateServer(index);
+    public void onScrollBoxCreated(DropBox dropBox) {
+        user.updateServer(dropBox.getSelectedIndex());
     }
 
     @Override
-    public void onScrollBoxOpen(int index) {
+    public void onScrollBoxOpen(DropBox dropBox) {
     }
 
     @Override
-    public void onScrollBoxClose(int index) {
+    public void onScrollBoxClose(DropBox dropBox) {
+        //addNewsFrameToPanel();
+        /*
         executorService.submit(() -> {
-            user.updateServer(index);
-            if (user.getLauncher().getConfig().isLoadNews()) {
-                newsPanel.removeAll();
-                newsPanel.repaint();
-                addNewsFrameToPanel();
-            }
+            user.updateServer(dropBox.getSelectedIndex());
+
         });
+
+
+        if(dropBox.getState() == State.CLOSED) {
+            if (user.getLauncher().getConfig().isLoadNews()) {
+                user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->false");
+                newsPanel.removeAll();
+
+                newsPanel.repaint();
+            }
+        }
+        */
     }
 
     @Override
-    public void onServerHover(int index) {
+    public void onServerHover(DropBox dropBox, int index) {
         displayServerInfo(index);
     }
 

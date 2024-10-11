@@ -125,23 +125,23 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     }
 
     @Override
-    public void onScrollBoxCreated(int i) {
+    public void onScrollBoxCreated(DropBox dropBox) {
 
     }
 
     @Override
-    public void onScrollBoxOpen(int i) {
+    public void onScrollBoxOpen(DropBox dropBox) {
 
     }
 
     @Override
-    public void onScrollBoxClose(int i) {
-        launcher.getLANG().setLocaleIndex(i);
+    public void onScrollBoxClose(DropBox dropBox) {
+        launcher.getLANG().setLocaleIndex(dropBox.getSelectedIndex());
         launcher.getFrame().getPanel().repaint();
     }
 
     @Override
-    public void onServerHover(int i) {
+    public void onServerHover(DropBox dropBox, int i) {
 
     }
 

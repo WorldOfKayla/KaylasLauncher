@@ -14,43 +14,43 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class EncryptionKeyManager {
 
-    private final String FILE_PATH;
+    private final String filePath;
     private final Engine engine;
+    private final Gson gson;
 
-    EncryptionKeyManager(Engine engine) {
+    public EncryptionKeyManager(Engine engine) {
         this.engine = engine;
-        FILE_PATH = Config.getFullPath() + "/cache/encryption";
+        this.filePath = Config.getFullPath() + "/cache/encryption.json";
+        this.gson = new Gson();
         createEncryptionDirectory();
     }
 
     private void createEncryptionDirectory() {
         File directory = new File("cache");
-        if (!directory.exists()) {
-            if (!directory.mkdirs()) {
-                Launcher.LOGGER.error("Failed to create encryption directory");
-            }
+        if (!directory.exists() && !directory.mkdirs()) {
+            Launcher.LOGGER.error("Failed to create encryption directory");
         }
     }
 
-    String getEncryptionKey(Integer keyLength) {
-        Map<String, Object> cipherFile = new HashMap<>();
-        File file = new File(FILE_PATH);
+    public String getEncryptionKey(int keyLength) {
+        File file = new File(filePath);
+        Map<String, Object> cipherFile;
 
         if (!file.exists()) {
             String newKey = generateRandomString(keyLength);
+            cipherFile = new HashMap<>();
             cipherFile.put("hashCode", newKey);
             writeJson(file, cipherFile);
+            return newKey;
         }
 
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(FILE_PATH), StandardCharsets.UTF_8)) {
-            Gson gson = new Gson();
-            Map<String, String> json = gson.fromJson(bufferedReader, Map.class);
-            return json.get("hashCode");
+        try {
+            cipherFile = readJson(file);
+            return (String) cipherFile.get("hashCode");
         } catch (IOException e) {
-            Engine.LOGGER.error("Error reading the encryption key file {}", e);
+            Engine.LOGGER.error("Error reading the encryption key file: {}", e.getMessage());
         }
         return "";
     }
@@ -63,11 +63,16 @@ public class EncryptionKeyManager {
     }
 
     private void writeJson(File file, Map<String, Object> data) {
-        try (Writer writer = new FileWriter(file)) {
-            Gson gson = new Gson();
+        try (Writer writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             gson.toJson(data, writer);
         } catch (IOException e) {
-            Engine.LOGGER.error("Error writing the encryption key file {}", e);
+            Engine.LOGGER.error("Error writing the encryption key file: {}", e.getMessage());
+        }
+    }
+
+    private Map readJson(File file) throws IOException {
+        try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_8)) {
+            return gson.fromJson(bufferedReader, Map.class);
         }
     }
 }

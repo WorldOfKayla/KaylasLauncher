@@ -86,13 +86,17 @@
         "assets/sounds/other/invalidJre/invalidJRE4.ogg",
         "assets/sounds/other/invalidJre/invalidJRE5.ogg",
         "assets/sounds/other/invalidJre/invalidJRE6.ogg",
-        "assets/sounds/other/invalidJre/invalidJRE7.ogg",
-        "assets/sounds/other/invalidJre/invalidJRE8.ogg"
+        "assets/sounds/other/invalidJre/invalidJRE7.ogg"
       ]
     },
     "alert": {
       "sounds": [
         "assets/sounds/alert.ogg"
+      ]
+    },
+    "ogo": {
+      "sounds": [
+        "assets/sounds/other/invalidJre/invalidJRE8.ogg"
       ]
     }
   }

@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,7 +31,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
-    private JPanel newsPanel;
+    private final JPanel newsPanel;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
@@ -41,84 +40,113 @@ public class User extends org.foxesworld.engine.user.User {
         this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(ServerBox.class, DropBox.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
-        this.serverInfo.setServerStatusImg(this.engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
+        this.serverInfo.setServerStatusImg(engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
         this.serverBox = userServers.getServerBox();
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
+        this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
 
         initializeUser();
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-        setDropBoxData(this.userServers.getServerListBox());
+        setDropBoxData(userServers.getServerListBox());
     }
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
-            setUserSpace();
-            this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
-            launcher.getDiscord().setSmallImageText(this.launcher.getLANG().getString("general.launcher"));
-            launcher.getDiscord().discordRpcStart(
-                    lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
-                    launcher.getAppTitle(),
-                    "launcher"
-            );
-            this.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, this.serverBox.getY() + 80, 340, 45), 3000,
-                    this.launcher.getLANG().getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{this.getLogin()}));
+            SwingUtilities.invokeLater(this::setUserSpace);
         } else {
-            engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+            displayLoginPanel();
         }
+    }
+
+    private void displayLoginPanel() {
+        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
     }
 
     private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(this.auth.getLauncher().getConfig().getSelectedServer());
+        dropBox.setSelectedIndex(auth.getLauncher().getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(serverInfoDisplayer);
     }
 
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        for (Map.Entry<String, Object> credentials : auth.getAuthCredentials().entrySet()) {
-            try {
-                Field field = this.userAttributes.getClass().getDeclaredField(credentials.getKey());
-                field.set(this.userAttributes, credentials.getValue());
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {
-            }
-        }
+        updateUserAttributes();
+        setUserHeadIcon();
+        setUserGroupLabel();
+        setupDiscordRpc();
+        notifyUserLoggedIn();
+    }
 
-        ImageIcon icon = new ImageIcon(this.engine.getImageUtils().getRoundedImage(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())), 5));
-        ((JLabel) this.getComponent("userHead")).setIcon(icon);
-        ((JLabel) this.getComponent("userGroup")).setText(this.lang.getString("group.group-" + this.auth.getAuthCredentials("group")));
-        engine.getGuiBuilder().getPanelsMap().get("userPane").setForeground(Color.BLUE);
-        //showUserInformationWindow();
+    private void setupDiscordRpc() {
+        launcher.getDiscord().setSmallImageText(launcher.getLANG().getString("general.launcher"));
+        launcher.getDiscord().discordRpcStart(
+                lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
+                launcher.getAppTitle(),
+                "launcher"
+        );
+    }
+
+    private void notifyUserLoggedIn() {
+        String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
+        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, serverBox.getY() + 80, 340, 45), 3000, message);
+    }
+
+    private void updateUserAttributes() {
+        auth.getAuthCredentials().forEach(this::setUserAttribute);
+    }
+
+    private void setUserAttribute(String key, Object value) {
+        try {
+            Field field = userAttributes.getClass().getDeclaredField(key);
+            field.setAccessible(true);
+            synchronized (userAttributes) {
+                field.set(userAttributes, value);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Engine.getLOGGER().error("Error setting user attribute: {}", e.getMessage());
+        }
+    }
+
+    private void setUserHeadIcon() {
+        BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(getUserHead(getLogin()));
+        ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+        SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userHead")).setIcon(icon));
+    }
+
+    private void setUserGroupLabel() {
+        String groupKey = "group.group-" + auth.getAuthCredentials("group");
+        SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userGroup")).setText(lang.getString(groupKey)));
     }
 
     public String getLogin() {
-        return this.userAttributes.login;
+        return userAttributes.login;
     }
 
     public String getPassword() {
-        return this.userAttributes.password;
+        return userAttributes.password;
     }
 
     public String getUnits() {
-        return this.userAttributes.units;
+        return userAttributes.units;
     }
 
     public String getToken() {
-        return this.userAttributes.token;
+        return userAttributes.token;
     }
 
     public String getColorScheme() {
-        return this.userAttributes.colorScheme;
+        return userAttributes.colorScheme;
     }
 
     public Object getUserGroup() {
-        return this.userAttributes.group;
+        return userAttributes.group;
     }
 
     public String getUuid() {
-        return this.userAttributes.uuid;
+        return userAttributes.uuid;
     }
 
     public Auth getAuth() {
@@ -129,44 +157,52 @@ public class User extends org.foxesworld.engine.user.User {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
-                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
                 String ip = auth.getUserServersAttributes().get(index).getHost();
                 int port = auth.getUserServersAttributes().get(index).getPort();
+                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
+
                 String[] status = serverInfo.pollServer(ip, port);
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
-                serverBox.updateBox(text, img);
+
+                SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
             } catch (Exception e) {
-                Engine.getLOGGER().error("Error refreshing server: " + e.getMessage());
+                Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
         });
         executor.shutdown();
     }
 
     private void showUserInformationWindow() {
+        JFrame window = createUserInfoWindow();
+        window.setVisible(true);
+    }
+
+    private JFrame createUserInfoWindow() {
         JFrame window = new JFrame("User Information");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         window.setSize(350, 200);
         window.setLocation(120, 120);
 
         JPanel panel = new JPanel(new GridLayout(0, 2));
-
-        for (Map.Entry<String, Object> entry : auth.getAuthCredentials().entrySet()) {
-            JLabel keyLabel = new JLabel(entry.getKey());
-            keyLabel.setForeground(Color.BLACK);
-            keyLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfontBold", 11));
-            panel.add(keyLabel);
-
-            JTextArea valueLabel = new JTextArea(String.valueOf(entry.getValue()));
-            valueLabel.setForeground(Color.GRAY);
-            valueLabel.setFont(this.launcher.getFONTUTILS().getFont("mcfont", 11));
-            panel.add(valueLabel);
-        }
+        auth.getAuthCredentials().forEach((key, value) -> addUserInfoRow(panel, key, value));
 
         window.add(panel);
         window.pack();
         window.setResizable(false);
-        window.setVisible(true);
+        return window;
+    }
+
+    private void addUserInfoRow(JPanel panel, String key, Object value) {
+        JLabel keyLabel = new JLabel(key);
+        keyLabel.setForeground(Color.BLACK);
+        keyLabel.setFont(launcher.getFONTUTILS().getFont("mcfontBold", 11));
+        panel.add(keyLabel);
+
+        JTextArea valueLabel = new JTextArea(String.valueOf(value));
+        valueLabel.setForeground(Color.GRAY);
+        valueLabel.setFont(launcher.getFONTUTILS().getFont("mcfont", 11));
+        panel.add(valueLabel);
     }
 
     public GuiBuilder getGuiBuilder() {

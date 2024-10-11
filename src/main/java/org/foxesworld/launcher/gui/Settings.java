@@ -78,7 +78,13 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
             }
 
             if (component instanceof DropBox) {
-                ((DropBox) component).setValues(launcher.getLANG().getLocalesSet());
+                String[] localeTransate = new String[this.launcher.getLANG().getLocalesSet().length];
+                int num = 0;
+                for (String lang : launcher.getLANG().getLocalesSet()) {
+                    localeTransate[num] = this.launcher.getLANG().getString("general." + lang);
+                    num += 1;
+                }
+                ((DropBox) component).setValues(localeTransate);
                 ((DropBox) component).setSelectedIndex(launcher.getLANG().getLocaleIndex());
                 ((DropBox) component).setScrollBoxListener(this);
             }

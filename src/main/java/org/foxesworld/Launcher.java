@@ -135,6 +135,8 @@ public class Launcher extends Engine implements AuthListener {
         loadMainPanel(fileProperties.getMainFrame());
         if (this.getConfig().isLoadNews()) {
             setNews(new News(this));
+        } else {
+            this.getGuiBuilder().getPanelsMap().get("newsForm").getComponent(0).setVisible(false);
         }
 
         getGuiBuilder().buildAdditionalPanels();
@@ -205,6 +207,7 @@ public class Launcher extends Engine implements AuthListener {
             SOUND.playSound("music", "launcherTheme", true);
         }
     }
+
 
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {

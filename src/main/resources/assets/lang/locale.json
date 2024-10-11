@@ -1,5 +1,20 @@
 {
   "general": {
+    "pl_PL": {
+      "en_US": "Polish",
+      "ru_RU": "Польский",
+      "pl_PL": "Polski"
+    },
+    "ru_RU": {
+      "en_US": "Russian",
+      "ru_RU": "Русский",
+      "pl_PL": "Rosyjski kurwa"
+    },
+    "en_US": {
+      "en_US": "American English",
+      "ru_RU": "Английский",
+      "pl_PL": "Angielski"
+    },
     "appTitle": {
       "en_US": "FoxesWorld",
       "ru_RU": "FoxesWorld",

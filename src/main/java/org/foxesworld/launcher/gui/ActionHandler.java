@@ -85,7 +85,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             SwingUtilities.invokeLater(() -> sndBar.setValue(progress));
                         }
                     };
-                    String sound = this.launcher.getSOUND().playSound("other", "invalidJVM", listener);
+                    String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
                     //this.launcher.getNotification().display("Sound Test", sound, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 

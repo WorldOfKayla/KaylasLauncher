@@ -86,6 +86,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         }
                     };
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
+                    this.launcher.getLoadingManager().toggleLoader();
                     //this.launcher.getNotification().display("Sound Test", sound, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 

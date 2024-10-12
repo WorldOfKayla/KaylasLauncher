@@ -14,29 +14,17 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class LoadStatus extends LoadingManager implements AnimationStats {
     private final ComponentsAccessor componentsAccessor;
-    private final Lock lock = new ReentrantLock();
 
     public LoadStatus(Engine engine, int index) {
         this.engine = engine;
         this.attributesList = List.of(engine.getEngineData().getLoadManager());
         this.loadingText = engine.getLANG().getString("loading.msg");
         this.loadingTitle = engine.getLANG().getString("loading.title");
-
-        this.loadingTimer = new Timer(500, e -> SwingUtilities.invokeLater(() -> {
-            lock.lock();
-            try {
-                loaderText.setText(loadingText);
-            } finally {
-                lock.unlock();
-            }
-        }));
 
         this.ANIMATION_SPEED = attributesList.get(index).getAnimSpeed();
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
@@ -50,30 +38,29 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
     protected void initializeLoadingFrame(int index) {
         SwingUtilities.invokeLater(() -> {
             setSize(getFrameWidth(), getFrameHeight());
-
             LoadManagerAttributes attributes = attributesList.get(index);
-            JPanel backgroundPanel = this.createBackgroundPanel(this.engine.getGuiBuilder().getPanelsMap().get("loadPanel"), attributes.getBgPath(), attributes.getBlurColor());
+
+            JPanel backgroundPanel = createBackgroundPanel(
+                    this.engine.getGuiBuilder().getPanelsMap().get("loadPanel"),
+                    attributes.getBgPath(),
+                    attributes.getBlurColor()
+            );
+
             backgroundPanel.setVisible(true);
+            SpriteAnimation currentLoader = new SpriteAnimation(
+                    engine,
+                    attributes.getSpritePath(),
+                    attributes.getRows(),
+                    attributes.getCols(),
+                    attributes.getDelay(),
+                    new Rectangle(attributes.getBounds())
+            );
 
-            SpriteAnimation currentLoader = new SpriteAnimation(engine, attributes.getSpritePath(),
-                    attributes.getRows(), attributes.getCols(), attributes.getDelay(),
-                    new Rectangle(attributes.getBounds().getX(), attributes.getBounds().getY(),
-                            attributes.getBounds().getSize().getWidth(), attributes.getBounds().getSize().getHeight()));
-            Rectangle rectangle = new Rectangle(attributes.getBounds().getX(), attributes.getBounds().getY(), attributes.getBounds().getSize().getWidth(), attributes.getBounds().getSize().getHeight());
-            currentLoader.setBounds(rectangle);
+            currentLoader.setBounds(attributes.getBounds());
             setContentPane(backgroundPanel);
-
             backgroundPanel.add(currentLoader);
 
-            lock.lock();
-            try {
-                titleLabel = (JLabel) componentsAccessor.getComponent("titleLabel");
-                loaderText = (JLabel) componentsAccessor.getComponent("loaderText");
-                loaderText.setForeground(hexToColor(attributes.getDescColor()));
-                titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
-            } finally {
-                lock.unlock();
-            }
+            setupLabels(attributes);
 
             setAlwaysOnTop(true);
             setLocationRelativeTo(engine.getFrame());
@@ -82,28 +69,23 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
         });
     }
 
-    @Override
-    public void animationStarted() {
+    private void setupLabels(LoadManagerAttributes attributes) {
         SwingUtilities.invokeLater(() -> {
-            lock.lock();
-            try {
-                this.setVisible(true);
-            } finally {
-                lock.unlock();
-            }
+            titleLabel = (JLabel) componentsAccessor.getComponent("titleLabel");
+            loaderText = (JLabel) componentsAccessor.getComponent("loaderText");
+            loaderText.setForeground(hexToColor(attributes.getDescColor()));
+            titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
         });
     }
 
     @Override
+    public void animationStarted() {
+        SwingUtilities.invokeLater(() -> this.setVisible(true));
+    }
+
+    @Override
     public void animationFinished() {
-        SwingUtilities.invokeLater(() -> {
-            lock.lock();
-            try {
-                this.setVisible(false);
-            } finally {
-                lock.unlock();
-            }
-        });
+        SwingUtilities.invokeLater(() -> this.setVisible(false));
     }
 
     private class InitializationWorker extends SwingWorker<Void, Void> {
@@ -123,8 +105,7 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
         protected void done() {
             try {
                 get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException ignored) {
             }
         }
     }

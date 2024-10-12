@@ -70,6 +70,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         public void onPlaybackStarted(String path) {
                             pressedComponent.setEnabled(false);
                             sndBar.setVisible(true);
+                            launcher.getLoadingManager().setLoadingText("playback started", "Test");
                         }
 
                         @Override
@@ -77,6 +78,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             pressedComponent.setEnabled(true);
                             sndBar.setValue(0);
                             sndBar.setVisible(false);
+                            launcher.getLoadingManager().setLoadingText("playback finished", "Test");
                         }
 
                         @Override
@@ -86,7 +88,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         }
                     };
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
-                    this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
+                    //this.launcher.getLoadingManager().toggleLoader();
+                    //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();

@@ -2,7 +2,6 @@ package org.foxesworld;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.foxesworld.Notification.NotificationPopup;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -27,6 +26,7 @@ import org.foxesworld.launcher.gui.components.ComponentManager;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
+import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

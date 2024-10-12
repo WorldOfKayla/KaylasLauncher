@@ -41,7 +41,8 @@ public class FileLoaderImpl implements FileLoaderListener {
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        initializeDownloadComponents();
+        this.
+                initializeDownloadComponents();
         setupGameLauncher();
         checkAndDownloadJre();
         core.getFileLoader().downloadFiles();
@@ -131,6 +132,7 @@ public class FileLoaderImpl implements FileLoaderListener {
         FileAttributes currentFile = fileLoader.getCurrentFile();
         updateDownloadInfoComponents(currentFile);
         String fullPath = core.getFileLoader().getHomeDir() + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
+        //core.getFileLoader().downloadFiles();
         if (core.getFileLoader().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
             core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, core.getFileLoader().getTotalSize());
         }

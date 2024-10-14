@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+
 public class SplashScreenWindow extends JWindow {
     private final ImageIcon imageIcon;
     private final ImageIcon backgroundImage;
@@ -39,7 +41,6 @@ public class SplashScreenWindow extends JWindow {
             }
         };
 
-        content.setBackground(Color.LIGHT_GRAY);
         content.add(imageLabel, BorderLayout.CENTER);
 
         getContentPane().add(content);
@@ -60,9 +61,9 @@ public class SplashScreenWindow extends JWindow {
 
         // Create the dimming overlay with rounded corners
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)); // Semi-transparent overlay
-        g2d.setColor(Color.BLACK); // Dimming color
-        g2d.fill(roundedRect); // Fill the overlay with rounded corners
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        g2d.setColor(hexToColor("#1e201eeb")); // Dimming color
+        g2d.fill(roundedRect);
 
         g2d.dispose();
     }

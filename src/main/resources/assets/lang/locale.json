@@ -1,19 +1,19 @@
 {
   "general": {
     "pl_PL": {
-      "en_US": "Polish",
-      "ru_RU": "Польский",
+      "en_US": "Polska",
+      "ru_RU": "Polska",
       "pl_PL": "Polski"
     },
     "ru_RU": {
-      "en_US": "Russian",
+      "en_US": "Русский",
       "ru_RU": "Русский",
-      "pl_PL": "Rosyjski kurwa"
+      "pl_PL": "Русский kurwa"
     },
     "en_US": {
       "en_US": "American English",
-      "ru_RU": "Английский",
-      "pl_PL": "Angielski"
+      "ru_RU": "English",
+      "pl_PL": "English"
     },
     "appTitle": {
       "en_US": "FoxesWorld",
@@ -349,6 +349,11 @@
       "en_US": "Player",
       "ru_RU": "Игрок",
       "pl_PL": "Gracz"
+    },
+    "group-6": {
+      "en_US": "Tester",
+      "ru_RU": "Тестер",
+      "pl_PL": "Testjer"
     }
   },
   "tooltip": {

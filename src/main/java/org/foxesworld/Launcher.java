@@ -1,7 +1,5 @@
 package org.foxesworld;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -12,10 +10,9 @@ import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.HashUtils;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
-import org.foxesworld.engine.utils.helper.JVMHelper;
+import org.foxesworld.launcher.LauncherValidator;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
@@ -37,16 +34,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Launcher extends Engine implements AuthListener {
-
+    private final LauncherValidator validator;
     private Auth auth;
     private User user;
     private Settings settings;
     private final FileProperties fileProperties;
     private IconUtils iconUtils;
-    private final File launcher;
+    private final File launcherFile;
     private final NotificationPopup notification;
     private static final List<String> CONFIG_FILES = List.of("config");
 
@@ -59,17 +55,14 @@ public class Launcher extends Engine implements AuthListener {
     public Launcher() {
         super(CONFIG_FILES);
         long startTime = System.currentTimeMillis();
-        this.launcher = new File(appPath());
+        this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         this.notification = new NotificationPopup();
+        this.validator = new LauncherValidator(this);
         preInit();
 
-        if (!isLauncherValid()) {
-            showInvalidLauncherDialog();
-            return;
-        }
-
-        validateJRE();
+        validator.validateLauncher();
+        validator.validateJRE();
 
         this.auth = new Auth(this);
         init();
@@ -77,35 +70,9 @@ public class Launcher extends Engine implements AuthListener {
         getLOGGER().info(getAppTitle() + " started in " + String.format("%d ms", duration) + "!");
     }
 
+
     private void showInvalidLauncherDialog() {
         showDialog("error.invalidLauncher", getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
-    }
-
-    private void validateJRE() {
-        int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
-        int expectedJRE = Integer.parseInt(getEngineData().getProgramRuntime().replaceAll("\\D", ""));
-
-        if (launchingWith != expectedJRE) {
-            if (launcher.isFile()) {
-                Engine.LOGGER.warn("Using incorrect JRE {}", launchingWith);
-                showDialog("error.invalidJVM", getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
-            } else if (launcher.isDirectory()) {
-                logJREWarning(expectedJRE);
-            } else {
-                Engine.LOGGER.warn("Launcher path is neither a file nor a directory. 0_0");
-            }
-        }
-    }
-
-    private void logJREWarning(int expectedJRE) {
-        Engine.LOGGER.warn("Using a JRE different from {}", getEngineData().getProgramRuntime());
-        if (isRunningInIDE()) {
-            Engine.LOGGER.warn("Launching in IDE using {}", JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin"));
-        }
-    }
-
-    private boolean isRunningInIDE() {
-        return System.getProperty("java.class.path").contains("build");
     }
 
     @Override
@@ -117,16 +84,6 @@ public class Launcher extends Engine implements AuthListener {
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
-
-    private void buildGui(String[] styles) {
-        setStyleProvider(new StyleProvider(styles));
-        setGuiBuilder(new GuiBuilder(this));
-        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
-        getGuiBuilder().setGuiBuilderListener(this);
-        getGuiBuilder().buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
-        this.iconUtils = new IconUtils(this);
-    }
-
     @Override
     public void init() {
         this.discord = new Discord(this, "aiden");
@@ -146,35 +103,18 @@ public class Launcher extends Engine implements AuthListener {
         setActionHandler(new ActionHandler(this));
         setInit(true);
     }
+    @Override
+    protected void postInit() {
 
-    private boolean isLauncherValid() {
-        getLOGGER().info("Starting launcher validation");
+    }
 
-        Map<String, Object> launcherRequest = Map.of("sysRequest", "downloadLatest");
-        String selfMd5 = HashUtils.md5(appPath());
-        getLOGGER().info("Calculated self MD5: {}", selfMd5);
-
-        if ("IDE".equals(selfMd5)) {
-            return true;
-        }
-
-        try {
-            String response = getPOSTrequest().send(launcherRequest);
-            LauncherAttributes launcherAttributes = new Gson().fromJson(response, LauncherAttributes.class);
-            getLOGGER().info("Server response MD5: {}", launcherAttributes.getFileMd5());
-
-            boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-            if (!isValid) {
-                getLOGGER().warn("Launcher validation failed: MD5 mismatch");
-            }
-
-            return isValid;
-        } catch (JsonSyntaxException e) {
-            getLOGGER().error("JSON parsing error during launcher validation: {}", e.getMessage(), e);
-        } catch (Exception e) {
-            getLOGGER().error("Unexpected error during launcher validation: {}", e.getMessage(), e);
-        }
-        return false;
+    private void buildGui(String[] styles) {
+        setStyleProvider(new StyleProvider(styles));
+        setGuiBuilder(new GuiBuilder(this));
+        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
+        getGuiBuilder().setGuiBuilderListener(this);
+        getGuiBuilder().buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
+        this.iconUtils = new IconUtils(this);
     }
 
     @Override
@@ -259,8 +199,12 @@ public class Launcher extends Engine implements AuthListener {
         return notification;
     }
 
+    public File getLauncherFile() {
+        return launcherFile;
+    }
+
     @SuppressWarnings("unused")
-    static class LauncherAttributes {
+    public static class LauncherAttributes {
         private String hash;
         private String filename;
 

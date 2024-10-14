@@ -36,33 +36,15 @@
         },
         {
           "componentType": "button",
-          "enabled": false,
-          "componentStyle": "btnSmallClean",
-          "imageIcon": "assets/ui/icons/info.svg",
-          "keyCode": "I",
-          "iconWidth": 25,
-          "iconHeight": 25,
-          "componentId": "info-small",
-          "bounds": {
-            "x": 225,
-            "y": 435,
-            "size": {
-              "width": 60,
-              "height": 50
-            }
-          }
-        },
-        {
-          "componentType": "button",
           "enabled": true,
           "componentStyle": "btnSmallClean",
           "imageIcon": "assets/ui/icons/settings.svg",
           "keyCode": "S",
-          "iconWidth": 34,
-          "iconHeight": 34,
+          "iconWidth": 25,
+          "iconHeight": 25,
           "componentId": "settings-small",
           "bounds": {
-            "x": 290,
+            "x": 280,
             "y": 435,
             "size": {
               "width": 60,

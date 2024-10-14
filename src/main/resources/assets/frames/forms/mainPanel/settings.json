@@ -39,6 +39,7 @@
                   "componentType": "button",
                   "enabled": true,
                   "keyCode": "BACK_SPACE",
+                  "toolTip": "tooltip.back",
                   "componentStyle": "btnSmallClean",
                   "localeKey": "settings.back",
                   "componentId": "back",

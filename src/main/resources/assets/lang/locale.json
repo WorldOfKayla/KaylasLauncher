@@ -358,15 +358,40 @@
   },
   "tooltip": {
   "gameTooltip": {
-    "en_US": "Let's Play!",
-    "ru_RU": "Давай играть!",
-    "pl_PL": "Zagrajmy!"
+    "en_US": "Let's Play! (ENTER)",
+    "ru_RU": "Давай играть! (ENTER)",
+    "pl_PL": "Zagrajmy! (ENTER)"
   },
   "logOutToolTip": {
-    "en_US": "Exit an account",
-    "ru_RU": "Сменить аккаунт",
-    "pl_PL": "Wyloguj się"
-  }
+    "en_US": "Exit an account (ESC)",
+    "ru_RU": "Сменить аккаунт (ESC)",
+    "pl_PL": "Wyloguj się (ESC)"
+  },
+   "test": {
+      "en_US": "TEST! Press F5 =)",
+      "ru_RU": "ТЕСТ Нажми F5 =)",
+      "pl_PL": "TEST! Najmi F5"
+    },
+    "settings": {
+      "en_US": "Settings! (S)",
+      "ru_RU": "Настройки! Горачая клавиша - S",
+      "pl_PL": "Nastroiki! (S)"
+    },
+    "folder": {
+      "en_US": "Open Folder! (F)",
+      "ru_RU": "Открыть директорию! Горачая клавиша - F",
+      "pl_PL": "Otkroi papku kurwa! (F)"
+    },
+    "back": {
+      "en_US": "Return back! (Backspace)",
+      "ru_RU": "Вернуться назад! Горачая клавиша - Backspace",
+      "pl_PL": "Nazad! Klawisha (Backspace)"
+    },
+    "applySettings": {
+      "en_US": "Apply settings! (ENTER)",
+      "ru_RU": "Сохранить настройки! Горачая клавиша - ENTER",
+      "pl_PL": "Soxranit! (ENTER)"
+    }
   },
   "dev": {
     "token": {

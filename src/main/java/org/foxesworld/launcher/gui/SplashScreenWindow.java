@@ -11,7 +11,7 @@ public class SplashScreenWindow extends JWindow {
     private final ImageIcon backgroundImage;
     private final JLabel imageLabel;
     private float opacity = 1f; // Start with full transparency
-    private final int fadeDuration = 2000;
+    private final int fadeDuration = 100;
     private final int fadeInterval = 40;
 
     public SplashScreenWindow() {
@@ -84,7 +84,7 @@ public class SplashScreenWindow extends JWindow {
                     }
                     publish(opacity);
                     try {
-                        Thread.sleep(fadeInterval); // Sleep for the duration of the fade interval
+                        Thread.sleep(fadeInterval);
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }

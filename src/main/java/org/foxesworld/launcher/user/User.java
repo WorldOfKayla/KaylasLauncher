@@ -19,19 +19,19 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 @SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final UserServers userServers;
     private final Launcher launcher;
-    private ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
+    private final ExecutorService executor;
+
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
@@ -46,15 +46,15 @@ public class User extends org.foxesworld.engine.user.User {
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
+        this.executor = Executors.newCachedThreadPool(); // Use cached thread pool for flexibility
 
         initializeUser();
-        //this.serverInfoDisplayer = new ServerInfoDisplayer(this);
         setDropBoxData(userServers.getServerListBox());
     }
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
-            SwingUtilities.invokeLater(this::setUserSpace);
+           this.setUserSpace();
         } else {
             displayLoginPanel();
         }
@@ -154,7 +154,6 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void updateServer(int index) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
@@ -170,7 +169,6 @@ public class User extends org.foxesworld.engine.user.User {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
         });
-        executor.shutdown();
     }
 
     private void showUserInformationWindow() {
@@ -202,6 +200,7 @@ public class User extends org.foxesworld.engine.user.User {
         JTextArea valueLabel = new JTextArea(String.valueOf(value));
         valueLabel.setForeground(Color.GRAY);
         valueLabel.setFont(launcher.getFONTUTILS().getFont("mcfont", 11));
+        valueLabel.setEditable(false);
         panel.add(valueLabel);
     }
 
@@ -219,5 +218,8 @@ public class User extends org.foxesworld.engine.user.User {
 
     public UserServers getUserServers() {
         return userServers;
+    }
+    public void shutdown() {
+        executor.shutdownNow();
     }
 }

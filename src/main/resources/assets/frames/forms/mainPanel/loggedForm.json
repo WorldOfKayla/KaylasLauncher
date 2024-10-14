@@ -38,6 +38,7 @@
           "componentType": "button",
           "enabled": true,
           "componentStyle": "btnSmallClean",
+          "toolTip": "tooltip.settings",
           "imageIcon": "assets/ui/icons/settings.svg",
           "keyCode": "S",
           "iconWidth": 25,

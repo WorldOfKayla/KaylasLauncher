@@ -93,7 +93,10 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
-                case "applySettings" -> this.launcher.getSettings().applySettings("settingsFields");
+                case "applySettings" -> {
+                    this.getEngine().getGuiBuilder().getComponentFactory().getCustomTooltip().clearAllTooltips();
+                    this.launcher.getSettings().applySettings("settingsFields");
+                }
                 case "logOut" -> {
                     this.launcher.getSOUND().playSound("other", "loggedOut");
                     this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));

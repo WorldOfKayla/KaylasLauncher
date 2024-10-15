@@ -27,6 +27,7 @@ import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
@@ -68,11 +69,6 @@ public class Launcher extends Engine implements AuthListener {
         init();
         long duration = System.currentTimeMillis() - startTime;
         getLOGGER().info(getAppTitle() + " started in " + String.format("%d ms", duration) + "!");
-    }
-
-
-    private void showInvalidLauncherDialog() {
-        showDialog("error.invalidLauncher", getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
     }
 
     @Override

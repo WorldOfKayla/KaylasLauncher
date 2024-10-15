@@ -8,6 +8,7 @@
   "backgroundBlur": "#494d4d52",
   "width": 850,
   "height": 500,
+  "borderRadius": 30,
   "resizable": false,
   "undecorated": true,
   "panels": {

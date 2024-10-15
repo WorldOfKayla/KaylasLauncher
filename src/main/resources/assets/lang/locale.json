@@ -391,6 +391,11 @@
       "en_US": "Apply settings! (ENTER)",
       "ru_RU": "Сохранить настройки! Горачая клавиша - ENTER",
       "pl_PL": "Soxranit! (ENTER)"
+    },
+    "selectServer": {
+      "en_US": "Don't forget to chose a server!",
+      "ru_RU": "Не забудь выбрать сервер!",
+      "pl_PL": "Pomni serwer vivbrat!"
     }
   },
   "dev": {

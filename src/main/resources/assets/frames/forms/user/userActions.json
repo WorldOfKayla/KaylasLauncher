@@ -23,6 +23,7 @@
           "componentStyle": "selectable",
           "componentId": "serverBox",
           "initialValue": "servers#test",
+          "toolTip": "tooltip.selectServer",
           "bounds": {
             "x": 35,
             "y": 215,

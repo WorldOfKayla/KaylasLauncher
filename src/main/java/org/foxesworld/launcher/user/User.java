@@ -46,7 +46,7 @@ public class User extends org.foxesworld.engine.user.User {
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
-        this.executor = Executors.newCachedThreadPool(); // Use cached thread pool for flexibility
+        this.executor = Executors.newCachedThreadPool();
 
         initializeUser();
         setDropBoxData(userServers.getServerListBox());

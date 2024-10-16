@@ -64,10 +64,10 @@
                   "keyCode": "F",
                   "fontSize": 12,
                   "toolTip": "tooltip.folder",
-                  "imageIcon": "assets/ui/icons/files/folder.svg",
+                  "imageIcon": "assets/ui/icons/dir.png",
                   "iconWidth": 32,
                   "iconHeight": 32,
-                  "componentStyle": "btnSmallClean",
+                  "componentStyle": "altButton",
                   "localeKey": "settings.homeDir",
                   "componentId": "gameDir-small",
                   "bounds": {

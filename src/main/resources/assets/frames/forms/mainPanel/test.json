@@ -39,7 +39,7 @@
                   "componentType":"button",
                   "enabled":true,
                   "keyCode":"BACK_SPACE",
-                  "componentStyle":"btnSmallClean",
+                  "componentStyle":"altButton",
                   "localeKey":"settings.back",
                   "componentId":"back-test",
                   "bounds": {

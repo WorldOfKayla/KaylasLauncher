@@ -45,12 +45,13 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxClose(DropBox dropBox) {
+        executorService.submit(() -> {
+        user.updateServer(dropBox.getSelectedIndex());
+
+    });
         //addNewsFrameToPanel();
         /*
-        executorService.submit(() -> {
-            user.updateServer(dropBox.getSelectedIndex());
 
-        });
 
 
         if(dropBox.getState() == State.CLOSED) {

@@ -5,7 +5,7 @@
         "opaque": true,
         "visible": true,
         "background": "#7e696900",
-        "backgroundImage": "assets/ui/img/pane.png",
+        "backgroundImage": "assets/ui/img/bg/info.png",
         "bounds": {
           "x": 0,
           "y": 30,
@@ -21,6 +21,7 @@
           "fontSize": 15,
           "componentStyle": "title",
           "localeKey": "",
+          "color": "#795a2f",
           "componentId": "userLogin",
           "initialValue": "user#login",
           "bounds": {
@@ -35,7 +36,7 @@
         {
           "componentType": "label",
           "fontSize": 11,
-          "color": "#dda413ba",
+          "color": "#666260",
           "componentStyle": "title",
           "localeKey": "",
           "componentId": "userGroup",
@@ -70,7 +71,7 @@
           "componentType": "button",
           "enabled": true,
           "keyCode": "F5",
-          "componentStyle": "btnSmallClean",
+          "componentStyle": "altButton",
           "componentId": "smallButton",
           "toolTip": "tooltip.test",
           "localeKey": "TEST",
@@ -122,6 +123,7 @@
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "localeKey": "logged.units",
+                  "color": "#292e34",
                   "componentId": "unitsField",
                   "initialValue": "balance#units",
                   "bounds": {
@@ -141,6 +143,7 @@
                   "iconWidth": 32,
                   "iconHeight": 32,
                   "localeKey": "logged.crystals",
+                  "color": "#292e34",
                   "componentId": "crystalsField",
                   "initialValue": "balance#crystals",
                   "bounds": {

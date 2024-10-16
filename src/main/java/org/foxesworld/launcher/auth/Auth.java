@@ -78,6 +78,7 @@ public class Auth {
         this.authCredentials.put("uuid", authResponse.getUuid());
         this.authCredentials.put("token", authResponse.getToken());
         this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
+        this.authCredentials.put("groupName", String.valueOf(authResponse.getGroupName()));
 
         List<Map<String, Integer>> balance = authResponse.getBalance();
         if (balance != null) {

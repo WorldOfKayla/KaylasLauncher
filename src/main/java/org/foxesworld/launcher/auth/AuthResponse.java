@@ -5,11 +5,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 class AuthResponse {
-    private String message;
-    private String uuid;
-    private String token;
-    private String type;
-    private String login;
+    private String message, uuid, token, type,login, groupName;
     private List<Map<String, Integer>> balance;
     private int group;
     private String colorScheme;
@@ -40,6 +36,10 @@ class AuthResponse {
 
     public int getGroup() {
         return group;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     public String getColorScheme() {

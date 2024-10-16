@@ -18,7 +18,7 @@
         "visible": true,
         "listener": "dragger",
         "background": "#503030c6",
-        "backgroundImage": "assets/ui/img/bg/header.png",
+        "backgroundImage": "assets/ui/img/bg/header2.png",
         "bounds": {
           "x": 0,
           "y": 0,
@@ -54,7 +54,7 @@
           "componentStyle": "promptLabel",
           "localeKey": "Build",
           "initialValue": "version",
-          "color": "#e66b24",
+          "color": "#4d2c09",
           "componentId": "appVersion",
           "bounds": {
             "x": 155,

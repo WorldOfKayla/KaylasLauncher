@@ -19,7 +19,7 @@
       "childComponents": [
         {
           "componentType": "textField",
-          "componentStyle": "textFieldMain",
+          "componentStyle": "textFieldAlt",
           "localeKey": "auth.loginPlaceholder",
           "componentId": "login",
           "bounds": {
@@ -33,7 +33,7 @@
         },
         {
           "componentType": "passField",
-          "componentStyle": "textFieldMain",
+          "componentStyle": "textFieldAlt",
           "localeKey": "auth.passwordPlaceholder",
           "revealButton": true,
           "componentId": "password",
@@ -95,17 +95,18 @@
         {
           "componentType": "button",
           "enabled": true,
-          "componentStyle": "btnSmallClean",
-          "imageIcon": "assets/ui/icons/settings.svg",
-          "iconWidth": 25,
-          "iconHeight": 25,
+          "componentStyle": "altButton",
+          "toolTip": "tooltip.settings",
+          "imageIcon": "assets/ui/icons/settings.png",
+          "iconWidth": 32,
+          "iconHeight": 32,
           "componentId": "settings-small",
           "bounds": {
             "x": 280,
             "y": 435,
             "size": {
-              "width": 60,
-              "height": 50
+              "width": 64,
+              "height": 64
             }
           }
         }

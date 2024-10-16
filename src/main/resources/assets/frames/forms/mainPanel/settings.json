@@ -21,10 +21,11 @@
           "panels": {
             "settingsPane": {
               "panelOptions": {
-                "opaque": true,
+                "opaque": false,
                 "focusable": true,
                 "visible": true,
-                "background": "#500b0a",
+                "doubleBuffered": true,
+                "backgroundImage": "assets/ui/img/bg/header2.png",
                 "bounds": {
                   "x": 0,
                   "y": 0,
@@ -40,8 +41,10 @@
                   "enabled": true,
                   "keyCode": "BACK_SPACE",
                   "toolTip": "tooltip.back",
-                  "componentStyle": "btnSmallClean",
-                  "localeKey": "settings.back",
+                  "imageIcon": "assets/ui/icons/back.png",
+                  "iconWidth": 16,
+                  "iconHeight": 16,
+                  "componentStyle": "altButton",
                   "componentId": "back",
                   "bounds": {
                     "x": 0,

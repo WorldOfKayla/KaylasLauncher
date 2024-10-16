@@ -37,19 +37,19 @@
         {
           "componentType": "button",
           "enabled": true,
-          "componentStyle": "btnSmallClean",
+          "componentStyle": "altButton",
           "toolTip": "tooltip.settings",
-          "imageIcon": "assets/ui/icons/settings.svg",
+          "imageIcon": "assets/ui/icons/settings.png",
           "keyCode": "S",
-          "iconWidth": 25,
-          "iconHeight": 25,
+          "iconWidth": 32,
+          "iconHeight": 32,
           "componentId": "settings-small",
           "bounds": {
             "x": 280,
             "y": 435,
             "size": {
-              "width": 60,
-              "height": 50
+              "width": 64,
+              "height": 64
             }
           }
         },

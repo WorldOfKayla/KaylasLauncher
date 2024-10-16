@@ -27,7 +27,6 @@ import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;

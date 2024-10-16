@@ -92,27 +92,29 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             addMultiplePhotos(newsPanel, newsAttributes);
         }
 
+        newsPanel.setBorder(new EmptyBorder(0, 0, 0, 50));
         newsPanel.add(createStatisticsPanel(newsAttributes));
-        newsPanel.add(Box.createVerticalStrut(10));
 
         return newsPanel;
     }
 
     private JPanel createUpperPanel(NewsAttributes newsAttributes) {
-        JPanel upperPanel = new JPanel();
-        upperPanel.setOpaque(true);
-        upperPanel.setBackground(hexToColor("#4a4c4f"));
-        upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.LINE_AXIS));
+        // Load the background image
+        ImageIcon backgroundImageIcon = new ImageIcon(this.imageUtils.getLocalImage("assets/ui/img/newsPanel/panelHeader.png"));
+        BackgroundPanel upperPanel = new BackgroundPanel(backgroundImageIcon.getImage());
+        upperPanel.setOpaque(false); // Make sure it's not opaque
 
         try {
+            // Create and add the community label
             JLabel communityLabel = createCommunityLabel(newsAttributes);
             upperPanel.add(communityLabel);
             upperPanel.add(Box.createHorizontalGlue());
 
+            // Create and add the date label
             JLabel dateLabel = new JLabel(formatDate(newsAttributes.getPublicationDate()));
-            dateLabel.setForeground(Color.WHITE);
+            dateLabel.setForeground(Color.black);
             dateLabel.setFont(this.fontUtils.getFont("mcfont", 13));
-            dateLabel.setBorder(new EmptyBorder(0, 0, 0, 50));
+            dateLabel.setBorder(new EmptyBorder(30, 0, 0, 50));
             upperPanel.add(dateLabel);
         } catch (IOException e) {
             Engine.LOGGER.error("Error loading community photo: " + e.getMessage());
@@ -121,15 +123,17 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         return upperPanel;
     }
 
+
+
     private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
         BufferedImage communityImg = this.imageUtils.getCachedUrlImg(newsAttributes.getCommunityPhotoUrl(), "vk", this.imageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
-        ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(communityImg, 64, 64), 25));
+        ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(communityImg, 52, 52), 50));
 
         JLabel communityLabel = new JLabel(communityIcon);
         communityLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         communityLabel.setText(newsAttributes.getCommunityName());
-        communityLabel.setForeground(Color.WHITE);
-        communityLabel.setBorder(new EmptyBorder(5, 10, 0, 0));
+        communityLabel.setForeground(hexToColor("#ac6343"));
+        communityLabel.setBorder(new EmptyBorder(30, 10, 0, 0));
         communityLabel.setFont(this.fontUtils.getFont("mcfontBold", 13));
         return communityLabel;
     }
@@ -143,9 +147,10 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
     }
 
     private JPanel createTextPanel(NewsAttributes newsAttributes) {
-        JPanel textPanel = new JPanel();
-        textPanel.setOpaque(false);
-        textPanel.setLayout(new BorderLayout());
+        // Load the background image
+        ImageIcon backgroundImageIcon = new ImageIcon(this.imageUtils.getLocalImage("assets/ui/img/newsPanel/panelBody.png")); // Replace with your image path
+        BackgroundPanel textPanel = new BackgroundPanel(backgroundImageIcon.getImage());
+        textPanel.setOpaque(false); // Make sure it's not opaque
 
         String originalText = EmojiParser.parseToAliases(newsAttributes.getText());
         String[] lines = originalText.split("\n");
@@ -172,55 +177,47 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         processedText.append("</body></html>");
         JLabel newsText = new JLabel(processedText.toString());
         newsText.setFont(this.fontUtils.getFont("mcfont", 13));
-        newsText.setForeground(Color.WHITE);
-        newsText.setBorder(new EmptyBorder(5, 0, 5, 0));
+        newsText.setForeground(Color.black);
+        newsText.setBorder(new EmptyBorder(5, 5, 5, 0));
 
         textPanel.add(newsText, BorderLayout.CENTER);
 
         return textPanel;
     }
 
+
     private void addSinglePhoto(JPanel newsPanel, NewsAttributes newsAttributes) {
         BufferedImage image = this.imageUtils.getRoundedImage(this.imageUtils.getCachedUrlImg(newsAttributes.getOriginalPhotoUrls().get(0), "vk", this.imageUtils.getLocalImage("")), 15);
 
-        int panelWidth = newsPanel.getWidth();
-        if (panelWidth == 0) {
-            panelWidth = 200;
-        }
-        int scaledHeight = (int) ((double) image.getHeight() / image.getWidth() * panelWidth);
-        Image scaledImage = image.getScaledInstance(panelWidth, scaledHeight, Image.SCALE_SMOOTH);
+        int maxWidth = 450;
+        int maxHeight = 400;
+
+        double aspectRatio = (double) image.getWidth() / image.getHeight();
+        int scaledWidth = Math.min(maxWidth, (int) (maxHeight * aspectRatio));
+        int scaledHeight = Math.min(maxHeight, (int) (maxWidth / aspectRatio));
+
+        Image scaledImage = image.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         JLabel photoLabel = new JLabel(scaledIcon);
+        photoLabel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
 
-        JPanel photoPanel = new JPanel();
+        BackgroundPanel photoPanel = new BackgroundPanel(this.imageUtils.getLocalImage("assets/ui/img/newsPanel/panelBody.png"));
         photoPanel.setLayout(new BoxLayout(photoPanel, BoxLayout.X_AXIS));
         photoPanel.setOpaque(false);
         photoPanel.add(Box.createHorizontalGlue());
         photoPanel.add(photoLabel);
         photoPanel.add(Box.createHorizontalGlue());
 
-        photoPanel.setBorder(new EmptyBorder(10, 5, 10, 0));
+        photoPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
         newsPanel.add(photoPanel);
-        newsPanel.setBackground(hexToColor("#0707079e"));
-        newsPanel.setOpaque(true);
-        newsPanel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                int panelWidth = newsPanel.getWidth();
-                if (panelWidth > 0) {
-                    int scaledHeight = (int) ((double) image.getHeight() / image.getWidth() * panelWidth);
-                    Image scaledImage = image.getScaledInstance(panelWidth, scaledHeight, Image.SCALE_SMOOTH);
-                    ImageIcon scaledIcon = new ImageIcon(scaledImage);
-                    photoLabel.setIcon(scaledIcon);
-                    newsPanel.removeComponentListener(this);
-                }
-            }
-        });
+        //newsPanel.setOpaque(true);
+        newsPanel.setBackground(new Color(0, 0, 0, 0));
     }
 
+
     private void addMultiplePhotos(JPanel newsPanel, NewsAttributes newsAttributes) {
-        JPanel multiPhotoPanel = new JPanel();
+        BackgroundPanel multiPhotoPanel = new BackgroundPanel(this.imageUtils.getLocalImage("assets/ui/img/newsPanel/panelBody.png"));
         multiPhotoPanel.setLayout(new GridLayout(0, 3, 0, 1));
         multiPhotoPanel.setOpaque(false);
 
@@ -235,7 +232,6 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             ImageIcon photoIcon = new ImageIcon(resizeImage(tooltipImage));
             JLabel photoLabel = new JLabel(photoIcon);
             photoLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
             photoLabel.setBackground(new Color(0, 0, 0, 0));
             photoLabel.setOpaque(false);
 
@@ -258,12 +254,11 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             multiPhotoPanel.add(photoLabel);
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+        multiPhotoPanel.setBorder(new EmptyBorder(0, 10, 10, 0));
         multiPhotoPanel.setBackground(new Color(0, 0, 0, 0));
         newsPanel.add(multiPhotoPanel);
-        newsPanel.setBackground(hexToColor("#0707079e"));
-        newsPanel.setOpaque(true);
     }
+
 
 
     private BufferedImage resizeImage(BufferedImage originalImage) {
@@ -293,27 +288,37 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         resizeFrame.setVisible(true);
     }
 
-
     private JPanel createStatisticsPanel(NewsAttributes newsAttributes) {
-        JPanel statisticsPanel = new JPanel();
-        statisticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        statisticsPanel.setBackground(hexToColor("#9a9fa5"));
-        statisticsPanel.setOpaque(true);
-        int[] statisticsValues = {newsAttributes.getViews(), newsAttributes.getLikes(), newsAttributes.getComments(), newsAttributes.getReposts()};
+        ImageIcon backgroundImageIcon = new ImageIcon(this.imageUtils.getLocalImage("assets/ui/img/newsPanel/panelFooter.png"));
+        BackgroundPanel statisticsPanel = new BackgroundPanel(backgroundImageIcon.getImage());
+        statisticsPanel.setOpaque(false);
+        statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.X_AXIS));
 
-        for (int i = 0; i < NewsProvider.getStatsValuesKeys().length; i++) {
-            ImageIcon imageIcon = this.iconUtils.getVectorIcon("assets/ui/icons/vk/" + NewsProvider.getStatsValuesKeys()[i] + ".svg", 16, 16);
-            Color textColor = Color.WHITE;
+        // Define statistics values
+        int[] statisticsValues = {
+                newsAttributes.getViews(),
+                newsAttributes.getLikes(),
+                newsAttributes.getComments(),
+                newsAttributes.getReposts()
+        };
 
-            JPanel labelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), imageIcon, textColor, 0);
-            statisticsPanel.add(labelPanel);
+        // Define corresponding icons for each stat
+        String[] statIcons = NewsProvider.getStatsValuesKeys();
 
+        // Create a panel for each statistic
+        for (int i = 0; i < statIcons.length; i++) {
+            ImageIcon icon = this.iconUtils.getVectorIcon("assets/ui/icons/vk/" + statIcons[i] + ".svg", 16, 16);
+            Color textColor = hexToColor("#626d7a");
+
+            // Create label panel for the statistic
+            JPanel statLabelPanel = createStatsLabel(String.valueOf(statisticsValues[i]), icon, textColor, FlowLayout.LEFT);
+            statisticsPanel.add(statLabelPanel);
+            //statisticsPanel.add(Box.createHorizontalStrut(15)); // Add space between stats
         }
 
+        statisticsPanel.setBorder(new EmptyBorder(0, 20, 75, 0)); // Adjust the padding
         return statisticsPanel;
     }
-
-
     public JPanel createStatsLabel(String text, ImageIcon icon, Color textColor, int horizontalAlignment) {
         JPanel labelPanel = new JPanel(new FlowLayout(horizontalAlignment, 0, 0));
         labelPanel.setOpaque(false);

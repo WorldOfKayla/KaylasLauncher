@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class Launcher extends Engine implements AuthListener {
     private final LauncherValidator validator;
-    private Auth auth;
+    private final Auth auth;
     private User user;
     private Settings settings;
     private final FileProperties fileProperties;
@@ -137,10 +137,10 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onPanelsBuilt() {
-        setUser(new User(this));
         if (!isInit() && getConfig().isBackgroundMusic()) {
             SOUND.playSound("music", "launcherTheme", true);
         }
+        this.user = new User(this);
     }
 
 

@@ -25,14 +25,13 @@ public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final UserServers userServers;
     private final Launcher launcher;
+    private ServerInfoDisplayer serverInfoDisplayer;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
-    private final ExecutorService executor;
-
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
@@ -47,15 +46,15 @@ public class User extends org.foxesworld.engine.user.User {
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
-        this.executor = Executors.newCachedThreadPool();
 
         initializeUser();
+        //this.serverInfoDisplayer = new ServerInfoDisplayer(this);
         setDropBoxData(userServers.getServerListBox());
     }
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
-           this.setUserSpace();
+            SwingUtilities.invokeLater(this::setUserSpace);
         } else {
             displayLoginPanel();
         }
@@ -112,9 +111,8 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     private void setUserHeadIcon() {
-        BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(getUserHead(getLogin()));
-        ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
-        SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userHead")).setIcon(icon));
+        ImageIcon icon = new ImageIcon(this.engine.getImageUtils().getRoundedImage(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())), 5));
+        ((JLabel) this.getComponent("userHead")).setIcon(icon);
     }
 
     private void setUserGroupLabel() {
@@ -155,6 +153,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void updateServer(int index) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
@@ -170,6 +169,7 @@ public class User extends org.foxesworld.engine.user.User {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
         });
+        executor.shutdown();
     }
 
     private void showUserInformationWindow() {
@@ -201,7 +201,6 @@ public class User extends org.foxesworld.engine.user.User {
         JTextArea valueLabel = new JTextArea(String.valueOf(value));
         valueLabel.setForeground(Color.GRAY);
         valueLabel.setFont(launcher.getFONTUTILS().getFont("mcfont", 11));
-        valueLabel.setEditable(false);
         panel.add(valueLabel);
     }
 
@@ -219,8 +218,5 @@ public class User extends org.foxesworld.engine.user.User {
 
     public UserServers getUserServers() {
         return userServers;
-    }
-    public void shutdown() {
-        executor.shutdownNow();
     }
 }

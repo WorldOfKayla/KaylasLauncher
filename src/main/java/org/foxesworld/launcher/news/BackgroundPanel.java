@@ -8,7 +8,7 @@ class BackgroundPanel extends JPanel {
 
     public BackgroundPanel(Image image) {
         this.backgroundImage = image;
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS)); // Match the layout you want
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // Match the layout you want
     }
 
     @Override

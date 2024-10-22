@@ -3,11 +3,9 @@
     "userActions": {
       "panelOptions": {
         "opaque": false,
-        "border": "2,2,2,2,#242221",
         "focusable": true,
         "visible": true,
         "doubleBuffered": false,
-        "background": "",
         "bounds": {
           "x": 0,
           "y": 0,

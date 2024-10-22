@@ -4,7 +4,6 @@
       "panelOptions": {
         "visible": true,
         "doubleBuffered": true,
-        "border": "1,1,1,1,#242221",
         "bounds": {
           "x": 348,
           "y": 27,

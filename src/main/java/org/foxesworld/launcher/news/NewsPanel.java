@@ -14,8 +14,6 @@ import org.foxesworld.launcher.news.provider.NewsProvider;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -33,7 +31,6 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback {
     private static final Pattern EMOJI_ALIAS_PATTERN = Pattern.compile(":[a-zA-Z0-9_+\\-]+:");
-
     private final JFrame resizeFrame = new JFrame();
     private final News news;
     private final ImageUtils imageUtils;
@@ -92,7 +89,6 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             addMultiplePhotos(newsPanel, newsAttributes);
         }
 
-        newsPanel.setBorder(new EmptyBorder(0, 0, 0, 50));
         newsPanel.add(createStatisticsPanel(newsAttributes));
 
         return newsPanel;
@@ -211,7 +207,6 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
 
         photoPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
         newsPanel.add(photoPanel);
-        //newsPanel.setOpaque(true);
         newsPanel.setBackground(new Color(0, 0, 0, 0));
     }
 

@@ -32,9 +32,6 @@
           "readFrom": "assets/frames/forms/mainPanel/download.json"
         },
         {
-          "readFrom": "assets/frames/forms/mainPanel/test.json"
-        },
-        {
           "readFrom": "assets/frames/forms/utils/loadPanel.json"
         }
       ]

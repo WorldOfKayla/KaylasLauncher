@@ -9,6 +9,7 @@ import org.foxesworld.engine.utils.helper.JVMHelper;
 import javax.swing.*;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 public class LauncherValidator {
     private final Launcher launcher;
@@ -24,28 +25,33 @@ public class LauncherValidator {
         String selfMd5 = HashUtils.md5(launcher.appPath());
         Launcher.LOGGER.info("Calculated self MD5: " + selfMd5);
 
+        // Skip validation for IDE environment
         if ("IDE".equals(selfMd5)) {
-            return;
+            //return;
         }
 
-        launcher.getPOSTrequest().sendAsync(launcherRequest,
-                response -> {
-                    try {
-                        Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
-                        Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
+        // Asynchronous launcher validation
+        CompletableFuture.runAsync(() ->
+                launcher.getPOSTrequest().sendAsync(launcherRequest,
+                        response -> {
+                            try {
+                                // Parse the server response
+                                Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
+                                Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
 
-                        boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-                        if (!isValid) {
-                            Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
-                            showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
+                                boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
+                                if (!isValid) {
+                                    Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
+                                    showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
+                                }
+                            } catch (JsonSyntaxException e) {
+                                Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
+                            }
+                        },
+                        error -> {
+                            Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
                         }
-                    } catch (JsonSyntaxException e) {
-                        Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
-                    }
-                },
-                error -> {
-                    Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
-                }
+                )
         );
     }
 

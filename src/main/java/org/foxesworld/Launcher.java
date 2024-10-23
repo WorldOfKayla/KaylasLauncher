@@ -136,7 +136,7 @@ public class Launcher extends Engine implements AuthListener {
                 config.clearConfigData(Arrays.asList("login", "password"), true);
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
         }
     }
 

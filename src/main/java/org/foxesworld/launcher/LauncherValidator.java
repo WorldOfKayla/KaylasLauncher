@@ -27,7 +27,7 @@ public class LauncherValidator {
 
         // Skip validation for IDE environment
         if ("IDE".equals(selfMd5)) {
-            //return;
+            return;
         }
 
         // Asynchronous launcher validation

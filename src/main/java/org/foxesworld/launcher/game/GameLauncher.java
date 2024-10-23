@@ -55,7 +55,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         List<String> gameArgs = getGameArgs();
         logger.debug("GameArgs " + gameArgs.toString());
         this.addArgsToProcess(gameArgs);
-        if (Integer.parseInt((String) this.user.getUserGroup()) == 1) {
+        if (this.user.getUserGroup() == 1) {
             this.processArgs.add("-Dforge.logging.console.level=debug");
             this.processArgs.add("-Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP,CLASSLOADING");
         }

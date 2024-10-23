@@ -398,6 +398,18 @@
       "pl_PL": "Pomni serwer vivbrat!"
     }
   },
+  "playback": {
+    "started": {
+      "en_US": "Playback started!",
+      "ru_RU": "Проигрывание начато!",
+      "pl_PL": "Nachali igrat"
+    },
+    "finished": {
+      "en_US": "Playback finished!",
+      "ru_RU": "Проигрывание закончено!",
+      "pl_PL": "Zakonchili igrat"
+    }
+  },
   "dev": {
     "token": {
       "en_US": "accessToken: ",

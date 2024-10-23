@@ -16,7 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,13 +27,14 @@ public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final UserServers userServers;
     private final Launcher launcher;
-    private ServerInfoDisplayer serverInfoDisplayer;
+    private final ExecutorService executorService;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
+    private volatile ServerInfoDisplayer serverInfoDisplayer;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
@@ -46,15 +49,15 @@ public class User extends org.foxesworld.engine.user.User {
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
+        this.executorService = Executors.newCachedThreadPool();
 
         initializeUser();
-        //this.serverInfoDisplayer = new ServerInfoDisplayer(this);
         setDropBoxData(userServers.getServerListBox());
     }
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
-            SwingUtilities.invokeLater(this::setUserSpace);
+            setUserSpace();
         } else {
             displayLoginPanel();
         }
@@ -74,7 +77,7 @@ public class User extends org.foxesworld.engine.user.User {
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         updateUserAttributes();
-        setUserHeadIcon();
+        setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
         notifyUserLoggedIn();
@@ -98,6 +101,24 @@ public class User extends org.foxesworld.engine.user.User {
         auth.getAuthCredentials().forEach(this::setUserAttribute);
     }
 
+    public void updateServer(int index) {
+        executorService.submit(() -> {
+            try {
+                String ip = auth.getUserServersAttributes().get(index).getHost();
+                int port = auth.getUserServersAttributes().get(index).getPort();
+                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
+
+                String[] status = serverInfo.pollServer(ip, port);
+                String text = serverInfo.genServerStatus(status);
+                BufferedImage img = serverInfo.genServerIcon(status);
+
+                SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
+            } catch (Exception e) {
+                Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
+            }
+        });
+    }
+
     private void setUserAttribute(String key, Object value) {
         try {
             Field field = userAttributes.getClass().getDeclaredField(key);
@@ -110,9 +131,43 @@ public class User extends org.foxesworld.engine.user.User {
         }
     }
 
-    private void setUserHeadIcon() {
-        ImageIcon icon = new ImageIcon(this.engine.getImageUtils().getRoundedImage(this.engine.getImageUtils().base64ToBufferedImage(this.getUserHead(this.getLogin())), 5));
-        ((JLabel) this.getComponent("userHead")).setIcon(icon);
+    private void setUserHeadIcon(String login) {
+        String userHeadBase64 = getUserHead(login);
+        if (userHeadBase64 != null) {
+            try {
+                BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+                ((JLabel) getComponent("userHead")).setIcon(icon);
+            } catch (Exception e) {
+                Engine.getLOGGER().error("Error setting user head icon: {}", e.getMessage(), e);
+            }
+        } else {
+            Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
+        }
+    }
+
+    protected String getUserHead(String login) {
+        if (login == null || login.isEmpty()) {
+            Engine.getLOGGER().warn("Login is null or empty in getUserHead");
+            return null;
+        }
+
+        Map<String, Object> skinData = new HashMap<>();
+        skinData.put("sysRequest", "skin");
+        skinData.put("show", "head");
+        skinData.put("login", login);
+
+        String response = null;
+        try {
+            response = this.engine.getPOSTrequest().send(skinData);
+            if (response == null || response.isEmpty()) {
+                Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
+            }
+        } catch (Exception e) {
+            Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
+        }
+
+        return response;
     }
 
     private void setUserGroupLabel() {
@@ -136,63 +191,22 @@ public class User extends org.foxesworld.engine.user.User {
         return userAttributes.token;
     }
 
-    public String getColorScheme() {
-        return userAttributes.colorScheme;
+    public void setNewsData(List<Map<String, String>> newsData) {
+        newsPanel.removeAll();
+        newsData.forEach(this::addNewsItem);
+        newsPanel.revalidate();
+        newsPanel.repaint();
     }
 
-    public Object getUserGroup() {
-        return userAttributes.group;
-    }
+    private void addNewsItem(Map<String, String> newsItem) {
+        String key = newsItem.get("key");
+        String value = newsItem.get("value");
 
-    public String getUuid() {
-        return userAttributes.uuid;
-    }
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        newsPanel.add(panel);
 
-    public Auth getAuth() {
-        return auth;
-    }
-
-    public void updateServer(int index) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            try {
-                String ip = auth.getUserServersAttributes().get(index).getHost();
-                int port = auth.getUserServersAttributes().get(index).getPort();
-                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
-
-                String[] status = serverInfo.pollServer(ip, port);
-                String text = serverInfo.genServerStatus(status);
-                BufferedImage img = serverInfo.genServerIcon(status);
-
-                SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
-            } catch (Exception e) {
-                Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
-            }
-        });
-        executor.shutdown();
-    }
-
-    private void showUserInformationWindow() {
-        JFrame window = createUserInfoWindow();
-        window.setVisible(true);
-    }
-
-    private JFrame createUserInfoWindow() {
-        JFrame window = new JFrame("User Information");
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(350, 200);
-        window.setLocation(120, 120);
-
-        JPanel panel = new JPanel(new GridLayout(0, 2));
-        auth.getAuthCredentials().forEach((key, value) -> addUserInfoRow(panel, key, value));
-
-        window.add(panel);
-        window.pack();
-        window.setResizable(false);
-        return window;
-    }
-
-    private void addUserInfoRow(JPanel panel, String key, Object value) {
         JLabel keyLabel = new JLabel(key);
         keyLabel.setForeground(Color.BLACK);
         keyLabel.setFont(launcher.getFONTUTILS().getFont("mcfontBold", 11));
@@ -218,5 +232,17 @@ public class User extends org.foxesworld.engine.user.User {
 
     public UserServers getUserServers() {
         return userServers;
+    }
+
+    public String getUuid() {
+        return userAttributes.uuid;
+    }
+
+    public Auth getAuth() {
+        return auth;
+    }
+
+    public int getUserGroup() {
+        return (int) this.userAttributes.group;
     }
 }

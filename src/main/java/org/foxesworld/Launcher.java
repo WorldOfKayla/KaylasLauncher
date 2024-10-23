@@ -140,13 +140,14 @@ public class Launcher extends Engine implements AuthListener {
         if (!isInit() && getConfig().isBackgroundMusic()) {
             SOUND.playSound("music", "launcherTheme", true);
         }
-        this.user = new User(this);
+
     }
 
 
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
         // Implementation
+        this.user = new User(this);
     }
 
     @Override

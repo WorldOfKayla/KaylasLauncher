@@ -70,7 +70,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         public void onPlaybackStarted(String path) {
                             pressedComponent.setEnabled(false);
                             sndBar.setVisible(true);
-                            launcher.getLoadingManager().setLoadingText("playback started", "Test");
+                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.started"), "Test");
                         }
 
                         @Override
@@ -78,7 +78,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             pressedComponent.setEnabled(true);
                             sndBar.setValue(0);
                             sndBar.setVisible(false);
-                            launcher.getLoadingManager().setLoadingText("playback finished", "Test");
+                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.finished"), "Test");
                         }
 
                         @Override

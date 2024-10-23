@@ -23,7 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,7 +140,23 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         return emojiUrlCache.computeIfAbsent(key, k -> {
             HTTPrequest httPrequest = this.news.getLauncher().getPOSTrequest();
             Map<String, Object> emoData = Map.of("sysRequest", "getEmoticon", "emoKey", k);
-            return httPrequest.send(emoData);
+
+            CompletableFuture<String> future = new CompletableFuture<>();
+
+            httPrequest.sendAsync(emoData,
+                    response -> future.complete(String.valueOf(response)),
+                    error -> {
+                        future.completeExceptionally(error);
+                        Engine.LOGGER.error("Failed to fetch emoticon URL: " + error.getMessage());
+                    }
+            );
+
+            try {
+                return future.get(); // Blocking call to get the result of the async operation
+            } catch (InterruptedException | ExecutionException e) {
+                Engine.LOGGER.error("Error completing emoticon URL fetch task: " + e.getMessage());
+                return null; // Return null or a default value in case of an error
+            }
         });
     }
 

@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Auth {
     private final Launcher launcher;
@@ -57,21 +59,37 @@ public class Auth {
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
-        if (authorize()) {
-            engine.getSOUND().playSound("other", "loggedIn");
+        try {
+            if (authorizeAsync().get()) {
+                engine.getSOUND().playSound("other", "loggedIn");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
     }
-    public boolean authorize() {
+
+    public CompletableFuture<Boolean> authorizeAsync() {
         this.authCredentials.put("userAction", "auth");
-        String response = POSTrequest.send(this.authCredentials);
-        AuthResponse authResponse = new Gson().fromJson(response, AuthResponse.class);
-        if ("success".equals(authResponse.getType())) {
-            handleSuccessfulAuth(authResponse);
-            return true;
-        } else {
-            handleFailedAuth(authResponse);
-            return false;
-        }
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        POSTrequest.sendAsync(this.authCredentials,
+                response -> {
+                    AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
+                    if ("success".equals(authResponse.getType())) {
+                        handleSuccessfulAuth(authResponse);
+                        future.complete(true);
+                    } else {
+                        handleFailedAuth(authResponse);
+                        future.complete(false);
+                    }
+                },
+                error -> {
+                    Engine.LOGGER.error("Authorization failed: " + error.getMessage());
+                    future.completeExceptionally(error);
+                }
+        );
+
+        return future;
     }
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);

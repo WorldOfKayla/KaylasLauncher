@@ -28,22 +28,25 @@ public class LauncherValidator {
             return;
         }
 
-        try {
-            String response = launcher.getPOSTrequest().send(launcherRequest);
-            Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(response, Launcher.LauncherAttributes.class);
-            Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
+        launcher.getPOSTrequest().sendAsync(launcherRequest,
+                response -> {
+                    try {
+                        Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
+                        Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
 
-            boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-            if (!isValid) {
-                Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
-                showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
-            }
-
-        } catch (JsonSyntaxException e) {
-            Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
-        } catch (Exception e) {
-           Launcher.LOGGER.error("Unexpected error during launcher validation: " + e.getMessage());
-        }
+                        boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
+                        if (!isValid) {
+                            Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
+                            showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
+                        }
+                    } catch (JsonSyntaxException e) {
+                        Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
+                    }
+                },
+                error -> {
+                    Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
+                }
+        );
     }
 
     public void validateJRE() {
@@ -62,7 +65,7 @@ public class LauncherValidator {
         } else if (launcher.getLauncherFile().isDirectory()) {
             Launcher.LOGGER.error("Using a JRE different from " + launcher.getEngineData().getProgramRuntime());
         } else {
-           Launcher.LOGGER.error("Launcher path is neither a file nor a directory. 0_0");
+            Launcher.LOGGER.error("Launcher path is neither a file nor a directory. 0_0");
         }
     }
 

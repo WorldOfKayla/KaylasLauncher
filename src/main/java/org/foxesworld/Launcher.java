@@ -34,6 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class Launcher extends Engine implements AuthListener {
     private final LauncherValidator validator;
@@ -130,8 +131,12 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void onLoad(Auth auth, Map<String, Object> authCredentials) {
         auth.setAuthCredentials(authCredentials);
-        if (!auth.authorize()) {
-            config.clearConfigData(Arrays.asList("login", "password"), true);
+        try {
+            if (!auth.authorizeAsync().get()) {
+                config.clearConfigData(Arrays.asList("login", "password"), true);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
     }
 

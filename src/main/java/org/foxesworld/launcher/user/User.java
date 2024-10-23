@@ -16,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -76,11 +75,11 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        updateUserAttributes();
+        updateUserAttributes(auth.getAuthCredentials());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
-        notifyUserLoggedIn();
+        //notifyUserLoggedIn();
     }
 
     private void setupDiscordRpc() {
@@ -97,8 +96,8 @@ public class User extends org.foxesworld.engine.user.User {
         guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, serverBox.getY() + 80, 340, 45), 3000, message);
     }
 
-    private void updateUserAttributes() {
-        auth.getAuthCredentials().forEach(this::setUserAttribute);
+    public void updateUserAttributes(Map<String, Object> attributes) {
+        attributes.forEach(this::setUserAttribute);
     }
 
     public void updateServer(int index) {
@@ -119,55 +118,41 @@ public class User extends org.foxesworld.engine.user.User {
         });
     }
 
-    private void setUserAttribute(String key, Object value) {
+    public void setUserAttribute(String attributeName, Object attributeValue) {
         try {
-            Field field = userAttributes.getClass().getDeclaredField(key);
+            Field field = UserAttributes.class.getDeclaredField(attributeName);
             field.setAccessible(true);
-            synchronized (userAttributes) {
-                field.set(userAttributes, value);
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Engine.getLOGGER().error("Error setting user attribute: {}", e.getMessage());
+
+            // Convert the value to the appropriate type
+            Object value = convertValue(field.getType(), attributeValue);
+            field.set(userAttributes, value);  // Update the userAttributes object
+        } catch (NoSuchFieldException e) {
+            Engine.getLOGGER().warn("No such field: " + attributeName);
+        } catch (IllegalAccessException e) {
+            Engine.getLOGGER().error("Cannot access field: " + e.getMessage());
+        } catch (Exception e) {
+            Engine.getLOGGER().error("Error setting user attribute: " + e.getMessage());
         }
     }
 
     private void setUserHeadIcon(String login) {
-        String userHeadBase64 = getUserHead(login);
-        if (userHeadBase64 != null) {
-            try {
-                BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
-                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
-                ((JLabel) getComponent("userHead")).setIcon(icon);
-            } catch (Exception e) {
-                Engine.getLOGGER().error("Error setting user head icon: {}", e.getMessage(), e);
+        getUserHeadAsync(login, userHeadBase64 -> {
+            if (userHeadBase64 != null) {
+                try {
+                    BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
+                    ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+
+                    // Update the icon on the Event Dispatch Thread (EDT)
+                    SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userHead")).setIcon(icon));
+                } catch (Exception e) {
+                    Engine.getLOGGER().error("Error setting user head icon: {}", e.getMessage(), e);
+                }
+            } else {
+                Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
             }
-        } else {
-            Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
-        }
-    }
-
-    protected String getUserHead(String login) {
-        if (login == null || login.isEmpty()) {
-            Engine.getLOGGER().warn("Login is null or empty in getUserHead");
-            return null;
-        }
-
-        Map<String, Object> skinData = new HashMap<>();
-        skinData.put("sysRequest", "skin");
-        skinData.put("show", "head");
-        skinData.put("login", login);
-
-        String response = null;
-        try {
-            response = this.engine.getPOSTrequest().send(skinData);
-            if (response == null || response.isEmpty()) {
-                Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
-            }
-        } catch (Exception e) {
-            Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
-        }
-
-        return response;
+        }, e -> {
+            Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage());
+        });
     }
 
     private void setUserGroupLabel() {
@@ -218,6 +203,21 @@ public class User extends org.foxesworld.engine.user.User {
         panel.add(valueLabel);
     }
 
+    private Object convertValue(Class<?> fieldType, Object value) {
+        if (fieldType == boolean.class || fieldType == Boolean.class) {
+            return Boolean.parseBoolean(value.toString());
+        } else if (fieldType == int.class || fieldType == Integer.class) {
+            return Integer.parseInt(value.toString());
+        } else if (fieldType == long.class || fieldType == Long.class) {
+            return Long.parseLong(value.toString());
+        } else if (fieldType == double.class || fieldType == Double.class) {
+            return Double.parseDouble(value.toString());
+        } else if (fieldType == float.class || fieldType == Float.class) {
+            return Float.parseFloat(value.toString());
+        }
+        return value;  // Return the value as is if no conversion is needed
+    }
+
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;
     }
@@ -243,6 +243,6 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public int getUserGroup() {
-        return (int) this.userAttributes.group;
+        return Integer.parseInt(String.valueOf(this.userAttributes.group));
     }
 }

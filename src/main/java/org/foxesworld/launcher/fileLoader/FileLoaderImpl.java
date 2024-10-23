@@ -1,5 +1,6 @@
 package org.foxesworld.launcher.fileLoader;
 
+import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.EngineData;
 import org.foxesworld.engine.fileLoader.FileAttributes;
@@ -10,7 +11,7 @@ import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
-import org.foxesworld.engine.utils.helper.JVMHelper;
+import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.foxesworld.launcher.game.GameLauncher;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,10 +43,9 @@ public class FileLoaderImpl implements FileLoaderListener {
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        this.
-                initializeDownloadComponents();
+        this.initializeDownloadComponents();
         setupGameLauncher();
-        checkAndDownloadJre();
+        addJreToLoadAsync(this.core.getGameLauncher().getCurrentJre());
         core.getFileLoader().downloadFiles();
     }
 
@@ -58,12 +59,27 @@ public class FileLoaderImpl implements FileLoaderListener {
         core.getGameLauncher().setGameListener(core);
     }
 
-    private void checkAndDownloadJre() {
-        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
-            core.getFileLoader().setReplaceMask("/uploads/files/");
-            core.getFileLoader().addFileToDownload(core.getFileLoader().addJreToLoad(core.getGameLauncher().getCurrentJre()));
-        }
+    public void addJreToLoadAsync(String jreVersion) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("sysRequest", "getJre");
+        request.put("jreVersion", jreVersion);
+
+        CompletableFuture<FileAttributes> future = new CompletableFuture<>();
+
+        HTTPrequest httpRequest = new HTTPrequest(core.getLauncher(), "POST");
+        httpRequest.sendAsync(request, response -> {
+            try {
+                FileAttributes jreFile = new Gson().fromJson((String) response, FileAttributes.class);
+                jreFile.setReplaceMask("/uploads/files/");
+                future.complete(jreFile);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        }, future::completeExceptionally);
+        core.getFileLoader().addFileToDownload(future.join());
+        //return future;
     }
+
 
     @Override
     public void onDownloadStart() {

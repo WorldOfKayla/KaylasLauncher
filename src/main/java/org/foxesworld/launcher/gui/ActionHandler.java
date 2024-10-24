@@ -23,6 +23,7 @@ import java.util.List;
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     protected Launcher launcher;
+    private Core core;
     protected ServerAttributes currentServer;
 
     public ActionHandler(Launcher launcher) {
@@ -118,6 +119,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     }
                 }
 
+                case "loadCancel-small" -> {
+                    this.launcher.getGuiBuilder().getNotification().show(Notification.Type.WARNING, new Rectangle(pressedComponent.getX(), pressedComponent.getY() + 80, 128, 45), 3000, "TEST");
+                    this.core.getFileLoader().cancel();
+                    this.getLauncher().getLoadingManager().toggleLoader();
+                }
+
                 case "back" -> {
                     if (!launcher.getAuth().isAuthorised()) {
                         engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
@@ -143,7 +150,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
                     this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
                     this.launcher.getConfig().writeCurrentConfig();
-                    new Core(this, forceUpdate.isSelected());
+                    this.core = new Core(this, forceUpdate.isSelected());
                 }
                 case "closeButton" -> System.exit(0);
                 case "hideButton" -> engine.getFrame().setExtendedState(1);

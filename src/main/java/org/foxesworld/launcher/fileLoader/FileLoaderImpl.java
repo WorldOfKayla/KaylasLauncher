@@ -31,7 +31,6 @@ public class FileLoaderImpl implements FileLoaderListener {
     private final Core core;
     private final ComponentsAccessor componentsAccessor;
     private final DownloadUtils downloadUtils;
-
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
 
@@ -159,6 +158,11 @@ public class FileLoaderImpl implements FileLoaderListener {
 
     @Override
     public void filesProcessed() {
+
+    }
+
+    @Override
+    public void onCancel() {
 
     }
 

@@ -34,6 +34,11 @@
       "en_US": "In launcher",
       "ru_RU": "В лаунчере",
       "pl_PL": "W launcherze"
+    },
+    "cancel": {
+      "en_US": "Cancel",
+      "ru_RU": "Отмена",
+      "pl_PL": "Ninado"
     }
   },
   "error": {

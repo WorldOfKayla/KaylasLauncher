@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.9.2-ENTERPRISE-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.9.3-ENTERPRISE-all.jar')
 }
 
 jar {

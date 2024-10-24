@@ -46,6 +46,11 @@
       "en_US": "The launcher is invalid!",
       "ru_RU": "Ваш лаунчер нуждается в обновлении!",
       "pl_PL": "Launcher jest nieważny!"
+    },
+    "file": {
+      "en_US": "File read error!",
+      "ru_RU": "Ошибка получения файлов!",
+      "pl_PL": "Launcher jest nieważny!"
     }
   },
   "settings": {

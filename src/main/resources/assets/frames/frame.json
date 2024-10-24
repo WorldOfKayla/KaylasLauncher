@@ -54,11 +54,11 @@
           "componentStyle": "titleBold",
           "localeKey": "Build",
           "initialValue": "version",
-          "color": "#f78600",
+          "color": "#000600",
           "componentId": "appVersion",
           "bounds": {
             "x": 160,
-            "y": -20,
+            "y": -19,
             "size": {
               "width": 250,
               "height": 50

@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class Launcher extends Engine implements AuthListener {
-    private final LauncherValidator validator;
     private final Auth auth;
     private User user;
     private Settings settings;
@@ -59,7 +58,7 @@ public class Launcher extends Engine implements AuthListener {
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         this.notification = new NotificationPopup();
-        this.validator = new LauncherValidator(this);
+        LauncherValidator validator = new LauncherValidator(this);
         preInit();
 
         validator.validateLauncher();
@@ -86,12 +85,8 @@ public class Launcher extends Engine implements AuthListener {
         this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
-        if (this.getConfig().isLoadNews()) {
-            setNews(new News(this));
-        } else {
-            this.getGuiBuilder().getPanelsMap().get("newsForm").getComponent(0).setVisible(false);
-        }
 
+        this.setNews();
         getGuiBuilder().buildAdditionalPanels();
         this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
         this.settings = new Settings(this);
@@ -99,9 +94,17 @@ public class Launcher extends Engine implements AuthListener {
         setActionHandler(new ActionHandler(this));
         setInit(true);
     }
+
     @Override
     protected void postInit() {
+    }
 
+    private void setNews() {
+        if (this.getConfig().isLoadNews()) {
+            setNews(new News(this));
+        } else {
+            this.getGuiBuilder().getPanelsMap().get("newsForm").getComponent(0).setVisible(false);
+        }
     }
 
     private void buildGui(String[] styles) {
@@ -125,7 +128,6 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLogin(Map<String, Object> authCredentials) {
-        // Implementation
     }
 
     @Override
@@ -135,8 +137,7 @@ public class Launcher extends Engine implements AuthListener {
             if (!auth.authorizeAsync().get()) {
                 config.clearConfigData(Arrays.asList("login", "password"), true);
             }
-        } catch (InterruptedException | ExecutionException e) {
-            //throw new RuntimeException(e);
+        } catch (InterruptedException | ExecutionException ignored) {
         }
     }
 
@@ -151,7 +152,6 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
-        // Implementation
         this.user = new User(this);
     }
 

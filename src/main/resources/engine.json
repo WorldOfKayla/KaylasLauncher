@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.12.2-AEROFOX",
+  "launcherVersion": "1.12.3-AEROFOX",
   "styles": [
     "button",
     "checkBox",
@@ -68,24 +68,29 @@
       }
     }
   ],
-  "requestProperties": [
-    {
-      "propertyKey": "User-Agent",
-      "propertyValue": "FoxesWorldLauncher"
-    },
-    {
-      "propertyKey": "Accept-Language",
-      "propertyValue": "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4"
-    },
-    {
-      "propertyKey": "Accept",
-      "propertyValue": "text/json,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-    },
-    {
-      "propertyKey": "Content-Type",
-      "propertyValue": "application/x-www-form-urlencoded; charset=UTF-8; boundary={$boundary}"
-    }
-  ],
+  "httpConf": {
+    "useCaches": false,
+    "doInput": true,
+    "doOutput": true,
+    "requestProperties": [
+      {
+        "propertyKey": "User-Agent",
+        "propertyValue": "FoxesWorldLauncher"
+      },
+      {
+        "propertyKey": "Accept-Language",
+        "propertyValue": "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4"
+      },
+      {
+        "propertyKey": "Accept",
+        "propertyValue": "text/json,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+      },
+      {
+        "propertyKey": "Content-Type",
+        "propertyValue": "application/x-www-form-urlencoded; charset=UTF-8; boundary={$boundary}"
+      }
+    ]
+  },
   "tweakClasses": [
     "net.minecraftforge.fml.common.launcher.FMLTweaker",
     "cpw.mods.fml.common.launcher.FMLTweaker",

@@ -12,6 +12,7 @@ import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.foxesworld.launcher.game.GameLauncher;
@@ -45,7 +46,9 @@ public class FileLoaderImpl implements FileLoaderListener {
         Engine.getLOGGER().debug("--==|Files are read|==--");
         this.initializeDownloadComponents();
         setupGameLauncher();
-        addJreToLoadAsync(this.core.getGameLauncher().getCurrentJre());
+        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
+            addJreToLoadAsync(this.core.getGameLauncher().getCurrentJre());
+        }
         core.getFileLoader().downloadFiles();
     }
 

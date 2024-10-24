@@ -22,6 +22,9 @@ public class NewsProvider {
     private static final String[] STATS_VALUES_KEYS = {"views", "likes", "comments", "reposts"};
     private final Gson gson = new Gson();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final long CACHE_VALIDITY_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+    private List<NewsAttributes> cachedNewsAttributesList = null;
+    private long lastFetchTime = 0;
 
     public NewsProvider(Engine engine) {
         this.engine = engine;
@@ -32,6 +35,11 @@ public class NewsProvider {
     }
 
     public void fetchNews(NewsFetchCallback callback) {
+        if (isCacheValid()) {
+            callback.onNewsFetched(cachedNewsAttributesList);
+            return;
+        }
+
         executorService.submit(() -> {
             List<NewsAttributes> newsAttributesList = new ArrayList<>();
             try {
@@ -45,8 +53,18 @@ public class NewsProvider {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            updateCache(newsAttributesList);
             callback.onNewsFetched(newsAttributesList);
         });
+    }
+
+    private boolean isCacheValid() {
+        return cachedNewsAttributesList != null && (System.currentTimeMillis() - lastFetchTime) < CACHE_VALIDITY_DURATION;
+    }
+
+    private void updateCache(List<NewsAttributes> newsAttributesList) {
+        this.cachedNewsAttributesList = newsAttributesList;
+        this.lastFetchTime = System.currentTimeMillis();
     }
 
     private void parseResponse(JsonObject jsonResponse, List<NewsAttributes> newsAttributesList) {

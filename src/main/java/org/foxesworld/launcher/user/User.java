@@ -79,7 +79,7 @@ public class User extends org.foxesworld.engine.user.User {
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
-        //notifyUserLoggedIn();
+        notifyUserLoggedIn();
     }
 
     private void setupDiscordRpc() {
@@ -177,10 +177,12 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void setNewsData(List<Map<String, String>> newsData) {
-        newsPanel.removeAll();
-        newsData.forEach(this::addNewsItem);
-        newsPanel.revalidate();
-        newsPanel.repaint();
+        SwingUtilities.invokeLater(() -> {
+            newsPanel.removeAll();
+            newsData.forEach(this::addNewsItem);
+            newsPanel.revalidate();
+            newsPanel.repaint();
+        });
     }
 
     private void addNewsItem(Map<String, String> newsItem) {

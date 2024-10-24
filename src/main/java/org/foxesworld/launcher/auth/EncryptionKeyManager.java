@@ -70,7 +70,7 @@ public class EncryptionKeyManager {
         }
     }
 
-    private Map readJson(File file) throws IOException {
+    private Map<String, Object> readJson(File file) throws IOException {
         try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(file.getPath()), StandardCharsets.UTF_8)) {
             return gson.fromJson(bufferedReader, Map.class);
         }

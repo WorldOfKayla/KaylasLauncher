@@ -51,14 +51,14 @@
         {
           "componentType": "label",
           "fontSize": 10,
-          "componentStyle": "promptLabel",
+          "componentStyle": "titleBold",
           "localeKey": "Build",
           "initialValue": "version",
-          "color": "#4d2c09",
+          "color": "#f78600",
           "componentId": "appVersion",
           "bounds": {
-            "x": 155,
-            "y": -17,
+            "x": 160,
+            "y": -20,
             "size": {
               "width": 250,
               "height": 50

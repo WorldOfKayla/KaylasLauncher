@@ -89,8 +89,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         }
                     };
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
-                    this.launcher.getLoadingManager().toggleLoader();
-                    //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
+                    //this.launcher.getLoadingManager().toggleLoader();
+                    this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                 }
 
                 case "gameDir-small" -> Settings.openGameFolder();
@@ -120,9 +120,10 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "loadCancel-small" -> {
-                    this.launcher.getGuiBuilder().getNotification().show(Notification.Type.WARNING, new Rectangle(pressedComponent.getX(), pressedComponent.getY() + 80, 128, 45), 3000, "TEST");
                     this.core.getFileLoader().cancel();
                     this.getLauncher().getLoadingManager().toggleLoader();
+                    this.getComponent("toGame").setEnabled(false);
+                    this.getComponent("logOut").setEnabled(false);
                 }
 
                 case "back" -> {

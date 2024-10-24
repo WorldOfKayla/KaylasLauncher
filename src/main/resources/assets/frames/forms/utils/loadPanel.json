@@ -47,21 +47,6 @@
               "height": 20
             }
           }
-        },
-        {
-          "componentType": "button",
-          "enabled": true,
-          "componentStyle": "altButton",
-          "localeKey": "general.cancel",
-          "componentId": "loadCancel-small",
-          "bounds": {
-            "x": 360,
-            "y": 90,
-            "size": {
-              "width": 128,
-              "height": 32
-            }
-          }
         }
       ]
     }

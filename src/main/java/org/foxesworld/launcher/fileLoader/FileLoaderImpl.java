@@ -79,7 +79,6 @@ public class FileLoaderImpl implements FileLoaderListener {
             }
         }, future::completeExceptionally);
         core.getFileLoader().addFileToDownload(future.join());
-        //return future;
     }
 
 
@@ -150,7 +149,7 @@ public class FileLoaderImpl implements FileLoaderListener {
         FileAttributes currentFile = fileLoader.getCurrentFile();
         updateDownloadInfoComponents(currentFile);
         String fullPath = core.getFileLoader().getHomeDir() + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        if (core.getFileLoader().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
+        if (core.getFileLoader().getFileValidator().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
             core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, core.getFileLoader().getTotalSize());
         }
         unpackRuntimeZipIfNeeded(fullPath);
@@ -173,7 +172,7 @@ public class FileLoaderImpl implements FileLoaderListener {
 
         Label downloadFile = (Label) downloadInfoAccessor.getComponentMap().get("downloadFile");
         Label downloadDirectory = (Label) downloadInfoAccessor.getComponentMap().get("downloadDirectory");
-        Label filesAmount = (Label) downloadInfoAccessor.getComponentMap().get("filesAmount");
+        //Label filesAmount = (Label) downloadInfoAccessor.getComponentMap().get("filesAmount");
 
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));

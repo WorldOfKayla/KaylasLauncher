@@ -23,10 +23,8 @@ public class Core implements GameListener {
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
-    private final boolean forceUpdate;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
-        this.forceUpdate = forceUpdate;
         ServerAttributes currentServer = actionHandler.getCurrentServer();
         actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(

@@ -51,12 +51,12 @@ public class User extends org.foxesworld.engine.user.User {
         this.executorService = Executors.newCachedThreadPool();
 
         initializeUser();
-        setDropBoxData(userServers.getServerListBox());
     }
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
             setUserSpace();
+            setDropBoxData(userServers.getServerListBox());
         } else {
             displayLoginPanel();
         }

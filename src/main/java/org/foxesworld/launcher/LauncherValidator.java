@@ -18,63 +18,66 @@ public class LauncherValidator {
         this.launcher = launcher;
     }
 
-    public void validateLauncher() {
-        Launcher.LOGGER.info("Starting launcher validation");
+    public void validate() {
+        CompletableFuture.runAsync(new LauncherFileValidationTask());
+        CompletableFuture.runAsync(new JREValidationTask());
+    }
 
-        Map<String, Object> launcherRequest = Map.of("sysRequest", "downloadLatest");
-        String selfMd5 = HashUtils.md5(launcher.appPath());
-        Launcher.LOGGER.info("Calculated self MD5: " + selfMd5);
+    private class LauncherFileValidationTask implements Runnable {
+        @Override
+        public void run() {
+            Launcher.LOGGER.info("Starting launcher validation");
 
-        // Skip validation for IDE environment
-        if ("IDE".equals(selfMd5)) {
-            return;
-        }
+            Map<String, Object> launcherRequest = Map.of("sysRequest", "downloadLatest");
+            String selfMd5 = HashUtils.md5(launcher.appPath());
+            Launcher.LOGGER.info("Calculated self MD5: " + selfMd5);
 
-        // Asynchronous launcher validation
-        CompletableFuture.runAsync(() ->
-                launcher.getPOSTrequest().sendAsync(launcherRequest,
-                        response -> {
-                            try {
-                                // Parse the server response
-                                Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
-                                Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
+            if ("IDE".equals(selfMd5)) {
+                return;
+            }
 
-                                boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-                                if (!isValid) {
-                                    Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
-                                    showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
-                                }
-                            } catch (JsonSyntaxException e) {
-                                Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
+            launcher.getPOSTrequest().sendAsync(launcherRequest,
+                    response -> {
+                        try {
+                            Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
+                            Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
+
+                            boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
+                            if (!isValid) {
+                                Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
+                                showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
                             }
-                        },
-                        error -> {
-                            Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
+                        } catch (JsonSyntaxException e) {
+                            Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
                         }
-                )
-        );
-    }
-
-    public void validateJRE() {
-        int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
-        int expectedJRE = Integer.parseInt(launcher.getEngineData().getProgramRuntime().replaceAll("\\D", ""));
-
-        if (launchingWith != expectedJRE) {
-            logJREWarning(expectedJRE);
+                    },
+                    error -> Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage())
+            );
         }
     }
 
-    private void logJREWarning(int expectedJRE) {
-        if (launcher.getLauncherFile().isFile()) {
-            Launcher.LOGGER.error("Using incorrect JRE " + expectedJRE);
-            showDialog("error.invalidJVM", "Launcher Guard", JOptionPane.WARNING_MESSAGE, true);
-        } else if (launcher.getLauncherFile().isDirectory()) {
-            Launcher.LOGGER.error("Using a JRE different from " + launcher.getEngineData().getProgramRuntime());
-        } else {
-            Launcher.LOGGER.error("Launcher path is neither a file nor a directory. 0_0");
+    private class JREValidationTask implements Runnable {
+        @Override
+        public void run() {
+            int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
+            int expectedJRE = Integer.parseInt(launcher.getEngineData().getProgramRuntime().replaceAll("\\D", ""));
+
+            if (launchingWith != expectedJRE) {
+                logJREWarning(expectedJRE);
+            }
+        }
+
+        private void logJREWarning(int expectedJRE) {
+            if (launcher.getLauncherFile().isFile()) {
+                Launcher.LOGGER.error("Using incorrect JRE " + expectedJRE);
+                showDialog("error.invalidJVM", "Launcher Guard", JOptionPane.WARNING_MESSAGE, true);
+            } else if (launcher.getLauncherFile().isDirectory()) {
+                Launcher.LOGGER.error("Using a JRE different from " + launcher.getEngineData().getProgramRuntime());
+            } else {
+                Launcher.LOGGER.error("Launcher path is neither a file nor a directory. 0_0");
+            }
         }
     }
-
     private void showDialog(String messageKey, String title, int messageType, boolean isModal) {
         launcher.showDialog(messageKey, title, messageType, isModal);
     }

@@ -61,8 +61,7 @@ public class Launcher extends Engine implements AuthListener {
         LauncherValidator validator = new LauncherValidator(this);
         preInit();
 
-        validator.validateLauncher();
-        validator.validateJRE();
+        validator.validate();
 
         this.auth = new Auth(this);
         init();

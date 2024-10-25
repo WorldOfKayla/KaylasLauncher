@@ -11,7 +11,7 @@
           "y": 30,
           "size": {
             "width": 350,
-            "height": 85
+            "height": 100
           }
         }
       },
@@ -96,6 +96,23 @@
             "size": {
               "width": 150,
               "height": 10
+            }
+          }
+        },
+        {
+          "componentType": "label",
+          "fontSize": 11,
+          "componentStyle": "title",
+          "imageIcon": "assets/ui/img/bg/info1.png",
+          "iconWidth": 615,
+          "iconHeight": 25,
+          "componentId": "infoUnder",
+          "bounds": {
+            "x": -50,
+            "y": 75,
+            "size": {
+              "width": 615,
+              "height": 64
             }
           }
         },

@@ -267,7 +267,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             multiPhotoPanel.add(photoLabel);
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(0, 10, 10, 0));
+        multiPhotoPanel.setBorder(new EmptyBorder(0, 20, 10, 0));
         multiPhotoPanel.setBackground(new Color(0, 0, 0, 0));
         newsPanel.add(multiPhotoPanel);
     }

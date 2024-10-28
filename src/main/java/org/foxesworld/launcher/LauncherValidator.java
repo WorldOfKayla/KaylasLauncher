@@ -78,7 +78,8 @@ public class LauncherValidator {
             }
         }
     }
-    private void showDialog(String messageKey, String title, int messageType, boolean isModal) {
+
+    private synchronized void showDialog(String messageKey, String title, int messageType, boolean isModal) {
         launcher.showDialog(messageKey, title, messageType, isModal);
     }
 }

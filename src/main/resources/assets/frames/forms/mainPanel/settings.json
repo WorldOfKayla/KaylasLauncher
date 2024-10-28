@@ -26,6 +26,7 @@
                 "visible": true,
                 "doubleBuffered": true,
                 "backgroundImage": "assets/ui/img/bg/header2.png",
+                "background": "#4a4c4fe6",
                 "bounds": {
                   "x": 0,
                   "y": 0,

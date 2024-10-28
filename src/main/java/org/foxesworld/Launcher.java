@@ -159,7 +159,7 @@ public class Launcher extends Engine implements AuthListener {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        getLOGGER().debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
+        //getLOGGER().debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
 
     @Override

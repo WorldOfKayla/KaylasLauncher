@@ -3,6 +3,7 @@ package org.foxesworld.launcher.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Objects;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
@@ -10,13 +11,13 @@ public class SplashScreenWindow extends JWindow {
     private final ImageIcon imageIcon;
     private final ImageIcon backgroundImage;
     private final JLabel imageLabel;
-    private float opacity = 1f;
-    private final int fadeDuration = 100;
+    private float opacity = 0f;
+    private final int fadeDuration = 1500;
     private final int fadeInterval = 40;
 
     public SplashScreenWindow() {
-        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("assets/ui/img/bg/launch.jpg"));
-        imageIcon = new ImageIcon(getClass().getClassLoader().getResource("assets/ui/icons/fwBanner.png"));
+        backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("assets/ui/img/bg/launch.jpg")));
+        imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("assets/ui/icons/fwBanner.png")));
         imageLabel = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -42,29 +43,21 @@ public class SplashScreenWindow extends JWindow {
         };
 
         content.add(imageLabel, BorderLayout.CENTER);
-
         getContentPane().add(content);
         setSize(500, 350);
         setLocationRelativeTo(null);
-        setBackground(new Color(0, 0, 0, 0)); // Transparent background
+        setBackground(new Color(0, 0, 0, 0));
     }
 
     private void createBackgroundWithOverlayAndRoundedCorners(Graphics g, int width, int height) {
         Graphics2D g2d = (Graphics2D) g.create();
-
-        // Create a rounded rectangle for the clipping mask
         Shape roundedRect = new RoundRectangle2D.Double(0, 0, width, height, 30, 30);
         g2d.setClip(roundedRect);
-
-        // Draw the background image
         g2d.drawImage(backgroundImage.getImage(), 0, 0, width, height, null);
-
-        // Create the dimming overlay with rounded corners
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        g2d.setColor(hexToColor("#1e201eeb")); // Dimming color
+        g2d.setColor(hexToColor("#1e201eeb"));
         g2d.fill(roundedRect);
-
         g2d.dispose();
     }
 
@@ -94,7 +87,8 @@ public class SplashScreenWindow extends JWindow {
 
             @Override
             protected void process(java.util.List<Float> chunks) {
-                float latestOpacity = chunks.get(chunks.size() - 1);
+                opacity = chunks.get(chunks.size() - 1);
+                imageLabel.revalidate();
                 imageLabel.repaint();
             }
 

@@ -47,10 +47,18 @@ public class Launcher extends Engine implements AuthListener {
     private static final List<String> CONFIG_FILES = List.of("config");
 
     public static void main(String[] args) {
-        SplashScreenWindow splashScreen = new SplashScreenWindow();
-        splashScreen.showSplashScreen();
-        SwingUtilities.invokeLater(Launcher::new);
+        SwingUtilities.invokeLater(() -> {
+            SplashScreenWindow splashScreen = new SplashScreenWindow();
+            splashScreen.showSplashScreen();
+
+            Timer launchTimer = new Timer(1600, e -> {
+                new Launcher();
+            });
+            launchTimer.setRepeats(false);
+            launchTimer.start();
+        });
     }
+
 
     public Launcher() {
         super(CONFIG_FILES);

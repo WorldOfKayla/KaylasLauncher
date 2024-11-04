@@ -203,6 +203,7 @@ public class Launcher extends Engine implements AuthListener {
         return launcherFile;
     }
 
+
     @SuppressWarnings("unused")
     public static class LauncherAttributes {
         private String hash;

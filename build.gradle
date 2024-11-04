@@ -48,14 +48,13 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.9.6-ENTERPRISE-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.10.1-PULOWSKI-all.jar')
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': properties.getProperty('project.mainclass'),
-                'Premain-Class': properties.getProperty('project.premainclass')
+                'Main-Class': properties.getProperty('project.mainclass')
         )
     }
 }

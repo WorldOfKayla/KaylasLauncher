@@ -90,6 +90,7 @@ public class Launcher extends Engine implements AuthListener {
     public void init() {
         this.discord = new Discord(this, "aiden");
         this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
+
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
 

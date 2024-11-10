@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.10.2-PULOWSKI-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.10.5-PULOWSKI-all.jar')
 }
 
 jar {

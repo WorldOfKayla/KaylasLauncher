@@ -30,11 +30,11 @@
       },
       "childComponents": [
         {
-          "componentType": "label",
-          "componentStyle": "titleBold",
+          "type": "label",
+          "style": "titleBold",
           "fontSize": 15,
           "localeKey": "general.appTitle",
-          "componentId": "appLogo",
+          "id": "appLogo",
           "color": "#f78600",
           "imageIcon": "assets/ui/icons/logo.svg",
           "iconWidth": 50,
@@ -49,13 +49,13 @@
           }
         },
         {
-          "componentType": "label",
+          "type": "label",
           "fontSize": 10,
-          "componentStyle": "titleBold",
+          "style": "titleBold",
           "localeKey": "Build",
           "initialValue": "version",
           "color": "#000600",
-          "componentId": "appVersion",
+          "id": "appVersion",
           "bounds": {
             "x": 160,
             "y": -19,
@@ -66,9 +66,9 @@
           }
         },
         {
-          "componentType": "multiButton",
-          "componentStyle": "frameButtons",
-          "componentId": "closeButton",
+          "type": "multiButton",
+          "style": "frameButtons",
+          "id": "closeButton",
           "imgCount": 3,
           "rowNum": 1,
           "bounds": {
@@ -81,9 +81,9 @@
           }
         },
         {
-          "componentType": "multiButton",
-          "componentStyle": "frameButtons",
-          "componentId": "hideButton",
+          "type": "multiButton",
+          "style": "frameButtons",
+          "id": "hideButton",
           "imgCount": 3,
           "rowNum": 0,
           "bounds": {

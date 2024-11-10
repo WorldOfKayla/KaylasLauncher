@@ -1,0 +1,109 @@
+{
+  childComponents: [
+    {
+      type: "label",
+      fontSize: 12,
+      style: "promptLabel",
+      localeKey: "settings.ramField",
+      id: "ramField",
+      bounds: {
+        x: 40,
+        y: 205,
+        size: {
+          width: 250,
+          height: 50
+        }
+      }
+    },
+    {
+      type: "slider",
+      enabled: true,
+      style: "slidingOut",
+      localeKey: "settings.ramPlaceholder",
+      minValue: 1024,
+      maxValue: 8196,
+      minorSpacing: 512,
+      majorSpacing: 1024,
+      initialValue: "config#ramAmount",
+      id: "ramAmountSlider",
+      bounds: {
+        x: 40,
+        y: 225,
+        size: {
+          width: 300,
+          height: 60
+        }
+      }
+    },
+    {
+      type: "spinner",
+      enabled: false,
+      style: "inputBox",
+      minValue: 1024,
+      maxValue: 8196,
+      majorSpacing: 512,
+      initialValue: "config#ramAmount",
+      id: "ramAmountText",
+      bounds: {
+        x: 345,
+        y: 230,
+        size: {
+          width: 80,
+          height: 25
+        }
+      }
+    },
+    {
+      type: "label",
+      fontSize: 12,
+      style: "promptLabel",
+      localeKey: "settings.soundVolume",
+      id: "soundVolume",
+      bounds: {
+        x: 40,
+        y: 150,
+        size: {
+          width: 250,
+          height: 50
+        }
+      }
+    },
+    {
+      type: "slider",
+      enabled: true,
+      minValue: 50,
+      maxValue: 100,
+      minorSpacing: 5,
+      majorSpacing: 10,
+      style: "slidingOut",
+      id: "volumeSlider",
+      initialValue: "config#volume",
+      bounds: {
+        x: 40,
+        y: 170,
+        size: {
+          width: 300,
+          height: 60
+        }
+      }
+    },
+    {
+      type: "spinner",
+      enabled: false,
+      style: "inputBox",
+      initialValue: "config#volume",
+      id: "volumeText",
+      minValue: 50,
+      maxValue: 100,
+      majorSpacing: 5,
+      bounds: {
+        x: 345,
+        y: 180,
+        size: {
+          width: 80,
+          height: 25
+        }
+      }
+    }
+  ]
+}

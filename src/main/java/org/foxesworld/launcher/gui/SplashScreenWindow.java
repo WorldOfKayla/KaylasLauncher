@@ -12,7 +12,7 @@ public class SplashScreenWindow extends JWindow {
     private final ImageIcon backgroundImage;
     private final JLabel imageLabel;
     private float opacity = 0f;
-    private final int fadeDuration = 1500;
+    private final int fadeDuration = 1200;
     private final int fadeInterval = 40;
 
     public SplashScreenWindow() {

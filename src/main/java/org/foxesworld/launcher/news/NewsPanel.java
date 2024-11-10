@@ -239,7 +239,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
 
         for (int i = 0; i < photoUrls.size(); i++) {
             String photoUrl = photoUrls.get(i);
-            BufferedImage tooltipImage = this.imageUtils.getCachedUrlImg(tooltipPhotoUrls.get(i), "vk/tooltips", this.imageUtils.getLocalImage(""));
+            BufferedImage tooltipImage = (BufferedImage) this.imageUtils.getScaledImage(this.imageUtils.getCachedUrlImg(tooltipPhotoUrls.get(i), "vk/tooltips", this.imageUtils.getLocalImage("")), 0.55);
             BufferedImage fullImage = this.imageUtils.getCachedUrlImg(photoUrl, "vk", this.imageUtils.getLocalImage(""));
 
             ImageIcon photoIcon = new ImageIcon(resizeImage(tooltipImage));
@@ -255,7 +255,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    photoLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+                    photoLabel.setBorder(BorderFactory.createEtchedBorder(Color.GRAY, Color.DARK_GRAY));
                 }
 
                 @Override
@@ -267,12 +267,10 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
             multiPhotoPanel.add(photoLabel);
         }
 
-        multiPhotoPanel.setBorder(new EmptyBorder(0, 20, 10, 0));
+        multiPhotoPanel.setBorder(new EmptyBorder(0, 10, 10, 0));
         multiPhotoPanel.setBackground(new Color(0, 0, 0, 0));
         newsPanel.add(multiPhotoPanel);
     }
-
-
 
     private BufferedImage resizeImage(BufferedImage originalImage) {
         int targetWidth = originalImage.getWidth();

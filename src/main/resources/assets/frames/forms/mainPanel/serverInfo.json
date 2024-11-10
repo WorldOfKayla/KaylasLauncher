@@ -17,11 +17,11 @@
       },
       "childComponents": [
         {
-          "componentType": "label",
-          "componentStyle": "heading",
+          "type": "label",
+          "style": "heading",
           "localeKey": "auth.loginPlaceholder",
           "fontSize": 16,
-          "componentId": "serverTitle",
+          "id": "serverTitle",
           "bounds": {
             "x": 10,
             "y": -85,
@@ -32,9 +32,9 @@
           }
         },
         {
-          "componentType": "label",
-          "componentStyle": "title",
-          "componentId": "serverImg",
+          "type": "label",
+          "style": "title",
+          "id": "serverImg",
           "bounds": {
             "x": 10,
             "y": 75,
@@ -66,14 +66,14 @@
               },
               "childComponents": [
                 {
-                  "componentType": "textArea",
+                  "type": "textArea",
                   "lineWrap": true,
                   "enabled": false,
-                  "componentStyle": "textFieldMain",
+                  "style": "textFieldMain",
                   "fontSize": 13,
                   "border": "5,5,5,5",
                   "color": "#ffffff",
-                  "componentId": "serverDescLabel",
+                  "id": "serverDescLabel",
                   "bounds": {
                     "x": 10,
                     "y": 10,

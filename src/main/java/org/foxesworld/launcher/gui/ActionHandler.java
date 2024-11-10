@@ -63,6 +63,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    launcher.getPanelVisibility().displayPanel("download->true|loggedForm->false|newsForm->false");
+                    /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
                     sndBar.setUI(new FlatProgressBarUI());
@@ -91,9 +93,16 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
                     //this.launcher.getLoadingManager().toggleLoader();
                     this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
+                */
                 }
 
+
                 case "gameDir-small" -> Settings.openGameFolder();
+                case "cancelDownload-small" -> {
+                    core.getFileLoader().cancel();
+                    this.getComponent("logOut").setEnabled(true);
+                    this.getComponent("toGame").setEnabled(true);
+                }
                 case "applySettings" -> {
                     this.getEngine().getGuiBuilder().getComponentFactory().getCustomTooltip().clearAllTooltips();
                     this.launcher.getSettings().applySettings("settingsFields");

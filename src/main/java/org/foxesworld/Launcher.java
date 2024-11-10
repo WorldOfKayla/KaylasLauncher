@@ -47,34 +47,33 @@ public class Launcher extends Engine implements AuthListener {
     private static final List<String> CONFIG_FILES = List.of("config");
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            SplashScreenWindow splashScreen = new SplashScreenWindow();
-            splashScreen.showSplashScreen();
-
-            Timer launchTimer = new Timer(1600, e -> {
-                new Launcher();
-            });
-            launchTimer.setRepeats(false);
-            launchTimer.start();
-        });
+        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
     }
 
+    private static void showSplashAndStartLauncher() {
+        SplashScreenWindow splashScreen = new SplashScreenWindow();
+        splashScreen.showSplashScreen();
+
+        Timer launchTimer = new Timer(1600, e -> new Launcher());
+        launchTimer.setRepeats(false);
+        launchTimer.start();
+    }
 
     public Launcher() {
         super(CONFIG_FILES);
         long startTime = System.currentTimeMillis();
+
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         this.notification = new NotificationPopup();
-        LauncherValidator validator = new LauncherValidator(this);
-        preInit();
 
-        validator.validate();
+        preInit();
+        new LauncherValidator(this).validate();
 
         this.auth = new Auth(this);
         init();
-        long duration = System.currentTimeMillis() - startTime;
-        getLOGGER().info(getAppTitle() + " started in " + String.format("%d ms", duration) + "!");
+
+        logStartupTime(startTime);
     }
 
     @Override
@@ -86,15 +85,13 @@ public class Launcher extends Engine implements AuthListener {
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
     }
+
     @Override
     public void init() {
-        this.discord = new Discord(this, "aiden");
-        this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
-
+        setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
-
-        this.setNews();
+        setNews();
         getGuiBuilder().buildAdditionalPanels();
         this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
         this.settings = new Settings(this);
@@ -105,6 +102,11 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     protected void postInit() {
+    }
+
+    private void setupDiscord() {
+        this.discord = new Discord(this, "aiden");
+        this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
     }
 
     private void setNews() {
@@ -118,10 +120,16 @@ public class Launcher extends Engine implements AuthListener {
     private void buildGui(String[] styles) {
         setStyleProvider(new StyleProvider(styles));
         setGuiBuilder(new GuiBuilder(this));
-        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
-        getGuiBuilder().setGuiBuilderListener(this);
-        getGuiBuilder().buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
+        GuiBuilder guiBuilder = getGuiBuilder();
+        guiBuilder.getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
+        guiBuilder.setGuiBuilderListener(this);
+        guiBuilder.buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
         this.iconUtils = new IconUtils(this);
+    }
+
+    private void logStartupTime(long startTime) {
+        long duration = System.currentTimeMillis() - startTime;
+        getLOGGER().info(getAppTitle() + " started in " + duration + " ms!");
     }
 
     @Override
@@ -154,9 +162,7 @@ public class Launcher extends Engine implements AuthListener {
         if (!isInit() && getConfig().isBackgroundMusic()) {
             SOUND.playSound("music", "launcherTheme", true);
         }
-
     }
-
 
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
@@ -168,7 +174,6 @@ public class Launcher extends Engine implements AuthListener {
         parentPanel.updateUI();
         parentPanel.repaint();
         parentPanel.revalidate();
-        //getLOGGER().debug("Built panel {} with parent {}", componentGroup, parentPanel.getName());
     }
 
     @Override
@@ -212,7 +217,6 @@ public class Launcher extends Engine implements AuthListener {
         return launcherFile;
     }
 
-
     @SuppressWarnings("unused")
     public static class LauncherAttributes {
         private String hash;
@@ -225,5 +229,18 @@ public class Launcher extends Engine implements AuthListener {
         public String getFilename() {
             return filename;
         }
+    }
+
+    @Override
+    public void showDialog(String messageKey, String errorTitle, int warningMessage, boolean terminate) {
+        SwingUtilities.invokeLater(() -> {
+            String errorMessage = this.getLANG().getString(messageKey);
+            this.getSOUND().playSound("other", messageKey);
+            UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12.0F));
+            JOptionPane.showMessageDialog(this.getFrame().getRootPane(), errorMessage, errorTitle, warningMessage);
+            if (terminate) {
+                System.exit(0);
+            }
+        });
     }
 }

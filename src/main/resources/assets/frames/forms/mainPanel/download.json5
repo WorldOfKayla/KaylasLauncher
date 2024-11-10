@@ -1,0 +1,125 @@
+{
+  panels: {
+    download: {
+      panelOptions: {
+        opaque: false,
+        visible: false,
+        doubleBuffered: true,
+        background: "#373c3975",
+        bounds: {
+          x: 20,
+          y: 40,
+          size: {
+            width: 800,
+            height: 440
+          }
+        }
+      },
+      childComponents: [
+        {
+          type: "progressBar",
+          style: "progress",
+          id: "progressBar",
+          color: "#ffffff",
+          bounds: {
+            x: 5,
+            y: 370,
+            size: {
+              width: 790,
+              height: 60
+            }
+          }
+        },
+        {
+          type: "label",
+          fontSize: 14,
+          style: "title",
+          color: "#ffffff",
+          id: "progressLabel",
+          bounds: {
+            x: 15,
+            y: 10,
+            size: {
+              width: 250,
+              height: 40
+            }
+          }
+        },
+        {
+          type: "button",
+          style: "altButton",
+          imageIcon: "assets/ui/icons/cancel.svg",
+          iconWidth: 32,
+          iconHeight: 32,
+          id: "cancelDownload-small",
+          bounds: {
+            x: 728,
+            y: 0,
+            size: {
+              width: 64,
+              height: 64
+            }
+          }
+        },
+        {
+          panels: {
+            downloadInfo: {
+              panelOptions: {
+                opaque: true,
+                cornerRadius: 10,
+                background: "#b0c1c1",
+                visible: true,
+                bounds: {
+                  x: 40,
+                  y: 40,
+                  size: {
+                    width: 700,
+                    height: 300
+                  }
+                }
+              },
+              childComponents: [
+                {
+                  type: "label",
+                  fontSize: 14,
+                  color: "#636c73bf",
+                  style: "title",
+                  imageIcon: "assets/ui/icons/file.png",
+                  iconWidth: 36,
+                  iconHeight: 36,
+                  id: "downloadFile",
+                  bounds: {
+                    x: 20,
+                    y: 10,
+                    size: {
+                      width: 600,
+                      height: 40
+                    }
+                  }
+                },
+                {
+                  type: "label",
+                  fontSize: 14,
+                  color: "#636c73bf",
+                  style: "title",
+                  imageIcon: "assets/ui/icons/files/folder.svg",
+                  iconWidth: 36,
+                  iconHeight: 36,
+                  id: "downloadDirectory",
+                  bounds: {
+                    x: 20,
+                    y: 50,
+                    size: {
+                      width: 600,
+                      height: 40
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

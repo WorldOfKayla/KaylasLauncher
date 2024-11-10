@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.13.2-RUZICKA",
+  "launcherVersion": "1.13.6-KELVIN",
   "styles": [
     "button",
     "checkBox",
@@ -15,7 +15,7 @@
     "slider",
     "spinner"
   ],
-  "loadAdapters": ["json", "yaml"],
+  "loadAdapters": ["json", "json5"],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",
   "bindUrl": "https://foxescraft.ru",
@@ -25,7 +25,7 @@
   "vkAPIversion": "5.101",
   "files": {
     "frameTpl": "assets/frames/frame.json",
-    "mainFrame": "assets/frames/mainFrame.json",
+    "mainFrame": "assets/frames/mainFrame.json5",
     "localeFile": "assets/lang/locale.json",
     "soundsFile": "assets/sounds/sounds.json"
   },

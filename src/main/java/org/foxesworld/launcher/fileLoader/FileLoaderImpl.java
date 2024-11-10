@@ -9,6 +9,7 @@ import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
+import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -19,41 +20,38 @@ import org.foxesworld.launcher.game.GameLauncher;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FileLoaderImpl implements FileLoaderListener {
+public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderListener {
     private final Core core;
-    private final ComponentsAccessor componentsAccessor;
     private final DownloadUtils downloadUtils;
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
 
     public FileLoaderImpl(Core core) {
+        super(core.getLauncher().getGuiBuilder(), "download", List.of(JProgressBar.class, Label.class, Button.class));
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
-        this.componentsAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "download", List.of(Label.class, JProgressBar.class));
     }
 
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        this.initializeDownloadComponents();
+        initializeDownloadComponents();
         setupGameLauncher();
         if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
-            addJreToLoadAsync(this.core.getGameLauncher().getCurrentJre());
+            addJreToLoadAsync(core.getGameLauncher().getCurrentJre());
         }
         core.getFileLoader().downloadFiles();
     }
 
     private void initializeDownloadComponents() {
-        downloadUtils.setProgressBar((JProgressBar) componentsAccessor.getComponent("progressBar"));
-        downloadUtils.setProgressLabel((JLabel) componentsAccessor.getComponent("progressLabel"));
+        downloadUtils.setProgressBar((JProgressBar) this.getComponent("progressBar"));
+        downloadUtils.setProgressLabel((JLabel) this.getComponent("progressLabel"));
+        downloadUtils.setCancelButton((Button) this.getComponent("cancelDownload-small"));
     }
 
     private void setupGameLauncher() {
@@ -80,7 +78,6 @@ public class FileLoaderImpl implements FileLoaderListener {
         }, future::completeExceptionally);
         core.getFileLoader().addFileToDownload(future.join());
     }
-
 
     @Override
     public void onDownloadStart() {
@@ -148,38 +145,35 @@ public class FileLoaderImpl implements FileLoaderListener {
     public void onNewFileFound(FileLoader fileLoader) {
         FileAttributes currentFile = fileLoader.getCurrentFile();
         updateDownloadInfoComponents(currentFile);
-        String fullPath = core.getFileLoader().getHomeDir() + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        if (core.getFileLoader().getFileValidator().isInvalidFile(new File(fullPath), currentFile.getHash(), currentFile.getSize())) {
-            core.getFileLoader().getDownloadUtils().downloader(currentFile.getFilename().replace(" ", "%20"), fullPath, core.getFileLoader().getTotalSize());
+        String fullPath = constructFullPath(fileLoader.getHomeDir(), currentFile);
+        if (fileLoader.shouldDownloadFile(currentFile)) {
+            startDownload(fileLoader, currentFile, fullPath);
         }
         unpackRuntimeZipIfNeeded(fullPath);
     }
 
-    @Override
-    public void filesProcessed() {
-
+    private String constructFullPath(String homeDir, FileAttributes currentFile) {
+        return homeDir + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
     }
 
-    @Override
-    public void onCancel() {
-
+    private void startDownload(FileLoader fileLoader, FileAttributes currentFile, String fullPath) {
+        String encodedFilename = currentFile.getFilename().replace(" ", "%20");
+        fileLoader.getDownloadUtils().downloader(encodedFilename, fullPath, fileLoader.getTotalSize());
     }
 
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
         ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo", Arrays.asList(Label.class, JProgressBar.class));
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        //String fullPath = core.getFileLoader().getHomeDir() + localPath;
 
         Label downloadFile = (Label) downloadInfoAccessor.getComponentMap().get("downloadFile");
         Label downloadDirectory = (Label) downloadInfoAccessor.getComponentMap().get("downloadDirectory");
-        //Label filesAmount = (Label) downloadInfoAccessor.getComponentMap().get("filesAmount");
 
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
-        //filesAmount.setText();
+
         downloadFile.setIcon(new ImageIcon(
-                this.core.getLauncher().getImageUtils().getScaledImage(
-                        this.core.getLauncher().getImageUtils().getLocalImage("assets/ui/icons/files/" + core.getFileLoader().getFileType() + ".png"), 36, 38)
+                core.getLauncher().getImageUtils().getScaledImage(
+                        core.getLauncher().getImageUtils().getLocalImage("assets/ui/icons/files/" + core.getFileLoader().getFileType() + ".png"), 36, 38)
         ));
     }
 
@@ -187,6 +181,20 @@ public class FileLoaderImpl implements FileLoaderListener {
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
+    }
+
+    @Override
+    public void filesProcessed() {
+        // Implementation for files processed event goes here
+    }
+
+    @Override
+    public void onCancel() {
+        Engine.getLOGGER().info("--==|Download canceled|==--");
+        core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
+        //JOptionPane.showMessageDialog(null, "Загрузка отменена", "Отмена", JOptionPane.INFORMATION_MESSAGE);
+        //this.core.getLauncher().init();
+
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
@@ -205,6 +213,6 @@ public class FileLoaderImpl implements FileLoaderListener {
     }
 
     private void addReplaceVars() {
-        this.varsToReplace.put("version", core.getActionHandler().getCurrentServer().getServerVersion());
+        varsToReplace.put("version", core.getActionHandler().getCurrentServer().getServerVersion());
     }
 }

@@ -1,0 +1,44 @@
+{
+  panels: {
+    newsForm: {
+      panelOptions: {
+        visible: true,
+        doubleBuffered: true,
+        bounds: {
+          x: 348,
+          y: 27,
+          size: {
+            width: 500,
+            height: 500
+          }
+        }
+      },
+      childComponents: [
+        {
+          repeat: true,
+          opaque: false,
+          id: "newsLoading",
+          type: "spriteImage",
+          colNum: 6,
+          rowNum: 7,
+          delay: 55,
+          imageIcon: "assets/ui/sprites/exp.png",
+          bounds: {
+            x: 200,
+            y: 200,
+            size: {
+              width: 500,
+              height: 500
+            }
+          }
+        },
+        {
+          loadPanel: "newsFrame"
+        },
+        {
+          readFrom: "assets/frames/forms/mainPanel/serverInfo.json"
+        }
+      ]
+    }
+  }
+}

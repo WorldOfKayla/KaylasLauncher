@@ -83,6 +83,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getLoadingManager().toggleLoader();
+        this.getPanel().updateUI();
+        this.getPanel().repaint();
+        this.getPanel().revalidate();
     }
 
     @Override
@@ -160,7 +163,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         String encodedFilename = currentFile.getFilename().replace(" ", "%20");
         fileLoader.getDownloadUtils().downloader(encodedFilename, fullPath, fileLoader.getTotalSize());
     }
-
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
         ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo", Arrays.asList(Label.class, JProgressBar.class));
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
@@ -170,12 +172,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
-
-        downloadFile.setIcon(new ImageIcon(
-                core.getLauncher().getImageUtils().getScaledImage(
-                        core.getLauncher().getImageUtils().getLocalImage("assets/ui/icons/files/" + core.getFileLoader().getFileType() + ".png"), 36, 38)
-        ));
+        downloadFile.setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + this.core.getFileLoader().getFileExtension(currentFile.getFilename()) + ".svg", 36f, 38f));
     }
+
 
     private void unpackRuntimeZipIfNeeded(String fullPath) {
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
@@ -192,9 +191,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onCancel() {
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
+        ((JProgressBar)this.getComponent("progressBar")).setValue(0);
         //JOptionPane.showMessageDialog(null, "Загрузка отменена", "Отмена", JOptionPane.INFORMATION_MESSAGE);
         //this.core.getLauncher().init();
-
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {

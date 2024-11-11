@@ -114,14 +114,13 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     private void modsInfoArr(String json) {
         if (json != null && !json.isEmpty()) {
-            JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class); // Using a utility method to parse JSON
+            JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
                 String modName = jsonObject.get("modName").getAsString();
                 String modPicture = jsonObject.get("modPicture").getAsString();
                 String modDesc = jsonObject.get("modDesc").getAsString();
 
-                // Here we can process or display mod information as needed
                 System.out.printf("Mod Name: %s, Description: %s\n", modName, modDesc);
             }
         }

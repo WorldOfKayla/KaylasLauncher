@@ -19,43 +19,48 @@ import java.util.concurrent.ExecutionException;
 
 public class Auth {
     private final Launcher launcher;
-    private AuthListener authListener;
-    private final EncryptionKeyManager encryptionKeyManager;
-    private final Map<String, Integer> balanceMap = new HashMap<>();
     private final Engine engine;
+    private final Config config;
+    private final HTTPrequest postRequest;
+    private final CryptUtils cryptUtils;
+    private final EncryptionKeyManager encryptionKeyManager;
+
+    private AuthListener authListener;
+    private Map<String, Object> authCredentials = new HashMap<>();
+    private final Map<String, Integer> balanceMap = new HashMap<>();
+
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
-    private Map<String, Object> authCredentials = new HashMap<>();
-    private final Config CONFIG;
-    private final HTTPrequest POSTrequest;
-    private final CryptUtils cryptUtils;
     private boolean authorised = false;
 
     public Auth(Launcher launcher) {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
-        this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
-        this.POSTrequest = engine.getPOSTrequest();
-        this.CONFIG = launcher.getConfig();
+        this.config = launcher.getConfig();
+        this.postRequest = engine.getPOSTrequest();
         this.cryptUtils = launcher.getCRYPTO();
+        this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
         setAuthListener(launcher);
         attemptAutoLogin();
     }
 
     private void attemptAutoLogin() {
-        if (CONFIG.getLogin() != null && CONFIG.getPassword() != null) {
-            authCredentials.put("login", CONFIG.getLogin());
-            String encryptedPassword = CONFIG.getPassword();
+        String login = config.getLogin();
+        String encryptedPassword = config.getPassword();
+
+        if (login != null && encryptedPassword != null) {
+            authCredentials.put("login", login);
             String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
-                Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + CONFIG.getLogin());
+                Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
                 authListener.onLoad(this, authCredentials);
             } else {
                 clearCredentials();
             }
         }
     }
+
     public void formAuth() {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
@@ -67,47 +72,47 @@ public class Auth {
             throw new RuntimeException(e);
         }
     }
+
     public CompletableFuture<Boolean> authorizeAsync() {
-        this.authCredentials.put("userAction", "auth");
+        authCredentials.put("userAction", "auth");
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        POSTrequest.sendAsync(this.authCredentials,
-                response -> {
-                    try {
-                        AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
-                        if ("success".equals(authResponse.getType())) {
-                            handleSuccessfulAuth(authResponse);
-                            future.complete(true);
-                        } else {
-                            handleFailedAuth(authResponse);
-                            future.complete(false);
-                        }
-                    } catch (Exception e) {
-                        Engine.getLOGGER().error("Exception during authorization response handling: ", e);
-                        future.completeExceptionally(e);
-                    }
-                },
-                error -> {
-                    Engine.getLOGGER().error("Authorization request failed: ", error);
-                    future.completeExceptionally(error);
-                }
+        postRequest.sendAsync(authCredentials,
+                response -> handleAuthResponse(response, future),
+                error -> handleAuthError(error, future)
         );
 
         return future;
     }
+
+    private void handleAuthResponse(Object response, CompletableFuture<Boolean> future) {
+        try {
+            AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
+            if ("success".equals(authResponse.getType())) {
+                handleSuccessfulAuth(authResponse);
+                future.complete(true);
+            } else {
+                handleFailedAuth(authResponse);
+                future.complete(false);
+            }
+        } catch (Exception e) {
+            Engine.getLOGGER().error("Exception during authorization response handling: ", e);
+            future.completeExceptionally(e);
+        }
+    }
+
+    private void handleAuthError(Throwable error, CompletableFuture<Boolean> future) {
+        Engine.getLOGGER().error("Authorization request failed: ", error);
+        future.completeExceptionally(error);
+    }
+
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);
-        this.authCredentials.put("uuid", authResponse.getUuid());
-        this.authCredentials.put("token", authResponse.getToken());
-        this.authCredentials.put("group", String.valueOf(authResponse.getGroup()));
+        authCredentials.put("uuid", authResponse.getUuid());
+        authCredentials.put("token", authResponse.getToken());
+        authCredentials.put("group", String.valueOf(authResponse.getGroup()));
 
-        List<Map<String, Integer>> balance = authResponse.getBalance();
-        if (balance != null) {
-            for (Map<String, Integer> balanceEntry : balance) {
-                balanceMap.putAll(balanceEntry);
-            }
-        }
-
+        updateBalance(authResponse.getBalance());
         Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
         loadUserServers(authResponse.getLogin());
 
@@ -117,10 +122,18 @@ public class Auth {
         authListener.onLogin(authCredentials);
     }
 
+    private void updateBalance(List<Map<String, Integer>> balance) {
+        if (balance != null) {
+            for (Map<String, Integer> balanceEntry : balance) {
+                balanceMap.putAll(balanceEntry);
+            }
+        }
+    }
+
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
-        this.launcher.getSOUND().playSound("other", "alert");
-        this.launcher.showDialog(authResponse.getMessage(), this.launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
+        launcher.getSOUND().playSound("other", "alert");
+        launcher.showDialog(authResponse.getMessage(), launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
     }
 
     private void loadUserServers(String login) {
@@ -136,22 +149,22 @@ public class Auth {
         setAuthorised(false);
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
-        this.getLauncher().getConfig().writeCurrentConfig();
+        config.writeCurrentConfig();
         engine.init();
     }
 
-    private void saveAuthCredentials(Map<String, Object> authCredentials) {
-        Map<String, Object> encryptedCredentials = new HashMap<>(authCredentials);
-        String encryptedPassword = cryptUtils.encrypt(String.valueOf(authCredentials.get("password")), encryptionKeyManager.getEncryptionKey(16));
+    private void saveAuthCredentials(Map<String, Object> credentials) {
+        Map<String, Object> encryptedCredentials = new HashMap<>(credentials);
+        String encryptedPassword = cryptUtils.encrypt(String.valueOf(credentials.get("password")), encryptionKeyManager.getEncryptionKey(16));
         encryptedCredentials.put("password", encryptedPassword);
-        launcher.getConfig().addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
-        launcher.getConfig().writeCurrentConfig();
+        config.addToConfig(encryptedCredentials, Arrays.asList("login", "password"));
+        config.writeCurrentConfig();
     }
 
     private void clearCredentials() {
-        Arrays.asList("login", "password").forEach(clear -> {
-            authCredentials.remove(clear);
-            launcher.getConfig().clearConfigData(clear, true);
+        Arrays.asList("login", "password").forEach(key -> {
+            authCredentials.remove(key);
+            config.clearConfigData(key, true);
         });
     }
 
@@ -166,27 +179,35 @@ public class Auth {
     public Engine getEngine() {
         return engine;
     }
+
     public Launcher getLauncher() {
         return launcher;
     }
+
     public String[] getUserServersArray() {
         return authorised ? userServersArray : new String[0];
     }
+
     public List<ServerAttributes> getUserServersAttributes() {
         return userServersAttributes;
     }
+
     public boolean isAuthorised() {
         return authorised;
     }
+
     public void setAuthListener(AuthListener authListener) {
         this.authListener = authListener;
     }
+
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
+
     public Map<String, Integer> getBalanceMap() {
         return balanceMap;
     }
+
     public void setAuthCredentials(Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
     }

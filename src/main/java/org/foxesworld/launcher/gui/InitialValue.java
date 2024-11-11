@@ -1,24 +1,24 @@
-package org.foxesworld.launcher.gui.components;
+package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
-import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 
-public class ComponentManager implements ComponentFactoryListener {
+public class InitialValue extends org.foxesworld.engine.gui.ComponentValue {
 
     private final Launcher launcher;
-    public ComponentManager(Launcher launcher) {
+    public InitialValue(Launcher launcher) {
         this.launcher = launcher;
     }
 
     @Override
     public void onComponentCreation(ComponentAttributes componentAttributes) {
         if (componentAttributes.getInitialValue() != null) {
-            this.getInitialData(componentAttributes);
+            this.setInitialData(componentAttributes);
         }
     }
 
-    protected void getInitialData(ComponentAttributes componentAttributes) {
+    @Override
+    public void setInitialData(ComponentAttributes componentAttributes) {
         String[] splitValue = String.valueOf(componentAttributes.getInitialValue()).split("#");
         switch (splitValue[0]) {
             case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getConfig().get(splitValue[1])));

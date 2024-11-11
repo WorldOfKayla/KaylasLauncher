@@ -19,7 +19,7 @@ import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.SplashScreenWindow;
-import org.foxesworld.launcher.gui.components.ComponentManager;
+import org.foxesworld.launcher.gui.InitialValue;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
@@ -121,7 +121,7 @@ public class Launcher extends Engine implements AuthListener {
         setStyleProvider(new StyleProvider(styles));
         setGuiBuilder(new GuiBuilder(this));
         GuiBuilder guiBuilder = getGuiBuilder();
-        guiBuilder.getComponentFactory().setComponentFactoryListener(new ComponentManager(this));
+        guiBuilder.getComponentFactory().setComponentFactoryListener(new InitialValue(this));
         guiBuilder.setGuiBuilderListener(this);
         guiBuilder.buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
         this.iconUtils = new IconUtils(this);

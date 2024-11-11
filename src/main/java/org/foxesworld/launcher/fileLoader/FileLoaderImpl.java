@@ -83,9 +83,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getLoadingManager().toggleLoader();
-        this.getPanel().updateUI();
-        this.getPanel().repaint();
-        this.getPanel().revalidate();
     }
 
     @Override
@@ -173,6 +170,10 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
         downloadFile.setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + this.core.getFileLoader().getFileExtension(currentFile.getFilename()) + ".svg", 36f, 38f));
+
+        this.getPanel().updateUI();
+        this.getPanel().repaint();
+        this.getPanel().revalidate();
     }
 
 
@@ -184,20 +185,17 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     @Override
     public void filesProcessed() {
-        // Implementation for files processed event goes here
     }
 
     @Override
     public void onCancel() {
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
-        ((JProgressBar)this.getComponent("progressBar")).setValue(0);
-        //JOptionPane.showMessageDialog(null, "Загрузка отменена", "Отмена", JOptionPane.INFORMATION_MESSAGE);
-        //this.core.getLauncher().init();
+        //((JProgressBar)this.getComponent("progressBar")).setValue(0);
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
-        addReplaceVars();
+        addReplaceVars("version", core.getActionHandler().getCurrentServer().getServerVersion());
         replaceTemplate.forEach(mask -> varsToReplace.forEach((key, value) -> {
             String maskKey = replaceVariableValue(key, mask.getMask(), value);
             String maskValue = replaceVariableValue(key, mask.getReplace(), value);
@@ -211,7 +209,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         return matcher.replaceAll(newValue);
     }
 
-    private void addReplaceVars() {
-        varsToReplace.put("version", core.getActionHandler().getCurrentServer().getServerVersion());
+    private void addReplaceVars(String replace, String replacer) {
+        varsToReplace.put(replace, replacer);
     }
 }

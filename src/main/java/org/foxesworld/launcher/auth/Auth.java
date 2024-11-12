@@ -24,11 +24,9 @@ public class Auth {
     private final HTTPrequest postRequest;
     private final CryptUtils cryptUtils;
     private final EncryptionKeyManager encryptionKeyManager;
-
     private AuthListener authListener;
     private Map<String, Object> authCredentials = new HashMap<>();
     private final Map<String, Integer> balanceMap = new HashMap<>();
-
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private boolean authorised = false;

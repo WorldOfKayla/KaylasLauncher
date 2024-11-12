@@ -91,6 +91,7 @@ public class Launcher extends Engine implements AuthListener {
         setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
+        this.user = new User(this);
         setNews();
         getGuiBuilder().buildAdditionalPanels();
         this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
@@ -113,7 +114,7 @@ public class Launcher extends Engine implements AuthListener {
         if (this.getConfig().isLoadNews()) {
             setNews(new News(this));
         } else {
-            this.getGuiBuilder().getPanelsMap().get("newsForm").getComponent(0).setVisible(false);
+            this.user.getServerInfoDisplayer().displayServerInfo(this.getConfig().getSelectedServer());
         }
     }
 
@@ -165,9 +166,7 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {
-        this.user = new User(this);
-    }
+    public void onAdditionalPanelBuild(JPanel jPanel) {}
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {

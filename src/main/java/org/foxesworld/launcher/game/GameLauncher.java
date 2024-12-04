@@ -195,6 +195,10 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() + File.separator + "bin";
     }
 
+    public String buildAssetsPath() {
+        return this.getPathBuilders().buildGameDir() + "assets" + this.gameClient.getServerVersion();
+    }
+
     @Override
     public org.foxesworld.engine.game.GameLauncher.pathBuilders getPathBuilders() {
         return this.pathBuilders;

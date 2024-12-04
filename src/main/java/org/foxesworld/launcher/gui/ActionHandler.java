@@ -18,7 +18,9 @@ import org.foxesworld.notification.Notification;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
@@ -63,7 +65,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    launcher.getPanelVisibility().displayPanel("download->true|loggedForm->false|newsForm->false");
+                    //launcher.init();
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
@@ -165,6 +167,21 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "closeButton" -> System.exit(0);
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
+    }
+
+    public void writePlayTime(String serverName, String login, long time){
+        Map<String, Object> playerData = new HashMap<>();
+        playerData.put("serverName", serverName);
+        playerData.put("login", login);
+        playerData.put("playTime", time);
+        playerData.put("sysRequest" , "donePlaying");
+        this.launcher.getPOSTrequest().sendAsync(playerData,
+                response -> {
+                    System.out.println(response);
+                },
+                error -> {
+
+                });
     }
     @Override
     public Engine getEngine() {

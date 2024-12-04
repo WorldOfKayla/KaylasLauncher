@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.13.6-KELVIN",
+  "launcherVersion": "1.13.8-KELVIN",
   "styles": [
     "button",
     "checkBox",
@@ -112,7 +112,8 @@
       },
       {
         "mask": "/uploads/files/clients/versions/${version}/assets/",
-        "replace": "/uploads/files/clients/versions/${version}/"
+        "replace": "/uploads/files/clients/versions/${version}/",
+        "suffix": "test/"
       }
     ]
   }

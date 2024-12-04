@@ -67,7 +67,7 @@
             }
           }
         },
-      /*
+
         {
           type: "button",
           enabled: true,
@@ -86,7 +86,7 @@
             }
           }
         },
-        */
+
         {
           type: "progressBar",
           visible: false,

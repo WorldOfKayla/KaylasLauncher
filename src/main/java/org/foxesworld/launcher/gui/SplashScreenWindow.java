@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
@@ -63,19 +64,19 @@ public class SplashScreenWindow extends JWindow {
 
     public void showSplashScreen() {
         setVisible(true);
+        fadeIn();
+    }
 
+    private void fadeIn() {
         int steps = fadeDuration / fadeInterval;
         float opacityStep = 1.0f / steps;
 
-        SwingWorker<Void, Float> fadeWorker = new SwingWorker<>() {
+        SwingWorker<Void, Void> fadeWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
                 for (int i = 0; i <= steps; i++) {
-                    opacity += opacityStep;
-                    if (opacity > 1f) {
-                        opacity = 1f;
-                    }
-                    publish(opacity);
+                    opacity = Math.min(1f, opacity + opacityStep);
+                    publish();
                     try {
                         Thread.sleep(fadeInterval);
                     } catch (InterruptedException ex) {
@@ -86,20 +87,23 @@ public class SplashScreenWindow extends JWindow {
             }
 
             @Override
-            protected void process(java.util.List<Float> chunks) {
-                opacity = chunks.get(chunks.size() - 1);
-                imageLabel.revalidate();
+            protected void process(java.util.List<Void> chunks) {
                 imageLabel.repaint();
             }
 
             @Override
             protected void done() {
-                Timer closeTimer = new Timer(fadeDuration + fadeInterval, e -> {
-                    setVisible(false);
-                    dispose();
-                });
-                closeTimer.setRepeats(false);
-                closeTimer.start();
+                try {
+                    get();
+                    Timer closeTimer = new Timer(fadeDuration + fadeInterval, e -> {
+                        setVisible(false);
+                        dispose();
+                    });
+                    closeTimer.setRepeats(false);
+                    closeTimer.start();
+                } catch (InterruptedException | ExecutionException ex) {
+                    ex.printStackTrace();
+                }
             }
         };
         fadeWorker.execute();

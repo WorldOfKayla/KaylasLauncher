@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderListener {
     private final Core core;
@@ -124,12 +125,26 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     private String findBestMatch(String filename) {
         String bestMatch = null;
+        int bestMatchLength = 0;
+
         for (Map.Entry<String, String> entry : replaceMasks.entrySet()) {
             String maskKey = entry.getKey();
-            if (filename.startsWith(maskKey) && (bestMatch == null || maskKey.length() > bestMatch.length())) {
-                bestMatch = entry.getValue();
+            String maskValue = entry.getValue();
+
+            if (filename.startsWith(maskKey)) {
+                int maskKeyLength = maskKey.length();
+                if (maskKeyLength > bestMatchLength) {
+                    bestMatch = maskValue;
+                    bestMatchLength = maskKeyLength;
+                }
+
+                // Early exit for exact match
+                if (maskKeyLength == filename.length()) {
+                    break;
+                }
             }
         }
+
         return bestMatch;
     }
 
@@ -160,6 +175,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         String encodedFilename = currentFile.getFilename().replace(" ", "%20");
         fileLoader.getDownloadUtils().downloader(encodedFilename, fullPath, fileLoader.getTotalSize());
     }
+
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
         ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo", Arrays.asList(Label.class, JProgressBar.class));
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
@@ -175,7 +191,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         this.getPanel().repaint();
         this.getPanel().revalidate();
     }
-
 
     private void unpackRuntimeZipIfNeeded(String fullPath) {
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
@@ -195,18 +210,37 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
-        addReplaceVars("version", core.getActionHandler().getCurrentServer().getServerVersion());
-        replaceTemplate.forEach(mask -> varsToReplace.forEach((key, value) -> {
-            String maskKey = replaceVariableValue(key, mask.getMask(), value);
-            String maskValue = replaceVariableValue(key, mask.getReplace(), value);
+        String serverVersion = core.getActionHandler().getCurrentServer().getServerVersion();
+        String serverName = core.getActionHandler().getCurrentServer().getServerName();
+        String port = String.valueOf(core.getActionHandler().getCurrentServer().getPort());
+
+        addReplaceVars("version", serverVersion);
+        addReplaceVars("serverName", serverName);
+        addReplaceVars("port", port);
+
+        // Precompile patterns for variables to avoid recompiling them for every mask
+        Map<String, Pattern> variablePatterns = varsToReplace.keySet().stream()
+                .collect(Collectors.toMap(var -> var, var -> Pattern.compile("\\$\\{" + var + "}")));
+
+        for (EngineData.ReplaceMask mask : replaceTemplate) {
+            String maskKey = mask.getMask();
+            String maskValue = mask.getReplace();
+
+            for (Map.Entry<String, String> entry : varsToReplace.entrySet()) {
+                String variable = entry.getKey();
+                String replacementValue = entry.getValue();
+                Pattern pattern = variablePatterns.get(variable);
+                maskKey = replaceVariableValue(pattern, maskKey, replacementValue);
+                maskValue = replaceVariableValue(pattern, maskValue, replacementValue);
+            }
+
             replaceMasks.put(maskKey, maskValue);
-        }));
+        }
     }
 
-    private String replaceVariableValue(String variableName, String originalValue, String newValue) {
-        Pattern pattern = Pattern.compile("\\$\\{" + variableName + "}");
+    private String replaceVariableValue(Pattern pattern, String originalValue, String replacementValue) {
         Matcher matcher = pattern.matcher(originalValue);
-        return matcher.replaceAll(newValue);
+        return matcher.replaceAll(replacementValue);
     }
 
     private void addReplaceVars(String replace, String replacer) {

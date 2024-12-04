@@ -88,6 +88,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
+       // System.gc();
         setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());

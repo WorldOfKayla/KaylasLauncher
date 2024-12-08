@@ -18,15 +18,12 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final UserServers userServers;
     private final Launcher launcher;
-    private final ExecutorService executorService;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
     private final ServerBox serverBox;
@@ -49,7 +46,6 @@ public class User extends org.foxesworld.engine.user.User {
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-        this.executorService = Executors.newCachedThreadPool();
 
         initializeUser();
     }
@@ -102,7 +98,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void updateServer(int index) {
-        executorService.submit(() -> {
+        this.launcher.getExecutorService().submit(() -> {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
                 int port = auth.getUserServersAttributes().get(index).getPort();

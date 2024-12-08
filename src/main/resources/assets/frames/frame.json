@@ -54,7 +54,7 @@
           "style": "titleBold",
           "localeKey": "Build",
           "initialValue": "version",
-          "color": "#000600",
+          "color": "#6d2204",
           "id": "appVersion",
           "bounds": {
             "x": 160,

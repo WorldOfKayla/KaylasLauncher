@@ -65,7 +65,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    //launcher.init();
+                    launcher.init();
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");

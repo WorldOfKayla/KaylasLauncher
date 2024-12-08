@@ -13,15 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class NewsProvider {
     private final Engine engine;
     private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
     private static final String[] STATS_VALUES_KEYS = {"views", "likes", "comments", "reposts"};
     private final Gson gson = new Gson();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final long CACHE_VALIDITY_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
     private List<NewsAttributes> cachedNewsAttributesList = null;
     private long lastFetchTime = 0;
@@ -40,7 +37,7 @@ public class NewsProvider {
             return;
         }
 
-        executorService.submit(() -> {
+        this.engine.getExecutorService().submit(() -> {
             List<NewsAttributes> newsAttributesList = new ArrayList<>();
             try {
                 URL url = new URL(buildUrl());

@@ -3,6 +3,7 @@ package org.foxesworld.launcher.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
@@ -17,11 +18,9 @@ import org.foxesworld.launcher.user.User;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Launcher launcher;
     private final User user;
     private final JPanel newsPanel;
     private final ImageUtils imageUtils;
@@ -30,6 +29,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     public ServerInfoDisplayer(User user) {
         super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class));
         this.user = user;
+        this.launcher = user.getLauncher();
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
         this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
@@ -46,7 +46,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxClose(DropBox dropBox) {
-        executorService.submit(() -> {
+        this.launcher.getExecutorService().submit(() -> {
             user.updateServer(dropBox.getSelectedIndex());
         });
         if (dropBox.getState() == State.CLOSED) {
@@ -60,10 +60,11 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     @Override
     public void onServerHover(DropBox dropBox, int index) {
         displayServerInfo(index);
+        System.gc();
     }
 
     private void clearNewsPanel() {
-        executorService.submit(() -> {
+        this.launcher.getExecutorService().submit(() -> {
             newsPanel.removeAll();
             newsPanel.repaint();
         });

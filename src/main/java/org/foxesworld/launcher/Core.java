@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 
@@ -29,7 +27,6 @@ public class Core implements GameListener {
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
         ServerAttributes currentServer = actionHandler.getCurrentServer();
@@ -59,6 +56,13 @@ public class Core implements GameListener {
         if (getLauncher().getLoadingManager().isVisible()) {
             getLauncher().getLoadingManager().toggleLoader();
         }
+        CountDownLatch latch = new CountDownLatch(1);
+        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(), "startedPlaying", 0, latch);
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -66,7 +70,7 @@ public class Core implements GameListener {
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         CountDownLatch latch = new CountDownLatch(1);
-        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(), timeElapsed, latch);
+        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(),  "donePlaying", timeElapsed, latch);
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -79,18 +83,18 @@ public class Core implements GameListener {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
                 System.exit(0);
             }
-        } else {
-            System.exit(0);
         }
+        System.gc();
+        System.exit(0);
     }
 
-    public void writePlayTime(ServerAttributes serverAttributes, String login, long time, CountDownLatch latch) {
-        executorService.submit(() -> {
+    public void writePlayTime(ServerAttributes serverAttributes, String login, String request, long time, CountDownLatch latch) {
+        this.launcher.getExecutorService().submit(() -> {
             Map<String, Object> playerData = new HashMap<>();
             playerData.put("serverName", serverAttributes.getServerName());
             playerData.put("login", login);
             playerData.put("playTime", time);
-            playerData.put("sysRequest", "donePlaying");
+            playerData.put("sysRequest", request);
 
             this.launcher.getPOSTrequest().sendAsync(playerData,
                     response -> {

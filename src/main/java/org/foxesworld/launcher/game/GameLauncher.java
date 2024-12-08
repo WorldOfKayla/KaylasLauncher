@@ -90,7 +90,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     @Override
     public void launchGame() {
 
-        executorService.submit(() -> {
+        this.launcher.getExecutorService().submit(() -> {
             this.checkDangerousParams();
             setJreArgs();
             try {

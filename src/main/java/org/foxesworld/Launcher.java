@@ -60,7 +60,7 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     public Launcher() {
-        super(CONFIG_FILES);
+        super(4, CONFIG_FILES);
         long startTime = System.currentTimeMillis();
 
         this.launcherFile = new File(appPath());

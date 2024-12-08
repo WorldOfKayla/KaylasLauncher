@@ -49,7 +49,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         this.newsComponents = new NewsComponents(this.news.getLauncher().getGuiBuilder(), "newsForm", List.of(SpriteAnimation.class));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setOpaque(false);
-        resizeFrame.setLocationRelativeTo(this.news.getLauncher());
+        resizeFrame.setLocationRelativeTo(this.news.getLauncher().getFrame());
         news.getNewsProvider().fetchNews(this);
 
     }

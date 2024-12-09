@@ -13,7 +13,8 @@ public class SplashScreenWindow extends JWindow {
     private final ImageIcon backgroundImage;
     private final JLabel imageLabel;
     private float opacity = 0f;
-    private final int fadeDuration = 1200;
+    private float scale = 0.8f; // Initial scale factor
+    private final int fadeDuration = 600;
     private final int fadeInterval = 40;
 
     public SplashScreenWindow() {
@@ -25,7 +26,14 @@ public class SplashScreenWindow extends JWindow {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                g2d.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), null);
+
+                // Apply scaling effect
+                int width = (int) (getWidth() * scale);
+                int height = (int) (getHeight() * scale);
+                int x = (getWidth() - width) / 2;
+                int y = (getHeight() - height) / 2;
+
+                g2d.drawImage(imageIcon.getImage(), x, y, width, height, null);
                 g2d.dispose();
             }
         };
@@ -64,19 +72,22 @@ public class SplashScreenWindow extends JWindow {
 
     public void showSplashScreen() {
         setVisible(true);
-        fadeIn();
+        fadeInWithScale();
     }
 
-    private void fadeIn() {
+    private void fadeInWithScale() {
         int steps = fadeDuration / fadeInterval;
         float opacityStep = 1.0f / steps;
+        float scaleStep = (1.0f - scale) / steps; // Gradual scaling
 
         SwingWorker<Void, Void> fadeWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
                 for (int i = 0; i <= steps; i++) {
                     opacity = Math.min(1f, opacity + opacityStep);
-                    publish();
+                    scale = Math.min(1.0f, scale + scaleStep); // Increment the scale
+
+                    publish(); // Trigger repaint
                     try {
                         Thread.sleep(fadeInterval);
                     } catch (InterruptedException ex) {

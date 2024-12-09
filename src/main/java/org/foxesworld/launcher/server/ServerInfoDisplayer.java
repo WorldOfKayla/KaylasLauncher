@@ -49,7 +49,8 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         this.launcher.getExecutorService().submit(() -> {
             user.updateServer(dropBox.getSelectedIndex());
         });
-        if (dropBox.getState() == State.CLOSED) {
+        //System.out.println(dropBox.getState());
+        if (dropBox.getState().equals(State.CLOSED)) {
             if (user.getLauncher().getConfig().isLoadNews()) {
                 newsPanel.removeAll();
                 addNewsFrameToPanel();

@@ -24,7 +24,7 @@
           "id": "serverTitle",
           "bounds": {
             "x": 10,
-            "y": -85,
+            "y": -110,
             "size": {
               "width": 470,
               "height": 280
@@ -37,7 +37,7 @@
           "id": "serverImg",
           "bounds": {
             "x": 10,
-            "y": 75,
+            "y": 45,
             "size": {
               "width": 470,
               "height": 260
@@ -55,10 +55,10 @@
                 "cornerRadius": 10,
                 "bounds": {
                   "x": 10,
-                  "y": 345,
+                  "y": 310,
                   "size": {
                     "width": 470,
-                    "height": 120
+                    "height": 150
                   }
                 },
                 "layout": "box",

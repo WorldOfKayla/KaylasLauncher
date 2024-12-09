@@ -69,6 +69,7 @@ public class Core implements GameListener {
     public void onGameExit(ServerAttributes serverAttributes) {
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
+        this.launcher.shutdownExecutorService();
         CountDownLatch latch = new CountDownLatch(1);
         writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(),  "donePlaying", timeElapsed, latch);
         try {
@@ -81,7 +82,6 @@ public class Core implements GameListener {
                 this.actionHandler.getLauncher().restartApplication(512, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
-                System.exit(0);
             }
         }
         System.gc();

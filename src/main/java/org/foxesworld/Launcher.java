@@ -54,7 +54,7 @@ public class Launcher extends Engine implements AuthListener {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(1600, e -> new Launcher());
+        Timer launchTimer = new Timer(600, e -> new Launcher());
         launchTimer.setRepeats(false);
         launchTimer.start();
     }
@@ -146,6 +146,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLogin(Map<String, Object> authCredentials) {
+
     }
 
     @Override

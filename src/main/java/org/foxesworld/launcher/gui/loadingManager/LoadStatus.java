@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
@@ -31,7 +30,7 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
         this.animationManager.setAnimationStats(this);
         this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class));
 
-        new InitializationWorker(index).execute();
+        this.engine.getExecutorServiceProvider().submitTask(() -> this.initializeLoadingFrame(index), "initializeLoadingFrame");
     }
 
     @Override
@@ -86,27 +85,5 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
     @Override
     public void animationFinished() {
         SwingUtilities.invokeLater(() -> this.setVisible(false));
-    }
-
-    private class InitializationWorker extends SwingWorker<Void, Void> {
-        private final int index;
-
-        public InitializationWorker(int index) {
-            this.index = index;
-        }
-
-        @Override
-        protected Void doInBackground() {
-            initializeLoadingFrame(index);
-            return null;
-        }
-
-        @Override
-        protected void done() {
-            try {
-                get();
-            } catch (InterruptedException | ExecutionException ignored) {
-            }
-        }
     }
 }

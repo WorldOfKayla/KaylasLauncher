@@ -94,8 +94,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     };
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
                     //this.launcher.getLoadingManager().toggleLoader();
-                    this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
-
+                    //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
+                    this.launcher.getLoadingManager().toggleLoader();
                 }
 
 
@@ -164,7 +164,15 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.launcher.getConfig().writeCurrentConfig();
                     this.core = new Core(this, forceUpdate.isSelected());
                 }
-                case "closeButton" -> System.exit(0);
+
+                case "closeButton" -> {
+                    this.launcher.getFrame().setVisible(false);
+                    this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
+                        this.launcher.getExecutorServiceProvider().shutdown();
+                        System.exit(0);
+                    });
+
+                }
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
     }

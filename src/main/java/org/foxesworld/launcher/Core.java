@@ -15,7 +15,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -46,7 +45,6 @@ public class Core implements GameListener {
 
         Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
         downloadThread.start();
-
     }
 
     @Override
@@ -81,11 +79,13 @@ public class Core implements GameListener {
         }
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {
-                this.actionHandler.getLauncher().restartApplication(1024, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
+                this.launcher.getExecutorServiceProvider().shutdown();
+                this.actionHandler.getLauncher().restartApplication(2048, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
             }
         }
+        System.exit(0);
     }
 
     public void writePlayTime(ServerAttributes serverAttributes, String login, String request, long time, CountDownLatch latch) {
@@ -101,17 +101,14 @@ public class Core implements GameListener {
                         response -> {
                             System.out.println("Response: " + response);
                             latch.countDown();
-                            if(Objects.equals(request, "donePlaying")) {
-                                System.exit(0);
-                            }
                         },
                         error -> {
                             error.printStackTrace();
-                            latch.countDown(); // Decrement the latch on error as well
+                            latch.countDown();
                         });
             } catch (Exception e) {
                 e.printStackTrace();
-                latch.countDown(); // Ensure latch is decremented in case of exception
+                latch.countDown();
             }
         };
 
@@ -120,11 +117,11 @@ public class Core implements GameListener {
                 this.launcher.getExecutorServiceProvider().submitTask(task, "writePlayTime." + request);
             } else {
                 System.err.println("Executor service is shutting down, cannot submit task.");
-                latch.countDown(); // Ensure latch is decremented if the task cannot be submitted
+                latch.countDown();
             }
         } catch (RejectedExecutionException e) {
             e.printStackTrace();
-            latch.countDown(); // Ensure latch is decremented in case of rejected execution
+            latch.countDown();
         }
     }
     public static int getCorrectOSArch() {

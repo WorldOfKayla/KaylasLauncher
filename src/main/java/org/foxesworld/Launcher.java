@@ -168,14 +168,17 @@ public class Launcher extends Engine implements AuthListener {
             }, "launcherTheme");
         }
         if(this.user.getUserGroup() == 1) {
+            JFrame statusFrame = this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+            statusFrame.setIconImage(this.imageUtils.getLocalImage("assets/ui/icons/threadBolt.png"));
+            statusFrame.setResizable(false);
             Point parentLocation = this.getFrame().getLocationOnScreen();
             int parentX = parentLocation.x;
             int parentY = parentLocation.y;
 
             //this.getExecutorServiceProvider().submitTask(() -> {}, "init");
 
-            this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setLocation(parentX + this.getFrame().getWidth(), parentY);
-            this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setVisible(true);
+            statusFrame.setLocation(parentX + this.getFrame().getWidth(), parentY);
+            statusFrame.setVisible(true);
         }
     }
 

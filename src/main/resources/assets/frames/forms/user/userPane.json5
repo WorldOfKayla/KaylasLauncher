@@ -68,7 +68,6 @@
           }
         },
 
-        /*
         {
           type: "button",
           enabled: true,
@@ -86,7 +85,7 @@
               height: 34
             }
           }
-        }, */
+        },
 
         {
           type: "progressBar",

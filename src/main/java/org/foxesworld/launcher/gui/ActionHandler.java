@@ -167,6 +167,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "closeButton" -> {
                     this.launcher.getFrame().setVisible(false);
+                    this.launcher.getExecutorServiceProvider().shutdown();
                     this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
                         this.launcher.getExecutorServiceProvider().shutdown();
                         System.exit(0);

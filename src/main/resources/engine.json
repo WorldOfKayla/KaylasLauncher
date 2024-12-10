@@ -14,7 +14,8 @@
     "textField",
     "textArea",
     "slider",
-    "spinner"
+    "spinner",
+    "compositeSlider"
   ],
   "loadAdapters": ["json", "json5"],
   "logLevel": "INFO",

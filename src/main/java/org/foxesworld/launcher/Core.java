@@ -43,8 +43,9 @@ public class Core implements GameListener {
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
         fileLoader.setLoaderListener(fileLoaderImpl);
 
-        Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
-        downloadThread.start();
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {fileLoader.getFilesToDownload(forceUpdate);}, "downloadFiles");
+        //Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
+        //downloadThread.start();
     }
 
     @Override
@@ -69,7 +70,6 @@ public class Core implements GameListener {
 
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
-        //this.launcher.shutdownExecutorService();
         CountDownLatch latch = new CountDownLatch(1);
         writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(),  "donePlaying", timeElapsed, latch);
         try {
@@ -85,6 +85,7 @@ public class Core implements GameListener {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
             }
         }
+        this.launcher.getExecutorServiceProvider().shutdown();
         System.exit(0);
     }
 

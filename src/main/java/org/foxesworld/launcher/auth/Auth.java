@@ -73,15 +73,25 @@ public class Auth {
 
     public CompletableFuture<Boolean> authorizeAsync() {
         authCredentials.put("userAction", "auth");
+
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        postRequest.sendAsync(authCredentials,
-                response -> handleAuthResponse(response, future),
-                error -> handleAuthError(error, future)
-        );
+        this.engine.getExecutorServiceProvider().submitTask(() -> {
+            try {
+                postRequest.sendAsync(
+                        authCredentials,
+                        response -> handleAuthResponse(response, future),
+                        error -> handleAuthError(error, future)
+                );
+            } catch (Exception e) {
+                Engine.getLOGGER().error("Authorization request failed: ", e);
+                future.completeExceptionally(e);
+            }
+        }, "authTask");
 
         return future;
     }
+
 
     private void handleAuthResponse(Object response, CompletableFuture<Boolean> future) {
         try {

@@ -55,7 +55,7 @@ public class Launcher extends Engine implements AuthListener {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(600, e -> new Launcher());
+        Timer launchTimer = new Timer(490, e -> new Launcher());
         launchTimer.setRepeats(false);
         launchTimer.start();
     }
@@ -167,18 +167,17 @@ public class Launcher extends Engine implements AuthListener {
                 SOUND.playSound("music", "launcherTheme", true);
             }, "launcherTheme");
         }
-        if(this.user.getUserGroup() == 1) {
-            JFrame statusFrame = this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-            statusFrame.setIconImage(this.imageUtils.getLocalImage("assets/ui/icons/threadBolt.png"));
-            statusFrame.setResizable(false);
-            Point parentLocation = this.getFrame().getLocationOnScreen();
-            int parentX = parentLocation.x;
-            int parentY = parentLocation.y;
-
-            //this.getExecutorServiceProvider().submitTask(() -> {}, "init");
-
-            statusFrame.setLocation(parentX + this.getFrame().getWidth(), parentY);
-            statusFrame.setVisible(true);
+        if(this.user.getAuth().isAuthorised()) {
+            if (this.user.getUserGroup() == 1) {
+                JFrame statusFrame = this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+                statusFrame.setIconImage(this.imageUtils.getLocalImage("assets/ui/icons/threadBolt.png"));
+                statusFrame.setResizable(false);
+                Point parentLocation = this.getFrame().getLocationOnScreen();
+                int parentX = parentLocation.x;
+                int parentY = parentLocation.y;
+                statusFrame.setLocation(parentX + this.getFrame().getWidth(), parentY);
+                statusFrame.setVisible(true);
+            }
         }
     }
 

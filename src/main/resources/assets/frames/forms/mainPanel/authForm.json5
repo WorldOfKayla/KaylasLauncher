@@ -35,6 +35,8 @@
           type: "passField",
           style: "textFieldAlt",
           localeKey: "auth.passwordPlaceholder",
+          showIcon: "assets/ui/icons/show.svg",
+          hideIcon: "assets/ui/icons/hide.svg",
           revealButton: true,
           id: "password",
           bounds: {

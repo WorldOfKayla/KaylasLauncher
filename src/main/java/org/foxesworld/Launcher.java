@@ -167,15 +167,16 @@ public class Launcher extends Engine implements AuthListener {
                 SOUND.playSound("music", "launcherTheme", true);
             }, "launcherTheme");
         }
+        if(this.user.getUserGroup() == 1) {
+            Point parentLocation = this.getFrame().getLocationOnScreen();
+            int parentX = parentLocation.x;
+            int parentY = parentLocation.y;
 
-        Point parentLocation = this.getFrame().getLocationOnScreen();
-        int parentX = parentLocation.x;
-        int parentY = parentLocation.y;
+            //this.getExecutorServiceProvider().submitTask(() -> {}, "init");
 
-        //this.getExecutorServiceProvider().submitTask(() -> {}, "init");
-
-        this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setLocation(parentX + this.getFrame().getWidth(), parentY);
-        this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setVisible(true);
+            this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setLocation(parentX + this.getFrame().getWidth(), parentY);
+            this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setVisible(true);
+        }
     }
 
     @Override

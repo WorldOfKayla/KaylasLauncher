@@ -17,6 +17,7 @@ import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
@@ -42,33 +43,35 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
+
     }
 
     @Override
     public void onScrollBoxClose(DropBox dropBox) {
-        this.launcher.getExecutorService().submit(() -> {
-            user.updateServer(dropBox.getSelectedIndex());
-        });
-        //System.out.println(dropBox.getState());
+        if(Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
+            displayServerInfo(0);
+        }
+        this.launcher.getExecutorServiceProvider().submitTask(() -> user.updateServer(dropBox.getSelectedIndex()), "dropBoxClose");
         if (dropBox.getState().equals(State.CLOSED)) {
             if (user.getLauncher().getConfig().isLoadNews()) {
                 newsPanel.removeAll();
                 addNewsFrameToPanel();
             }
         }
+
     }
 
     @Override
     public void onServerHover(DropBox dropBox, int index) {
         displayServerInfo(index);
-        System.gc();
+        //System.gc();
     }
 
     private void clearNewsPanel() {
-        this.launcher.getExecutorService().submit(() -> {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
             newsPanel.removeAll();
             newsPanel.repaint();
-        });
+        }, "clearNewsPanel");
     }
 
     private void addNewsFrameToPanel() {
@@ -89,9 +92,9 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {
-            ((JLabel) getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
-            ((JLabel) getComponent("serverImg")).setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
-            ((TextArea) getComponent("serverDescLabel")).setText(thisServer.getServerDescription());
+        ((JLabel) getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
+        ((JLabel) getComponent("serverImg")).setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
+        ((TextArea) getComponent("serverDescLabel")).setText(thisServer.getServerDescription());
     }
 
     private BufferedImage getServerImage(String url) {

@@ -27,7 +27,7 @@ public class SplashScreenWindow extends JWindow {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 
-                // Apply scaling effect
+                // Apply scaling effect smoothly
                 int width = (int) (getWidth() * scale);
                 int height = (int) (getHeight() * scale);
                 int x = (getWidth() - width) / 2;
@@ -84,8 +84,10 @@ public class SplashScreenWindow extends JWindow {
             @Override
             protected Void doInBackground() {
                 for (int i = 0; i <= steps; i++) {
+                    // Easing function for smooth scaling (ease-in effect)
+                    float easedScale = easeInOut(i / (float) steps);
                     opacity = Math.min(1f, opacity + opacityStep);
-                    scale = Math.min(1.0f, scale + scaleStep); // Increment the scale
+                    scale = Math.min(1.0f, scale + scaleStep);
 
                     publish(); // Trigger repaint
                     try {
@@ -107,8 +109,13 @@ public class SplashScreenWindow extends JWindow {
                 try {
                     get();
                     Timer closeTimer = new Timer(fadeDuration + fadeInterval, e -> {
-                        setVisible(false);
-                        dispose();
+                        // Delay before fading out
+                        Timer delayTimer = new Timer(300, event -> {
+                            setVisible(false);
+                            dispose();
+                        });
+                        delayTimer.setRepeats(false);
+                        delayTimer.start();
                     });
                     closeTimer.setRepeats(false);
                     closeTimer.start();
@@ -118,5 +125,10 @@ public class SplashScreenWindow extends JWindow {
             }
         };
         fadeWorker.execute();
+    }
+
+    // Easing function for smooth transitions
+    private float easeInOut(float t) {
+        return t < 0.5f ? 2f * t * t : -1f + (4f - 2f * t) * t;
     }
 }

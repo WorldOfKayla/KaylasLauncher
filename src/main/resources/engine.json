@@ -1,6 +1,7 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.14.1-GARNET",
+  "launcherVersion": "1.15.2",
+  "launcherBuild": "Isolde",
   "styles": [
     "button",
     "checkBox",

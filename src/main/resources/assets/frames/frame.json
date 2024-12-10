@@ -54,10 +54,27 @@
           "style": "titleBold",
           "localeKey": "Build",
           "initialValue": "version",
-          "color": "#6d2204",
+          "color": "#010206",
           "id": "appVersion",
           "bounds": {
             "x": 160,
+            "y": -19,
+            "size": {
+              "width": 250,
+              "height": 50
+            }
+          }
+        },
+        {
+          "type": "label",
+          "fontSize": 10,
+          "style": "titleBold",
+          "localeKey": "-",
+          "initialValue": "build",
+          "color": "#213c94",
+          "id": "appBuild",
+          "bounds": {
+            "x": 230,
             "y": -19,
             "size": {
               "width": 250,

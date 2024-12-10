@@ -37,7 +37,7 @@ public class NewsProvider {
             return;
         }
 
-        this.engine.getExecutorService().submit(() -> {
+        this.engine.getExecutorServiceProvider().submitTask(() -> {
             List<NewsAttributes> newsAttributesList = new ArrayList<>();
             try {
                 URL url = new URL(buildUrl());
@@ -52,7 +52,7 @@ public class NewsProvider {
             }
             updateCache(newsAttributesList);
             callback.onNewsFetched(newsAttributesList);
-        });
+        }, "fetchNews");
     }
 
     private boolean isCacheValid() {

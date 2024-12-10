@@ -19,7 +19,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     private double volume;
     private int width, height, ramAmount;
     private String login, password;
-    private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic;
+    private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic, discordRPC;
 
     public Config(Engine engine) {
         setCfgExportDir("cache/config/");
@@ -290,5 +290,9 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isDiscordRPC() {
+        return discordRPC;
     }
 }

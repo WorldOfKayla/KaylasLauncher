@@ -6,7 +6,6 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
@@ -16,7 +15,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.RejectedExecutionException;
 
 import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 
@@ -67,9 +68,10 @@ public class Core implements GameListener {
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
+
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
-        this.launcher.shutdownExecutorService();
+        //this.launcher.shutdownExecutorService();
         CountDownLatch latch = new CountDownLatch(1);
         writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(),  "donePlaying", timeElapsed, latch);
         try {
@@ -79,33 +81,51 @@ public class Core implements GameListener {
         }
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {
-                this.actionHandler.getLauncher().restartApplication(512, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
+                this.actionHandler.getLauncher().restartApplication(1024, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
             }
         }
-        System.gc();
-        System.exit(0);
     }
 
     public void writePlayTime(ServerAttributes serverAttributes, String login, String request, long time, CountDownLatch latch) {
-        this.launcher.getExecutorService().submit(() -> {
-            Map<String, Object> playerData = new HashMap<>();
-            playerData.put("serverName", serverAttributes.getServerName());
-            playerData.put("login", login);
-            playerData.put("playTime", time);
-            playerData.put("sysRequest", request);
+        Runnable task = () -> {
+            try {
+                Map<String, Object> playerData = new HashMap<>();
+                playerData.put("serverName", serverAttributes.getServerName());
+                playerData.put("login", login);
+                playerData.put("playTime", time);
+                playerData.put("sysRequest", request);
 
-            this.launcher.getPOSTrequest().sendAsync(playerData,
-                    response -> {
-                        System.out.println("Response: " + response);
-                        latch.countDown();
-                    },
-                    error -> {
-                        error.printStackTrace();
-                        latch.countDown();
-                    });
-        });
+                this.launcher.getPOSTrequest().sendAsync(playerData,
+                        response -> {
+                            System.out.println("Response: " + response);
+                            latch.countDown();
+                            if(Objects.equals(request, "donePlaying")) {
+                                System.exit(0);
+                            }
+                        },
+                        error -> {
+                            error.printStackTrace();
+                            latch.countDown(); // Decrement the latch on error as well
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+                latch.countDown(); // Ensure latch is decremented in case of exception
+            }
+        };
+
+        try {
+            if (!this.launcher.getExecutorServiceProvider().getExecutorService().isShutdown()) {
+                this.launcher.getExecutorServiceProvider().submitTask(task, "writePlayTime." + request);
+            } else {
+                System.err.println("Executor service is shutting down, cannot submit task.");
+                latch.countDown(); // Ensure latch is decremented if the task cannot be submitted
+            }
+        } catch (RejectedExecutionException e) {
+            e.printStackTrace();
+            latch.countDown(); // Ensure latch is decremented in case of rejected execution
+        }
     }
     public static int getCorrectOSArch() {
         if (OS_TYPE == JVMHelper.OS.WIN) {

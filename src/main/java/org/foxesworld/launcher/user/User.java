@@ -80,12 +80,14 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     private void setupDiscordRpc() {
-        launcher.getDiscord().setSmallImageText(launcher.getLANG().getString("general.launcher"));
-        launcher.getDiscord().discordRpcStart(
-                lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
-                launcher.getAppTitle(),
-                "launcher"
-        );
+        if(this.launcher.getConfig().isDiscordRPC()) {
+            launcher.getDiscord().setSmallImageText(launcher.getLANG().getString("general.launcher"));
+            launcher.getDiscord().discordRpcStart(
+                    lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
+                    launcher.getAppTitle(),
+                    "launcher"
+            );
+        }
     }
 
     private void notifyUserLoggedIn() {
@@ -98,7 +100,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void updateServer(int index) {
-        this.launcher.getExecutorService().submit(() -> {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
                 int port = auth.getUserServersAttributes().get(index).getPort();
@@ -112,7 +114,7 @@ public class User extends org.foxesworld.engine.user.User {
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
-        });
+        }, "updateServer"+index);
     }
 
     public void setUserAttribute(String attributeName, Object attributeValue) {

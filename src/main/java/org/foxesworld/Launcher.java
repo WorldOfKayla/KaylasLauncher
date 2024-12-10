@@ -26,6 +26,7 @@ import org.foxesworld.launcher.user.User;
 import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URISyntaxException;
@@ -60,7 +61,7 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     public Launcher() {
-        super(4, CONFIG_FILES);
+        super(6, CONFIG_FILES);
         long startTime = System.currentTimeMillis();
 
         this.launcherFile = new File(appPath());
@@ -88,7 +89,6 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
-       // System.gc();
         setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
@@ -163,12 +163,24 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void onPanelsBuilt() {
         if (!isInit() && getConfig().isBackgroundMusic()) {
-            SOUND.playSound("music", "launcherTheme", true);
+            this.getExecutorServiceProvider().submitTask(() -> {
+                SOUND.playSound("music", "launcherTheme", true);
+            }, "launcherTheme");
         }
+
+        Point parentLocation = this.getFrame().getLocationOnScreen();
+        int parentX = parentLocation.x;
+        int parentY = parentLocation.y;
+
+        //this.getExecutorServiceProvider().submitTask(() -> {}, "init");
+
+        this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setLocation(parentX + this.getFrame().getWidth(), parentY);
+        this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame().setVisible(true);
     }
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {}
+    public void onAdditionalPanelBuild(JPanel jPanel) {
+    }
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {

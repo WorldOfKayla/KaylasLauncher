@@ -19,6 +19,7 @@ public class InitialValue extends org.foxesworld.engine.gui.ComponentValue {
 
     @Override
     public void setInitialData(ComponentAttributes componentAttributes) {
+        //this.launcher.submitTask(() -> {
         String[] splitValue = String.valueOf(componentAttributes.getInitialValue()).split("#");
         switch (splitValue[0]) {
             case "config" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getConfig().getConfig().get(splitValue[1])));
@@ -26,6 +27,9 @@ public class InitialValue extends org.foxesworld.engine.gui.ComponentValue {
             case "servers" -> componentAttributes.setInitialValue(this.launcher.getAuth().getUserServersArray());
             case "balance" -> componentAttributes.setInitialValue(String.valueOf(this.launcher.getAuth().getBalanceMap().get(splitValue[1])));
             case "version" -> componentAttributes.setInitialValue(this.launcher.getEngineData().getLauncherVersion());
+            case "build" -> componentAttributes.setInitialValue(this.launcher.getEngineData().getLauncherBuild());
+
         }
+            //        }, "setInitialData."+componentAttributes.getComponentId());
     }
 }

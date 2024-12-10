@@ -90,7 +90,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     @Override
     public void launchGame() {
 
-        this.launcher.getExecutorService().submit(() -> {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
             this.checkDangerousParams();
             setJreArgs();
             try {
@@ -141,7 +141,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
-        });
+        }, "launch-"+this.gameClient.getServerName());
     }
     @Override
     protected String addTweakClass() {

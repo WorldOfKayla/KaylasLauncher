@@ -89,6 +89,9 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
+        SwingUtilities.invokeLater(() -> {
+        setActionHandler(new ActionHandler(this));
+    });
         setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());
@@ -98,7 +101,7 @@ public class Launcher extends Engine implements AuthListener {
         this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
         this.settings = new Settings(this);
         this.settings.addListeners();
-        setActionHandler(new ActionHandler(this));
+
         setInit(true);
     }
 
@@ -168,16 +171,7 @@ public class Launcher extends Engine implements AuthListener {
             }, "launcherTheme");
         }
         if(this.user.getAuth().isAuthorised()) {
-            if (this.user.getUserGroup() == 1) {
-                JFrame statusFrame = this.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-                statusFrame.setIconImage(this.imageUtils.getLocalImage("assets/ui/icons/threadBolt.png"));
-                statusFrame.setResizable(false);
-                Point parentLocation = this.getFrame().getLocationOnScreen();
-                int parentX = parentLocation.x;
-                int parentY = parentLocation.y;
-                statusFrame.setLocation(parentX + this.getFrame().getWidth(), parentY);
-                statusFrame.setVisible(true);
-            }
+            this.user.showTaskMgr();
         }
     }
 
@@ -249,6 +243,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void showDialog(String messageKey, String errorTitle, int warningMessage, boolean terminate) {
+        this.getExecutorServiceProvider().submitTask(() -> {
         SwingUtilities.invokeLater(() -> {
             String errorMessage = this.getLANG().getString(messageKey);
             this.getSOUND().playSound("other", messageKey);
@@ -258,5 +253,6 @@ public class Launcher extends Engine implements AuthListener {
                 System.exit(0);
             }
         });
+        }, "modalDialog");
     }
 }

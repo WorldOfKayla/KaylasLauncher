@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.12.5-Aurora-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.12.6-Aurora-all.jar')
 }
 
 jar {

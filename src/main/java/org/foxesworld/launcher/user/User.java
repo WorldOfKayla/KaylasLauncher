@@ -31,6 +31,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
     private final ServerInfoDisplayer serverInfoDisplayer;
+    private JFrame taskMgrFrame;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
@@ -182,6 +183,21 @@ public class User extends org.foxesworld.engine.user.User {
             newsPanel.revalidate();
             newsPanel.repaint();
         });
+    }
+
+    public void showTaskMgr(){
+        if (this.getUserGroup() == 1) {
+            SwingUtilities.invokeLater(() -> {
+                taskMgrFrame = this.launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+                taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
+                taskMgrFrame.setResizable(false);
+                Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
+                int parentX = parentLocation.x;
+                int parentY = parentLocation.y;
+                taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
+                taskMgrFrame.setVisible(true);
+            });
+        }
     }
 
     private void addNewsItem(Map<String, String> newsItem) {

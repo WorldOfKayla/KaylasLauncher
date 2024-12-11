@@ -66,7 +66,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "smallButton" -> {
                    // launcher.init();
-
+                    this.launcher.showDialog("Hello", "GGWP", 1, false);
+                    /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
                     sndBar.setUI(new FlatProgressBarUI());
@@ -96,6 +97,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     //this.launcher.getLoadingManager().toggleLoader();
                     //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                     this.launcher.getLoadingManager().toggleLoader();
+
+                     */
                 }
 
 

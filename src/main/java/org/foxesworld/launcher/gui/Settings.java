@@ -4,10 +4,11 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.checkbox.CheckBoxListener;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
+import org.foxesworld.engine.gui.components.compositeSlider.CompositeSlider;
+import org.foxesworld.engine.gui.components.compositeSlider.SliderListener;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.slider.Slider;
-import org.foxesworld.engine.gui.components.slider.SliderListener;
 import org.foxesworld.engine.gui.components.spinner.Spinner;
 import org.foxesworld.engine.gui.components.spinner.SpinnerListener;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
@@ -28,7 +29,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     private Launcher launcher;
 
     public Settings(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class));
+        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class, CompositeSlider.class));
         this.launcher = launcher;
     }
 
@@ -65,8 +66,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     public void addListeners() {
         for (JComponent component : this.getComponentsForPanel("settingsFields")) {
-            if (component instanceof Slider) {
-                ((Slider) component).setSliderListener(this);
+            if (component instanceof CompositeSlider) {
+                ((CompositeSlider) component).setSliderListener(this);
             }
 
             if (component instanceof TextField) {
@@ -103,26 +104,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         }
     }
 
-    @Override
-    public void onSliderChange(Slider slider) {
-        SwingUtilities.invokeLater(() -> {
-            int value = slider.getValue();
-            switch (slider.getName()) {
-                case "volumeSlider" -> {
-                    launcher.getConfig().setVolume(value);
-                    launcher.getEngine().getConfig().getConfig().put("volume", value);
-                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                    ((JSpinner) this.getComponent("volumeText")).setValue(value);
-                }
-
-                case "ramAmountSlider" -> {
-                    ((JSpinner) this.getComponent("ramAmountText")).setValue(value);
-                    launcher.getEngine().getConfig().getConfig().put("ramAmount", value);
-                }
-            }
-        });
-
-    }
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {
@@ -177,5 +158,25 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onSpinnerChange(Spinner customJSpinner) {
         ((Slider)this.getComponent(customJSpinner.getName().replace("Text", "Slider"))).setValue((Integer) customJSpinner.getValue());
+    }
+
+    @Override
+    public void onSliderChange(CompositeSlider compositeSlider) {
+        SwingUtilities.invokeLater(() -> {
+            int value = compositeSlider.getValue();
+            switch (compositeSlider.getName()) {
+                case "volume" -> {
+                    launcher.getConfig().setVolume(value);
+                    launcher.getEngine().getConfig().getConfig().put("volume", value);
+                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
+                    //((JSpinner) this.getComponent("volumeText")).setValue(value);
+                }
+
+                case "ramAmount" -> {
+                    //((JSpinner) this.getComponent("ramAmountText")).setValue(value);
+                    //launcher.getEngine().getConfig().getConfig().put("ramAmount", value);
+                }
+            }
+        });
     }
 }

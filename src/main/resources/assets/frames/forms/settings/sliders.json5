@@ -2,16 +2,39 @@
   childComponents: [
     {
       type: "compositeSlider",
-      style: "slidingOut",
-      labelStyle: "promptLabel",
+      styles: {
+        "label":  "promptLabel",
+        "slider":  "slidingOut"
+        },
       fontSize: 12,
       localeKey: "settings.soundVolume",
+      stepSize: 10,
       minValue: 50,
       maxValue: 100,
       minorSpacing: 5,
       majorSpacing: 10,
       initialValue: "config#volume",
       id: "volume",
+      layoutConfig: {
+        "label": {
+          "x": 0,
+          "y": 0,
+          "width": 120,
+          "height": 25
+        },
+        "slider": {
+          "x": 0,
+          "y": 20,
+          "width": 300,
+          "height": 45
+        },
+        "spinner": {
+          "x": 320,
+          "y": 35,
+          "width": 80,
+          "height": 30
+        }
+      },
       bounds: {
         x: 35,
         y: 170,
@@ -23,14 +46,37 @@
     },
     {
       type: "compositeSlider",
-      style: "slidingOut",
-      labelStyle: "promptLabel",
+      styles: {
+        "label":  "promptLabel",
+        "slider":  "slidingOut"
+      },
       fontSize: 12,
       localeKey: "settings.ramField",
+      stepSize: 4,
       minorSpacing: 512,
       majorSpacing: 1024,
       initialValue: "config#ramAmount",
       id: "ramAmount",
+      layoutConfig: {
+        "label": {
+          "x": 0,
+          "y": 0,
+          "width": 240,
+          "height": 25
+        },
+        "slider": {
+          "x": 0,
+          "y": 20,
+          "width": 300,
+          "height": 45
+        },
+        "spinner": {
+          "x": 320,
+          "y": 35,
+          "width": 80,
+          "height": 30
+        }
+      },
       bounds: {
         x: 35,
         y: 240,

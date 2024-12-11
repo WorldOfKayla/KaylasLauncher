@@ -26,7 +26,6 @@ import org.foxesworld.launcher.user.User;
 import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URISyntaxException;

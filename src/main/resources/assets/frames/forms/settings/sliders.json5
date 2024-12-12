@@ -8,7 +8,7 @@
         },
       fontSize: 12,
       localeKey: "settings.soundVolume",
-      stepSize: 10,
+      stepSize: 6,
       minValue: 50,
       maxValue: 100,
       minorSpacing: 5,
@@ -30,7 +30,7 @@
         },
         "spinner": {
           "x": 320,
-          "y": 35,
+          "y": 15,
           "width": 80,
           "height": 30
         }
@@ -52,7 +52,7 @@
       },
       fontSize: 12,
       localeKey: "settings.ramField",
-      stepSize: 4,
+      stepSize: 6,
       minorSpacing: 512,
       majorSpacing: 1024,
       initialValue: "config#ramAmount",
@@ -72,7 +72,7 @@
         },
         "spinner": {
           "x": 320,
-          "y": 35,
+          "y": 15,
           "width": 80,
           "height": 30
         }

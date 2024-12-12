@@ -58,6 +58,7 @@ public class User extends org.foxesworld.engine.user.User {
         } else {
             displayLoginPanel();
         }
+        this.showTaskMgr();
     }
 
     private void displayLoginPanel() {
@@ -186,17 +187,20 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void showTaskMgr(){
-        if (this.getUserGroup() == 1) {
-            SwingUtilities.invokeLater(() -> {
-                taskMgrFrame = this.launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-                taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
-                taskMgrFrame.setResizable(false);
-                Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
-                int parentX = parentLocation.x;
-                int parentY = parentLocation.y;
-                taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
-                taskMgrFrame.setVisible(true);
-            });
+        if(auth.isAuthorised()) {
+            if (this.getUserGroup() == UserGroup.ADMIN) {
+                SwingUtilities.invokeLater(() -> {
+                    this.launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
+                    taskMgrFrame = this.launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+                    taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
+                    taskMgrFrame.setResizable(false);
+                    Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
+                    int parentX = parentLocation.x;
+                    int parentY = parentLocation.y;
+                    taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
+                    taskMgrFrame.setVisible(true);
+                });
+            }
         }
     }
 
@@ -263,7 +267,10 @@ public class User extends org.foxesworld.engine.user.User {
         return serverInfoDisplayer;
     }
 
-    public int getUserGroup() {
-        return Integer.parseInt(String.valueOf(this.userAttributes.group));
+    public UserGroup getUserGroup() {
+        if(auth.isAuthorised()) {
+            return UserGroup.fromGroupId(Integer.parseInt((String) this.userAttributes.group));
+        } else return UserGroup.GUEST;
     }
+
 }

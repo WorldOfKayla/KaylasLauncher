@@ -1,9 +1,11 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.gui.ComponentValue;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
+import org.foxesworld.engine.gui.components.ComponentFactory;
 
-public class InitialValue extends org.foxesworld.engine.gui.ComponentValue {
+public class InitialValue extends ComponentValue implements ComponentFactory.ComponentFactoryListener {
 
     private final Launcher launcher;
     public InitialValue(Launcher launcher) {

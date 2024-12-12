@@ -76,6 +76,7 @@
           style: "altButton",
           id: "smallButton",
           toolTip: "tooltip.test",
+          tooltipStyle: "warning",
           localeKey: "TEST",
           bounds: {
             x: 80,

@@ -29,7 +29,7 @@
             x: 5,
             y: 20,
             size: {
-              width: 180,
+              width: 220,
               height: 60
             }
           }
@@ -112,6 +112,7 @@
                   enabled: true,
                   keyCode: "ENTER",
                   toolTip: "tooltip.applySettings",
+                  tooltipStyle: "success",
                   style: "buttonMain",
                   id: "applySettings",
                   localeKey: "settings.applySettings",

@@ -83,12 +83,14 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
-        user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
-        newsPanel.removeAll();
-        newsPanel.add(this.getPanel());
-        ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
-        updateServerInfoComponents(thisServer);
-        newsPanel.repaint();
+        if(user.getAuth().isAuthorised()) {
+            user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
+            newsPanel.removeAll();
+            newsPanel.add(this.getPanel());
+            ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
+            updateServerInfoComponents(thisServer);
+            newsPanel.repaint();
+        }
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {

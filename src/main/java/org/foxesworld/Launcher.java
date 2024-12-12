@@ -169,9 +169,6 @@ public class Launcher extends Engine implements AuthListener {
                 SOUND.playSound("music", "launcherTheme", true);
             }, "launcherTheme");
         }
-        if(this.user.getAuth().isAuthorised()) {
-            this.user.showTaskMgr();
-        }
     }
 
     @Override

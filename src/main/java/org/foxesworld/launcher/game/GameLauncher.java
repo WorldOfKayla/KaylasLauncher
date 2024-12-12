@@ -6,6 +6,7 @@ import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
+import org.foxesworld.launcher.user.UserGroup;
 
 import javax.swing.*;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
@@ -55,7 +58,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         List<String> gameArgs = getGameArgs();
         logger.debug("GameArgs " + gameArgs.toString());
         this.addArgsToProcess(gameArgs);
-        if (this.user.getUserGroup() == 1) {
+        if (this.user.getUserGroup() == UserGroup.ADMIN) {
             this.processArgs.add("-Dforge.logging.console.level=debug");
             this.processArgs.add("-Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP,CLASSLOADING");
         }
@@ -105,7 +108,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 }
 
                 processArgs.add(mainClass);
-                if(Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
+                if (Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
                     authLib.loadAuthLib();
                 } else {
                     Engine.LOGGER.info("Launching without AuthLib loaded!");
@@ -129,20 +132,26 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 int exitCode = process.waitFor();
                 gameListener.onGameExit(this.gameClient);
+
                 // Using invokeLater for ssdd-related actions
                 SwingUtilities.invokeLater(() -> {
                     if (exitCode != 0) {
                         logger.error("Error launching minecraft. Error code: " + exitCode);
                         JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, this.launcher.getAppTitle() + " Crash", JOptionPane.ERROR_MESSAGE, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/bug.svg", 64, 64));
-                        System.exit(0);
                     }
+                    // Terminate the game process if the task is completed
+                    logger.info("Task completed, stopping the game.");
+                    System.exit(0);
                 });
+
             } catch (IOException | InterruptedException | RuntimeException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
-        }, "launch-"+this.gameClient.getServerName());
+        }, "launch-" + this.gameClient.getServerName());
     }
+
+
     @Override
     protected String addTweakClass() {
         String tweakClassVal;

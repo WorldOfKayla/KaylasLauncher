@@ -53,6 +53,7 @@
           keyCode: "ESCAPE",
           style: "buttonMain",
           toolTip: "tooltip.logOutToolTip",
+          tooltipStyle: "error",
           id: "logOut",
           localeKey: "logged.logOut",
           bounds: {
@@ -70,6 +71,7 @@
           keyCode: "ENTER",
           style: "buttonMain",
           toolTip: "tooltip.gameTooltip",
+          tooltipStyle: "success",
           id: "toGame",
           localeKey: "logged.toGame",
           bounds: {

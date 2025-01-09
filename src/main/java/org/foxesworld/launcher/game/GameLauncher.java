@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
@@ -32,7 +30,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.config = actionHandler.getLauncher().getConfig();
         this.gameClient = actionHandler.getCurrentServer();
         this.engine = actionHandler.getEngine();
-        this.pathBuilders = new pathBuilders(this);
+        this.pathBuilders = new PathBuilders(this, config.getHomeDir());
         this.logger = Engine.getLOGGER();
         this.printDebug();
         this.user = actionHandler.getLauncher().getUser();
@@ -40,7 +38,9 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         //this.clientType = ClientType.getType(this.gameClient.getClient());
         this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
         if(this.pathBuilders.getArgsFile() != null){
-            argsReader = new ArgsReader(this);
+            boolean checkLib = actionHandler.getCurrentServer().isCheckLib();
+            if(!checkLib) { logger.warn("LIBRARY HASH IS IGNORED!!! That may be insecure!!!"); }
+            argsReader = new ArgsReader(this, checkLib);
         }
     }
 
@@ -117,7 +117,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 // Log the command that will be executed
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
-                processBuilder.directory(new File(getPathBuilders().buildClientDir()));
+                processBuilder.directory(new File(getPathBuilders().buildClientDir().toUri()));
                 processBuilder.redirectErrorStream(true);
                 processBuilder.environment().put("JAVA_HOME", getPathBuilders().buildRuntimeDir().toString());
 
@@ -178,8 +178,8 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         this.replaceValues.put("tweakClass", this.tweakClassVal);
         this.replaceValues.put("auth_player_name", this.user.getLogin());
         this.replaceValues.put("version_name", this.getVersion());
-        this.replaceValues.put("game_directory", getPathBuilders().buildClientDir());
-        this.replaceValues.put("assets_root", getPathBuilders().buildAssetsPath());
+        this.replaceValues.put("game_directory", getPathBuilders().buildClientDir().toAbsolutePath().toString());
+        this.replaceValues.put("assets_root", getPathBuilders().buildAssetsPath().toAbsolutePath().toString());
         this.replaceValues.put("assets_index_name", this.getVersion());
         this.replaceValues.put("auth_uuid", this.user.getUuid());
         this.replaceValues.put("auth_access_token", this.user.getToken());
@@ -189,12 +189,12 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
     private List<String> getJvmArgs() {
         this.replaceValues = new HashMap<>();
-        this.replaceValues.put("natives_directory", getPathBuilders().buildNativesPath());
-        this.replaceValues.put("library_directory", getPathBuilders().buildLibrariesPath());
+        this.replaceValues.put("natives_directory", getPathBuilders().buildNativesPath().toAbsolutePath().toString());
+        this.replaceValues.put("library_directory", getPathBuilders().buildLibrariesPath().toAbsolutePath().toString());
         this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
         this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
         this.replaceValues.put("classpath_separator", File.pathSeparator);
-        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath()) + this.pathBuilders.buildMinecraftJarPath();
+        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath().toAbsolutePath().toString()) + this.pathBuilders.buildMinecraftJarPath();
         this.replaceValues.put("classpath", cp);
         this.replaceValues.put("version_name", this.gameClient.getServerVersion());
         return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
@@ -209,7 +209,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
 
     @Override
-    public org.foxesworld.engine.game.GameLauncher.pathBuilders getPathBuilders() {
+    public org.foxesworld.engine.game.GameLauncher.PathBuilders getPathBuilders() {
         return this.pathBuilders;
     }
 }

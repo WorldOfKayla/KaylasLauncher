@@ -71,7 +71,7 @@
           "style": "titleBold",
           "localeKey": "-",
           "initialValue": "build",
-          "color": "#0fda66",
+          "color": "#ec2da2",
           "id": "appBuild",
           "bounds": {
             "x": 230,

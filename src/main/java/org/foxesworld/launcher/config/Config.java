@@ -18,7 +18,7 @@ public class Config extends org.foxesworld.engine.config.Config {
     private int selectedServer, lang, loaderIndex;
     private double volume;
     private int width, height, ramAmount;
-    private String login, password;
+    private String login, password, homeDir;
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic, discordRPC;
 
     public Config(Engine engine) {
@@ -29,6 +29,9 @@ public class Config extends org.foxesworld.engine.config.Config {
         CfgProvider.setLOGGER(Engine.LOGGER);
         addCfgFiles(engine.getConfigFiles());
         this.config = getCfgMaps().get("config");
+        if (!this.config.containsKey("homeDir")){
+            this.config.put("homeDir", CfgProvider.getGameFullPath());
+        }
         this.assignConfigValues();
     }
 
@@ -223,75 +226,60 @@ public class Config extends org.foxesworld.engine.config.Config {
     public String configToJSON() {
         return new GsonBuilder().setPrettyPrinting().create().toJson(config);
     }
-
     public Map<String, Object> getConfig() {
         return config;
     }
-
     public String getLogin() {
         return login;
     }
-
     public String getPassword() {
         return password;
     }
-
     public int getLang() {
         return lang;
     }
-
     public int getRamAmount() {
         return ramAmount;
     }
-
     public double getVolume() {
         return volume;
     }
-
     public boolean isAutoEnter() {
         return autoEnter;
     }
-
     public boolean isFullScreen() {
         return fullScreen;
     }
-
     public boolean isLoadNews() {
         return loadNews;
     }
-
     public boolean isLaunchAC() {
         return launchAC;
     }
-
     public boolean isEnableSound() {
         return enableSound;
     }
-
     public boolean isBackgroundMusic() {
         return backgroundMusic;
     }
-
     public void setVolume(double volume) {
         this.volume = volume;
     }
-
     public int getSelectedServer() {
         return selectedServer;
     }
-
     public int getLoaderIndex() {
         return loaderIndex;
     }
-
     public int getWidth() {
         return width;
     }
-
     public int getHeight() {
         return height;
     }
-
+    public String getHomeDir() {
+        return homeDir;
+    }
     public boolean isDiscordRPC() {
         return discordRPC;
     }

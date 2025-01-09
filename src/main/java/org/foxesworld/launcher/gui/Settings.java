@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.compositeSlider.CompositeSlider;
 import org.foxesworld.engine.gui.components.compositeSlider.SliderListener;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
+import org.foxesworld.engine.gui.components.fileSelector.FileSelector;
 import org.foxesworld.engine.gui.components.slider.Slider;
 import org.foxesworld.engine.gui.components.spinner.Spinner;
 import org.foxesworld.engine.gui.components.spinner.SpinnerListener;
@@ -29,12 +30,13 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     private Launcher launcher;
 
     public Settings(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class, CompositeSlider.class));
+        super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class, CompositeSlider.class, FileSelector.class));
         this.launcher = launcher;
     }
 
     public void applySettings(String panelId) {
         for (Map.Entry<String, Object> entry : this.collectFormCredentialsForPanel(panelId).entrySet()) {
+            System.out.println(entry.getKey());
             Object value = determineValueType(entry.getValue());
             this.launcher.getConfig().setConfigValue(entry.getKey(), value);
         }
@@ -42,7 +44,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         this.launcher.getConfig().writeCurrentConfig();
         this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
         this.launcher.getEngine().getFrame().dispose();
-        this.launcher = new Launcher();
+        this.launcher = new Launcher(null);
     }
 
     private Object determineValueType(Object value) {

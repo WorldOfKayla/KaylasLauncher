@@ -59,7 +59,7 @@ public class Auth {
         }
     }
 
-    public void formAuth() {
+    public void formAuth(JComponent component) {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
         try {
@@ -69,6 +69,7 @@ public class Auth {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+        component.setEnabled(true);
     }
 
     public CompletableFuture<Boolean> authorizeAsync() {
@@ -103,6 +104,7 @@ public class Auth {
                 handleFailedAuth(authResponse);
                 future.complete(false);
             }
+
         } catch (Exception e) {
             Engine.getLOGGER().error("Exception during authorization response handling: ", e);
             future.completeExceptionally(e);

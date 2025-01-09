@@ -47,17 +47,21 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
             switch (key) {
                 case "submit" -> {
+
                     switch (parent){
                         case "authForm" -> {
-                            this.launcher.getAuth().formAuth();
+                            this.getComponent("authForm>submit").setEnabled(false);
+                            this.launcher.getExecutorServiceProvider().submitTask(()-> {
+                            this.launcher.getAuth().formAuth(this.getComponent("authForm>submit"));
                             if (this.launcher.getAuth().isAuthorised()) {
                                 engine.getFrame().getRootPanel().removeAll();
                                 engine.getPanelVisibility().displayPanel("authForm->false");
-                                this.engine.init();
+                                this.launcher.init();
                             } else {
                                 ((TextField)this.getComponent("login")).resetText();
                                 ((PassField)this.getComponent("password")).resetText();
                             }
+                            }, "auth");
                         }
 
                         case "userinfo" -> Engine.getLOGGER().warn("TEST");
@@ -66,7 +70,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "smallButton" -> {
                    // launcher.init();
-                    this.launcher.showDialog("Hello", "GGWP", 1, false);
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");

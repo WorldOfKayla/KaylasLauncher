@@ -1,5 +1,6 @@
 package org.foxesworld;
 
+import org.foxesworld.cfgProvider.CfgProvider;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -54,13 +55,16 @@ public class Launcher extends Engine implements AuthListener {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(490, e -> new Launcher());
+        Timer launchTimer = new Timer(890, e -> new Launcher(splashScreen));
         launchTimer.setRepeats(false);
         launchTimer.start();
     }
 
-    public Launcher() {
-        super(6, CONFIG_FILES);
+    public Launcher(SplashScreenWindow splashScreen) {
+        super(Runtime.getRuntime().availableProcessors(), CONFIG_FILES);
+        if(splashScreen != null) {
+            new Timer(600, e ->splashScreen.dispose()).start();
+        }
         long startTime = System.currentTimeMillis();
 
         this.launcherFile = new File(appPath());
@@ -71,6 +75,7 @@ public class Launcher extends Engine implements AuthListener {
         new LauncherValidator(this).validate();
 
         this.auth = new Auth(this);
+        //this.auth.attemptAutoLogin();
         init();
 
         logStartupTime(startTime);
@@ -114,11 +119,11 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     private void setNews() {
-        if (this.getConfig().isLoadNews()) {
-            setNews(new News(this));
-        } else {
+        //if (this.getConfig().isLoadNews()) {
+            //setNews(new News(this));
+        //} else {
             this.user.getServerInfoDisplayer().displayServerInfo(this.getConfig().getSelectedServer());
-        }
+        //}
     }
 
     private void buildGui(String[] styles) {

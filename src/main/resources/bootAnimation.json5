@@ -1,0 +1,106 @@
+{
+  objects: [
+    {
+      name: "AidenFox Anim",
+      type: "image",
+      imagePath: "assets/ui/img/brand/aidenfox.png",
+      repeat: true,
+      bounds: {
+        x: 290,
+        y: 0,
+        width: 290,
+        height: 380
+      },
+      phases: [
+        {
+          duration: 800,
+          effects: [
+            {
+              type: "move",
+              params: {
+                startX: -290,
+                startY: 20,
+                endX: -20,
+                endY: 20
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "main text Anim",
+      type: "image",
+      imagePath: "assets/ui/img/brand/text.png",
+      repeat: true,
+      bounds: {
+        x: 250,
+        y: -200,
+        width: 224,
+        height: 77
+      },
+      phases: [
+        {
+          duration: 800,
+          effects: [
+            {
+              type: "move",
+              params: {
+                startX: 250,
+                startY: -200,
+                endX: 250,
+                endY: 60
+              }
+            },
+            {
+              type: "resize",
+              params: {
+                startWidth: 0,
+                endWidth: 12,
+                startHeight: 224,
+                endHeight: 77
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "altText Anim",
+      type: "image",
+      imagePath: "assets/ui/img/brand/altText.png",
+      repeat: true,
+      bounds: {
+        x: 0,
+        y: 0,
+        width: 244,
+        height: 35
+      },
+      phases: [
+        {
+          duration: 800,
+          effects: [
+            {
+              type: "move",
+              params: {
+                startX: 250,
+                startY: 900,
+                endX: 260,
+                endY: 115
+              }
+            }
+          ]
+        },
+        {
+          duration: 800,
+          delay: 1500,
+          effects: [
+            {
+              type: "decay"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

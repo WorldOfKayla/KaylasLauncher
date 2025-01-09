@@ -108,6 +108,20 @@
                   }
                 },
                 {
+                  type: "fileSelector" ,
+                  selectionMode: "DIRECTORIES_ONLY",
+                  initialValue: "config#homeDir",
+                  id: "homeDir" ,
+                  bounds: {
+                    x: 40,
+                    y: 380,
+                    size: {
+                      width: 262 ,
+                      height: 45
+                    }
+                  }
+                },
+                {
                   type: "button",
                   enabled: true,
                   keyCode: "ENTER",
@@ -117,10 +131,10 @@
                   id: "applySettings",
                   localeKey: "settings.applySettings",
                   bounds: {
-                    x: 40,
+                    x: 310,
                     y: 380,
                     size: {
-                      width: 210,
+                      width: 160,
                       height: 47
                     }
                   }

@@ -38,7 +38,7 @@ public class Core implements GameListener {
         );
         this.actionHandler = actionHandler;
         this.launcher = actionHandler.getLauncher();
-        fileLoader = new FileLoader(actionHandler);
+        fileLoader = new FileLoader(actionHandler, actionHandler.getLauncher().getConfig().getHomeDir());
         FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
         fileLoader.setLoaderListener(fileLoaderImpl);

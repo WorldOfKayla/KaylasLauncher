@@ -67,7 +67,7 @@
             }
           }
         },
-
+      /*
         {
           type: "button",
           enabled: true,
@@ -102,7 +102,7 @@
               height: 10
             }
           }
-        },
+        },*/
         {
           type: "label",
           fontSize: 11,

@@ -124,6 +124,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
 
 
     private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
+        System.out.println(newsAttributes.getCommunityPhotoUrl());
         BufferedImage communityImg = this.imageUtils.getCachedUrlImg(newsAttributes.getCommunityPhotoUrl(), "vk", this.imageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
         ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(communityImg, 52, 52), 50));
 

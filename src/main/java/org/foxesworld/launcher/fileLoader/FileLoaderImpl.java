@@ -94,7 +94,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     }
 
     private void initializeArgsReader() {
-        core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher()));
+        core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher(), this.core.getActionHandler().getCurrentServer().isCheckLib()));
     }
 
     private void setupFileGuard() {
@@ -108,10 +108,10 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     private List<String> getFileGuardCheckList() {
         return Arrays.asList(
-                core.getGameLauncher().getPathBuilders().buildClientDir(),
-                core.getGameLauncher().getPathBuilders().buildVersionDir(),
-                core.getGameLauncher().getPathBuilders().buildNativesPath(),
-                core.getGameLauncher().getPathBuilders().buildAssetsPath()
+                core.getGameLauncher().getPathBuilders().buildClientDir().toAbsolutePath().toString(),
+                core.getGameLauncher().getPathBuilders().buildVersionDir().toAbsolutePath().toString(),
+                core.getGameLauncher().getPathBuilders().buildNativesPath().toAbsolutePath().toString(),
+                core.getGameLauncher().getPathBuilders().buildAssetsPath().toAbsolutePath().toString()
         );
     }
 

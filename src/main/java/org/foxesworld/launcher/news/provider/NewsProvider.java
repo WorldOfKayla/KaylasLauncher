@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.foxesworld.engine.Engine;
+import org.foxesworld.Launcher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,16 +15,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class NewsProvider {
-    private final Engine engine;
+    private final Launcher launcher;
     private static final String VK_API_URL = "https://api.vk.com/method/wall.get";
     private static final String[] STATS_VALUES_KEYS = {"views", "likes", "comments", "reposts"};
     private final Gson gson = new Gson();
-    private static final long CACHE_VALIDITY_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+    private static final long CACHE_VALIDITY_DURATION = 60 * 60 * 1000;
     private List<NewsAttributes> cachedNewsAttributesList = null;
     private long lastFetchTime = 0;
 
-    public NewsProvider(Engine engine) {
-        this.engine = engine;
+    public NewsProvider(Launcher launcher) {
+        this.launcher = launcher;
     }
 
     public static String[] getStatsValuesKeys() {
@@ -37,7 +37,7 @@ public class NewsProvider {
             return;
         }
 
-        this.engine.getExecutorServiceProvider().submitTask(() -> {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
             List<NewsAttributes> newsAttributesList = new ArrayList<>();
             try {
                 URL url = new URL(buildUrl());
@@ -127,9 +127,9 @@ public class NewsProvider {
     }
 
     private String buildUrl() {
-        return VK_API_URL + "?domain=" + this.engine.getEngineData().getGroupDomain() +
-                "&access_token=" + this.engine.getEngineData().getAccessToken() +
-                "&count=100&extended=1&v=" + this.engine.getEngineData().getVkAPIversion();
+        return VK_API_URL + "?domain=" + this.launcher.getEngineData().getGroupDomain() +
+                "&access_token=" + this.launcher.getEngineData().getAccessToken() +
+                "&count=100&extended=1&v=" + this.launcher.getEngineData().getVkAPIversion();
     }
 
     public interface NewsFetchCallback {

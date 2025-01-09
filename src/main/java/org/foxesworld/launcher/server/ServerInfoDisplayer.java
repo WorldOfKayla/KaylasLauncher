@@ -48,23 +48,25 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxClose(DropBox dropBox) {
-        if(Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
-            displayServerInfo(0);
-        }
-        this.launcher.getExecutorServiceProvider().submitTask(() -> user.updateServer(dropBox.getSelectedIndex()), "dropBoxClose");
-        if (dropBox.getState().equals(State.CLOSED)) {
-            if (user.getLauncher().getConfig().isLoadNews()) {
-                newsPanel.removeAll();
-                addNewsFrameToPanel();
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+            if (Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
+                displayServerInfo(0);
             }
-        }
-
+            user.updateServer(dropBox.getSelectedIndex());
+            if (dropBox.getState().equals(State.CLOSED)) {
+                //if (user.getLauncher().getConfig().isLoadNews()) {
+                //    newsPanel.removeAll();
+                //    addNewsFrameToPanel();
+                //}
+            }
+            System.gc();
+        }, "dropBoxClose");
     }
 
     @Override
     public void onServerHover(DropBox dropBox, int index) {
         displayServerInfo(index);
-        //System.gc();
+
     }
 
     private void clearNewsPanel() {
@@ -83,14 +85,16 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
-        if(user.getAuth().isAuthorised()) {
-            user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
-            newsPanel.removeAll();
-            newsPanel.add(this.getPanel());
-            ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
-            updateServerInfoComponents(thisServer);
-            newsPanel.repaint();
-        }
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+            if (user.getAuth().isAuthorised()) {
+                user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
+                newsPanel.removeAll();
+                newsPanel.add(this.getPanel());
+                ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
+                updateServerInfoComponents(thisServer);
+                newsPanel.repaint();
+            }
+        }, "displayServer-" + index);
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {

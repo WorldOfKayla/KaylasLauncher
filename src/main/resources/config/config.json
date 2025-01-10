@@ -7,7 +7,6 @@
   "loadNews": true,
   "enableSound": true,
   "backgroundMusic": true,
-  "selectedServer": 0,
   "homeDir": "SysVal{AppDir}",
   "discordRPC": true,
   "ramAmount": 4096,

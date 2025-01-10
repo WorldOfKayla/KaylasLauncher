@@ -20,6 +20,7 @@
         {
           readFrom: "assets/frames/forms/user/userActions.json5"
         },
+      /*
         {
           type: "serverBox",
           style: "srvStatus",
@@ -33,7 +34,7 @@
               height: 34
             }
           }
-        },
+        }, */
         {
           type: "button",
           enabled: true,

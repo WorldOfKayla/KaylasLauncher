@@ -36,7 +36,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     public void applySettings(String panelId) {
         for (Map.Entry<String, Object> entry : this.collectFormCredentialsForPanel(panelId).entrySet()) {
-            System.out.println(entry.getKey());
             Object value = determineValueType(entry.getValue());
             this.launcher.getConfig().setConfigValue(entry.getKey(), value);
         }
@@ -98,10 +97,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         }
     }
 
-    public static void openGameFolder() {
+    public void openGameFolder() {
         try {
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI(Config.getFullPath().replaceAll(Pattern.quote("\\"), "/")));
+            d.browse(new URI(this.launcher.getConfig().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException ignored) {
         }
     }

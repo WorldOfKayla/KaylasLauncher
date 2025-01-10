@@ -22,7 +22,7 @@ public class EncryptionKeyManager {
 
     public EncryptionKeyManager(Engine engine) {
         this.engine = engine;
-        this.filePath = Config.getFullPath() + "/cache/encryption.json";
+        this.filePath = engine.getConfig().getFullPath() + "/cache/encryption.json";
         this.gson = new Gson();
         createEncryptionDirectory();
     }

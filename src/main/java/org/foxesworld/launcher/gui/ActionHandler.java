@@ -105,7 +105,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
 
-                case "gameDir-small" -> Settings.openGameFolder();
+                case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
                 case "cancelDownload-small" -> {
                     core.getFileLoader().cancel();
                     this.getComponent("logOut").setEnabled(true);

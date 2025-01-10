@@ -10,9 +10,11 @@ import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.dropBox.State;
 import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
+import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
@@ -29,7 +31,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     private final GuiBuilder guiBuilder;
 
     public ServerInfoDisplayer(User user) {
-        super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class));
+        super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class, ServerBox.class));
         this.user = user;
         this.launcher = user.getLauncher();
         this.newsPanel = user.getNewsPanel();
@@ -39,7 +41,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {
-        user.updateServer(dropBox.getSelectedIndex());
+        //user.updateServer(dropBox.getSelectedIndex());
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             if (Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
                 displayServerInfo(0);
             }
-            user.updateServer(dropBox.getSelectedIndex());
+            //user.updateServer(dropBox.getSelectedIndex());
             if (dropBox.getState().equals(State.CLOSED)) {
                 //if (user.getLauncher().getConfig().isLoadNews()) {
                 //    newsPanel.removeAll();
@@ -85,19 +87,21 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
-        AtomicReference<ServerAttributes> thisServer = new AtomicReference<>();
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            if (user.getAuth().isAuthorised()) {
-                user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
-                newsPanel.removeAll();
-                newsPanel.add(this.getPanel());
-                thisServer.set(user.getAuth().getUserServersAttributes().get(index));
-                updateServerInfoComponents(thisServer.get());
-                newsPanel.repaint();
-            }
-            String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
-            ((Label)this.getComponent("serverPlayers")).setText(this.user.getServerInfo().genServerStatus(status));
-        }, "displayServer-" + index);
+        if (this.user.getAuth().isAuthorised()) {
+            AtomicReference<ServerAttributes> thisServer = new AtomicReference<>();
+            this.launcher.getExecutorServiceProvider().submitTask(() -> {
+                if (user.getAuth().isAuthorised()) {
+                    user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
+                    newsPanel.removeAll();
+                    newsPanel.add(this.getPanel());
+                    thisServer.set(user.getAuth().getUserServersAttributes().get(index));
+                    updateServerInfoComponents(thisServer.get());
+                    newsPanel.repaint();
+                }
+                String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
+                ((ServerBox) this.getComponent("serverPlayers")).updateBox(this.user.getServerInfo().genServerStatus(status), this.user.getServerInfo().genServerIcon(status));
+            }, "displayServer-" + index);
+        }
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {

@@ -36,7 +36,7 @@
           loadPanel: "newsFrame"
         },
         {
-          readFrom: "assets/frames/forms/mainPanel/serverInfo.json"
+          readFrom: "assets/frames/forms/mainPanel/serverInfo.json5"
         }
       ]
     }

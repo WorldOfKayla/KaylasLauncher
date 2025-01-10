@@ -1,6 +1,5 @@
 package org.foxesworld;
 
-import org.foxesworld.cfgProvider.CfgProvider;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -18,11 +17,9 @@ import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
-import org.foxesworld.launcher.gui.Settings;
-import org.foxesworld.launcher.gui.SplashScreenWindow;
 import org.foxesworld.launcher.gui.InitialValue;
+import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
-import org.foxesworld.launcher.news.News;
 import org.foxesworld.launcher.user.User;
 import org.foxesworld.notification.NotificationPopup;
 
@@ -33,7 +30,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -45,10 +42,14 @@ public class Launcher extends Engine implements AuthListener {
     private IconUtils iconUtils;
     private final File launcherFile;
     private final NotificationPopup notification;
-    private static final List<String> CONFIG_FILES = List.of("config");
+    private static Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
+    }
+
+    static {
+        CONFIG_FILES.put("config", Config.class);
     }
 
     /*
@@ -63,11 +64,7 @@ public class Launcher extends Engine implements AuthListener {
 
     public Launcher() {
         super(Runtime.getRuntime().availableProcessors(), CONFIG_FILES);
-
         long startTime = System.currentTimeMillis();
-
-        System.setProperty("AppDir", CfgProvider.getGameFullPath());
-        System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         this.notification = new NotificationPopup();
@@ -75,17 +72,15 @@ public class Launcher extends Engine implements AuthListener {
         preInit();
         this.auth = new Auth(this);
         new LauncherValidator(this).validate();
-
-
-        //this.auth.attemptAutoLogin();
         init();
-
         logStartupTime(startTime);
     }
 
     @Override
     protected void preInit() {
         this.config = new Config(this);
+        System.setProperty("AppDir", this.config.getFullPath());
+        System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
         this.SOUND = new Sound(this, getClass().getClassLoader().getResourceAsStream(fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
@@ -95,9 +90,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
-        SwingUtilities.invokeLater(() -> {
-        setActionHandler(new ActionHandler(this));
-    });
+        SwingUtilities.invokeLater(() -> setActionHandler(new ActionHandler(this)));
         setupDiscord();
         buildGui(getEngineData().getStyles());
         loadMainPanel(fileProperties.getMainFrame());

@@ -47,7 +47,6 @@ public class User extends org.foxesworld.engine.user.User {
         this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-
         initializeUser();
     }
 
@@ -95,7 +94,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void notifyUserLoggedIn() {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
-        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, serverBox.getY() + 80, 340, 45), 3000, message);
+        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, userServers.getServerListBox().getY() + 140, 340, 45), 3000, message);
     }
 
     public void updateUserAttributes(Map<String, Object> attributes) {

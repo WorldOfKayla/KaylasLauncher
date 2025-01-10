@@ -1,5 +1,5 @@
 {
-  "panels":{
+  "panels": {
     "serverInfo": {
       "panelOptions": {
         "visible": false,
@@ -38,7 +38,7 @@
                 "opaque": false,
                 "doubleBuffered": true,
                 "background": "#4a4c4f",
-                "cornerRadius": 5,
+                "cornerRadius": 10,
                 "bounds": {
                   "x": 300,
                   "y": 5,
@@ -51,16 +51,16 @@
               },
               "childComponents": [
                 {
-                  "type": "label",
-                  "style": "title",
-                  "fontSize": 17,
-                  "id": "serverPlayers",
-                  "bounds": {
-                    "x": 50,
-                    "y": -5,
-                    "size": {
-                      "width": 120,
-                      "height": 50
+                  type: "serverBox",
+                  style: "srvStatus",
+                  color: "#ffffff",
+                  id: "serverPlayers",
+                  bounds: {
+                    x: 45,
+                    y: 10,
+                    size: {
+                      width: 145,
+                      height: 300
                     }
                   }
                 }

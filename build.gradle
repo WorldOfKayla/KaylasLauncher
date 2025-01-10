@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.13.0-ORION-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.13.2-ORION-all.jar')
     implementation files('lib/foxesworld/Animatix-0.0.10-SNAPSHOT-all.jar')
 }
 

@@ -329,9 +329,9 @@
       "pl_PL": "Serwer wyłączony"
     },
     "serverOn": {
-      "en_US": "Playing %% players of ##",
-      "ru_RU": "На сервере %% из ## игроков",
-      "pl_PL": "Granie %% graczy z ##"
+      "en_US": "%% of ##",
+      "ru_RU": "%% из ##",
+      "pl_PL": "%% graczy z ##"
     },
     "serverFull": {
       "en_US": "Server full! (Total slots: %%)",

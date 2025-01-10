@@ -44,7 +44,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         this.launcher.getConfig().writeCurrentConfig();
         this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
         this.launcher.getEngine().getFrame().dispose();
-        this.launcher = new Launcher(null);
+        this.launcher = new Launcher();
     }
 
     private Object determineValueType(Object value) {
@@ -105,7 +105,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         } catch (IOException | URISyntaxException ignored) {
         }
     }
-
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {

@@ -48,9 +48,10 @@ public class Launcher extends Engine implements AuthListener {
     private static final List<String> CONFIG_FILES = List.of("config");
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
+        SwingUtilities.invokeLater(Launcher::new);
     }
 
+    /*
     private static void showSplashAndStartLauncher() {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
@@ -58,23 +59,24 @@ public class Launcher extends Engine implements AuthListener {
         Timer launchTimer = new Timer(890, e -> new Launcher(splashScreen));
         launchTimer.setRepeats(false);
         launchTimer.start();
-    }
+    } */
 
-    public Launcher(SplashScreenWindow splashScreen) {
+    public Launcher() {
         super(Runtime.getRuntime().availableProcessors(), CONFIG_FILES);
-        if(splashScreen != null) {
-            new Timer(600, e ->splashScreen.dispose()).start();
-        }
+
         long startTime = System.currentTimeMillis();
 
+        System.setProperty("AppDir", CfgProvider.getGameFullPath());
+        System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         this.notification = new NotificationPopup();
 
         preInit();
+        this.auth = new Auth(this);
         new LauncherValidator(this).validate();
 
-        this.auth = new Auth(this);
+
         //this.auth.attemptAutoLogin();
         init();
 

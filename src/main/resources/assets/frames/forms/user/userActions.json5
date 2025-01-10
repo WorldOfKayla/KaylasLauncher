@@ -20,7 +20,7 @@
           type: "dropBox",
           style: "selectable",
           id: "serverBox",
-          initialValue: "servers#test",
+          initialValue: "servers",
           toolTip: "tooltip.selectServer",
           bounds: {
             x: 35,

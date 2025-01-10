@@ -19,6 +19,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
     private final Launcher launcher;
@@ -66,7 +67,6 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     @Override
     public void onServerHover(DropBox dropBox, int index) {
         displayServerInfo(index);
-
     }
 
     private void clearNewsPanel() {
@@ -85,15 +85,18 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
+        AtomicReference<ServerAttributes> thisServer = new AtomicReference<>();
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             if (user.getAuth().isAuthorised()) {
                 user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
                 newsPanel.removeAll();
                 newsPanel.add(this.getPanel());
-                ServerAttributes thisServer = user.getAuth().getUserServersAttributes().get(index);
-                updateServerInfoComponents(thisServer);
+                thisServer.set(user.getAuth().getUserServersAttributes().get(index));
+                updateServerInfoComponents(thisServer.get());
                 newsPanel.repaint();
             }
+            String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
+            ((Label)this.getComponent("serverPlayers")).setText(this.user.getServerInfo().genServerStatus(status));
         }, "displayServer-" + index);
     }
 

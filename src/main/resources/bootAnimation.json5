@@ -8,7 +8,7 @@
       bounds: {
         x: 290,
         y: 0,
-        width: 290,
+        width: 390,
         height: 380
       },
       phases: [
@@ -20,7 +20,7 @@
               params: {
                 startX: -290,
                 startY: 20,
-                endX: -20,
+                endX: 20,
                 endY: 20
               }
             }
@@ -48,7 +48,7 @@
               params: {
                 startX: 250,
                 startY: -200,
-                endX: 250,
+                endX: 320,
                 endY: 60
               }
             },
@@ -85,7 +85,7 @@
               params: {
                 startX: 250,
                 startY: 900,
-                endX: 260,
+                endX: 330,
                 endY: 115
               }
             }

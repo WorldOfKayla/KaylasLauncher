@@ -19,7 +19,6 @@
         {
           "type": "label",
           "style": "heading",
-          "localeKey": "auth.loginPlaceholder",
           "fontSize": 16,
           "id": "serverTitle",
           "bounds": {
@@ -28,6 +27,44 @@
             "size": {
               "width": 470,
               "height": 280
+            }
+          }
+        },
+        {
+          "panels": {
+            "serverOnline": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": false,
+                "doubleBuffered": true,
+                "background": "#4a4c4f",
+                "cornerRadius": 5,
+                "bounds": {
+                  "x": 300,
+                  "y": 5,
+                  "size": {
+                    "width": 170,
+                    "height": 37
+                  }
+                },
+                "border": "1,1,1,1,#ffffff"
+              },
+              "childComponents": [
+                {
+                  "type": "label",
+                  "style": "title",
+                  "fontSize": 17,
+                  "id": "serverPlayers",
+                  "bounds": {
+                    "x": 50,
+                    "y": -5,
+                    "size": {
+                      "width": 120,
+                      "height": 50
+                    }
+                  }
+                }
+              ]
             }
           }
         },

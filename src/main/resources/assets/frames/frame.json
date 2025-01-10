@@ -36,8 +36,8 @@
           "localeKey": "general.appTitle",
           "id": "appLogo",
           "color": "#f78600",
-          "imageIcon": "assets/ui/icons/logo.svg",
-          "iconWidth": 50,
+          "imageIcon": "assets/ui/icons/aidenfox.svg",
+          "iconWidth": 55,
           "iconHeight": 45,
           "bounds": {
             "x": 5,
@@ -69,9 +69,9 @@
           "type": "label",
           "fontSize": 10,
           "style": "titleBold",
-          "localeKey": "-",
+          "localeKey": "|",
           "initialValue": "build",
-          "color": "#ec2da2",
+          "color": "#b7f400",
           "id": "appBuild",
           "bounds": {
             "x": 230,

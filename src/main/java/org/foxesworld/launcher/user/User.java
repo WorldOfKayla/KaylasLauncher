@@ -54,7 +54,7 @@ public class User extends org.foxesworld.engine.user.User {
     private void initializeUser() {
         if (auth.isAuthorised()) {
             setUserSpace();
-            setDropBoxData(userServers.getServerListBox());
+
         } else {
             displayLoginPanel();
         }
@@ -75,6 +75,7 @@ public class User extends org.foxesworld.engine.user.User {
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         updateUserAttributes(auth.getAuthCredentials());
+        setDropBoxData(userServers.getServerListBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
@@ -261,6 +262,10 @@ public class User extends org.foxesworld.engine.user.User {
 
     public Auth getAuth() {
         return auth;
+    }
+
+    public ServerInfo getServerInfo() {
+        return serverInfo;
     }
 
     public ServerInfoDisplayer getServerInfoDisplayer() {

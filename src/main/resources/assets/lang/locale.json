@@ -325,7 +325,7 @@
     },
     "serverOff": {
       "en_US": "Server off",
-      "ru_RU": "Сервер выключен",
+      "ru_RU": "Оффлайн",
       "pl_PL": "Serwer wyłączony"
     },
     "serverOn": {

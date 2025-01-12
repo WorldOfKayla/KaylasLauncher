@@ -17,7 +17,6 @@ import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.foxesworld.launcher.game.GameLauncher;
-import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 
 import javax.swing.*;
 import java.io.File;

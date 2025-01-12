@@ -3,8 +3,6 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.config.Config;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

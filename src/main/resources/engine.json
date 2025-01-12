@@ -1,7 +1,7 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.17.7",
-  "launcherBuild": "Astral",
+  "launcherVersion": "1.18.3",
+  "launcherBuild": "Threadplex",
   "styles": [
     "button",
     "checkBox",
@@ -18,7 +18,7 @@
     "compositeSlider"
   ],
   "loadAdapters": ["json", "json5"],
-  "logLevel": "INFO",
+  "logLevel": "DEBUG",
   "programRuntime": "jdk-17.0.11",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
@@ -111,11 +111,6 @@
       {
         "mask": "/uploads/files/clients/versions/${version}/libraries/",
         "replace": "/uploads/files/clients/versions/${version}/"
-      },
-      {
-        "mask": "/uploads/files/clients/versions/${version}/assets/",
-        "replace": "/uploads/files/clients/versions/${version}/",
-        "suffix": "test/"
       }
     ]
   }

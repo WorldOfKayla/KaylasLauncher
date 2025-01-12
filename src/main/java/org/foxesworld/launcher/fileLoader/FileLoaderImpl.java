@@ -17,6 +17,7 @@ import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.foxesworld.launcher.game.GameLauncher;
+import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 
 import javax.swing.*;
 import java.io.File;
@@ -31,11 +32,13 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     private final DownloadUtils downloadUtils;
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
+    //private final JProgressBar progressBar;
 
     public FileLoaderImpl(Core core) {
         super(core.getLauncher().getGuiBuilder(), "download", List.of(JProgressBar.class, Label.class, Button.class));
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
+        //this.progressBar = ((LoadStatus)core.getLauncher().getLoadingManager()).getProgressBar();
     }
 
     @Override
@@ -200,13 +203,16 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     @Override
     public void filesProcessed() {
+
+        //this.progressBar.setValue(100);
     }
 
     @Override
     public void onCancel() {
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
-        //((JProgressBar)this.getComponent("progressBar")).setValue(0);
+        core.getLauncher().getExecutorServiceProvider().shutdown();
+        ((JProgressBar)this.getComponent("progressBar")).setValue(0);
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
@@ -218,7 +224,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         addReplaceVars("serverName", serverName);
         addReplaceVars("port", port);
 
-        // Precompile patterns for variables to avoid recompiling them for every mask
         Map<String, Pattern> variablePatterns = varsToReplace.keySet().stream()
                 .collect(Collectors.toMap(var -> var, var -> Pattern.compile("\\$\\{" + var + "}")));
 

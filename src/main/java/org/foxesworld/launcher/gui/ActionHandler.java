@@ -69,6 +69,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
+                    this.launcher.getLoadingManager().toggleLoader();
                    // launcher.init();
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
@@ -99,7 +100,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
                     //this.launcher.getLoadingManager().toggleLoader();
                     //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
-                    this.launcher.getLoadingManager().toggleLoader();
+
 
                      */
                 }
@@ -160,7 +161,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "toGame" -> {
-                    this.getComponent(key).setEnabled(false);
+                    pressedComponent.setEnabled(false);
                     this.getComponent("logOut").setEnabled(false);
                     DropBox dropBox = (DropBox) this.getComponent("serverBox");
                     Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");

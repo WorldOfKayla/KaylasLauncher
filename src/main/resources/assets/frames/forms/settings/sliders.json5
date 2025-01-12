@@ -3,7 +3,7 @@
     {
       type: "compositeSlider",
       styles: {
-        "label":  "promptLabel",
+        "label":  "title",
         "slider":  "slidingOut"
         },
       fontSize: 12,
@@ -19,7 +19,7 @@
         "label": {
           "x": 0,
           "y": 0,
-          "width": 120,
+          "width": 160,
           "height": 25
         },
         "slider": {
@@ -47,7 +47,7 @@
     {
       type: "compositeSlider",
       styles: {
-        "label":  "promptLabel",
+        "label":  "title",
         "slider":  "slidingOut"
       },
       fontSize: 12,
@@ -61,7 +61,7 @@
         "label": {
           "x": 0,
           "y": 0,
-          "width": 240,
+          "width": 290,
           "height": 25
         },
         "slider": {

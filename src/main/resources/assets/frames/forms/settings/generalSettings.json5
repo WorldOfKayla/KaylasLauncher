@@ -125,16 +125,17 @@
                   type: "button",
                   enabled: true,
                   keyCode: "ENTER",
+                  fontSize: 11,
                   toolTip: "tooltip.applySettings",
                   tooltipStyle: "success",
                   style: "buttonMain",
                   id: "applySettings",
                   localeKey: "settings.applySettings",
                   bounds: {
-                    x: 310,
+                    x: 300,
                     y: 380,
                     size: {
-                      width: 160,
+                      width: 200,
                       height: 47
                     }
                   }

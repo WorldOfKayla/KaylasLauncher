@@ -23,6 +23,7 @@ public class FileGuardImpl implements FileGuardListener {
 
     @Override
     public void onDirCheck(String s) {
+        Engine.LOGGER.debug("Checking {}", s);
     }
 
     @Override

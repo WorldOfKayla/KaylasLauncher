@@ -100,7 +100,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     public void openGameFolder() {
         try {
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI(this.launcher.getConfig().getFullPath().replaceAll(Pattern.quote("\\"), "/")));
+            d.browse(new URI(this.launcher.getConfig().getHomeDir().replaceAll(Pattern.quote("\\"), "/")));
         } catch (IOException | URISyntaxException ignored) {
         }
     }

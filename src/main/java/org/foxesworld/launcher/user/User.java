@@ -5,7 +5,6 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
-import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
@@ -26,7 +25,6 @@ public class User extends org.foxesworld.engine.user.User {
     private final Launcher launcher;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
-    private final ServerBox serverBox;
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
@@ -37,11 +35,10 @@ public class User extends org.foxesworld.engine.user.User {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
         this.launcher = launcher;
         this.auth = launcher.getAuth();
-        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(ServerBox.class, DropBox.class));
+        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.serverInfo.setServerStatusImg(engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
-        this.serverBox = userServers.getServerBox();
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
@@ -106,13 +103,13 @@ public class User extends org.foxesworld.engine.user.User {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
                 int port = auth.getUserServersAttributes().get(index).getPort();
-                serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
+                //serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
 
                 String[] status = serverInfo.pollServer(ip, port);
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
 
-                SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
+                //SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
@@ -137,24 +134,50 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     private void setUserHeadIcon(String login) {
-        getUserHeadAsync(login, userHeadBase64 -> {
-            if (userHeadBase64 != null) {
-                try {
-                    BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
-                    ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+        if (login == null || login.isEmpty()) {
+            Engine.getLOGGER().warn("Login is null or empty. Cannot set user head icon.");
+            return;
+        }
 
-                    // Update the icon on the Event Dispatch Thread (EDT)
-                    SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userHead")).setIcon(icon));
-                } catch (Exception e) {
-                    Engine.getLOGGER().error("Error setting user head icon: {}", e.getMessage(), e);
-                }
-            } else {
+        getUserHeadAsync(login, userHeadBase64 -> {
+            if (userHeadBase64 == null) {
                 Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
+                return;
+            }
+
+            try {
+                BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
+                if (userHeadImage == null) {
+                    Engine.getLOGGER().warn("Decoded user head image is null for login: {}", login);
+                    return;
+                }
+
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+                if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+                    Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
+                    return;
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        Component component = getComponent("userHead");
+                        if (component instanceof JLabel) {
+                            ((JLabel) component).setIcon(icon);
+                        } else {
+                            Engine.getLOGGER().warn("Component 'userHead' is not a JLabel for login: {}", login);
+                        }
+                    } catch (Exception e) {
+                        Engine.getLOGGER().error("Error updating user head icon on UI for login: {}. Error: {}", login, e.getMessage(), e);
+                    }
+                });
+            } catch (Exception e) {
+                Engine.getLOGGER().error("Error processing user head icon for login: {}. Error: {}", login, e.getMessage(), e);
             }
         }, e -> {
-            Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage());
+            Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e);
         });
     }
+
 
     private void setUserGroupLabel() {
         String groupKey = "group.group-" + auth.getAuthCredentials("group");
@@ -192,13 +215,15 @@ public class User extends org.foxesworld.engine.user.User {
                 SwingUtilities.invokeLater(() -> {
                     this.launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
                     taskMgrFrame = this.launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-                    taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
-                    taskMgrFrame.setResizable(false);
-                    Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
-                    int parentX = parentLocation.x;
-                    int parentY = parentLocation.y;
-                    taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
-                    taskMgrFrame.setVisible(true);
+                    if(taskMgrFrame != null) {
+                        taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
+                        taskMgrFrame.setResizable(false);
+                        Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
+                        int parentX = parentLocation.x;
+                        int parentY = parentLocation.y;
+                        taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
+                        taskMgrFrame.setVisible(true);
+                    }
                 });
             }
         }

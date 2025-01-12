@@ -63,7 +63,9 @@
   "other": {
     "loggedIn": {
       "sounds": [
-        "assets/sounds/auth.ogg"
+        "assets/sounds/auth/auth0.ogg",
+        "assets/sounds/auth/auth1.ogg",
+        "assets/sounds/auth/auth2.ogg"
       ]
     },
     "loggedOut": {

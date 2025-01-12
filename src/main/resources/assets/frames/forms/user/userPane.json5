@@ -67,42 +67,43 @@
             }
           }
         },
-      /*
-        {
-          type: "button",
-          enabled: true,
-          visible: true,
-          keyCode: "F5",
-          style: "altButton",
-          id: "smallButton",
-          toolTip: "tooltip.test",
-          tooltipStyle: "warning",
-          localeKey: "TEST",
-          bounds: {
-            x: 80,
-            y: 45,
-            size: {
-              width: 60,
-              height: 34
-            }
-          }
-        },
+        /*{
+         type: "button",
+         enabled: true,
+         visible: true,
+         keyCode: "F5",
+         style: "altButton",
+         id: "smallButton",
+         toolTip: "tooltip.test",
+         tooltipStyle: "warning",
+         localeKey: "TEST",
+         bounds: {
+           x: 80,
+           y: 45,
+           size: {
+             width: 60,
+             height: 34
+           }
+         }
+       },
+     /*
 
-        {
-          type: "progressBar",
-          visible: false,
-          style: "progress",
-          id: "sndBar",
-          color: "#ffffff",
-          bounds: {
-            x: 190,
-            y: 70,
-            size: {
-              width: 150,
-              height: 10
-            }
-          }
-        },*/
+
+       {
+      type: "progressBar",
+         visible: false,
+         style: "progress",
+         id: "sndBar",
+         color: "#ffffff",
+         bounds: {
+           x: 190,
+           y: 70,
+           size: {
+             width: 150,
+             height: 10
+           }
+         }
+       },*/
         {
           type: "label",
           fontSize: 11,

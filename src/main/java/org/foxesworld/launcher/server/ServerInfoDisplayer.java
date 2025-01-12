@@ -10,11 +10,9 @@ import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
 import org.foxesworld.engine.gui.components.dropBox.State;
 import org.foxesworld.engine.gui.components.label.Label;
-import org.foxesworld.engine.gui.components.serverBox.ServerBox;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
-import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
@@ -31,7 +29,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     private final GuiBuilder guiBuilder;
 
     public ServerInfoDisplayer(User user) {
-        super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class, ServerBox.class));
+        super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class));
         this.user = user;
         this.launcher = user.getLauncher();
         this.newsPanel = user.getNewsPanel();
@@ -46,7 +44,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
-
+        user.getServerInfoDisplayer().getPanel().repaint();
     }
 
     @Override
@@ -99,7 +97,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
                     newsPanel.repaint();
                 }
                 String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
-                ((ServerBox) this.getComponent("serverPlayers")).updateBox(this.user.getServerInfo().genServerStatus(status), this.user.getServerInfo().genServerIcon(status));
+                ((Label) this.getComponent("srvOnline")).setText(this.user.getServerInfo().genServerStatus(status));
             }, "displayServer-" + index);
         }
     }

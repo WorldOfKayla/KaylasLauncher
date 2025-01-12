@@ -6,7 +6,7 @@
         focusable: true,
         visible: false,
         background: "#c0a1a0f7",
-        backgroundImage: "assets/ui/img/bg/season/summer.png+",
+        backgroundImage: "assets/ui/img/bg/season/summer.png",
         border: "1,1,1,1,#242221",
         bounds: {
           x: 0,
@@ -47,7 +47,21 @@
               height: 20
             }
           }
-        }
+        }/*,
+        {
+          type: "progressBar",
+          style: "progress",
+          id: "loadProgress",
+          color: "#ffffff",
+          bounds: {
+            x: 40,
+            y: 110,
+            size: {
+              width: 300,
+              height: 10
+            }
+          }
+        } */
       ]
     }
   }

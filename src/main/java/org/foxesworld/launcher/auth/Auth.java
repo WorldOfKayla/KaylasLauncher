@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Auth {
     private final Launcher launcher;
@@ -26,7 +28,7 @@ public class Auth {
     private final EncryptionKeyManager encryptionKeyManager;
     private AuthListener authListener;
     private Map<String, Object> authCredentials = new HashMap<>();
-    private final Map<String, Integer> balanceMap = new HashMap<>();
+    private ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private boolean authorised = false;
@@ -64,35 +66,28 @@ public class Auth {
         this.authCredentials = formAuth.getFormCredentials();
         try {
             if (authorizeAsync().get()) {
-                engine.getSOUND().playSound("other", "loggedIn");
+
+            } else {
+                component.setEnabled(true);
             }
         } catch (InterruptedException | ExecutionException e) {
+            Engine.getLOGGER().error("Error during form authorization", e);
             throw new RuntimeException(e);
         }
-        component.setEnabled(true);
+
     }
 
     public CompletableFuture<Boolean> authorizeAsync() {
         authCredentials.put("userAction", "auth");
-
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        this.engine.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                postRequest.sendAsync(
-                        authCredentials,
-                        response -> handleAuthResponse(response, future),
-                        error -> handleAuthError(error, future)
-                );
-            } catch (Exception e) {
-                Engine.getLOGGER().error("Authorization request failed: ", e);
-                future.completeExceptionally(e);
-            }
-        }, "authTask");
+        postRequest.sendAsync(authCredentials,
+                response -> handleAuthResponse(response, future),
+                error -> handleAuthError(error, future)
+        );
 
         return future;
     }
-
 
     private void handleAuthResponse(Object response, CompletableFuture<Boolean> future) {
         try {
@@ -104,9 +99,8 @@ public class Auth {
                 handleFailedAuth(authResponse);
                 future.complete(false);
             }
-
         } catch (Exception e) {
-            Engine.getLOGGER().error("Exception during authorization response handling: ", e);
+            Engine.getLOGGER().error("Error processing auth response", e);
             future.completeExceptionally(e);
         }
     }
@@ -123,7 +117,7 @@ public class Auth {
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
 
         updateBalance(authResponse.getBalance());
-        Engine.getLOGGER().info(authResponse.getLogin() + " authorised!");
+        Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
         loadUserServers(authResponse.getLogin());
 
         if ("true".equals(authCredentials.get("rememberMe"))) {
@@ -133,10 +127,23 @@ public class Auth {
     }
 
     private void updateBalance(List<Map<String, Integer>> balance) {
-        if (balance != null) {
-            for (Map<String, Integer> balanceEntry : balance) {
-                balanceMap.putAll(balanceEntry);
-            }
+        if (balance != null && !balance.isEmpty()) {
+            ConcurrentHashMap<String, AtomicInteger> newBalances = new ConcurrentHashMap<>();
+
+            balance.forEach(balanceEntry -> {
+                balanceEntry.forEach((key, value) -> {
+                    newBalances.computeIfAbsent(key, k -> new AtomicInteger()).addAndGet(value);
+                });
+            });
+
+            newBalances.forEach((key, value) -> balanceMap.merge(key, value, (oldValue, newValue) -> {
+                oldValue.addAndGet(newValue.get());
+                return oldValue;
+            }));
+
+            Engine.getLOGGER().info("Balance updated: " + balanceMap);
+        } else {
+            Engine.getLOGGER().warn("Received null or empty balance data");
         }
     }
 
@@ -214,7 +221,7 @@ public class Auth {
         this.authorised = authorised;
     }
 
-    public Map<String, Integer> getBalanceMap() {
+    public Map<String, AtomicInteger> getBalanceMap() {
         return balanceMap;
     }
 

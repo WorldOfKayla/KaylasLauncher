@@ -10,6 +10,7 @@ import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
+import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.LauncherValidator;
@@ -24,7 +25,9 @@ import org.foxesworld.launcher.user.User;
 import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
@@ -63,7 +66,7 @@ public class Launcher extends Engine implements AuthListener {
     } */
 
     public Launcher() {
-        super(Runtime.getRuntime().availableProcessors(), CONFIG_FILES);
+        super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         long startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
@@ -79,8 +82,9 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     protected void preInit() {
         this.config = new Config(this);
-        System.setProperty("AppDir", this.config.getFullPath());
+        System.setProperty("AppDir", System.getenv("APPDATA"));
         System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
+        this.config.processConfig();
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
         this.SOUND = new Sound(this, getClass().getClassLoader().getResourceAsStream(fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
@@ -91,26 +95,35 @@ public class Launcher extends Engine implements AuthListener {
     @Override
     public void init() {
         SwingUtilities.invokeLater(() -> setActionHandler(new ActionHandler(this)));
-        setupDiscord();
-        buildGui(getEngineData().getStyles());
-        loadMainPanel(fileProperties.getMainFrame());
-        this.user = new User(this);
-        setNews();
-        getGuiBuilder().buildAdditionalPanels();
-        this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
-        this.settings = new Settings(this);
-        this.settings.addListeners();
-
+            setupDiscord();
+            buildGui(getEngineData().getStyles());
+            loadMainPanel(fileProperties.getMainFrame());
+            this.getExecutorServiceProvider().submitTask(() -> {
+                    this.user = new User(this);
+                    setNews();
+                    this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
+                    this.settings = new Settings(this);
+                    this.settings.addListeners();
+                }, "init");
         setInit(true);
     }
 
     @Override
     protected void postInit() {
+        this.getExecutorServiceProvider().submitTask(() -> {
+            this.getFrame().setFocusStatusListener(this);
+            getGuiBuilder().buildAdditionalPanels();
+            if(this.getConfig().isBackgroundMusic()) {
+                SOUND.playSound("music", "launcherTheme", true);
+            }
+        }, "postInit");
     }
 
     private void setupDiscord() {
-        this.discord = new Discord(this, "aiden");
-        this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
+        this.getExecutorServiceProvider().submitTask(() -> {
+            this.discord = new Discord(this, "aiden");
+            this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
+        }, "discordSetUp");
     }
 
     private void setNews() {
@@ -148,32 +161,26 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLogin(Map<String, Object> authCredentials) {
-
+        getSOUND().playSound("other", "loggedIn");
     }
 
     @Override
     public void onLoad(Auth auth, Map<String, Object> authCredentials) {
-        auth.setAuthCredentials(authCredentials);
-        try {
-            if (!auth.authorizeAsync().get()) {
-                config.clearConfigData(Arrays.asList("login", "password"), true);
-            }
-        } catch (InterruptedException | ExecutionException ignored) {
-        }
+        //this.getExecutorServiceProvider().submitTask(() -> {
+            auth.setAuthCredentials(authCredentials);
+            try {
+                if (!auth.authorizeAsync().get()) {
+                    config.clearConfigData(Arrays.asList("login", "password"), true);
+                }
+            } catch (InterruptedException | ExecutionException ignored) {}
+        //}, "auth");
     }
 
     @Override
-    public void onPanelsBuilt() {
-        if (!isInit() && getConfig().isBackgroundMusic()) {
-            this.getExecutorServiceProvider().submitTask(() -> {
-                SOUND.playSound("music", "launcherTheme", true);
-            }, "launcherTheme");
-        }
-    }
+    public void onPanelsBuilt() {}
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {
-    }
+    public void onAdditionalPanelBuild(JPanel jPanel) {}
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
@@ -221,6 +228,57 @@ public class Launcher extends Engine implements AuthListener {
 
     public File getLauncherFile() {
         return launcherFile;
+    }
+
+    @Override
+    @Deprecated
+    public void updateFocus(boolean hasFocus) {
+        JPanel oldTitleBar = this.getGuiBuilder().getPanelsMap().get("titleBar");
+
+        if (oldTitleBar != null) {
+            String texturePath = "assets/ui/img/bg/header.png";
+            BufferedImage texture = this.getImageUtils().getLocalImage(texturePath);
+
+            int sectionHeight = oldTitleBar.getHeight();
+            int yOffset = hasFocus ? sectionHeight : 0;
+
+            DragListener dragListener = new DragListener();
+            JPanel newTitleBar = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+
+                    if (texture != null) {
+                        g.drawImage(texture, 0, 0, getWidth(), getHeight(),
+                                0, yOffset, texture.getWidth(), yOffset + sectionHeight, null);
+                    }
+
+                    Graphics2D g2d = (Graphics2D) g;
+                    Color shadowColor = new Color(0, 0, 0, 77);
+                    g2d.setColor(shadowColor);
+                    g2d.fillRect(0, 0, getWidth(), getHeight());
+                }
+            };
+
+            newTitleBar.setBounds(oldTitleBar.getBounds());
+            newTitleBar.setLayout(oldTitleBar.getLayout());
+            newTitleBar.setOpaque(false);
+            newTitleBar.setName(oldTitleBar.getName());
+
+            for (Component component : oldTitleBar.getComponents()) {
+                oldTitleBar.remove(component);
+                newTitleBar.add(component);
+            }
+
+            dragListener.addDragListener(newTitleBar, this.getFrame());
+            this.getGuiBuilder().getPanelsMap().put("titleBar", newTitleBar);
+
+            Container parent = oldTitleBar.getParent();
+            parent.remove(oldTitleBar);
+            parent.add(newTitleBar);
+            parent.revalidate();
+            parent.repaint();
+        }
     }
 
     @SuppressWarnings("unused")

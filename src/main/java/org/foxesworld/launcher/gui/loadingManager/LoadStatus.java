@@ -18,6 +18,7 @@ import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class LoadStatus extends LoadingManager implements AnimationStats {
     private final ComponentsAccessor componentsAccessor;
+    //private final JProgressBar progressBar;
 
     public LoadStatus(Engine engine, int index) {
         this.engine = engine;
@@ -28,14 +29,16 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
         this.ANIMATION_SPEED = attributesList.get(index).getAnimSpeed();
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
         this.animationManager.setAnimationStats(this);
-        this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class));
-
+        this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class, JProgressBar.class));
+        //this.progressBar = (JProgressBar) this.componentsAccessor.getComponent("loadProgress");
+        //this.progressBar.setMinimum(100);
         this.engine.getExecutorServiceProvider().submitTask(() -> this.initializeLoadingFrame(index), "initializeLoadingFrame");
     }
 
     @Override
     protected void initializeLoadingFrame(int index) {
         SwingUtilities.invokeLater(() -> {
+            //this.progressBar.setValue(0);
             setSize(getFrameWidth(), getFrameHeight());
             LoadManagerAttributes attributes = attributesList.get(index);
 
@@ -86,4 +89,8 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
     public void animationFinished() {
         SwingUtilities.invokeLater(() -> this.setVisible(false));
     }
+
+    //public void setProgress(int value){ this.progressBar.setValue(value); }
+
+    //public JProgressBar getProgressBar() {return progressBar;}
 }

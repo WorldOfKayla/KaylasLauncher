@@ -27,8 +27,10 @@ public class Core implements GameListener {
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
+    private boolean forceUpdate = false;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
+        this.forceUpdate = forceUpdate;
         ServerAttributes currentServer = actionHandler.getCurrentServer();
         actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(
@@ -43,7 +45,7 @@ public class Core implements GameListener {
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
         fileLoader.setLoaderListener(fileLoaderImpl);
 
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {fileLoader.getFilesToDownload(forceUpdate);}, "downloadFiles");
+        this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
         //Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
         //downloadThread.start();
     }
@@ -71,7 +73,7 @@ public class Core implements GameListener {
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
         CountDownLatch latch = new CountDownLatch(1);
-        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(),  "donePlaying", timeElapsed, latch);
+        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(), "donePlaying", timeElapsed, latch);
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -125,6 +127,7 @@ public class Core implements GameListener {
             latch.countDown();
         }
     }
+
     public static int getCorrectOSArch() {
         if (OS_TYPE == JVMHelper.OS.WIN) {
             return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;
@@ -158,5 +161,9 @@ public class Core implements GameListener {
 
     public void setGameLauncher(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
+    }
+
+    public boolean isForceUpdate() {
+        return forceUpdate;
     }
 }

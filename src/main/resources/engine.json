@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.18.3",
+  "launcherVersion": "1.18.5",
   "launcherBuild": "Threadplex",
   "styles": [
     "button",
@@ -10,7 +10,6 @@
     "passField",
     "progressBar",
     "dropBox",
-    "serverBox",
     "textField",
     "textArea",
     "slider",

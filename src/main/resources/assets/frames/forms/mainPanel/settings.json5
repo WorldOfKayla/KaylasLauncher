@@ -69,7 +69,6 @@
               panelOptions: {
                 opaque: false,
                 visible: true,
-                layout: "gridbag",
                 bounds: {
                   x: 490,
                   y: 0,
@@ -80,6 +79,24 @@
                 }
               },
               childComponents: [
+                {
+                  type: "label",
+                  fontSize: 14,
+                  style: "titleBold",
+                  imageIcon: "assets/ui/icons/info.svg",
+                  iconWidth: 32,
+                  iconHeight: 32,
+                  localeKey: "settings.settingsInfo",
+                  id: "optionsInfo",
+                  bounds: {
+                    x: 5,
+                    y: 20,
+                    size: {
+                      width: 270,
+                      height: 60
+                    }
+                  }
+                },
                 {
                   type: "textArea",
                   lineWrap: true,

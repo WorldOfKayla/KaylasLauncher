@@ -110,7 +110,7 @@
                 {
                   type: "fileSelector" ,
                   selectionMode: "DIRECTORIES_ONLY",
-				  background: "assets/ui/components/input/textField2.png",
+				  background: "assets/ui/components/input/textField.png",
                   initialValue: "config#homeDir",
                   id: "homeDir" ,
                   bounds: {
@@ -126,7 +126,6 @@
                   type: "button",
                   enabled: true,
                   keyCode: "ENTER",
-                  fontSize: 11,
                   toolTip: "tooltip.applySettings",
                   tooltipStyle: "success",
                   style: "buttonMain",

@@ -19,7 +19,7 @@
       childComponents: [
         {
           type: "textField",
-          style: "textFieldAlt",
+          style: "textFieldMain",
           localeKey: "auth.loginPlaceholder",
           id: "login",
           bounds: {
@@ -33,7 +33,7 @@
         },
         {
           type: "passField",
-          style: "textFieldAlt",
+          style: "textFieldMain",
           localeKey: "auth.passwordPlaceholder",
           showIcon: "assets/ui/icons/show.svg",
           hideIcon: "assets/ui/icons/hide.svg",

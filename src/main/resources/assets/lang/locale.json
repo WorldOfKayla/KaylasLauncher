@@ -74,6 +74,11 @@
       "ru_RU": "Общие параметры",
       "pl_PL": "Podstawowe opcje"
     },
+    "settingsInfo": {
+      "en_US": "Description",
+      "ru_RU": "Описание",
+      "pl_PL": "Informacia"
+    },
     "autoEnter": {
       "en_US": "Auto enter a selected server",
       "ru_RU": "Автозаход на сервер",
@@ -135,9 +140,9 @@
       "pl_PL": "Gdy ta opcja jest włączona, launcher uruchomi się automatycznie po wyjściu z gry"
     },
     "applySettings": {
-      "en_US": "Apply Settings",
-      "ru_RU": "Применить настройки",
-      "pl_PL": "Zastosuj ustawienia"
+      "en_US": "Apply",
+      "ru_RU": "Применить",
+      "pl_PL": "Zastosuj"
     },
     "ramField": {
       "en_US": "RAM amount (Mb)",

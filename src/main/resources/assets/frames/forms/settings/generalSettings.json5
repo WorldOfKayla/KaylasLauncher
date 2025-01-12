@@ -18,8 +18,8 @@
       childComponents: [
         {
           type: "label",
-          fontSize: 15,
-          style: "promptLabel",
+          fontSize: 14,
+          style: "titleBold",
           imageIcon: "assets/ui/icons/settings.svg",
           iconWidth: 32,
           iconHeight: 32,
@@ -29,7 +29,7 @@
             x: 5,
             y: 20,
             size: {
-              width: 220,
+              width: 270,
               height: 60
             }
           }
@@ -110,6 +110,7 @@
                 {
                   type: "fileSelector" ,
                   selectionMode: "DIRECTORIES_ONLY",
+				  background: "assets/ui/components/input/textField2.png",
                   initialValue: "config#homeDir",
                   id: "homeDir" ,
                   bounds: {

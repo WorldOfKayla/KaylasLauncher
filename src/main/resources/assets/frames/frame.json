@@ -32,7 +32,7 @@
         {
           "type": "label",
           "style": "titleBold",
-          "fontSize": 15,
+          "fontSize": 10,
           "localeKey": "general.appTitle",
           "id": "appLogo",
           "color": "#f78600",
@@ -68,13 +68,13 @@
         {
           "type": "label",
           "fontSize": 10,
-          "style": "titleBold",
+          "style": "title",
           "localeKey": "|",
           "initialValue": "build",
           "color": "#b7f400",
           "id": "appBuild",
           "bounds": {
-            "x": 230,
+            "x": 290,
             "y": -19,
             "size": {
               "width": 250,

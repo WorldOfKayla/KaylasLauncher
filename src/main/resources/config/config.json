@@ -1,5 +1,6 @@
 {
   "lang": 0,
+  "logLevel": "INFO",
   "loaderIndex": 0,
   "autoEnter": false,
   "launchAC": true,

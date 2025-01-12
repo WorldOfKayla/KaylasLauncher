@@ -1,5 +1,6 @@
 package org.foxesworld;
 
+import org.apache.logging.log4j.Level;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
 import org.foxesworld.engine.gui.FileProperties;
@@ -22,7 +23,6 @@ import org.foxesworld.launcher.gui.InitialValue;
 import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.user.User;
-import org.foxesworld.notification.NotificationPopup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,9 +44,7 @@ public class Launcher extends Engine implements AuthListener {
     private final FileProperties fileProperties;
     private IconUtils iconUtils;
     private final File launcherFile;
-    private final NotificationPopup notification;
-    private static Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
-
+    private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
@@ -70,7 +68,6 @@ public class Launcher extends Engine implements AuthListener {
         long startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
-        this.notification = new NotificationPopup();
 
         preInit();
         this.auth = new Auth(this);
@@ -90,6 +87,7 @@ public class Launcher extends Engine implements AuthListener {
         this.frameConstructor = new FrameConstructor(this);
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils(this);
+        this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config)config).getLogLevel()));
     }
 
     @Override
@@ -183,6 +181,11 @@ public class Launcher extends Engine implements AuthListener {
     public void onAdditionalPanelBuild(JPanel jPanel) {}
 
     @Override
+    public void onGuiBuilt() {
+
+    }
+
+    @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
         parentPanel.updateUI();
         parentPanel.repaint();
@@ -220,10 +223,6 @@ public class Launcher extends Engine implements AuthListener {
 
     public IconUtils getIconUtils() {
         return iconUtils;
-    }
-
-    public NotificationPopup getNotification() {
-        return notification;
     }
 
     public File getLauncherFile() {

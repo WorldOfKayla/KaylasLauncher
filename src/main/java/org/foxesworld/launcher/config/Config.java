@@ -12,7 +12,7 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     private int selectedServer, lang, loaderIndex, width, height, ramAmount;
     private double volume;
-    private String login, password, homeDir;
+    private String login, password, homeDir, logLevel;
     private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic, discordRPC;
 
     public Config(Engine engine) {
@@ -97,6 +97,10 @@ public class Config extends org.foxesworld.engine.config.Config {
     public int getWidth() { return width; }
     public int getHeight() { return height; }
     public String getHomeDir() { return homeDir; }
+
+    public String getLogLevel() {
+        return logLevel;
+    }
 
     // Setters
     public void setVolume(double volume) {

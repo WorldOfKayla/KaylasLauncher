@@ -91,7 +91,7 @@
         x: 30,
         y: 140,
         size: {
-          width: 320,
+          width: 370,
           height: 32
         }
       }

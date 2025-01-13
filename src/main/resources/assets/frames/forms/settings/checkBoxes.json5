@@ -3,7 +3,7 @@
     {
       type: "checkBox",
       enabled: true,
-      style: "solid",
+      style: "solid1",
       id: "autoEnter",
       localeKey: "settings.autoEnter",
       initialValue: "config#autoEnter",
@@ -19,7 +19,7 @@
     {
       type: "checkBox",
       enabled: true,
-      style: "solid",
+      style: "solid1",
       id: "fullScreen",
       localeKey: "settings.fullScreen",
       initialValue: "config#fullScreen",
@@ -35,7 +35,7 @@
     {
       type: "checkBox",
       enabled: false,
-      style: "solid",
+      style: "solid1",
       id: "loadNews",
       localeKey: "settings.loadNews",
       initialValue: "config#loadNews",
@@ -51,7 +51,7 @@
     {
       type: "checkBox",
       enabled: true,
-      style: "solid",
+      style: "solid1",
       id: "enableSound",
       localeKey: "settings.enableSound",
       initialValue: "config#enableSound",
@@ -67,7 +67,7 @@
     {
       type: "checkBox",
       enabled: true,
-      style: "solid",
+      style: "solid1",
       id: "backgroundMusic",
       localeKey: "settings.backgroundMusic",
       initialValue: "config#backgroundMusic",
@@ -83,7 +83,7 @@
     {
       type: "checkBox",
       enabled: true,
-      style: "solid",
+      style: "solid1",
       id: "launchAC",
       localeKey: "settings.launchAC",
       initialValue: "config#launchAC",

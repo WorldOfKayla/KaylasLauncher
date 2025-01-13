@@ -47,7 +47,6 @@ public class Core implements GameListener {
 
         this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
 
-        // Инициализация GameTimeTask
         this.gameTimeTask = new GameTimeTask(
                 currentServer,
                 this.launcher.getUser().getLogin(),

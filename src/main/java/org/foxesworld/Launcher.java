@@ -7,6 +7,7 @@ import org.foxesworld.engine.gui.FileProperties;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
+import org.foxesworld.engine.gui.components.panel.Panel;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;

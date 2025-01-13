@@ -9,14 +9,12 @@ import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
+import org.foxesworld.launcher.game.GameTimeTask;
 import org.foxesworld.launcher.gui.ActionHandler;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.RejectedExecutionException;
 
 import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 
@@ -28,6 +26,8 @@ public class Core implements GameListener {
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
     private boolean forceUpdate = false;
+
+    private final GameTimeTask gameTimeTask;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
         this.forceUpdate = forceUpdate;
@@ -46,39 +46,55 @@ public class Core implements GameListener {
         fileLoader.setLoaderListener(fileLoaderImpl);
 
         this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
-        //Thread downloadThread = new Thread(() -> fileLoader.getFilesToDownload(forceUpdate));
-        //downloadThread.start();
+
+        // Инициализация GameTimeTask
+        this.gameTimeTask = new GameTimeTask(
+                currentServer,
+                this.launcher.getUser().getLogin(),
+                this.launcher.getExecutorServiceProvider().getExecutorService(),
+                this.launcher.getPOSTrequest()
+        );
     }
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
-        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.gameLauncher.launcher.getUser().getLogin() + " ===");
+        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
         if (getLauncher().getLoadingManager().isVisible()) {
             getLauncher().getLoadingManager().toggleLoader();
         }
+
+        // Отправка "startedPlaying"
         CountDownLatch latch = new CountDownLatch(1);
-        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(), "startedPlaying", 0, latch);
+        gameTimeTask.writePlayTime("startedPlaying", 0, latch);
         try {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // Запуск GameTimeTask
+        gameTimeTask.start();
     }
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-
         long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.gameLauncher.launcher.getUser().getLogin());
+        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.launcher.getUser().getLogin());
+
+        // Остановка GameTimeTask
+        gameTimeTask.stop();
+
+        // Отправка "donePlaying"
         CountDownLatch latch = new CountDownLatch(1);
-        writePlayTime(serverAttributes, this.gameLauncher.launcher.getUser().getLogin(), "donePlaying", timeElapsed, latch);
+        gameTimeTask.writePlayTime("donePlaying", timeElapsed, latch);
         try {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {
                 this.launcher.getExecutorServiceProvider().shutdown();
@@ -89,43 +105,6 @@ public class Core implements GameListener {
         }
         this.launcher.getExecutorServiceProvider().shutdown();
         System.exit(0);
-    }
-
-    public void writePlayTime(ServerAttributes serverAttributes, String login, String request, long time, CountDownLatch latch) {
-        Runnable task = () -> {
-            try {
-                Map<String, Object> playerData = new HashMap<>();
-                playerData.put("serverName", serverAttributes.getServerName());
-                playerData.put("login", login);
-                playerData.put("playTime", time);
-                playerData.put("sysRequest", request);
-
-                this.launcher.getPOSTrequest().sendAsync(playerData,
-                        response -> {
-                            System.out.println("Response: " + response);
-                            latch.countDown();
-                        },
-                        error -> {
-                            error.printStackTrace();
-                            latch.countDown();
-                        });
-            } catch (Exception e) {
-                e.printStackTrace();
-                latch.countDown();
-            }
-        };
-
-        try {
-            if (!this.launcher.getExecutorServiceProvider().getExecutorService().isShutdown()) {
-                this.launcher.getExecutorServiceProvider().submitTask(task, "writePlayTime." + request);
-            } else {
-                System.err.println("Executor service is shutting down, cannot submit task.");
-                latch.countDown();
-            }
-        } catch (RejectedExecutionException e) {
-            e.printStackTrace();
-            latch.countDown();
-        }
     }
 
     public static int getCorrectOSArch() {

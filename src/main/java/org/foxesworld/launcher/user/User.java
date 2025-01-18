@@ -38,7 +38,6 @@ public class User extends org.foxesworld.engine.user.User {
         this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
-        this.serverInfo.setServerStatusImg(engine.getImageUtils().getLocalImage("assets/ui/components/icons/status.png"));
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
         this.userAttributes = new UserAttributes(this);
@@ -54,7 +53,7 @@ public class User extends org.foxesworld.engine.user.User {
         } else {
             displayLoginPanel();
         }
-        this.showTaskMgr();
+        //this.showTaskMgr();
     }
 
     private void displayLoginPanel() {
@@ -63,7 +62,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void setDropBoxData(DropBox dropBox) {
         dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(auth.getLauncher().getConfig().getSelectedServer());
+        dropBox.setSelectedIndex(this.launcher.getConfig().getSelectedServer());
         dropBox.setScrollBoxListener(this.serverInfoDisplayer);
     }
 
@@ -173,9 +172,7 @@ public class User extends org.foxesworld.engine.user.User {
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error processing user head icon for login: {}. Error: {}", login, e.getMessage(), e);
             }
-        }, e -> {
-            Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e);
-        });
+        }, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
     }
 
 

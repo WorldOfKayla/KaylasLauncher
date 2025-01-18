@@ -51,14 +51,14 @@
         {
           type: "label",
           fontSize: 25,
-          style: "promptLabel",
+          style: "titleBold",
           localeKey: "auth.authTitle",
           id: "appHeader",
           bounds: {
-            x: 80,
+            x: 50,
             y: 50,
             size: {
-              width: 250,
+              width: 340,
               height: 50
             }
           }

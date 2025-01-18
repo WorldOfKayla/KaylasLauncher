@@ -1,14 +1,11 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.animatix.AnimationFactory;
-import org.foxesworld.animatix.animation.AnimationStatus;
-import org.foxesworld.animatix.animation.config.AnimationConfig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 

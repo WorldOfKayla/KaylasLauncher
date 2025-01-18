@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 public class GameTimeTask {
-
-    private final int delay = 60;
+    private final int delay = 20;
+    private long lastElapsedTimeSent = 0;
     private final ScheduledExecutorService scheduler;
     private final ServerAttributes serverAttributes;
     private final String userLogin;
@@ -29,9 +29,6 @@ public class GameTimeTask {
         this.postRequest = postRequest;
     }
 
-    /**
-     * Инициализация задачи отслеживания времени.
-     */
     public void start() {
         startTime = System.currentTimeMillis();
 
@@ -40,19 +37,20 @@ public class GameTimeTask {
             long elapsedTime = (currentTime - startTime) / 1000;
 
             writePlayTime("playing", elapsedTime, null);
-        }, 1, delay, TimeUnit.SECONDS); // запуск каждые 60 секунд
+            lastElapsedTimeSent = elapsedTime;
+        }, 0, delay, TimeUnit.SECONDS);
     }
-
 
     public void stop() {
         if (!scheduler.isShutdown()) {
-            scheduler.shutdownNow();
+            scheduler.shutdown();
+            Engine.LOGGER.info("GameTimeTask stopped successfully.");
         }
     }
 
-
     public void writePlayTime(String action, long elapsedTime, CountDownLatch latch) {
         Runnable task = () -> {
+            System.out.println(elapsedTime);
             try {
                 Map<String, Object> playerData = new HashMap<>();
                 playerData.put("serverName", serverAttributes.getServerName());

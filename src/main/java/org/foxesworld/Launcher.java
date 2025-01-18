@@ -7,7 +7,6 @@ import org.foxesworld.engine.gui.FileProperties;
 import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
-import org.foxesworld.engine.gui.components.panel.Panel;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.sound.Sound;
@@ -33,10 +32,8 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class Launcher extends Engine implements AuthListener {
     private final Auth auth;
@@ -93,16 +90,22 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void init() {
-        SwingUtilities.invokeLater(() -> setActionHandler(new ActionHandler(this)));
             setupDiscord();
-            buildGui(getEngineData().getStyles());
-            loadMainPanel(fileProperties.getMainFrame());
             this.getExecutorServiceProvider().submitTask(() -> {
+                buildGui(getEngineData().getStyles());
+                loadMainPanel(fileProperties.getMainFrame());
                     this.user = new User(this);
                     setNews();
                     this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                     this.settings = new Settings(this);
-                    this.settings.addListeners();
+
+                    SwingUtilities.invokeLater(() -> {
+                        this.settings.addListeners();
+                        setActionHandler(new ActionHandler(this));
+                        if(this.getConfig().isBackgroundMusic()) {
+                            SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
+                        }
+                    });
                 }, "init");
         setInit(true);
     }
@@ -112,9 +115,6 @@ public class Launcher extends Engine implements AuthListener {
         this.getExecutorServiceProvider().submitTask(() -> {
             this.getFrame().setFocusStatusListener(this);
             getGuiBuilder().buildAdditionalPanels();
-            if(this.getConfig().isBackgroundMusic()) {
-                SOUND.playSound("music", "launcherTheme", true);
-            }
         }, "postInit");
     }
 
@@ -165,14 +165,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLoad(Auth auth, Map<String, Object> authCredentials) {
-        //this.getExecutorServiceProvider().submitTask(() -> {
-            auth.setAuthCredentials(authCredentials);
-            try {
-                if (!auth.authorizeAsync().get()) {
-                    config.clearConfigData(Arrays.asList("login", "password"), true);
-                }
-            } catch (InterruptedException | ExecutionException ignored) {}
-        //}, "auth");
+        auth.authTask(authCredentials);
     }
 
     @Override
@@ -295,8 +288,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void showDialog(String messageKey, String errorTitle, int warningMessage, boolean terminate) {
-        this.getExecutorServiceProvider().submitTask(() -> {
-        SwingUtilities.invokeLater(() -> {
+        this.getExecutorServiceProvider().submitTask(() -> SwingUtilities.invokeLater(() -> {
             String errorMessage = this.getLANG().getString(messageKey);
             this.getSOUND().playSound("other", messageKey);
             UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12.0F));
@@ -304,7 +296,6 @@ public class Launcher extends Engine implements AuthListener {
             if (terminate) {
                 System.exit(0);
             }
-        });
-        }, "modalDialog");
+        }), "modalDialog");
     }
 }

@@ -26,16 +26,21 @@ public class Core implements GameListener {
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
     private boolean forceUpdate = false;
+    long timeElapsed;
 
     private final GameTimeTask gameTimeTask;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
         this.forceUpdate = forceUpdate;
         ServerAttributes currentServer = actionHandler.getCurrentServer();
-        actionHandler.getEngine().getDiscord().setSmallImageText(actionHandler.getCurrentServer().getServerDescription());
+        actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(
-                actionHandler.getEngine().getLANG().getStringWithKey("game.login", new String[]{"login"}, new String[]{actionHandler.getLauncher().getUser().getLogin()}),
-                actionHandler.getEngine().getLANG().getStringWithKey("game.playing", new String[]{"server"}, new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.login",
+                        new String[]{"login"},
+                        new String[]{actionHandler.getLauncher().getUser().getLogin()}),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
+                        new String[]{"server"},
+                        new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
                 currentServer.getServerName().toLowerCase(Locale.ROOT)
         );
         this.actionHandler = actionHandler;
@@ -53,7 +58,29 @@ public class Core implements GameListener {
                 this.launcher.getExecutorServiceProvider().getExecutorService(),
                 this.launcher.getPOSTrequest()
         );
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                shutdownSequence();
+            } catch (Exception e) {
+                Engine.LOGGER.error("Error during shutdown sequence: ", e);
+            }
+        }));
     }
+
+    private void shutdownSequence() {
+        CountDownLatch latch = new CountDownLatch(1);
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        gameTimeTask.writePlayTime("donePlaying", timeElapsed, latch);
+        gameTimeTask.stop();
+        try {
+            latch.await();
+            Engine.LOGGER.info("Successfully saved playtime: " + timeElapsed + " seconds.");
+        } catch (InterruptedException e) {
+            Engine.LOGGER.error("Error waiting for playtime write completion: ", e);
+        }
+    }
+
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
@@ -64,7 +91,6 @@ public class Core implements GameListener {
             getLauncher().getLoadingManager().toggleLoader();
         }
 
-        // Отправка "startedPlaying"
         CountDownLatch latch = new CountDownLatch(1);
         gameTimeTask.writePlayTime("startedPlaying", 0, latch);
         try {
@@ -73,26 +99,14 @@ public class Core implements GameListener {
             e.printStackTrace();
         }
 
-        // Запуск GameTimeTask
         gameTimeTask.start();
     }
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-        long timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.launcher.getUser().getLogin());
 
-        // Остановка GameTimeTask
-        gameTimeTask.stop();
-
-        // Отправка "donePlaying"
-        CountDownLatch latch = new CountDownLatch(1);
-        gameTimeTask.writePlayTime("donePlaying", timeElapsed, latch);
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {

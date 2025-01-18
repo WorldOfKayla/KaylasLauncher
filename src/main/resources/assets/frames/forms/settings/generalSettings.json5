@@ -3,6 +3,7 @@
     generalSettings: {
       panelOptions: {
         opaque: false,
+        doubleBuffered: true,
         focusable: true,
         visible: true,
         bounds: {

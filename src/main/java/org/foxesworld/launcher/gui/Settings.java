@@ -15,7 +15,6 @@ import org.foxesworld.engine.gui.components.spinner.SpinnerListener;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
-import org.foxesworld.launcher.config.Config;
 
 import javax.swing.*;
 import java.awt.*;

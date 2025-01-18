@@ -1,6 +1,5 @@
 package org.foxesworld.launcher.gui;
 
-import com.formdev.flatlaf.ui.FlatProgressBarUI;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.components.button.Button;
@@ -10,8 +9,6 @@ import org.foxesworld.engine.gui.components.multiButton.MultiButton;
 import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.engine.sound.PlaybackStatusListener;
-import org.foxesworld.engine.sound.SoundPlayer;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
 
@@ -163,6 +160,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "toGame" -> {
                     pressedComponent.setEnabled(false);
                     this.getComponent("logOut").setEnabled(false);
+                    this.launcher.getSOUND().playSound("other", "start");
                     DropBox dropBox = (DropBox) this.getComponent("serverBox");
                     Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
                     this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
@@ -185,20 +183,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             }
     }
 
-    public void writePlayTime(String serverName, String login, long time){
-        Map<String, Object> playerData = new HashMap<>();
-        playerData.put("serverName", serverName);
-        playerData.put("login", login);
-        playerData.put("playTime", time);
-        playerData.put("sysRequest" , "donePlaying");
-        this.launcher.getPOSTrequest().sendAsync(playerData,
-                response -> {
-                    System.out.println(response);
-                },
-                error -> {
-
-                });
-    }
     @Override
     public Engine getEngine() {
         return engine;

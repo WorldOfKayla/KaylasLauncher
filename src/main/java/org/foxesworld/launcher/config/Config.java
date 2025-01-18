@@ -2,7 +2,9 @@ package org.foxesworld.launcher.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.foxesworld.cfgProvider.annotations.ConfigKey;
 import org.foxesworld.engine.Engine;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -12,8 +14,13 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     private int selectedServer, lang, loaderIndex, width, height, ramAmount;
     private double volume;
-    private String login, password, homeDir, logLevel;
-    private boolean autoEnter, fullScreen, loadNews, enableSound, launchAC, backgroundMusic, discordRPC;
+    private boolean enableSound;
+    private boolean backgroundMusic;
+
+    @ConfigKey("logs.level")
+    private String logLevel;
+    private String login, password, homeDir;
+    private boolean autoEnter, fullScreen, loadNews, launchAC, discordRPC;
 
     public Config(Engine engine) {
         super(engine.getConfigFiles(), Engine.LOGGER);
@@ -100,6 +107,18 @@ public class Config extends org.foxesworld.engine.config.Config {
 
     public String getLogLevel() {
         return logLevel;
+    }
+
+    public static class LogsConfig {
+        private String level;
+
+        public String getLevel() {
+            return level;
+        }
+
+        public void setLevel(String level) {
+            this.level = level;
+        }
     }
 
     // Setters

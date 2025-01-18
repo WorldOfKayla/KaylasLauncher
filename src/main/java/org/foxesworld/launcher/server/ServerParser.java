@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.server.ServerAttributes;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

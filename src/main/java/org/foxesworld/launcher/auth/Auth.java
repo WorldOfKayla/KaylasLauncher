@@ -28,7 +28,9 @@ public class Auth {
     private final EncryptionKeyManager encryptionKeyManager;
     private AuthListener authListener;
     private Map<String, Object> authCredentials = new HashMap<>();
-    private ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
+    private final Object balanceLock = new Object();
+    private volatile boolean isBalanceUpdating = false;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private boolean authorised = false;
@@ -42,6 +44,17 @@ public class Auth {
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
         setAuthListener(launcher);
         attemptAutoLogin();
+    }
+
+    public void  authTask(Map<String, Object> authCredentials){
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+            setAuthCredentials(authCredentials);
+            try {
+                if (!authorizeAsync().get()) {
+                    config.clearConfigData(Arrays.asList("login", "password"), true);
+                }
+            } catch (InterruptedException | ExecutionException ignored) {}
+        }, "auth");
     }
 
     private void attemptAutoLogin() {
@@ -126,26 +139,44 @@ public class Auth {
         authListener.onLogin(authCredentials);
     }
 
-    private void updateBalance(List<Map<String, Integer>> balance) {
-        if (balance != null && !balance.isEmpty()) {
-            ConcurrentHashMap<String, AtomicInteger> newBalances = new ConcurrentHashMap<>();
-
-            balance.forEach(balanceEntry -> {
-                balanceEntry.forEach((key, value) -> {
-                    newBalances.computeIfAbsent(key, k -> new AtomicInteger()).addAndGet(value);
-                });
-            });
-
-            newBalances.forEach((key, value) -> balanceMap.merge(key, value, (oldValue, newValue) -> {
-                oldValue.addAndGet(newValue.get());
-                return oldValue;
-            }));
-
-            Engine.getLOGGER().info("Balance updated: " + balanceMap);
-        } else {
+    public void updateBalance(List<Map<String, Integer>> balance) {
+        if (balance == null || balance.isEmpty()) {
             Engine.getLOGGER().warn("Received null or empty balance data");
+            return;
         }
+
+        synchronized (balanceLock) {
+            if (isBalanceUpdating) {
+                Engine.getLOGGER().warn("Balance update is already in progress, skipping duplicate request.");
+                return;
+            }
+            isBalanceUpdating = true;
+        }
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                ConcurrentHashMap<String, AtomicInteger> newBalances = new ConcurrentHashMap<>();
+                balance.forEach(balanceEntry -> balanceEntry.forEach((key, value) ->
+                        newBalances.computeIfAbsent(key, k -> new AtomicInteger()).addAndGet(value)
+                ));
+
+                synchronized (balanceLock) {
+                    newBalances.forEach((key, value) -> balanceMap.merge(key, value, (oldValue, newValue) -> {
+                        oldValue.addAndGet(newValue.get());
+                        return oldValue;
+                    }));
+                    Engine.getLOGGER().info("Balance updated: " + balanceMap);
+                }
+            } catch (Exception e) {
+                Engine.getLOGGER().error("Error updating balance", e);
+            } finally {
+                synchronized (balanceLock) {
+                    isBalanceUpdating = false;
+                }
+            }
+        });
     }
+
 
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");

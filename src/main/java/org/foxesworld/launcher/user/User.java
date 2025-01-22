@@ -299,4 +299,16 @@ public class User extends org.foxesworld.engine.user.User {
         } else return UserGroup.GUEST;
     }
 
+    public int getUserIntGroup(){
+        return  Integer.parseInt((String) this.userAttributes.group);
+    }
+
+    public String getUserFullName(){
+        return this.userAttributes.userFullName;
+    }
+
+    public String getColorScheme(){
+        return this.userAttributes.colorScheme;
+    }
+
 }

@@ -128,6 +128,8 @@ public class Auth {
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
+        authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
+        authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
 
         updateBalance(authResponse.getBalance());
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");

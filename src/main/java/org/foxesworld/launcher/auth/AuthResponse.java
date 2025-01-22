@@ -5,7 +5,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 class AuthResponse {
-    private String message, uuid, token, type,login, groupName;
+    private String message, uuid, token, type,login, groupName, userFullName;
     private List<Map<String, Integer>> balance;
     private int group;
     private String colorScheme;
@@ -44,5 +44,9 @@ class AuthResponse {
 
     public String getColorScheme() {
         return colorScheme;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
     }
 }

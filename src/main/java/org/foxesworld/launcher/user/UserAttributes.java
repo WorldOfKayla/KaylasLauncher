@@ -2,7 +2,7 @@ package org.foxesworld.launcher.user;
 
 class UserAttributes {
 
-    String login, password, units, token, uuid, colorScheme, userAction, groupName;
+    String login, password, units, token, uuid, colorScheme, userAction, groupName, userFullName;
     Object group;
     boolean rememberMe;
 

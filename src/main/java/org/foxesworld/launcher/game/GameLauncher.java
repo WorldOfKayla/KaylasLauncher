@@ -81,8 +81,8 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             processArgs.add("--server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
         }
-        //processArgs.add("--width=" + this.config.getWidth());
-        //processArgs.add("--height=" + this.config.getHeight());
+        processArgs.add("--width=" + this.config.getWidth());
+        processArgs.add("--height=" + this.config.getHeight());
 
         //if(this.User.re) Adding multiplayer only to an online User
         //processArgs.add("--disableMultiplayer");

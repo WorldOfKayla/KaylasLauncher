@@ -2,11 +2,7 @@
   "button": {
     "click": {
       "sounds": [
-        "assets/sounds/button/click/press0.ogg",
-        "assets/sounds/button/click/press1.ogg",
-        "assets/sounds/button/click/press2.ogg",
-        "assets/sounds/button/click/press3.ogg",
-        "assets/sounds/button/click/press4.ogg"
+        "assets/sounds/button/submit.ogg"
       ]
     },
     "clickSmall": {

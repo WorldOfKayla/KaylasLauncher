@@ -154,8 +154,4 @@ public class Core implements GameListener {
     public void setGameLauncher(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }
-
-    public boolean isForceUpdate() {
-        return forceUpdate;
-    }
 }

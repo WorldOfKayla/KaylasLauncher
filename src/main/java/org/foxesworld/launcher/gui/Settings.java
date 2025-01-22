@@ -168,12 +168,9 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                     launcher.getConfig().setVolume(value);
                     launcher.getEngine().getConfig().getConfig().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                    //((JSpinner) this.getComponent("volumeText")).setValue(value);
                 }
 
                 case "ramAmount" -> {
-                    //((JSpinner) this.getComponent("ramAmountText")).setValue(value);
-                    //launcher.getEngine().getConfig().getConfig().put("ramAmount", value);
                 }
             }
         });

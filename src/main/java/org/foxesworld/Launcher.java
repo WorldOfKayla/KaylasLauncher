@@ -37,6 +37,7 @@ import java.util.Map;
 
 public class Launcher extends Engine implements AuthListener {
     private final Auth auth;
+    long startTime;
     private User user;
     private Settings settings;
     private final FileProperties fileProperties;
@@ -63,7 +64,7 @@ public class Launcher extends Engine implements AuthListener {
 
     public Launcher() {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
 
@@ -71,7 +72,6 @@ public class Launcher extends Engine implements AuthListener {
         this.auth = new Auth(this);
         new LauncherValidator(this).validate();
         init();
-        logStartupTime(startTime);
     }
 
     @Override
@@ -94,21 +94,21 @@ public class Launcher extends Engine implements AuthListener {
             this.getExecutorServiceProvider().submitTask(() -> {
                 buildGui(getEngineData().getStyles());
                 loadMainPanel(fileProperties.getMainFrame());
+                SwingUtilities.invokeLater(() -> {
                     this.user = new User(this);
                     setNews();
                     this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                     this.settings = new Settings(this);
-
-                    SwingUtilities.invokeLater(() -> {
-                        this.settings.addListeners();
-                        setActionHandler(new ActionHandler(this));
-                        if(this.getConfig().isBackgroundMusic()) {
-                            SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
-                        }
+                    this.settings.addListeners();
+                    setActionHandler(new ActionHandler(this));
+                    if(this.getConfig().isBackgroundMusic()) {
+                        SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
+                    }
                     });
                 }, "init");
         setInit(true);
     }
+
 
     @Override
     protected void postInit() {
@@ -125,7 +125,7 @@ public class Launcher extends Engine implements AuthListener {
         }, "discordSetUp");
     }
 
-    private void setNews() {
+    public void setNews() {
         //if (this.getConfig().isLoadNews()) {
             //setNews(new News(this));
         //} else {
@@ -165,6 +165,7 @@ public class Launcher extends Engine implements AuthListener {
 
     @Override
     public void onLoad(Auth auth, Map<String, Object> authCredentials) {
+        logStartupTime(startTime);
         auth.authTask(authCredentials);
     }
 
@@ -172,10 +173,14 @@ public class Launcher extends Engine implements AuthListener {
     public void onPanelsBuilt() {}
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {}
+    public void onAdditionalPanelBuild(JPanel jPanel) {
+
+    }
 
     @Override
-    public void onGuiBuilt() {}
+    public void onGuiBuilt() {
+
+    }
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {

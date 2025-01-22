@@ -16,6 +16,7 @@ import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
@@ -39,12 +40,13 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {
+        this.getPanel().repaint();
         //user.updateServer(dropBox.getSelectedIndex());
     }
 
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
-        user.getServerInfoDisplayer().getPanel().repaint();
+        this.getPanel().repaint();
     }
 
     @Override
@@ -53,15 +55,9 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             if (Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
                 displayServerInfo(0);
             }
-            //user.updateServer(dropBox.getSelectedIndex());
-            if (dropBox.getState().equals(State.CLOSED)) {
-                //if (user.getLauncher().getConfig().isLoadNews()) {
-                //    newsPanel.removeAll();
-                //    addNewsFrameToPanel();
-                //}
-            }
             System.gc();
         }, "dropBoxClose");
+        this.getPanel().repaint();
     }
 
     @Override
@@ -103,7 +99,13 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {
-        ((JLabel) getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + thisServer.getServerVersion());
+        JLabel serverCore;
+        String[] version = thisServer.getServerVersion().split("-");
+
+        ((JLabel) getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + version[0]);
+        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/srvIcons/" + version[1] + ".png"), 32, 32);
+        serverCore = ((JLabel) getComponent("serverCore"));
+        serverCore.setIcon(new ImageIcon(image));
         ((JLabel) getComponent("serverImg")).setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
         ((TextArea) getComponent("serverDescLabel")).setText(thisServer.getServerDescription());
     }

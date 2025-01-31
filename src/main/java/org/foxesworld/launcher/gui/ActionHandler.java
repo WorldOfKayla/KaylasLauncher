@@ -15,9 +15,7 @@ import org.foxesworld.notification.Notification;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
@@ -66,7 +64,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "smallButton" -> {
-                    this.launcher.getLoadingManager().toggleLoader();
+                    this.launcher.getLoadingManager().toggleVisibility();
+                    //launcher.getOptionalModsWindow().toggleVisibility();
                    // launcher.init();
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
@@ -106,11 +105,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
                 case "cancelDownload-small" -> {
                     core.getFileLoader().cancel();
-                    this.getComponent("logOut").setEnabled(true);
-                    this.getComponent("toGame").setEnabled(true);
                 }
                 case "applySettings" -> {
-                    this.getEngine().getGuiBuilder().getComponentFactory().getCustomTooltip().clearAllTooltips();
+                    //this.getEngine().getGuiBuilder().getComponentFactory().ggetCustomTooltip().clearAllTooltips();
                     this.launcher.getSettings().applySettings("settingsFields");
                 }
                 case "logOut" -> {
@@ -136,7 +133,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                 case "loadCancel-small" -> {
                     this.core.getFileLoader().cancel();
-                    this.getLauncher().getLoadingManager().toggleLoader();
+                    this.getLauncher().getLoadingManager().toggleVisibility();
                     this.getComponent("toGame").setEnabled(false);
                     this.getComponent("logOut").setEnabled(false);
                 }

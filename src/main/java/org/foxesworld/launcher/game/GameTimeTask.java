@@ -50,7 +50,6 @@ public class GameTimeTask {
 
     public void writePlayTime(String action, long elapsedTime, CountDownLatch latch) {
         Runnable task = () -> {
-            System.out.println(elapsedTime);
             try {
                 Map<String, Object> playerData = new HashMap<>();
                 playerData.put("serverName", serverAttributes.getServerName());

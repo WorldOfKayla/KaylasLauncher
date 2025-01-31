@@ -10,13 +10,8 @@ import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Auth {
@@ -42,11 +37,11 @@ public class Auth {
         this.postRequest = engine.getPOSTrequest();
         this.cryptUtils = launcher.getCRYPTO();
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
-        setAuthListener(launcher);
+        setAuthListener(new AuthListenerAdapter(this));
         attemptAutoLogin();
     }
 
-    public void  authTask(Map<String, Object> authCredentials){
+    public void authTask(Map<String, Object> authCredentials) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             setAuthCredentials(authCredentials);
             try {
@@ -55,6 +50,22 @@ public class Auth {
                 }
             } catch (InterruptedException | ExecutionException ignored) {}
         }, "auth");
+    }
+
+    public void formAuth(JComponent component) {
+        FormAuth formAuth = new FormAuth(this);
+        this.authCredentials = formAuth.getFormCredentials();
+        try {
+            if (authorizeAsync().get()) {
+
+            } else {
+                component.setEnabled(true);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            Engine.getLOGGER().error("Error during form authorization", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void attemptAutoLogin() {
@@ -74,22 +85,6 @@ public class Auth {
         }
     }
 
-    public void formAuth(JComponent component) {
-        FormAuth formAuth = new FormAuth(this);
-        this.authCredentials = formAuth.getFormCredentials();
-        try {
-            if (authorizeAsync().get()) {
-
-            } else {
-                component.setEnabled(true);
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            Engine.getLOGGER().error("Error during form authorization", e);
-            throw new RuntimeException(e);
-        }
-
-    }
-
     public CompletableFuture<Boolean> authorizeAsync() {
         authCredentials.put("userAction", "auth");
         CompletableFuture<Boolean> future = new CompletableFuture<>();
@@ -107,9 +102,11 @@ public class Auth {
             AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
                 handleSuccessfulAuth(authResponse);
+                invokeHook("onAuthSuccess", authResponse);
                 future.complete(true);
             } else {
                 handleFailedAuth(authResponse);
+                invokeHook("onAuthFailure", authResponse);
                 future.complete(false);
             }
         } catch (Exception e) {
@@ -120,6 +117,7 @@ public class Auth {
 
     private void handleAuthError(Throwable error, CompletableFuture<Boolean> future) {
         Engine.getLOGGER().error("Authorization request failed: ", error);
+        invokeHook("onAuthError", error);
         future.completeExceptionally(error);
     }
 
@@ -131,7 +129,6 @@ public class Auth {
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
 
-        updateBalance(authResponse.getBalance());
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
         loadUserServers(authResponse.getLogin());
 
@@ -179,7 +176,6 @@ public class Auth {
         });
     }
 
-
     private void handleFailedAuth(AuthResponse authResponse) {
         Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
         launcher.getSOUND().playSound("other", "alert");
@@ -200,6 +196,7 @@ public class Auth {
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
         config.writeCurrentConfig();
+        invokeHook("onLogOut", null);
         engine.init();
     }
 
@@ -260,5 +257,17 @@ public class Auth {
 
     public void setAuthCredentials(Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
+    }
+
+    private void invokeHook(String hookName, Object data) {
+        if (authListener != null) {
+            switch (hookName) {
+                case "onAuthSuccess" -> authListener.onAuthSuccess(data);
+                case "onAuthFailure" -> authListener.onAuthFailure(data);
+                case "onAuthError" -> authListener.onAuthError(data);
+                case "onLogOut" -> authListener.onLogOut(data);
+                default -> Engine.getLOGGER().warn("Unknown hook: " + hookName);
+            }
+        }
     }
 }

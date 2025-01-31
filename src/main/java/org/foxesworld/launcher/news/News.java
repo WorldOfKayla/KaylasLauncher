@@ -22,7 +22,7 @@ public class News extends org.foxesworld.engine.news.News {
             childPanel.setOpaque(false);
             childPanel.setBounds(0, 0, 505, 480);
             childPanel.setName("newsFrame");
-            this.launcher.getGuiBuilder().addPanelToMap(childPanel);
+        //this.launcher.getGuiBuilder().getGuiStructure().addPanelToMap(childPanel);
         //}, "buildNews");
     }
 

@@ -40,9 +40,29 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {
+        String[] values = dropBox.getValues();
+        BufferedImage[] icons = new BufferedImage[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            String value = values[i];
+            String iconName = null;
+
+            if (value.contains("-")) {
+                String[] parts = value.split("-");
+                iconName = parts[parts.length - 1];
+            } else {
+                iconName = "Vanilla";
+            }
+
+            if (iconName != null && !iconName.isEmpty()) {
+                icons[i] = this.launcher.getImageUtils().getLocalImage("assets/ui/icons/srvIcons/" + iconName.trim() + ".png");
+            }
+        }
+
+        dropBox.setIcons(icons);
         this.getPanel().repaint();
-        //user.updateServer(dropBox.getSelectedIndex());
     }
+
 
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
@@ -54,6 +74,8 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             if (Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
                 displayServerInfo(0);
+            } else {
+                displayServerInfo(dropBox.getSelectedIndex());
             }
             System.gc();
         }, "dropBoxClose");

@@ -18,7 +18,7 @@
       childComponents: [
         {
           type: "dropBox",
-          style: "selectable",
+          style: "selectable2",
           id: "serverBox",
           initialValue: "servers",
           toolTip: "tooltip.selectServer",

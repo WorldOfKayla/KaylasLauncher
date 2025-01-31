@@ -15,11 +15,9 @@ import java.util.Map;
 public class EncryptionKeyManager {
 
     private final String filePath;
-    private final Engine engine;
     private final Gson gson;
 
     public EncryptionKeyManager(Engine engine) {
-        this.engine = engine;
         this.filePath = engine.getConfig().getFullPath() + "/cache/encryption.json";
         this.gson = new Gson();
         createEncryptionDirectory();

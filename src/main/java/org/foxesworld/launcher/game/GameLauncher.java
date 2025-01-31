@@ -9,8 +9,7 @@ import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.user.UserGroup;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +96,9 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             this.checkDangerousParams();
             setJreArgs();
             try {
+                if(getIntVer() < 173){
+                    Engine.LOGGER.info("LEGACY!1!1!11!");
+                }
                 // Adding --tweakclass only on versions under 1.13.3
                 if (getIntVer() == 1710 || getIntVer() == 1122) {
                     tweakClassVal = addTweakClass();
@@ -150,6 +152,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
             }
         }, "launch-" + this.gameClient.getServerName());
     }
+
 
 
     @Override

@@ -4,8 +4,9 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.ComponentValue;
 import org.foxesworld.engine.gui.components.ComponentAttributes;
 import org.foxesworld.engine.gui.components.ComponentFactory;
+import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 
-public class InitialValue extends ComponentValue implements ComponentFactory.ComponentFactoryListener {
+public class InitialValue extends ComponentValue implements ComponentFactoryListener {
 
     private final Launcher launcher;
     public InitialValue(Launcher launcher) {

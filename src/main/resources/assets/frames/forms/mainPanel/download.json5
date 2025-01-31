@@ -26,22 +26,22 @@
             y: 370,
             size: {
               width: 790,
-              height: 60
+              height: 30
             }
           }
         },
         {
           type: "label",
-          fontSize: 14,
+          fontSize: 12,
           style: "title",
           color: "#ffffff",
           id: "progressLabel",
           bounds: {
             x: 15,
-            y: 10,
+            y: 5,
             size: {
               width: 250,
-              height: 40
+              height: 20
             }
           }
         },
@@ -49,15 +49,15 @@
           type: "button",
           style: "altButton",
           imageIcon: "assets/ui/icons/cancel.svg",
-          iconWidth: 32,
-          iconHeight: 32,
+          iconWidth: 16,
+          iconHeight: 16,
           id: "cancelDownload-small",
           bounds: {
-            x: 728,
+            x: 760,
             y: 0,
             size: {
-              width: 64,
-              height: 64
+              width: 32,
+              height: 32
             }
           }
         },
@@ -70,10 +70,10 @@
                 background: "#b0c1c1",
                 visible: true,
                 bounds: {
-                  x: 40,
+                  x: 300,
                   y: 40,
                   size: {
-                    width: 700,
+                    width: 500,
                     height: 300
                   }
                 }
@@ -112,6 +112,47 @@
                     size: {
                       width: 600,
                       height: 40
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          panels: {
+            serverDescription: {
+              panelOptions: {
+                opaque: true,
+                cornerRadius: 10,
+                background: "#b0c1c1",
+                visible: true,
+                bounds: {
+                  x: 40,
+                  y: 40,
+                  size: {
+                    width: 250,
+                    height: 300
+                  }
+                }
+              },
+              childComponents: [
+                {
+                  "type": "textArea",
+                  "lineWrap": true,
+                  "editable": false,
+                  "enabled": false,
+                  "style": "textFieldMain",
+                  "fontSize": 13,
+                  "border": "5,5,5,5",
+                  "color": "#7e7d7c",
+                  "id": "serverDescArea",
+                  "bounds": {
+                    "x": 10,
+                    "y": 10,
+                    "size": {
+                      "width": 240,
+                      "height": 290
                     }
                   }
                 }

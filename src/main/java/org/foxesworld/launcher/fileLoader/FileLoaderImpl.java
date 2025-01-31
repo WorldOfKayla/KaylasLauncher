@@ -8,9 +8,11 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
+import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.label.Label;
+import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.helper.JVMHelper;
@@ -85,7 +87,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     @Override
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
-        core.getLauncher().getLoadingManager().toggleLoader();
+        core.getLauncher().getLoadingManager().toggleVisibility();
+        DownloadProcessor downloadProcessor = new DownloadProcessor(this.core.getLauncher().getGuiBuilder(), "download", List.of(TextArea.class));
+        ((TextArea)downloadProcessor.getComponent("serverDescArea")).setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
     }
 
     @Override
@@ -202,7 +206,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     @Override
     public void filesProcessed() {
-
         //this.progressBar.setValue(100);
     }
 
@@ -249,5 +252,12 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     private void addReplaceVars(String replace, String replacer) {
         varsToReplace.put(replace, replacer);
+    }
+
+    private static class DownloadProcessor extends  ComponentsAccessor {
+
+        public DownloadProcessor(GuiBuilder guiBuilder, String panelId, List<Class<?>> componentTypes) {
+            super(guiBuilder, panelId, componentTypes);
+        }
     }
 }

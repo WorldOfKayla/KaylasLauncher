@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
+import static org.foxesworld.engine.utils.helper.JVMHelper.getCorrectOSArch;
 
 public class Core implements GameListener {
     private long startTime;
@@ -88,7 +89,7 @@ public class Core implements GameListener {
         Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();
         if (getLauncher().getLoadingManager().isVisible()) {
-            getLauncher().getLoadingManager().toggleLoader();
+            getLauncher().getLoadingManager().toggleVisibility();
         }
 
         CountDownLatch latch = new CountDownLatch(1);
@@ -120,11 +121,13 @@ public class Core implements GameListener {
         System.exit(0);
     }
 
-    public static int getCorrectOSArch() {
+    public static int getOsArchitecture() {
         if (OS_TYPE == JVMHelper.OS.WIN) {
-            return System.getenv("ProgramFiles(x86)") == null ? 32 : 64;
+            String programFiles = System.getenv("ProgramFiles(x86)");
+            return programFiles != null ? 32 : 64;
         }
-        return System.getProperty("os.arch").contains("64") ? 64 : 32;
+        String osArch = System.getProperty("os.arch");
+        return osArch.contains("64") ? 64 : 32;
     }
 
     public ActionHandler getActionHandler() {

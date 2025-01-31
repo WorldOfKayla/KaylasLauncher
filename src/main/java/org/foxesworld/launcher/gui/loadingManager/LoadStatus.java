@@ -1,54 +1,59 @@
 package org.foxesworld.launcher.gui.loadingManager;
 
-import org.foxesworld.engine.Engine;
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
+import org.foxesworld.engine.gui.components.button.Button;
+import org.foxesworld.engine.gui.components.checkbox.Checkbox;
+import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.loadingManager.LoadManagerAttributes;
 import org.foxesworld.engine.gui.loadingManager.LoadingManager;
 import org.foxesworld.engine.utils.animation.AnimationManager;
-import org.foxesworld.engine.utils.animation.AnimationStats;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
-public class LoadStatus extends LoadingManager implements AnimationStats {
-    private final ComponentsAccessor componentsAccessor;
-    //private final JProgressBar progressBar;
+public class LoadStatus extends LoadingManager {
+    private final ComponentsAccessor loadPanel, loggedForm;
+    private final Launcher launcher;
 
-    public LoadStatus(Engine engine, int index) {
-        this.engine = engine;
-        this.attributesList = List.of(engine.getEngineData().getLoadManager());
+    public LoadStatus(Launcher launcher, int index) {
+        super(launcher);
+        this.launcher = launcher;
+        this.attributesList = List.of(this.engine.getEngineData().getLoadManager());
         this.loadingText = engine.getLANG().getString("loading.msg");
         this.loadingTitle = engine.getLANG().getString("loading.title");
-
         this.ANIMATION_SPEED = attributesList.get(index).getAnimSpeed();
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
         this.animationManager.setAnimationStats(this);
-        this.componentsAccessor = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class, JProgressBar.class));
-        //this.progressBar = (JProgressBar) this.componentsAccessor.getComponent("loadProgress");
-        //this.progressBar.setMinimum(100);
-        this.engine.getExecutorServiceProvider().submitTask(() -> this.initializeLoadingFrame(index), "initializeLoadingFrame");
+        this.loadPanel = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class, JProgressBar.class));
+        this.loggedForm = new ComponentsAccessor(this.engine.getGuiBuilder(), "loggedForm", List.of(Button.class, DropBox.class, Checkbox.class));
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                initializeLoadingFrame(index);
+                return null;
+            }
+        }.execute();
     }
 
     @Override
     protected void initializeLoadingFrame(int index) {
         SwingUtilities.invokeLater(() -> {
-            //this.progressBar.setValue(0);
             setSize(getFrameWidth(), getFrameHeight());
             LoadManagerAttributes attributes = attributesList.get(index);
-
-            JPanel backgroundPanel = createBackgroundPanel(
+            createBackgroundPanel(
                     this.engine.getGuiBuilder().getPanelsMap().get("loadPanel"),
                     attributes.getBgPath(),
                     attributes.getBlurColor()
             );
 
-            backgroundPanel.setVisible(true);
             SpriteAnimation currentLoader = new SpriteAnimation(
                     engine,
                     attributes.getSpritePath(),
@@ -59,38 +64,82 @@ public class LoadStatus extends LoadingManager implements AnimationStats {
             );
 
             currentLoader.setBounds(attributes.getBounds());
-            setContentPane(backgroundPanel);
+            backgroundPanel.setVisible(true);
             backgroundPanel.add(currentLoader);
-
             setupLabels(attributes);
-
             setAlwaysOnTop(true);
-            setLocationRelativeTo(engine.getFrame());
-            addFrameComponentListener();
             setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
         });
     }
 
     private void setupLabels(LoadManagerAttributes attributes) {
         SwingUtilities.invokeLater(() -> {
-            titleLabel = (JLabel) componentsAccessor.getComponent("titleLabel");
-            loaderText = (JLabel) componentsAccessor.getComponent("loaderText");
+            titleLabel = (JLabel) loadPanel.getComponent("titleLabel");
+            loaderText = (JLabel) loadPanel.getComponent("loaderText");
             loaderText.setForeground(hexToColor(attributes.getDescColor()));
             titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
         });
     }
 
     @Override
-    public void animationStarted() {
-        SwingUtilities.invokeLater(() -> this.setVisible(true));
+    protected void initializeLoadingFrame() {
     }
 
     @Override
-    public void animationFinished() {
-        SwingUtilities.invokeLater(() -> this.setVisible(false));
+    public void fadeIn() {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+            changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
+            SwingUtilities.invokeLater(() -> {
+                this.setVisible(true);
+                JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
+                JPanel overlay = getOverlay();
+                overlay.setBackground(new Color(0, 0, 0, 0));
+                overlay.setName("loadingOverlay");
+                layeredPane.add(overlay, JLayeredPane.POPUP_LAYER);
+                overlay.setBounds(0, 0, launcher.getFrame().getWidth(), launcher.getFrame().getHeight());
+
+                AtomicInteger alpha = new AtomicInteger(0);
+                Timer timer = new Timer(30, e -> {
+                    alpha.addAndGet(10);
+                    overlay.setBackground(new Color(0, 0, 0, Math.min(alpha.get(), 180)));
+                    overlay.repaint();
+                    if (alpha.get() >= 180) {
+                        ((Timer) e.getSource()).stop();
+                    }
+                });
+                timer.start();
+            });
+        }, "fadeIn");
     }
 
-    //public void setProgress(int value){ this.progressBar.setValue(value); }
+    @Override
+    public void fadeOut() {
+        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+            JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
+            JPanel mainFramePanel = loggedForm.getPanel();
 
-    //public JProgressBar getProgressBar() {return progressBar;}
+            SwingUtilities.invokeLater(() -> {
+                for (Component component : layeredPane.getComponentsInLayer(JLayeredPane.POPUP_LAYER)) {
+                    if (component instanceof JPanel overlay && "loadingOverlay".equals(overlay.getName())) {
+                        AtomicInteger alpha = new AtomicInteger(overlay.getBackground().getAlpha());
+                        Timer timer = new Timer(30, e -> {
+                            alpha.addAndGet(-10);
+                            overlay.setBackground(new Color(0, 0, 0, Math.max(alpha.get(), 0)));
+                            overlay.repaint();
+                            if (alpha.get() <= 0) {
+                                ((Timer) e.getSource()).stop();
+                                layeredPane.remove(overlay);
+                                layeredPane.revalidate();
+                                layeredPane.repaint();
+                            }
+                        });
+                        timer.start();
+                    }
+                }
+                this.setVisible(false);
+                mainFramePanel.revalidate();
+                mainFramePanel.repaint();
+            });
+        }, "fadeOut");
+    }
 }

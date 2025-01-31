@@ -425,6 +425,18 @@
       "pl_PL": "Zakonchili igrat"
     }
   },
+  "optionalMods": {
+    "optionalTitle": {
+      "en_US": "Optional Mods",
+      "ru_RU": "Опциональные моды",
+      "pl_PL": "Mod Optionale"
+    },
+    "apply": {
+      "en_US": "Apply",
+      "ru_RU": "Принять",
+      "pl_PL": "Prinat'"
+    }
+  },
   "dev": {
     "token": {
       "en_US": "accessToken: ",

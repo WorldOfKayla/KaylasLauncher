@@ -2,177 +2,160 @@
   panels: {
     userPane: {
       panelOptions: {
-        opaque: true,
-        visible: true,
-        background: "#7e6969",
-        backgroundImage: "assets/ui/img/bg/info.png",
+        opaque: true ,
+        visible: true ,
+        background: "#7e6969" ,
+        backgroundImage: "assets/ui/img/bg/info.png" ,
         bounds: {
-          x: 0,
-          y: 30,
+          x: 0 ,
+          y: 30 ,
           size: {
-            width: 355,
+            width: 355 ,
             height: 100
           }
         }
-      },
+      } ,
       childComponents: [
         {
-          type: "label",
-          fontSize: 15,
-          style: "title",
-          localeKey: "",
-          color: "#f9b54d",
-          id: "userLogin",
-          initialValue: "user#login",
+          type: "label" ,
+          fontSize: 15 ,
+          style: "title" ,
+          localeKey: "" ,
+          color: "#f9b54d" ,
+          id: "userLogin" ,
+          initialValue: "user#login" ,
           bounds: {
-            x: 75,
-            y: -5,
+            x: 75 ,
+            y: -5 ,
             size: {
-              width: 250,
+              width: 250 ,
               height: 50
             }
           }
-        },
+        } ,
         {
-          type: "label",
-          fontSize: 11,
-          color: "#ec8241",
-          style: "title",
-          localeKey: "",
-          id: "userGroup",
-          initialValue: "user#group",
+          type: "label" ,
+          fontSize: 11 ,
+          color: "#ec8241" ,
+          style: "title" ,
+          localeKey: "" ,
+          id: "userGroup" ,
+          initialValue: "user#group" ,
+          bounds: {
+            x: 80 ,
+            y: 10 ,
+            size: {
+              width: 250 ,
+              height: 50
+            }
+          }
+        } ,
+        {
+          type: "label" ,
+          fontSize: 11 ,
+          style: "title" ,
+          imageIcon: "assets/ui/img/head.png" ,
+          iconWidth: 64 ,
+          iconHeight: 64 ,
+          id: "userHead" ,
+          bounds: {
+            x: 5 ,
+            y: 10 ,
+            size: {
+              width: 64 ,
+              height: 64
+            }
+          }
+        } ,
+        {
+          type: "label" ,
+          fontSize: 11 ,
+          style: "title" ,
+          imageIcon: "assets/ui/img/bg/info1.png" ,
+          iconWidth: 615 ,
+          iconHeight: 25 ,
+          id: "infoUnder" ,
+          bounds: {
+            x: -50 ,
+            y: 75 ,
+            size: {
+              width: 615 ,
+              height: 64
+            }
+          }
+        } ,
+        /*
+        {
+          type: "button",
+          enabled: true,
+          visible: true,
+          keyCode: "F5",
+          style: "altButton",
+          id: "smallButton",
+          toolTip: "tooltip.test",
+          tooltipStyle: "warning",
+          localeKey: "TEST",
           bounds: {
             x: 80,
-            y: 10,
+            y: 45,
             size: {
-              width: 250,
-              height: 50
+              width: 60,
+              height: 34
             }
           }
-        },
-        {
-          type: "label",
-          fontSize: 11,
-          style: "title",
-          imageIcon: "assets/ui/img/head.png",
-          iconWidth: 64,
-          iconHeight: 64,
-          id: "userHead",
-          bounds: {
-            x: 5,
-            y: 10,
-            size: {
-              width: 64,
-              height: 64
-            }
-          }
-        },
-        /*{
-         type: "button",
-         enabled: true,
-         visible: true,
-         keyCode: "F5",
-         style: "altButton",
-         id: "smallButton",
-         toolTip: "tooltip.test",
-         tooltipStyle: "warning",
-         localeKey: "TEST",
-         bounds: {
-           x: 80,
-           y: 45,
-           size: {
-             width: 60,
-             height: 34
-           }
-         }
-       },
-     /*
-
-
-       {
-      type: "progressBar",
-         visible: false,
-         style: "progress",
-         id: "sndBar",
-         color: "#ffffff",
-         bounds: {
-           x: 190,
-           y: 70,
-           size: {
-             width: 150,
-             height: 10
-           }
-         }
-       },*/
-        {
-          type: "label",
-          fontSize: 11,
-          style: "title",
-          imageIcon: "assets/ui/img/bg/info1.png",
-          iconWidth: 615,
-          iconHeight: 25,
-          id: "infoUnder",
-          bounds: {
-            x: -50,
-            y: 75,
-            size: {
-              width: 615,
-              height: 64
-            }
-          }
-        },
+        }, */
         {
           panels: {
             userDataForm: {
               panelOptions: {
-                opaque: false,
-                visible: true,
+                opaque: false ,
+                visible: true ,
                 bounds: {
-                  x: 190,
-                  y: 0,
+                  x: 190 ,
+                  y: 0 ,
                   size: {
-                    width: 160,
+                    width: 160 ,
                     height: 75
                   }
                 }
-              },
+              } ,
               childComponents: [
                 {
-                  type: "label",
-                  fontSize: 11,
-                  style: "title",
-                  imageIcon: "assets/ui/icons/units.png",
-                  iconWidth: 32,
-                  iconHeight: 32,
-                  localeKey: "logged.units",
-                  color: "#292e34",
-                  id: "unitsField",
-                  initialValue: "balance#units",
+                  type: "label" ,
+                  fontSize: 11 ,
+                  style: "title" ,
+                  imageIcon: "assets/ui/icons/units.png" ,
+                  iconWidth: 32 ,
+                  iconHeight: 32 ,
+                  localeKey: "logged.units" ,
+                  color: "#292e34" ,
+                  id: "unitsField" ,
+                  initialValue: "balance#units" ,
                   bounds: {
-                    x: 5,
-                    y: -8,
+                    x: 5 ,
+                    y: -8 ,
                     size: {
-                      width: 250,
+                      width: 250 ,
                       height: 50
                     }
                   }
-                },
+                } ,
                 {
-                  type: "label",
-                  fontSize: 11,
-                  style: "title",
-                  imageIcon: "assets/ui/icons/crystals.png",
-                  iconWidth: 32,
-                  iconHeight: 32,
-                  localeKey: "logged.crystals",
-                  color: "#292e34",
-                  id: "crystalsField",
-                  initialValue: "balance#crystals",
+                  type: "label" ,
+                  fontSize: 11 ,
+                  style: "title" ,
+                  imageIcon: "assets/ui/icons/crystals.png" ,
+                  iconWidth: 32 ,
+                  iconHeight: 32 ,
+                  localeKey: "logged.crystals" ,
+                  color: "#292e34" ,
+                  id: "crystalsField" ,
+                  initialValue: "balance#crystals" ,
                   bounds: {
-                    x: 0,
-                    y: 28,
+                    x: 0 ,
+                    y: 28 ,
                     size: {
-                      width: 250,
+                      width: 250 ,
                       height: 50
                     }
                   }

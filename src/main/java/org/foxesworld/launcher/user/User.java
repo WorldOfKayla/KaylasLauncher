@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.auth.Balance;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.notification.Notification;
 
@@ -54,6 +55,10 @@ public class User extends org.foxesworld.engine.user.User {
             displayLoginPanel();
         }
         //this.showTaskMgr();
+    }
+
+    public void setBalance(List<Map<String,Integer>> balance){
+        ((Label)this.getComponent("crystalsField")).setText(balance.get(0).toString());
     }
 
     private void displayLoginPanel() {

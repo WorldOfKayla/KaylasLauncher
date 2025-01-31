@@ -14,9 +14,9 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
+import org.foxesworld.engine.utils.hook.HookException;
 import org.foxesworld.launcher.LauncherValidator;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.launcher.auth.AuthListener;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.InitialValue;
@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Launcher extends Engine implements AuthListener {
+public class Launcher extends Engine {
     private final Auth auth;
     long startTime;
     private User user;
@@ -70,7 +70,7 @@ public class Launcher extends Engine implements AuthListener {
 
         preInit();
         this.auth = new Auth(this);
-        new LauncherValidator(this).validate();
+        this.getExecutorServiceProvider().submitTask(()-> new LauncherValidator(this).validate(), "validation");
         init();
     }
 
@@ -79,12 +79,20 @@ public class Launcher extends Engine implements AuthListener {
         this.config = new Config(this);
         System.setProperty("AppDir", System.getenv("APPDATA"));
         System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
+        try {
+            if (getPreInitHooks().hook(null, null)) {
+                LOGGER.info("Pre-init hooks interrupted initialization");
+                return;
+            }
+        } catch (HookException e) {
+            LOGGER.error("Error in pre-init hooks", e);
+        }
         this.config.processConfig();
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
         this.SOUND = new Sound(this, getClass().getClassLoader().getResourceAsStream(fileProperties.getSoundsFile()));
         this.frameConstructor = new FrameConstructor(this);
         this.serverInfo = new ServerInfo(this);
-        this.CRYPTO = new CryptUtils(this);
+        this.CRYPTO = new CryptUtils();
         this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config)config).getLogLevel()));
     }
 
@@ -143,7 +151,7 @@ public class Launcher extends Engine implements AuthListener {
         this.iconUtils = new IconUtils(this);
     }
 
-    private void logStartupTime(long startTime) {
+    public void logStartupTime(long startTime) {
         long duration = System.currentTimeMillis() - startTime;
         getLOGGER().info(getAppTitle() + " started in " + duration + " ms!");
     }
@@ -159,18 +167,8 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     @Override
-    public void onLogin(Map<String, Object> authCredentials) {
-        getSOUND().playSound("other", "loggedIn");
+    public void onPanelsBuilt() {
     }
-
-    @Override
-    public void onLoad(Auth auth, Map<String, Object> authCredentials) {
-        logStartupTime(startTime);
-        auth.authTask(authCredentials);
-    }
-
-    @Override
-    public void onPanelsBuilt() {}
 
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
@@ -183,8 +181,8 @@ public class Launcher extends Engine implements AuthListener {
     }
 
     @Override
-    public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, JPanel parentPanel) {
-        parentPanel.updateUI();
+    public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, Container parentPanel) {
+        //parentPanel.update();
         parentPanel.repaint();
         parentPanel.revalidate();
     }
@@ -302,5 +300,8 @@ public class Launcher extends Engine implements AuthListener {
                 System.exit(0);
             }
         }), "modalDialog");
+    }
+    public long getStartTime() {
+        return startTime;
     }
 }

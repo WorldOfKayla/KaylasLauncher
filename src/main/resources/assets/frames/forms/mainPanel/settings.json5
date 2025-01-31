@@ -42,7 +42,7 @@
                   enabled: true,
                   keyCode: "BACK_SPACE",
                   toolTip: "tooltip.back",
-                  imageIcon: "assets/ui/icons/back.png",
+                  imageIcon: "assets/ui/icons/back.svg",
                   iconWidth: 16,
                   iconHeight: 16,
                   style: "altButton",

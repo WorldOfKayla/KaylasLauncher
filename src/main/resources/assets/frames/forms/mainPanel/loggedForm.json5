@@ -20,40 +20,6 @@
         {
           readFrom: "assets/frames/forms/user/userActions.json5"
         },
-      /*
-        {
-          type: "serverBox",
-          style: "srvStatus",
-          color: "#ffffff",
-          id: "serverStatusBox",
-          bounds: {
-            x: 80,
-            y: 350,
-            size: {
-              width: 245,
-              height: 34
-            }
-          }
-        }, */
-        {
-          type: "button",
-          enabled: true,
-          style: "altButton",
-          toolTip: "tooltip.settings",
-          imageIcon: "assets/ui/icons/settings.png",
-          keyCode: "S",
-          iconWidth: 32,
-          iconHeight: 32,
-          id: "settings-small",
-          bounds: {
-            x: 280,
-            y: 435,
-            size: {
-              width: 64,
-              height: 64
-            }
-          }
-        },
         {
           readFrom: "assets/frames/forms/user/userPane.json5"
         }

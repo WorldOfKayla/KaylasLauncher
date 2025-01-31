@@ -17,6 +17,41 @@
       },
       childComponents: [
         {
+          type: "button",
+          enabled: true,
+          keyCode: "U",
+          style: "altButton",
+          toolTip: "tooltip.userPane",
+          imageIcon: "assets/ui/icons/menu.svg",
+          iconWidth: 20,
+          iconHeight: 24,
+          tooltipStyle: "success",
+          id: "userPane",
+          bounds: {
+            x: 10,
+            y: 40,
+            size: {
+              width: 32,
+              height: 32
+            }
+          }
+        },
+        {
+          type: "label",
+          fontSize: 14,
+          style: "titleBold",
+          id: "userSkin",
+          localeKey: "",
+          bounds: {
+            x: 110,
+            y: 60,
+            size: {
+              width: 120,
+              height: 230
+            }
+          }
+        },
+        {
           type: "dropBox",
           style: "selectable2",
           id: "serverBox",
@@ -24,7 +59,7 @@
           toolTip: "tooltip.selectServer",
           bounds: {
             x: 35,
-            y: 215,
+            y: 350,
             size: {
               width: 273,
               height: 25
@@ -40,13 +75,14 @@
           initialValue: false,
           bounds: {
             x: 30,
-            y: 310,
+            y: 390,
             size: {
               width: 270,
               height: 32
             }
           }
         },
+        /*
         {
           type: "button",
           enabled: true,
@@ -64,7 +100,7 @@
               height: 47
             }
           }
-        },
+        }, */
         {
           type: "button",
           enabled: true,
@@ -75,11 +111,31 @@
           id: "toGame",
           localeKey: "logged.toGame",
           bounds: {
-            x: 165,
-            y: 260,
+            x: 30,
+            y: 310,
             size: {
-              width: 120,
-              height: 47
+              width: 235,
+              height: 30
+            }
+          }
+        },
+        {
+          type: "button",
+          enabled: true,
+          keyCode: "O",
+          style: "altButton",
+          toolTip: "tooltip.optionalMods",
+          imageIcon: "assets/ui/icons/settingsGrey.svg",
+          iconWidth: 16,
+          iconHeight: 16,
+          tooltipStyle: "success",
+          id: "optionalMods",
+          bounds: {
+            x: 260,
+            y: 310,
+            size: {
+              width: 32,
+              height: 32
             }
           }
         }

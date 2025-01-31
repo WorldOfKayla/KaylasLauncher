@@ -2,16 +2,16 @@
   panels: {
     userPane: {
       panelOptions: {
-        opaque: true ,
-        visible: true ,
+        opaque: true,
+        visible: false,
         background: "#7e6969" ,
         backgroundImage: "assets/ui/img/bg/info.png" ,
         bounds: {
-          x: 0 ,
+          x: -600 ,
           y: 30 ,
           size: {
             width: 355 ,
-            height: 100
+            height: 500
           }
         }
       } ,
@@ -25,8 +25,8 @@
           id: "userLogin" ,
           initialValue: "user#login" ,
           bounds: {
-            x: 75 ,
-            y: -5 ,
+            x: 150 ,
+            y: 15 ,
             size: {
               width: 250 ,
               height: 50
@@ -42,8 +42,8 @@
           id: "userGroup" ,
           initialValue: "user#group" ,
           bounds: {
-            x: 80 ,
-            y: 10 ,
+            x: 150 ,
+            y: 30,
             size: {
               width: 250 ,
               height: 50
@@ -55,32 +55,16 @@
           fontSize: 11 ,
           style: "title" ,
           imageIcon: "assets/ui/img/head.png" ,
+          localeKey: "",
           iconWidth: 64 ,
           iconHeight: 64 ,
           id: "userHead" ,
           bounds: {
-            x: 5 ,
-            y: 10 ,
+            x: 70 ,
+            y: -10 ,
             size: {
-              width: 64 ,
-              height: 64
-            }
-          }
-        } ,
-        {
-          type: "label" ,
-          fontSize: 11 ,
-          style: "title" ,
-          imageIcon: "assets/ui/img/bg/info1.png" ,
-          iconWidth: 615 ,
-          iconHeight: 25 ,
-          id: "infoUnder" ,
-          bounds: {
-            x: -50 ,
-            y: 75 ,
-            size: {
-              width: 615 ,
-              height: 64
+              width: 128 ,
+              height: 128
             }
           }
         } ,
@@ -109,7 +93,7 @@
             userDataForm: {
               panelOptions: {
                 opaque: false ,
-                visible: true ,
+                visible: false ,
                 bounds: {
                   x: 190 ,
                   y: 0 ,
@@ -157,6 +141,62 @@
                     size: {
                       width: 250 ,
                       height: 50
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          panels: {
+            userOptions: {
+              panelOptions: {
+                opaque: true ,
+                visible: true ,
+                background: "#4d2c2c" ,
+                bounds: {
+                  x: 0 ,
+                  y: 140 ,
+                  size: {
+                    width: 355 ,
+                    height: 500
+                  }
+                }
+              } ,
+              childComponents: [
+                {
+                  type: "button",
+                  enabled: true,
+                  style: "buttonMain",
+                  toolTip: "tooltip.settings",
+                  localeKey: "settings.settingsButt",
+                  keyCode: "S",
+                  id: "settings-small",
+                  bounds: {
+                    x: 40,
+                    y: 35,
+                    size: {
+                      width: 256,
+                      height: 47
+                    }
+                  }
+                },
+                {
+                  type: "button",
+                  enabled: true,
+                  keyCode: "ESCAPE",
+                  style: "buttonMain",
+                  toolTip: "tooltip.logOutToolTip",
+                  tooltipStyle: "error",
+                  id: "logOut",
+                  localeKey: "logged.logOut",
+                  bounds: {
+                    x: 40,
+                    y: 90,
+                    size: {
+                      width: 256,
+                      height: 47
                     }
                   }
                 }

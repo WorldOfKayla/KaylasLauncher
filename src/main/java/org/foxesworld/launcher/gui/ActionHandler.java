@@ -15,6 +15,7 @@ import org.foxesworld.notification.Notification;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
@@ -96,8 +97,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
                     //this.launcher.getLoadingManager().toggleLoader();
                     //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
-
-
                      */
                 }
 
@@ -155,8 +154,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
 
                 case "toGame" -> {
-                    pressedComponent.setEnabled(false);
-                    this.getComponent("logOut").setEnabled(false);
                     this.launcher.getSOUND().playSound("other", "start");
                     DropBox dropBox = (DropBox) this.getComponent("serverBox");
                     Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
@@ -167,6 +164,74 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     this.core = new Core(this, forceUpdate.isSelected());
                 }
 
+                case "optionalMods" -> {
+                    launcher.showDialog("Опциональные моды будут позже", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
+                }
+
+                case "userPane" -> {
+                    JPanel panel = this.launcher.getUser().getPanel();
+                    boolean isVisible = panel.isVisible();
+
+                    String iconPath = isVisible
+                            ? "assets/ui/icons/menu.svg"
+                            : "assets/ui/icons/back.svg";
+                    ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
+                    ((Button) pressedComponent).setIcon(icon);
+
+                    int startX = isVisible ? panel.getX() : -panel.getWidth();
+                    int endX = isVisible ? -panel.getWidth() : 0;
+
+                    Container panelParent = panel.getParent();
+                    if (panelParent != null) {
+                        panelParent.setComponentZOrder(pressedComponent, 0);
+                        panelParent.setComponentZOrder(panel, 1);
+
+                        if (!isVisible) {
+                            panel.setVisible(true);
+                        }
+                        panelParent.revalidate();
+                        panelParent.repaint();
+                    }
+
+                    Object prop = panel.getClientProperty("currentAnimation");
+                    if (prop instanceof Timer oldTimer && oldTimer.isRunning()) {
+                        oldTimer.stop();
+                    }
+
+                    Timer timer = new Timer(15, null);
+                    timer.setInitialDelay(0);
+                    panel.putClientProperty("currentAnimation", timer);
+
+                    final long[] startTime = {-1};
+                    timer.addActionListener(ex -> {
+                        long currentTime = System.currentTimeMillis();
+                        if (startTime[0] < 0) startTime[0] = currentTime;
+
+                        float progress = Math.min(1f, (currentTime - startTime[0]) / 300f);
+                        float interpolated = 1 - (float) Math.pow(1 - progress, 3);
+
+                        int newX = (int) (startX + (endX - startX) * interpolated);
+                        panel.setLocation(newX, panel.getY());
+
+                        if (panelParent != null) {
+                            panelParent.setComponentZOrder(pressedComponent, 0);
+                            panelParent.setComponentZOrder(panel, 1);
+                        }
+                        panelParent.repaint();
+
+                        if (progress >= 1f) {
+                            timer.stop();
+                            panel.putClientProperty("currentAnimation", null);
+                            if (isVisible) {
+                                panel.setVisible(false);
+                            }
+                            panelParent.setComponentZOrder(pressedComponent, 0);
+                            panelParent.revalidate();
+                        }
+                    });
+                    timer.start();
+                }
+
                 case "closeButton" -> {
                     this.launcher.getFrame().setVisible(false);
                     this.launcher.getExecutorServiceProvider().shutdown();
@@ -174,12 +239,10 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         this.launcher.getExecutorServiceProvider().shutdown();
                         System.exit(0);
                     });
-
                 }
                 case "hideButton" -> engine.getFrame().setExtendedState(1);
             }
     }
-
     @Override
     public Engine getEngine() {
         return engine;

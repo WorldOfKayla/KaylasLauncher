@@ -112,7 +112,7 @@ public class Core implements GameListener {
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
             if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {
                 this.launcher.getExecutorServiceProvider().shutdown();
-                this.actionHandler.getLauncher().restartApplication(2048, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch());
+                this.actionHandler.getLauncher().restartApplication(2048, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + '-' + getOSPrefix() + "-x" + getCorrectOSArch());
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
             }
@@ -121,13 +121,15 @@ public class Core implements GameListener {
         System.exit(0);
     }
 
-    public static int getOsArchitecture() {
-        if (OS_TYPE == JVMHelper.OS.WIN) {
-            String programFiles = System.getenv("ProgramFiles(x86)");
-            return programFiles != null ? 32 : 64;
+    public static String getOSPrefix() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            return "win";
+        } else if (osName.contains("mac")) {
+            return "mac";
+        } else {
+            return "unix";
         }
-        String osArch = System.getProperty("os.arch");
-        return osArch.contains("64") ? 64 : 32;
     }
 
     public ActionHandler getActionHandler() {

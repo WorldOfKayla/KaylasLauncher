@@ -389,7 +389,7 @@
     },
     "settings": {
       "en_US": "Settings! (S)",
-      "ru_RU": "Настройки! Горачая клавиша - S",
+      "ru_RU": "Настройки!",
       "pl_PL": "Nastroiki! (S)"
     },
     "folder": {
@@ -411,6 +411,16 @@
       "en_US": "Don't forget to chose a server!",
       "ru_RU": "Не забудь выбрать сервер!",
       "pl_PL": "Pomni serwer vivbrat!"
+    },
+    "optionalMods": {
+      "en_US": "Optional mods",
+      "ru_RU": "Опциональные моды",
+      "pl_PL": "Modi opcionalny"
+    },
+    "userPane": {
+      "en_US": "User Pane",
+      "ru_RU": "Пользовательская панель",
+      "pl_PL": "Panel' Pol'Zowatela"
     }
   },
   "playback": {

@@ -6,16 +6,23 @@ import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.HTTP.OnFailure;
+import org.foxesworld.engine.utils.HTTP.OnSuccess;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.Balance;
+import org.foxesworld.launcher.gui.BlendedImageIcon;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.notification.Notification;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +37,14 @@ public class User extends org.foxesworld.engine.user.User {
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
     private final ServerInfoDisplayer serverInfoDisplayer;
+    private SkinLoader skinLoader;
     private JFrame taskMgrFrame;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
         this.launcher = launcher;
         this.auth = launcher.getAuth();
-        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class));
+        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class, Label.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.lang = launcher.getLANG();
@@ -49,6 +57,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void initializeUser() {
         if (auth.isAuthorised()) {
+            this.skinLoader = new SkinLoader(this);
             setUserSpace();
 
         } else {
@@ -79,6 +88,23 @@ public class User extends org.foxesworld.engine.user.User {
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
+        this.skinLoader.loadSkin(skins -> {
+            BufferedImage front = skins.get("front");
+            BufferedImage back = skins.get("back");
+            Label skinLabel = (Label) this.userServers.getComponent("userSkin");
+            skinLabel.setIcon(new ImageIcon(front));
+            skinLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    skinLabel.setIcon(new ImageIcon(back));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    skinLabel.setIcon(new ImageIcon(front));
+                }
+            });
+        });
         notifyUserLoggedIn();
     }
 
@@ -95,7 +121,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void notifyUserLoggedIn() {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
-        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, userServers.getServerListBox().getY() + 140, 340, 45), 3000, message);
+        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, userServers.getServerListBox().getY() + 40, 340, 45), 3000, message);
     }
 
     public void updateUserAttributes(Map<String, Object> attributes) {
@@ -137,6 +163,39 @@ public class User extends org.foxesworld.engine.user.User {
         }
     }
 
+    @Override
+    protected void getUserHeadAsync(String login, OnSuccess<String> onSuccess, OnFailure onFailure) {
+        if (login != null && !login.isEmpty()) {
+            Map<String, Object> skinData = new HashMap();
+            skinData.put("sysRequest", "userHead");
+            skinData.put("login", login);
+            HTTPrequest httpRequest = this.engine.getPOSTrequest();
+            httpRequest.sendAsync(skinData, (response) -> {
+                if (response != null && !response.toString().isEmpty()) {
+                    onSuccess.onSuccess((String)response);
+                } else {
+                    Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
+                    if (onFailure != null) {
+                        onFailure.onFailure(new Exception("Received empty or null response"));
+                    }
+                }
+
+            }, (e) -> {
+                Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
+                if (onFailure != null) {
+                    onFailure.onFailure(e);
+                }
+
+            });
+        } else {
+            Engine.getLOGGER().warn("Login is null or empty in getUserHead");
+            if (onFailure != null) {
+                onFailure.onFailure(new IllegalArgumentException("Login cannot be null or empty"));
+            }
+
+        }
+    }
+
     private void setUserHeadIcon(String login) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Login is null or empty. Cannot set user head icon.");
@@ -156,7 +215,7 @@ public class User extends org.foxesworld.engine.user.User {
                     return;
                 }
 
-                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(userHeadImage, 5));
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 0.4), 70));
                 if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
                     Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
                     return;
@@ -192,10 +251,6 @@ public class User extends org.foxesworld.engine.user.User {
 
     public String getPassword() {
         return userAttributes.password;
-    }
-
-    public String getUnits() {
-        return userAttributes.units;
     }
 
     public String getToken() {

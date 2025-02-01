@@ -171,13 +171,16 @@
                   style: "buttonMain",
                   toolTip: "tooltip.settings",
                   localeKey: "settings.settingsButt",
+                  imageIcon: "assets/ui/icons/settingsGrey.svg" ,
+                  iconWidth: 32 ,
+                  iconHeight: 32 ,
                   keyCode: "S",
                   id: "settings-small",
                   bounds: {
-                    x: 40,
+                    x: 10,
                     y: 35,
                     size: {
-                      width: 256,
+                      width: 330,
                       height: 47
                     }
                   }
@@ -191,11 +194,14 @@
                   tooltipStyle: "error",
                   id: "logOut",
                   localeKey: "logged.logOut",
+                  imageIcon: "assets/ui/icons/logout.svg" ,
+                  iconWidth: 32 ,
+                  iconHeight: 32 ,
                   bounds: {
-                    x: 40,
+                    x: 10,
                     y: 90,
                     size: {
-                      width: 256,
+                      width: 330,
                       height: 47
                     }
                   }

@@ -21,7 +21,7 @@
           type: "label",
           fontSize: 14,
           style: "titleBold",
-          imageIcon: "assets/ui/icons/settings.svg",
+          imageIcon: "assets/ui/icons/settingsGrey.svg",
           iconWidth: 32,
           iconHeight: 32,
           localeKey: "settings.baseOptions",

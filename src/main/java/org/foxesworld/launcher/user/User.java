@@ -88,6 +88,7 @@ public class User extends org.foxesworld.engine.user.User {
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
+        ((Label)this.userServers.getComponent("greetUser")).setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
         this.skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
@@ -166,7 +167,7 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void getUserHeadAsync(String login, OnSuccess<String> onSuccess, OnFailure onFailure) {
         if (login != null && !login.isEmpty()) {
-            Map<String, Object> skinData = new HashMap();
+            Map<String, Object> skinData = new HashMap<>();
             skinData.put("sysRequest", "userHead");
             skinData.put("login", login);
             HTTPrequest httpRequest = this.engine.getPOSTrequest();
@@ -215,7 +216,7 @@ public class User extends org.foxesworld.engine.user.User {
                     return;
                 }
 
-                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 0.4), 70));
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 0.4), 80));
                 if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
                     Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
                     return;

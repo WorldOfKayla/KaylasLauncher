@@ -6,7 +6,7 @@
         "doubleBuffered": true,
         "opaque": true,
         "bounds": {
-          "x": 3,
+          "x": 0,
           "y": 0,
           "size": {
             "width": 500,

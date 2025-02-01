@@ -23,10 +23,10 @@
           localeKey: "" ,
           color: "#f9b54d" ,
           id: "userLogin" ,
-          initialValue: "user#login" ,
+          initialValue: "user#userFullName" ,
           bounds: {
-            x: 150 ,
-            y: 15 ,
+            x: 100 ,
+            y: 55 ,
             size: {
               width: 250 ,
               height: 50
@@ -42,8 +42,8 @@
           id: "userGroup" ,
           initialValue: "user#group" ,
           bounds: {
-            x: 150 ,
-            y: 30,
+            x: 100 ,
+            y: 70,
             size: {
               width: 250 ,
               height: 50
@@ -60,8 +60,8 @@
           iconHeight: 64 ,
           id: "userHead" ,
           bounds: {
-            x: 70 ,
-            y: -10 ,
+            x: 20 ,
+            y: 25 ,
             size: {
               width: 128 ,
               height: 128

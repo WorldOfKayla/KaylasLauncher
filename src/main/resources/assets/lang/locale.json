@@ -262,6 +262,11 @@
     }
   },
   "logged": {
+    "greet": {
+      "en_US": "Hello, {login}!",
+      "ru_RU": "Привет, {login}!",
+      "pl_PL": "Jesteś {login}!"
+    },
     "loggedIn": {
       "en_US": "You're in!",
       "ru_RU": "Привет!",

@@ -30,6 +30,7 @@ plugins {
     id 'java'
     id 'application'
     id "com.github.johnrengelman.shadow" version "8.1.0"
+    //id("com.scalified.plugins.gradle.proguard") version "1.6.0"
 }
 
 Properties properties = new Properties()
@@ -50,6 +51,10 @@ repositories {
 dependencies {
     implementation files('lib/foxesworld/fox-engine-1.14.2-HELIX-all.jar')
     implementation files('lib/foxesworld/Animatix-0.0.10-SNAPSHOT-all.jar')
+
+    // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle
+    //runtimeOnly 'com.guardsquare:proguard-gradle:7.6.1'
+
 }
 
 jar {
@@ -66,6 +71,12 @@ if (System.getProperty("java.home") == null) {
     System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...")
     System.setProperty("java.home", new File(".").getAbsolutePath())
 }
+
+//proguard {
+//    configurations.setFrom(files("$rootDir/proguard-rules.pro", "$projectDir/proguard-rules.pro"))
+
+//}
+
 
 tasks.register('nativeDist') {
     doLast {

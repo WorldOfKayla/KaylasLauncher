@@ -41,33 +41,33 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
         }
         Component pressedComponent = this.getComponent(key);
 
-            switch (key) {
-                case "submit" -> {
+        switch (key) {
+            case "submit" -> {
 
-                    switch (parent){
-                        case "authForm" -> {
-                            this.getComponent("authForm>submit").setEnabled(false);
-                            this.launcher.getExecutorServiceProvider().submitTask(()-> {
+                switch (parent) {
+                    case "authForm" -> {
+                        this.getComponent("authForm>submit").setEnabled(false);
+                        this.launcher.getExecutorServiceProvider().submitTask(() -> {
                             this.launcher.getAuth().formAuth(this.getComponent("authForm>submit"));
                             if (this.launcher.getAuth().isAuthorised()) {
                                 engine.getFrame().getRootPanel().removeAll();
                                 engine.getPanelVisibility().displayPanel("authForm->false");
                                 this.launcher.init();
                             } else {
-                                ((TextField)this.getComponent("login")).resetText();
-                                ((PassField)this.getComponent("password")).resetText();
+                                ((TextField) this.getComponent("login")).resetText();
+                                ((PassField) this.getComponent("password")).resetText();
                             }
-                            }, "auth");
-                        }
-
-                        case "userinfo" -> Engine.getLOGGER().warn("TEST");
+                        }, "auth");
                     }
-                }
 
-                case "smallButton" -> {
-                    this.launcher.getLoadingManager().toggleVisibility();
-                    //launcher.getOptionalModsWindow().toggleVisibility();
-                   // launcher.init();
+                    case "userinfo" -> Engine.getLOGGER().warn("TEST");
+                }
+            }
+
+            case "smallButton" -> {
+                this.launcher.getLoadingManager().toggleVisibility();
+                //launcher.getOptionalModsWindow().toggleVisibility();
+                // launcher.init();
                     /*
                     SoundPlayer.setUPDATE_RATE(10);
                     JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
@@ -98,80 +98,80 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     //this.launcher.getLoadingManager().toggleLoader();
                     //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
                      */
-                }
+            }
 
 
-                case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
-                case "cancelDownload-small" -> {
-                    core.getFileLoader().cancel();
+            case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
+            case "cancelDownload-small" -> {
+                core.getFileLoader().cancel();
+            }
+            case "applySettings" -> {
+                //this.getEngine().getGuiBuilder().getComponentFactory().ggetCustomTooltip().clearAllTooltips();
+                this.launcher.getSettings().applySettings("settingsFields");
+            }
+            case "logOut" -> {
+                this.launcher.getSOUND().playSound("other", "loggedOut");
+                this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
+                this.launcher.getAuth().logOut();
+            }
+            case "info-small" -> {
+                if (!launcher.getAuth().isAuthorised()) {
+                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
+                } else {
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
                 }
-                case "applySettings" -> {
-                    //this.getEngine().getGuiBuilder().getComponentFactory().ggetCustomTooltip().clearAllTooltips();
-                    this.launcher.getSettings().applySettings("settingsFields");
-                }
-                case "logOut" -> {
-                    this.launcher.getSOUND().playSound("other", "loggedOut");
-                    this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
-                    this.launcher.getAuth().logOut();
-                }
-                case "info-small" -> {
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
-                    }
-                }
+            }
 
-                case "settings-small" -> {
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
-                    }
+            case "settings-small" -> {
+                if (!launcher.getAuth().isAuthorised()) {
+                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
+                } else {
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
                 }
+            }
 
-                case "loadCancel-small" -> {
-                    this.core.getFileLoader().cancel();
-                    this.getLauncher().getLoadingManager().toggleVisibility();
-                    this.getComponent("toGame").setEnabled(false);
-                    this.getComponent("logOut").setEnabled(false);
+            case "loadCancel-small" -> {
+                this.core.getFileLoader().cancel();
+                this.getLauncher().getLoadingManager().toggleVisibility();
+                this.getComponent("toGame").setEnabled(false);
+                this.getComponent("logOut").setEnabled(false);
+            }
+
+            case "back" -> {
+                if (!launcher.getAuth().isAuthorised()) {
+                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
+                } else {
+                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
                 }
+            }
 
-                case "back" -> {
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
-                    }
+            case "back-test" -> {
+                if (!launcher.getAuth().isAuthorised()) {
+                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|test->false");
+                } else {
+                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|test->false");
                 }
+            }
 
-                case "back-test" -> {
-                    if (!launcher.getAuth().isAuthorised()) {
-                        engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|test->false");
-                    } else {
-                        engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|test->false");
-                    }
-                }
+            case "toGame" -> {
+                this.launcher.getSOUND().playSound("other", "start");
+                DropBox dropBox = (DropBox) this.getComponent("serverBox");
+                Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
+                this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
+                Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
+                this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
+                this.launcher.getConfig().writeCurrentConfig();
+                this.core = new Core(this, forceUpdate.isSelected());
+            }
 
-                case "toGame" -> {
-                    this.launcher.getSOUND().playSound("other", "start");
-                    DropBox dropBox = (DropBox) this.getComponent("serverBox");
-                    Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
-                    this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
-                    Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
-                    this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
-                    this.launcher.getConfig().writeCurrentConfig();
-                    this.core = new Core(this, forceUpdate.isSelected());
-                }
+            case "optionalMods" -> {
+                launcher.showDialog("Опциональные моды будут позже", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
+            }
 
-                case "optionalMods" -> {
-                    launcher.showDialog("Опциональные моды будут позже", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
-                }
-
-                case "userPane" -> {
+            case "userPane" -> {
+                this.getEngine().getExecutorServiceProvider().submitTask(() -> {
                     JPanel panel = this.launcher.getUser().getPanel();
                     boolean isVisible = panel.isVisible();
-
                     String iconPath = isVisible
                             ? "assets/ui/icons/menu.svg"
                             : "assets/ui/icons/back.svg";
@@ -180,14 +180,14 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
                     int startX = isVisible ? panel.getX() : -panel.getWidth();
                     int endX = isVisible ? -panel.getWidth() : 0;
-
                     Container panelParent = panel.getParent();
                     if (panelParent != null) {
                         panelParent.setComponentZOrder(pressedComponent, 0);
                         panelParent.setComponentZOrder(panel, 1);
-
                         if (!isVisible) {
                             panel.setVisible(true);
+                        } else {
+                            this.getEngine().getGuiBuilder().getPanelsMap().get("userActions").setVisible(true);
                         }
                         panelParent.revalidate();
                         panelParent.repaint();
@@ -205,11 +205,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     final long[] startTime = {-1};
                     timer.addActionListener(ex -> {
                         long currentTime = System.currentTimeMillis();
-                        if (startTime[0] < 0) startTime[0] = currentTime;
+                        if (startTime[0] < 0) {
+                            startTime[0] = currentTime;
+                        }
 
                         float progress = Math.min(1f, (currentTime - startTime[0]) / 300f);
                         float interpolated = 1 - (float) Math.pow(1 - progress, 3);
-
                         int newX = (int) (startX + (endX - startX) * interpolated);
                         panel.setLocation(newX, panel.getY());
 
@@ -224,25 +225,29 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                             panel.putClientProperty("currentAnimation", null);
                             if (isVisible) {
                                 panel.setVisible(false);
+                            } else {
+                                this.getEngine().getGuiBuilder().getPanelsMap().get("userActions").setVisible(false);
                             }
                             panelParent.setComponentZOrder(pressedComponent, 0);
                             panelParent.revalidate();
                         }
                     });
                     timer.start();
-                }
-
-                case "closeButton" -> {
-                    this.launcher.getFrame().setVisible(false);
-                    this.launcher.getExecutorServiceProvider().shutdown();
-                    this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
-                        this.launcher.getExecutorServiceProvider().shutdown();
-                        System.exit(0);
-                    });
-                }
-                case "hideButton" -> engine.getFrame().setExtendedState(1);
+                }, "userPaneToggle");
             }
+
+            case "closeButton" -> {
+                this.launcher.getFrame().setVisible(false);
+                this.launcher.getExecutorServiceProvider().shutdown();
+                this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
+                    this.launcher.getExecutorServiceProvider().shutdown();
+                    System.exit(0);
+                });
+            }
+            case "hideButton" -> engine.getFrame().setExtendedState(1);
+        }
     }
+
     @Override
     public Engine getEngine() {
         return engine;

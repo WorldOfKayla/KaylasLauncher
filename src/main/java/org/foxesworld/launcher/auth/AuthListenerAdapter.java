@@ -2,6 +2,7 @@ package org.foxesworld.launcher.auth;
 
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.launcher.user.User;
 
 import java.util.Map;
 
@@ -12,13 +13,10 @@ public class AuthListenerAdapter implements AuthListener {
         this.auth = auth;
         this.launcher = auth.getLauncher();
     }
-    @Override
-    public void onLogin(Map<String, Object> authCredentials) {
 
-    }
 
     @Override
-    public void onLoad(Auth auth, Map<String, Object> authCredentials) {
+    public void onAuthAttempt(Auth auth, Map<String, Object> authCredentials) {
         launcher.logStartupTime(launcher.getStartTime());
         auth.authTask(authCredentials);
 
@@ -26,19 +24,17 @@ public class AuthListenerAdapter implements AuthListener {
 
     @Override
     public void onAuthSuccess(Object data) {
-        Engine.LOGGER.debug("Auth SUCCESS");
         auth.updateBalance(((AuthResponse)data).getBalance());
         launcher.getSOUND().playSound("other", "loggedIn");
+        System.out.println(((AuthResponse)data).getUserFullName());
     }
 
     @Override
     public void onAuthFailure(Object data) {
-        // Optional: Do nothing by default
     }
 
     @Override
     public void onAuthError(Object data) {
-        // Optional: Do nothing by default
     }
 
     @Override

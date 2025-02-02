@@ -167,22 +167,16 @@ public class Launcher extends Engine {
     }
 
     @Override
-    public void onPanelsBuilt() {
-    }
+    public void onPanelsBuilt() {}
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {
-
-    }
+    public void onAdditionalPanelBuild(JPanel jPanel) {}
 
     @Override
-    public void onGuiBuilt() {
-
-    }
+    public void onGuiBuilt() {}
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, Container parentPanel) {
-        //parentPanel.update();
         parentPanel.repaint();
         parentPanel.revalidate();
     }

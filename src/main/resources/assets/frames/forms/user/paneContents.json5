@@ -1,0 +1,62 @@
+{
+  panels: {
+    userOptions: {
+      panelOptions: {
+        opaque: true ,
+        visible: true ,
+        background: "#4d2c2c" ,
+        bounds: {
+          x: 0 ,
+          y: 140 ,
+          size: {
+            width: 355 ,
+            height: 500
+          }
+        }
+      } ,
+      childComponents: [
+        {
+          type: "button",
+          enabled: true,
+          style: "buttonMain",
+          toolTip: "tooltip.settings",
+          localeKey: "settings.settingsButt",
+          imageIcon: "assets/ui/icons/settingsGrey.svg" ,
+          iconWidth: 32 ,
+          iconHeight: 32 ,
+          keyCode: "S",
+          id: "settings-small",
+          bounds: {
+            x: 10,
+            y: 35,
+            size: {
+              width: 330,
+              height: 47
+            }
+          }
+        },
+        {
+          type: "button",
+          enabled: true,
+          keyCode: "ESCAPE",
+          style: "buttonMain",
+          toolTip: "tooltip.logOutToolTip",
+          tooltipStyle: "error",
+          id: "logOut",
+          localeKey: "logged.logOut",
+          imageIcon: "assets/ui/icons/logout.svg" ,
+          iconWidth: 32 ,
+          iconHeight: 32 ,
+          bounds: {
+            x: 10,
+            y: 90,
+            size: {
+              width: 330,
+              height: 47
+            }
+          }
+        }
+      ]
+    }
+  }
+}

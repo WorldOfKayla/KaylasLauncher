@@ -11,8 +11,6 @@ import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
-import org.foxesworld.launcher.auth.Balance;
-import org.foxesworld.launcher.gui.BlendedImageIcon;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.notification.Notification;
 
@@ -25,6 +23,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
@@ -37,37 +36,37 @@ public class User extends org.foxesworld.engine.user.User {
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
     private final ServerInfoDisplayer serverInfoDisplayer;
-    private SkinLoader skinLoader;
+    private final SkinLoader skinLoader;
     private JFrame taskMgrFrame;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
         this.launcher = launcher;
         this.auth = launcher.getAuth();
+        this.userAttributes = new UserAttributes(this);
         this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class, Label.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
-        this.userAttributes = new UserAttributes(this);
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
+        this.skinLoader = new SkinLoader(this);
         initializeUser();
     }
 
-    private void initializeUser() {
+    public void initializeUser() {
         if (auth.isAuthorised()) {
-            this.skinLoader = new SkinLoader(this);
             setUserSpace();
-
         } else {
             displayLoginPanel();
         }
         //this.showTaskMgr();
     }
 
-    public void setBalance(List<Map<String,Integer>> balance){
-        ((Label)this.getComponent("crystalsField")).setText(balance.get(0).toString());
+    public void setBalance(Map<String, AtomicInteger> balance){
+        ((Label)this.getComponent("crystalsField")).setText(balance.get("crystals").toString());
+        ((Label)this.getComponent("unitsField")).setText(balance.get("units").toString());
     }
 
     private void displayLoginPanel() {
@@ -83,10 +82,10 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        updateUserAttributes(auth.getAuthCredentials());
         setDropBoxData(userServers.getServerListBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
+        setBalance(auth.getBalanceMap());
         setupDiscordRpc();
         ((Label)this.userServers.getComponent("greetUser")).setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
         this.skinLoader.loadSkin(skins -> {
@@ -124,44 +123,18 @@ public class User extends org.foxesworld.engine.user.User {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
         guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, userServers.getServerListBox().getY() + 40, 340, 45), 3000, message);
     }
-
-    public void updateUserAttributes(Map<String, Object> attributes) {
-        attributes.forEach(this::setUserAttribute);
-    }
-
     public void updateServer(int index) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
                 String ip = auth.getUserServersAttributes().get(index).getHost();
                 int port = auth.getUserServersAttributes().get(index).getPort();
-                //serverBox.updateBox(lang.getString("server.updating"), serverInfo.genServerIcon(new String[]{null, "0", null}));
-
                 String[] status = serverInfo.pollServer(ip, port);
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
-
-                //SwingUtilities.invokeLater(() -> serverBox.updateBox(text, img));
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
         }, "updateServer"+index);
-    }
-
-    public void setUserAttribute(String attributeName, Object attributeValue) {
-        try {
-            Field field = UserAttributes.class.getDeclaredField(attributeName);
-            field.setAccessible(true);
-
-            // Convert the value to the appropriate type
-            Object value = convertValue(field.getType(), attributeValue);
-            field.set(userAttributes, value);  // Update the userAttributes object
-        } catch (NoSuchFieldException e) {
-            Engine.getLOGGER().warn("No such field: " + attributeName);
-        } catch (IllegalAccessException e) {
-            Engine.getLOGGER().error("Cannot access field: " + e.getMessage());
-        } catch (Exception e) {
-            Engine.getLOGGER().error("Error setting user attribute: " + e.getMessage());
-        }
     }
 
     @Override
@@ -216,7 +189,7 @@ public class User extends org.foxesworld.engine.user.User {
                     return;
                 }
 
-                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 0.4), 80));
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 72, 72), 80));
                 if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
                     Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
                     return;
@@ -243,7 +216,10 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void setUserGroupLabel() {
         String groupKey = "group.group-" + auth.getAuthCredentials("group");
-        SwingUtilities.invokeLater(() -> ((JLabel) getComponent("userGroup")).setText(lang.getString(groupKey)));
+        SwingUtilities.invokeLater(() -> {
+            ((JLabel) getComponent("userGroup")).setText(lang.getString(groupKey));
+            ((JLabel) getComponent("userLogin")).setText(userAttributes.userFullName);
+        });
     }
 
     public String getLogin() {
@@ -265,6 +241,16 @@ public class User extends org.foxesworld.engine.user.User {
             newsPanel.revalidate();
             newsPanel.repaint();
         });
+    }
+
+    public synchronized Object getUserAttribute(String attributeName) {
+        try {
+            Field field = UserAttributes.class.getDeclaredField(attributeName);
+            field.setAccessible(true);
+            return field.get(userAttributes);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void showTaskMgr(){

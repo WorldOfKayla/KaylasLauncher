@@ -78,7 +78,7 @@ public class Auth {
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
-                authListener.onLoad(this, authCredentials);
+                authListener.onAuthAttempt(this, authCredentials);
             } else {
                 clearCredentials();
             }
@@ -135,7 +135,6 @@ public class Auth {
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
-        authListener.onLogin(authCredentials);
     }
 
     public void updateBalance(List<Map<String, Integer>> balance) {

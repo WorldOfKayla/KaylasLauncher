@@ -49,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.14.3-HELIX-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.15.1-TET-all.jar')
     implementation files('lib/foxesworld/Animatix-0.0.10-SNAPSHOT-all.jar')
 
     // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle

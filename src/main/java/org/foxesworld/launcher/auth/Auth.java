@@ -8,24 +8,23 @@ import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
+import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Auth {
     private final Launcher launcher;
     private final Engine engine;
     private final Config config;
-    private final HTTPrequest postRequest;
     private final CryptUtils cryptUtils;
     private final EncryptionKeyManager encryptionKeyManager;
     private AuthListener authListener;
     private Map<String, Object> authCredentials = new HashMap<>();
     private final ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
-    private final Object balanceLock = new Object();
-    private volatile boolean isBalanceUpdating = false;
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private boolean authorised = false;
@@ -34,7 +33,6 @@ public class Auth {
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.config = launcher.getConfig();
-        this.postRequest = engine.getPOSTrequest();
         this.cryptUtils = launcher.getCRYPTO();
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
         setAuthListener(new AuthListenerAdapter(this));
@@ -86,10 +84,14 @@ public class Auth {
     }
 
     public CompletableFuture<Boolean> authorizeAsync() {
-        authCredentials.put("userAction", "auth");
+        String login = (String) authCredentials.get("login");
+        String password = (String) authCredentials.get("password");
+
+        AuthRequest authRequest = new AuthRequest(engine, login, password);
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        postRequest.sendAsync(authCredentials,
+        authRequest.sendAsync(
+                Map.of(),
                 response -> handleAuthResponse(response, future),
                 error -> handleAuthError(error, future)
         );
@@ -102,10 +104,9 @@ public class Auth {
             AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
                 handleSuccessfulAuth(authResponse);
-                invokeHook("onAuthSuccess", authResponse);
+                //invokeHook("onAuthSuccess", authResponse);
                 future.complete(true);
             } else {
-                handleFailedAuth(authResponse);
                 invokeHook("onAuthFailure", authResponse);
                 future.complete(false);
             }
@@ -123,11 +124,13 @@ public class Auth {
 
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);
+        launcher.getSOUND().playSound("other", "loggedIn");
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
+        updateBalance((authResponse).getBalance());
 
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
         loadUserServers(authResponse.getLogin());
@@ -135,52 +138,30 @@ public class Auth {
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
+        launcher.setUser(new User(launcher));
     }
 
-    public void updateBalance(List<Map<String, Integer>> balance) {
-        if (balance == null || balance.isEmpty()) {
-            Engine.getLOGGER().warn("Received null or empty balance data");
-            return;
-        }
 
-        synchronized (balanceLock) {
-            if (isBalanceUpdating) {
-                Engine.getLOGGER().warn("Balance update is already in progress, skipping duplicate request.");
-                return;
-            }
-            isBalanceUpdating = true;
-        }
+    public void updateBalance(List<Map<String, Integer>> balance) {
 
         CompletableFuture.runAsync(() -> {
             try {
-                ConcurrentHashMap<String, AtomicInteger> newBalances = new ConcurrentHashMap<>();
-                balance.forEach(balanceEntry -> balanceEntry.forEach((key, value) ->
-                        newBalances.computeIfAbsent(key, k -> new AtomicInteger()).addAndGet(value)
-                ));
-
-                synchronized (balanceLock) {
-                    newBalances.forEach((key, value) -> balanceMap.merge(key, value, (oldValue, newValue) -> {
-                        oldValue.addAndGet(newValue.get());
-                        return oldValue;
-                    }));
-                    Engine.getLOGGER().info("Balance updated: " + balanceMap);
-                }
+                balance.forEach(entry ->
+                        entry.forEach((key, value) ->
+                                balanceMap.compute(key, (k, v) -> {
+                                    if (v == null) return new AtomicInteger(value);
+                                    v.addAndGet(value);
+                                    return v;
+                                })
+                        )
+                );
+                Engine.getLOGGER().info("Balance updated: " + balanceMap);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error updating balance", e);
             } finally {
-                synchronized (balanceLock) {
-                    isBalanceUpdating = false;
-                }
             }
         });
     }
-
-    private void handleFailedAuth(AuthResponse authResponse) {
-        Engine.getLOGGER().info("Incorrect password for " + authCredentials.get("login") + "!");
-        launcher.getSOUND().playSound("other", "alert");
-        launcher.showDialog(authResponse.getMessage(), launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
-    }
-
     private void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);

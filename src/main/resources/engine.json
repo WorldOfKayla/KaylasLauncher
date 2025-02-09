@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.20.6.2",
+  "launcherVersion": "1.20.10",
   "launcherBuild": "Ascension",
   "styles": [
     "button",
@@ -40,7 +40,7 @@
       "rows": 3,
       "cols": 5,
       "delay": 55,
-      "animSpeed": 40,
+      "animSpeed": 55,
       "bounds": {
         "x": 30,
         "y": 40,

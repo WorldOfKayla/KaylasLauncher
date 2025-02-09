@@ -85,6 +85,7 @@ public class Core implements GameListener {
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
+        this.launcher.getFrame().setVisible(false);
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
         Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
         startTime = System.currentTimeMillis();

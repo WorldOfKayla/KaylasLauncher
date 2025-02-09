@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
@@ -28,6 +29,12 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     private final JPanel newsPanel;
     private final ImageUtils imageUtils;
     private final GuiBuilder guiBuilder;
+    @Component
+    @SuppressWarnings("unused")
+    private Label srvOnline,serverTitle,serverCore,serverImg;
+    @Component
+    @SuppressWarnings("unused")
+    private TextArea serverDescLabel;
 
     public ServerInfoDisplayer(User user) {
         super(user.getGuiBuilder(), "serverInfo", List.of(Label.class, TextArea.class));
@@ -45,7 +52,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
 
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
-            String iconName = null;
+            String iconName;
 
             if (value.contains("-")) {
                 String[] parts = value.split("-");
@@ -115,21 +122,24 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
                     newsPanel.repaint();
                 }
                 String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
-                ((Label) this.getComponent("srvOnline")).setText(this.user.getServerInfo().genServerStatus(status));
+                this.srvOnline.setText(this.user.getServerInfo().genServerStatus(status));
             }, "displayServer-" + index);
         }
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {
-        JLabel serverCore;
         String[] version = thisServer.getServerVersion().split("-");
-
-        ((JLabel) getComponent("serverTitle")).setText(thisServer.getServerName() + ' ' + version[0]);
-        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/srvIcons/" + version[1] + ".png"), 32, 32);
-        serverCore = ((JLabel) getComponent("serverCore"));
-        serverCore.setIcon(new ImageIcon(image));
-        ((JLabel) getComponent("serverImg")).setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
-        ((TextArea) getComponent("serverDescLabel")).setText(thisServer.getServerDescription());
+        String srvIcon = "";
+        if(version[1] != null) {
+            srvIcon = "assets/ui/icons/srvIcons/" + version[1] + ".png";
+        } else {
+            srvIcon = "assets/ui/icons/srvIcons/Vanilla.png";
+        }
+        this.serverTitle.setText(thisServer.getServerName() + ' ' + version[0]);
+        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(this.launcher.getImageUtils().getLocalImage(srvIcon), 32, 32);
+        this.serverCore.setIcon(new ImageIcon(image));
+        this.serverImg.setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
+        this.serverDescLabel.setText(thisServer.getServerDescription());
     }
 
     private BufferedImage getServerImage(String url) {

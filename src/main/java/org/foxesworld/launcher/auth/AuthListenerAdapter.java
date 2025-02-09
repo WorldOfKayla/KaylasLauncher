@@ -4,6 +4,7 @@ import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.launcher.user.User;
 
+import javax.swing.*;
 import java.util.Map;
 
 public class AuthListenerAdapter implements AuthListener {
@@ -24,13 +25,16 @@ public class AuthListenerAdapter implements AuthListener {
 
     @Override
     public void onAuthSuccess(Object data) {
-        auth.updateBalance(((AuthResponse)data).getBalance());
         launcher.getSOUND().playSound("other", "loggedIn");
-        System.out.println(((AuthResponse)data).getUserFullName());
+        //launcher.getFrame().repaint();
+        //launcher.init();
     }
 
     @Override
     public void onAuthFailure(Object data) {
+        Engine.getLOGGER().info("Incorrect password for " + ((AuthResponse)data).getLogin() + "!");
+        launcher.getSOUND().playSound("other", "alert");
+        launcher.showDialog(((AuthResponse)data).getMessage(), launcher.getLANG().getString("auth.authTitle"), JOptionPane.WARNING_MESSAGE, false);
     }
 
     @Override

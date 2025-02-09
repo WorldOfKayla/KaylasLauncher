@@ -9,6 +9,7 @@ import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.label.Label;
@@ -33,13 +34,25 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     private final DownloadUtils downloadUtils;
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
-    //private final JProgressBar progressBar;
+    @SuppressWarnings("unused")
+    @Component
+    private Label progressLabel, downloadFile, downloadDirectory;
+    @SuppressWarnings("unused")
+    @Component
+    private JProgressBar progressBar;
+
+    @SuppressWarnings("unused")
+    @Component
+    private TextArea serverDescArea;
+
+    @SuppressWarnings("unused")
+    @Component("cancelDownload-small")
+    private Button cancelDownload;
 
     public FileLoaderImpl(Core core) {
-        super(core.getLauncher().getGuiBuilder(), "download", List.of(JProgressBar.class, Label.class, Button.class));
+        super(core.getLauncher().getGuiBuilder(), "download", List.of(JProgressBar.class, Label.class, TextArea.class, Button.class));
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
-        //this.progressBar = ((LoadStatus)core.getLauncher().getLoadingManager()).getProgressBar();
     }
 
     @Override
@@ -54,9 +67,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     }
 
     private void initializeDownloadComponents() {
-        downloadUtils.setProgressBar((JProgressBar) this.getComponent("progressBar"));
-        downloadUtils.setProgressLabel((JLabel) this.getComponent("progressLabel"));
-        downloadUtils.setCancelButton((Button) this.getComponent("cancelDownload-small"));
+        downloadUtils.setProgressBar(this.progressBar);
+        downloadUtils.setProgressLabel(this.progressLabel);
+        downloadUtils.setCancelButton(this.cancelDownload);
     }
 
     private void setupGameLauncher() {
@@ -88,8 +101,8 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getLoadingManager().toggleVisibility();
-        DownloadProcessor downloadProcessor = new DownloadProcessor(this.core.getLauncher().getGuiBuilder(), "download", List.of(TextArea.class));
-        ((TextArea)downloadProcessor.getComponent("serverDescArea")).setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
+       // DownloadProcessor downloadProcessor = new DownloadProcessor(this.core.getLauncher().getGuiBuilder(), "download", List.of(TextArea.class));
+        this.serverDescArea.setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
     }
 
     @Override
@@ -183,11 +196,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     }
 
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
-        ComponentsAccessor downloadInfoAccessor = new ComponentsAccessor(core.getLauncher().getGuiBuilder(), "downloadInfo", Arrays.asList(Label.class, JProgressBar.class));
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-
-        Label downloadFile = (Label) downloadInfoAccessor.getComponentMap().get("downloadFile");
-        Label downloadDirectory = (Label) downloadInfoAccessor.getComponentMap().get("downloadDirectory");
 
         downloadFile.setText(new File(localPath).getName());
         downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
@@ -214,7 +223,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
         core.getLauncher().getExecutorServiceProvider().shutdown();
-        ((JProgressBar)this.getComponent("progressBar")).setValue(0);
+        this.progressBar.setValue(0);
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
@@ -252,12 +261,5 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     private void addReplaceVars(String replace, String replacer) {
         varsToReplace.put(replace, replacer);
-    }
-
-    private static class DownloadProcessor extends  ComponentsAccessor {
-
-        public DownloadProcessor(GuiBuilder guiBuilder, String panelId, List<Class<?>> componentTypes) {
-            super(guiBuilder, panelId, componentTypes);
-        }
     }
 }

@@ -20,13 +20,13 @@
       childComponents: [
         {
           type: "label",
-          fontSize: 23,
-          style: "promptLabel",
+          fontSize: 16,
+          style: "titleBold",
           localeKey: "loading.title",
           id: "titleLabel",
           bounds: {
             x: 120,
-            y: 50,
+            y: 45,
             size: {
               width: 300,
               height: 35
@@ -47,21 +47,37 @@
               height: 20
             }
           }
-        }/*,
+        },
         {
           type: "progressBar",
-          style: "progress",
+          style: "progressMini",
           id: "loadProgress",
           color: "#ffffff",
+          borderRadius: 20,
           bounds: {
             x: 40,
-            y: 110,
+            y: 120,
             size: {
               width: 300,
-              height: 10
+              height: 30
             }
           }
-        } */
+        },
+        {
+          type: "label",
+          fontSize: 12,
+          style: "title",
+          localeKey: "loading.msg",
+          id: "progressText",
+          bounds: {
+            x: 12,
+            y: 7,
+            size: {
+              width: 400,
+              height: 20
+            }
+          }
+        }
       ]
     }
   }

@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.gui;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.checkbox.CheckBoxListener;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
@@ -27,6 +28,8 @@ import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
     private Launcher launcher;
+    @Component
+    private TextArea settingsInfo;
 
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class, CompositeSlider.class, FileSelector.class));
@@ -137,9 +140,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        TextArea infoArea = (TextArea) this.getComponent("settingsInfo");
-        infoArea.setWrapStyleWord(true);
-        infoArea.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
+        settingsInfo.setWrapStyleWord(true);
+        settingsInfo.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
     }
 
     @Override

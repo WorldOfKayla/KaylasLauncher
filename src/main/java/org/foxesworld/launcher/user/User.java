@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@SuppressWarnings("unused")
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
-    private final UserServers userServers;
+    private final LoggedForm loggedForm;
     private final Launcher launcher;
     private final LanguageProvider lang;
     private final ServerInfo serverInfo;
@@ -38,13 +37,15 @@ public class User extends org.foxesworld.engine.user.User {
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final SkinLoader skinLoader;
     private JFrame taskMgrFrame;
+    @org.foxesworld.engine.gui.componentAccessor.Component
+    private Label userGroup, userLogin, crystalsField, unitsField;
 
     public User(Launcher launcher) {
         super(launcher.getGuiBuilder(), "userPane", List.of(Label.class));
         this.launcher = launcher;
         this.auth = launcher.getAuth();
         this.userAttributes = new UserAttributes(this);
-        this.userServers = new UserServers(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class, Label.class));
+        this.loggedForm = new LoggedForm(launcher.getGuiBuilder(), "loggedForm", List.of(DropBox.class, Label.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.lang = launcher.getLANG();
@@ -57,7 +58,9 @@ public class User extends org.foxesworld.engine.user.User {
 
     public void initializeUser() {
         if (auth.isAuthorised()) {
+            this.launcher.getFrame().repaint();
             setUserSpace();
+            this.getServerInfoDisplayer().displayServerInfo(this.launcher.getConfig().getSelectedServer());
         } else {
             displayLoginPanel();
         }
@@ -65,8 +68,8 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void setBalance(Map<String, AtomicInteger> balance){
-        ((Label)this.getComponent("crystalsField")).setText(balance.get("crystals").toString());
-        ((Label)this.getComponent("unitsField")).setText(balance.get("units").toString());
+        this.crystalsField.setText(balance.get("crystals").toString());
+        this.unitsField.setText(balance.get("units").toString());
     }
 
     private void displayLoginPanel() {
@@ -82,28 +85,30 @@ public class User extends org.foxesworld.engine.user.User {
     @Override
     protected void setUserSpace() {
         auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
-        setDropBoxData(userServers.getServerListBox());
+        setDropBoxData(loggedForm.getServerBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setBalance(auth.getBalanceMap());
         setupDiscordRpc();
-        ((Label)this.userServers.getComponent("greetUser")).setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
+        this.loggedForm.getGreetUser().setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
         this.skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
-            Label skinLabel = (Label) this.userServers.getComponent("userSkin");
+            Label skinLabel = this.loggedForm.getUserSkin();
             skinLabel.setIcon(new ImageIcon(front));
-            skinLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    skinLabel.setIcon(new ImageIcon(back));
-                }
+            if(skinLabel.isEnabled()) {
+                skinLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        skinLabel.setIcon(new ImageIcon(back));
+                    }
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    skinLabel.setIcon(new ImageIcon(front));
-                }
-            });
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        skinLabel.setIcon(new ImageIcon(front));
+                    }
+                });
+            }
         });
         notifyUserLoggedIn();
     }
@@ -121,7 +126,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void notifyUserLoggedIn() {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
-        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, userServers.getServerListBox().getY() + 40, 340, 45), 3000, message);
+        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, loggedForm.getServerBox().getY() + 40, 340, 45), 3000, message);
     }
     public void updateServer(int index) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
@@ -217,8 +222,8 @@ public class User extends org.foxesworld.engine.user.User {
     private void setUserGroupLabel() {
         String groupKey = "group.group-" + auth.getAuthCredentials("group");
         SwingUtilities.invokeLater(() -> {
-            ((JLabel) getComponent("userGroup")).setText(lang.getString(groupKey));
-            ((JLabel) getComponent("userLogin")).setText(userAttributes.userFullName);
+            this.userGroup.setText(lang.getString(groupKey));
+            this.userLogin.setText(userAttributes.userFullName);
         });
     }
 
@@ -233,7 +238,7 @@ public class User extends org.foxesworld.engine.user.User {
     public String getToken() {
         return userAttributes.token;
     }
-
+    @Deprecated
     public void setNewsData(List<Map<String, String>> newsData) {
         SwingUtilities.invokeLater(() -> {
             newsPanel.removeAll();
@@ -273,6 +278,7 @@ public class User extends org.foxesworld.engine.user.User {
         }
     }
 
+    @Deprecated
     private void addNewsItem(Map<String, String> newsItem) {
         String key = newsItem.get("key");
         String value = newsItem.get("value");
@@ -293,21 +299,6 @@ public class User extends org.foxesworld.engine.user.User {
         panel.add(valueLabel);
     }
 
-    private Object convertValue(Class<?> fieldType, Object value) {
-        if (fieldType == boolean.class || fieldType == Boolean.class) {
-            return Boolean.parseBoolean(value.toString());
-        } else if (fieldType == int.class || fieldType == Integer.class) {
-            return Integer.parseInt(value.toString());
-        } else if (fieldType == long.class || fieldType == Long.class) {
-            return Long.parseLong(value.toString());
-        } else if (fieldType == double.class || fieldType == Double.class) {
-            return Double.parseDouble(value.toString());
-        } else if (fieldType == float.class || fieldType == Float.class) {
-            return Float.parseFloat(value.toString());
-        }
-        return value;  // Return the value as is if no conversion is needed
-    }
-
     public GuiBuilder getGuiBuilder() {
         return guiBuilder;
     }
@@ -320,8 +311,8 @@ public class User extends org.foxesworld.engine.user.User {
         return launcher;
     }
 
-    public UserServers getUserServers() {
-        return userServers;
+    public LoggedForm getUserServers() {
+        return loggedForm;
     }
 
     public String getUuid() {

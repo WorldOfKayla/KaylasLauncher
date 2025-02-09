@@ -18,9 +18,7 @@ public class ServerParser extends org.foxesworld.engine.server.ServerParser {
     @Override
     public List<ServerAttributes> parseServers(String login) {
         request.put("login", login);
-
         CompletableFuture<List<ServerAttributes>> future = new CompletableFuture<>();
-
             engine.getPOSTrequest().sendAsync(request,
                     response -> {
                         try {

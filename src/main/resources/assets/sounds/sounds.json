@@ -74,7 +74,8 @@
   "music": {
     "launcherTheme": {
       "sounds": [
-        "assets/sounds/mus/mus0.ogg"
+        "assets/sounds/mus/mus0.ogg",
+        "assets/sounds/mus/mus1.ogg"
       ]
     }
   },
@@ -82,7 +83,11 @@
   "other": {
     "loggedIn": {
       "sounds": [
-        "assets/sounds/auth/auth0.ogg"
+        "assets/sounds/auth/auth0.ogg",
+        "assets/sounds/auth/auth1.ogg",
+        "assets/sounds/auth/auth2.ogg",
+        "assets/sounds/auth/auth3.ogg",
+        "assets/sounds/auth/auth4.ogg"
       ]
     },
     "loggedOut": {

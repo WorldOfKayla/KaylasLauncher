@@ -9,6 +9,7 @@ import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.user.UserGroup;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -91,67 +92,159 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     public void launchGame() {
-
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             this.checkDangerousParams();
             setJreArgs();
             try {
-                if(getIntVer() < 173){
+                if (getIntVer() < 173) {
                     Engine.LOGGER.info("LEGACY!1!1!11!");
                 }
-                // Adding --tweakclass only on versions under 1.13.3
+                // Добавляем --tweakClass для определённых версий
                 if (getIntVer() == 1710 || getIntVer() == 1122) {
                     tweakClassVal = addTweakClass();
-                    mainClass = (tweakClassVal != null ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
+                    mainClass = (tweakClassVal != null && !tweakClassVal.isEmpty()
+                            ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
                 }
-
                 if (this.argsReader.getMainClass() != null) {
                     mainClass = argsReader.getMainClass();
                 }
-
                 processArgs.add(mainClass);
-                if (Boolean.valueOf(this.argsReader.isAuthLib()).equals(true)) {
+                if (Boolean.valueOf(this.argsReader.isAuthLib())) {
                     authLib.loadAuthLib();
                 } else {
                     Engine.LOGGER.info("Launching without AuthLib loaded!");
                 }
                 setGameArgs();
 
-                // Log the command that will be executed
+                // Логируем сформированную команду для отладки
+                Engine.LOGGER.debug("Executing command: " + processArgs.toString());
+
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(getPathBuilders().buildClientDir().toUri()));
                 processBuilder.redirectErrorStream(true);
                 processBuilder.environment().put("JAVA_HOME", getPathBuilders().buildRuntimeDir().toString());
-
-                // Redirect error stream to the standard output
-                processBuilder.inheritIO();
+                // Перенаправляем вывод в PIPE для его захвата
+                processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
 
                 Process process = processBuilder.start();
+                if (process.isAlive()) {
+                    gameListener.onGameStart(gameClient);
+                }
+
+                // Захватываем вывод процесса
+                StringBuilder processOutput = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        processOutput.append(line).append("\n");
+                    }
+                }
+
                 if (process.isAlive()) {
                     gameListener.onGameStart(gameClient);
                 }
                 engine.getFrame().setVisible(false);
 
                 int exitCode = process.waitFor();
-                gameListener.onGameExit(this.gameClient);
+                System.out.println("Process exit code: " + exitCode);
 
-                // Using invokeLater for ssdd-related actions
-                SwingUtilities.invokeLater(() -> {
-                    if (exitCode != 0) {
-                        logger.error("Error launching minecraft. Error code: " + exitCode);
-                        JOptionPane.showMessageDialog(this.engine.getFrame(), "Exit Code - " + exitCode, this.launcher.getAppTitle() + " Crash", JOptionPane.ERROR_MESSAGE, this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/bug.svg", 64, 64));
-                    }
-                    // Terminate the game process if the task is completed
-                    logger.info("Task completed, stopping the game.");
-                    System.exit(0);
-                });
-
+                if (exitCode != 0) {
+                    logger.error("Error launching minecraft. Error code: " + exitCode);
+                    // Создаем исключение с текстом, включающим код завершения и вывод процесса
+                    Exception launchException = new Exception("Minecraft exited with error code: " + exitCode +
+                            "\nProcess output:\n" + processOutput);
+                    SwingUtilities.invokeLater(() -> {
+                        showErrorReport(launchException);
+                        gameListener.onGameExit(this.gameClient);
+                        System.exit(1);
+                    });
+                } else {
+                    SwingUtilities.invokeLater(() -> {
+                        logger.info("Task completed, stopping the game.");
+                        gameListener.onGameExit(this.gameClient);
+                        System.exit(0);
+                    });
+                }
             } catch (IOException | InterruptedException | RuntimeException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                logger.error("Exception occurred during game launch: ", e);
+                SwingUtilities.invokeLater(() -> {
+                    showErrorReport(e);
+                    gameListener.onGameExit(this.gameClient);
+                });
             }
         }, "launch-" + this.gameClient.getServerName());
     }
+
+
+    private void showErrorReport(Throwable throwable) {
+        StringBuilder header = new StringBuilder();
+        header.append("Crash Report\n");
+        header.append("============\n");
+        header.append("Дата и время: ").append(java.time.LocalDateTime.now()).append("\n");
+        header.append("ОС: ").append(System.getProperty("os.name")).append(" ")
+                .append(System.getProperty("os.version")).append("\n");
+        header.append("Java: ").append(System.getProperty("java.version")).append("\n");
+        header.append("Пользователь: ").append(System.getProperty("user.name")).append("\n");
+        header.append("\n");
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        String stackTrace = sw.toString();
+
+        String errorText = header + stackTrace;
+
+        JTextArea textArea = new JTextArea(errorText);
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        textArea.setBackground(new Color(30, 30, 30));
+        textArea.setForeground(new Color(200, 200, 200));
+        textArea.setCaretColor(new Color(200, 200, 200));
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(700, 400));
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton saveButton = new JButton("Сохранить ошибку");
+
+        saveButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Сохранить отчет об ошибке");
+            fileChooser.setSelectedFile(new File("crash_report.log"));
+            int userSelection = fileChooser.showSaveDialog(engine.getFrame());
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
+                    fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".log");
+                }
+                try (FileWriter fw = new FileWriter(fileToSave)) {
+                    fw.write(errorText);
+
+                } catch (IOException ioException) {
+                    JOptionPane.showMessageDialog(engine.getFrame(), "Не удалось сохранить отчет:\n" + ioException.getMessage(),
+                            "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            gameListener.onGameExit(this.gameClient);
+        });
+
+        buttonPanel.add(saveButton);
+
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JOptionPane.showMessageDialog(
+                engine.getFrame(),
+                mainPanel,
+                this.launcher.getAppTitle() + " Crash Report",
+                JOptionPane.ERROR_MESSAGE,
+                this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/bug.svg", 64, 64)
+        );
+        gameListener.onGameExit(this.gameClient);
+    }
+
 
 
 

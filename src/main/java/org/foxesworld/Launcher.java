@@ -21,6 +21,7 @@ import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.gui.InitialValue;
 import org.foxesworld.launcher.gui.Settings;
+import org.foxesworld.launcher.gui.SplashScreenWindow;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.user.User;
 
@@ -36,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Launcher extends Engine {
-    private final Auth auth;
+    private Auth auth;
     long startTime;
     private User user;
     private Settings settings;
@@ -44,23 +45,28 @@ public class Launcher extends Engine {
     private IconUtils iconUtils;
     private final File launcherFile;
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Launcher::new);
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        System.setProperty("file.encoding", "UTF-8");
+        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
     }
 
     static {
         CONFIG_FILES.put("config", Config.class);
     }
 
-    /*
     private static void showSplashAndStartLauncher() {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(890, e -> new Launcher(splashScreen));
+        Timer launchTimer = new Timer(890, e -> {
+            new Launcher();
+            splashScreen.dispose();
+        });
         launchTimer.setRepeats(false);
         launchTimer.start();
-    } */
+    }
 
     public Launcher() {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
@@ -69,8 +75,7 @@ public class Launcher extends Engine {
         this.fileProperties = getFileProperties();
 
         preInit();
-        this.auth = new Auth(this);
-        this.getExecutorServiceProvider().submitTask(()-> new LauncherValidator(this).validate(), "validation");
+        this.getExecutorServiceProvider().submitTask(() -> new LauncherValidator(this).validate(), "validation");
         init();
     }
 
@@ -93,27 +98,27 @@ public class Launcher extends Engine {
         this.frameConstructor = new FrameConstructor(this);
         this.serverInfo = new ServerInfo(this);
         this.CRYPTO = new CryptUtils();
-        this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config)config).getLogLevel()));
+        this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config) config).getLogLevel()));
+        this.frameConstructor.setFocusStatusListener(this);
     }
 
     @Override
     public void init() {
-            setupDiscord();
-            this.getExecutorServiceProvider().submitTask(() -> {
-                buildGui(getEngineData().getStyles());
-                loadMainPanel(fileProperties.getMainFrame());
-                SwingUtilities.invokeLater(() -> {
-                    this.user = new User(this);
-                    setNews();
-                    this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
-                    this.settings = new Settings(this);
-                    this.settings.addListeners();
-                    setActionHandler(new ActionHandler(this));
-                    if(this.getConfig().isBackgroundMusic()) {
-                        SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
-                    }
-                    });
-                }, "init");
+        setupDiscord();
+        this.getExecutorServiceProvider().submitTask(() -> {
+            buildGui(getEngineData().getStyles());
+            this.auth = new Auth(this);
+            loadMainPanel(fileProperties.getMainFrame());
+            SwingUtilities.invokeLater(() -> {
+                this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
+                this.settings = new Settings(this);
+                this.settings.addListeners();
+                setActionHandler(new ActionHandler(this));
+                if (this.getConfig().isBackgroundMusic()) {
+                    SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
+                }
+            });
+        }, "init");
         setInit(true);
     }
 
@@ -131,14 +136,6 @@ public class Launcher extends Engine {
             this.discord = new Discord(this, "aiden");
             this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
         }, "discordSetUp");
-    }
-
-    public void setNews() {
-        //if (this.getConfig().isLoadNews()) {
-            //setNews(new News(this));
-        //} else {
-            this.user.getServerInfoDisplayer().displayServerInfo(this.getConfig().getSelectedServer());
-        //}
     }
 
     private void buildGui(String[] styles) {
@@ -167,13 +164,16 @@ public class Launcher extends Engine {
     }
 
     @Override
-    public void onPanelsBuilt() {}
+    public void onPanelsBuilt() {
+    }
 
     @Override
-    public void onAdditionalPanelBuild(JPanel jPanel) {}
+    public void onAdditionalPanelBuild(JPanel jPanel) {
+    }
 
     @Override
-    public void onGuiBuilt() {}
+    public void onGuiBuilt() {
+    }
 
     @Override
     public void onPanelBuild(Map<String, OptionGroups> groups, String componentGroup, Container parentPanel) {
@@ -219,7 +219,6 @@ public class Launcher extends Engine {
     }
 
     @Override
-    @Deprecated
     public void updateFocus(boolean hasFocus) {
         JPanel oldTitleBar = this.getGuiBuilder().getPanelsMap().get("titleBar");
 
@@ -295,6 +294,7 @@ public class Launcher extends Engine {
             }
         }), "modalDialog");
     }
+
     public long getStartTime() {
         return startTime;
     }

@@ -69,7 +69,6 @@
             }
           }
         } ,
-      /*
         {
           type: "button",
           enabled: true,
@@ -88,7 +87,7 @@
               height: 34
             }
           }
-        }, */
+        },
 
         {
           readFrom: "assets/frames/forms/user/userBalance.json5"

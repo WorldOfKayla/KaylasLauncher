@@ -8,11 +8,10 @@ import org.foxesworld.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProgressBarAnimator {
@@ -30,6 +29,7 @@ public class ProgressBarAnimator {
     private List<String> messages;
     private ProgressListener progressListener;
     private final ParticleEffect particleEffect;
+    private AnimationConfig animationConfig;
 
     public ProgressBarAnimator(Launcher launcher, JProgressBar progressBar, JLabel progressText) {
         this.launcher = launcher;
@@ -37,6 +37,7 @@ public class ProgressBarAnimator {
         this.progressText = progressText;
         this.originalBounds = progressBar.getBounds();
         loadMessagesFromJson("assets/messages.json");
+        loadAnimationConfig("assets/animation_config.json");
         this.particleEffect = new ParticleEffect();
     }
 
@@ -56,6 +57,21 @@ public class ProgressBarAnimator {
             }
         } catch (IOException | JsonSyntaxException | JsonIOException e) {
             System.err.println("Ошибка загрузки сообщений: " + e.getMessage());
+        }
+    }
+
+    private void loadAnimationConfig(String filePath) {
+        try (Reader reader = new InputStreamReader(
+                ProgressBarAnimator.class.getClassLoader().getResourceAsStream(filePath),
+                StandardCharsets.UTF_8)) {
+            Gson gson = new Gson();
+            animationConfig = gson.fromJson(reader, AnimationConfig.class);
+
+            animationConfig.entrance.sort(Comparator.comparingDouble(k -> k.time));
+            animationConfig.exit.sort(Comparator.comparingDouble(k -> k.time));
+        } catch (Exception e) {
+            System.err.println("Ошибка загрузки конфигурации анимации: " + e.getMessage());
+            animationConfig = new AnimationConfig();
         }
     }
 
@@ -86,21 +102,17 @@ public class ProgressBarAnimator {
     private void animate(final int duration, final java.util.function.Consumer<Double> updater, final Runnable onComplete) {
         SwingUtilities.invokeLater(() -> {
             final long startTime = System.currentTimeMillis();
-            // Используем интервал 10 мс для более частых обновлений
             Timer timer = new Timer(10, null);
             timer.setInitialDelay(0);
             timer.setCoalesce(true);
-            timer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    long elapsed = System.currentTimeMillis() - startTime;
-                    double ratio = Math.min(1.0, (double) elapsed / duration);
-                    updater.accept(ratio);
-                    if (ratio >= 1.0) {
-                        timer.stop();
-                        if (onComplete != null) {
-                            onComplete.run();
-                        }
+            timer.addActionListener(e -> {
+                long elapsed = System.currentTimeMillis() - startTime;
+                double ratio = Math.min(1.0, (double) elapsed / duration);
+                updater.accept(ratio);
+                if (ratio >= 1.0) {
+                    timer.stop();
+                    if (onComplete != null) {
+                        onComplete.run();
                     }
                 }
             });
@@ -117,7 +129,7 @@ public class ProgressBarAnimator {
                 progressListener.onStart();
             }
 
-            animateProgressBarEntrance(() -> updateRandomMessage());
+            animateProgressBarEntrance(this::updateRandomMessage);
 
             while (!Thread.currentThread().isInterrupted()) {
                 final int valueToUpdate = currentValue;
@@ -130,7 +142,7 @@ public class ProgressBarAnimator {
 
                 try {
                     // Уменьшено время ожидания для более частых обновлений
-                    Thread.sleep(45);
+                    Thread.sleep(55);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -155,77 +167,142 @@ public class ProgressBarAnimator {
         }, "pbTest");
     }
 
-    /**
-     * Анимация входа прогресс-бара с уменьшением масштаба.
-     *
-     * @param onComplete действие по завершению анимации (например, обновление сообщения)
-     */
     private void animateProgressBarEntrance(Runnable onComplete) {
+        if (animationConfig.entrance == null || animationConfig.entrance.isEmpty()) {
+            onComplete.run();
+            return;
+        }
+
         SwingUtilities.invokeLater(() -> {
-            final int duration = 500;
-            final double startScale = 1.2;
-            final double endScale = 1.0;
-            final int yOffset = 60;
-
-            int initialWidth = (int) (originalBounds.width * startScale);
-            int initialHeight = (int) (originalBounds.height * startScale);
-            int initialX = calculateCenteredX(initialWidth);
-            int initialY = originalBounds.y - yOffset;
-            progressBar.setBounds(progressBar.getX(), initialY, initialWidth, initialHeight);
             progressBar.setVisible(true);
-
-            animate(duration, ratio -> {
-                double ease = 1 - Math.pow(1 - ratio, 2);
-                if (ratio < 0.5) {
-                    int newY = (int) ((originalBounds.y - yOffset) + yOffset * ease);
-                    progressBar.setBounds(progressBar.getX(), newY, progressBar.getWidth(), progressBar.getHeight());
-                } else {
-                    double scale = startScale + (endScale - startScale) * ease;
-                    int newWidth = (int) (originalBounds.width * scale);
-                    int newHeight = (int) (originalBounds.height * scale);
-                    int newX = calculateCenteredX(newWidth);
-                    progressBar.setBounds(newX, progressBar.getY(), newWidth, newHeight);
-                }
-            }, onComplete);
+            animateWithTimeline(500, animationConfig.entrance, onComplete);
         });
     }
 
-    /**
-     * Анимация выхода прогресс-бара с изменением масштаба и сдвигом по оси Y.
-     *
-     * @param onComplete действие по завершению анимации
-     */
     private void animateProgressBarExit(Runnable onComplete) {
-        SwingUtilities.invokeLater(() -> {
-            final int duration = 500;
-            final double startScale = 1.0;
-            final double midScale = 0.85;
-            final double endScale = 0.85;
-            final int exitYOffset = 100;
+        if (animationConfig.exit == null || animationConfig.exit.isEmpty()) {
+            onComplete.run();
+            return;
+        }
 
-            animate(duration, ratio -> {
-                if (ratio < 0.5) {
-                    double ease = 1 - Math.pow(1 - (ratio * 2), 2);
-                    double scale = startScale + (midScale - startScale) * ease;
-                    int newWidth = (int) (originalBounds.width * scale);
-                    int newHeight = (int) (originalBounds.height * scale);
-                    int newX = calculateCenteredX(newWidth);
-                    progressBar.setBounds(newX, originalBounds.y, newWidth, newHeight);
-                } else {
-                    double ease = Math.pow((ratio - 0.5) * 2, 2);
-                    double scale = midScale + (endScale - midScale) * ease;
-                    int newWidth = (int) (originalBounds.width * scale);
-                    int newHeight = (int) (originalBounds.height * scale);
-                    int newY = (int) (originalBounds.y + exitYOffset * ease);
-                    int newX = calculateCenteredX(newWidth);
-                    progressBar.setBounds(newX, newY, newWidth, newHeight);
-                }
-            }, () -> {
+        SwingUtilities.invokeLater(() -> {
+            animateWithTimeline(500, animationConfig.exit, () -> {
                 progressBar.setVisible(false);
-                if (onComplete != null) {
-                    onComplete.run();
-                }
+                onComplete.run();
             });
         });
     }
+
+    private class AnimationConfig {
+        List<AnimationKeyFrame> entrance;
+        List<AnimationKeyFrame> exit;
+    }
+
+    private class AnimationKeyFrame {
+        double time;
+        double scaleX;
+        double scaleY;
+        int offsetX;
+        int offsetY;
+        String interpolation;
+    }
+
+
+    private void animateWithTimeline(int duration, List<AnimationKeyFrame> keyFrames, Runnable onComplete) {
+        SwingUtilities.invokeLater(() -> {
+            final long startTime = System.currentTimeMillis();
+            Timer timer = new Timer(10, null);
+            timer.setInitialDelay(0);
+            timer.setCoalesce(true);
+
+            timer.addActionListener(e -> {
+                long elapsed = System.currentTimeMillis() - startTime;
+                double progress = Math.min(1.0, (double) elapsed / duration);
+
+                // Находим текущий и следующий ключевые кадры
+                AnimationKeyFrame currentFrame = null;
+                AnimationKeyFrame nextFrame = null;
+                double segmentProgress = 0;
+
+                for (int i = 0; i < keyFrames.size() - 1; i++) {
+                    if (progress >= keyFrames.get(i).time && progress <= keyFrames.get(i+1).time) {
+                        currentFrame = keyFrames.get(i);
+                        nextFrame = keyFrames.get(i+1);
+                        segmentProgress = (progress - currentFrame.time) /
+                                (nextFrame.time - currentFrame.time);
+                        break;
+                    }
+                }
+
+                if (currentFrame != null && nextFrame != null) {
+                    // Интерполяция параметров
+                    double scaleX = interpolate(
+                            currentFrame.scaleX,
+                            nextFrame.scaleX,
+                            segmentProgress,
+                            nextFrame.interpolation
+                    );
+
+                    double scaleY = interpolate(
+                            currentFrame.scaleY,
+                            nextFrame.scaleY,
+                            segmentProgress,
+                            nextFrame.interpolation
+                    );
+
+                    int offsetX = (int) interpolate(
+                            currentFrame.offsetX,
+                            nextFrame.offsetX,
+                            segmentProgress,
+                            nextFrame.interpolation
+                    );
+
+                    int offsetY = (int) interpolate(
+                            currentFrame.offsetY,
+                            nextFrame.offsetY,
+                            segmentProgress,
+                            nextFrame.interpolation
+                    );
+
+                    // Применяем вычисленные значения
+                    int newWidth = (int) (originalBounds.width * scaleX);
+                    int newHeight = (int) (originalBounds.height * scaleY);
+                    int newX = calculateCenteredX(newWidth) + offsetX;
+                    int newY = originalBounds.y + offsetY;
+
+                    progressBar.setBounds(newX, newY, newWidth, newHeight);
+                }
+
+                if (progress >= 1.0) {
+                    timer.stop();
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
+                }
+            });
+            timer.start();
+        });
+    }
+
+    private void applyAnimationFrame(AnimationKeyFrame frame, double ratio) {
+        int newWidth = (int) (originalBounds.width * frame.scaleX);
+        int newHeight = (int) (originalBounds.height * frame.scaleY);
+        int newX = calculateCenteredX(newWidth) + frame.offsetX;
+        int newY = originalBounds.y + frame.offsetY;
+
+        progressBar.setBounds(newX, newY, newWidth, newHeight);
+    }
+    private double interpolate(double start, double end, double ratio, String interpolation) {
+        switch (interpolation != null ? interpolation : "linear") {
+            case "easeIn":
+                return start + (end - start) * (1 - Math.cos(ratio * Math.PI / 2));
+            case "easeOut":
+                return start + (end - start) * Math.sin(ratio * Math.PI / 2);
+            case "easeInOut":
+                return start + (end - start) * (0.5 - Math.cos(ratio * Math.PI)/2);
+            default: // linear
+                return start + (end - start) * ratio;
+        }
+    }
+
 }

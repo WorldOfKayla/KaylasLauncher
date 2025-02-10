@@ -60,7 +60,7 @@ public class Launcher extends Engine {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(890, e -> {
+        Timer launchTimer = new Timer(1000, e -> {
             new Launcher();
             splashScreen.dispose();
         });
@@ -73,7 +73,6 @@ public class Launcher extends Engine {
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
-
         preInit();
         this.getExecutorServiceProvider().submitTask(() -> new LauncherValidator(this).validate(), "validation");
         init();
@@ -100,6 +99,7 @@ public class Launcher extends Engine {
         this.CRYPTO = new CryptUtils();
         this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config) config).getLogLevel()));
         this.frameConstructor.setFocusStatusListener(this);
+        this.auth = new Auth(this);
     }
 
     @Override
@@ -107,9 +107,9 @@ public class Launcher extends Engine {
         setupDiscord();
         this.getExecutorServiceProvider().submitTask(() -> {
             buildGui(getEngineData().getStyles());
-            this.auth = new Auth(this);
             loadMainPanel(fileProperties.getMainFrame());
             SwingUtilities.invokeLater(() -> {
+                setUser(new User(this));
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
                 this.settings.addListeners();
@@ -126,7 +126,6 @@ public class Launcher extends Engine {
     @Override
     protected void postInit() {
         this.getExecutorServiceProvider().submitTask(() -> {
-            this.getFrame().setFocusStatusListener(this);
             getGuiBuilder().buildAdditionalPanels();
         }, "postInit");
     }
@@ -141,10 +140,9 @@ public class Launcher extends Engine {
     private void buildGui(String[] styles) {
         setStyleProvider(new StyleProvider(styles));
         setGuiBuilder(new GuiBuilder(this));
-        GuiBuilder guiBuilder = getGuiBuilder();
-        guiBuilder.getComponentFactory().setComponentFactoryListener(new InitialValue(this));
-        guiBuilder.setGuiBuilderListener(this);
-        guiBuilder.buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
+        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new InitialValue(this));
+        getGuiBuilder().setGuiBuilderListener(this);
+        getGuiBuilder().buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
         this.iconUtils = new IconUtils(this);
     }
 

@@ -145,14 +145,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 }
             }
 
-            case "back-test" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|test->false");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|test->false");
-                }
-            }
-
             case "toGame" -> {
                 this.launcher.getSOUND().playSound("other", "start");
                 DropBox dropBox = (DropBox) this.getComponent("serverBox");
@@ -165,7 +157,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
             }
 
             case "optionalMods" -> {
-                launcher.showDialog("Опциональные моды будут позже", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
+                launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
             }
 
             //EXPERIMENTAL
@@ -180,6 +172,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 int endX   = isVisible ? -panel.getWidth() : 0;
 
                 Container panelParent = panel.getParent();
+                panelParent.setComponentZOrder(pressedComponent, 0);
 
                     // Если панель сейчас скрыта, делаем её видимой для анимации
                     if (!isVisible) {
@@ -203,20 +196,15 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                 panel.putClientProperty("currentAnimation", timer);
 
                 final long startTime = System.currentTimeMillis();
-                final int animationDuration = 350; // длительность анимации в мс
+                final int animationDuration = 250; // длительность анимации в мс
 
                 timer.addActionListener(ex -> {
                     long elapsed = System.currentTimeMillis() - startTime;
                     float progress = Math.min(1f, (float) elapsed / animationDuration);
-
-                    // Функция ease-out (кубическая): замедление в конце
                     float easedProgress = 1 - (float) Math.pow(1 - progress, 3);
 
                     int newX = (int) (startX + (endX - startX) * easedProgress);
                     panel.setLocation(newX, panel.getY());
-
-                    // Обновляем z-порядок и перерисовку, если родительский контейнер существует
-                    panelParent.setComponentZOrder(pressedComponent, 0);
                     panelParent.setComponentZOrder(panel, 1);
                     panelParent.repaint();
 
@@ -228,7 +216,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                         } else {
                             this.getEngine().getGuiBuilder().getPanelsMap().get("userActions").setVisible(false);
                         }
-                        panelParent.setComponentZOrder(pressedComponent, 0);
+                        pressedComponent.setBounds(10,40,30,30);
                         panelParent.revalidate();
                     }
                 });

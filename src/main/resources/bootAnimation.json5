@@ -13,7 +13,7 @@
       },
       phases: [
         {
-          duration: 800,
+          duration: 320,
           effects: [
             {
               type: "move",
@@ -90,13 +90,47 @@
               }
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      name: "Robotnik Anim",
+      type: "image",
+      imagePath: "assets/ui/img/brand/robotnik.png",
+      repeat: true,
+      bounds: {
+        x: -900,
+        y: 0,
+        width: 512,
+        height: 512
+      },
+      phases: [
         {
+          delay: 700,
           duration: 800,
-          delay: 1500,
           effects: [
             {
-              type: "decay"
+              type: "move",
+              params: {
+                endX: 1130,
+                endY: -220
+              }
+            }
+          ]
+        },
+        {
+          duration: 100,
+          effects: [
+            {
+              type: "resize",
+              params: {
+                startWidth: 1024,
+                startHeight: 1024,
+                endWidth: 64,
+                endHeight: 64,
+                endX: 330,
+                endY: 115
+              }
             }
           ]
         }

@@ -54,9 +54,7 @@ public class Auth {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
         try {
-            if (authorizeAsync().get()) {
-
-            } else {
+            if (!authorizeAsync().get()) {
                 component.setEnabled(true);
             }
         } catch (InterruptedException | ExecutionException e) {
@@ -138,7 +136,6 @@ public class Auth {
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
-        launcher.setUser(new User(launcher));
     }
 
 

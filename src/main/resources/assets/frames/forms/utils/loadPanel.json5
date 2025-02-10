@@ -56,9 +56,9 @@
           borderRadius: 20,
           bounds: {
             x: 40,
-            y: 120,
+            y: 100,
             size: {
-              width: 300,
+              width: 350,
               height: 30
             }
           }

@@ -87,7 +87,9 @@
         "assets/sounds/auth/auth1.ogg",
         "assets/sounds/auth/auth2.ogg",
         "assets/sounds/auth/auth3.ogg",
-        "assets/sounds/auth/auth4.ogg"
+        "assets/sounds/auth/auth4.ogg",
+        "assets/sounds/auth/auth5.ogg",
+        "assets/sounds/auth/auth6.ogg"
       ]
     },
     "loggedOut": {

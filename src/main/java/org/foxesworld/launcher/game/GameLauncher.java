@@ -131,7 +131,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     gameListener.onGameStart(gameClient);
                 }
 
-                // Захватываем вывод процесса
                 StringBuilder processOutput = new StringBuilder();
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                     String line;
@@ -180,11 +179,11 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         StringBuilder header = new StringBuilder();
         header.append("Crash Report\n");
         header.append("============\n");
-        header.append("Дата и время: ").append(java.time.LocalDateTime.now()).append("\n");
-        header.append("ОС: ").append(System.getProperty("os.name")).append(" ")
+        header.append("Date: ").append(java.time.LocalDateTime.now()).append("\n");
+        header.append("OC: ").append(System.getProperty("os.name")).append(" ")
                 .append(System.getProperty("os.version")).append("\n");
         header.append("Java: ").append(System.getProperty("java.version")).append("\n");
-        header.append("Пользователь: ").append(System.getProperty("user.name")).append("\n");
+        header.append("User: ").append(System.getProperty("user.name")).append("\n");
         header.append("\n");
 
         StringWriter sw = new StringWriter();
@@ -205,11 +204,11 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         scrollPane.setPreferredSize(new Dimension(700, 400));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton saveButton = new JButton("Сохранить ошибку");
+        JButton saveButton = new JButton("CoxpaHutb");
 
         saveButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Сохранить отчет об ошибке");
+            fileChooser.setDialogTitle("Save Report");
             fileChooser.setSelectedFile(new File("crash_report.log"));
             int userSelection = fileChooser.showSaveDialog(engine.getFrame());
             if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -222,7 +221,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(engine.getFrame(), "Не удалось сохранить отчет:\n" + ioException.getMessage(),
-                            "Ошибка", JOptionPane.ERROR_MESSAGE);
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             gameListener.onGameExit(this.gameClient);

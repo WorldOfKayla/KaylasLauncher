@@ -36,8 +36,7 @@ public class SkinLoader {
             CompletableFuture<Boolean> future = new CompletableFuture<>();
             futures[i] = future;
 
-            postRequest.sendAsync(
-                    requestData,
+            postRequest.sendAsync(requestData,
                     response -> handleSkinLoad(response, side, future),
                     error -> handleSkinLoadError(error, side, future)
             );

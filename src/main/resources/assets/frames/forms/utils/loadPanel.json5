@@ -65,7 +65,7 @@
         },
         {
           type: "label",
-          fontSize: 12,
+          fontSize: 11,
           style: "title",
           localeKey: "loading.msg",
           id: "progressText",

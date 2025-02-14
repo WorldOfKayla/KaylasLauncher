@@ -75,7 +75,7 @@
         } ,
         {
           panels: {
-            userData: {
+            userControls: {
               panelOptions: {
                 opaque: false ,
                 focusable: true ,

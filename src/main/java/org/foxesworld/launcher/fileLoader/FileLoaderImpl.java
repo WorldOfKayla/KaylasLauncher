@@ -8,14 +8,12 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.utils.Download.DownloadUtils;
-import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.fileLoader.fileGuard.FileGuardImpl;
@@ -23,7 +21,10 @@ import org.foxesworld.launcher.game.GameLauncher;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,14 +79,9 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     }
 
     public void addJreToLoadAsync(String jreVersion) {
-        Map<String, Object> request = new HashMap<>();
-        request.put("sysRequest", "getJre");
-        request.put("jreVersion", jreVersion);
-
+        JreRequest jreRequest = new JreRequest(this.core.getLauncher(), jreVersion);
         CompletableFuture<FileAttributes> future = new CompletableFuture<>();
-
-        HTTPrequest httpRequest = new HTTPrequest(core.getLauncher(), "POST");
-        httpRequest.sendAsync(request, response -> {
+        jreRequest.sendAsync(Map.of(), response -> {
             try {
                 FileAttributes jreFile = new Gson().fromJson((String) response, FileAttributes.class);
                 jreFile.setReplaceMask("/uploads/files/");

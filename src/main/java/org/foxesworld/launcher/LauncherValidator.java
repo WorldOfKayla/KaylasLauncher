@@ -3,18 +3,22 @@ package org.foxesworld.launcher;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.HTTP.HttpParam;
 import org.foxesworld.engine.utils.HashUtils;
 import org.foxesworld.engine.utils.helper.JVMHelper;
 
 import javax.swing.*;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
-public class LauncherValidator {
+public class LauncherValidator extends HTTPrequest {
     private final Launcher launcher;
+    @HttpParam
+    private final String sysRequest = "downloadLatest";
 
     public LauncherValidator(Launcher launcher) {
+        super(launcher, "POST");
         this.launcher = launcher;
     }
 
@@ -25,8 +29,6 @@ public class LauncherValidator {
 
     private void validateLauncherFile() {
         Launcher.LOGGER.info("Starting launcher validation");
-
-        Map<String, Object> launcherRequest = Map.of("sysRequest", "downloadLatest");
         String selfMd5 = HashUtils.md5(launcher.appPath());
         Launcher.LOGGER.info("Calculated self MD5: " + selfMd5);
 
@@ -34,7 +36,7 @@ public class LauncherValidator {
             return;
         }
 
-        launcher.getPOSTrequest().sendAsync(launcherRequest,
+        this.sendAsync(Map.of(),
                 response -> {
                     try {
                         Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);

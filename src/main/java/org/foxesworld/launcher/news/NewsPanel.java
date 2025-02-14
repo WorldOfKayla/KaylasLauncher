@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
+@Deprecated
 public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback {
     private static final Pattern EMOJI_ALIAS_PATTERN = Pattern.compile(":[a-zA-Z0-9_+\\-]+:");
     private final JFrame resizeFrame = new JFrame();
@@ -124,7 +125,6 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
 
 
     private JLabel createCommunityLabel(NewsAttributes newsAttributes) throws IOException {
-        System.out.println(newsAttributes.getCommunityPhotoUrl());
         BufferedImage communityImg = this.imageUtils.getCachedUrlImg(newsAttributes.getCommunityPhotoUrl(), "vk", this.imageUtils.getLocalImage("assets/ui/icons/srvIcons/forge.png"));
         ImageIcon communityIcon = new ImageIcon(imageUtils.getRoundedImage(imageUtils.getScaledImage(communityImg, 52, 52), 50));
 
@@ -137,6 +137,7 @@ public class NewsPanel extends JPanel implements NewsProvider.NewsFetchCallback 
         return communityLabel;
     }
 
+    @Deprecated
     private String getEmoticonUrl(String key) {
         return emojiUrlCache.computeIfAbsent(key, k -> {
             HTTPrequest httPrequest = this.news.getLauncher().getPOSTrequest();

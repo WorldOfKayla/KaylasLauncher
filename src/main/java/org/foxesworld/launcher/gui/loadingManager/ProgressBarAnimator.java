@@ -235,7 +235,6 @@ public class ProgressBarAnimator {
                 }
 
                 if (currentFrame != null && nextFrame != null) {
-                    // Интерполяция параметров
                     double scaleX = interpolate(
                             currentFrame.scaleX,
                             nextFrame.scaleX,

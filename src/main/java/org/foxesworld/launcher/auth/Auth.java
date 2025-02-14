@@ -88,8 +88,7 @@ public class Auth {
         AuthRequest authRequest = new AuthRequest(engine, login, password);
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        authRequest.sendAsync(
-                Map.of(),
+        authRequest.sendAsync(Map.of(),
                 response -> handleAuthResponse(response, future),
                 error -> handleAuthError(error, future)
         );

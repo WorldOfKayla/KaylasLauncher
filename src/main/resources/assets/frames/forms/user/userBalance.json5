@@ -2,13 +2,14 @@
   panels: {
     userBalance: {
       panelOptions: {
-        opaque: false ,
+        opaque: true ,
         visible: true ,
+        background: "#4d2c2cc2",
         bounds: {
-          x: 230 ,
-          y: 50 ,
+          x: 210 ,
+          y: 0 ,
           size: {
-            width: 160 ,
+            width: 135 ,
             height: 75
           }
         }
@@ -22,7 +23,7 @@
           iconWidth: 32 ,
           iconHeight: 32 ,
           localeKey: "logged.units" ,
-          color: "#292e34" ,
+          color: "#d68700" ,
           id: "unitsField" ,
           initialValue: "balance#units" ,
           bounds: {
@@ -42,7 +43,7 @@
           iconWidth: 32 ,
           iconHeight: 32 ,
           localeKey: "logged.crystals" ,
-          color: "#292e34" ,
+          color: "#fe75fb" ,
           id: "crystalsField" ,
           initialValue: "balance#crystals" ,
           bounds: {

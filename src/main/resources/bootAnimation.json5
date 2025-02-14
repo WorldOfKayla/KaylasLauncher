@@ -96,7 +96,7 @@
     {
       name: "Robotnik Anim",
       type: "image",
-      imagePath: "assets/ui/img/brand/robotnik.png",
+      imagePath: "assets/ui/img/brand/robotnk.png",
       repeat: true,
       bounds: {
         x: -900,

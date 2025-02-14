@@ -57,63 +57,45 @@ public class Core implements GameListener {
                 currentServer,
                 this.launcher.getUser().getLogin(),
                 this.launcher.getExecutorServiceProvider().getExecutorService(),
-                this.launcher.getPOSTrequest()
+                this.launcher
         );
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                shutdownSequence();
-            } catch (Exception e) {
-                Engine.LOGGER.error("Error during shutdown sequence: ", e);
-            }
-        }));
-    }
-
-    private void shutdownSequence() {
-        CountDownLatch latch = new CountDownLatch(1);
-        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-        gameTimeTask.writePlayTime("donePlaying", timeElapsed, latch);
-        gameTimeTask.stop();
-        try {
-            latch.await();
-            Engine.LOGGER.info("Successfully saved playtime: " + timeElapsed + " seconds.");
-        } catch (InterruptedException e) {
-            Engine.LOGGER.error("Error waiting for playtime write completion: ", e);
-        }
     }
 
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
+        // Скрываем окно лаунчера и воспроизводим звук старта
         this.launcher.getFrame().setVisible(false);
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
-        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName() + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
-        startTime = System.currentTimeMillis();
+
+        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName()
+                + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
+
+        // Если отображается экран загрузки, скрываем его
         if (getLauncher().getLoadingManager().isVisible()) {
             getLauncher().getLoadingManager().toggleVisibility();
         }
 
-        CountDownLatch latch = new CountDownLatch(1);
-        gameTimeTask.writePlayTime("startedPlaying", 0, latch);
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        // Запускаем задачу учёта времени (отправка "startedPlaying" выполняется внутри start())
         gameTimeTask.start();
     }
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-        System.out.println("Time elapsed: " + timeElapsed + " seconds by " + this.launcher.getUser().getLogin());
+        // Завершаем сессию. Метод finishPlaying() вычисляет итоговое время сессии и отправляет запрос "donePlaying".
+        gameTimeTask.finishPlaying();
+        Engine.LOGGER.info("Сессия игры завершена для пользователя " + this.launcher.getUser().getLogin());
 
-
+        // Если требуется перезапуск приложения, можно выполнить соответствующую логику:
         if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
-            if (!new File(this.actionHandler.getEngine().appPath()).isDirectory() || this.launcher.appPath().equals("IDE")) {
+            File appDirectory = new File(this.actionHandler.getEngine().appPath());
+            if (!appDirectory.isDirectory() || this.launcher.appPath().equals("IDE")) {
                 this.launcher.getExecutorServiceProvider().shutdown();
-                this.actionHandler.getLauncher().restartApplication(2048, this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + '-' + getOSPrefix() + "-x" + getCorrectOSArch());
+                this.actionHandler.getLauncher().restartApplication(
+                        2048,
+                        this.actionHandler.getLauncher().getEngineData().getProgramRuntime()
+                                + '-' + getOSPrefix() + "-x" + getCorrectOSArch()
+                );
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");
             }
@@ -121,6 +103,7 @@ public class Core implements GameListener {
         this.launcher.getExecutorServiceProvider().shutdown();
         System.exit(0);
     }
+
 
     public static String getOSPrefix() {
         String osName = System.getProperty("os.name").toLowerCase();

@@ -1,0 +1,56 @@
+{
+  "layers": [
+    {
+      "type": "image",
+      "name": "Image1",
+      "shape": "image",
+      "color": "#FFFFFF",
+      "imagePath": "brand/aidenfox.png",
+      "keyframes": [
+        { "time": 0, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 2000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 3000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 5000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image1",
+      "shape": "image",
+      "color": "#FFFFFF",
+      "imagePath": "brand/logo.png",
+      "keyframes": [
+        { "time": 1000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 2000, "position": { "x": 500, "y": 50 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 3000, "position": { "x": 500, "y": 50 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 5000, "position": { "x": 500, "y": 50 }, "radius": 0.1, "rotation": 0, "opacity": 0.5, "scaleX": 1, "scaleY": 1 }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image1",
+      "shape": "image",
+      "color": "#FFFFFF",
+      "imagePath": "brand/altText.png",
+      "keyframes": [
+        { "time": 1000, "position": { "x": 500, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 2000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 3000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 5000, "position": { "x": 500, "y": 80 }, "radius": 0.1, "rotation": 360, "opacity": 0.5, "scaleX": 1, "scaleY": 1 }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image1",
+      "shape": "image",
+      "color": "#FFFFFF",
+      "imagePath": "brand/robotnik.png",
+      "keyframes": [
+        { "time": 0, "position": { "x": 500, "y": 500 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
+        { "time": 2000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
+        { "time": 3000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
+        { "time": 5000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": -64, "opacity": 0, "scaleX": 1, "scaleY": 1 }
+      ]
+    }
+  ]
+}

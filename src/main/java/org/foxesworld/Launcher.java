@@ -60,7 +60,7 @@ public class Launcher extends Engine {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
 
-        Timer launchTimer = new Timer(1000, e -> {
+        Timer launchTimer = new Timer(1500, e -> {
             new Launcher();
             splashScreen.dispose();
         });

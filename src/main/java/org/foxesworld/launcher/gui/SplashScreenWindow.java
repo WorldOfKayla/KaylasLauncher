@@ -1,29 +1,19 @@
 package org.foxesworld.launcher.gui;
 
 
-import org.foxesworld.ascendix.LottieSwingEngine;
-import org.foxesworld.ascendix.lottie.AnimationConfig;
+import org.foxesworld.ascendix.Ascendix;
 import org.foxesworld.ascendix.lottie.LottieLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.util.Objects;
-
-import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
 public class SplashScreenWindow extends JWindow {
-    private LottieSwingEngine lottieSwingEngine;
-    private AnimationConfig config;
+    private final Ascendix lottieSwingEngine;
 
-    public SplashScreenWindow() {
-        config = new AnimationConfig();
-        config.setFps(144);
-        config.setLoop(false);
-        config.setBackgroundColor(Color.WHITE);
-        config.setScale(1.0f);
-        config.setTotalFrames(256);
-        lottieSwingEngine = new LottieSwingEngine(LottieLoader.loadAnimation(SplashScreenWindow.class.getClassLoader().getResourceAsStream("assets/animation.json")), config);
+    public SplashScreenWindow() {;
+        System.setProperty("log.dir", System.getProperty("user.dir"));
+        System.setProperty("log.level", "INFO");
+        lottieSwingEngine = new Ascendix(LottieLoader.loadAnimation("assets/animation.json"));
 
         getContentPane().add(lottieSwingEngine.getAnimationPanel());
         setSize(600, 360);
@@ -43,5 +33,9 @@ public class SplashScreenWindow extends JWindow {
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.showSplashScreen();
         });
+    }
+
+    public Ascendix getLottieSwingEngine() {
+        return lottieSwingEngine;
     }
 }

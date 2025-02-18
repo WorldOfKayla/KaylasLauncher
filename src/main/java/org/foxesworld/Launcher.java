@@ -59,13 +59,13 @@ public class Launcher extends Engine {
     private static void showSplashAndStartLauncher() {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
-
-        Timer launchTimer = new Timer(1500, e -> {
+        splashScreen.getLottieSwingEngine().getAnimationPanel().setOnAnimationCompleted(() -> {
             new Launcher();
             splashScreen.dispose();
         });
-        launchTimer.setRepeats(false);
-        launchTimer.start();
+
+        //launchTimer.setRepeats(false);
+        //launchTimer.start();
     }
 
     public Launcher() {

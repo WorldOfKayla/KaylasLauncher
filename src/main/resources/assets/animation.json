@@ -1,4 +1,13 @@
 {
+  "config": {
+    "fps": 366,
+    "loop":false,
+    "hardwareAccelerationEnabled": true,
+    "scale": 1.0,
+    "totalFrames": 2048,
+    "width": 1024,
+    "height": 1024
+  },
   "layers": [
     {
       "type": "image",
@@ -6,10 +15,18 @@
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/aidenfox.png",
+      "particles": {
+        "particle": "heart",
+        "lifetime":  50,
+        "fadeDuration": 30,
+        "spacing": 128,
+        "scale": 0.35,
+        "count": 8
+      },
       "keyframes": [
-        { "time": 0, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 3000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 0, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.6, "scaleX": 1, "scaleY": 1 },
+        { "time": 2000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.7, "scaleX": 1, "scaleY": 1 },
+        { "time": 3000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.8, "scaleX": 1, "scaleY": 1 },
         { "time": 5000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     },
@@ -19,11 +36,19 @@
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/logo.png",
+      "particles": {
+        "particle": "smoke",
+        "lifetime":  140,
+        "fadeDuration": 20,
+        "spacing": 128.0,
+        "scale": 0.5,
+        "count": 10
+      },
       "keyframes": [
         { "time": 1000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 500, "y": 50 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 3000, "position": { "x": 500, "y": 50 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 5000, "position": { "x": 500, "y": 50 }, "radius": 0.1, "rotation": 0, "opacity": 0.5, "scaleX": 1, "scaleY": 1 }
+        { "time": 2000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 6000, "position": { "x": 500, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 7000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     },
     {
@@ -31,25 +56,21 @@
       "name": "Image1",
       "shape": "image",
       "color": "#FFFFFF",
-      "imagePath": "brand/altText.png",
+      "imagePath": "brand/alt.png",
+      "particles": {
+        "particle": "glint",
+        "lifetime":  30,
+        "fadeDuration": 12,
+        "spacing": 128.0,
+        "scale": 0.3,
+        "count": 10
+      },
       "keyframes": [
         { "time": 1000, "position": { "x": 500, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
         { "time": 2000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
         { "time": 3000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 5000, "position": { "x": 500, "y": 80 }, "radius": 0.1, "rotation": 360, "opacity": 0.5, "scaleX": 1, "scaleY": 1 }
-      ]
-    },
-    {
-      "type": "image",
-      "name": "Image1",
-      "shape": "image",
-      "color": "#FFFFFF",
-      "imagePath": "brand/robotnik.png",
-      "keyframes": [
-        { "time": 0, "position": { "x": 500, "y": 500 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
-        { "time": 3000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 },
-        { "time": 5000, "position": { "x": 500, "y": 230 }, "radius": 0.1, "rotation": -64, "opacity": 0, "scaleX": 1, "scaleY": 1 }
+        { "time": 5000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 8000, "position": { "x": 480, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     }
   ]

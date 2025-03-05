@@ -8,6 +8,7 @@ import org.foxesworld.engine.gui.components.ComponentFactoryListener;
 
 public class InitialValue extends ComponentValue implements ComponentFactoryListener {
 
+    private int count;
     private final Launcher launcher;
     public InitialValue(Launcher launcher) {
         this.launcher = launcher;
@@ -18,6 +19,7 @@ public class InitialValue extends ComponentValue implements ComponentFactoryList
         if (componentAttributes.getInitialValue() != null) {
             this.setInitialData(componentAttributes);
         }
+        count+=1;
     }
 
     @Override

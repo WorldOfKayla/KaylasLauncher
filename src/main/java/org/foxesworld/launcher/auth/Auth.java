@@ -3,6 +3,7 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
+import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
@@ -64,7 +65,7 @@ public class Auth {
 
     }
 
-    private void attemptAutoLogin() {
+    public void attemptAutoLogin() {
         String login = config.getLogin();
         String encryptedPassword = config.getPassword();
 

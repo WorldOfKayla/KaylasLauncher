@@ -1,17 +1,17 @@
 {
   "config": {
-    "fps": 366,
+    "fps": 732,
     "loop":false,
     "hardwareAccelerationEnabled": true,
     "scale": 1.0,
-    "totalFrames": 2048,
+    "totalFrames": 5000,
     "width": 1024,
     "height": 1024
   },
   "layers": [
     {
       "type": "image",
-      "name": "Image1",
+      "name": "AidenFox",
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/aidenfox.png",
@@ -21,18 +21,26 @@
         "fadeDuration": 30,
         "spacing": 128,
         "scale": 0.35,
-        "count": 8
+        "count": 3
       },
       "keyframes": [
-        { "time": 0, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.6, "scaleX": 1, "scaleY": 1 },
+        {"time":  0, "soundFile":  "intro3.ogg", "volume":  0.5},
+        { "time": 1000, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.6, "scaleX": 1, "scaleY": 1 },
         { "time": 2000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.7, "scaleX": 1, "scaleY": 1 },
         { "time": 3000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.8, "scaleX": 1, "scaleY": 1 },
-        { "time": 5000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 5000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 ,
+          "effect": {
+            "type": "ExampleRenderEffect",
+            "parameters": {
+              "tint": "#FFFFFF",
+              "intensity": 0.1
+            }
+          }}
       ]
     },
     {
       "type": "image",
-      "name": "Image1",
+      "name": "Logo",
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/logo.png",
@@ -45,20 +53,20 @@
         "count": 10
       },
       "keyframes": [
-        { "time": 1000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 6000, "position": { "x": 500, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 7000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 3000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1, "soundFile": "whoosh.ogg", "volume":  0.3 },
+        { "time": 5000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1 },
+        { "time": 8000, "position": { "x": 500, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 10000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     },
     {
       "type": "image",
-      "name": "Image1",
+      "name": "Alt Text",
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/alt.png",
       "particles": {
-        "particle": "glint",
+        "particle": "goldentrail",
         "lifetime":  30,
         "fadeDuration": 12,
         "spacing": 128.0,
@@ -66,11 +74,47 @@
         "count": 10
       },
       "keyframes": [
-        { "time": 1000, "position": { "x": 500, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 3000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 5000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 8000, "position": { "x": 480, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 4800, "position": { "x": 500, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.2},
+        { "time": 8000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.3, "scaleY": 1 },
+        { "time": 10000, "position": { "x": 500, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 12000, "position": { "x": 480, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Stone",
+      "shape": "image",
+      "color": "#FFFFFF",
+      "imagePath": "brand/robotnik.png",
+      "particles": {
+        "particle": "goldentrail",
+        "lifetime":  30,
+        "fadeDuration": 12,
+        "spacing": 128.0,
+        "scale": 0.5,
+        "count": 10
+      },
+      "keyframes": [
+        { "time": 10000, "position": { "x": 500, "y": 100 }, "radius": 1.00, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 , "soundFile":  "ha.ogg", "volume":  1.0},
+        { "time": 11000, "position": { "x": 430, "y": 125 }, "radius": 0.50, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 11300, "position": { "x": 430, "y": 125 }, "radius": 0.28, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 12600, "position": { "x": 430, "y": 125 }, "radius": 0.18, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 12900, "position": { "x": 430, "y": 125 }, "radius": 0.14, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 13200, "position": { "x": 430, "y": 125 }, "radius": 0.12, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 13500, "position": { "x": 430, "y": 125 }, "radius": 0.15, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1}
+      ]
+    },
+    {
+      "type": "text",
+      "name": "authority",
+      "shape": "text",
+      "textColor": "#ac6343",
+      "fontName": "Sans Serif",
+      "text": "By FoxesWorld",
+      "keyframes": [
+        { "time": 1000, "position": { "x": 8000, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
+        { "time": 10000, "position": { "x": 800, "y": 175 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0},
+        { "time": 11000, "position": { "x": 460, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1}
       ]
     }
   ]

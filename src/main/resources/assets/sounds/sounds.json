@@ -133,6 +133,11 @@
       "sounds": [
         "assets/sounds/other/test/test0.ogg"
       ]
+    },
+    "pop": {
+      "sounds": [
+        "assets/sounds/pop.ogg"
+      ]
     }
   }
 }

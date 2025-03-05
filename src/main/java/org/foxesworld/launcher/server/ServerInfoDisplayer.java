@@ -43,6 +43,8 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
         this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
+        SwingUtilities.invokeLater(() -> displayServerInfo(this.launcher.getConfig().getSelectedServer()));
+
     }
 
     @Override
@@ -64,10 +66,10 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             if (iconName != null && !iconName.isEmpty()) {
                 icons[i] = this.launcher.getImageUtils().getLocalImage("assets/ui/icons/srvIcons/" + iconName.trim() + ".png");
             }
+            this.getPanel().repaint();
         }
 
         dropBox.setIcons(icons);
-        this.getPanel().repaint();
     }
 
 

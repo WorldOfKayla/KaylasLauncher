@@ -25,7 +25,8 @@ public class AuthListenerAdapter implements AuthListener {
 
     @Override
     public void onAuthSuccess(Object data) {
-        launcher.getSOUND().playSound("other", "loggedIn");
+        //launcher.getSOUND().playSound("other", "loggedIn");
+        launcher.getSOUND().playSound("other", "boot");
         //launcher.getFrame().repaint();
         //launcher.init();
     }

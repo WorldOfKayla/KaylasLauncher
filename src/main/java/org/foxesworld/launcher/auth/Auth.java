@@ -122,7 +122,7 @@ public class Auth {
 
     private void handleSuccessfulAuth(AuthResponse authResponse) {
         setAuthorised(true);
-        launcher.getSOUND().playSound("other", "loggedIn");
+        launcher.getSOUND().playSound("other", "login");
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
@@ -130,10 +130,7 @@ public class Auth {
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
         loadUserServers(authResponse.getLogin());
         updateBalance((authResponse).getBalance());
-
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
-
-
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
@@ -141,7 +138,6 @@ public class Auth {
 
 
     public void updateBalance(List<Map<String, Integer>> balance) {
-
         CompletableFuture.runAsync(() -> {
             try {
                 balance.forEach(entry ->
@@ -163,9 +159,7 @@ public class Auth {
     public void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream()
-                .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
-                .toArray(String[]::new);
+        userServersArray = userServersAttributes.stream().map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion()).toArray(String[]::new);
         Launcher.LOGGER.info("Loaded {} servers", serverParser.getServersNum());
     }
 

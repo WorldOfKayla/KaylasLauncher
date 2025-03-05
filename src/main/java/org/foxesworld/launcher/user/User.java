@@ -58,7 +58,6 @@ public class User extends org.foxesworld.engine.user.User {
 
     public void initializeUser() {
         if (auth.isAuthorised()) {
-            //this.launcher.getFrame().repaint();
             engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
             setUserSpace();
             this.getServerInfoDisplayer().displayServerInfo(this.launcher.getConfig().getSelectedServer());
@@ -86,7 +85,6 @@ public class User extends org.foxesworld.engine.user.User {
 
     @Override
     protected void setUserSpace() {
-        //auth.getEngine().getPanelVisibility().displayPanel("authForm->false|loggedForm->true");
         setDropBoxData(loggedForm.getServerBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();

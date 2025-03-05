@@ -109,7 +109,6 @@ public class Launcher extends Engine {
             loadMainPanel(fileProperties.getMainFrame());
 
             SwingUtilities.invokeLater(() -> {
-
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
                 this.settings.addListeners();
@@ -222,51 +221,53 @@ public class Launcher extends Engine {
 
     @Override
     public void updateFocus(boolean hasFocus) {
-        JPanel oldTitleBar = this.getGuiBuilder().getPanelsMap().get("titleBar");
+        if(this.getGuiBuilder() != null) {
+            JPanel oldTitleBar = this.getGuiBuilder().getPanelsMap().get("titleBar");
 
-        if (oldTitleBar != null) {
-            String texturePath = "assets/ui/img/bg/header.png";
-            BufferedImage texture = this.getImageUtils().getLocalImage(texturePath);
+            if (oldTitleBar != null) {
+                String texturePath = "assets/ui/img/bg/header.png";
+                BufferedImage texture = this.getImageUtils().getLocalImage(texturePath);
 
-            int sectionHeight = oldTitleBar.getHeight();
-            int yOffset = hasFocus ? sectionHeight : 0;
+                int sectionHeight = oldTitleBar.getHeight();
+                int yOffset = hasFocus ? sectionHeight : 0;
 
-            DragListener dragListener = new DragListener();
-            JPanel newTitleBar = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
+                DragListener dragListener = new DragListener();
+                JPanel newTitleBar = new JPanel() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
 
-                    if (texture != null) {
-                        g.drawImage(texture, 0, 0, getWidth(), getHeight(),
-                                0, yOffset, texture.getWidth(), yOffset + sectionHeight, null);
+                        if (texture != null) {
+                            g.drawImage(texture, 0, 0, getWidth(), getHeight(),
+                                    0, yOffset, texture.getWidth(), yOffset + sectionHeight, null);
+                        }
+
+                        Graphics2D g2d = (Graphics2D) g;
+                        Color shadowColor = new Color(0, 0, 0, 77);
+                        g2d.setColor(shadowColor);
+                        g2d.fillRect(0, 0, getWidth(), getHeight());
                     }
+                };
 
-                    Graphics2D g2d = (Graphics2D) g;
-                    Color shadowColor = new Color(0, 0, 0, 77);
-                    g2d.setColor(shadowColor);
-                    g2d.fillRect(0, 0, getWidth(), getHeight());
+                newTitleBar.setBounds(oldTitleBar.getBounds());
+                newTitleBar.setLayout(oldTitleBar.getLayout());
+                newTitleBar.setOpaque(false);
+                newTitleBar.setName(oldTitleBar.getName());
+
+                for (Component component : oldTitleBar.getComponents()) {
+                    oldTitleBar.remove(component);
+                    newTitleBar.add(component);
                 }
-            };
 
-            newTitleBar.setBounds(oldTitleBar.getBounds());
-            newTitleBar.setLayout(oldTitleBar.getLayout());
-            newTitleBar.setOpaque(false);
-            newTitleBar.setName(oldTitleBar.getName());
+                dragListener.addDragListener(newTitleBar, this.getFrame());
+                this.getGuiBuilder().getPanelsMap().put("titleBar", newTitleBar);
 
-            for (Component component : oldTitleBar.getComponents()) {
-                oldTitleBar.remove(component);
-                newTitleBar.add(component);
+                Container parent = oldTitleBar.getParent();
+                parent.remove(oldTitleBar);
+                parent.add(newTitleBar);
+                parent.revalidate();
+                parent.repaint();
             }
-
-            dragListener.addDragListener(newTitleBar, this.getFrame());
-            this.getGuiBuilder().getPanelsMap().put("titleBar", newTitleBar);
-
-            Container parent = oldTitleBar.getParent();
-            parent.remove(oldTitleBar);
-            parent.add(newTitleBar);
-            parent.revalidate();
-            parent.repaint();
         }
     }
 

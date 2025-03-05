@@ -32,14 +32,7 @@
     },
     "close": {
       "sounds": [
-        "assets/sounds/button/close/close0.ogg",
-        "assets/sounds/button/close/close1.ogg",
-        "assets/sounds/button/close/close2.ogg",
-        "assets/sounds/button/close/close3.ogg",
-        "assets/sounds/button/close/close4.ogg",
-        "assets/sounds/button/close/close5.ogg",
-        "assets/sounds/button/close/close6.ogg",
-        "assets/sounds/button/close/close7.ogg"
+        "assets/sounds/button/close/close.ogg"
       ]
     }
   },
@@ -62,12 +55,14 @@
   "dropBox": {
     "dropBoxOpen": {
       "sounds": [
-        "assets/sounds/dropBox/open.ogg"
+        "assets/sounds/dropBox/open.ogg",
+        "assets/sounds/dropBox/open1.ogg"
       ]
     },
     "dropBoxClose": {
       "sounds": [
-        "assets/sounds/dropBox/close.ogg"
+        "assets/sounds/dropBox/close.ogg",
+        "assets/sounds/dropBox/close1.ogg"
       ]
     }
   },
@@ -94,7 +89,7 @@
     },
     "loggedOut": {
       "sounds": [
-        "assets/sounds/logout.ogg"
+        "assets/sounds/other/logout.ogg"
       ]
     },
     "invalidLauncher": {
@@ -126,7 +121,12 @@
     },
     "start": {
       "sounds": [
-        "assets/sounds/other/start.ogg"
+        "assets/sounds/other/accept.ogg"
+      ]
+    },
+    "login": {
+      "sounds": [
+        "assets/sounds/other/login.ogg"
       ]
     },
     "ogo": {

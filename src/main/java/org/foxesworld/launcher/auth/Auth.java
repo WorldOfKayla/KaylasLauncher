@@ -128,10 +128,11 @@ public class Auth {
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
+        loadUserServers(authResponse.getLogin());
         updateBalance((authResponse).getBalance());
 
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
-        loadUserServers(authResponse.getLogin());
+
 
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
@@ -159,12 +160,13 @@ public class Auth {
             }
         });
     }
-    private void loadUserServers(String login) {
+    public void loadUserServers(String login) {
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
         userServersArray = userServersAttributes.stream()
                 .map(serverAttributes -> serverAttributes.getServerName() + ' ' + serverAttributes.getServerVersion())
                 .toArray(String[]::new);
+        Launcher.LOGGER.info("Loaded {} servers", serverParser.getServersNum());
     }
 
     public void logOut() {

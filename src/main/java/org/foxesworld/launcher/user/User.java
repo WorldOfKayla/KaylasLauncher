@@ -65,6 +65,7 @@ public class User extends org.foxesworld.engine.user.User {
         } else {
             displayLoginPanel();
         }
+        this.getPanel().repaint();
         //this.showTaskMgr();
     }
 

@@ -101,7 +101,6 @@ public class Launcher extends Engine {
         this.frameConstructor.setFocusStatusListener(this);
         this.auth = new Auth(this);
     }
-
     @Override
     public void init() {
         setupDiscord();
@@ -110,11 +109,17 @@ public class Launcher extends Engine {
             loadMainPanel(fileProperties.getMainFrame());
 
             SwingUtilities.invokeLater(() -> {
-                setUser(new User(this));
+
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
                 this.settings.addListeners();
                 setActionHandler(new ActionHandler(this));
+                //TODO This is a temporary decision
+                    auth.loadUserServers((String) this.auth.getAuthCredentials().get("login"));
+                //That happens because of a race in a multithreaded environment
+                //And we have to load servers once again to maje sure they are loaded
+                //to avoid an exception
+                setUser(new User(this));
                 if (this.getConfig().isBackgroundMusic()) {
                     SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
                 }
@@ -122,8 +127,6 @@ public class Launcher extends Engine {
         }, "init");
         setInit(true);
     }
-
-
     @Override
     protected void postInit() {
         this.getExecutorServiceProvider().submitTask(() -> {

@@ -55,13 +55,11 @@
   "dropBox": {
     "dropBoxOpen": {
       "sounds": [
-        "assets/sounds/dropBox/open.ogg",
         "assets/sounds/dropBox/open1.ogg"
       ]
     },
     "dropBoxClose": {
       "sounds": [
-        "assets/sounds/dropBox/close.ogg",
         "assets/sounds/dropBox/close1.ogg"
       ]
     }

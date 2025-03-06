@@ -120,8 +120,6 @@ public class Config extends org.foxesworld.engine.config.Config {
             this.level = level;
         }
     }
-
-    // Setters
     public void setVolume(double volume) {
         this.volume = volume;
         setConfigValue("volume", volume);

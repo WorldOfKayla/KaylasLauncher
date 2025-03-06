@@ -103,6 +103,7 @@ public class Launcher extends Engine {
     }
     @Override
     public void init() {
+        getSOUND().getSoundPlayer().stopAllSounds();
         setupDiscord();
         this.getExecutorServiceProvider().submitTask(() -> {
             buildGui(getEngineData().getStyles());
@@ -116,7 +117,6 @@ public class Launcher extends Engine {
                 DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
                 auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
                 serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
-                //setUser(new User(this));
             });
         }, "init");
         setInit(true);

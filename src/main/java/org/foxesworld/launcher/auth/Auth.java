@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Класс Auth отвечает за процесс аутентификации, управление сессией пользователя и загрузку связанных данных.
- * Используются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
+ * iспользуются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
  * <ul>
  *     <li>Списка серверов (DataInjector<String[]>)</li>
  *     <li>Балансовых данных (DataInjector<ConcurrentHashMap<String, AtomicInteger>>)</li>

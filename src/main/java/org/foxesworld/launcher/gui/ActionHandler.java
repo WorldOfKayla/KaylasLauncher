@@ -11,238 +11,207 @@ import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.notification.Notification;
+import org.foxesworld.test.command.CommandRegistrable;
+import org.foxesworld.test.command.CommandRegistry;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
+public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler implements CommandRegistrable {
 
-    protected Launcher launcher;
+    protected final Launcher launcher;
     private Core core;
     protected ServerAttributes currentServer;
 
     public ActionHandler(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
+        super(launcher.getGuiBuilder(), "mainFrame", List.of(
+                TextField.class, Checkbox.class, JProgressBar.class,
+                PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
+        registerCommands();
     }
 
+    /**
+     * При возникновении события делегируем выполнение команде из реестра.
+     */
     @Override
     public void handleAction(ActionEvent e) {
-        String key = e.getActionCommand();
-        String parent = "";
-        if (e.getActionCommand().contains(">")) {
-            String[] command = e.getActionCommand().split(">");
-            key = command[1];
-            parent = command[0];
-        }
-        Component pressedComponent = this.getComponent(key);
+        // Преобразуем команду: "authForm>submit" -> "authForm.submit"
+        String commandKey = e.getActionCommand().replace(">", ".");
+        CommandRegistry.execute(commandKey, e);
+    }
 
-        switch (key) {
-            case "submit" -> {
+    /**
+     * Регистрирует команды, обрабатываемые этим классом.
+     */
+    @Override
+    public void registerCommands() {
+        // Команды формы авторизации
+        CommandRegistry.register("authForm.submit", this::handleAuthSubmit);
+        CommandRegistry.register("userinfo.submit", this::handleUserInfoSubmit);
 
-                switch (parent) {
-                    case "authForm" -> {
-                        this.getComponent("authForm>submit").setEnabled(false);
-                        this.launcher.getExecutorServiceProvider().submitTask(() -> {
-                            this.launcher.getAuth().formAuth(this.getComponent("authForm>submit"));
-                            if (this.launcher.getAuth().isAuthorised()) {
-                                engine.getFrame().getRootPanel().removeAll();
-                                engine.getPanelVisibility().displayPanel("authForm->false");
-                                this.launcher.init();
-                            } else {
-                                ((TextField) this.getComponent("login")).resetText();
-                                ((PassField) this.getComponent("password")).resetText();
-                            }
-                        }, "auth");
-                    }
-
-                    case "userinfo" -> Engine.getLOGGER().warn("TEST");
-                }
-            }
-
-            case "smallButton" -> {
-                this.launcher.getLoadingManager().toggleVisibility();
-                //launcher.getOptionalModsWindow().toggleVisibility();
-                // launcher.init();
-                    /*
-                    SoundPlayer.setUPDATE_RATE(10);
-                    JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
-                    sndBar.setUI(new FlatProgressBarUI());
-                    PlaybackStatusListener listener = new PlaybackStatusListener() {
-                        @Override
-                        public void onPlaybackStarted(String path) {
-                            pressedComponent.setEnabled(false);
-                            sndBar.setVisible(true);
-                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.started"), "Test");
-                        }
-
-                        @Override
-                        public void onPlaybackStopped(String path) {
-                            pressedComponent.setEnabled(true);
-                            sndBar.setValue(0);
-                            sndBar.setVisible(false);
-                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.finished"), "Test");
-                        }
-
-                        @Override
-                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {
-                            int progress = (int) ((double) microsecondPosition / microsecondLength * 100);
-                            SwingUtilities.invokeLater(() -> sndBar.setValue(progress));
-                        }
-                    };
-                    String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
-                    //this.launcher.getLoadingManager().toggleLoader();
-                    //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
-                     */
-            }
-
-
-            case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
-            case "cancelDownload-small" -> {
+        // Остальные команды
+        CommandRegistry.register("smallButton", e -> launcher.getLoadingManager().toggleVisibility());
+        CommandRegistry.register("gameDir-small", e -> launcher.getSettings().openGameFolder());
+        CommandRegistry.register("cancelDownload-small", e -> {
+            if (core != null) {
                 core.getFileLoader().cancel();
             }
-            case "applySettings" -> {
-                //this.getEngine().getGuiBuilder().getComponentFactory().ggetCustomTooltip().clearAllTooltips();
-                this.launcher.getSettings().applySettings("settingsFields");
+        });
+        CommandRegistry.register("applySettings", e -> launcher.getSettings().applySettings("settingsFields"));
+        CommandRegistry.register("logOut", this::handleLogOut);
+        CommandRegistry.register("info-small", this::handleInfoSmall);
+        CommandRegistry.register("settings-small", this::handleSettingsSmall);
+        CommandRegistry.register("loadCancel-small", this::handleLoadCancelSmall);
+        CommandRegistry.register("back", this::handleBack);
+        CommandRegistry.register("toGame", this::handleToGame);
+        CommandRegistry.register("optionalMods", e -> launcher.showDialog(
+                "Optional mods will arrive later ;)",
+                "Work In Progress",
+                JOptionPane.WARNING_MESSAGE,
+                false));
+        CommandRegistry.register("userPane", this::handleUserPane);
+        CommandRegistry.register("closeButton", this::handleCloseButton);
+        CommandRegistry.register("hideButton", e -> engine.getFrame().setExtendedState(Frame.ICONIFIED));
+    }
+
+    private void handleAuthSubmit(ActionEvent e) {
+        getComponent("authForm>submit").setEnabled(false);
+        launcher.getExecutorServiceProvider().submitTask(() -> {
+            launcher.getAuth().formAuth(getComponent("authForm>submit"));
+            if (launcher.getAuth().isAuthorised()) {
+                engine.getFrame().getRootPanel().removeAll();
+                engine.getPanelVisibility().displayPanel("authForm->false");
+                launcher.init();
+            } else {
+                ((TextField) getComponent("login")).resetText();
+                ((PassField) getComponent("password")).resetText();
             }
-            case "logOut" -> {
-                this.launcher.getSOUND().playSound("other", "loggedOut");
-                this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
-                this.launcher.getAuth().logOut();
-            }
-            case "info-small" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
-                }
-            }
+        }, "auth");
+    }
 
-            case "settings-small" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
-                }
-            }
+    private void handleUserInfoSubmit(ActionEvent e) {
+        Engine.getLOGGER().warn("TEST");
+    }
 
-            case "loadCancel-small" -> {
-                this.core.getFileLoader().cancel();
-                this.getLauncher().getLoadingManager().toggleVisibility();
-                this.getComponent("toGame").setEnabled(false);
-                this.getComponent("logOut").setEnabled(false);
-            }
+    private void handleLogOut(ActionEvent e) {
+        launcher.getSOUND().playSound("other", "loggedOut");
+        launcher.getGuiBuilder().getNotification().show(
+                Notification.Type.SUCCESS,
+                Notification.Location.BOTTOM_LEFT,
+                launcher.getUser().getLogin() + launcher.getLANG().getString("auth.loggedOut"));
+        launcher.getAuth().logOut();
+    }
 
-            case "back" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
-                }
-            }
+    private void handleInfoSmall(ActionEvent e) {
+        String panelCommand = launcher.getAuth().isAuthorised()
+                ? "loggedForm->false|newsForm->false|test->true"
+                : "authForm->false|newsForm->false|test->true";
+        engine.getPanelVisibility().displayPanel(panelCommand);
+    }
 
-            case "toGame" -> {
-                this.launcher.getSOUND().playSound("other", "start");
-                DropBox dropBox = (DropBox) this.getComponent("serverBox");
-                Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
-                this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
-                Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
-                this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
-                this.launcher.getConfig().writeCurrentConfig();
-                this.core = new Core(this, forceUpdate.isSelected());
-            }
+    private void handleSettingsSmall(ActionEvent e) {
+        String panelCommand = launcher.getAuth().isAuthorised()
+                ? "loggedForm->false|newsForm->false|settings->true"
+                : "authForm->false|newsForm->false|settings->true";
+        engine.getPanelVisibility().displayPanel(panelCommand);
+    }
 
-            case "optionalMods" -> {
-                launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
-            }
+    private void handleLoadCancelSmall(ActionEvent e) {
+        if (core != null) {
+            core.getFileLoader().cancel();
+        }
+        launcher.getLoadingManager().toggleVisibility();
+        getComponent("toGame").setEnabled(false);
+        getComponent("logOut").setEnabled(false);
+    }
 
-            //EXPERIMENTAL
-            case "userPane" -> this.getEngine().getExecutorServiceProvider().submitTask(() -> SwingUtilities.invokeLater(() -> {
-                JPanel panel = this.launcher.getUser().getPanel();
-                boolean isVisible = panel.isVisible();
-                String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
-                ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
-                ((Button) pressedComponent).setIcon(icon);
+    private void handleBack(ActionEvent e) {
+        String panelCommand = launcher.getAuth().isAuthorised()
+                ? "loggedForm->true|newsForm->true|settings->false"
+                : "authForm->true|newsForm->true|settings->false";
+        engine.getPanelVisibility().displayPanel(panelCommand);
+    }
 
-                int startX = isVisible ? panel.getX() : -panel.getWidth();
-                int endX   = isVisible ? -panel.getWidth() : 0;
+    private void handleToGame(ActionEvent e) {
+        launcher.getSOUND().playSound("other", "start");
+        DropBox dropBox = (DropBox) getComponent("serverBox");
+        Checkbox forceUpdate = (Checkbox) getComponent("forceUpdate");
+        currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
+        Engine.getLOGGER().info("Launching " + currentServer.getServerName());
+        launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
+        launcher.getConfig().writeCurrentConfig();
+        core = new Core(this, forceUpdate.isSelected());
+    }
 
-                Container panelParent = panel.getParent();
-                panelParent.setComponentZOrder(pressedComponent, 0);
+    private void handleUserPane(ActionEvent e) {
+        engine.getExecutorServiceProvider().submitTask(() ->
+                SwingUtilities.invokeLater(() -> {
+                    JPanel panel = launcher.getUser().getPanel();
+                    boolean isVisible = panel.isVisible();
+                    String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
+                    ImageIcon icon = launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
+                    ((Button) getComponent("userPane")).setIcon(icon);
 
-                    // Если панель сейчас скрыта, делаем её видимой для анимации
+                    int startX = isVisible ? panel.getX() : -panel.getWidth();
+                    int endX = isVisible ? -panel.getWidth() : 0;
+                    Container panelParent = panel.getParent();
+                    panelParent.setComponentZOrder(getComponent("userPane"), 0);
+
                     if (!isVisible) {
                         panel.setVisible(true);
                     } else {
-                        // Если панель открыта, делаем видимой панель действий пользователя
-                        this.getEngine().getGuiBuilder().getPanelsMap().get("userActions").setVisible(true);
+                        engine.getGuiBuilder().getPanelsMap().get("userActions").setVisible(true);
                     }
                     panelParent.revalidate();
                     panelParent.repaint();
 
-                // Если уже запущена анимация – останавливаем её
-                Object prop = panel.getClientProperty("currentAnimation");
-                if (prop instanceof Timer oldTimer && oldTimer.isRunning()) {
-                    oldTimer.stop();
-                }
-
-                // Шаг обновления 1 мс
-                Timer timer = new Timer(1, null);
-                timer.setInitialDelay(0);
-                panel.putClientProperty("currentAnimation", timer);
-
-                final long startTime = System.currentTimeMillis();
-                final int animationDuration = 250; // длительность анимации в мс
-
-                timer.addActionListener(ex -> {
-                    long elapsed = System.currentTimeMillis() - startTime;
-                    float progress = Math.min(1f, (float) elapsed / animationDuration);
-                    float easedProgress = 1 - (float) Math.pow(1 - progress, 3);
-
-                    int newX = (int) (startX + (endX - startX) * easedProgress);
-                    panel.setLocation(newX, panel.getY());
-                    panelParent.setComponentZOrder(panel, 1);
-                    panelParent.repaint();
-
-                    if (progress >= 1f) {
-                        timer.stop();
-                        panel.putClientProperty("currentAnimation", null);
-                        if (isVisible) {
-                            panel.setVisible(false);
-                        } else {
-                            this.getEngine().getGuiBuilder().getPanelsMap().get("userActions").setVisible(false);
-                        }
-                        pressedComponent.setBounds(10,40,30,30);
-                        panelParent.revalidate();
+                    Object prop = panel.getClientProperty("currentAnimation");
+                    if (prop instanceof Timer oldTimer && oldTimer.isRunning()) {
+                        oldTimer.stop();
                     }
-                });
-                timer.start();
-            }), "userPaneToggle");
 
-            case "closeButton" -> {
-                this.launcher.getFrame().setVisible(false);
-                this.launcher.getExecutorServiceProvider().shutdown();
-                this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
-                    this.launcher.getExecutorServiceProvider().shutdown();
-                    System.exit(0);
-                });
-            }
-            case "hideButton" -> engine.getFrame().setExtendedState(1);
-        }
+                    Timer timer = new Timer(1, null);
+                    timer.setInitialDelay(0);
+                    panel.putClientProperty("currentAnimation", timer);
+
+                    final long startTime = System.currentTimeMillis();
+                    final int animationDuration = 250;
+
+                    timer.addActionListener(ex -> {
+                        long elapsed = System.currentTimeMillis() - startTime;
+                        float progress = Math.min(1f, (float) elapsed / animationDuration);
+                        float easedProgress = 1 - (float) Math.pow(1 - progress, 3);
+                        int newX = (int) (startX + (endX - startX) * easedProgress);
+                        panel.setLocation(newX, panel.getY());
+                        panelParent.setComponentZOrder(panel, 1);
+                        panelParent.repaint();
+                        if (progress >= 1f) {
+                            timer.stop();
+                            panel.putClientProperty("currentAnimation", null);
+                            if (isVisible) {
+                                panel.setVisible(false);
+                            } else {
+                                engine.getGuiBuilder().getPanelsMap().get("userActions").setVisible(false);
+                            }
+                            getComponent("userPane").setBounds(10, 40, 30, 30);
+                            panelParent.revalidate();
+                        }
+                    });
+                    timer.start();
+                }), "userPaneToggle");
     }
 
-    @Override
-    public Engine getEngine() {
-        return engine;
-    }
-
-    @Override
-    public ServerAttributes getCurrentServer() {
-        return currentServer;
+    private void handleCloseButton(ActionEvent e) {
+        launcher.getFrame().setVisible(false);
+        launcher.getExecutorServiceProvider().shutdown();
+        launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
+            launcher.getExecutorServiceProvider().shutdown();
+            System.exit(0);
+        });
     }
 
     public Launcher getLauncher() {

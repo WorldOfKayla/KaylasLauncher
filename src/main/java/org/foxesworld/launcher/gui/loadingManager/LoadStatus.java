@@ -10,6 +10,7 @@ import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.loadingManager.LoadManagerAttributes;
 import org.foxesworld.engine.gui.loadingManager.LoadingManager;
 import org.foxesworld.engine.utils.animation.AnimationManager;
+import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class LoadStatus extends LoadingManager {
     private JProgressBar progressBar;
     private Label progressText;
 
+    // DataInjector для уведомления о завершении инициализации
+    private final DataInjector<Boolean> initInjector = new DataInjector<>();
 
     public LoadStatus(Launcher launcher, int index) {
         super(launcher);
@@ -51,7 +54,7 @@ public class LoadStatus extends LoadingManager {
 
             @Override
             protected void done() {
-
+                // Дополнительные действия после выполнения SwingWorker, если необходимо
             }
         }.execute();
     }
@@ -91,6 +94,9 @@ public class LoadStatus extends LoadingManager {
                 setAlwaysOnTop(true);
                 // Задание формы окна с закруглёнными углами
                 setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+
+                // Уведомляем слушателей, что инициализация завершена
+                initInjector.setContent(true);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -132,39 +138,39 @@ public class LoadStatus extends LoadingManager {
      */
     @Override
     public void fadeIn() {
-        launcher.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
+        initInjector.addListener(initialized -> {
+            launcher.getExecutorServiceProvider().submitTask(() -> {
+                try {
+                    changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
 
-                SwingUtilities.invokeLater(() -> {
-                    setVisible(true);
-                    JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
-                    JPanel overlay = getOverlay();
-                    overlay.setBackground(new Color(0, 0, 0, 0));
-                    overlay.setName("loadingOverlay");
-                    layeredPane.add(overlay, JLayeredPane.POPUP_LAYER);
-                    overlay.setBounds(0, 0, launcher.getFrame().getWidth(), launcher.getFrame().getHeight());
+                    SwingUtilities.invokeLater(() -> {
+                        setVisible(true);
+                        JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
+                        JPanel overlay = getOverlay();
+                        overlay.setBackground(new Color(0, 0, 0, 0));
+                        overlay.setName("loadingOverlay");
+                        layeredPane.add(overlay, JLayeredPane.POPUP_LAYER);
+                        overlay.setBounds(0, 0, launcher.getFrame().getWidth(), launcher.getFrame().getHeight());
 
-                    final AtomicInteger alpha = new AtomicInteger(0);
-                    Timer fadeTimer = new Timer(30, e -> {
-                        int newAlpha = Math.min(alpha.addAndGet(10), 180);
-                        overlay.setBackground(new Color(0, 0, 0, newAlpha));
-                        overlay.repaint();
-                        if (newAlpha >= 180) {
-                            ((Timer) e.getSource()).stop();
-                        }
+                        final AtomicInteger alpha = new AtomicInteger(0);
+                        Timer fadeTimer = new Timer(30, e -> {
+                            int newAlpha = Math.min(alpha.addAndGet(10), 180);
+                            overlay.setBackground(new Color(0, 0, 0, newAlpha));
+                            overlay.repaint();
+                            if (newAlpha == 180) {
+                                ((Timer) e.getSource()).stop();
+                            }
+                        });
+                        fadeTimer.start();
                     });
-                    fadeTimer.start();
-                });
 
-                new ProgressBarAnimator(launcher, progressBar, progressText).startProgressTest();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }, "fadeIn");
+                    new ProgressBarAnimator(launcher, progressBar, progressText).startProgressTest();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }, "fadeIn");
+        });
     }
-
-
 
     /**
      * Метод выполняет анимацию исчезновения (fadeOut) экрана загрузки.
@@ -189,12 +195,9 @@ public class LoadStatus extends LoadingManager {
 
                             Timer timer = new Timer(interval, null);
                             timer.addActionListener(e -> {
-                                // Вычисляем прошедшее время
                                 long elapsed = System.currentTimeMillis() - startTime;
                                 double progress = Math.min(1.0, (double) elapsed / duration);
-                                // Применяем функцию ease-out: easedProgress = 1 - (1 - progress)^2
                                 double easedProgress = 1 - Math.pow(1 - progress, 2);
-                                // Вычисляем новое значение альфа с учётом ease-out эффекта
                                 int newAlpha = (int) (initialAlpha * (1 - easedProgress));
                                 overlay.setBackground(new Color(0, 0, 0, newAlpha));
                                 overlay.repaint();
@@ -209,7 +212,6 @@ public class LoadStatus extends LoadingManager {
                             timer.start();
                         }
                     }
-                    // Скрываем текущее окно загрузки и обновляем основную панель
                     setVisible(false);
                     mainFramePanel.revalidate();
                     mainFramePanel.repaint();
@@ -219,5 +221,4 @@ public class LoadStatus extends LoadingManager {
             }
         }, "fadeOut");
     }
-
 }

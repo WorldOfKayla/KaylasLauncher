@@ -39,6 +39,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final SkinLoader skinLoader;
     private JFrame taskMgrFrame;
     @org.foxesworld.engine.gui.componentAccessor.Component
+    @SuppressWarnings("unused")
     private Label userGroup, userLogin, crystalsField, unitsField;
 
     public User(Launcher launcher) {
@@ -147,6 +148,7 @@ public class User extends org.foxesworld.engine.user.User {
         guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, loggedForm.getServerBox().getY() + 40, 340, 45), 3000, message);
     }
 
+    @Deprecated
     public void updateServer(int index) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
@@ -250,15 +252,13 @@ public class User extends org.foxesworld.engine.user.User {
     public String getLogin() {
         return userAttributes.login;
     }
-
-    public String getPassword() {
-        return userAttributes.password;
-    }
-
     public String getToken() {
         return userAttributes.token;
     }
-
+    @Deprecated
+    public String getPassword() {
+        return userAttributes.password;
+    }
     @Deprecated
     public void setNewsData(List<Map<String, String>> newsData) {
         SwingUtilities.invokeLater(() -> {
@@ -269,6 +269,7 @@ public class User extends org.foxesworld.engine.user.User {
         });
     }
 
+    @Deprecated
     public synchronized Object getUserAttribute(String attributeName) {
         try {
             Field field = UserAttributes.class.getDeclaredField(attributeName);

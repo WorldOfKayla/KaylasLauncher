@@ -20,7 +20,6 @@ public class AuthListenerAdapter implements AuthListener {
     public void onAuthAttempt(Auth auth, Map<String, Object> authCredentials) {
         launcher.logStartupTime(launcher.getStartTime());
         auth.authTask(authCredentials);
-
     }
 
     @Override
@@ -45,5 +44,9 @@ public class AuthListenerAdapter implements AuthListener {
     @Override
     public void onLogOut(Object data) {
         Engine.LOGGER.debug("LOGOUT");
+    }
+
+    @Override
+    public void onBalanceLoaded(Object data) {
     }
 }

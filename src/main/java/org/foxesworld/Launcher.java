@@ -63,9 +63,6 @@ public class Launcher extends Engine {
             new Launcher();
             splashScreen.dispose();
         });
-
-        //launchTimer.setRepeats(false);
-        //launchTimer.start();
     }
 
     public Launcher() {
@@ -114,14 +111,12 @@ public class Launcher extends Engine {
                 this.settings.addListeners();
                 setActionHandler(new ActionHandler(this));
                 //TODO This is a temporary decision
+                // DataInjector must help in multi-threaded env
                     auth.loadUserServers((String) this.auth.getAuthCredentials().get("login"));
                 //That happens because of a race in a multithreaded environment
                 //And we have to load servers once again to maje sure they are loaded
                 //to avoid an exception
                 setUser(new User(this));
-                if (this.getConfig().isBackgroundMusic()) {
-                    SOUND.getSoundPlayer().onAllSoundsFinished(() -> SOUND.playSound("music", "launcherTheme", true));
-                }
             });
         }, "init");
         setInit(true);
@@ -131,6 +126,7 @@ public class Launcher extends Engine {
         this.getExecutorServiceProvider().submitTask(() -> {
             getGuiBuilder().buildAdditionalPanels();
         }, "postInit");
+
     }
 
     private void setupDiscord() {

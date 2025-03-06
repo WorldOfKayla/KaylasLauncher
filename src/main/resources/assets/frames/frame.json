@@ -71,10 +71,10 @@
           "style": "title",
           "localeKey": "|",
           "initialValue": "build",
-          "color": "#82f3f6",
+          "color": "#08f9ff",
           "id": "appBuild",
           "bounds": {
-            "x": 300,
+            "x": 290,
             "y": -19,
             "size": {
               "width": 250,

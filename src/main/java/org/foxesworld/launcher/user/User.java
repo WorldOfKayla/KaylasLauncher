@@ -68,10 +68,15 @@ public class User extends org.foxesworld.engine.user.User {
         //this.showTaskMgr();
     }
 
-    public void setBalance(Map<String, AtomicInteger> balance){
-        this.crystalsField.setText(balance.get("crystals").toString());
-        this.unitsField.setText(balance.get("units").toString());
+    public void setBalance(Map<String, AtomicInteger> balance) {
+        SwingUtilities.invokeLater(() -> {
+            String crystals = balance.get("crystals") != null ? balance.get("crystals").toString() : "0";
+            String units = balance.get("units") != null ? balance.get("units").toString() : "0";
+            this.crystalsField.setText(crystals);
+            this.unitsField.setText(units);
+        });
     }
+
 
     private void displayLoginPanel() {
         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
@@ -88,8 +93,8 @@ public class User extends org.foxesworld.engine.user.User {
         setDropBoxData(loggedForm.getServerBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
-        setBalance(auth.getBalanceMap());
         setupDiscordRpc();
+        auth.getBalanceInjector().addListener(this::setBalance);
         this.loggedForm.getGreetUser().setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
         this.skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
@@ -220,8 +225,8 @@ public class User extends org.foxesworld.engine.user.User {
 
 
     private void setUserGroupLabel() {
-        String groupKey = "group.group-" + auth.getAuthCredentials("group");
         SwingUtilities.invokeLater(() -> {
+            String groupKey = "group.group-" + auth.getAuthCredentials("group");
             this.userGroup.setText(lang.getString(groupKey));
             this.userLogin.setText(userAttributes.userFullName);
         });

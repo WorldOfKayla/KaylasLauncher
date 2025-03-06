@@ -8,4 +8,5 @@ public interface AuthListener {
     void onAuthFailure(Object data);
     void onAuthError(Object data);
     void onLogOut(Object data);
+    void onBalanceLoaded(Object data);
 }

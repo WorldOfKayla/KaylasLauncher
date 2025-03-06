@@ -2,69 +2,69 @@
   panels: {
     userActions: {
       panelOptions: {
-        opaque: false ,
-        focusable: true ,
-        visible: true ,
-        doubleBuffered: false ,
+        opaque: false,
+        focusable: true,
+        visible: true,
+        doubleBuffered: false,
         bounds: {
-          x: 0 ,
-          y: 0 ,
+          x: 0,
+          y: 0,
           size: {
-            width: 350 ,
+            width: 350,
             height: 500
           }
         }
-      } ,
+      },
       childComponents: [
         {
           panels: {
             infoPane: {
               panelOptions: {
-                opaque: true ,
-                focusable: true ,
-                visible: true ,
-                doubleBuffered: false ,
-                background: "#0707079e" ,
+                opaque: true,
+                focusable: true,
+                visible: true,
+                doubleBuffered: false,
+                background: "#0707079e",
                 bounds: {
-                  x: 0 ,
-                  y: 30 ,
+                  x: 0,
+                  y: 30,
                   size: {
                     width: 348,
                     height: 43
                   }
                 },
                 zIndex: 1
-              } ,
+              },
               childComponents: [
                 {
-                  type: "button" ,
-                  enabled: true ,
-                  keyCode: "U" ,
-                  style: "altButton" ,
-                  imageIcon: "assets/ui/icons/menu.svg" ,
-                  iconWidth: 20 ,
-                  iconHeight: 24 ,
-                  id: "userPane" ,
+                  type: "button",
+                  enabled: true,
+                  keyCode: "U",
+                  style: "altButton",
+                  imageIcon: "assets/ui/icons/menu.svg",
+                  iconWidth: 20,
+                  iconHeight: 24,
+                  id: "userPane",
                   bounds: {
-                    x: 10 ,
-                    y: 10 ,
+                    x: 10,
+                    y: 10,
                     size: {
-                      width: 32 ,
+                      width: 32,
                       height: 32
                     }
                   }
                 },
                 {
-                  type: "label" ,
-                  fontSize: 14 ,
-                  style: "title" ,
-                  id: "greetUser" ,
-                  localeKey: "logged.greet" ,
+                  type: "label",
+                  fontSize: 14,
+                  style: "title",
+                  id: "greetUser",
+                  localeKey: "logged.greet",
                   bounds: {
-                    x: 60 ,
-                    y: 10 ,
+                    x: 60,
+                    y: 10,
                     size: {
-                      width: 320 ,
+                      width: 320,
                       height: 30
                     }
                   }
@@ -72,108 +72,108 @@
               ]
             }
           }
-        } ,
+        },
         {
           panels: {
             userControls: {
               panelOptions: {
-                opaque: false ,
-                focusable: true ,
-                visible: true ,
-                doubleBuffered: false ,
+                opaque: false,
+                focusable: true,
+                visible: true,
+                doubleBuffered: false,
                 bounds: {
-                  x: 0 ,
-                  y: 30 ,
+                  x: 0,
+                  y: 30,
                   size: {
-                    width: 350 ,
+                    width: 350,
                     height: 500
                   }
                 }
-              } ,
+              },
               childComponents: [
                 {
-                  type: "label" ,
-                  fontSize: 14 ,
-                  style: "titleBold" ,
-                  id: "userSkin" ,
-                  localeKey: "" ,
+                  type: "label",
+                  fontSize: 14,
+                  style: "titleBold",
+                  id: "userSkin",
+                  localeKey: "",
                   bounds: {
-                    x: 110 ,
-                    y: 60 ,
+                    x: 110,
+                    y: 60,
                     size: {
-                      width: 120 ,
+                      width: 120,
                       height: 230
                     }
                   }
-                } ,
+                },
                 {
-                  type: "dropBox" ,
-                  style: "selectable2" ,
-                  id: "serverBox" ,
-                  initialValue: "servers" ,
-                  toolTip: "tooltip.selectServer" ,
+                  type: "dropBox",
+                  style: "selectable2",
+                  id: "serverBox",
+                  initialValue: "servers",
+                  toolTip: "tooltip.selectServer",
                   bounds: {
-                    x: 35 ,
-                    y: 350 ,
+                    x: 35,
+                    y: 350,
                     size: {
-                      width: 273 ,
+                      width: 273,
                       height: 25
                     }
                   }
-                } ,
+                },
                 {
-                  type: "checkBox" ,
-                  enabled: true ,
-                  style: "solid" ,
-                  id: "forceUpdate" ,
-                  localeKey: "logged.forceUpdate" ,
-                  initialValue: false ,
+                  type: "checkBox",
+                  enabled: true,
+                  style: "solid",
+                  id: "forceUpdate",
+                  localeKey: "logged.forceUpdate",
+                  initialValue: false,
                   bounds: {
-                    x: 30 ,
-                    y: 390 ,
+                    x: 30,
+                    y: 390,
                     size: {
-                      width: 270 ,
+                      width: 270,
                       height: 32
                     }
                   }
-                } ,
+                },
                 {
-                  type: "button" ,
-                  enabled: true ,
-                  keyCode: "ENTER" ,
-                  style: "buttonMain" ,
-                  toolTip: "tooltip.gameTooltip" ,
-                  imageIcon: "assets/ui/icons/sword.svg" ,
-                  iconWidth: 20 ,
-                  iconHeight: 24 ,
-                  tooltipStyle: "success" ,
-                  id: "toGame" ,
-                  localeKey: "logged.toGame" ,
+                  type: "button",
+                  enabled: true,
+                  keyCode: "ENTER",
+                  style: "buttonMain",
+                  toolTip: "tooltip.gameTooltip",
+                  imageIcon: "assets/ui/icons/sword.svg",
+                  iconWidth: 20,
+                  iconHeight: 24,
+                  tooltipStyle: "success",
+                  id: "toGame",
+                  localeKey: "logged.toGame",
                   bounds: {
-                    x: 30 ,
-                    y: 310 ,
+                    x: 30,
+                    y: 310,
                     size: {
-                      width: 235 ,
+                      width: 235,
                       height: 30
                     }
                   }
-                } ,
+                },
                 {
-                  type: "button" ,
-                  enabled: true ,
-                  keyCode: "O" ,
-                  style: "altButton" ,
-                  toolTip: "tooltip.optionalMods" ,
-                  imageIcon: "assets/ui/icons/settingsGrey.svg" ,
-                  iconWidth: 16 ,
-                  iconHeight: 16 ,
-                  tooltipStyle: "success" ,
-                  id: "optionalMods" ,
+                  type: "button",
+                  enabled: true,
+                  keyCode: "O",
+                  style: "altButton",
+                  toolTip: "tooltip.optionalMods",
+                  imageIcon: "assets/ui/icons/settingsGrey.svg",
+                  iconWidth: 16,
+                  iconHeight: 16,
+                  tooltipStyle: "success",
+                  id: "optionalMods",
                   bounds: {
-                    x: 260 ,
-                    y: 310 ,
+                    x: 260,
+                    y: 310,
                     size: {
-                      width: 32 ,
+                      width: 32,
                       height: 32
                     }
                   }

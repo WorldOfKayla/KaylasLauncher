@@ -27,7 +27,6 @@
         "assets/sounds/button/hover/hover3.ogg",
         "assets/sounds/button/hover/hover4.ogg",
         "assets/sounds/button/hover/hover5.ogg"
-
       ]
     },
     "close": {
@@ -72,7 +71,6 @@
       ]
     }
   },
-
   "other": {
     "loggedOut": {
       "sounds": [

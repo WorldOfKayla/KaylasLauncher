@@ -108,7 +108,6 @@ public class Launcher extends Engine {
         this.getExecutorServiceProvider().submitTask(() -> {
             buildGui(getEngineData().getStyles());
             loadMainPanel(fileProperties.getMainFrame());
-
             SwingUtilities.invokeLater(() -> {
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);

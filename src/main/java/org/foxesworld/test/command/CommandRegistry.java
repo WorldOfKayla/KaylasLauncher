@@ -21,7 +21,7 @@ public final class CommandRegistry {
         if (command != null) {
             command.execute(event);
         } else {
-            Engine.getLOGGER().warn("Не зарегистрирована команда: " + commandKey);
+            Engine.getLOGGER().warn("Cant register command: " + commandKey);
         }
     }
 }

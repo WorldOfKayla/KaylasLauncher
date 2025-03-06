@@ -37,7 +37,6 @@ public class Auth {
     private String[] userServersArray;
     private boolean authorised = false;
 
-    // Инжекторы для уведомления подписчиков о загрузке данных
     private final DataInjector<String[]> userServersInjector = new DataInjector<>();
     private final DataInjector<ConcurrentHashMap<String, AtomicInteger>> balanceInjector = new DataInjector<>();
 

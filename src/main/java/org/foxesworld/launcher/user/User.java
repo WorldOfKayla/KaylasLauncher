@@ -237,7 +237,6 @@ public class User extends org.foxesworld.engine.user.User {
                 Engine.getLOGGER().error("Error processing user head icon for login: {}. Error: {}", login, e.getMessage(), e);
             }
         });
-        // Запускаем асинхронный HTTP-запрос, передавая результат в DataInjector
         getUserHeadAsync(login, headInjector::setContent, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
     }
 

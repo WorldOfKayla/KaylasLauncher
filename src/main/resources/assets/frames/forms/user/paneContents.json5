@@ -2,18 +2,18 @@
   panels: {
     userOptions: {
       panelOptions: {
-        opaque: true ,
-        visible: true ,
-        background: "#4d2c2c" ,
+        opaque: true,
+        visible: true,
+        background: "#4d2c2c",
         bounds: {
-          x: 0 ,
-          y: 140 ,
+          x: 0,
+          y: 140,
           size: {
-            width: 355 ,
+            width: 355,
             height: 500
           }
         }
-      } ,
+      },
       childComponents: [
         {
           type: "button",
@@ -21,9 +21,9 @@
           style: "buttonMain",
           toolTip: "tooltip.settings",
           localeKey: "settings.settingsButt",
-          imageIcon: "assets/ui/icons/settingsGrey.svg" ,
-          iconWidth: 32 ,
-          iconHeight: 32 ,
+          imageIcon: "assets/ui/icons/settingsGrey.svg",
+          iconWidth: 32,
+          iconHeight: 32,
           keyCode: "S",
           id: "settings-small",
           bounds: {
@@ -44,9 +44,9 @@
           tooltipStyle: "error",
           id: "logOut",
           localeKey: "logged.logOut",
-          imageIcon: "assets/ui/icons/logout.svg" ,
-          iconWidth: 32 ,
-          iconHeight: 32 ,
+          imageIcon: "assets/ui/icons/logout.svg",
+          iconWidth: 32,
+          iconHeight: 32,
           bounds: {
             x: 10,
             y: 90,

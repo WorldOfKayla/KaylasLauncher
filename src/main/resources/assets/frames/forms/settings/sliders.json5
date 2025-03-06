@@ -3,9 +3,9 @@
     {
       type: "compositeSlider",
       styles: {
-        "label":  "title",
-        "slider":  "slidingOut"
-        },
+        "label": "title",
+        "slider": "slidingOut"
+      },
       fontSize: 12,
       localeKey: "settings.soundVolume",
       stepSize: 6,
@@ -47,8 +47,8 @@
     {
       type: "compositeSlider",
       styles: {
-        "label":  "title",
-        "slider":  "slidingOut"
+        "label": "title",
+        "slider": "slidingOut"
       },
       fontSize: 12,
       localeKey: "settings.ramField",

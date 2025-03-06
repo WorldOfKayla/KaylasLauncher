@@ -4,18 +4,18 @@
       panelOptions: {
         opaque: false,
         visible: false,
-        background: "#7e6969" ,
-        backgroundImage: "assets/ui/img/bg/info.png" ,
+        background: "#7e6969",
+        backgroundImage: "assets/ui/img/bg/info.png",
         zIndex: 1,
         bounds: {
-          x: -600 ,
-          y: 30 ,
+          x: -600,
+          y: 30,
           size: {
-            width: 355 ,
+            width: 355,
             height: 500
           }
         }
-      } ,
+      },
       childComponents: [
         {
           panels: {
@@ -27,92 +27,92 @@
                 background: "#4d2c2cc2",
                 zIndex: 1,
                 bounds: {
-                  x: 10 ,
-                  y: 50 ,
+                  x: 10,
+                  y: 50,
                   size: {
-                    width: 440 ,
+                    width: 440,
                     height: 75
                   }
                 }
-              } ,
+              },
               childComponents: [
-        {
-          type: "label" ,
-          fontSize: 15 ,
-          style: "title" ,
-          localeKey: "" ,
-          color: "#f9b54d" ,
-          id: "userLogin" ,
-          initialValue: "user#userFullName" ,
-          bounds: {
-            x: 90 ,
-            y: 5 ,
-            size: {
-              width: 250 ,
-              height: 50
-            }
-          }
-        } ,
-        {
-          type: "label" ,
-          fontSize: 11 ,
-          color: "#ec8241" ,
-          style: "title" ,
-          localeKey: "" ,
-          id: "userGroup" ,
-          initialValue: "user#group" ,
-          bounds: {
-            x: 90 ,
-            y: 25,
-            size: {
-              width: 250 ,
-              height: 50
-            }
-          }
-        } ,
-        {
-          type: "label" ,
-          fontSize: 11 ,
-          style: "title" ,
-          imageIcon: "assets/ui/img/head.png" ,
-          localeKey: "",
-          iconWidth: 64 ,
-          iconHeight: 64 ,
-          id: "userHead" ,
-          bounds: {
-            x: 10 ,
-            y: -25 ,
-            size: {
-              width: 128 ,
-              height: 128
-            }
-          }
-        } ,
-        /*
-        {
-          type: "button",
-          enabled: true,
-          visible: true,
-          keyCode: "F5",
-          style: "altButton",
-          id: "smallButton",
-          toolTip: "tooltip.test",
-          tooltipStyle: "warning",
-          localeKey: "TEST",
-          bounds: {
-            x: 100,
-            y: 100,
-            size: {
-              width: 60,
-              height: 34
-            }
-          }
-        },
-*/
-        {
-          readFrom: "assets/frames/forms/user/userBalance.json5"
-        }
-                ]
+                {
+                  type: "label",
+                  fontSize: 15,
+                  style: "title",
+                  localeKey: "",
+                  color: "#f9b54d",
+                  id: "userLogin",
+                  initialValue: "user#userFullName",
+                  bounds: {
+                    x: 90,
+                    y: 5,
+                    size: {
+                      width: 250,
+                      height: 50
+                    }
+                  }
+                },
+                {
+                  type: "label",
+                  fontSize: 11,
+                  color: "#ec8241",
+                  style: "title",
+                  localeKey: "",
+                  id: "userGroup",
+                  initialValue: "user#group",
+                  bounds: {
+                    x: 90,
+                    y: 25,
+                    size: {
+                      width: 250,
+                      height: 50
+                    }
+                  }
+                },
+                {
+                  type: "label",
+                  fontSize: 11,
+                  style: "title",
+                  imageIcon: "assets/ui/img/head.png",
+                  localeKey: "",
+                  iconWidth: 64,
+                  iconHeight: 64,
+                  id: "userHead",
+                  bounds: {
+                    x: 10,
+                    y: -25,
+                    size: {
+                      width: 128,
+                      height: 128
+                    }
+                  }
+                },
+                /*
+                {
+                  type: "button",
+                  enabled: true,
+                  visible: true,
+                  keyCode: "F5",
+                  style: "altButton",
+                  id: "smallButton",
+                  toolTip: "tooltip.test",
+                  tooltipStyle: "warning",
+                  localeKey: "TEST",
+                  bounds: {
+                    x: 100,
+                    y: 100,
+                    size: {
+                      width: 60,
+                      height: 34
+                    }
+                  }
+                },
+        */
+                {
+                  readFrom: "assets/frames/forms/user/userBalance.json5"
+                }
+              ]
             }
           }
         },

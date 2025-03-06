@@ -13,6 +13,7 @@ import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.notification.Notification;
+import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,15 +78,27 @@ public class User extends org.foxesworld.engine.user.User {
         });
     }
 
-
     private void displayLoginPanel() {
         engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
     }
 
     private void setDropBoxData(DropBox dropBox) {
-        dropBox.setValues(auth.getUserServersArray());
-        dropBox.setSelectedIndex(this.launcher.getConfig().getSelectedServer());
-        dropBox.setScrollBoxListener(this.serverInfoDisplayer);
+        String[] servers = auth.getUserServersArray();
+        if (servers == null || servers.length == 0) {
+            Launcher.LOGGER.warn("User servers array is null or empty. Setting empty values for dropBox.");
+            dropBox.setValues(new String[0]);
+            return;
+        }
+        dropBox.setValues(servers);
+        SwingUtilities.invokeLater(() -> {
+            int selectedIndex = launcher.getConfig().getSelectedServer();
+            if (selectedIndex < 0 || selectedIndex >= servers.length) {
+                Launcher.LOGGER.warn("Selected server index {} is out of bounds. Defaulting to index 0.", selectedIndex);
+                selectedIndex = 0;
+            }
+            dropBox.setSelectedIndex(selectedIndex);
+            dropBox.setScrollBoxListener(this.serverInfoDisplayer);
+        });
     }
 
     @Override
@@ -133,6 +146,7 @@ public class User extends org.foxesworld.engine.user.User {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
         guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, loggedForm.getServerBox().getY() + 40, 340, 45), 3000, message);
     }
+
     public void updateServer(int index) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
@@ -163,48 +177,48 @@ public class User extends org.foxesworld.engine.user.User {
                         onFailure.onFailure(new Exception("Received empty or null response"));
                     }
                 }
-
             }, (e) -> {
                 Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
                 if (onFailure != null) {
                     onFailure.onFailure(e);
                 }
-
             });
         } else {
             Engine.getLOGGER().warn("Login is null or empty in getUserHead");
             if (onFailure != null) {
                 onFailure.onFailure(new IllegalArgumentException("Login cannot be null or empty"));
             }
-
         }
     }
 
+    /**
+     * Обновлённый метод, использующий DataInjector для асинхронного получения и установки аватара пользователя.
+     */
     private void setUserHeadIcon(String login) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Login is null or empty. Cannot set user head icon.");
             return;
         }
-
-        getUserHeadAsync(login, userHeadBase64 -> {
+        // Создаём DataInjector для получения base64-строки аватара
+        DataInjector<String> headInjector = new DataInjector<>();
+        // Регистрируем слушателя, который выполнит обновление UI, когда данные будут получены
+        headInjector.addListener(userHeadBase64 -> {
             if (userHeadBase64 == null) {
                 Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
                 return;
             }
-
             try {
                 BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
                 if (userHeadImage == null) {
                     Engine.getLOGGER().warn("Decoded user head image is null for login: {}", login);
                     return;
                 }
-
-                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(engine.getImageUtils().getScaledImage(userHeadImage, 72, 72), 80));
+                ImageIcon icon = new ImageIcon(engine.getImageUtils().getRoundedImage(
+                        engine.getImageUtils().getScaledImage(userHeadImage, 72, 72), 80));
                 if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
                     Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
                     return;
                 }
-
                 SwingUtilities.invokeLater(() -> {
                     try {
                         Component component = getComponent("userHead");
@@ -220,9 +234,10 @@ public class User extends org.foxesworld.engine.user.User {
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error processing user head icon for login: {}. Error: {}", login, e.getMessage(), e);
             }
-        }, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
+        });
+        // Запускаем асинхронный HTTP-запрос, передавая результат в DataInjector
+        getUserHeadAsync(login, headInjector::setContent, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
     }
-
 
     private void setUserGroupLabel() {
         SwingUtilities.invokeLater(() -> {
@@ -243,6 +258,7 @@ public class User extends org.foxesworld.engine.user.User {
     public String getToken() {
         return userAttributes.token;
     }
+
     @Deprecated
     public void setNewsData(List<Map<String, String>> newsData) {
         SwingUtilities.invokeLater(() -> {
@@ -343,7 +359,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public int getUserIntGroup(){
-        return  Integer.parseInt((String) this.userAttributes.group);
+        return Integer.parseInt((String) this.userAttributes.group);
     }
 
     public String getUserFullName(){
@@ -353,5 +369,4 @@ public class User extends org.foxesworld.engine.user.User {
     public String getColorScheme(){
         return this.userAttributes.colorScheme;
     }
-
 }

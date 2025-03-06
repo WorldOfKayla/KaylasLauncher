@@ -5,6 +5,7 @@ import java.util.Map;
 
 class UserAttributes {
 
+    @SuppressWarnings("unused")
     String login, password, token, uuid, colorScheme, userAction, groupName, userFullName;
     Object group;
     boolean rememberMe;

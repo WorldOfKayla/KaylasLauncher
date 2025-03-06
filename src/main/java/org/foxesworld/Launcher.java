@@ -9,6 +9,7 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.DragListener;
@@ -24,6 +25,7 @@ import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.SplashScreenWindow;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.user.User;
+import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +36,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Launcher extends Engine {
@@ -110,13 +113,10 @@ public class Launcher extends Engine {
                 this.settings = new Settings(this);
                 this.settings.addListeners();
                 setActionHandler(new ActionHandler(this));
-                //TODO This is a temporary decision
-                // DataInjector must help in multi-threaded env
-                    auth.loadUserServers((String) this.auth.getAuthCredentials().get("login"));
-                //That happens because of a race in a multithreaded environment
-                //And we have to load servers once again to maje sure they are loaded
-                //to avoid an exception
-                setUser(new User(this));
+                DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
+                auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
+                serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
+                //setUser(new User(this));
             });
         }, "init");
         setInit(true);

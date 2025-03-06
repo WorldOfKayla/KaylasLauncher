@@ -17,7 +17,7 @@ public class DataInjector<T> {
     private final CompletableFuture<T> futureData = new CompletableFuture<>();
     private final CopyOnWriteArrayList<Consumer<T>> listeners = new CopyOnWriteArrayList<>();
     public DataInjector(){
-        LOGGER.warn("Using experimental DataInjector!");
+        //LOGGER.warn("Using experimental DataInjector!");
     }
 
     /**

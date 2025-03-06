@@ -7,6 +7,7 @@ import org.foxesworld.engine.utils.HTTP.HttpParam;
 public class AuthRequest extends HTTPrequest {
 
     @HttpParam
+    @SuppressWarnings("unused")
     private final String login, password, userAction = "auth";
 
     public AuthRequest(Engine engine, String login, String password) {

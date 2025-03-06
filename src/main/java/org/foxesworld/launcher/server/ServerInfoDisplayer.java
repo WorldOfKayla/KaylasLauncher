@@ -112,22 +112,46 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
-        if (this.user.getAuth().isAuthorised()) {
-            AtomicReference<ServerAttributes> thisServer = new AtomicReference<>();
-            this.launcher.getExecutorServiceProvider().submitTask(() -> {
-                if (user.getAuth().isAuthorised()) {
-                    user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
-                    newsPanel.removeAll();
-                    newsPanel.add(this.getPanel());
-                    thisServer.set(user.getAuth().getUserServersAttributes().get(index));
-                    updateServerInfoComponents(thisServer.get());
-                    newsPanel.repaint();
-                }
-                String[] status = this.user.getServerInfo().pollServer(thisServer.get().getHost(), thisServer.get().getPort());
-                this.srvOnline.setText(this.user.getServerInfo().genServerStatus(status));
-            }, "displayServer-" + index);
+        // Проверяем, авторизован ли пользователь
+        if (!this.user.getAuth().isAuthorised()) {
+            Launcher.LOGGER.warn("User is not authorised. Cannot display server info.");
+            return;
         }
+
+        // Проверяем, загружены ли данные о серверах
+        List<ServerAttributes> servers = this.user.getAuth().getUserServersAttributes();
+        if (servers == null || servers.isEmpty()) {
+            Launcher.LOGGER.warn("User servers attributes are not available.");
+            return;
+        }
+
+        // Проверяем корректность индекса
+        if (index < 0 || index >= servers.size()) {
+            Launcher.LOGGER.warn("Index {} is out of bounds for servers list.", index);
+            return;
+        }
+
+        // Получаем нужный сервер
+        ServerAttributes server = servers.get(index);
+
+        // Обновляем UI (панель и компоненты) в EDT
+        SwingUtilities.invokeLater(() -> {
+            user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
+            newsPanel.removeAll();
+            newsPanel.add(this.getPanel());
+            updateServerInfoComponents(server);
+            newsPanel.repaint();
+        });
+
+        launcher.getExecutorServiceProvider().submitTask(() -> {
+            String[] status = user.getServerInfo().pollServer(server.getHost(), server.getPort());
+            String serverStatus = user.getServerInfo().genServerStatus(status);
+            SwingUtilities.invokeLater(() -> {
+                srvOnline.setText(serverStatus);
+            });
+        }, "displayServer-" + index);
     }
+
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {
         String[] version = thisServer.getServerVersion().split("-");

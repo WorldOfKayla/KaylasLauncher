@@ -17,12 +17,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Класс Auth отвечает за процесс аутентификации, управление сессией пользователя и загрузку связанных данных.
- * В данной реализации используются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
+ * Используются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
  * <ul>
  *     <li>Списка серверов (DataInjector<String[]>)</li>
  *     <li>Балансовых данных (DataInjector<ConcurrentHashMap<String, AtomicInteger>>)</li>
  * </ul>
- * Это позволяет подписанным компонентам получать актуальные данные сразу после их загрузки, что особенно важно в многопоточной среде.
+ * Это позволяет подписанным компонентам получать актуальные данные сразу после их загрузки,
+ * что особенно важно в многопоточной среде.
  */
 public class Auth {
     private final Launcher launcher;
@@ -30,14 +31,17 @@ public class Auth {
     private final Config config;
     private final CryptUtils cryptUtils;
     private final EncryptionKeyManager encryptionKeyManager;
-    private AuthListener authListener;
     private Map<String, Object> authCredentials = new HashMap<>();
     private final ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
     private List<ServerAttributes> userServersAttributes;
     private String[] userServersArray;
     private boolean authorised = false;
+
+    // Инжекторы для уведомления подписчиков о загрузке данных
     private final DataInjector<String[]> userServersInjector = new DataInjector<>();
     private final DataInjector<ConcurrentHashMap<String, AtomicInteger>> balanceInjector = new DataInjector<>();
+
+    private static final Gson GSON = new Gson();
 
     public Auth(Launcher launcher) {
         this.launcher = launcher;
@@ -45,7 +49,6 @@ public class Auth {
         this.config = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
-        setAuthListener(new AuthListenerAdapter(this));
         attemptAutoLogin();
     }
 
@@ -55,14 +58,15 @@ public class Auth {
      * @param authCredentials Учётные данные пользователя.
      */
     public void authTask(Map<String, Object> authCredentials) {
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+        launcher.getExecutorServiceProvider().submitTask(() -> {
             setAuthCredentials(authCredentials);
             try {
                 if (!authorizeAsync().get()) {
                     config.clearConfigData(Arrays.asList("login", "password"), true);
                 }
-            } catch (InterruptedException | ExecutionException ignored) {
-                // Логирование или обработка прерывания по необходимости
+            } catch (InterruptedException | ExecutionException e) {
+                Engine.getLOGGER().error("Authentication task interrupted", e);
+                Thread.currentThread().interrupt();
             }
         }, "auth");
     }
@@ -97,7 +101,8 @@ public class Auth {
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
-                authListener.onAuthAttempt(this, authCredentials);
+                launcher.logStartupTime(launcher.getStartTime());
+                authTask(authCredentials);
             } else {
                 clearCredentials();
             }
@@ -115,7 +120,7 @@ public class Auth {
         AuthRequest authRequest = new AuthRequest(engine, login, password);
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        authRequest.sendAsync(Map.of(),
+        authRequest.sendAsync(Collections.emptyMap(),
                 response -> handleAuthResponse(response, future),
                 error -> handleAuthError(error, future)
         );
@@ -130,12 +135,11 @@ public class Auth {
      */
     private void handleAuthResponse(Object response, CompletableFuture<Boolean> future) {
         try {
-            AuthResponse authResponse = new Gson().fromJson(String.valueOf(response), AuthResponse.class);
+            AuthResponse authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
                 handleSuccessfulAuth(authResponse);
                 future.complete(true);
             } else {
-                invokeHook("onAuthFailure", authResponse);
                 future.complete(false);
             }
         } catch (Exception e) {
@@ -152,7 +156,7 @@ public class Auth {
      */
     private void handleAuthError(Throwable error, CompletableFuture<Boolean> future) {
         Engine.getLOGGER().error("Authorization request failed: ", error);
-        invokeHook("onAuthError", error);
+        launcher.getSOUND().playSound("other", "alert");
         future.completeExceptionally(error);
     }
 
@@ -166,19 +170,20 @@ public class Auth {
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
             public void onPlaybackStarted(String s) {
-
+                // No-op
             }
 
             @Override
             public void onPlaybackStopped(String s) {
                 if (launcher.getConfig().isBackgroundMusic()) {
-                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() -> launcher.getSOUND().playSound("music", "launcherTheme", true));
+                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() ->
+                            launcher.getSOUND().playSound("music", "launcherTheme", true));
                 }
             }
 
             @Override
             public void onPlaybackProgress(String s, long l, long l1) {
-
+                // No-op
             }
         });
         authCredentials.put("uuid", authResponse.getUuid());
@@ -186,8 +191,11 @@ public class Auth {
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
+
+        // Асинхронная загрузка серверов и обновление баланса
         loadUserServers(authResponse.getLogin());
         updateBalance(authResponse.getBalance());
+
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
@@ -196,29 +204,24 @@ public class Auth {
 
     /**
      * Обновляет баланс, используя данные с сервера.
-     * После обновления balanceMap, вызывается инжектор, уведомляющий подписчиков о готовности актуальных данных.
+     * После обновления balanceMap вызывается инжектор, уведомляющий подписчиков о готовности актуальных данных.
      *
      * @param balance Список балансов для обновления.
      */
     public void updateBalance(List<Map<String, Integer>> balance) {
-        CompletableFuture.runAsync(() -> {
+        launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
                 balance.forEach(entry ->
                         entry.forEach((key, value) ->
-                                balanceMap.compute(key, (k, v) -> {
-                                    if (v == null) return new AtomicInteger(value);
-                                    v.addAndGet(value);
-                                    return v;
-                                })
+                                balanceMap.compute(key, (k, v) -> v == null ? new AtomicInteger(value) : new AtomicInteger(v.addAndGet(value)))
                         )
                 );
                 Engine.getLOGGER().info("Balance updated: " + balanceMap);
-                // Универсальный инжектор уведомляет всех подписчиков
                 balanceInjector.setContent(balanceMap);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error updating balance", e);
             }
-        });
+        }, "updateBalance");
     }
 
     /**
@@ -228,14 +231,36 @@ public class Auth {
      * @param login Логин пользователя.
      */
     public void loadUserServers(String login) {
+        if (login == null || login.isEmpty()) {
+            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
+            return;
+        }
         ServerParser serverParser = new ServerParser(engine);
         userServersAttributes = serverParser.parseServers(login);
         userServersArray = userServersAttributes.stream()
-                .map(serverAttributes -> serverAttributes.getServerName() + " " + serverAttributes.getServerVersion())
+                .map(sa -> sa.getServerName() + " " + sa.getServerVersion())
                 .toArray(String[]::new);
-        Launcher.LOGGER.info("Loaded {} servers", serverParser.getServersNum());
-        // Универсальный инжектор уведомляет всех подписчиков о готовом списке серверов
+        Engine.getLOGGER().info("Loaded {} servers", serverParser.getServersNum());
+        // Уведомляем подписчиков через инжектор
         userServersInjector.setContent(userServersArray);
+    }
+
+    /**
+     * Альтернативный метод загрузки серверов с использованием DataInjector для списка ServerAttributes.
+     *
+     * @param login           Логин пользователя.
+     * @param serversInjector DataInjector, который будет уведомлён после загрузки серверов.
+     */
+    public void loadUserServers(String login, DataInjector<List<ServerAttributes>> serversInjector) {
+        if (login == null || login.isEmpty()) {
+            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
+            return;
+        }
+        ServerParser serverParser = new ServerParser(engine);
+        List<ServerAttributes> loadedServers = serverParser.parseServers(login);
+        Engine.getLOGGER().info("Loaded {} servers", loadedServers.size());
+        // Уведомляем подписчиков через переданный инжектор
+        serversInjector.setContent(loadedServers);
     }
 
     /**
@@ -247,7 +272,7 @@ public class Auth {
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
         config.writeCurrentConfig();
-        invokeHook("onLogOut", null);
+        //Engine.LOGGER.debug("LOGOUT");
         engine.init();
     }
 
@@ -309,11 +334,6 @@ public class Auth {
     public boolean isAuthorised() {
         return authorised;
     }
-
-    public void setAuthListener(AuthListener authListener) {
-        this.authListener = authListener;
-    }
-
     public void setAuthorised(boolean authorised) {
         this.authorised = authorised;
     }
@@ -324,25 +344,6 @@ public class Auth {
 
     public void setAuthCredentials(Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
-    }
-
-    /**
-     * (Устаревший) Метод для вызова хуков аутентификации.
-     *
-     * @param hookName Имя хука.
-     * @param data     Передаваемые данные.
-     */
-    @Deprecated
-    private void invokeHook(String hookName, Object data) {
-        if (authListener != null) {
-            switch (hookName) {
-                case "onAuthSuccess" -> authListener.onAuthSuccess(data);
-                case "onAuthFailure" -> authListener.onAuthFailure(data);
-                case "onAuthError"   -> authListener.onAuthError(data);
-                case "onLogOut"      -> authListener.onLogOut(data);
-                default -> Engine.getLOGGER().warn("Unknown hook: " + hookName);
-            }
-        }
     }
 
     /**

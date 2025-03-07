@@ -67,7 +67,6 @@ public class Launcher extends Engine {
             splashScreen.dispose();
         });
     }
-
     public Launcher() {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         startTime = System.currentTimeMillis();
@@ -111,7 +110,6 @@ public class Launcher extends Engine {
             SwingUtilities.invokeLater(() -> {
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
-                this.settings.addListeners();
                 setActionHandler(new ActionHandler(this));
                 DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
                 auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);

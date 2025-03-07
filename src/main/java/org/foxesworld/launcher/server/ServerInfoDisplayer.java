@@ -9,19 +9,17 @@ import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.dropBox.DropBoxListener;
-import org.foxesworld.engine.gui.components.dropBox.State;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
+import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
     private final Launcher launcher;
@@ -29,9 +27,11 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     private final JPanel newsPanel;
     private final ImageUtils imageUtils;
     private final GuiBuilder guiBuilder;
+
     @Component
     @SuppressWarnings("unused")
-    private Label srvOnline,serverTitle,serverCore,serverImg;
+    private Label srvOnline, serverTitle, serverCore, serverImg;
+
     @Component
     @SuppressWarnings("unused")
     private TextArea serverDescLabel;
@@ -44,7 +44,6 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         this.guiBuilder = user.getGuiBuilder();
         this.imageUtils = this.guiBuilder.getEngine().getImageUtils();
         SwingUtilities.invokeLater(() -> displayServerInfo(this.launcher.getConfig().getSelectedServer()));
-
     }
 
     @Override
@@ -72,7 +71,6 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         dropBox.setIcons(icons);
     }
 
-
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
         this.getPanel().repaint();
@@ -96,42 +94,20 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         displayServerInfo(index);
     }
 
-    private void clearNewsPanel() {
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            newsPanel.removeAll();
-            newsPanel.repaint();
-        }, "clearNewsPanel");
-    }
-
-    private void addNewsFrameToPanel() {
-        JPanel newsFrame = guiBuilder.getPanelsMap().get("newsFrame");
-        if (newsFrame != null) {
-            guiBuilder.getPanelsMap().get("newsForm").add(newsFrame);
-            guiBuilder.getPanelsMap().get("newsForm").repaint();
-        }
-    }
-
     public void displayServerInfo(int index) {
-        // Проверяем, авторизован ли пользователь
         if (!this.user.getAuth().isAuthorised()) {
             Launcher.LOGGER.warn("User is not authorised. Cannot display server info.");
             return;
         }
-
-        // Проверяем, загружены ли данные о серверах
         List<ServerAttributes> servers = this.user.getAuth().getUserServersAttributes();
         if (servers == null || servers.isEmpty()) {
             Launcher.LOGGER.warn("User servers attributes are not available.");
             return;
         }
-
-        // Проверяем корректность индекса
         if (index < 0 || index >= servers.size()) {
             Launcher.LOGGER.warn("Index {} is out of bounds for servers list.", index);
             return;
         }
-
-        // Получаем нужный сервер
         ServerAttributes server = servers.get(index);
 
         // Обновляем UI (панель и компоненты) в EDT
@@ -143,26 +119,38 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             newsPanel.repaint();
         });
 
-        launcher.getExecutorServiceProvider().submitTask(() -> {
-            String[] status = user.getServerInfo().pollServer(server.getHost(), server.getPort());
-            String serverStatus = user.getServerInfo().genServerStatus(status);
+        // Создаем DataInjector для получения статуса сервера с улучшенной функциональностью
+        DataInjector<String> statusInjector = new DataInjector<>();
+
+        // Добавляем слушателя для обработки ошибок (логирование ошибок)
+        statusInjector.addErrorListener(e -> {
+            Launcher.LOGGER.error("Error in statusInjector", e);
+        });
+
+        statusInjector.addListener(serverStatus -> {
             SwingUtilities.invokeLater(() -> {
                 srvOnline.setText(serverStatus);
             });
+        });
+
+        launcher.getExecutorServiceProvider().submitTask(() -> {
+            String[] status = user.getServerInfo().pollServer(server.getHost(), server.getPort());
+            String serverStatus = user.getServerInfo().genServerStatus(status);
+            statusInjector.setContent(serverStatus);
         }, "displayServer-" + index);
     }
 
-
     private void updateServerInfoComponents(ServerAttributes thisServer) {
         String[] version = thisServer.getServerVersion().split("-");
-        String srvIcon = "";
-        if(version[1] != null) {
+        String srvIcon;
+        if (version.length > 1 && version[1] != null && !version[1].isEmpty()) {
             srvIcon = "assets/ui/icons/srvIcons/" + version[1] + ".png";
         } else {
             srvIcon = "assets/ui/icons/srvIcons/Vanilla.png";
         }
         this.serverTitle.setText(thisServer.getServerName() + ' ' + version[0]);
-        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(this.launcher.getImageUtils().getLocalImage(srvIcon), 32, 32);
+        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(
+                this.launcher.getImageUtils().getLocalImage(srvIcon), 32, 32);
         this.serverCore.setIcon(new ImageIcon(image));
         this.serverImg.setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
         this.serverDescLabel.setText(thisServer.getServerDescription());

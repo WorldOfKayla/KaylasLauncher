@@ -160,11 +160,11 @@
       "color": "#FFFFFF",
       "imagePath": "brand/alt.png",
       "particles": {
-        "particle": "goldentrail",
+        "particle": "smoke",
         "lifetime": 30,
         "fadeDuration": 12,
-        "spacing": 128.0,
-        "scale": 0.3,
+        "spacing": 168.0,
+        "scale": 0.35,
         "count": 10
       },
       "keyframes": [
@@ -331,38 +331,9 @@
       "fontName": "Sans Serif",
       "text": "By FoxesWorld",
       "keyframes": [
-        {
-          "time": 1000,
-          "position": {
-            "x": 8000,
-            "y": 175
-          },
-          "opacity": 1,
-          "scaleX": 1,
-          "scaleY": 1
-        },
-        {
-          "time": 10000,
-          "position": {
-            "x": 800,
-            "y": 175
-          },
-          "opacity": 0.1,
-          "scaleX": 1,
-          "scaleY": 1,
-          "soundFile": "whoosh1.ogg",
-          "volume": 1.0
-        },
-        {
-          "time": 11000,
-          "position": {
-            "x": 460,
-            "y": 175
-          },
-          "opacity": 1,
-          "scaleX": 1,
-          "scaleY": 1
-        }
+        { "time": 1000, "position": { "x": 8000, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
+        { "time": 11000, "position": { "x": 1000, "y": 175 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0},
+        { "time": 12000, "position": { "x": 460, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1}
       ]
     }
   ]

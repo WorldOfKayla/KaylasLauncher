@@ -16,6 +16,7 @@ import org.foxesworld.engine.gui.components.spinner.SpinnerListener;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
+import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), "settings", List.of(TextArea.class, JSpinner.class, Checkbox.class, DropBox.class, TextField.class, Slider.class, CompositeSlider.class, FileSelector.class));
         this.launcher = launcher;
+        this.addListeners();
     }
 
     public void applySettings(String panelId) {
@@ -65,7 +67,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         }
         return value;
     }
-
 
     public void addListeners() {
         for (JComponent component : this.getComponentsForPanel("settingsFields")) {
@@ -109,12 +110,10 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onScrollBoxCreated(DropBox dropBox) {
-
     }
 
     @Override
     public void onScrollBoxOpen(DropBox dropBox) {
-
     }
 
     @Override
@@ -125,7 +124,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
 
     @Override
     public void onServerHover(DropBox dropBox, int i) {
-
     }
 
     @Override
@@ -138,10 +136,24 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         }
     }
 
+    /**
+     * Здесь мы используем DataInjector для асинхронного получения описания настройки.
+     * При наведении на JCheckBox, описание загружается в отдельном потоке и по готовности обновляет компонент settingsInfo.
+     */
     @Override
     public void onHover(JCheckBox jCheckBox) {
-        settingsInfo.setWrapStyleWord(true);
-        settingsInfo.setText(this.launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc"));
+        // Создаём DataInjector для строки с описанием
+        DataInjector<String> descInjector = new DataInjector<>();
+        // Регистрируем слушателя, который обновит TextArea в EDT
+        descInjector.addListener(desc -> SwingUtilities.invokeLater(() -> {
+            settingsInfo.setWrapStyleWord(true);
+            settingsInfo.setText(desc);
+        }));
+        // Запускаем асинхронную задачу для получения описания
+        launcher.getExecutorServiceProvider().submitTask(() -> {
+            String desc = launcher.getLANG().getString("settings." + jCheckBox.getName() + "-desc");
+            descInjector.setContent(desc);
+        }, "loadSettingsDesc-" + jCheckBox.getName());
     }
 
     @Override
@@ -171,8 +183,8 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
                     launcher.getEngine().getConfig().getConfig().put("volume", value);
                     launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
                 }
-
                 case "ramAmount" -> {
+                    // Дополнительная логика для ramAmount, если потребуется
                 }
             }
         });

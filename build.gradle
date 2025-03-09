@@ -50,7 +50,7 @@ repositories {
 
 dependencies {
     implementation files('lib/foxesworld/fox-engine-1.15.1-TET-all.jar')
-    implementation files('lib/foxesworld/Ascendix-1.7.5-SNAPSHOT.jar')
+    implementation files('lib/foxesworld/Ascendix-1.8.0-SNAPSHOT.jar')
 
     // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle
     //runtimeOnly 'com.guardsquare:proguard-gradle:7.6.1'

@@ -5,7 +5,7 @@
     "hardwareAccelerationEnabled": true,
     "scale": 1.0,
     "totalFrames": 5000,
-    "width": 720,
+    "width": 640,
     "height": 350
   },
   "layers": [
@@ -18,9 +18,10 @@
       "keyframes": [
         { "time": 2000,
           "effect": {
-            "type": "ExampleRenderEffect",
+            "type": "Background",
             "parameters": {
-              "tint": "#d59615",
+              "tint": ["#d59615", "#ff0000"],
+              "backgroundImage": "brand/bg.jpg",
               "intensity": 0.8,
               "duration": 3000,
               "borderRadius": 35
@@ -67,7 +68,7 @@
       "keyframes": [
         { "time": 3000, "position": { "x": 480, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1, "soundFile": "whoosh.ogg", "volume":  0.3 },
         { "time": 5000, "position": { "x": 480, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1 },
-        { "time": 8000, "position": { "x": 480, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 8000, "position": { "x": 480, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.3 },
         { "time": 10000, "position": { "x": 480, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     },
@@ -88,13 +89,21 @@
       "keyframes": [
         { "time": 4800, "position": { "x": 480, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.2},
         { "time": 8000, "position": { "x": 480, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.3, "scaleY": 1 },
-        { "time": 10000, "position": { "x": 480, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 12000, "position": { "x": 460, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 10000, "position": { "x": 480, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 0.8, "scaleY": 1 },
+        { "time": 12000, "position": { "x": 460, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1,
+          "effect": {
+            "type": "Glow",
+            "parameters": {
+              "enabled": true,
+              "color": "#ffffff",
+              "radius": 15
+            }
+          }}
       ]
     },
     {
       "type": "image",
-      "name": "Stone",
+      "name": "Aiwo Robotnik",
       "shape": "image",
       "color": "#FFFFFF",
       "imagePath": "brand/robotnik.png",
@@ -120,13 +129,22 @@
       "type": "text",
       "name": "authority",
       "shape": "text",
-      "textColor": "#ac6343",
+      "textColor": "#000000",
       "fontName": "Sans Serif",
+      "fontStyle": "italic",
       "text": "By FoxesWorld",
+      "particles": {
+        "particle": "poof",
+        "lifetime":  900,
+        "fadeDuration": 12,
+        "spacing": 256.0,
+        "scale": 0.3,
+        "count": 20
+      },
       "keyframes": [
         { "time": 1000, "position": { "x": 8000, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
-        { "time": 11000, "position": { "x": 1000, "y": 175 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0},
-        { "time": 12000, "position": { "x": 460, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1}
+        { "time": 11000, "position": { "x": 1000, "y": 175 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0, "fontSize":  3},
+        { "time": 12000, "position": { "x": 380, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1, "fontSize":  23}
       ]
     }
   ]

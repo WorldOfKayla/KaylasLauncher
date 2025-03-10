@@ -49,9 +49,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
     private final Map<String, Consumer<ActionEvent>> commandRegistry = new HashMap<>();
 
     public ActionHandler(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "mainFrame", List.of(
-                TextField.class, Checkbox.class, JProgressBar.class,
-                PassField.class, Button.class, MultiButton.class, DropBox.class));
+        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         registerCommands();
@@ -59,6 +57,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
     @Override
     public void registerCommand(String key, Consumer<ActionEvent> command) {
+        Launcher.LOGGER.info("  - Registered command for {} action", key);
         commandRegistry.put(key, command);
     }
 

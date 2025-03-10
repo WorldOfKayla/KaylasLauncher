@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 public class FormAuth extends ComponentsAccessor {
     private final Launcher launcher;
-    public FormAuth(Auth auth) {
-        super(auth.getEngine().getGuiBuilder(), "authForm", Arrays.asList(TextField.class, PassField.class, JCheckBox.class));
-        this.launcher = auth.getLauncher();
+    public FormAuth(Launcher launcher) {
+        super(launcher.getGuiBuilder(), "authForm", Arrays.asList(TextField.class, PassField.class, JCheckBox.class));
+        this.launcher = launcher;
     }
 }

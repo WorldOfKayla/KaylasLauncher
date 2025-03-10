@@ -77,7 +77,7 @@ public class Auth {
      * @param component UI-компонент, который будет задействован.
      */
     public void formAuth(final JComponent component) {
-        FormAuth formAuth = new FormAuth(this);
+        FormAuth formAuth = new FormAuth(this.launcher);
         this.authCredentials = formAuth.getFormCredentials();
         try {
             if (!authorizeAsync().get()) {
@@ -178,8 +178,10 @@ public class Auth {
             @Override
             public void onPlaybackStopped(String s) {
                 if (launcher.getConfig().isBackgroundMusic()) {
-                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() ->
-                            launcher.getSOUND().playSound("music", "launcherTheme", true));
+                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() -> {
+                        launcher.getSOUND().getSoundPlayer().stopAllSounds();
+                        launcher.getSOUND().playSound("music", "launcherTheme", true);
+                    });
                 }
             }
 

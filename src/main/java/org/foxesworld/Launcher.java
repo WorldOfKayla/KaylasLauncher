@@ -48,6 +48,7 @@ public class Launcher extends Engine {
     private IconUtils iconUtils;
     private final File launcherFile;
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
+    private ActionHandler actionHandler;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -110,7 +111,8 @@ public class Launcher extends Engine {
             SwingUtilities.invokeLater(() -> {
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
-                setActionHandler(new ActionHandler(this));
+                this.actionHandler = new ActionHandler(this);
+                setActionHandler(this.actionHandler);
                 DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
                 auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
                 serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
@@ -293,5 +295,9 @@ public class Launcher extends Engine {
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public ActionHandler getActionHandler() {
+        return actionHandler;
     }
 }

@@ -11,44 +11,41 @@ import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.game.GameTimeTask;
 import org.foxesworld.launcher.gui.ActionHandler;
-import org.foxesworld.test.DataInjector;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
+import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 import static org.foxesworld.engine.utils.helper.JVMHelper.getCorrectOSArch;
 
 public class Core implements GameListener {
+    private long startTime;
     private final Launcher launcher;
     private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
+    private boolean forceUpdate = false;
+    long timeElapsed;
+
     private final GameTimeTask gameTimeTask;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
+        this.forceUpdate = forceUpdate;
+        ServerAttributes currentServer = actionHandler.getCurrentServer();
+        actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
+        actionHandler.getEngine().getDiscord().discordRpcStart(
+                actionHandler.getEngine().getLANG().getStringWithKey("game.login",
+                        new String[]{"login"},
+                        new String[]{actionHandler.getLauncher().getUser().getLogin()}),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
+                        new String[]{"server"},
+                        new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
+                currentServer.getServerName().toLowerCase(Locale.ROOT)
+        );
         this.actionHandler = actionHandler;
         this.launcher = actionHandler.getLauncher();
-
-        // Используем DataInjector для асинхронного получения серверных данных
-        DataInjector<ServerAttributes> serverInjector = new DataInjector<>();
-        serverInjector.addListener(currentServer -> {
-            // Настройка Discord после получения серверных атрибутов
-            actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
-            actionHandler.getEngine().getDiscord().discordRpcStart(
-                    actionHandler.getEngine().getLANG().getStringWithKey("game.login",
-                            new String[]{"login"},
-                            new String[]{actionHandler.getLauncher().getUser().getLogin()}),
-                    actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
-                            new String[]{"server"},
-                            new String[]{currentServer.getServerName() + " " + currentServer.getServerVersion()}),
-                    currentServer.getServerName().toLowerCase(Locale.ROOT)
-            );
-        });
-        // Устанавливаем данные (если уже доступны – слушатель вызовется немедленно)
-        serverInjector.setContent(actionHandler.getCurrentServer());
-
-        // Остальная инициализация
         fileLoader = new FileLoader(actionHandler, actionHandler.getLauncher().getConfig().getHomeDir());
         FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
         fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
@@ -57,15 +54,17 @@ public class Core implements GameListener {
         this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
 
         this.gameTimeTask = new GameTimeTask(
-                actionHandler.getCurrentServer(),
+                currentServer,
                 this.launcher.getUser().getLogin(),
                 this.launcher.getExecutorServiceProvider().getExecutorService(),
                 this.launcher
         );
     }
 
+
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
+        // Скрываем окно лаунчера и воспроизводим звук старта
         this.launcher.getFrame().setVisible(false);
         this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
 
@@ -83,7 +82,7 @@ public class Core implements GameListener {
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-        // Завершаем сессию: вычисляем итоговое время сессии и отправляем запрос "donePlaying"
+        // Завершаем сессию. Метод finishPlaying() вычисляет итоговое время сессии и отправляет запрос "donePlaying".
         gameTimeTask.finishPlaying();
         Engine.LOGGER.info("Сессия игры завершена для пользователя " + this.launcher.getUser().getLogin());
 
@@ -104,6 +103,7 @@ public class Core implements GameListener {
         this.launcher.getExecutorServiceProvider().shutdown();
         System.exit(0);
     }
+
 
     public static String getOSPrefix() {
         String osName = System.getProperty("os.name").toLowerCase();

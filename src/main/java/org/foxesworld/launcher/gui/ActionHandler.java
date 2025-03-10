@@ -10,158 +10,176 @@ import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
+import org.foxesworld.launcher.gui.command.DynamicCommandRegistry;
 import org.foxesworld.notification.Notification;
+import org.foxesworld.engine.gui.componentAccessor.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
-public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
+/**
+ * Класс для обработки действий, реализующий динамическую регистрацию команд.
+ */
+public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler implements DynamicCommandRegistry {
 
     protected Launcher launcher;
     private Core core;
     protected ServerAttributes currentServer;
 
+    @Component
+    private TextField login;
+
+    @Component
+    private PassField password;
+
+    @Component("authForm>submit")
+    private Button authSubmit;
+
+    @Component
+    private Checkbox forceUpdate;
+
+    @Component
+    private DropBox serverBox;
+
+    private final Map<String, Consumer<ActionEvent>> commandRegistry = new HashMap<>();
+
     public ActionHandler(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
+        super(launcher.getGuiBuilder(), "mainFrame", List.of(
+                TextField.class, Checkbox.class, JProgressBar.class,
+                PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
+        registerCommands();
     }
 
     @Override
-    public void handleAction(ActionEvent e) {
-        String key = e.getActionCommand();
-        String parent = "";
-        if (e.getActionCommand().contains(">")) {
-            String[] command = e.getActionCommand().split(">");
-            key = command[1];
-            parent = command[0];
+    public void registerCommand(String key, Consumer<ActionEvent> command) {
+        commandRegistry.put(key, command);
+    }
+
+    @Override
+    public void unregisterCommand(String key) {
+        commandRegistry.remove(key);
+    }
+
+    @Override
+    public void executeCommand(String key, ActionEvent event) {
+        Consumer<ActionEvent> handler = commandRegistry.get(key);
+        if (handler != null) {
+            handler.accept(event);
+        } else {
+            Engine.getLOGGER().warn("No command registered for: " + key);
         }
-        Component pressedComponent = this.getComponent(key);
+    }
 
-        switch (key) {
-            case "submit" -> {
-
-                switch (parent) {
-                    case "authForm" -> {
-                        this.getComponent("authForm>submit").setEnabled(false);
-                        this.launcher.getExecutorServiceProvider().submitTask(() -> {
-                            this.launcher.getAuth().formAuth(this.getComponent("authForm>submit"));
-                            if (this.launcher.getAuth().isAuthorised()) {
-                                engine.getFrame().getRootPanel().removeAll();
-                                engine.getPanelVisibility().displayPanel("authForm->false");
-                                this.launcher.init();
-                            } else {
-                                ((TextField) this.getComponent("login")).resetText();
-                                ((PassField) this.getComponent("password")).resetText();
-                            }
-                        }, "auth");
-                    }
-
-                    case "userinfo" -> Engine.getLOGGER().warn("TEST");
-                }
-            }
-
-            case "smallButton" -> {
-                this.launcher.getLoadingManager().toggleVisibility();
-                //launcher.getOptionalModsWindow().toggleVisibility();
-                // launcher.init();
-                    /*
-                    SoundPlayer.setUPDATE_RATE(10);
-                    JProgressBar sndBar = (JProgressBar) this.getComponent("sndBar");
-                    sndBar.setUI(new FlatProgressBarUI());
-                    PlaybackStatusListener listener = new PlaybackStatusListener() {
-                        @Override
-                        public void onPlaybackStarted(String path) {
-                            pressedComponent.setEnabled(false);
-                            sndBar.setVisible(true);
-                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.started"), "Test");
-                        }
-
-                        @Override
-                        public void onPlaybackStopped(String path) {
-                            pressedComponent.setEnabled(true);
-                            sndBar.setValue(0);
-                            sndBar.setVisible(false);
-                            launcher.getLoadingManager().setLoadingText(launcher.getLANG().getString("playback.finished"), "Test");
-                        }
-
-                        @Override
-                        public void onPlaybackProgress(String path, long microsecondPosition, long microsecondLength) {
-                            int progress = (int) ((double) microsecondPosition / microsecondLength * 100);
-                            SwingUtilities.invokeLater(() -> sndBar.setValue(progress));
-                        }
-                    };
-                    String sound = this.launcher.getSOUND().playSound("other", "ogo", listener);
-                    //this.launcher.getLoadingManager().toggleLoader();
-                    //this.launcher.getNotification().display("Sound Test", sound, new ImageIcon(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/logo.png")));//this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/aidenfox.svg", 128, 128));
-                     */
-            }
-
-
-            case "gameDir-small" -> this.launcher.getSettings().openGameFolder();
-            case "cancelDownload-small" -> {
-                core.getFileLoader().cancel();
-            }
-            case "applySettings" -> {
-                //this.getEngine().getGuiBuilder().getComponentFactory().ggetCustomTooltip().clearAllTooltips();
-                this.launcher.getSettings().applySettings("settingsFields");
-            }
-            case "logOut" -> {
-                this.launcher.getSOUND().playSound("other", "loggedOut");
-                this.launcher.getGuiBuilder().getNotification().show(Notification.Type.SUCCESS, Notification.Location.BOTTOM_LEFT, this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
-                this.launcher.getAuth().logOut();
-            }
-            case "info-small" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
+    /**
+     * Метод для динамической регистрации команд.
+     * Здесь для каждой команды используется метод registerCommand из интерфейса DynamicCommandRegistry.
+     */
+    private void registerCommands() {
+        // Команда для отправки формы аутентификации
+        registerCommand("authForm>submit", e -> {
+            authSubmit.setEnabled(false);
+            this.launcher.getExecutorServiceProvider().submitTask(() -> {
+                this.launcher.getAuth().formAuth(authSubmit);
+                if (this.launcher.getAuth().isAuthorised()) {
+                    engine.getFrame().getRootPanel().removeAll();
+                    engine.getPanelVisibility().displayPanel("authForm->false");
+                    this.launcher.init();
                 } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
+                    login.resetText();
+                    password.resetText();
                 }
-            }
+            }, "auth");
+        });
 
-            case "settings-small" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
-                }
-            }
+        // Тестовая команда для пользовательской информации
+        registerCommand("userinfo>submit", e ->
+                Engine.getLOGGER().warn("TEST"));
 
-            case "loadCancel-small" -> {
-                this.core.getFileLoader().cancel();
-                this.getLauncher().getLoadingManager().toggleVisibility();
-                this.getComponent("toGame").setEnabled(false);
-                this.getComponent("logOut").setEnabled(false);
-            }
+        // Переключение видимости загрузчика
+        registerCommand("smallButton", e ->
+                this.launcher.getLoadingManager().toggleVisibility());
 
-            case "back" -> {
-                if (!launcher.getAuth().isAuthorised()) {
-                    engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
-                } else {
-                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
-                }
-            }
+        // Открытие папки игры
+        registerCommand("gameDir-small", e ->
+                this.launcher.getSettings().openGameFolder());
 
-            case "toGame" -> {
-                this.launcher.getSOUND().playSound("other", "start");
-                DropBox dropBox = (DropBox) this.getComponent("serverBox");
-                Checkbox forceUpdate = (Checkbox) this.getComponent("forceUpdate");
-                this.currentServer = launcher.getAuth().getUserServersAttributes().get(dropBox.getSelectedIndex());
-                Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
-                this.launcher.getConfig().setConfigValue("selectedServer", dropBox.getSelectedIndex());
-                this.launcher.getConfig().writeCurrentConfig();
-                this.core = new Core(this, forceUpdate.isSelected());
-            }
+        // Отмена загрузки
+        registerCommand("cancelDownload-small", e ->
+                core.getFileLoader().cancel());
 
-            case "optionalMods" -> {
-                launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false);
-            }
+        // Применение настроек
+        registerCommand("applySettings", e ->
+                this.launcher.getSettings().applySettings("settingsFields"));
 
-            //EXPERIMENTAL
-            case "userPane" -> this.getEngine().getExecutorServiceProvider().submitTask(() -> {
+        // Выход из учётной записи
+        registerCommand("logOut", e -> {
+            this.launcher.getSOUND().playSound("other", "loggedOut");
+            this.launcher.getGuiBuilder().getNotification().show(
+                    Notification.Type.SUCCESS,
+                    Notification.Location.BOTTOM_LEFT,
+                    this.launcher.getUser().getLogin() + this.launcher.getLANG().getString("auth.loggedOut"));
+            this.launcher.getAuth().logOut();
+        });
+
+        // Отображение информационной панели
+        registerCommand("info-small", e -> {
+            if (!launcher.getAuth().isAuthorised()) {
+                engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
+            } else {
+                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
+            }
+        });
+
+        // Отображение панели настроек
+        registerCommand("settings-small", e -> {
+            if (!launcher.getAuth().isAuthorised()) {
+                engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
+            } else {
+                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
+            }
+        });
+
+        // Отмена загрузки с дополнительными действиями
+        registerCommand("loadCancel-small", e -> {
+            this.core.getFileLoader().cancel();
+            this.launcher.getLoadingManager().toggleVisibility();
+            this.getComponent("toGame").setEnabled(false);
+            this.getComponent("logOut").setEnabled(false);
+        });
+
+        // Возврат к предыдущему состоянию
+        registerCommand("back", e -> {
+            if (!launcher.getAuth().isAuthorised()) {
+                engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
+            } else {
+                engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");
+            }
+        });
+
+        // Запуск игры
+        registerCommand("toGame", e -> {
+            this.launcher.getSOUND().playSound("other", "start");
+            this.currentServer = launcher.getAuth().getUserServersAttributes().get(serverBox.getSelectedIndex());
+            Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
+            this.launcher.getConfig().setConfigValue("selectedServer", serverBox.getSelectedIndex());
+            this.launcher.getConfig().writeCurrentConfig();
+            this.core = new Core(this, forceUpdate.isSelected());
+        });
+
+        // Оповещение о недоступности опциональных модов
+        registerCommand("optionalMods", e ->
+                launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false));
+
+        // Экспериментальная команда: анимация и переключение пользовательской панели
+        registerCommand("userPane", e -> {
+            this.getEngine().getExecutorServiceProvider().submitTask(() -> {
                 SwingUtilities.invokeLater(() -> {
                     JPanel panel = this.launcher.getUser().getPanel();
                     if (panel == null) {
@@ -179,6 +197,8 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
                     ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
 
+                    // Получаем компонент, вызвавший команду
+                    JComponent pressedComponent = this.getComponent("userPane");
                     if (pressedComponent instanceof Button button) {
                         button.setIcon(icon);
                     } else {
@@ -238,18 +258,32 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
                     timer.start();
                 });
             }, "userPaneToggle");
+        });
 
-
-            case "closeButton" -> {
-                this.launcher.getFrame().setVisible(false);
+        // Завершение работы приложения
+        registerCommand("closeButton", e -> {
+            this.launcher.getFrame().setVisible(false);
+            this.launcher.getExecutorServiceProvider().shutdown();
+            this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
                 this.launcher.getExecutorServiceProvider().shutdown();
-                this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
-                    this.launcher.getExecutorServiceProvider().shutdown();
-                    System.exit(0);
-                });
-            }
-            case "hideButton" -> engine.getFrame().setExtendedState(1);
-        }
+                System.exit(0);
+            });
+        });
+
+        // Свернуть окно
+        registerCommand("hideButton", e ->
+                engine.getFrame().setExtendedState(Frame.ICONIFIED));
+    }
+
+    /**
+     * Основной метод обработки событий.
+     * Делегирует выполнение команды методу executeCommand.
+     *
+     * @param e событие, содержащее информацию о нажатой команде.
+     */
+    @Override
+    public void handleAction(ActionEvent e) {
+        executeCommand(e.getActionCommand(), e);
     }
 
     @Override
@@ -264,5 +298,9 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
     public Launcher getLauncher() {
         return launcher;
+    }
+
+    public Map<String, Consumer<ActionEvent>> getCommandRegistry() {
+        return commandRegistry;
     }
 }

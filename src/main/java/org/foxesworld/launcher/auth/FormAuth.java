@@ -6,7 +6,6 @@ import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
 public class FormAuth extends ComponentsAccessor {

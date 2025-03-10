@@ -10,7 +10,7 @@ import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.loadingManager.LoadManagerAttributes;
 import org.foxesworld.engine.gui.loadingManager.LoadingManager;
 import org.foxesworld.engine.utils.animation.AnimationManager;
-import org.foxesworld.test.DataInjector;
+import org.foxesworld.engine.utils.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;

@@ -68,10 +68,10 @@
         {
           "type": "label",
           "fontSize": 10,
-          "style": "title",
+          "style": "titleBold",
           "localeKey": "|",
           "initialValue": "build",
-          "color": "#08f9ff",
+          "color": "#101b81",
           "id": "appBuild",
           "bounds": {
             "x": 290,

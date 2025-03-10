@@ -12,6 +12,7 @@ import org.foxesworld.engine.locale.LanguageProvider;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
+import org.foxesworld.engine.utils.DataInjector;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -25,7 +26,6 @@ import org.foxesworld.launcher.gui.Settings;
 import org.foxesworld.launcher.gui.SplashScreenWindow;
 import org.foxesworld.launcher.gui.loadingManager.LoadStatus;
 import org.foxesworld.launcher.user.User;
-import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;

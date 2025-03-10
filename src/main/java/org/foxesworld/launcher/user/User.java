@@ -13,7 +13,7 @@ import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.notification.Notification;
-import org.foxesworld.test.DataInjector;
+import org.foxesworld.engine.utils.DataInjector;
 
 import javax.swing.*;
 import java.awt.*;

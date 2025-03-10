@@ -14,7 +14,7 @@ import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.ImageUtils;
 import org.foxesworld.launcher.user.User;
-import org.foxesworld.test.DataInjector;
+import org.foxesworld.engine.utils.DataInjector;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;

@@ -6,9 +6,9 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.PlaybackStatusListener;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
+import org.foxesworld.engine.utils.DataInjector;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.server.ServerParser;
-import org.foxesworld.test.DataInjector;
 
 import javax.swing.*;
 import java.util.*;
@@ -17,10 +17,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Класс Auth отвечает за процесс аутентификации, управление сессией пользователя и загрузку связанных данных.
- * iспользуются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
+ * Используются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
  * <ul>
- *     <li>Списка серверов (DataInjector<String[]>)</li>
- *     <li>Балансовых данных (DataInjector<ConcurrentHashMap<String, AtomicInteger>>)</li>
+ *     <li>Списка серверов (DataInjector&lt;String[]&gt;)</li>
+ *     <li>Балансовых данных (DataInjector&lt;ConcurrentHashMap&lt;String, AtomicInteger&gt;&gt;)</li>
  * </ul>
  * Это позволяет подписанным компонентам получать актуальные данные сразу после их загрузки,
  * что особенно важно в многопоточной среде.
@@ -56,10 +56,11 @@ public class Auth {
      *
      * @param authCredentials Учётные данные пользователя.
      */
-    public void authTask(Map<String, Object> authCredentials) {
+    public void authTask(final Map<String, Object> authCredentials) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             setAuthCredentials(authCredentials);
             try {
+                // Выполнение асинхронной авторизации
                 if (!authorizeAsync().get()) {
                     config.clearConfigData(Arrays.asList("login", "password"), true);
                 }
@@ -75,7 +76,7 @@ public class Auth {
      *
      * @param component UI-компонент, который будет задействован.
      */
-    public void formAuth(JComponent component) {
+    public void formAuth(final JComponent component) {
         FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
         try {
@@ -92,11 +93,11 @@ public class Auth {
      * Пытается выполнить автоматический вход, используя сохранённые учётные данные.
      */
     public void attemptAutoLogin() {
-        String login = config.getLogin();
-        String encryptedPassword = config.getPassword();
+        final String login = config.getLogin();
+        final String encryptedPassword = config.getPassword();
         if (login != null && encryptedPassword != null) {
             authCredentials.put("login", login);
-            String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
+            final String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
@@ -114,10 +115,10 @@ public class Auth {
      * @return CompletableFuture с результатом авторизации.
      */
     public CompletableFuture<Boolean> authorizeAsync() {
-        String login = (String) authCredentials.get("login");
-        String password = (String) authCredentials.get("password");
-        AuthRequest authRequest = new AuthRequest(engine, login, password);
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        final String login = (String) authCredentials.get("login");
+        final String password = (String) authCredentials.get("password");
+        final AuthRequest authRequest = new AuthRequest(engine, login, password);
+        final CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         authRequest.sendAsync(Collections.emptyMap(),
                 response -> handleAuthResponse(response, future),
@@ -132,13 +133,15 @@ public class Auth {
      * @param response Ответ сервера.
      * @param future   CompletableFuture для завершения операции.
      */
-    private void handleAuthResponse(Object response, CompletableFuture<Boolean> future) {
+    private void handleAuthResponse(final Object response, final CompletableFuture<Boolean> future) {
         try {
             AuthResponse authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
                 handleSuccessfulAuth(authResponse);
                 future.complete(true);
             } else {
+                launcher.getSOUND().playSound("other", "alert");
+                launcher.showDialog(authResponse.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, false);
                 future.complete(false);
             }
         } catch (Exception e) {
@@ -153,7 +156,7 @@ public class Auth {
      * @param error  Ошибка аутентификации.
      * @param future CompletableFuture для завершения операции.
      */
-    private void handleAuthError(Throwable error, CompletableFuture<Boolean> future) {
+    private void handleAuthError(final Throwable error, final CompletableFuture<Boolean> future) {
         Engine.getLOGGER().error("Authorization request failed: ", error);
         launcher.getSOUND().playSound("other", "alert");
         future.completeExceptionally(error);
@@ -164,12 +167,12 @@ public class Auth {
      *
      * @param authResponse Ответ сервера при успешной авторизации.
      */
-    private void handleSuccessfulAuth(AuthResponse authResponse) {
+    private void handleSuccessfulAuth(final AuthResponse authResponse) {
         setAuthorised(true);
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
             public void onPlaybackStarted(String s) {
-                // No-op
+                // Нет действий
             }
 
             @Override
@@ -182,9 +185,11 @@ public class Auth {
 
             @Override
             public void onPlaybackProgress(String s, long l, long l1) {
-                // No-op
+                // Нет действий
             }
         });
+
+        // Сохраняем дополнительные данные авторизации
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
@@ -207,18 +212,23 @@ public class Auth {
      *
      * @param balance Список балансов для обновления.
      */
-    public void updateBalance(List<Map<String, Integer>> balance) {
+    public void updateBalance(final List<Map<String, Integer>> balance) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
-                balance.forEach(entry ->
-                        entry.forEach((key, value) ->
-                                balanceMap.compute(key, (k, v) -> v == null ? new AtomicInteger(value) : new AtomicInteger(v.addAndGet(value)))
-                        )
-                );
+                // Обновляем баланс с использованием merge для аккумулирования значений
+                for (Map<String, Integer> entry : balance) {
+                    for (Map.Entry<String, Integer> e : entry.entrySet()) {
+                        balanceMap.merge(e.getKey(), new AtomicInteger(e.getValue()),
+                                (existing, newValue) -> {
+                                    existing.addAndGet(e.getValue());
+                                    return existing;
+                                });
+                    }
+                }
                 Engine.getLOGGER().info("Balance updated: " + balanceMap);
                 balanceInjector.setContent(balanceMap);
-            } catch (Exception e) {
-                Engine.getLOGGER().error("Error updating balance", e);
+            } catch (Exception ex) {
+                Engine.getLOGGER().error("Error updating balance", ex);
             }
         }, "updateBalance");
     }
@@ -229,7 +239,7 @@ public class Auth {
      *
      * @param login Логин пользователя.
      */
-    public void loadUserServers(String login) {
+    public void loadUserServers(final String login) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
             return;
@@ -250,7 +260,7 @@ public class Auth {
      * @param login           Логин пользователя.
      * @param serversInjector DataInjector, который будет уведомлён после загрузки серверов.
      */
-    public void loadUserServers(String login, DataInjector<List<ServerAttributes>> serversInjector) {
+    public void loadUserServers(final String login, final DataInjector<List<ServerAttributes>> serversInjector) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
             return;
@@ -271,7 +281,6 @@ public class Auth {
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
         config.writeCurrentConfig();
-        //Engine.LOGGER.debug("LOGOUT");
         engine.init();
     }
 
@@ -280,9 +289,9 @@ public class Auth {
      *
      * @param credentials Учётные данные пользователя.
      */
-    private void saveAuthCredentials(Map<String, Object> credentials) {
+    private void saveAuthCredentials(final Map<String, Object> credentials) {
         Map<String, Object> encryptedCredentials = new HashMap<>(credentials);
-        String encryptedPassword = cryptUtils.encrypt(
+        final String encryptedPassword = cryptUtils.encrypt(
                 String.valueOf(credentials.get("password")),
                 encryptionKeyManager.getEncryptionKey(16)
         );
@@ -301,7 +310,7 @@ public class Auth {
         });
     }
 
-    public String getAuthCredentials(String key) {
+    public String getAuthCredentials(final String key) {
         return String.valueOf(authCredentials.get(key));
     }
 
@@ -333,7 +342,8 @@ public class Auth {
     public boolean isAuthorised() {
         return authorised;
     }
-    public void setAuthorised(boolean authorised) {
+
+    public void setAuthorised(final boolean authorised) {
         this.authorised = authorised;
     }
 
@@ -341,7 +351,7 @@ public class Auth {
         return balanceMap;
     }
 
-    public void setAuthCredentials(Map<String, Object> authCredentials) {
+    public void setAuthCredentials(final Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
     }
 

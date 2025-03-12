@@ -1,6 +1,7 @@
 package org.foxesworld.launcher.gui.loadingManager;
 
 import org.foxesworld.Launcher;
+import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.checkbox.Checkbox;
@@ -113,16 +114,37 @@ public class LoadStatus extends LoadingManager {
             try {
                 titleLabel = (JLabel) loadPanel.getComponent("titleLabel");
                 loaderText = (JLabel) loadPanel.getComponent("loaderText");
-                progressBar = (JProgressBar) loadPanel.getComponent("loadProgress");
-                progressText = (Label) loadPanel.getComponent("progressText");
-                progressBar.add(progressText);
-                loaderText.setForeground(hexToColor(attributes.getDescColor()));
-                titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
+
+                Object progressComponent = loadPanel.getComponent("loadProgress");
+                if (progressComponent instanceof JProgressBar) {
+                    progressBar = (JProgressBar) progressComponent;
+                } else {
+                    Engine.getLOGGER().error("Компонент 'loadProgress' не найден или не является JProgressBar.");
+                }
+
+                Object progressTextComponent = loadPanel.getComponent("progressText");
+                if (progressTextComponent instanceof Label) {
+                    progressText = (Label) progressTextComponent;
+                } else {
+                    Engine.getLOGGER().error("Компонент 'progressText' не найден или не является Label.");
+                }
+
+                if (progressBar != null && progressText != null) {
+                    progressBar.add(progressText);
+                }
+
+                if (loaderText != null) {
+                    loaderText.setForeground(hexToColor(attributes.getDescColor()));
+                }
+                if (titleLabel != null) {
+                    titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
+                }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Engine.getLOGGER().error("Ошибка при настройке меток в LoadStatus", ex);
             }
         });
     }
+
 
     /**
      * Переопределённый метод (без реализации), оставленный для совместимости с базовым классом.

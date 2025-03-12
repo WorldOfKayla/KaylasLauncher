@@ -49,7 +49,6 @@ public class Launcher extends Engine {
     private final File launcherFile;
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     private ActionHandler actionHandler;
-    private boolean test = false;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -71,7 +70,6 @@ public class Launcher extends Engine {
     }
 
     public Launcher() {
-        // нициализация с учетом доступных процессоров
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
@@ -126,6 +124,7 @@ public class Launcher extends Engine {
 
         safeSubmitTask(() -> {
             buildGui(getEngineData().getStyles());
+            //this.getGuiBuilder().setOnPanelsBuild(this::tes);
             loadMainPanel(fileProperties.getMainFrame());
         }, "init");
     }
@@ -176,20 +175,25 @@ public class Launcher extends Engine {
     @Override
     public void onPanelsBuilt() {
         if(!isInit()) {
-            SwingUtilities.invokeLater(() -> {
-                this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
-                this.settings = new Settings(this);
-                this.actionHandler = new ActionHandler(this);
-                setActionHandler(this.actionHandler);
-                DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
-                auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
-                serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
-            });
+            tes();
             setInit(true);
             logStartupTime(getStartTime());
         }
     }
 
+    public void tes(){
+        SwingUtilities.invokeLater(() -> {
+            this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
+            this.settings = new Settings(this);
+            this.actionHandler = new ActionHandler(this);
+            setActionHandler(this.actionHandler);
+            DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
+            auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
+            serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
+        });
+
+
+    }
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
     }

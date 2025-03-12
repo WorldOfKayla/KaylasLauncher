@@ -83,6 +83,9 @@ public class Auth {
         try {
             if (!authorizeAsync().get()) {
                 component.setEnabled(true);
+            } else {
+                this.launcher.tes();
+                this.launcher.getFrame().repaint();
             }
         } catch (InterruptedException | ExecutionException e) {
             Engine.getLOGGER().error("Error during form authorization", e);

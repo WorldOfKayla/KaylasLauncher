@@ -6,33 +6,29 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.GameListener;
 import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.engine.utils.helper.JVMHelper;
 import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.game.GameTimeTask;
 import org.foxesworld.launcher.gui.ActionHandler;
+import org.foxesworld.test.DirWatcher;
+import org.foxesworld.test.FileProtector;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
 
-import static org.foxesworld.engine.utils.helper.JVMHelper.OS_TYPE;
 import static org.foxesworld.engine.utils.helper.JVMHelper.getCorrectOSArch;
 
 public class Core implements GameListener {
-    private long startTime;
     private final Launcher launcher;
     private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final FileLoader fileLoader;
     private GameLauncher gameLauncher;
-    private boolean forceUpdate = false;
-    long timeElapsed;
-
     private final GameTimeTask gameTimeTask;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
-        this.forceUpdate = forceUpdate;
         ServerAttributes currentServer = actionHandler.getCurrentServer();
         actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
         actionHandler.getEngine().getDiscord().discordRpcStart(
@@ -76,7 +72,30 @@ public class Core implements GameListener {
             getLauncher().getLoadingManager().toggleVisibility();
         }
 
-        // Запускаем задачу учёта времени (отправка "startedPlaying" выполняется внутри start())
+        FileProtector fileProtector = new FileProtector();
+
+
+        try {
+            // Строим пути для отслеживания
+            Path assetsPath = this.gameLauncher.getPathBuilders().buildAssetsPath();
+            Path librariesPath = this.gameLauncher.getPathBuilders().buildLibrariesPath();
+            Path clientDir = this.gameLauncher.getPathBuilders().buildClientDir();
+
+            fileProtector.protectDirectory(assetsPath);
+            fileProtector.protectDirectory(librariesPath);
+            //fileProtector.protectDirectory(clientDir);
+
+            // нициализируем watcher
+            DirWatcher dirWatcher = new DirWatcher(Arrays.asList(assetsPath, librariesPath, clientDir), event -> {
+                Launcher.LOGGER.warn("Detected event: " + event.getKind() + " on " + event.getPath());
+            });
+            //dirWatcher.start();
+           //Launcher.LOGGER.info("DirWatcher started successfully!");
+        } catch (Exception e) {
+            System.err.println("Failed to start DirWatcher: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         gameTimeTask.start();
     }
 

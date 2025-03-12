@@ -21,9 +21,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User extends org.foxesworld.engine.user.User {
@@ -38,6 +38,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final SkinLoader skinLoader;
     private JFrame taskMgrFrame;
+
     @org.foxesworld.engine.gui.componentAccessor.Component
     @SuppressWarnings("unused")
     private Label userGroup, userLogin, crystalsField, unitsField;
@@ -62,66 +63,40 @@ public class User extends org.foxesworld.engine.user.User {
         if (auth.isAuthorised()) {
             engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
             setUserSpace();
-            this.getServerInfoDisplayer().displayServerInfo(this.launcher.getConfig().getSelectedServer());
+            serverInfoDisplayer.displayServerInfo(launcher.getConfig().getSelectedServer());
         } else {
-            displayLoginPanel();
+            engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
         }
-        this.getPanel().repaint();
-        //this.showTaskMgr();
+        getPanel().repaint();
     }
 
     public void setBalance(Map<String, AtomicInteger> balance) {
-        SwingUtilities.invokeLater(() -> {
+        runOnEDT(() -> {
             String crystals = balance.get("crystals") != null ? balance.get("crystals").toString() : "0";
             String units = balance.get("units") != null ? balance.get("units").toString() : "0";
-            this.crystalsField.setText(crystals);
-            this.unitsField.setText(units);
+            crystalsField.setText(crystals);
+            unitsField.setText(units);
         });
     }
 
-    private void displayLoginPanel() {
-        engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
-    }
-
-    private void setDropBoxData(DropBox dropBox) {
-        String[] servers = auth.getUserServersArray();
-        if (servers == null || servers.length == 0) {
-            Launcher.LOGGER.warn("User servers array is null or empty. Setting empty values for dropBox.");
-            dropBox.setValues(new String[0]);
-            return;
-        }
-        dropBox.setValues(servers);
-        SwingUtilities.invokeLater(() -> {
-            int selectedIndex = launcher.getConfig().getSelectedServer();
-            if (selectedIndex < 0 || selectedIndex >= servers.length) {
-                Launcher.LOGGER.warn("Selected server index {} is out of bounds. Defaulting to index 0.", selectedIndex);
-                selectedIndex = 0;
-            }
-            dropBox.setSelectedIndex(selectedIndex);
-            dropBox.setScrollBoxListener(this.serverInfoDisplayer);
-        });
-    }
-
-    @Override
-    protected void setUserSpace() {
+    public void setUserSpace() {
         setDropBoxData(loggedForm.getServerBox());
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
         auth.getBalanceInjector().addListener(this::setBalance);
-        this.loggedForm.getGreetUser().setText(this.launcher.getLANG().getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
-        this.skinLoader.loadSkin(skins -> {
+        loggedForm.getGreetUser().setText(lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
+        skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
-            Label skinLabel = this.loggedForm.getUserSkin();
+            Label skinLabel = loggedForm.getUserSkin();
             skinLabel.setIcon(new ImageIcon(front));
-            if(skinLabel.isEnabled()) {
+            if (skinLabel.isEnabled()) {
                 skinLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         skinLabel.setIcon(new ImageIcon(back));
                     }
-
                     @Override
                     public void mouseExited(MouseEvent e) {
                         skinLabel.setIcon(new ImageIcon(front));
@@ -132,9 +107,28 @@ public class User extends org.foxesworld.engine.user.User {
         notifyUserLoggedIn();
     }
 
+    private void setDropBoxData(DropBox dropBox) {
+        String[] servers = auth.getUserServersArray();
+        if (servers == null || servers.length == 0) {
+            Launcher.LOGGER.warn("User servers array is null or empty. Setting empty values for dropBox.");
+            dropBox.setValues(new String[0]);
+            return;
+        }
+        dropBox.setValues(servers);
+        runOnEDT(() -> {
+            int selectedIndex = launcher.getConfig().getSelectedServer();
+            if (selectedIndex < 0 || selectedIndex >= servers.length) {
+                Launcher.LOGGER.warn("Selected server index {} is out of bounds. Defaulting to index 0.", selectedIndex);
+                selectedIndex = 0;
+            }
+            dropBox.setSelectedIndex(selectedIndex);
+            dropBox.setScrollBoxListener(serverInfoDisplayer);
+        });
+    }
+
     private void setupDiscordRpc() {
-        if(this.launcher.getConfig().isDiscordRPC()) {
-            launcher.getDiscord().setSmallImageText(launcher.getLANG().getString("general.launcher"));
+        if (launcher.getConfig().isDiscordRPC()) {
+            launcher.getDiscord().setSmallImageText(lang.getString("general.launcher"));
             launcher.getDiscord().discordRpcStart(
                     lang.getStringWithKey("game.login", new String[]{"login"}, new String[]{auth.getAuthCredentials("login")}),
                     launcher.getAppTitle(),
@@ -145,65 +139,63 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void notifyUserLoggedIn() {
         String message = lang.getStringWithKey("auth.loggedIn", new String[]{"login"}, new String[]{getLogin()});
-        guiBuilder.getNotification().show(Notification.Type.SUCCESS, new Rectangle(10, loggedForm.getServerBox().getY() + 40, 340, 45), 3000, message);
+        guiBuilder.getNotification().show(Notification.Type.SUCCESS,
+                new Rectangle(10, loggedForm.getServerBox().getY() + 40, 340, 45), 3000, message);
     }
 
     @Deprecated
     public void updateServer(int index) {
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {
+        launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
-                String ip = auth.getUserServersAttributes().get(index).getHost();
-                int port = auth.getUserServersAttributes().get(index).getPort();
+                var serverAttr = auth.getUserServersAttributes().get(index);
+                String ip = serverAttr.getHost();
+                int port = serverAttr.getPort();
                 String[] status = serverInfo.pollServer(ip, port);
+                // Дополнительная логика обработки статуса сервера
                 String text = serverInfo.genServerStatus(status);
                 BufferedImage img = serverInfo.genServerIcon(status);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
-        }, "updateServer"+index);
+        }, "updateServer" + index);
     }
 
     @Override
     protected void getUserHeadAsync(String login, OnSuccess<String> onSuccess, OnFailure onFailure) {
-        if (login != null && !login.isEmpty()) {
-            Map<String, Object> skinData = new HashMap<>();
-            skinData.put("sysRequest", "userHead");
-            skinData.put("login", login);
-            HTTPrequest httpRequest = this.engine.getPOSTrequest();
-            httpRequest.sendAsync(skinData, (response) -> {
-                if (response != null && !response.toString().isEmpty()) {
-                    onSuccess.onSuccess((String)response);
-                } else {
-                    Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
-                    if (onFailure != null) {
-                        onFailure.onFailure(new Exception("Received empty or null response"));
-                    }
-                }
-            }, (e) -> {
-                Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
-                if (onFailure != null) {
-                    onFailure.onFailure(e);
-                }
-            });
-        } else {
+        if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Login is null or empty in getUserHead");
             if (onFailure != null) {
                 onFailure.onFailure(new IllegalArgumentException("Login cannot be null or empty"));
             }
+            return;
         }
+        Map<String, Object> skinData = new HashMap<>();
+        skinData.put("sysRequest", "userHead");
+        skinData.put("login", login);
+        HTTPrequest httpRequest = new HTTPrequest(launcher, "GET");
+        httpRequest.sendAsync(skinData, response -> {
+            if (response != null && !response.toString().isEmpty()) {
+                onSuccess.onSuccess((String) response);
+            } else {
+                Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
+                if (onFailure != null) {
+                    onFailure.onFailure(new Exception("Received empty or null response"));
+                }
+            }
+        }, e -> {
+            Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
+            if (onFailure != null) {
+                onFailure.onFailure(e);
+            }
+        });
     }
 
-    /**
-     * Обновлённый метод, использующий DataInjector для асинхронного получения и установки аватара пользователя.
-     */
     private void setUserHeadIcon(String login) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Login is null or empty. Cannot set user head icon.");
             return;
         }
-        // Создаём DataInjector для получения base64-строки аватара
         DataInjector<String> headInjector = new DataInjector<>();
-        // Регистрируем слушателя, который выполнит обновление UI, когда данные будут получены
         headInjector.addListener(userHeadBase64 -> {
             if (userHeadBase64 == null) {
                 Engine.getLOGGER().warn("User head base64 string is null for login: {}", login);
@@ -221,7 +213,7 @@ public class User extends org.foxesworld.engine.user.User {
                     Engine.getLOGGER().warn("Generated icon is invalid for login: {}", login);
                     return;
                 }
-                SwingUtilities.invokeLater(() -> {
+                runOnEDT(() -> {
                     try {
                         Component component = getComponent("userHead");
                         if (component instanceof JLabel) {
@@ -241,26 +233,29 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     private void setUserGroupLabel() {
-        SwingUtilities.invokeLater(() -> {
+        runOnEDT(() -> {
             String groupKey = "group.group-" + auth.getAuthCredentials("group");
-            this.userGroup.setText(lang.getString(groupKey));
-            this.userLogin.setText(userAttributes.userFullName);
+            userGroup.setText(lang.getString(groupKey));
+            userLogin.setText(userAttributes.userFullName);
         });
     }
 
     public String getLogin() {
         return userAttributes.login;
     }
+
     public String getToken() {
         return userAttributes.token;
     }
+
     @Deprecated
     public String getPassword() {
         return userAttributes.password;
     }
+
     @Deprecated
     public void setNewsData(List<Map<String, String>> newsData) {
-        SwingUtilities.invokeLater(() -> {
+        runOnEDT(() -> {
             newsPanel.removeAll();
             newsData.forEach(this::addNewsItem);
             newsPanel.revalidate();
@@ -279,23 +274,21 @@ public class User extends org.foxesworld.engine.user.User {
         }
     }
 
-    public void showTaskMgr(){
-        if(auth.isAuthorised()) {
-            if (this.getUserGroup() == UserGroup.ADMIN) {
-                SwingUtilities.invokeLater(() -> {
-                    this.launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
-                    taskMgrFrame = this.launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-                    if(taskMgrFrame != null) {
-                        taskMgrFrame.setIconImage(this.launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
-                        taskMgrFrame.setResizable(false);
-                        Point parentLocation = this.launcher.getFrame().getLocationOnScreen();
-                        int parentX = parentLocation.x;
-                        int parentY = parentLocation.y;
-                        taskMgrFrame.setLocation(parentX + this.launcher.getFrame().getWidth(), parentY);
-                        taskMgrFrame.setVisible(true);
-                    }
-                });
-            }
+    public void showTaskMgr() {
+        if (auth.isAuthorised() && getUserGroup() == UserGroup.ADMIN) {
+            runOnEDT(() -> {
+                launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
+                taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+                if (taskMgrFrame != null) {
+                    taskMgrFrame.setIconImage(launcher.getImageUtils().getLocalImage("assets/ui/icons/threadBolt.png"));
+                    taskMgrFrame.setResizable(false);
+                    Point parentLocation = launcher.getFrame().getLocationOnScreen();
+                    int parentX = parentLocation.x;
+                    int parentY = parentLocation.y;
+                    taskMgrFrame.setLocation(parentX + launcher.getFrame().getWidth(), parentY);
+                    taskMgrFrame.setVisible(true);
+                }
+            });
         }
     }
 
@@ -353,20 +346,26 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public UserGroup getUserGroup() {
-        if(auth.isAuthorised()) {
-            return UserGroup.fromGroupId(Integer.parseInt((String) this.userAttributes.group));
-        } else return UserGroup.GUEST;
+        if (auth.isAuthorised()) {
+            return UserGroup.fromGroupId(Integer.parseInt((String) userAttributes.group));
+        }
+        return UserGroup.GUEST;
     }
 
-    public int getUserIntGroup(){
-        return Integer.parseInt((String) this.userAttributes.group);
+    public int getUserIntGroup() {
+        return Integer.parseInt((String) userAttributes.group);
     }
 
-    public String getUserFullName(){
-        return this.userAttributes.userFullName;
+    public String getUserFullName() {
+        return userAttributes.userFullName;
     }
 
-    public String getColorScheme(){
-        return this.userAttributes.colorScheme;
+    public String getColorScheme() {
+        return userAttributes.colorScheme;
+    }
+
+    // Вспомогательный метод для сокращения вызовов SwingUtilities.invokeLater
+    private void runOnEDT(Runnable task) {
+        SwingUtilities.invokeLater(task);
     }
 }

@@ -49,6 +49,7 @@ public class Launcher extends Engine {
     private final File launcherFile;
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     private ActionHandler actionHandler;
+    private boolean test = false;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -68,14 +69,30 @@ public class Launcher extends Engine {
             splashScreen.dispose();
         });
     }
+
     public Launcher() {
+        // нициализация с учетом доступных процессоров
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         this.fileProperties = getFileProperties();
         preInit();
-        this.getExecutorServiceProvider().submitTask(() -> new LauncherValidator(this).validate(), "validation");
+        safeSubmitTask(() -> new LauncherValidator(this).validate(), "validation");
+
         init();
+    }
+
+    /**
+     * Метод-обёртка для безопасного выполнения задач.
+     */
+    private void safeSubmitTask(Runnable task, String taskName) {
+        this.getExecutorServiceProvider().submitTask(() -> {
+            try {
+                task.run();
+            } catch (Exception e) {
+                getLOGGER().error("Ошибка в задаче " + taskName, e);
+            }
+        }, taskName);
     }
 
     @Override
@@ -85,11 +102,11 @@ public class Launcher extends Engine {
         System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
         try {
             if (getPreInitHooks().hook(null, null)) {
-                LOGGER.info("Pre-init hooks interrupted initialization");
+                LOGGER.info("Pre-init hooks прервали инициализацию");
                 return;
             }
         } catch (HookException e) {
-            LOGGER.error("Error in pre-init hooks", e);
+            LOGGER.error("Ошибка в pre-init hooks", e);
         }
         this.config.processConfig();
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
@@ -101,13 +118,64 @@ public class Launcher extends Engine {
         this.frameConstructor.setFocusStatusListener(this);
         this.auth = new Auth(this);
     }
+
     @Override
     public void init() {
         getSOUND().getSoundPlayer().stopAllSounds();
         setupDiscord();
-        this.getExecutorServiceProvider().submitTask(() -> {
+
+        safeSubmitTask(() -> {
             buildGui(getEngineData().getStyles());
             loadMainPanel(fileProperties.getMainFrame());
+        }, "init");
+    }
+
+    @Override
+    protected void postInit() {
+        safeSubmitTask(() -> {
+            getGuiBuilder().buildAdditionalPanels();
+        }, "postInit");
+    }
+
+    private void setupDiscord() {
+        safeSubmitTask(() -> {
+            this.discord = new Discord(this, "aiden");
+            this.discord.setLargeImageText(getLANG().getStringWithKey("general.website",
+                    new String[]{"key"},
+                    new String[]{getEngineData().getBindUrl()}));
+        }, "discordSetUp");
+    }
+
+    private void buildGui(String[] styles) {
+        setStyleProvider(new StyleProvider(styles));
+        setGuiBuilder(new GuiBuilder(this));
+        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new InitialValue(this));
+        getGuiBuilder().setGuiBuilderListener(this);
+        getGuiBuilder().buildGuiAsync(fileProperties.getFrameTpl(), getFrame().getRootPanel());
+        this.iconUtils = new IconUtils(this);
+    }
+
+    public void logStartupTime(long startTime) {
+        long duration = System.currentTimeMillis() - startTime;
+        getLOGGER().info(getAppTitle() + " запущен за " + duration + " мс!");
+    }
+
+    @Override
+    public String appPath() {
+        try {
+            return URLDecoder.decode(
+                    Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(),
+                    StandardCharsets.UTF_8
+            );
+        } catch (URISyntaxException e) {
+            getLOGGER().error("Ошибка декодирования пути приложения: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    @Override
+    public void onPanelsBuilt() {
+        if(!isInit()) {
             SwingUtilities.invokeLater(() -> {
                 this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
                 this.settings = new Settings(this);
@@ -117,50 +185,9 @@ public class Launcher extends Engine {
                 auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
                 serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
             });
-        }, "init");
-        setInit(true);
-    }
-    @Override
-    protected void postInit() {
-        this.getExecutorServiceProvider().submitTask(() -> {
-            getGuiBuilder().buildAdditionalPanels();
-        }, "postInit");
-
-    }
-
-    private void setupDiscord() {
-        this.getExecutorServiceProvider().submitTask(() -> {
-            this.discord = new Discord(this, "aiden");
-            this.discord.setLargeImageText(getLANG().getStringWithKey("general.website", new String[]{"key"}, new String[]{getEngineData().getBindUrl()}));
-        }, "discordSetUp");
-    }
-
-    private void buildGui(String[] styles) {
-        setStyleProvider(new StyleProvider(styles));
-        setGuiBuilder(new GuiBuilder(this));
-        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new InitialValue(this));
-        getGuiBuilder().setGuiBuilderListener(this);
-        getGuiBuilder().buildGui(fileProperties.getFrameTpl(), getFrame().getRootPanel());
-        this.iconUtils = new IconUtils(this);
-    }
-
-    public void logStartupTime(long startTime) {
-        long duration = System.currentTimeMillis() - startTime;
-        getLOGGER().info(getAppTitle() + " started in " + duration + " ms!");
-    }
-
-    @Override
-    public String appPath() {
-        try {
-            return URLDecoder.decode(Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), StandardCharsets.UTF_8);
-        } catch (URISyntaxException e) {
-            getLOGGER().error("Error decoding app path: {}", e.getMessage(), e);
-            return null;
+            setInit(true);
+            logStartupTime(getStartTime());
         }
-    }
-
-    @Override
-    public void onPanelsBuilt() {
     }
 
     @Override
@@ -216,7 +243,13 @@ public class Launcher extends Engine {
 
     @Override
     public void updateFocus(boolean hasFocus) {
-        if(this.getGuiBuilder() != null) {
+        // Если вызов не происходит из EDT, перенаправляем выполнение в EDT
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(() -> updateFocus(hasFocus));
+            return;
+        }
+
+        if (this.getGuiBuilder() != null) {
             JPanel oldTitleBar = this.getGuiBuilder().getPanelsMap().get("titleBar");
 
             if (oldTitleBar != null) {
@@ -231,12 +264,10 @@ public class Launcher extends Engine {
                     @Override
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
-
                         if (texture != null) {
                             g.drawImage(texture, 0, 0, getWidth(), getHeight(),
                                     0, yOffset, texture.getWidth(), yOffset + sectionHeight, null);
                         }
-
                         Graphics2D g2d = (Graphics2D) g;
                         Color shadowColor = new Color(0, 0, 0, 77);
                         g2d.setColor(shadowColor);
@@ -249,6 +280,7 @@ public class Launcher extends Engine {
                 newTitleBar.setOpaque(false);
                 newTitleBar.setName(oldTitleBar.getName());
 
+                // Переносим компоненты из старой панели в новую
                 for (Component component : oldTitleBar.getComponents()) {
                     oldTitleBar.remove(component);
                     newTitleBar.add(component);
@@ -282,7 +314,7 @@ public class Launcher extends Engine {
 
     @Override
     public void showDialog(String messageKey, String errorTitle, int warningMessage, boolean terminate) {
-        this.getExecutorServiceProvider().submitTask(() -> SwingUtilities.invokeLater(() -> {
+        safeSubmitTask(() -> SwingUtilities.invokeLater(() -> {
             String errorMessage = this.getLANG().getString(messageKey);
             this.getSOUND().playSound("other", messageKey);
             UIManager.put("OptionPane.messageFont", this.getFONTUTILS().getFont("mcfont", 12.0F));
@@ -295,9 +327,5 @@ public class Launcher extends Engine {
 
     public long getStartTime() {
         return startTime;
-    }
-
-    public ActionHandler getActionHandler() {
-        return actionHandler;
     }
 }

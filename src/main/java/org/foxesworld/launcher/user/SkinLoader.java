@@ -3,56 +3,79 @@ package org.foxesworld.launcher.user;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
+import org.foxesworld.engine.utils.HTTP.HttpParam;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class SkinLoader {
+public class SkinLoader extends HTTPrequest {
     private final User user;
-    private final HTTPrequest postRequest;
-    private final Map<String, Object> skinData = new HashMap<>();
+    @HttpParam
+    private final String login;
+    @HttpParam
+    private final String sysRequest = "skinPreview";
     private final Map<String, BufferedImage> userSkin = new HashMap<>();
 
     public SkinLoader(User user) {
+        super(user.getLauncher(), "POST");
         this.user = user;
-        this.postRequest = user.getLauncher().getPOSTrequest();
-        skinData.put("sysRequest", "skinPreview");
-        skinData.put("login", user.getLogin());
+        this.login = user.getLogin();
     }
 
     public void loadSkin(Consumer<Map<String, BufferedImage>> onComplete) {
         List<String> sides = Arrays.asList("front", "back");
         CompletableFuture<?>[] futures = new CompletableFuture[sides.size()];
         for (int i = 0; i < sides.size(); i++) {
-            String side = sides.get(i);
-            Map<String, Object> requestData = new HashMap<>(skinData);
-            requestData.put("side", side);
-
+            final String currentSide = sides.get(i);
             CompletableFuture<Boolean> future = new CompletableFuture<>();
             futures[i] = future;
 
-            postRequest.sendAsync(requestData,
-                    response -> handleSkinLoad(response, side, future),
-                    error -> handleSkinLoadError(error, side, future)
+            Map<String, Object> params = getAnnotatedParams();
+            params.put("side", currentSide);
+
+            this.sendAsync(params,
+                    response -> handleSkinLoad(response, currentSide, future),
+                    error -> handleSkinLoadError(error, currentSide, future)
             );
         }
 
-        CompletableFuture.allOf(futures)
-                .thenRun(() -> onComplete.accept(this.userSkin))
-                .exceptionally(ex -> {
+        CompletableFuture.allOf(futures).thenRun(() -> onComplete.accept(this.userSkin)).exceptionally(ex -> {
                     Engine.getLOGGER().error("Skin loading failed: {}", ex.getMessage());
                     return null;
                 });
     }
 
+    /**
+     * Метод собирает все поля, помеченные аннотацией @HttpParam,
+     * и возвращает их в виде карты "имя-параметр" - "значение".
+     */
+    private Map<String, Object> getAnnotatedParams() {
+        Map<String, Object> params = new HashMap<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(HttpParam.class)) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(this);
+                    if (value != null) {
+                        params.put(field.getName(), value);
+                    }
+                } catch (IllegalAccessException e) {
+                    Engine.getLOGGER().error("Ошибка доступа к полю {}: {}", field.getName(), e.getMessage());
+                }
+            }
+        }
+        return params;
+    }
+
     private void handleSkinLoad(Object response, String side, CompletableFuture<Boolean> future) {
         Launcher.LOGGER.info("Adding skin {} side for {}", side, user.getLogin());
-        this.userSkin.put(side, this.user.getLauncher().getImageUtils().base64ToBufferedImage(String.valueOf(response)));
+        BufferedImage image = this.user.getLauncher().getImageUtils()
+                .base64ToBufferedImage(String.valueOf(response));
+        this.userSkin.put(side, image);
         future.complete(true);
     }
 

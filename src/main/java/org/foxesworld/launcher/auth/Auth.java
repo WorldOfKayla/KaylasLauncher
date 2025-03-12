@@ -16,14 +16,15 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Класс Auth отвечает за процесс аутентификации, управление сессией пользователя и загрузку связанных данных.
- * Используются универсальные инжекторы (DataInjector) для асинхронной установки и получения:
+ * The Auth class is responsible for the authentication process, managing the user's session,
+ * and loading related data.
+ * Universal injectors (DataInjector) are used for asynchronous setting and retrieval of:
  * <ul>
- *     <li>Списка серверов (DataInjector&lt;String[]&gt;)</li>
- *     <li>Балансовых данных (DataInjector&lt;ConcurrentHashMap&lt;String, AtomicInteger&gt;&gt;)</li>
+ *     <li>List of servers (DataInjector&lt;String[]&gt;)</li>
+ *     <li>Balance data (DataInjector&lt;ConcurrentHashMap&lt;String, AtomicInteger&gt;&gt;)</li>
  * </ul>
- * Это позволяет подписанным компонентам получать актуальные данные сразу после их загрузки,
- * что особенно важно в многопоточной среде.
+ * This allows subscribed components to receive up-to-date data immediately after loading,
+ * which is especially important in a multi-threaded environment.
  */
 public class Auth {
     private final Launcher launcher;
@@ -52,15 +53,15 @@ public class Auth {
     }
 
     /**
-     * Запускает асинхронную задачу аутентификации.
+     * Starts an asynchronous authentication task.
      *
-     * @param authCredentials Учётные данные пользователя.
+     * @param authCredentials The user's credentials.
      */
     public void authTask(final Map<String, Object> authCredentials) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             setAuthCredentials(authCredentials);
             try {
-                // Выполнение асинхронной авторизации
+                // Execute asynchronous authentication
                 if (!authorizeAsync().get()) {
                     config.clearConfigData(Arrays.asList("login", "password"), true);
                 }
@@ -72,9 +73,9 @@ public class Auth {
     }
 
     /**
-     * Запускает аутентификацию через UI-компонент.
+     * Initiates authentication via a UI component.
      *
-     * @param component UI-компонент, который будет задействован.
+     * @param component The UI component to be used.
      */
     public void formAuth(final JComponent component) {
         FormAuth formAuth = new FormAuth(this.launcher);
@@ -90,7 +91,7 @@ public class Auth {
     }
 
     /**
-     * Пытается выполнить автоматический вход, используя сохранённые учётные данные.
+     * Attempts to perform an automatic login using stored credentials.
      */
     public void attemptAutoLogin() {
         final String login = config.getLogin();
@@ -101,7 +102,6 @@ public class Auth {
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
-                launcher.logStartupTime(launcher.getStartTime());
                 authTask(authCredentials);
             } else {
                 clearCredentials();
@@ -110,9 +110,9 @@ public class Auth {
     }
 
     /**
-     * Асинхронная авторизация с использованием CompletableFuture.
+     * Performs asynchronous authentication using CompletableFuture.
      *
-     * @return CompletableFuture с результатом авторизации.
+     * @return CompletableFuture with the authentication result.
      */
     public CompletableFuture<Boolean> authorizeAsync() {
         final String login = (String) authCredentials.get("login");
@@ -128,10 +128,10 @@ public class Auth {
     }
 
     /**
-     * Обрабатывает успешный ответ аутентификации.
+     * Handles a successful authentication response.
      *
-     * @param response Ответ сервера.
-     * @param future   CompletableFuture для завершения операции.
+     * @param response The server's response.
+     * @param future   CompletableFuture to complete the operation.
      */
     private void handleAuthResponse(final Object response, final CompletableFuture<Boolean> future) {
         try {
@@ -151,10 +151,10 @@ public class Auth {
     }
 
     /**
-     * Обрабатывает ошибку при авторизации.
+     * Handles an error during authentication.
      *
-     * @param error  Ошибка аутентификации.
-     * @param future CompletableFuture для завершения операции.
+     * @param error  The authentication error.
+     * @param future CompletableFuture to complete the operation.
      */
     private void handleAuthError(final Throwable error, final CompletableFuture<Boolean> future) {
         Engine.getLOGGER().error("Authorization request failed: ", error);
@@ -163,16 +163,16 @@ public class Auth {
     }
 
     /**
-     * Обрабатывает успешную авторизацию.
+     * Handles successful authentication.
      *
-     * @param authResponse Ответ сервера при успешной авторизации.
+     * @param authResponse The server response upon successful authentication.
      */
     private void handleSuccessfulAuth(final AuthResponse authResponse) {
         setAuthorised(true);
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
             public void onPlaybackStarted(String s) {
-                // Нет действий
+                // No actions
             }
 
             @Override
@@ -187,18 +187,18 @@ public class Auth {
 
             @Override
             public void onPlaybackProgress(String s, long l, long l1) {
-                // Нет действий
+                // No actions
             }
         });
 
-        // Сохраняем дополнительные данные авторизации
+        // Save additional authentication data
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
 
-        // Асинхронная загрузка серверов и обновление баланса
+        // Asynchronously load servers and update balance
         loadUserServers(authResponse.getLogin());
         updateBalance(authResponse.getBalance());
 
@@ -209,15 +209,15 @@ public class Auth {
     }
 
     /**
-     * Обновляет баланс, используя данные с сервера.
-     * После обновления balanceMap вызывается инжектор, уведомляющий подписчиков о готовности актуальных данных.
+     * Updates the balance using data from the server.
+     * After updating the balanceMap, the injector notifies subscribers that up-to-date data is available.
      *
-     * @param balance Список балансов для обновления.
+     * @param balance The list of balances to update.
      */
     public void updateBalance(final List<Map<String, Integer>> balance) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
-                // Обновляем баланс с использованием merge для аккумулирования значений
+                // Update balance using merge to accumulate values
                 for (Map<String, Integer> entry : balance) {
                     for (Map.Entry<String, Integer> e : entry.entrySet()) {
                         balanceMap.merge(e.getKey(), new AtomicInteger(e.getValue()),
@@ -236,10 +236,10 @@ public class Auth {
     }
 
     /**
-     * Загружает список серверов для пользователя.
-     * После загрузки серверов вызывается инжектор, уведомляющий подписчиков о готовности данных.
+     * Loads the list of servers for the user.
+     * After loading the servers, the injector notifies subscribers that the data is ready.
      *
-     * @param login Логин пользователя.
+     * @param login The user's login.
      */
     public void loadUserServers(final String login) {
         if (login == null || login.isEmpty()) {
@@ -252,15 +252,15 @@ public class Auth {
                 .map(sa -> sa.getServerName() + " " + sa.getServerVersion())
                 .toArray(String[]::new);
         Engine.getLOGGER().info("Loaded {} servers", serverParser.getServersNum());
-        // Уведомляем подписчиков через инжектор
+        // Notify subscribers via the injector
         userServersInjector.setContent(userServersArray);
     }
 
     /**
-     * Альтернативный метод загрузки серверов с использованием DataInjector для списка ServerAttributes.
+     * Alternative method for loading servers using a DataInjector for a list of ServerAttributes.
      *
-     * @param login           Логин пользователя.
-     * @param serversInjector DataInjector, который будет уведомлён после загрузки серверов.
+     * @param login           The user's login.
+     * @param serversInjector The DataInjector that will be notified once the servers are loaded.
      */
     public void loadUserServers(final String login, final DataInjector<List<ServerAttributes>> serversInjector) {
         if (login == null || login.isEmpty()) {
@@ -270,12 +270,12 @@ public class Auth {
         ServerParser serverParser = new ServerParser(engine);
         List<ServerAttributes> loadedServers = serverParser.parseServers(login);
         Engine.getLOGGER().info("Loaded {} servers", loadedServers.size());
-        // Уведомляем подписчиков через переданный инжектор
+        // Notify subscribers via the provided injector
         serversInjector.setContent(loadedServers);
     }
 
     /**
-     * Метод для выхода из системы.
+     * Logs out of the system.
      */
     public void logOut() {
         Engine.getLOGGER().info("Logging out...");
@@ -287,9 +287,9 @@ public class Auth {
     }
 
     /**
-     * Сохраняет зашифрованные учётные данные.
+     * Saves the encrypted user credentials.
      *
-     * @param credentials Учётные данные пользователя.
+     * @param credentials The user's credentials.
      */
     private void saveAuthCredentials(final Map<String, Object> credentials) {
         Map<String, Object> encryptedCredentials = new HashMap<>(credentials);
@@ -303,7 +303,7 @@ public class Auth {
     }
 
     /**
-     * Очищает учётные данные.
+     * Clears the user credentials.
      */
     private void clearCredentials() {
         Arrays.asList("login", "password").forEach(key -> {
@@ -329,9 +329,9 @@ public class Auth {
     }
 
     /**
-     * Возвращает массив серверов, если пользователь авторизован, иначе – пустой массив.
+     * Returns an array of servers if the user is authenticated; otherwise, returns an empty array.
      *
-     * @return Массив серверов или пустой массив.
+     * @return An array of servers or an empty array.
      */
     public String[] getUserServersArray() {
         return authorised ? userServersArray : new String[0];
@@ -358,18 +358,18 @@ public class Auth {
     }
 
     /**
-     * Геттер для универсального инжектора серверов.
+     * Getter for the universal server injector.
      *
-     * @return DataInjector для массива серверов.
+     * @return A DataInjector for the array of servers.
      */
     public DataInjector<String[]> getUserServersInjector() {
         return userServersInjector;
     }
 
     /**
-     * Геттер для универсального инжектора баланса.
+     * Getter for the universal balance injector.
      *
-     * @return DataInjector для данных баланса.
+     * @return A DataInjector for the balance data.
      */
     public DataInjector<ConcurrentHashMap<String, AtomicInteger>> getBalanceInjector() {
         return balanceInjector;

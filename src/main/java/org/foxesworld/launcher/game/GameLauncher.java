@@ -7,12 +7,10 @@ import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
 import org.foxesworld.launcher.user.UserGroup;
-import org.foxesworld.test.DirWatcher;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,16 +170,6 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                     showErrorReport(e);
                     gameListener.onGameExit(this.gameClient);
                 });
-            }
-            try {
-                DirWatcher dirWatcher = new DirWatcher(Arrays.asList(
-                        this.pathBuilders.buildAssetsPath(),
-                        this.pathBuilders.buildLibrariesPath(),
-                        this.pathBuilders.buildClientDir()
-                ));
-                dirWatcher.start();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }, "launch-" + this.gameClient.getServerName());
     }

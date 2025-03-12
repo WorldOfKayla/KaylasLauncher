@@ -3,7 +3,11 @@ package org.foxesworld.launcher.game;
 import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
+/**
+ * GameTimeResponse represents the server response regarding the game session.
+ */
 public class GameTimeResponse {
+
     @SerializedName("status")
     private String status;
 
@@ -12,6 +16,21 @@ public class GameTimeResponse {
 
     @SerializedName("data")
     private GameTimeData data;
+
+    public GameTimeResponse() {
+        // Default constructor
+    }
+
+    /**
+     * Constructs a GameTimeResponse with the specified elapsed time.
+     *
+     * @param elapsedSeconds the elapsed time in seconds
+     */
+    public GameTimeResponse(long elapsedSeconds) {
+        this.status = "success";
+        this.message = "Game time update";
+        this.data = new GameTimeData(elapsedSeconds);
+    }
 
     public String getStatus() {
         return status;
@@ -24,64 +43,96 @@ public class GameTimeResponse {
     public GameTimeData getData() {
         return data;
     }
-}
 
-class GameTimeData {
-    @SerializedName("isPlaying")
-    private boolean isPlaying;
+    /**
+     * GameTimeData holds detailed information about the current game session.
+     */
+    public static class GameTimeData {
 
-    @SerializedName("playingOn")
-    private String playingOn;
+        @SerializedName("elapsedTime")
+        private long elapsedTime;
 
-    @SerializedName("servers")
-    private Map<String, ServerInfo> servers;
+        @SerializedName("isPlaying")
+        private boolean isPlaying;
 
-    public boolean isPlaying() {
-        return isPlaying;
+        @SerializedName("playingOn")
+        private String playingOn;
+
+        @SerializedName("servers")
+        private Map<String, ServerInfo> servers;
+
+        public GameTimeData() {
+            // Default constructor
+        }
+
+        /**
+         * Constructs a GameTimeData with the specified elapsed time.
+         *
+         * @param elapsedTime the elapsed time in seconds
+         */
+        public GameTimeData(long elapsedTime) {
+            this.elapsedTime = elapsedTime;
+        }
+
+        public long getElapsedTime() {
+            return elapsedTime;
+        }
+
+        public boolean isPlaying() {
+            return isPlaying;
+        }
+
+        public String getPlayingOn() {
+            return playingOn;
+        }
+
+        public Map<String, ServerInfo> getServers() {
+            return servers;
+        }
     }
 
-    public String getPlayingOn() {
-        return playingOn;
-    }
+    /**
+     * ServerInfo represents the detailed information for a particular server.
+     */
+    public static class ServerInfo {
 
-    public Map<String, ServerInfo> getServers() {
-        return servers;
-    }
-}
+        @SerializedName("totalTime")
+        private long totalTime;
 
-class ServerInfo {
-    @SerializedName("totalTime")
-    private long totalTime;
+        @SerializedName("startTimestamp")
+        private long startTimestamp;
 
-    @SerializedName("startTimestamp")
-    private long startTimestamp;
+        @SerializedName("lastUpdated")
+        private long lastUpdated;
 
-    @SerializedName("lastUpdated")
-    private long lastUpdated;
+        @SerializedName("lastSession")
+        private long lastSession;
 
-    @SerializedName("lastSession")
-    private long lastSession;
+        @SerializedName("lastPlayed")
+        private long lastPlayed;
 
-    @SerializedName("lastPlayed")
-    private long lastPlayed;
+        public ServerInfo() {
+            // Default constructor
+        }
 
-    public long getTotalTime() {
-        return totalTime;
-    }
+        public long getTotalTime() {
+            return totalTime;
+        }
 
-    public long getStartTimestamp() {
-        return startTimestamp;
-    }
+        public long getStartTimestamp() {
+            return startTimestamp;
+        }
 
-    public long getLastUpdated() {
-        return lastUpdated;
-    }
+        public long getLastUpdated() {
+            return lastUpdated;
+        }
 
-    public long getLastSession() {
-        return lastSession;
-    }
+        public long getLastSession() {
+            return lastSession;
+        }
 
-    public long getLastPlayed() {
-        return lastPlayed;
+        public long getLastPlayed() {
+            return lastPlayed;
+        }
     }
 }

@@ -36,12 +36,12 @@
     },
     {
       type: "checkBox",
-      enabled: false,
+      enabled: true,
       style: "solid1",
       keyCode: "F3",
-      id: "loadNews",
-      localeKey: "settings.loadNews",
-      initialValue: "config#loadNews",
+      id: "enableSound",
+      localeKey: "settings.enableSound",
+      initialValue: "config#enableSound",
       bounds: {
         x: 30,
         y: 80,
@@ -56,9 +56,9 @@
       enabled: true,
       style: "solid1",
       keyCode: "F4",
-      id: "enableSound",
-      localeKey: "settings.enableSound",
-      initialValue: "config#enableSound",
+      id: "backgroundMusic",
+      localeKey: "settings.backgroundMusic",
+      initialValue: "config#backgroundMusic",
       bounds: {
         x: 30,
         y: 100,
@@ -73,29 +73,12 @@
       enabled: true,
       style: "solid1",
       keyCode: "F5",
-      id: "backgroundMusic",
-      localeKey: "settings.backgroundMusic",
-      initialValue: "config#backgroundMusic",
-      bounds: {
-        x: 30,
-        y: 120,
-        size: {
-          width: 240,
-          height: 32
-        }
-      }
-    },
-    {
-      type: "checkBox",
-      enabled: true,
-      style: "solid1",
-      keyCode: "F6",
       id: "launchAC",
       localeKey: "settings.launchAC",
       initialValue: "config#launchAC",
       bounds: {
         x: 30,
-        y: 140,
+        y: 120,
         size: {
           width: 370,
           height: 32

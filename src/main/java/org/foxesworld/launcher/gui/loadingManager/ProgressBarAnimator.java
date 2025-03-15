@@ -122,6 +122,7 @@ public class ProgressBarAnimator {
 
     public void startProgressTest() {
         launcher.getExecutorServiceProvider().submitTask(() -> {
+            animateProgressBarEntrance(this::updateRandomMessage);
             final int MAX_VALUE = progressBar.getMaximum();
             int currentValue = 0;
 
@@ -129,7 +130,7 @@ public class ProgressBarAnimator {
                 progressListener.onStart();
             }
 
-            animateProgressBarEntrance(this::updateRandomMessage);
+
 
             while (!Thread.currentThread().isInterrupted()) {
                 final int valueToUpdate = currentValue;
@@ -142,7 +143,7 @@ public class ProgressBarAnimator {
 
                 try {
                     // Уменьшено время ожидания для более частых обновлений
-                    Thread.sleep(55);
+                    Thread.sleep(35);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -193,12 +194,12 @@ public class ProgressBarAnimator {
         });
     }
 
-    private class AnimationConfig {
+    private static class AnimationConfig {
         List<AnimationKeyFrame> entrance;
         List<AnimationKeyFrame> exit;
     }
 
-    private class AnimationKeyFrame {
+    private static class AnimationKeyFrame {
         double time;
         double scaleX;
         double scaleY;
@@ -292,16 +293,13 @@ public class ProgressBarAnimator {
         progressBar.setBounds(newX, newY, newWidth, newHeight);
     }
     private double interpolate(double start, double end, double ratio, String interpolation) {
-        switch (interpolation != null ? interpolation : "linear") {
-            case "easeIn":
-                return start + (end - start) * (1 - Math.cos(ratio * Math.PI / 2));
-            case "easeOut":
-                return start + (end - start) * Math.sin(ratio * Math.PI / 2);
-            case "easeInOut":
-                return start + (end - start) * (0.5 - Math.cos(ratio * Math.PI)/2);
-            default: // linear
-                return start + (end - start) * ratio;
-        }
+        return switch (interpolation != null ? interpolation : "linear") {
+            case "easeIn" -> start + (end - start) * (1 - Math.cos(ratio * Math.PI / 2));
+            case "easeOut" -> start + (end - start) * Math.sin(ratio * Math.PI / 2);
+            case "easeInOut" -> start + (end - start) * (0.5 - Math.cos(ratio * Math.PI) / 2);
+            default -> // linear
+                    start + (end - start) * ratio;
+        };
     }
 
 }

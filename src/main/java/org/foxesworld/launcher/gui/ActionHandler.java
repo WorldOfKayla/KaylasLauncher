@@ -87,12 +87,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             this.launcher.getExecutorServiceProvider().submitTask(() -> {
                 this.launcher.getAuth().formAuth(authSubmit, () -> {
                     launcher.setInit(false);
-                    launcher.gammaInit();
-                    //launcher.setUser(new User(launcher));
-                    //this.launcher.getConfig().writeCurrentConfig();
-                    //this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
-                    //this.launcher.getEngine().getFrame().dispose();
-                    //this.launcher = new Launcher();
+                    launcher.LambdaInit();
                 });
                 if (this.launcher.getAuth().getAuthStatus() == AuthStatus.AUTHORISED) {
                     engine.getFrame().getRootPanel().removeAll();
@@ -202,16 +197,44 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
                         }
 
                         boolean isVisible = panel.isVisible();
-                        String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
-                        ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
+                        String oldIconPath = isVisible ? "assets/ui/icons/back.svg" : "assets/ui/icons/menu.svg";
+                        String newIconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
+
+                        ImageIcon oldIcon = this.launcher.getIconUtils().getVectorIcon(oldIconPath, 20, 24);
+                        ImageIcon newIcon = this.launcher.getIconUtils().getVectorIcon(newIconPath, 20, 24);
 
                         // Получаем компонент, вызвавший команду
                         JComponent pressedComponent = this.getComponent("userPane");
-                        if (pressedComponent instanceof Button button) {
-                            button.setIcon(icon);
-                        } else {
+                        if (!(pressedComponent instanceof Button button)) {
                             Engine.getLOGGER().warn("Pressed component is not a Button.");
+                            return;
                         }
+
+                        // Анимация смены иконки
+                        Timer iconTimer = new Timer(15, null);
+                        final long startTime = System.currentTimeMillis();
+                        final int iconAnimationDuration = 250; // длительность анимации
+
+                        iconTimer.addActionListener(event -> {
+                            long elapsed = System.currentTimeMillis() - startTime;
+                            float progress = Math.min(1f, (float) elapsed / iconAnimationDuration);
+                            float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
+
+                            BlendedImageIcon blendedIcon = new BlendedImageIcon(
+                                    oldIcon.getImage(),
+                                    newIcon.getImage(),
+                                    easedProgress
+                            );
+
+                            button.setIcon(blendedIcon);
+                            button.repaint(); // Принудительное обновление кнопки
+
+                            if (progress >= 1f) {
+                                iconTimer.stop();
+                                button.setIcon(newIcon); // Финальное обновление
+                            }
+                        });
+                        iconTimer.start();
 
                         // Вычисление позиций для анимации
                         int startX = isVisible ? panel.getX() : -panel.getWidth();
@@ -233,36 +256,32 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
                         panelParent.revalidate();
                         panelParent.repaint();
 
-                        // Остановка предыдущей анимации, если она активна
                         Object currentAnimation = panel.getClientProperty("currentAnimation");
                         if (currentAnimation instanceof Timer oldTimer && oldTimer.isRunning()) {
                             oldTimer.stop();
                         }
 
-                        // Создание таймера с задержкой 15 мс для плавной анимации
-                        int timerDelay = 1;
-                        Timer timer = new Timer(timerDelay, null);
-                        panel.putClientProperty("currentAnimation", timer);
+                        Timer panelTimer = new Timer(0, null);
+                        panel.putClientProperty("currentAnimation", panelTimer);
 
-                        final long startTime = System.currentTimeMillis();
-                        final int animationDuration = 250; // длительность анимации в мс
+                        final long panelStartTime = System.currentTimeMillis();
+                        final int panelAnimationDuration = 220;
 
-                        timer.addActionListener(animationEvent -> {
+                        panelTimer.addActionListener(animationEvent -> {
                             try {
-                                long elapsed = System.currentTimeMillis() - startTime;
-                                float progress = Math.min(1f, (float) elapsed / animationDuration);
-                                // Плавное затухание (ease-out)
+                                long elapsed = System.currentTimeMillis() - panelStartTime;
+                                float progress = Math.min(1f, (float) elapsed / panelAnimationDuration);
                                 float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
                                 int newX = (int) (startX + (endX - startX) * easedProgress);
+
                                 panel.setLocation(newX, panel.getY());
                                 panelParent.setComponentZOrder(panel, 1);
                                 panelParent.repaint();
 
                                 if (progress >= 1f) {
-                                    timer.stop();
+                                    panelTimer.stop();
                                     panel.putClientProperty("currentAnimation", null);
 
-                                    // Переключение видимости панелей после завершения анимации
                                     if (isVisible) {
                                         panel.setVisible(false);
                                     } else {
@@ -275,16 +294,18 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
                                 }
                             } catch (Exception ex) {
                                 Engine.getLOGGER().error("Error during animation", ex);
-                                timer.stop();
+                                panelTimer.stop();
                             }
                         });
-                        timer.start();
+                        panelTimer.start();
                     } catch (Exception ex) {
                         Engine.getLOGGER().error("Exception in userPane command", ex);
                     }
                 });
             }, "userPaneToggle");
         });
+
+
 
         // Завершение работы приложения
         registerCommand("closeButton", e -> {

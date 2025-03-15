@@ -88,7 +88,7 @@
                     }
                   }
                 },
-                /*
+
                 {
                   type: "button",
                   enabled: true,
@@ -100,15 +100,15 @@
                   tooltipStyle: "warning",
                   localeKey: "TEST",
                   bounds: {
-                    x: 100,
-                    y: 100,
+                    x: 80,
+                    y: 10,
                     size: {
                       width: 60,
                       height: 34
                     }
                   }
                 },
-        */
+
                 {
                   readFrom: "assets/frames/forms/user/userBalance.json5"
                 }

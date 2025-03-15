@@ -10,6 +10,7 @@ public class InitialValue extends ComponentValue implements ComponentFactoryList
     private int count;
     private final Launcher launcher;
     public InitialValue(Launcher launcher) {
+        super(launcher);
         this.launcher = launcher;
     }
 

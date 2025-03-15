@@ -3,18 +3,17 @@ package org.foxesworld.launcher.user;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.gui.GuiBuilder;
+import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.server.ServerAttributes;
-import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
+import org.foxesworld.engine.utils.HTTP.RequestState;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
-import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.utils.DataInjector;
 
@@ -26,8 +25,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User extends org.foxesworld.engine.user.User {
@@ -43,7 +41,7 @@ public class User extends org.foxesworld.engine.user.User {
     private SkinLoader skinLoader;
     private JFrame taskMgrFrame;
 
-    @org.foxesworld.engine.gui.componentAccessor.Component
+    @Component
     @SuppressWarnings("unused")
     private Label userGroup, userLogin, crystalsField, unitsField;
 
@@ -62,15 +60,15 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void initializeUser() {
-        AuthStatus status = auth.getAuthStatus();
-        if(status != AuthStatus.UNAUTHORISED) {
-            if (status == AuthStatus.PENDING) {
+        RequestState status = auth.getAuthRequest().getRequestState();
+        if(status != RequestState.FAILED) {
+            if (status == RequestState.PENDING) {
                 engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
                 waitForAuthorization();
                 return;
             }
 
-            if (status == AuthStatus.AUTHORISED) {
+            if (status == RequestState.SUCCESS) {
                 engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
                 this.serverInfoDisplayer = new ServerInfoDisplayer(this);
                 this.skinLoader = new SkinLoader(this);
@@ -85,7 +83,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     /**
      * Ожидает завершения авторизации без блокировки основного потока.
-     * Используется Swing Timer для периодической проверки статуса.
+     * спользуется Swing Timer для периодической проверки статуса.
      */
     private void waitForAuthorization() {
         Timer timer = new Timer(2000, e -> {
@@ -207,11 +205,9 @@ public class User extends org.foxesworld.engine.user.User {
             }
             return;
         }
-        Map<String, Object> skinData = new HashMap<>();
-        skinData.put("sysRequest", "userHead");
-        skinData.put("login", login);
-        HTTPrequest httpRequest = new HTTPrequest(launcher, "GET");
-        httpRequest.sendAsync(skinData, response -> {
+        HeadLoader headLoader = new HeadLoader(this.launcher, "GET", login);
+        CountDownLatch latch = new CountDownLatch(1);
+        headLoader.sendAsync(Map.of(), response -> {
             if (response != null && !response.toString().isEmpty()) {
                 onSuccess.onSuccess((String) response);
             } else {
@@ -220,13 +216,24 @@ public class User extends org.foxesworld.engine.user.User {
                     onFailure.onFailure(new Exception("Received empty or null response"));
                 }
             }
+            latch.countDown();
         }, e -> {
             Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
             if (onFailure != null) {
                 onFailure.onFailure(e);
             }
+            latch.countDown();
         });
+        headLoader.waitForRequestCompletion(latch::countDown);
+
+        try {
+            latch.await();
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            Engine.getLOGGER().error("Interrupted while waiting for user head request completion: {}", ex.getMessage());
+        }
     }
+
 
     private void setUserHeadIcon(String login) {
         if (login == null || login.isEmpty()) {
@@ -253,7 +260,7 @@ public class User extends org.foxesworld.engine.user.User {
                 }
                 runOnEDT(() -> {
                     try {
-                        Component component = getComponent("userHead");
+                        JComponent component = getComponent("userHead");
                         if (component instanceof JLabel) {
                             ((JLabel) component).setIcon(icon);
                         } else {

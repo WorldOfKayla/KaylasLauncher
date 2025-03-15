@@ -49,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.15.5-TET-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.15.6-TET-all.jar')
     implementation files('lib/foxesworld/Ascendix-1.8.6-SNAPSHOT.jar')
 
     // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle

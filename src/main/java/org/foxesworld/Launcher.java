@@ -61,12 +61,12 @@ public class Launcher extends Engine {
         SplashScreenWindow splashScreen = new SplashScreenWindow();
         splashScreen.showSplashScreen();
         splashScreen.getLottieSwingEngine().getAnimationPanel().setOnAnimationCompleted(() -> {
-            new Launcher();
+            new Launcher(null);
             splashScreen.dispose();
         });
     }
 
-    public Launcher() {
+    public Launcher(Rectangle bounds) {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
@@ -75,6 +75,9 @@ public class Launcher extends Engine {
         safeSubmitTask(() -> new LauncherValidator(this).validate(), "validation");
 
         init();
+        if(bounds != null) {
+            this.getFrame().setBounds(bounds);
+        }
     }
 
     private void safeSubmitTask(Runnable task, String taskName) {
@@ -125,9 +128,7 @@ public class Launcher extends Engine {
 
     @Override
     protected void postInit() {
-        safeSubmitTask(() -> {
-            getGuiBuilder().buildAdditionalPanels();
-        }, "postInit");
+        safeSubmitTask(() -> getGuiBuilder().buildAdditionalPanels(), "postInit");
     }
 
     private void setupDiscord() {
@@ -143,7 +144,7 @@ public class Launcher extends Engine {
         setStyleProvider(new StyleProvider(styles));
         setGuiBuilder(new GuiBuilder(this));
         getGuiBuilder().getComponentFactory().setComponentFactoryListener(new InitialValue(this));
-        getGuiBuilder().setGuiBuilderListener(this);
+        getGuiBuilder().addGuiBuilderListener(this);
         getGuiBuilder().buildGuiAsync(fileProperties.getFrameTpl(), getFrame().getRootPanel());
         this.iconUtils = new IconUtils(this);
     }
@@ -169,20 +170,20 @@ public class Launcher extends Engine {
     @Override
     public void onPanelsBuilt() {
         if(!isInit()) {
-            gammaInit();
+            LambdaInit();
             setInit(true);
             logStartupTime(getStartTime());
         }
     }
 
-    public void gammaInit(){
-        SwingUtilities.invokeLater(() -> {
+    public void LambdaInit(){
+        safeSubmitTask(() -> SwingUtilities.invokeLater(() -> {
             this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
             this.settings = new Settings(this);
             this.actionHandler = new ActionHandler(this);
             setActionHandler(this.actionHandler);
             setUser(new User(this));
-        });
+        }), "lambdaInit");
     }
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {
@@ -237,7 +238,6 @@ public class Launcher extends Engine {
 
     @Override
     public void updateFocus(boolean hasFocus) {
-        // Если вызов не происходит из EDT, перенаправляем выполнение в EDT
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> updateFocus(hasFocus));
             return;
@@ -274,7 +274,6 @@ public class Launcher extends Engine {
                 newTitleBar.setOpaque(false);
                 newTitleBar.setName(oldTitleBar.getName());
 
-                // Переносим компоненты из старой панели в новую
                 for (Component component : oldTitleBar.getComponents()) {
                     oldTitleBar.remove(component);
                     newTitleBar.add(component);

@@ -211,7 +211,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     @Override
     public void filesProcessed() {
-        //this.progressBar.setValue(100);
+        this.progressBar.setValue(100);
     }
 
     @Override

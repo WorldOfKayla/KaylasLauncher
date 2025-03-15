@@ -7,7 +7,8 @@ import org.foxesworld.engine.utils.HTTP.HttpParam;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,8 +21,10 @@ public class SkinLoader extends HTTPrequest {
     private static final String CACHE_DIR = "cache/skins/";
 
     private final User user;
+
     @HttpParam
     private final String login;
+
     @HttpParam
     private final String sysRequest = "skinPreview";
 
@@ -34,46 +37,52 @@ public class SkinLoader extends HTTPrequest {
         ensureCacheDirectoryExists();
     }
 
+    /**
+     * Загружает скин для обеих сторон (front и back).
+     * Запросы выполняются параллельно с использованием CompletableFuture.
+     * После завершения всех запросов вызывается onComplete.
+     *
+     * @param onComplete callback, который вызывается после загрузки скинов
+     */
     public void loadSkin(Consumer<Map<String, BufferedImage>> onComplete) {
         List<String> sides = Arrays.asList("front", "back");
-        CompletableFuture<?>[] futures = new CompletableFuture[sides.size()];
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        for (int i = 0; i < sides.size(); i++) {
-            final String currentSide = sides.get(i);
-            CompletableFuture<Boolean> future = new CompletableFuture<>();
-            futures[i] = future;
-
-            // Проверяем, есть ли уже закешированный скин в файле
+        for (String currentSide : sides) {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            // Если скин уже есть в кеше, завершаем future сразу
             BufferedImage cachedSkin = loadSkinFromCache(login, currentSide);
             if (cachedSkin != null) {
                 userSkin.put(currentSide, cachedSkin);
-                future.complete(true);
-                continue; // Пропускаем загрузку с сервера
+                future.complete(null);
+            } else {
+                // Формируем параметры запроса, включая сторону скина
+                Map<String, Object> params = getAnnotatedParams();
+                params.put("side", currentSide);
+                this.sendAsync(params,
+                        response -> {
+                            handleSkinLoad(response, currentSide);
+                            future.complete(null);
+                        },
+                        error -> {
+                            handleSkinLoadError(error, currentSide);
+                            future.complete(null);
+                        }
+                );
             }
-
-            // Загружаем скин с сервера
-            Map<String, Object> params = getAnnotatedParams();
-            params.put("side", currentSide);
-
-            this.sendAsync(params,
-                    response -> handleSkinLoad(response, currentSide, future),
-                    error -> handleSkinLoadError(error, currentSide, future)
-            );
+            futures.add(future);
         }
 
-        CompletableFuture.allOf(futures)
-                .thenRun(() -> onComplete.accept(this.userSkin))
-                .exceptionally(ex -> {
-                    Engine.getLOGGER().error("Skin loading failed: {}", ex.getMessage());
-                    return null;
-                });
+        // После завершения всех асинхронных операций вызываем callback
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenRun(() -> onComplete.accept(userSkin));
     }
 
     /**
      * Загружает скин из кеша (файла), если он существует.
      *
      * @param login Логин пользователя.
-     * @param side Сторона скина (front или back).
+     * @param side  Сторона скина (front или back).
      * @return Загруженное изображение или null, если кеш отсутствует.
      */
     private BufferedImage loadSkinFromCache(String login, String side) {
@@ -93,8 +102,8 @@ public class SkinLoader extends HTTPrequest {
      * Сохраняет загруженный скин в кеш (файл).
      *
      * @param login Логин пользователя.
-     * @param side Сторона скина (front или back).
-     * @param image Изображение скина.
+     * @param side  Сторона скина (front или back).
+     * @param image зображение скина.
      */
     private void cacheSkinToFile(String login, String side, BufferedImage image) {
         Path cachePath = Paths.get(CACHE_DIR + login + File.separator, side + ".png");
@@ -122,8 +131,10 @@ public class SkinLoader extends HTTPrequest {
     }
 
     /**
-     * Метод собирает все поля, помеченные аннотацией @HttpParam,
+     * Собирает все поля, помеченные аннотацией @HttpParam,
      * и возвращает их в виде карты "имя-параметр" - "значение".
+     *
+     * @return карта параметров запроса
      */
     private Map<String, Object> getAnnotatedParams() {
         Map<String, Object> params = new HashMap<>();
@@ -144,19 +155,27 @@ public class SkinLoader extends HTTPrequest {
         return params;
     }
 
-    private void handleSkinLoad(Object response, String side, CompletableFuture<Boolean> future) {
+    /**
+     * Обработка успешного ответа от сервера.
+     *
+     * @param response Ответ сервера
+     * @param side     Сторона скина (front или back)
+     */
+    private void handleSkinLoad(Object response, String side) {
         Launcher.LOGGER.info("Adding skin {} side for {}", side, user.getLogin());
         BufferedImage image = this.user.getLauncher().getImageUtils()
                 .base64ToBufferedImage(String.valueOf(response));
-
         this.userSkin.put(side, image);
-        cacheSkinToFile(user.getLogin(), side, image); // Сохраняем в файл
-
-        future.complete(true);
+        cacheSkinToFile(user.getLogin(), side, image);
     }
 
-    private void handleSkinLoadError(Throwable error, String side, CompletableFuture<Boolean> future) {
+    /**
+     * Обработка ошибки при выполнении запроса.
+     *
+     * @param error Ошибка выполнения запроса
+     * @param side  Сторона скина (front или back)
+     */
+    private void handleSkinLoadError(Throwable error, String side) {
         Engine.getLOGGER().error("Skin {} request failed: {} for {}", side, error, user.getLogin());
-        future.completeExceptionally(error);
     }
 }

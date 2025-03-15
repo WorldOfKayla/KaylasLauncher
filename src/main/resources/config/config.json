@@ -5,7 +5,6 @@
   "autoEnter": false,
   "launchAC": true,
   "fullScreen": false,
-  "loadNews": false,
   "enableSound": true,
   "backgroundMusic": true,
   "homeDir": "SysVal{AppDir}\\.FoxesWorld",

@@ -5,25 +5,38 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class BlendedImageIcon extends ImageIcon {
-    private final BufferedImage combined;
-
-    public BlendedImageIcon(BufferedImage img1, BufferedImage img2, float alpha) {
-        combined = new BufferedImage(
-                Math.max(img1.getWidth(), img2.getWidth()),
-                Math.max(img1.getHeight(), img2.getHeight()),
-                BufferedImage.TYPE_INT_ARGB
-        );
-
-        Graphics2D g = combined.createGraphics();
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha));
-        g.drawImage(img1, 0, 0, null);
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g.drawImage(img2, 0, 0, null);
-        g.dispose();
+    public BlendedImageIcon(Image img1, Image img2, float alpha) {
+        super(blendImages(img1, img2, alpha));
     }
 
-    @Override
-    public Image getImage() {
+    private static Image blendImages(Image img1, Image img2, float alpha) {
+        BufferedImage bImg1 = toBufferedImage(img1);
+        BufferedImage bImg2 = toBufferedImage(img2);
+
+        int width = Math.max(bImg1.getWidth(), bImg2.getWidth());
+        int height = Math.max(bImg1.getHeight(), bImg2.getHeight());
+
+        BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = combined.createGraphics();
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha));
+        g.drawImage(bImg1, 0, 0, null);
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g.drawImage(bImg2, 0, 0, null);
+        g.dispose();
+
         return combined;
+    }
+
+    private static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+        BufferedImage bImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bImage.createGraphics();
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+        return bImage;
     }
 }

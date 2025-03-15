@@ -47,7 +47,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
         this.launcher.getConfig().writeCurrentConfig();
         this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
         this.launcher.getEngine().getFrame().dispose();
-        this.launcher = new Launcher();
+        this.launcher = new Launcher(this.launcher.getFrame().getBounds());
     }
 
     private Object determineValueType(Object value) {

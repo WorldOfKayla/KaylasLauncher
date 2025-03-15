@@ -10,14 +10,17 @@ import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.sprite.SpriteAnimation;
 import org.foxesworld.engine.gui.loadingManager.LoadManagerAttributes;
 import org.foxesworld.engine.gui.loadingManager.LoadingManager;
-import org.foxesworld.engine.utils.animation.AnimationManager;
 import org.foxesworld.engine.utils.DataInjector;
+import org.foxesworld.engine.utils.FontUtils;
+import org.foxesworld.engine.utils.animation.AnimationManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.foxesworld.engine.utils.FontUtils.hexToColor;
 
@@ -38,7 +41,6 @@ public class LoadStatus extends LoadingManager {
         this.loadingText = engine.getLANG().getString("loading.msg");
         this.loadingTitle = engine.getLANG().getString("loading.title");
 
-        // Установка скорости анимации согласно параметрам конфигурации
         this.ANIMATION_SPEED = attributesList.get(index).getAnimSpeed();
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
         this.animationManager.setAnimationStats(this);
@@ -145,7 +147,6 @@ public class LoadStatus extends LoadingManager {
         });
     }
 
-
     /**
      * Переопределённый метод (без реализации), оставленный для совместимости с базовым классом.
      */
@@ -156,7 +157,7 @@ public class LoadStatus extends LoadingManager {
 
     /**
      * Метод выполняет анимацию появления (fadeIn) экрана загрузки.
-     * Он выполняет отключение основных компонентов и накладывает затемняющий оверлей.
+     * Для периодических вычислений создаётся локальный ScheduledExecutorService.
      */
     @Override
     public void fadeIn() {
@@ -173,18 +174,28 @@ public class LoadStatus extends LoadingManager {
                         overlay.setName("loadingOverlay");
                         layeredPane.add(overlay, JLayeredPane.POPUP_LAYER);
                         overlay.setBounds(0, 0, launcher.getFrame().getWidth(), launcher.getFrame().getHeight());
+                    });
 
-                        final AtomicInteger alpha = new AtomicInteger(0);
-                        Timer fadeTimer = new Timer(30, e -> {
-                            int newAlpha = Math.min(alpha.addAndGet(10), 180);
-                            overlay.setBackground(new Color(0, 0, 0, newAlpha));
-                            overlay.repaint();
-                            if (newAlpha == 180) {
-                                ((Timer) e.getSource()).stop();
+                    // Создаём локальный scheduler для анимации
+                    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                    AtomicInteger alpha = new AtomicInteger(0);
+                    AtomicReference<ScheduledFuture<?>> fadeFutureRef = new AtomicReference<>();
+                    fadeFutureRef.set(scheduler.scheduleAtFixedRate(() -> {
+                        int newAlpha = Math.min(alpha.addAndGet(10), 180);
+                        SwingUtilities.invokeLater(() -> {
+                            JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
+                            for (Component comp : layeredPane.getComponentsInLayer(JLayeredPane.POPUP_LAYER)) {
+                                if (comp instanceof JPanel && "loadingOverlay".equals(comp.getName())) {
+                                    comp.setBackground(new Color(0, 0, 0, newAlpha));
+                                    comp.repaint();
+                                }
                             }
                         });
-                        fadeTimer.start();
-                    });
+                        if (newAlpha >= 180) {
+                            fadeFutureRef.get().cancel(false);
+                            scheduler.shutdown();
+                        }
+                    }, 0, 30, TimeUnit.MILLISECONDS));
 
                     new ProgressBarAnimator(launcher, progressBar, progressText).startProgressTest();
                 } catch (Exception ex) {
@@ -196,51 +207,48 @@ public class LoadStatus extends LoadingManager {
 
     /**
      * Метод выполняет анимацию исчезновения (fadeOut) экрана загрузки.
-     * После завершения анимации происходит удаление оверлея и обновление основных компонентов.
+     * Для периодических вычислений создаётся локальный ScheduledExecutorService.
      */
     @Override
     public void fadeOut() {
         launcher.getExecutorServiceProvider().submitTask(() -> {
-            this.progressBar.setVisible(false);
-            try {
-                SwingUtilities.invokeLater(() -> {
-                    JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
-                    JPanel mainFramePanel = loggedForm.getPanel();
-                    for (Component component : layeredPane.getComponentsInLayer(JLayeredPane.POPUP_LAYER)) {
-                        if (component instanceof JPanel overlay && "loadingOverlay".equals(overlay.getName())) {
-                            final int initialAlpha = overlay.getBackground().getAlpha();
-                            // Общая длительность анимации (в миллисекундах)
-                            final long duration = 500;
-                            final int interval = 20;
-                            // Время начала анимации
-                            final long startTime = System.currentTimeMillis();
-
-                            Timer timer = new Timer(interval, null);
-                            timer.addActionListener(e -> {
-                                long elapsed = System.currentTimeMillis() - startTime;
-                                double progress = Math.min(1.0, (double) elapsed / duration);
-                                double easedProgress = 1 - Math.pow(1 - progress, 2);
-                                int newAlpha = (int) (initialAlpha * (1 - easedProgress));
+            progressBar.setVisible(false);
+            SwingUtilities.invokeLater(() -> {
+                JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
+                JPanel mainFramePanel = loggedForm.getPanel();
+                for (Component component : layeredPane.getComponentsInLayer(JLayeredPane.POPUP_LAYER)) {
+                    if (component instanceof JPanel overlay && "loadingOverlay".equals(overlay.getName())) {
+                        int initialAlpha = overlay.getBackground().getAlpha();
+                        final long duration = 500;
+                        final int interval = 20;
+                        final long startTime = System.currentTimeMillis();
+                        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                        AtomicReference<ScheduledFuture<?>> fadeOutFutureRef = new AtomicReference<>();
+                        fadeOutFutureRef.set(scheduler.scheduleAtFixedRate(() -> {
+                            long elapsed = System.currentTimeMillis() - startTime;
+                            double progress = Math.min(1.0, (double) elapsed / duration);
+                            double easedProgress = 1 - Math.pow(1 - progress, 2);
+                            int newAlpha = (int) (initialAlpha * (1 - easedProgress));
+                            SwingUtilities.invokeLater(() -> {
                                 overlay.setBackground(new Color(0, 0, 0, newAlpha));
                                 overlay.repaint();
-
-                                if (progress >= 1.0) {
-                                    ((Timer) e.getSource()).stop();
+                            });
+                            if (progress >= 1.0) {
+                                fadeOutFutureRef.get().cancel(false);
+                                scheduler.shutdown();
+                                SwingUtilities.invokeLater(() -> {
                                     layeredPane.remove(overlay);
                                     layeredPane.revalidate();
                                     layeredPane.repaint();
-                                }
-                            });
-                            timer.start();
-                        }
+                                });
+                            }
+                        }, 0, interval, TimeUnit.MILLISECONDS));
                     }
-                    setVisible(false);
-                    mainFramePanel.revalidate();
-                    mainFramePanel.repaint();
-                });
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+                }
+                setVisible(false);
+                mainFramePanel.revalidate();
+                mainFramePanel.repaint();
+            });
         }, "fadeOut");
     }
 }

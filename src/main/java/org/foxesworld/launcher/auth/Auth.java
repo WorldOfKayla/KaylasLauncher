@@ -38,6 +38,7 @@ public class Auth {
     private AuthStatus authStatus = AuthStatus.UNAUTHORISED;
     private static final Gson GSON = new Gson();
     private AuthResponse authResponse;
+    private  AuthRequest authRequest;
 
     public Auth(Launcher launcher) {
         this.launcher = launcher;
@@ -76,7 +77,7 @@ public class Auth {
      * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
     public void formAuth(final JComponent component, Runnable onCompletion) {
-        FormAuth formAuth = new FormAuth(this.launcher);
+        FormAuth formAuth = new FormAuth(this);
         this.authCredentials = formAuth.getFormCredentials();
         try {
             if (!authorizeAsync(onCompletion).get()) {
@@ -117,7 +118,7 @@ public class Auth {
     public CompletableFuture<Boolean> authorizeAsync(Runnable onCompletion) {
         final String login = (String) authCredentials.get("login");
         final String password = (String) authCredentials.get("password");
-        final AuthRequest authRequest = new AuthRequest(engine, login, password);
+        authRequest = new AuthRequest(engine, login, password);
         final CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         authRequest.sendAsync(Collections.emptyMap(),
@@ -296,5 +297,9 @@ public class Auth {
 
     public AuthResponse getAuthResponse() {
         return authResponse;
+    }
+
+    public AuthRequest getAuthRequest() {
+        return authRequest;
     }
 }

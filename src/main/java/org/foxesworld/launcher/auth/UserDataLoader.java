@@ -1,5 +1,6 @@
 package org.foxesworld.launcher.auth;
 
+import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.DataInjector;
@@ -21,7 +22,7 @@ public class UserDataLoader {
     private final DataInjector<ConcurrentHashMap<String, AtomicInteger>> balanceInjector;
     private String[] userServersArray;
     private List<ServerAttributes> userServersAttributes;
-    private final ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
 
     /**
      * Constructs a new UserDataLoader with the specified engine.
@@ -62,6 +63,7 @@ public class UserDataLoader {
      */
     public void updateBalance(final List<Map<String, Integer>> balance) {
         try {
+            balanceMap = new ConcurrentHashMap<>();
             for (Map<String, Integer> entry : balance) {
                 for (Map.Entry<String, Integer> e : entry.entrySet()) {
                     balanceMap.merge(e.getKey(), new AtomicInteger(e.getValue()),
@@ -88,6 +90,7 @@ public class UserDataLoader {
      * @param onDataLoaded a Runnable to be executed after both datasets have been loaded.
      */
     public void loadUserData(final String login, final List<Map<String, Integer>> balance, final Runnable onDataLoaded) {
+        Launcher.LOGGER.info("Loading userdata for {}", login);
         if (onDataLoaded == null) {
             loadUserServers(login);
             updateBalance(balance);
@@ -96,10 +99,9 @@ public class UserDataLoader {
 
         AtomicBoolean serversLoaded = new AtomicBoolean(false);
         AtomicBoolean balanceLoaded = new AtomicBoolean(false);
-        AtomicBoolean isCompleted = new AtomicBoolean(false); // предотвращает повторный вызов
 
         Runnable checkCompletion = () -> {
-            if (serversLoaded.get() && balanceLoaded.get() && isCompleted.compareAndSet(false, true)) {
+            if (serversLoaded.get() && balanceLoaded.get()) {
                 onDataLoaded.run();
             }
         };

@@ -6,6 +6,7 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.sound.PlaybackStatusListener;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.launcher.config.Config;
+import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -34,8 +35,9 @@ public class Auth {
     private final CryptUtils cryptUtils;
     private final EncryptionKeyManager encryptionKeyManager;
     private Map<String, Object> authCredentials = new HashMap<>();
-    private boolean authorised = false;
+    private AuthStatus authStatus = AuthStatus.UNAUTHORISED;
     private static final Gson GSON = new Gson();
+    private AuthResponse authResponse;
 
     public Auth(Launcher launcher) {
         this.launcher = launcher;
@@ -48,39 +50,40 @@ public class Auth {
     }
 
     /**
-     * Starts an asynchronous authentication task.
+     * Выполняет задачу авторизации с заданной задачей после завершения.
      *
-     * @param authCredentials The user's credentials.
+     * @param authCredentials Учетные данные пользователя.
+     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
-    public void authTask(final Map<String, Object> authCredentials) {
+    public void authTask(final Map<String, Object> authCredentials, Runnable onCompletion) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             setAuthCredentials(authCredentials);
             try {
-                // Execute asynchronous authentication
-                if (!authorizeAsync().get()) {
+                if (!authorizeAsync(onCompletion).get()) {
                     config.clearConfigData(Arrays.asList("login", "password"), true);
                 }
             } catch (InterruptedException | ExecutionException e) {
-                Engine.getLOGGER().error("Authentication task interrupted", e);
+                Engine.getLOGGER().error("Ошибка выполнения задачи авторизации", e);
                 Thread.currentThread().interrupt();
             }
         }, "auth");
     }
 
     /**
-     * Initiates authentication via a UI component.
+     * Выполняет авторизацию через UI и выполняет переданную задачу после завершения.
      *
-     * @param component The UI component to be used.
+     * @param component UI-компонент.
+     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
-    public void formAuth(final JComponent component) {
+    public void formAuth(final JComponent component, Runnable onCompletion) {
         FormAuth formAuth = new FormAuth(this.launcher);
         this.authCredentials = formAuth.getFormCredentials();
         try {
-            if (!authorizeAsync().get()) {
+            if (!authorizeAsync(onCompletion).get()) {
                 component.setEnabled(true);
             }
         } catch (InterruptedException | ExecutionException e) {
-            Engine.getLOGGER().error("Error during form authorization", e);
+            Engine.getLOGGER().error("Ошибка формы авторизации", e);
             throw new RuntimeException(e);
         }
     }
@@ -92,12 +95,13 @@ public class Auth {
         final String login = config.getLogin();
         final String encryptedPassword = config.getPassword();
         if (login != null && encryptedPassword != null) {
+            this.setAuthStatus(AuthStatus.PENDING);
             authCredentials.put("login", login);
             final String decryptedPassword = cryptUtils.decrypt(encryptedPassword, encryptionKeyManager.getEncryptionKey(16));
             if (decryptedPassword != null) {
                 authCredentials.put("password", decryptedPassword);
                 Engine.getLOGGER().debug("Attempting auto login with saved credentials for: " + login);
-                authTask(authCredentials);
+                authTask(authCredentials, () -> {});
             } else {
                 clearCredentials();
             }
@@ -105,58 +109,74 @@ public class Auth {
     }
 
     /**
-     * Performs asynchronous authentication using CompletableFuture.
+     * Выполняет асинхронную авторизацию с возможностью задания задачи по завершению.
      *
-     * @return CompletableFuture with the authentication result.
+     * @param onCompletion Действие, выполняемое после завершения аутентификации (необязательно).
+     * @return CompletableFuture с результатом авторизации.
      */
-    public CompletableFuture<Boolean> authorizeAsync() {
+    public CompletableFuture<Boolean> authorizeAsync(Runnable onCompletion) {
         final String login = (String) authCredentials.get("login");
         final String password = (String) authCredentials.get("password");
         final AuthRequest authRequest = new AuthRequest(engine, login, password);
         final CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         authRequest.sendAsync(Collections.emptyMap(),
-                response -> handleAuthResponse(response, future),
-                error -> handleAuthError(error, future)
+                response -> handleAuthResponse(response, future, onCompletion),
+                error -> handleAuthError(error, future, onCompletion)
         );
+
         return future;
     }
 
     /**
-     * Handles a successful authentication response.
+     * Обрабатывает успешный ответ от сервера и выполняет переданную задачу после авторизации.
      *
-     * @param response The server's response.
-     * @param future   CompletableFuture to complete the operation.
+     * @param response Ответ сервера.
+     * @param future CompletableFuture для завершения операции.
+     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
-    private void handleAuthResponse(final Object response, final CompletableFuture<Boolean> future) {
+    private void handleAuthResponse(final Object response, final CompletableFuture<Boolean> future, Runnable onCompletion) {
         try {
-            AuthResponse authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
+            authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
                 userDataLoader.loadUserData(authResponse.getLogin(), authResponse.getBalance(), () -> {
                     handleSuccessfulAuth(authResponse);
                     future.complete(true);
+                    if (onCompletion != null) {
+                        onCompletion.run();
+                    }
                 });
             } else {
                 launcher.getSOUND().playSound("other", "alert");
-                launcher.showDialog(authResponse.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, false);
+                launcher.showDialog(authResponse.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE, false);
                 future.complete(false);
+                if (onCompletion != null) {
+                    onCompletion.run();
+                }
             }
         } catch (Exception e) {
-            Engine.getLOGGER().error("Error processing auth response", e);
+            Engine.getLOGGER().error("Ошибка обработки ответа авторизации", e);
             future.completeExceptionally(e);
+            if (onCompletion != null) {
+                onCompletion.run();
+            }
         }
     }
 
     /**
-     * Handles an error during authentication.
+     * Обрабатывает ошибку авторизации и выполняет переданную задачу после завершения.
      *
-     * @param error  The authentication error.
-     * @param future CompletableFuture to complete the operation.
+     * @param error Ошибка авторизации.
+     * @param future CompletableFuture для завершения операции.
+     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
-    private void handleAuthError(final Throwable error, final CompletableFuture<Boolean> future) {
-        Engine.getLOGGER().error("Authorization request failed: ", error);
+    private void handleAuthError(final Throwable error, final CompletableFuture<Boolean> future, Runnable onCompletion) {
+        Engine.getLOGGER().error("Ошибка авторизации: ", error);
         launcher.getSOUND().playSound("other", "alert");
         future.completeExceptionally(error);
+        if (onCompletion != null) {
+            onCompletion.run();
+        }
     }
 
     /**
@@ -165,7 +185,7 @@ public class Auth {
      * @param authResponse The server response upon successful authentication.
      */
     private void handleSuccessfulAuth(final AuthResponse authResponse) {
-        setAuthorised(true);
+        setAuthStatus(AuthStatus.AUTHORISED);
         this.launcher.getFrame().repaint();
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
@@ -200,6 +220,7 @@ public class Auth {
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
+        launcher.getFrame().repaint();
     }
 
     /**
@@ -207,7 +228,7 @@ public class Auth {
      */
     public void logOut() {
         Engine.getLOGGER().info("Logging out...");
-        setAuthorised(false);
+        setAuthStatus(AuthStatus.UNAUTHORISED);
         engine.getFrame().getRootPanel().removeAll();
         clearCredentials();
         config.writeCurrentConfig();
@@ -260,15 +281,20 @@ public class Auth {
         return userDataLoader;
     }
 
-    public boolean isAuthorised() {
-        return authorised;
+    public AuthStatus getAuthStatus() {
+        return authStatus;
     }
 
-    public void setAuthorised(final boolean authorised) {
-        this.authorised = authorised;
+    public void setAuthStatus(final AuthStatus status) {
+        this.authStatus = status;
     }
+
 
     public void setAuthCredentials(final Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
+    }
+
+    public AuthResponse getAuthResponse() {
+        return authResponse;
     }
 }

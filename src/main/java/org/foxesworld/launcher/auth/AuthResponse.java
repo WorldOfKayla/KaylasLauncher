@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-class AuthResponse {
+public class AuthResponse {
     private String message, uuid, token, type,login, groupName, userFullName;
     private List<Map<String, Integer>> balance;
     private int group;

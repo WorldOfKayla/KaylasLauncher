@@ -50,7 +50,7 @@ public class Launcher extends Engine {
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.setProperty("file.encoding", "UTF-8");
-        SwingUtilities.invokeLater(Launcher::new);
+        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
     }
 
     static {
@@ -77,9 +77,6 @@ public class Launcher extends Engine {
         init();
     }
 
-    /**
-     * Метод-обёртка для безопасного выполнения задач.
-     */
     private void safeSubmitTask(Runnable task, String taskName) {
         this.getExecutorServiceProvider().submitTask(() -> {
             try {
@@ -172,13 +169,13 @@ public class Launcher extends Engine {
     @Override
     public void onPanelsBuilt() {
         if(!isInit()) {
-            tes();
+            gammaInit();
             setInit(true);
             logStartupTime(getStartTime());
         }
     }
 
-    public void tes(){
+    public void gammaInit(){
         SwingUtilities.invokeLater(() -> {
             this.loadingManager = new LoadStatus(this, getConfig().getLoaderIndex());
             this.settings = new Settings(this);
@@ -186,7 +183,6 @@ public class Launcher extends Engine {
             setActionHandler(this.actionHandler);
             setUser(new User(this));
         });
-        this.getFrame().repaint();
     }
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {

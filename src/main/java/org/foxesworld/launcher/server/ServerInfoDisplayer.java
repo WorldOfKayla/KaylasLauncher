@@ -21,6 +21,9 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.foxesworld.launcher.auth.AuthStatus.AUTHORISED;
+import static org.foxesworld.launcher.auth.AuthStatus.UNAUTHORISED;
+
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
     private final Launcher launcher;
     private final User user;
@@ -95,7 +98,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     }
 
     public void displayServerInfo(int index) {
-        if (!this.user.getAuth().isAuthorised()) {
+        if (this.user.getAuth().getAuthStatus() == UNAUTHORISED) {
             Launcher.LOGGER.warn("User is not authorised. Cannot display server info.");
             return;
         }

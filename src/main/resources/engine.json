@@ -1,6 +1,6 @@
 {
   "launcherBrand": "FoxesLauncher",
-  "launcherVersion": "1.23.4",
+  "launcherVersion": "1.23.6",
   "launcherBuild": "SkyLake",
   "styles": [
     "button",
@@ -17,7 +17,7 @@
     "compositeSlider"
   ],
   "loadAdapters": ["json", "json5"],
-  "logLevel": "DEBUG",
+  "logLevel": "INFO",
   "programRuntime": "jdk-17.0.13",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",

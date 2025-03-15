@@ -10,6 +10,7 @@ import org.foxesworld.engine.gui.components.passfield.PassField;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
+import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.gui.command.DynamicCommandRegistry;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.gui.componentAccessor.Component;
@@ -81,12 +82,19 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
      * Здесь для каждой команды используется метод registerCommand из интерфейса DynamicCommandRegistry.
      */
     private void registerCommands() {
-        // Команда для отправки формы аутентификации
         registerCommand("authForm>submit", e -> {
             authSubmit.setEnabled(false);
             this.launcher.getExecutorServiceProvider().submitTask(() -> {
-                this.launcher.getAuth().formAuth(authSubmit);
-                if (this.launcher.getAuth().isAuthorised()) {
+                this.launcher.getAuth().formAuth(authSubmit, () -> {
+                    launcher.setInit(false);
+                    launcher.gammaInit();
+                    //launcher.setUser(new User(launcher));
+                    //this.launcher.getConfig().writeCurrentConfig();
+                    //this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
+                    //this.launcher.getEngine().getFrame().dispose();
+                    //this.launcher = new Launcher();
+                });
+                if (this.launcher.getAuth().getAuthStatus() == AuthStatus.AUTHORISED) {
                     engine.getFrame().getRootPanel().removeAll();
                     engine.getPanelVisibility().displayPanel("authForm->false");
                     this.launcher.init();
@@ -129,7 +137,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
         // Отображение информационной панели
         registerCommand("info-small", e -> {
-            if (!launcher.getAuth().isAuthorised()) {
+            if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
             } else {
                 engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|test->true");
@@ -138,7 +146,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
         // Отображение панели настроек
         registerCommand("settings-small", e -> {
-            if (!launcher.getAuth().isAuthorised()) {
+            if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
             } else {
                 engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|settings->true");
@@ -155,7 +163,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
         // Возврат к предыдущему состоянию
         registerCommand("back", e -> {
-            if (!launcher.getAuth().isAuthorised()) {
+            if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
             } else {
                 engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|settings->false");

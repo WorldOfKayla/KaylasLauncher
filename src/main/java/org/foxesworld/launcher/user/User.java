@@ -12,6 +12,7 @@ import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
+import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.notification.Notification;
@@ -26,6 +27,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User extends org.foxesworld.engine.user.User {
@@ -37,10 +39,8 @@ public class User extends org.foxesworld.engine.user.User {
     private final GuiBuilder guiBuilder;
     private final UserAttributes userAttributes;
     private final JPanel newsPanel;
-    private final ServerInfoDisplayer serverInfoDisplayer;
-    private final SkinLoader skinLoader;
-    private String[] userServersArray;
-    private List<ServerAttributes> userServersAttributes;
+    private ServerInfoDisplayer serverInfoDisplayer;
+    private SkinLoader skinLoader;
     private JFrame taskMgrFrame;
 
     @org.foxesworld.engine.gui.componentAccessor.Component
@@ -58,32 +58,54 @@ public class User extends org.foxesworld.engine.user.User {
         this.lang = launcher.getLANG();
         this.guiBuilder = launcher.getGuiBuilder();
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
-        this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-        this.skinLoader = new SkinLoader(this);
         SwingUtilities.invokeLater(this::initializeUser);
     }
 
-    public void loadUserServers(final String login, final DataInjector<List<ServerAttributes>> serversInjector) {
-        if (login == null || login.isEmpty()) {
-            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
-            return;
+    public void initializeUser() {
+        AuthStatus status = auth.getAuthStatus();
+        if(status != AuthStatus.UNAUTHORISED) {
+            if (status == AuthStatus.PENDING) {
+                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                waitForAuthorization();
+                return;
+            }
+
+            if (status == AuthStatus.AUTHORISED) {
+                engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
+                this.serverInfoDisplayer = new ServerInfoDisplayer(this);
+                this.skinLoader = new SkinLoader(this);
+                setUserSpace();
+                serverInfoDisplayer.displayServerInfo(launcher.getConfig().getSelectedServer());
+            } else {
+                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+            }
+            getPanel().repaint();
         }
-        ServerParser serverParser = new ServerParser(engine);
-        List<ServerAttributes> loadedServers = serverParser.parseServers(login);
-        Engine.getLOGGER().info("Loaded {} servers", loadedServers.size());
-        serversInjector.setContent(loadedServers);
     }
 
-    public void initializeUser() {
-        if (auth.isAuthorised()) {
-            engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
-            setUserSpace();
-            serverInfoDisplayer.displayServerInfo(launcher.getConfig().getSelectedServer());
-        } else {
-            engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
-        }
-        getPanel().repaint();
+    /**
+     * Ожидает завершения авторизации без блокировки основного потока.
+     * Используется Swing Timer для периодической проверки статуса.
+     */
+    private void waitForAuthorization() {
+        Timer timer = new Timer(2000, e -> {
+            switch (auth.getAuthStatus()) {
+                case AUTHORISED -> {
+                    ((Timer) e.getSource()).stop();
+                    SwingUtilities.invokeLater(this::initializeUser);
+                }
+
+                case UNAUTHORISED -> {
+                    launcher.getSOUND().playSound("other", "alert");
+                }
+            }
+        });
+        timer.setRepeats(true);
+        timer.start();
     }
+
+
+
 
     public void setBalance(Map<String, AtomicInteger> balance) {
         runOnEDT(() -> {
@@ -291,7 +313,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void showTaskMgr() {
-        if (auth.isAuthorised() && getUserGroup() == UserGroup.ADMIN) {
+        if (auth.getAuthStatus() == AuthStatus.AUTHORISED && getUserGroup() == UserGroup.ADMIN) {
             runOnEDT(() -> {
                 launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
                 taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
@@ -362,7 +384,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public UserGroup getUserGroup() {
-        if (auth.isAuthorised()) {
+        if (auth.getAuthStatus() == AuthStatus.AUTHORISED) {
             return UserGroup.fromGroupId(Integer.parseInt((String) userAttributes.group));
         }
         return UserGroup.GUEST;
@@ -379,17 +401,7 @@ public class User extends org.foxesworld.engine.user.User {
     public String getColorScheme() {
         return userAttributes.colorScheme;
     }
-
-    // Вспомогательный метод для сокращения вызовов SwingUtilities.invokeLater
     private void runOnEDT(Runnable task) {
         SwingUtilities.invokeLater(task);
-    }
-
-    public String[] getUserServersArray() {
-        return userServersArray;
-    }
-
-    public List<ServerAttributes> getUserServersAttributes() {
-        return userServersAttributes;
     }
 }

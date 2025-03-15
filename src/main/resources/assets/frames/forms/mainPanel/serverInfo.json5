@@ -24,7 +24,7 @@
                 "opaque": true,
                 "doubleBuffered": true,
                 "background": "#7c3306",
-                "cornerRadius": 10,
+                "cornerRadius": 20,
                 "bounds": {
                   "x": 10,
                   "y": 5,
@@ -79,7 +79,7 @@
                 "opaque": true,
                 "doubleBuffered": true,
                 "background": "#b3b2b0",
-                "cornerRadius": 10,
+                "cornerRadius": 20,
                 "bounds": {
                   "x": 310,
                   "y": 5,
@@ -100,7 +100,7 @@
                     "x": 50,
                     "y": -120,
                     "size": {
-                      "width": 470,
+                      "width": 480,
                       "height": 280
                     }
                   }

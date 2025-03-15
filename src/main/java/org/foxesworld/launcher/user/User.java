@@ -6,12 +6,14 @@ import org.foxesworld.engine.gui.GuiBuilder;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.locale.LanguageProvider;
+import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
+import org.foxesworld.launcher.server.ServerParser;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.utils.DataInjector;
 
@@ -37,6 +39,8 @@ public class User extends org.foxesworld.engine.user.User {
     private final JPanel newsPanel;
     private final ServerInfoDisplayer serverInfoDisplayer;
     private final SkinLoader skinLoader;
+    private String[] userServersArray;
+    private List<ServerAttributes> userServersAttributes;
     private JFrame taskMgrFrame;
 
     @org.foxesworld.engine.gui.componentAccessor.Component
@@ -56,7 +60,18 @@ public class User extends org.foxesworld.engine.user.User {
         this.newsPanel = guiBuilder.getPanelsMap().get("newsForm");
         this.serverInfoDisplayer = new ServerInfoDisplayer(this);
         this.skinLoader = new SkinLoader(this);
-        initializeUser();
+        SwingUtilities.invokeLater(this::initializeUser);
+    }
+
+    public void loadUserServers(final String login, final DataInjector<List<ServerAttributes>> serversInjector) {
+        if (login == null || login.isEmpty()) {
+            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
+            return;
+        }
+        ServerParser serverParser = new ServerParser(engine);
+        List<ServerAttributes> loadedServers = serverParser.parseServers(login);
+        Engine.getLOGGER().info("Loaded {} servers", loadedServers.size());
+        serversInjector.setContent(loadedServers);
     }
 
     public void initializeUser() {
@@ -84,7 +99,7 @@ public class User extends org.foxesworld.engine.user.User {
         setUserHeadIcon(getLogin());
         setUserGroupLabel();
         setupDiscordRpc();
-        auth.getBalanceInjector().addListener(this::setBalance);
+        auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
         loggedForm.getGreetUser().setText(lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
         skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
@@ -97,6 +112,7 @@ public class User extends org.foxesworld.engine.user.User {
                     public void mouseEntered(MouseEvent e) {
                         skinLabel.setIcon(new ImageIcon(back));
                     }
+
                     @Override
                     public void mouseExited(MouseEvent e) {
                         skinLabel.setIcon(new ImageIcon(front));
@@ -108,7 +124,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     private void setDropBoxData(DropBox dropBox) {
-        String[] servers = auth.getUserServersArray();
+        String[] servers = auth.getUserDataLoader().getUserServersArray();
         if (servers == null || servers.length == 0) {
             Launcher.LOGGER.warn("User servers array is null or empty. Setting empty values for dropBox.");
             dropBox.setValues(new String[0]);
@@ -147,7 +163,7 @@ public class User extends org.foxesworld.engine.user.User {
     public void updateServer(int index) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
             try {
-                var serverAttr = auth.getUserServersAttributes().get(index);
+                var serverAttr = auth.getUserDataLoader().getUserServersAttributes().get(index);
                 String ip = serverAttr.getHost();
                 int port = serverAttr.getPort();
                 String[] status = serverInfo.pollServer(ip, port);
@@ -367,5 +383,13 @@ public class User extends org.foxesworld.engine.user.User {
     // Вспомогательный метод для сокращения вызовов SwingUtilities.invokeLater
     private void runOnEDT(Runnable task) {
         SwingUtilities.invokeLater(task);
+    }
+
+    public String[] getUserServersArray() {
+        return userServersArray;
+    }
+
+    public List<ServerAttributes> getUserServersAttributes() {
+        return userServersAttributes;
     }
 }

@@ -79,7 +79,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
     @Override
     public void onScrollBoxClose(DropBox dropBox) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            if (Arrays.stream(this.user.getAuth().getUserServersArray()).count() == 1) {
+            if (Arrays.stream(this.user.getAuth().getUserDataLoader().getUserServersArray()).count() == 1) {
                 displayServerInfo(0);
             } else {
                 displayServerInfo(dropBox.getSelectedIndex());
@@ -99,7 +99,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             Launcher.LOGGER.warn("User is not authorised. Cannot display server info.");
             return;
         }
-        List<ServerAttributes> servers = this.user.getAuth().getUserServersAttributes();
+        List<ServerAttributes> servers = this.user.getAuth().getUserDataLoader().getUserServersAttributes();
         if (servers == null || servers.isEmpty()) {
             Launcher.LOGGER.warn("User servers attributes are not available.");
             return;

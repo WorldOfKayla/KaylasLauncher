@@ -9,10 +9,8 @@ import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.Sound;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.DataInjector;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -36,7 +34,6 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Launcher extends Engine {
@@ -53,7 +50,7 @@ public class Launcher extends Engine {
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.setProperty("file.encoding", "UTF-8");
-        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
+        SwingUtilities.invokeLater(Launcher::new);
     }
 
     static {
@@ -123,8 +120,8 @@ public class Launcher extends Engine {
         setupDiscord();
 
         safeSubmitTask(() -> {
+
             buildGui(getEngineData().getStyles());
-            //this.getGuiBuilder().setOnPanelsBuild(this::tes);
             loadMainPanel(fileProperties.getMainFrame());
         }, "init");
     }
@@ -187,12 +184,9 @@ public class Launcher extends Engine {
             this.settings = new Settings(this);
             this.actionHandler = new ActionHandler(this);
             setActionHandler(this.actionHandler);
-            DataInjector<List<ServerAttributes>> serversInjector = new DataInjector<>();
-            auth.loadUserServers((String) auth.getAuthCredentials().get("login"), serversInjector);
-            serversInjector.addListener(servers -> SwingUtilities.invokeLater(() -> setUser(new User(this))));
+            setUser(new User(this));
         });
-
-
+        this.getFrame().repaint();
     }
     @Override
     public void onAdditionalPanelBuild(JPanel jPanel) {

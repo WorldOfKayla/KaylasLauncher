@@ -165,7 +165,7 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
         // Запуск игры
         registerCommand("toGame", e -> {
             this.launcher.getSOUND().playSound("other", "start");
-            this.currentServer = launcher.getAuth().getUserServersAttributes().get(serverBox.getSelectedIndex());
+            this.currentServer = launcher.getAuth().getUserDataLoader().getUserServersAttributes().get(serverBox.getSelectedIndex());
             Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
             this.launcher.getConfig().setConfigValue("selectedServer", serverBox.getSelectedIndex());
             this.launcher.getConfig().writeCurrentConfig();
@@ -180,81 +180,100 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
         registerCommand("userPane", e -> {
             this.getEngine().getExecutorServiceProvider().submitTask(() -> {
                 SwingUtilities.invokeLater(() -> {
-                    JPanel panel = this.launcher.getUser().getPanel();
-                    if (panel == null) {
-                        Engine.getLOGGER().error("User panel is null.");
-                        return;
-                    }
-
-                    Container panelParent = panel.getParent();
-                    if (panelParent == null) {
-                        Engine.getLOGGER().error("User panel parent is null.");
-                        return;
-                    }
-
-                    boolean isVisible = panel.isVisible();
-                    String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
-                    ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
-
-                    // Получаем компонент, вызвавший команду
-                    JComponent pressedComponent = this.getComponent("userPane");
-                    if (pressedComponent instanceof Button button) {
-                        button.setIcon(icon);
-                    } else {
-                        Engine.getLOGGER().warn("Pressed component is not a Button.");
-                    }
-
-                    int startX = isVisible ? panel.getX() : -panel.getWidth();
-                    int endX = isVisible ? -panel.getWidth() : 0;
-
-                    panelParent.setComponentZOrder(pressedComponent, 0);
-                    pressedComponent.setBounds(10, 40, 30, 30);
-
-                    if (!isVisible) {
-                        panel.setVisible(true);
-                    } else {
-                        JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
-                        if (userActionsPanel != null) {
-                            userActionsPanel.setVisible(true);
+                    try {
+                        JPanel panel = this.launcher.getUser().getPanel();
+                        if (panel == null) {
+                            Engine.getLOGGER().error("User panel is null.");
+                            return;
                         }
-                    }
-                    panelParent.revalidate();
-                    panelParent.repaint();
 
-                    Object prop = panel.getClientProperty("currentAnimation");
-                    if (prop instanceof Timer oldTimer && oldTimer.isRunning()) {
-                        oldTimer.stop();
-                    }
+                        Container panelParent = panel.getParent();
+                        if (panelParent == null) {
+                            Engine.getLOGGER().error("User panel parent is null.");
+                            return;
+                        }
 
-                    Timer timer = new Timer(0, null);
-                    panel.putClientProperty("currentAnimation", timer);
-                    final long startTime = System.currentTimeMillis();
-                    final int animationDuration = 250;
-                    timer.addActionListener(ex -> {
-                        long elapsed = System.currentTimeMillis() - startTime;
-                        float progress = Math.min(1f, (float) elapsed / animationDuration);
-                        float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
-                        int newX = (int) (startX + (endX - startX) * easedProgress);
-                        panel.setLocation(newX, panel.getY());
-                        panelParent.setComponentZOrder(panel, 1);
+                        boolean isVisible = panel.isVisible();
+                        String iconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
+                        ImageIcon icon = this.launcher.getIconUtils().getVectorIcon(iconPath, 20, 24);
+
+                        // Получаем компонент, вызвавший команду
+                        JComponent pressedComponent = this.getComponent("userPane");
+                        if (pressedComponent instanceof Button button) {
+                            button.setIcon(icon);
+                        } else {
+                            Engine.getLOGGER().warn("Pressed component is not a Button.");
+                        }
+
+                        // Вычисление позиций для анимации
+                        int startX = isVisible ? panel.getX() : -panel.getWidth();
+                        int endX = isVisible ? -panel.getWidth() : 0;
+
+                        // Настройка компонента, вызвавшего команду
+                        panelParent.setComponentZOrder(pressedComponent, 0);
+                        pressedComponent.setBounds(10, 40, 30, 30);
+
+                        // Отображение панелей до начала анимации
+                        if (!isVisible) {
+                            panel.setVisible(true);
+                        } else {
+                            JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
+                            if (userActionsPanel != null) {
+                                userActionsPanel.setVisible(true);
+                            }
+                        }
+                        panelParent.revalidate();
                         panelParent.repaint();
 
-                        if (progress >= 1f) {
-                            timer.stop();
-                            panel.putClientProperty("currentAnimation", null);
-
-                            if (isVisible) {
-                                panel.setVisible(false);
-                            } else {
-                                JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
-                                if (userActionsPanel != null) {
-                                    userActionsPanel.setVisible(false);
-                                }
-                            }
-                            panelParent.revalidate();
+                        // Остановка предыдущей анимации, если она активна
+                        Object currentAnimation = panel.getClientProperty("currentAnimation");
+                        if (currentAnimation instanceof Timer oldTimer && oldTimer.isRunning()) {
+                            oldTimer.stop();
                         }
-                    });
-                    timer.start();
+
+                        // Создание таймера с задержкой 15 мс для плавной анимации
+                        int timerDelay = 1;
+                        Timer timer = new Timer(timerDelay, null);
+                        panel.putClientProperty("currentAnimation", timer);
+
+                        final long startTime = System.currentTimeMillis();
+                        final int animationDuration = 250; // длительность анимации в мс
+
+                        timer.addActionListener(animationEvent -> {
+                            try {
+                                long elapsed = System.currentTimeMillis() - startTime;
+                                float progress = Math.min(1f, (float) elapsed / animationDuration);
+                                // Плавное затухание (ease-out)
+                                float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
+                                int newX = (int) (startX + (endX - startX) * easedProgress);
+                                panel.setLocation(newX, panel.getY());
+                                panelParent.setComponentZOrder(panel, 1);
+                                panelParent.repaint();
+
+                                if (progress >= 1f) {
+                                    timer.stop();
+                                    panel.putClientProperty("currentAnimation", null);
+
+                                    // Переключение видимости панелей после завершения анимации
+                                    if (isVisible) {
+                                        panel.setVisible(false);
+                                    } else {
+                                        JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
+                                        if (userActionsPanel != null) {
+                                            userActionsPanel.setVisible(false);
+                                        }
+                                    }
+                                    panelParent.revalidate();
+                                }
+                            } catch (Exception ex) {
+                                Engine.getLOGGER().error("Error during animation", ex);
+                                timer.stop();
+                            }
+                        });
+                        timer.start();
+                    } catch (Exception ex) {
+                        Engine.getLOGGER().error("Exception in userPane command", ex);
+                    }
                 });
             }, "userPaneToggle");
         });

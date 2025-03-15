@@ -3,17 +3,17 @@ package org.foxesworld.launcher.auth;
 import com.google.gson.Gson;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
-import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.engine.sound.PlaybackStatusListener;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
-import org.foxesworld.engine.utils.DataInjector;
 import org.foxesworld.launcher.config.Config;
-import org.foxesworld.launcher.server.ServerParser;
 
 import javax.swing.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * The Auth class is responsible for the authentication process, managing the user's session,
@@ -28,19 +28,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Auth {
     private final Launcher launcher;
+    private final UserDataLoader userDataLoader;
     private final Engine engine;
     private final Config config;
     private final CryptUtils cryptUtils;
     private final EncryptionKeyManager encryptionKeyManager;
     private Map<String, Object> authCredentials = new HashMap<>();
-    private final ConcurrentHashMap<String, AtomicInteger> balanceMap = new ConcurrentHashMap<>();
-    private List<ServerAttributes> userServersAttributes;
-    private String[] userServersArray;
     private boolean authorised = false;
-
-    private final DataInjector<String[]> userServersInjector = new DataInjector<>();
-    private final DataInjector<ConcurrentHashMap<String, AtomicInteger>> balanceInjector = new DataInjector<>();
-
     private static final Gson GSON = new Gson();
 
     public Auth(Launcher launcher) {
@@ -49,6 +43,7 @@ public class Auth {
         this.config = launcher.getConfig();
         this.cryptUtils = launcher.getCRYPTO();
         this.encryptionKeyManager = new EncryptionKeyManager(this.engine);
+        this.userDataLoader = new UserDataLoader(engine);
         attemptAutoLogin();
     }
 
@@ -83,9 +78,6 @@ public class Auth {
         try {
             if (!authorizeAsync().get()) {
                 component.setEnabled(true);
-            } else {
-                this.launcher.tes();
-                this.launcher.getFrame().repaint();
             }
         } catch (InterruptedException | ExecutionException e) {
             Engine.getLOGGER().error("Error during form authorization", e);
@@ -140,8 +132,10 @@ public class Auth {
         try {
             AuthResponse authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
             if ("success".equals(authResponse.getType())) {
-                handleSuccessfulAuth(authResponse);
-                future.complete(true);
+                userDataLoader.loadUserData(authResponse.getLogin(), authResponse.getBalance(), () -> {
+                    handleSuccessfulAuth(authResponse);
+                    future.complete(true);
+                });
             } else {
                 launcher.getSOUND().playSound("other", "alert");
                 launcher.showDialog(authResponse.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, false);
@@ -172,6 +166,7 @@ public class Auth {
      */
     private void handleSuccessfulAuth(final AuthResponse authResponse) {
         setAuthorised(true);
+        this.launcher.getFrame().repaint();
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
             public void onPlaybackStarted(String s) {
@@ -201,80 +196,10 @@ public class Auth {
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));
 
-        // Asynchronously load servers and update balance
-        loadUserServers(authResponse.getLogin());
-        updateBalance(authResponse.getBalance());
-
         Engine.getLOGGER().info(authResponse.getLogin() + " authorized!");
         if ("true".equals(authCredentials.get("rememberMe"))) {
             saveAuthCredentials(authCredentials);
         }
-    }
-
-    /**
-     * Updates the balance using data from the server.
-     * After updating the balanceMap, the injector notifies subscribers that up-to-date data is available.
-     *
-     * @param balance The list of balances to update.
-     */
-    public void updateBalance(final List<Map<String, Integer>> balance) {
-        launcher.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                // Update balance using merge to accumulate values
-                for (Map<String, Integer> entry : balance) {
-                    for (Map.Entry<String, Integer> e : entry.entrySet()) {
-                        balanceMap.merge(e.getKey(), new AtomicInteger(e.getValue()),
-                                (existing, newValue) -> {
-                                    existing.addAndGet(e.getValue());
-                                    return existing;
-                                });
-                    }
-                }
-                Engine.getLOGGER().info("Balance updated: " + balanceMap);
-                balanceInjector.setContent(balanceMap);
-            } catch (Exception ex) {
-                Engine.getLOGGER().error("Error updating balance", ex);
-            }
-        }, "updateBalance");
-    }
-
-    /**
-     * Loads the list of servers for the user.
-     * After loading the servers, the injector notifies subscribers that the data is ready.
-     *
-     * @param login The user's login.
-     */
-    public void loadUserServers(final String login) {
-        if (login == null || login.isEmpty()) {
-            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
-            return;
-        }
-        ServerParser serverParser = new ServerParser(engine);
-        userServersAttributes = serverParser.parseServers(login);
-        userServersArray = userServersAttributes.stream()
-                .map(sa -> sa.getServerName() + " " + sa.getServerVersion())
-                .toArray(String[]::new);
-        Engine.getLOGGER().info("Loaded {} servers", serverParser.getServersNum());
-        // Notify subscribers via the injector
-        userServersInjector.setContent(userServersArray);
-    }
-
-    /**
-     * Alternative method for loading servers using a DataInjector for a list of ServerAttributes.
-     *
-     * @param login           The user's login.
-     * @param serversInjector The DataInjector that will be notified once the servers are loaded.
-     */
-    public void loadUserServers(final String login, final DataInjector<List<ServerAttributes>> serversInjector) {
-        if (login == null || login.isEmpty()) {
-            Engine.getLOGGER().warn("Empty login provided, aborting loadUserServers.");
-            return;
-        }
-        ServerParser serverParser = new ServerParser(engine);
-        List<ServerAttributes> loadedServers = serverParser.parseServers(login);
-        Engine.getLOGGER().info("Loaded {} servers", loadedServers.size());
-        // Notify subscribers via the provided injector
-        serversInjector.setContent(loadedServers);
     }
 
     /**
@@ -331,17 +256,8 @@ public class Auth {
         return launcher;
     }
 
-    /**
-     * Returns an array of servers if the user is authenticated; otherwise, returns an empty array.
-     *
-     * @return An array of servers or an empty array.
-     */
-    public String[] getUserServersArray() {
-        return authorised ? userServersArray : new String[0];
-    }
-
-    public List<ServerAttributes> getUserServersAttributes() {
-        return userServersAttributes;
+    public UserDataLoader getUserDataLoader() {
+        return userDataLoader;
     }
 
     public boolean isAuthorised() {
@@ -352,29 +268,7 @@ public class Auth {
         this.authorised = authorised;
     }
 
-    public Map<String, AtomicInteger> getBalanceMap() {
-        return balanceMap;
-    }
-
     public void setAuthCredentials(final Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
-    }
-
-    /**
-     * Getter for the universal server injector.
-     *
-     * @return A DataInjector for the array of servers.
-     */
-    public DataInjector<String[]> getUserServersInjector() {
-        return userServersInjector;
-    }
-
-    /**
-     * Getter for the universal balance injector.
-     *
-     * @return A DataInjector for the balance data.
-     */
-    public DataInjector<ConcurrentHashMap<String, AtomicInteger>> getBalanceInjector() {
-        return balanceInjector;
     }
 }

@@ -39,6 +39,7 @@ public class User extends org.foxesworld.engine.user.User {
     private final JPanel newsPanel;
     private ServerInfoDisplayer serverInfoDisplayer;
     private SkinLoader skinLoader;
+    private HeadLoader headLoader;
     private JFrame taskMgrFrame;
 
     @Component
@@ -116,11 +117,13 @@ public class User extends org.foxesworld.engine.user.User {
 
     public void setUserSpace() {
         setDropBoxData(loggedForm.getServerBox());
-        setUserHeadIcon(getLogin());
+
         setUserGroupLabel();
         setupDiscordRpc();
         auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
         loggedForm.getGreetUser().setText(lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
+        headLoader = new HeadLoader(launcher, "GET");
+        setUserHeadIcon(getLogin());
         skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
@@ -140,6 +143,7 @@ public class User extends org.foxesworld.engine.user.User {
                 });
             }
         });
+
         notifyUserLoggedIn();
     }
 
@@ -196,45 +200,6 @@ public class User extends org.foxesworld.engine.user.User {
         }, "updateServer" + index);
     }
 
-    @Override
-    protected void getUserHeadAsync(String login, OnSuccess<String> onSuccess, OnFailure onFailure) {
-        if (login == null || login.isEmpty()) {
-            Engine.getLOGGER().warn("Login is null or empty in getUserHead");
-            if (onFailure != null) {
-                onFailure.onFailure(new IllegalArgumentException("Login cannot be null or empty"));
-            }
-            return;
-        }
-        HeadLoader headLoader = new HeadLoader(this.launcher, "GET", login);
-        CountDownLatch latch = new CountDownLatch(1);
-        headLoader.sendAsync(Map.of(), response -> {
-            if (response != null && !response.toString().isEmpty()) {
-                onSuccess.onSuccess((String) response);
-            } else {
-                Engine.getLOGGER().warn("Received empty or null response for user head request for login: {}", login);
-                if (onFailure != null) {
-                    onFailure.onFailure(new Exception("Received empty or null response"));
-                }
-            }
-            latch.countDown();
-        }, e -> {
-            Engine.getLOGGER().error("Error while sending user head request for login: {}", login, e);
-            if (onFailure != null) {
-                onFailure.onFailure(e);
-            }
-            latch.countDown();
-        });
-        headLoader.waitForRequestCompletion(latch::countDown);
-
-        try {
-            latch.await();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            Engine.getLOGGER().error("Interrupted while waiting for user head request completion: {}", ex.getMessage());
-        }
-    }
-
-
     private void setUserHeadIcon(String login) {
         if (login == null || login.isEmpty()) {
             Engine.getLOGGER().warn("Login is null or empty. Cannot set user head icon.");
@@ -274,7 +239,7 @@ public class User extends org.foxesworld.engine.user.User {
                 Engine.getLOGGER().error("Error processing user head icon for login: {}. Error: {}", login, e.getMessage(), e);
             }
         });
-        getUserHeadAsync(login, headInjector::setContent, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
+        headLoader.getUserHeadAsync(login, headInjector::setContent, e -> Engine.getLOGGER().error("Failed to retrieve user head for login: {}. Error: {}", login, e.getMessage(), e));
     }
 
     private void setUserGroupLabel() {

@@ -88,7 +88,7 @@
                     }
                   }
                 },
-
+/*
                 {
                   type: "button",
                   enabled: true,
@@ -108,7 +108,7 @@
                     }
                   }
                 },
-
+*/
                 {
                   readFrom: "assets/frames/forms/user/userBalance.json5"
                 }

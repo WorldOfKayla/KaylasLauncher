@@ -9,6 +9,7 @@ import org.foxesworld.launcher.server.ServerParser;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -46,13 +47,16 @@ public class UserDataLoader {
             return;
         }
         ServerParser serverParser = new ServerParser(engine);
-        userServersAttributes = serverParser.parseServers(login);
+        try {
+            userServersAttributes = (List<ServerAttributes>) serverParser.parseServers(login).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         userServersArray = userServersAttributes.stream()
                 .map(sa -> sa.getServerName() + " " + sa.getServerVersion())
                 .toArray(String[]::new);
-        Engine.getLOGGER().info("Loaded {} servers", serverParser.getServersNum());
+        Engine.getLOGGER().info("Loaded {} servers", serverParser.getServerNum());
 
-        // Уведомляем подписчиков через DataInjector
         serversInjector.setContent(userServersArray);
     }
 

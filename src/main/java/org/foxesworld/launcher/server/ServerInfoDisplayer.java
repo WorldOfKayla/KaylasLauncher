@@ -21,10 +21,16 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.foxesworld.launcher.auth.AuthStatus.AUTHORISED;
 import static org.foxesworld.launcher.auth.AuthStatus.UNAUTHORISED;
 
+/**
+ * ServerInfoDisplayer is responsible for displaying server information including server images.
+ * <p>
+ * This class uses the ServerImageLoader to asynchronously download and cache the server image.
+ * </p>
+ */
 public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxListener {
+
     private final Launcher launcher;
     private final User user;
     private final JPanel newsPanel;
@@ -102,7 +108,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             Launcher.LOGGER.warn("User is not authorised. Cannot display server info.");
             return;
         }
-        List<ServerAttributes> servers = this.user.getAuth().getUserDataLoader().getUserServersAttributes();
+        var servers = this.user.getAuth().getUserDataLoader().getUserServersAttributes();
         if (servers == null || servers.isEmpty()) {
             Launcher.LOGGER.warn("User servers attributes are not available.");
             return;
@@ -113,7 +119,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
         }
         ServerAttributes server = servers.get(index);
 
-        // Обновляем UI (панель и компоненты) в EDT
+        // Update UI components on the EDT.
         SwingUtilities.invokeLater(() -> {
             user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
             newsPanel.removeAll();
@@ -122,19 +128,10 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             newsPanel.repaint();
         });
 
-        // Создаем DataInjector для получения статуса сервера с улучшенной функциональностью
+        // Create a DataInjector for obtaining server status.
         DataInjector<String> statusInjector = new DataInjector<>();
-
-        // Добавляем слушателя для обработки ошибок (логирование ошибок)
-        statusInjector.addErrorListener(e -> {
-            Launcher.LOGGER.error("Error in statusInjector", e);
-        });
-
-        statusInjector.addListener(serverStatus -> {
-            SwingUtilities.invokeLater(() -> {
-                srvOnline.setText(serverStatus);
-            });
-        });
+        statusInjector.addErrorListener(e -> Launcher.LOGGER.error("Error in statusInjector", e));
+        statusInjector.addListener(serverStatus -> SwingUtilities.invokeLater(() -> srvOnline.setText(serverStatus)));
 
         launcher.getExecutorServiceProvider().submitTask(() -> {
             String[] status = user.getServerInfo().pollServer(server.getHost(), server.getPort());
@@ -152,22 +149,15 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             srvIcon = "assets/ui/icons/srvIcons/Vanilla.png";
         }
         this.serverTitle.setText(thisServer.getServerName() + ' ' + version[0]);
-        BufferedImage image = (BufferedImage) this.imageUtils.getScaledImage(
-                this.launcher.getImageUtils().getLocalImage(srvIcon), 32, 32);
-        this.serverCore.setIcon(new ImageIcon(image));
-        this.serverImg.setIcon(new ImageIcon(getServerImage(thisServer.getServerImage())));
+        BufferedImage iconImage = (BufferedImage) imageUtils.getScaledImage(launcher.getImageUtils().getLocalImage(srvIcon), 32, 32);
+        this.serverCore.setIcon(new ImageIcon(iconImage));
         this.serverDescLabel.setText(thisServer.getServerDescription());
-    }
 
-    private BufferedImage getServerImage(String url) {
-        return imageUtils.getRoundedImage(
-                imageUtils.getScaledImage(
-                        imageUtils.getCachedUrlImg(
-                                user.getLauncher().getEngineData().getBindUrl() + url,
-                                "serverImg",
-                                imageUtils.getLocalImage("assets/ui/img/noimg.jpg")),
-                        470, 260),
-                25);
+        // Use ServerImageLoader to load the server image asynchronously.
+        ServerImageLoader imageLoader = new ServerImageLoader(user, thisServer.getServerImage());
+        imageLoader.loadServerImage(image -> SwingUtilities.invokeLater(() ->
+                serverImg.setIcon(new ImageIcon(image))
+        ));
     }
 
     private void modsInfoArr(String json) {

@@ -18,14 +18,20 @@ public class BlendedImageIcon extends ImageIcon {
 
         BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = combined.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        int x1 = (width - bImg1.getWidth()) / 2;
+        int y1 = (height - bImg1.getHeight()) / 2;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha));
-        g.drawImage(bImg1, 0, 0, null);
-
+        g.drawImage(bImg1, x1, y1, null);
+        int x2 = (width - bImg2.getWidth()) / 2;
+        int y2 = (height - bImg2.getHeight()) / 2;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g.drawImage(bImg2, 0, 0, null);
-        g.dispose();
+        g.drawImage(bImg2, x2, y2, null);
 
+        g.dispose();
         return combined;
     }
 

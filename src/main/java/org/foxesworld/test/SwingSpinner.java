@@ -6,7 +6,7 @@ public class SwingSpinner extends JComponent {
     private double angle = 0;
     private double arcLength = 120;
     private double arcSpeed = 2;
-    private double rotationSpeed = 10;
+    private double rotationSpeed = 820;
     private boolean expanding = true;
 
     public SwingSpinner() {
@@ -16,7 +16,6 @@ public class SwingSpinner extends JComponent {
 
     private void updateSpinner() {
         angle += rotationSpeed;
-
         if (expanding) {
             arcLength += arcSpeed;
             rotationSpeed = 3;
@@ -24,7 +23,7 @@ public class SwingSpinner extends JComponent {
                 expanding = false;
             }
         } else {
-            arcLength -= arcSpeed * 2; // Ускоренное сжатие
+            arcLength -= arcSpeed * 2;
             rotationSpeed = 6;
             if (arcLength <= 90) {
                 expanding = true;
@@ -38,6 +37,7 @@ public class SwingSpinner extends JComponent {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawSpinner(g2d, getWidth(), getHeight());
+        repaint();
     }
 
     private void drawSpinner(Graphics2D g2d, int width, int height) {

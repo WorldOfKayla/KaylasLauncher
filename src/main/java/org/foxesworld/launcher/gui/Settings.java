@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 public class Settings extends ComponentsAccessor implements SliderListener, DropBoxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
     private Launcher launcher;
     @Component
+    @SuppressWarnings("unused")
     private TextArea settingsInfo;
 
     public Settings(Launcher launcher) {

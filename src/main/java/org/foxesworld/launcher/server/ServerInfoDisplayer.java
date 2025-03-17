@@ -118,8 +118,6 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements DropBoxLi
             return;
         }
         ServerAttributes server = servers.get(index);
-
-        // Update UI components on the EDT.
         SwingUtilities.invokeLater(() -> {
             user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
             newsPanel.removeAll();

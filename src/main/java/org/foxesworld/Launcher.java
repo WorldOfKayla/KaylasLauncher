@@ -50,7 +50,7 @@ public class Launcher extends Engine {
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.setProperty("file.encoding", "UTF-8");
-        SwingUtilities.invokeLater(() -> {new  Launcher(null);});
+        SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
     }
 
     static {

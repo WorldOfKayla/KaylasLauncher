@@ -16,7 +16,7 @@ public class SplashScreenWindow extends JWindow {
         lottieSwingEngine = new Ascendix(LottieLoader.loadAnimation("assets/animation.json"));
 
         getContentPane().add(lottieSwingEngine.getAnimationPanel());
-        setSize(600, 360);
+        setSize(640, 360);
         setLocationRelativeTo(null);
         setBackground(new Color(0, 0, 0, 0));
         lottieSwingEngine.getAnimationPanel().setOpaque(false);

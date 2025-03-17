@@ -29,13 +29,9 @@ public class ServerParser extends HTTPrequest {
                 .thenApply(response -> {
                     try {
                         ServerAttributes[] serversArray = new Gson().fromJson(String.valueOf(response), ServerAttributes[].class);
-
-                        // Приведение типа List<?> → List<ServerAttributes>
                         List<ServerAttributes> parsedServers = List.of(serversArray);
-
                         serverNum = parsedServers.size();
                         Engine.getLOGGER().debug("Loaded {} servers for User {}", serverNum, login);
-
                         return parsedServers;
                     } catch (Exception e) {
                         Engine.getLOGGER().error("Error parsing server response: {}", e.getMessage(), e);

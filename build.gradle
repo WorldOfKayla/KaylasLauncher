@@ -49,8 +49,9 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.15.7-TET-all.jar')
+    implementation files('lib/foxesworld/fox-engine-1.15.8-TET-all.jar')
     implementation files('lib/foxesworld/Ascendix-1.8.6-SNAPSHOT.jar')
+    implementation 'org.javassist:javassist:3.29.2-GA'
 
     // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle
     //runtimeOnly 'com.guardsquare:proguard-gradle:7.6.1'
@@ -60,10 +61,24 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': properties.getProperty('project.mainclass')
+                'Main-Class': properties.getProperty('project.mainclass'),
+                'Premain-Class': properties.getProperty('project.premainclass'),
+                'Can-Redefine-Classes': 'true'
         )
     }
 }
+
+tasks.named('run', JavaExec) {
+    // Зависим от сборки shadowJar, чтобы артефакт уже существовал
+    dependsOn shadowJar
+    doFirst {
+        // Перед запуском получаем путь к собранному jar-у (shadowJar)
+        def agentJar = shadowJar.archiveFile.get().asFile.absolutePath
+        println "Используется javaagent: ${agentJar}"
+        jvmArgs += ["-javaagent:${agentJar}"]
+    }
+}
+
 
 apply plugin: "com.github.johnrengelman.shadow"
 

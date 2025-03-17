@@ -97,7 +97,6 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getLoadingManager().toggleVisibility();
-       // DownloadProcessor downloadProcessor = new DownloadProcessor(this.core.getLauncher().getGuiBuilder(), "download", List.of(TextArea.class));
         this.serverDescArea.setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
     }
 

@@ -10,8 +10,8 @@ import org.foxesworld.launcher.fileLoader.FileLoaderImpl;
 import org.foxesworld.launcher.game.GameLauncher;
 import org.foxesworld.launcher.game.GameTimeTask;
 import org.foxesworld.launcher.gui.ActionHandler;
-import org.foxesworld.test.DirWatcher;
-import org.foxesworld.test.FileProtector;
+import org.foxesworld.test.guard.DirWatcher;
+import org.foxesworld.test.guard.FileProtector;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -85,7 +85,6 @@ public class Core implements GameListener {
             fileProtector.protectDirectory(librariesPath);
             //fileProtector.protectDirectory(clientDir);
 
-            // нициализируем watcher
             DirWatcher dirWatcher = new DirWatcher(Arrays.asList(assetsPath, librariesPath, clientDir), event -> {
                 Launcher.LOGGER.warn("Detected event: " + event.getKind() + " on " + event.getPath());
             });
@@ -101,7 +100,6 @@ public class Core implements GameListener {
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-        // Завершаем сессию. Метод finishPlaying() вычисляет итоговое время сессии и отправляет запрос "donePlaying".
         gameTimeTask.finishPlaying();
         Engine.LOGGER.info("Сессия игры завершена для пользователя " + this.launcher.getUser().getLogin());
 

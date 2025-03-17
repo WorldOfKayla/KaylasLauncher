@@ -23,9 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-/**
- * Класс для обработки действий, реализующий динамическую регистрацию команд.
- */
 public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler implements DynamicCommandRegistry {
 
     protected Launcher launcher;

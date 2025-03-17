@@ -23,8 +23,8 @@ public class LauncherValidator extends HTTPrequest {
     }
 
     public void validate() {
-        this.validateLauncherFile();
-        this.validateJRE();
+        validateLauncherFile();
+        validateJRE();
     }
 
     private void validateLauncherFile() {
@@ -36,27 +36,32 @@ public class LauncherValidator extends HTTPrequest {
             return;
         }
 
-        this.sendAsync(Map.of(),
-                response -> {
+        sendAsyncCF(Map.of())
+                .thenAccept(response -> {
                     try {
-                        Launcher.LauncherAttributes launcherAttributes = new Gson().fromJson(String.valueOf(response), Launcher.LauncherAttributes.class);
+                        Launcher.LauncherAttributes launcherAttributes = new Gson()
+                                .fromJson(response, Launcher.LauncherAttributes.class);
                         Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
 
                         boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
                         if (!isValid) {
                             Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
-                            showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
+                            showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard",
+                                    JOptionPane.WARNING_MESSAGE, true);
                         }
                     } catch (JsonSyntaxException e) {
                         Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
                     }
-                },
-                error -> Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage())
-        );
+                })
+                .exceptionally(error -> {
+                    Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
+                    return null;
+                });
     }
 
     private void validateJRE() {
-        int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin").replaceAll("\\D", ""));
+        int launchingWith = Integer.parseInt(JVMHelper.getJavaVersion(System.getProperty("java.home") + "/bin")
+                .replaceAll("\\D", ""));
         int expectedJRE = Integer.parseInt(launcher.getEngineData().getProgramRuntime().replaceAll("\\D", ""));
 
         if (launchingWith != expectedJRE) {

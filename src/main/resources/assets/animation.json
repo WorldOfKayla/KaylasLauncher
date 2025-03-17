@@ -4,7 +4,7 @@
     "loop":false,
     "hardwareAccelerationEnabled": true,
     "scale": 1.0,
-    "totalFrames": 5000,
+    "totalFrames": 5500,
     "width": 640,
     "height": 350
   },
@@ -13,20 +13,19 @@
       "type": "image",
       "name": "Background",
       "shape": "image",
-      "color": "#FFFFFF",
       "imagePath": "",
       "keyframes": [
-        { "time": 2000,
+        { "time": 0,
           "effect": {
-            "type": "Background",
-            "parameters": {
-              "tint": ["#d59615", "#ff0000"],
-              "backgroundImage": "brand/bg.jpg",
-              "intensity": 0.8,
-              "duration": 3000,
-              "borderRadius": 35
-            }
-          }}
+          "type": "Background",
+          "parameters": {
+            "tint": ["#d59615", "#ff0000"],
+            "backgroundImage": "brand/bg.jpg",
+            "intensity": 0.8,
+            "duration": 3000,
+            "borderRadius": 35
+          }
+        }}
       ]
     },
     {
@@ -37,7 +36,7 @@
       "imagePath": "brand/aidenfox.png",
       "particles": {
         "particle": "heart",
-        "lifetime":  90,
+        "lifetime":  120,
         "fadeDuration": 30,
         "spacing": 128,
         "scale": 0.35,
@@ -59,17 +58,17 @@
       "imagePath": "brand/logo.png",
       "particles": {
         "particle": "smoke",
-        "lifetime":  140,
+        "lifetime":  150,
         "fadeDuration": 20,
         "spacing": 128.0,
         "scale": 0.5,
         "count": 10
       },
       "keyframes": [
-        { "time": 3000, "position": { "x": 480, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1, "soundFile": "whoosh.ogg", "volume":  0.3 },
-        { "time": 5000, "position": { "x": 480, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.1 },
-        { "time": 8000, "position": { "x": 480, "y": 50 },    "radius": 0.5, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 0.3 },
-        { "time": 10000, "position": { "x": 480, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 3000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.3 },
+        { "time": 5000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 8000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 10000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
     },
     {
@@ -79,50 +78,26 @@
       "color": "#FFFFFF",
       "imagePath": "brand/alt.png",
       "particles": {
-        "particle": "goldentrail",
-        "lifetime":  30,
+        "particle": "smoke",
+        "lifetime":  150,
         "fadeDuration": 12,
         "spacing": 128.0,
         "scale": 0.3,
-        "count": 10
+        "count": 15
       },
       "keyframes": [
-        { "time": 4800, "position": { "x": 480, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.2},
-        { "time": 8000, "position": { "x": 480, "y": 80 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.3, "scaleY": 1 },
-        { "time": 10000, "position": { "x": 480, "y": 80 }, "radius": 1, "rotation": 360, "opacity": 1, "scaleX": 0.8, "scaleY": 1 },
-        { "time": 12000, "position": { "x": 460, "y": 85 }, "radius": 0.9, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1,
+        { "time": 4800, "position": { "x": 490, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.2},
+        { "time": 7000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 10000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
+        { "time": 12000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1,
           "effect": {
-            "type": "Glow",
-            "parameters": {
-              "enabled": true,
-              "color": "#ffffff",
-              "radius": 15
-            }
-          }}
-      ]
-    },
-    {
-      "type": "image",
-      "name": "Aiwo Robotnik",
-      "shape": "image",
-      "color": "#FFFFFF",
-      "imagePath": "brand/robotnik.png",
-      "particles": {
-        "particle": "goldentrail",
-        "lifetime":  90,
-        "fadeDuration": 12,
-        "spacing": 128.0,
-        "scale": 0.5,
-        "count": 10
-      },
-      "keyframes": [
-        { "time": 10000, "position": { "x": 500, "y": 100 }, "radius": 1.00, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 1 , "soundFile":  "ha.ogg", "volume":  1.0},
-        { "time": 11000, "position": { "x": 430, "y": 125 }, "radius": 0.50, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 11300, "position": { "x": 430, "y": 125 }, "radius": 0.28, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 12600, "position": { "x": 430, "y": 125 }, "radius": 0.18, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 12900, "position": { "x": 430, "y": 125 }, "radius": 0.14, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 13200, "position": { "x": 430, "y": 125 }, "radius": 0.12, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 13500, "position": { "x": 430, "y": 125 }, "radius": 0.15, "rotation": 360, "opacity": 1, "scaleX": 1, "scaleY": 1}
+          "type": "Glow",
+          "parameters": {
+            "enabled": true,
+            "color": "#ffffff",
+            "radius": 15
+          }
+        }}
       ]
     },
     {
@@ -134,17 +109,17 @@
       "fontStyle": "italic",
       "text": "By FoxesWorld",
       "particles": {
-        "particle": "poof",
+        "particle": "generic",
         "lifetime":  900,
         "fadeDuration": 12,
         "spacing": 256.0,
         "scale": 0.3,
-        "count": 20
+        "count": 5
       },
       "keyframes": [
-        { "time": 1000, "position": { "x": 8000, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
-        { "time": 11000, "position": { "x": 1000, "y": 175 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0, "fontSize":  3},
-        { "time": 12000, "position": { "x": 380, "y": 175 }, "opacity": 1, "scaleX": 1, "scaleY": 1, "fontSize":  23}
+        { "time": 1000, "position": { "x": 2000, "y": 115 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
+        { "time": 11000, "position": { "x": 1000, "y": 115 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0, "fontSize":  3},
+        { "time": 12000, "position": { "x": 460, "y": 115 }, "opacity": 1, "scaleX": 1, "scaleY": 1, "fontSize":  23}
       ]
     }
   ]

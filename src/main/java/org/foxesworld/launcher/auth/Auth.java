@@ -6,27 +6,12 @@ import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.sound.PlaybackStatusListener;
 import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.launcher.config.Config;
-import org.foxesworld.launcher.user.User;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-/**
- * The Auth class is responsible for the authentication process, managing the user's session,
- * and loading related data.
- * Universal injectors (DataInjector) are used for asynchronous setting and retrieval of:
- * <ul>
- *     <li>List of servers (DataInjector&lt;String[]&gt;)</li>
- *     <li>Balance data (DataInjector&lt;ConcurrentHashMap&lt;String, AtomicInteger&gt;&gt;)</li>
- * </ul>
- * This allows subscribed components to receive up-to-date data immediately after loading,
- * which is especially important in a multi-threaded environment.
- */
 public class Auth {
     private final Launcher launcher;
     private final UserDataLoader userDataLoader;
@@ -38,7 +23,7 @@ public class Auth {
     private AuthStatus authStatus = AuthStatus.UNAUTHORISED;
     private static final Gson GSON = new Gson();
     private AuthResponse authResponse;
-    private  AuthRequest authRequest;
+    private AuthRequest authRequest;
 
     public Auth(Launcher launcher) {
         this.launcher = launcher;
@@ -52,9 +37,6 @@ public class Auth {
 
     /**
      * Выполняет задачу авторизации с заданной задачей после завершения.
-     *
-     * @param authCredentials Учетные данные пользователя.
-     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
     public void authTask(final Map<String, Object> authCredentials, Runnable onCompletion) {
         launcher.getExecutorServiceProvider().submitTask(() -> {
@@ -72,9 +54,6 @@ public class Auth {
 
     /**
      * Выполняет авторизацию через UI и выполняет переданную задачу после завершения.
-     *
-     * @param component UI-компонент.
-     * @param onCompletion Задача, выполняемая после завершения аутентификации.
      */
     public void formAuth(final JComponent component, Runnable onCompletion) {
         FormAuth formAuth = new FormAuth(this);
@@ -90,7 +69,7 @@ public class Auth {
     }
 
     /**
-     * Attempts to perform an automatic login using stored credentials.
+     * Пытается выполнить автоматический вход с использованием сохранённых учётных данных.
      */
     public void attemptAutoLogin() {
         final String login = config.getLogin();
@@ -110,107 +89,86 @@ public class Auth {
     }
 
     /**
-     * Выполняет асинхронную авторизацию с возможностью задания задачи по завершению.
+     * Выполняет асинхронную авторизацию, используя sendAsyncCF для получения CompletableFuture.
      *
-     * @param onCompletion Действие, выполняемое после завершения аутентификации (необязательно).
+     * @param onCompletion Действие, выполняемое после завершения аутентификации (опционально).
      * @return CompletableFuture с результатом авторизации.
      */
     public CompletableFuture<Boolean> authorizeAsync(Runnable onCompletion) {
         final String login = (String) authCredentials.get("login");
         final String password = (String) authCredentials.get("password");
         authRequest = new AuthRequest(engine, login, password);
-        final CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        authRequest.sendAsync(Collections.emptyMap(),
-                response -> handleAuthResponse(response, future, onCompletion),
-                error -> handleAuthError(error, future, onCompletion)
-        );
-
-        return future;
-    }
-
-    /**
-     * Обрабатывает успешный ответ от сервера и выполняет переданную задачу после авторизации.
-     *
-     * @param response Ответ сервера.
-     * @param future CompletableFuture для завершения операции.
-     * @param onCompletion Задача, выполняемая после завершения аутентификации.
-     */
-    private void handleAuthResponse(final Object response, final CompletableFuture<Boolean> future, Runnable onCompletion) {
-        try {
-            authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
-            if ("success".equals(authResponse.getType())) {
-                userDataLoader.loadUserData(authResponse.getLogin(), authResponse.getBalance(), () -> {
-                    handleSuccessfulAuth(authResponse);
-                    future.complete(true);
+        return authRequest.sendAsyncCF(Collections.emptyMap())
+                .thenCompose(response -> {
+                    try {
+                        authResponse = GSON.fromJson(String.valueOf(response), AuthResponse.class);
+                        if ("success".equals(authResponse.getType())) {
+                            return loadUserDataCF(authResponse.getLogin(), authResponse.getBalance())
+                                    .thenApply(v -> {
+                                        handleSuccessfulAuth(authResponse);
+                                        if (onCompletion != null) {
+                                            onCompletion.run();
+                                        }
+                                        return true;
+                                    });
+                        } else {
+                            launcher.getSOUND().playSound("other", "alert");
+                            launcher.showDialog(authResponse.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE, false);
+                            if (onCompletion != null) {
+                                onCompletion.run();
+                            }
+                            return CompletableFuture.completedFuture(false);
+                        }
+                    } catch (Exception e) {
+                        Engine.getLOGGER().error("Ошибка обработки ответа авторизации", e);
+                        if (onCompletion != null) {
+                            onCompletion.run();
+                        }
+                        return CompletableFuture.completedFuture(false);
+                    }
+                })
+                .exceptionally(error -> {
+                    Engine.getLOGGER().error("Ошибка авторизации: ", error);
+                    launcher.getSOUND().playSound("other", "alert");
                     if (onCompletion != null) {
                         onCompletion.run();
                     }
+                    return false;
                 });
-            } else {
-                launcher.getSOUND().playSound("other", "alert");
-                launcher.showDialog(authResponse.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE, false);
-                future.complete(false);
-                if (onCompletion != null) {
-                    onCompletion.run();
-                }
-            }
-        } catch (Exception e) {
-            Engine.getLOGGER().error("Ошибка обработки ответа авторизации", e);
-            future.completeExceptionally(e);
-            if (onCompletion != null) {
-                onCompletion.run();
-            }
-        }
     }
 
     /**
-     * Обрабатывает ошибку авторизации и выполняет переданную задачу после завершения.
-     *
-     * @param error Ошибка авторизации.
-     * @param future CompletableFuture для завершения операции.
-     * @param onCompletion Задача, выполняемая после завершения аутентификации.
+     * Вспомогательный метод для обёртки loadUserData с callback в CompletableFuture.
      */
-    private void handleAuthError(final Throwable error, final CompletableFuture<Boolean> future, Runnable onCompletion) {
-        Engine.getLOGGER().error("Ошибка авторизации: ", error);
-        launcher.getSOUND().playSound("other", "alert");
-        future.completeExceptionally(error);
-        if (onCompletion != null) {
-            onCompletion.run();
-        }
+    private CompletableFuture<Void> loadUserDataCF(String login, List<Map<String, Integer>> balance) {
+        CompletableFuture<Void> cf = new CompletableFuture<>();
+        userDataLoader.loadUserData(login, balance, () -> cf.complete(null));
+        return cf;
     }
 
     /**
-     * Handles successful authentication.
-     *
-     * @param authResponse The server response upon successful authentication.
+     * Обработка успешной авторизации.
      */
     private void handleSuccessfulAuth(final AuthResponse authResponse) {
         setAuthStatus(AuthStatus.AUTHORISED);
         this.launcher.getFrame().repaint();
         launcher.getSOUND().playSound("other", "login", new PlaybackStatusListener() {
             @Override
-            public void onPlaybackStarted(String s) {
-                // No actions
-            }
+            public void onPlaybackStarted(String s) { }
 
             @Override
             public void onPlaybackStopped(String s) {
                 if (launcher.getConfig().isBackgroundMusic()) {
-                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() -> {
-                        launcher.getSOUND().getSoundPlayer().stopAllSounds();
-                        launcher.getSOUND().playSound("music", "launcherTheme", true);
-                    });
+                    launcher.getSOUND().getSoundPlayer().onAllSoundsFinished(() -> launcher.getSOUND().playSound("music", "launcherTheme", true));
                 }
             }
 
             @Override
-            public void onPlaybackProgress(String s, long l, long l1) {
-                // No actions
-            }
+            public void onPlaybackProgress(String s, long l, long l1) { }
         });
 
-        // Save additional authentication data
+        // Сохранение дополнительных данных авторизации
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
@@ -225,7 +183,7 @@ public class Auth {
     }
 
     /**
-     * Logs out of the system.
+     * Выполняет выход из системы.
      */
     public void logOut() {
         Engine.getLOGGER().info("Logging out...");
@@ -237,9 +195,7 @@ public class Auth {
     }
 
     /**
-     * Saves the encrypted user credentials.
-     *
-     * @param credentials The user's credentials.
+     * Сохраняет зашифрованные учётные данные пользователя.
      */
     private void saveAuthCredentials(final Map<String, Object> credentials) {
         Map<String, Object> encryptedCredentials = new HashMap<>(credentials);
@@ -253,7 +209,7 @@ public class Auth {
     }
 
     /**
-     * Clears the user credentials.
+     * Очищает учётные данные пользователя.
      */
     private void clearCredentials() {
         Arrays.asList("login", "password").forEach(key -> {
@@ -290,13 +246,8 @@ public class Auth {
         this.authStatus = status;
     }
 
-
     public void setAuthCredentials(final Map<String, Object> authCredentials) {
         this.authCredentials = authCredentials;
-    }
-
-    public AuthResponse getAuthResponse() {
-        return authResponse;
     }
 
     public AuthRequest getAuthRequest() {

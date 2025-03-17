@@ -23,6 +23,7 @@ import java.util.function.Consumer;
  * processes it (scales and rounds the corners), caches it locally, and then returns it.
  * </p>
  */
+@SuppressWarnings("unused")
 public class ServerImageLoader extends HTTPrequest {
 
     private static final String CACHE_DIR = "cache/serverImages/";

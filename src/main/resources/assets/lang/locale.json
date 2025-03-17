@@ -17,7 +17,7 @@
     },
     "appTitle": {
       "en_US": "FoxesWorld",
-      "ru_RU": "FoxesWorld",
+      "ru_RU": "ЛисийМир",
       "pl_PL": "FoxesWorld"
     },
     "status": {
@@ -58,12 +58,29 @@
       "pl_PL": "Launcher jest nieważny!"
     }
   },
-  "settings": {
+  "pane": {
     "settingsButt": {
       "en_US": "Settings",
       "ru_RU": "Настройки",
       "pl_PL": "Ustawienia"
     },
+    "uploadSkin": {
+      "en_US": "Upload Skin",
+      "ru_RU": "Загрузить скин",
+      "pl_PL": "Zagruzit' Skin"
+    },
+    "website": {
+      "en_US": "Foxesworld Site",
+      "ru_RU": "Сайт Лисьего Мира",
+      "pl_PL": "Domoi"
+    },
+    "logOut": {
+      "en_US": "Log Out",
+      "ru_RU": "Выйти",
+      "pl_PL": "Wyloguj się"
+    }
+  },
+  "settings": {
     "back": {
       "en_US": "Back",
       "ru_RU": "Назад",
@@ -271,11 +288,6 @@
       "en_US": "You're in!",
       "ru_RU": "Привет!",
       "pl_PL": "Jesteś zalogowany!"
-    },
-    "logOut": {
-      "en_US": "Log Out",
-      "ru_RU": "Выйти",
-      "pl_PL": "Wyloguj się"
     },
     "toGame": {
       "en_US": "To game",

@@ -7,13 +7,13 @@ import org.foxesworld.engine.gui.componentAccessor.Component;
 import org.foxesworld.engine.gui.components.dropBox.DropBox;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.utils.HTTP.OnFailure;
-import org.foxesworld.engine.utils.HTTP.OnSuccess;
 import org.foxesworld.engine.utils.HTTP.RequestState;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
+import org.foxesworld.launcher.user.loader.HeadLoader;
+import org.foxesworld.launcher.user.loader.SkinLoader;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.utils.DataInjector;
 
@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User extends org.foxesworld.engine.user.User {
@@ -61,24 +60,26 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void initializeUser() {
-        RequestState status = auth.getAuthRequest().getRequestState();
-        if(status != RequestState.FAILED) {
-            if (status == RequestState.PENDING) {
-                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
-                waitForAuthorization();
-                return;
-            }
+        if(auth.getAuthRequest() != null) {
+            RequestState status = auth.getAuthRequest().getRequestState();
+            if (status != RequestState.FAILED) {
+                if (status == RequestState.PENDING) {
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                    waitForAuthorization();
+                    return;
+                }
 
-            if (status == RequestState.SUCCESS) {
-                engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
-                this.serverInfoDisplayer = new ServerInfoDisplayer(this);
-                this.skinLoader = new SkinLoader(this);
-                setUserSpace();
-                serverInfoDisplayer.displayServerInfo(launcher.getConfig().getSelectedServer());
-            } else {
-                engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                if (status == RequestState.SUCCESS) {
+                    engine.getPanelVisibility().displayPanel("loggedForm->true|newsForm->true|authForm->false");
+                    this.serverInfoDisplayer = new ServerInfoDisplayer(this);
+                    this.skinLoader = new SkinLoader(this);
+                    setUserSpace();
+                    serverInfoDisplayer.displayServerInfo(launcher.getConfig().getSelectedServer());
+                } else {
+                    engine.getPanelVisibility().displayPanel("loggedForm->false|newsForm->true|authForm->true");
+                }
+                getPanel().repaint();
             }
-            getPanel().repaint();
         }
     }
 
@@ -192,8 +193,8 @@ public class User extends org.foxesworld.engine.user.User {
                 int port = serverAttr.getPort();
                 String[] status = serverInfo.pollServer(ip, port);
                 // Дополнительная логика обработки статуса сервера
-                String text = serverInfo.genServerStatus(status);
-                BufferedImage img = serverInfo.genServerIcon(status);
+                //String text = serverInfo.genServerStatus(status);
+                //BufferedImage img = serverInfo.genServerIcon(status);
             } catch (Exception e) {
                 Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
             }
@@ -335,10 +336,6 @@ public class User extends org.foxesworld.engine.user.User {
         return launcher;
     }
 
-    public LoggedForm getUserServers() {
-        return loggedForm;
-    }
-
     public String getUuid() {
         return userAttributes.uuid;
     }
@@ -350,28 +347,11 @@ public class User extends org.foxesworld.engine.user.User {
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
-
-    public ServerInfoDisplayer getServerInfoDisplayer() {
-        return serverInfoDisplayer;
-    }
-
     public UserGroup getUserGroup() {
         if (auth.getAuthStatus() == AuthStatus.AUTHORISED) {
             return UserGroup.fromGroupId(Integer.parseInt((String) userAttributes.group));
         }
         return UserGroup.GUEST;
-    }
-
-    public int getUserIntGroup() {
-        return Integer.parseInt((String) userAttributes.group);
-    }
-
-    public String getUserFullName() {
-        return userAttributes.userFullName;
-    }
-
-    public String getColorScheme() {
-        return userAttributes.colorScheme;
     }
     private void runOnEDT(Runnable task) {
         SwingUtilities.invokeLater(task);

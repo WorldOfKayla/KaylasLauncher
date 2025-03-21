@@ -1,7 +1,7 @@
 {
   "config": {
     "fps": 732,
-    "loop":false,
+    "loop": false,
     "hardwareAccelerationEnabled": true,
     "scale": 1.0,
     "totalFrames": 5500,
@@ -15,17 +15,20 @@
       "shape": "image",
       "imagePath": "",
       "keyframes": [
-        { "time": 0,
+        {
+          "time": 0,
+          "position": { "x": 200, "y": 150 },
           "effect": {
-          "type": "Background",
-          "parameters": {
-            "tint": ["#d59615", "#ff0000"],
-            "backgroundImage": "brand/bg.jpg",
-            "intensity": 0.8,
-            "duration": 3000,
-            "borderRadius": 35
+            "type": "Background",
+            "parameters": {
+              "tint": ["#d59615", "#ff0000"],
+              "backgroundImage": "brand/bg.jpg",
+              "intensity": 0.8,
+              "duration": 5000,
+              "borderRadius": 35
+            }
           }
-        }}
+        }
       ]
     },
     {
@@ -36,17 +39,17 @@
       "imagePath": "brand/aidenfox.png",
       "particles": {
         "particle": "heart",
-        "lifetime":  120,
-        "fadeDuration": 30,
+        "lifetime": 120,
+        "fadeDuration": 90,
         "spacing": 128,
         "scale": 0.35,
-        "count": 3
+        "count": 10
       },
       "keyframes": [
-        {"time":  0, "soundFile":  "intro.ogg", "volume":  0.5},
-        { "time": 1000, "position": { "x": -500, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.6, "scaleX": 1, "scaleY": 1 },
-        { "time": 2000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.7, "scaleX": 1, "scaleY": 1 },
-        { "time": 3000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.8, "scaleX": 1, "scaleY": 1 },
+        { "time": 0, "soundFile": "intro", "volume": 0.5 },
+        { "time": 2000, "position": { "x": -200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.6, "scaleX": 1, "scaleY": 1 },
+        { "time": 3500, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.7, "scaleX": 1, "scaleY": 1 },
+        { "time": 4000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 0.8, "scaleX": 1, "scaleY": 1 },
         { "time": 5000, "position": { "x": 200, "y": 150 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1}
       ]
     },
@@ -58,17 +61,20 @@
       "imagePath": "brand/logo.png",
       "particles": {
         "particle": "smoke",
-        "lifetime":  150,
+        "lifetime": 150,
         "fadeDuration": 20,
         "spacing": 128.0,
         "scale": 0.5,
         "count": 10
       },
       "keyframes": [
-        { "time": 3000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.3 },
-        { "time": 5000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 8000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 10000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+        { "time": 4000, "position": { "x": 500, "y": -1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1,     "scaleY": 1, "soundFile": "flyIn", "volume": 0.4 },
+        { "time": 5000, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.80,  "scaleY": 1.20 },
+        { "time": 5150, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1.10,  "scaleY": 0.90 },
+        { "time": 5300, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.95,  "scaleY": 1.05 },
+        { "time": 5450, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1.02,  "scaleY": 0.98 },
+        { "time": 5550, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.99,  "scaleY": 1.01 },
+        { "time": 5650, "position": { "x": 500, "y": 50 },    "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1,     "scaleY": 1}
       ]
     },
     {
@@ -79,47 +85,59 @@
       "imagePath": "brand/alt.png",
       "particles": {
         "particle": "smoke",
-        "lifetime":  150,
+        "lifetime": 150,
         "fadeDuration": 12,
         "spacing": 128.0,
         "scale": 0.3,
         "count": 15
       },
       "keyframes": [
-        { "time": 4800, "position": { "x": 490, "y": 1000 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1, "soundFile": "whoosh.ogg", "volume":  0.2},
-        { "time": 7000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 10000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 },
-        { "time": 12000, "position": { "x": 490, "y": 85 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1,
-          "effect": {
-          "type": "Glow",
-          "parameters": {
-            "enabled": true,
-            "color": "#ffffff",
-            "radius": 15
-          }
-        }}
+        { "time": 4800, "position": { "x": 490, "y": 65 },   "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 0},
+        { "time": 6000, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 0.1, "scaleX": 0.80,  "scaleY": 1.20 },
+        { "time": 6150, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1.10,  "scaleY": 0.90 },
+        { "time": 6300, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.95,  "scaleY": 1.05 },
+        { "time": 6450, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1.02,  "scaleY": 0.98 },
+        { "time": 6600, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 0.99,  "scaleY": 1.01 },
+        { "time": 6750, "position": { "x": 490, "y": 85 },   "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1,     "scaleY": 1 }
       ]
     },
     {
-      "type": "text",
+      "type": "image",
       "name": "authority",
-      "shape": "text",
-      "textColor": "#000000",
-      "fontName": "Sans Serif",
-      "fontStyle": "italic",
-      "text": "By FoxesWorld",
+      "shape": "image",
+      "imagePath": "brand/authority.png",
       "particles": {
-        "particle": "generic",
-        "lifetime":  900,
+        "particle": "poof",
+        "lifetime": 900,
         "fadeDuration": 12,
         "spacing": 256.0,
         "scale": 0.3,
-        "count": 5
+        "count": 10
       },
       "keyframes": [
-        { "time": 1000, "position": { "x": 2000, "y": 115 }, "opacity": 1, "scaleX": 1, "scaleY": 1},
-        { "time": 11000, "position": { "x": 1000, "y": 115 }, "opacity": 0.1, "scaleX": 1, "scaleY": 1,  "soundFile":  "whoosh1.ogg", "volume":  1.0, "fontSize":  3},
-        { "time": 12000, "position": { "x": 460, "y": 115 }, "opacity": 1, "scaleX": 1, "scaleY": 1, "fontSize":  23}
+        { "time": 1000, "position": { "x": 960, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 0.0, "scaleY": 0.0 },
+        { "time": 7800, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 5, "opacity": 0, "scaleX": 0.1, "scaleY": 0.1, "soundFile": "flyIn", "volume": 0.4 },
+        { "time": 8500, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 10, "opacity": 0, "scaleX": 0.1, "scaleY": 1, "soundFile": "flyIn", "volume": 0.4 },
+        { "time": 9000, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "fox",
+      "shape": "image",
+      "imagePath": "brand/fox.png",
+      "keyframes": [
+        { "time": 9000, "position": { "x": 540, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0.0, "scaleX": 1, "scaleY": 1},
+        { "time": 9500, "position": { "x": 580, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0.5, "scaleX": 1, "scaleY": 1},
+        { "time": 9800, "position": { "x": 580, "y": 115 }, "radius": 1, "rotation": 35, "opacity": 1, "scaleX": 1, "scaleY": 1, "soundFile": "sniff", "volume": 0.2},
+        { "time": 10000, "position": { "x": 580, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1,
+          "effect": {
+            "type": "Gloss",
+            "parameters": {
+              "duration": 5000,
+              "borderRadius": 35
+            }
+          }}
       ]
     }
   ]

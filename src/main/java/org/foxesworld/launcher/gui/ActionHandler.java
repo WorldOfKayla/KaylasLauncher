@@ -306,12 +306,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
         // Завершение работы приложения
         registerCommand("closeButton", e -> {
-            this.launcher.getFrame().setVisible(false);
+            //this.launcher.getFrame().setVisible(false);
             this.launcher.getExecutorServiceProvider().shutdown();
-            this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
-                this.launcher.getExecutorServiceProvider().shutdown();
+            //this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
+            //    this.launcher.getExecutorServiceProvider().shutdown();
                 System.exit(0);
-            });
+            //});
         });
 
         // Свернуть окно

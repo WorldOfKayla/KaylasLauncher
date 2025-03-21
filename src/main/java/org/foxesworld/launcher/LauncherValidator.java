@@ -11,11 +11,15 @@ import org.foxesworld.engine.utils.helper.JVMHelper;
 import javax.swing.*;
 import java.util.Map;
 import java.util.Objects;
+import java.net.ServerSocket;
+import java.io.IOException;
 
 public class LauncherValidator extends HTTPrequest {
     private final Launcher launcher;
     @HttpParam
     private final String sysRequest = "downloadLatest";
+    private static ServerSocket instanceSocket;
+    private static final int bindPort = 45678;
 
     public LauncherValidator(Launcher launcher) {
         super(launcher, "POST");
@@ -23,8 +27,24 @@ public class LauncherValidator extends HTTPrequest {
     }
 
     public void validate() {
+        checkSingleInstance();
         validateLauncherFile();
         validateJRE();
+    }
+
+    /**
+     * Checks that no other instance of the application is running by attempting to bind
+     * a server socket to a specific port. If the binding fails, an error message is displayed
+     * and the application terminates.
+     */
+    private void checkSingleInstance() {
+        try {
+            instanceSocket = new ServerSocket(bindPort);
+            Launcher.LOGGER.info("Successfully bound to port {}. No other instances detected.", bindPort);
+        } catch (IOException e) {
+            Launcher.LOGGER.error("Another instance of the launcher is already running: " + e.getMessage());
+            showDialog("error.alreadyRunning", launcher.getAppTitle() + " Guard", JOptionPane.WARNING_MESSAGE, true);
+        }
     }
 
     private void validateLauncherFile() {
@@ -82,5 +102,13 @@ public class LauncherValidator extends HTTPrequest {
 
     private synchronized void showDialog(String messageKey, String title, int messageType, boolean isModal) {
         launcher.showDialog(messageKey, title, messageType, isModal);
+    }
+
+    public static void closeSocket(){
+        try {
+            instanceSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

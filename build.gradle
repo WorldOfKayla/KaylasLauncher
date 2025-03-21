@@ -49,9 +49,9 @@ repositories {
 }
 
 dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.15.8-TET-all.jar')
-    implementation files('lib/foxesworld/Ascendix-1.8.6-SNAPSHOT.jar')
-    implementation 'org.javassist:javassist:3.29.2-GA'
+    implementation files('lib/foxesworld/fox-engine-1.15.9-TET-all.jar')
+    implementation files('lib/foxesworld/Ascendix-1.11.0-SNAPSHOT.jar')
+    //implementation 'org.javassist:javassist:3.29.2-GA'
 
     // https://mvnrepository.com/artifact/com.guardsquare/proguard-gradle
     //runtimeOnly 'com.guardsquare:proguard-gradle:7.6.1'

@@ -17,6 +17,7 @@ import org.foxesworld.engine.gui.components.textArea.TextArea;
 import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.gui.components.textfield.TextFieldListener;
 import org.foxesworld.engine.utils.DataInjector;
+import org.foxesworld.launcher.LauncherValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,6 +41,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     }
 
     public void applySettings(String panelId) {
+        LauncherValidator.closeSocket();
         for (Map.Entry<String, Object> entry : this.collectFormCredentialsForPanel(panelId).entrySet()) {
             Object value = determineValueType(entry.getValue());
             this.launcher.getConfig().setConfigValue(entry.getKey(), value);

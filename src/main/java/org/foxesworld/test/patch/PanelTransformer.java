@@ -1,5 +1,6 @@
 package org.foxesworld.test.patch;
 
+/*
 import javassist.*;
 import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
@@ -127,3 +128,4 @@ public class PanelTransformer implements ClassFileTransformer {
         });
     }
 }
+*/

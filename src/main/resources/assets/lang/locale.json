@@ -52,6 +52,11 @@
       "ru_RU": "Ваш лаунчер нуждается в обновлении!",
       "pl_PL": "Launcher jest nieważny!"
     },
+    "alreadyRunning": {
+      "en_US": "The launcher is already running!",
+      "ru_RU": "Лаунчер уже запущен!",
+      "pl_PL": "Launcher jest Zapushen kurwa!11!1!!"
+    },
     "file": {
       "en_US": "File read error!",
       "ru_RU": "Ошибка получения файлов!",
@@ -200,6 +205,11 @@
       "en_US": "Height",
       "ru_RU": "",
       "pl_PL": "Wysokość"
+    },
+    "gameFiles": {
+      "en_US": "GameFiles",
+      "ru_RU": "Файлы игры",
+      "pl_PL": "Igrovie Faily"
     }
   },
   "auth": {

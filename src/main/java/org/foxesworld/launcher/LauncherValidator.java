@@ -56,8 +56,7 @@ public class LauncherValidator extends HTTPrequest {
             return;
         }
 
-        sendAsyncCF(Map.of())
-                .thenAccept(response -> {
+        sendAsyncCF(Map.of()).thenAccept(response -> {
                     try {
                         Launcher.LauncherAttributes launcherAttributes = new Gson()
                                 .fromJson(response, Launcher.LauncherAttributes.class);

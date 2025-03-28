@@ -115,9 +115,6 @@ public class Auth {
                         } else {
                             launcher.getSOUND().playSound("other", "alert");
                             launcher.showDialog(authResponse.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE, false);
-                            if (onCompletion != null) {
-                                onCompletion.run();
-                            }
                             return CompletableFuture.completedFuture(false);
                         }
                     } catch (Exception e) {

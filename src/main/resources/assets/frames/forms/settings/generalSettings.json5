@@ -88,7 +88,7 @@
                   id: "langBoxLabel",
                   bounds: {
                     x: 40,
-                    y: 290,
+                    y: 285,
                     size: {
                       width: 250,
                       height: 50
@@ -101,7 +101,7 @@
                   id: "lang",
                   bounds: {
                     x: 40,
-                    y: 325,
+                    y: 320,
                     size: {
                       width: 380,
                       height: 25
@@ -126,7 +126,7 @@
                 {
                 type: "fileSelector",
                 selectionMode: "DIRECTORIES_ONLY",
-                  id: "homeDir",
+                id: "homeDir",
 		        styles: {
 					"textField": "textFieldMain",
 					"button": "altButton"
@@ -135,28 +135,12 @@
                   iconWidth: 20,
                   iconHeight: 24,
                   initialValue: "config#homeDir",
-                  layoutConfig: {
-                    "button": {
-                      "x": 20,
-                      "y": 0,
-                      "width": 32,
-                      "height": 32,
-                      zIndex: 1
-                    },
-                    "textField": {
-                      "x": 0,
-                      "y": 0,
-                      "width": 380,
-                      "height": 45,
-                      zIndex: 0
-                    }
-                  },
                   bounds: {
                     x: 40,
                     y: 380,
                     size: {
                       width: 380,
-                      height: 45
+                      height: 35
                     }
                   }
                 }

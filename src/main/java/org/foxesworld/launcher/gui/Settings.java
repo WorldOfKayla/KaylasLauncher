@@ -179,7 +179,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Drop
     @Override
     public void onSliderChange(CompositeSlider compositeSlider) {
         SwingUtilities.invokeLater(() -> {
-            int value = compositeSlider.getValue();
+            int value = (int) compositeSlider.getValue();
             switch (compositeSlider.getName()) {
                 case "volume" -> {
                     launcher.getConfig().setVolume(value);

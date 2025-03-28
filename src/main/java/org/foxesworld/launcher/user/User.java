@@ -11,6 +11,7 @@ import org.foxesworld.engine.utils.HTTP.RequestState;
 import org.foxesworld.engine.utils.ServerInfo;
 import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthStatus;
+import org.foxesworld.launcher.gui.BlendedImageIcon;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
 import org.foxesworld.launcher.user.loader.HeadLoader;
 import org.foxesworld.launcher.user.loader.SkinLoader;
@@ -118,28 +119,68 @@ public class User extends org.foxesworld.engine.user.User {
 
     public void setUserSpace() {
         setDropBoxData(loggedForm.getServerBox());
-
         setUserGroupLabel();
         setupDiscordRpc();
         auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
-        loggedForm.getGreetUser().setText(lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
+        loggedForm.getGreetUser().setText(
+                lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()})
+        );
         headLoader = new HeadLoader(launcher, "GET");
         setUserHeadIcon(getLogin());
+
         skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
-            Label skinLabel = loggedForm.getUserSkin();
+            JLabel skinLabel = loggedForm.getUserSkin();
+
+            // Установка начальной иконки с изображением front
             skinLabel.setIcon(new ImageIcon(front));
+
+            // Если компонент активен, устанавливаем слушатели для плавной смены скина
             if (skinLabel.isEnabled()) {
+                // Параметры анимации
+                final int animationDuration = 10; // общая длительность анимации в мс
+                final int animationSteps = 25;       // количество шагов обновления
+                final int delay = animationDuration / animationSteps; // интервал между шагами в мс
+
                 skinLabel.addMouseListener(new MouseAdapter() {
+                    Timer timer;
+                    float alpha = 0f;
+
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        skinLabel.setIcon(new ImageIcon(back));
+                        if (timer != null && timer.isRunning()) {
+                            timer.stop();
+                        }
+                        alpha = 0f;
+                        timer = new Timer(delay, null);
+                        timer.addActionListener(ae -> {
+                            alpha += 1.0f / animationSteps;
+                            if (alpha >= 1f) {
+                                alpha = 1f;
+                                timer.stop();
+                            }
+                            skinLabel.setIcon(new BlendedImageIcon(front, back, alpha));
+                        });
+                        timer.start();
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        skinLabel.setIcon(new ImageIcon(front));
+                        if (timer != null && timer.isRunning()) {
+                            timer.stop();
+                        }
+                        alpha = 1f;
+                        timer = new Timer(delay, null);
+                        timer.addActionListener(ae -> {
+                            alpha -= 1.0f / animationSteps;
+                            if (alpha <= 0f) {
+                                alpha = 0f;
+                                timer.stop();
+                            }
+                            skinLabel.setIcon(new BlendedImageIcon(front, back, alpha));
+                        });
+                        timer.start();
                     }
                 });
             }
@@ -147,6 +188,7 @@ public class User extends org.foxesworld.engine.user.User {
 
         notifyUserLoggedIn();
     }
+
 
     private void setDropBoxData(DropBox dropBox) {
         String[] servers = auth.getUserDataLoader().getUserServersArray();

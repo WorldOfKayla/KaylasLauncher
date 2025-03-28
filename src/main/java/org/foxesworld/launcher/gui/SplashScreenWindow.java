@@ -10,7 +10,7 @@ import java.awt.*;
 public class SplashScreenWindow extends JWindow {
     private final Ascendix lottieSwingEngine;
 
-    public SplashScreenWindow() {;
+    public SplashScreenWindow() {
         System.setProperty("log.dir", System.getProperty("user.dir"));
         System.setProperty("log.level", "INFO");
         lottieSwingEngine = new Ascendix(LottieLoader.loadAnimation("assets/animation.json"));

@@ -80,16 +80,6 @@ public class Launcher extends Engine {
         }
     }
 
-    private void safeSubmitTask(Runnable task, String taskName) {
-        this.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                task.run();
-            } catch (Exception e) {
-                getLOGGER().error("Ошибка в задаче " + taskName, e);
-            }
-        }, taskName);
-    }
-
     @Override
     protected void preInit() {
         this.config = new Config(this);
@@ -120,7 +110,6 @@ public class Launcher extends Engine {
         setupDiscord();
 
         safeSubmitTask(() -> {
-
             buildGui(getEngineData().getStyles());
             loadMainPanel(fileProperties.getMainFrame());
         }, "init");

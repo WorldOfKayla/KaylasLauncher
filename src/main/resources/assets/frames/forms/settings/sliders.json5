@@ -85,6 +85,41 @@
           height: 65
         }
       }
-    }
+    }/*,
+    {
+      type: "compositeComponent",
+      id: "test",
+      visible: true,
+      opaque: false,
+      childComponents: [
+        {
+          type: "label",
+          style: "title",
+          fontSize: 12,
+          localeKey: "settings.ramField",
+          id: "ramLabel",
+          bounds: {
+            x: 0,
+            y: 0,
+            size: {
+              width: 290,
+              height: 25
+            }
+          }
+        },
+        {
+          type: "slider"
+
+        }
+      ],
+      bounds: {
+        x: 35,
+        y: 230,
+        size: {
+          width: 430,
+          height: 65
+        }
+      }
+    },*/
   ]
 }

@@ -16,7 +16,7 @@ public class FileGuardImpl implements FileGuardListener {
     @Override
     public void onFilesChecked(int filesDeleted) {
         Engine.getLOGGER().debug("--==|Files checked|==--");
-        Engine.getLOGGER().info(filesDeleted + " removed");
+        Engine.getLOGGER().info("{} files removed", filesDeleted);
         core.getActionHandler().getEngine().getSOUND().getSoundPlayer().stopAllSounds();
         core.getGameLauncher().launchGame();
     }

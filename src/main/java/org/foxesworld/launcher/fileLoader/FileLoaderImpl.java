@@ -8,8 +8,6 @@ import org.foxesworld.engine.fileLoader.FileLoader;
 import org.foxesworld.engine.fileLoader.FileLoaderListener;
 import org.foxesworld.engine.fileLoader.fileGuard.FileGuard;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
-import org.foxesworld.engine.gui.componentAccessor.Component;
-import org.foxesworld.engine.gui.componentAccessor.ComponentsAccessor;
 import org.foxesworld.engine.gui.components.button.Button;
 import org.foxesworld.engine.gui.components.label.Label;
 import org.foxesworld.engine.gui.components.textArea.TextArea;
@@ -30,28 +28,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderListener {
+public class FileLoaderImpl implements FileLoaderListener {
     private final Core core;
+    private FileLoaderUI fileLoaderUI;
     private final DownloadUtils downloadUtils;
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
-    @SuppressWarnings("unused")
-    @Component
-    private Label progressLabel, downloadFile, downloadDirectory;
-    @SuppressWarnings("unused")
-    @Component
-    private JProgressBar progressBar;
-
-    @SuppressWarnings("unused")
-    @Component
-    private TextArea serverDescArea;
-
-    @SuppressWarnings("unused")
-    @Component("cancelDownload-small")
-    private Button cancelDownload;
 
     public FileLoaderImpl(Core core) {
-        super(core.getLauncher().getGuiBuilder(), "download", List.of(JProgressBar.class, Label.class, TextArea.class, Button.class));
+
         this.core = core;
         this.downloadUtils = core.getFileLoader().getDownloadUtils();
     }
@@ -59,18 +44,12 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        initializeDownloadComponents();
+        this.fileLoaderUI = new FileLoaderUI(this, "download", List.of(JProgressBar.class, Label.class, TextArea.class, Button.class));
         setupGameLauncher();
         if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
             addJreToLoadAsync(core.getGameLauncher().getCurrentJre());
         }
         core.getFileLoader().downloadFiles();
-    }
-
-    private void initializeDownloadComponents() {
-        downloadUtils.setProgressBar(this.progressBar);
-        downloadUtils.setProgressLabel(this.progressLabel);
-        downloadUtils.setCancelButton(this.cancelDownload);
     }
 
     private void setupGameLauncher() {
@@ -97,7 +76,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
     public void onDownloadStart() {
         core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
         core.getLauncher().getLoadingManager().toggleVisibility();
-        this.serverDescArea.setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
+        this.fileLoaderUI.getServerDescArea().setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
     }
 
     @Override
@@ -187,30 +166,27 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
     private void startDownload(FileLoader fileLoader, FileAttributes currentFile, String fullPath) {
         String encodedFilename = currentFile.getFilename().replace(" ", "%20");
-        fileLoader.getDownloadUtils().downloader(encodedFilename, fullPath, fileLoader.getTotalSize());
+        fileLoader.getDownloadUtils().downloader(encodedFilename, fullPath);
     }
 
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-
-        downloadFile.setText(new File(localPath).getName());
-        downloadDirectory.setText(String.valueOf(new File(localPath).getParentFile()));
-        downloadFile.setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + this.core.getFileLoader().getFileExtension(currentFile.getFilename()) + ".svg", 36f, 38f));
-
-        this.getPanel().updateUI();
-        this.getPanel().repaint();
-        this.getPanel().revalidate();
+        this.fileLoaderUI.getDownloadFile().setText(new File(localPath).getName());
+        this.fileLoaderUI.getDownloadDirectory().setText(String.valueOf(new File(localPath).getParentFile()));
+        this.fileLoaderUI.getDownloadFile().setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + this.core.getFileLoader().getFileExtension(currentFile.getFilename()) + ".svg", 36f, 38f));
+        this.fileLoaderUI.getDownloadSpeed().setText(String.valueOf(this.core.getFileLoader().getDownloadUtils().getFormatedSpeed()));
+        this.fileLoaderUI.getPanel().updateUI();
+        this.fileLoaderUI.getPanel().repaint();
+        this.fileLoaderUI.getPanel().revalidate();
     }
-
     private void unpackRuntimeZipIfNeeded(String fullPath) {
         if (fullPath.contains("runtime") && fullPath.contains("zip")) {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }
-
     @Override
     public void filesProcessed() {
-        this.progressBar.setValue(100);
+        this.fileLoaderUI.getProgressBar().setValue(100);
     }
 
     @Override
@@ -218,7 +194,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
         core.getLauncher().getExecutorServiceProvider().shutdown();
-        this.progressBar.setValue(0);
+        this.fileLoaderUI.getProgressBar().setValue(0);
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
@@ -230,8 +206,7 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
         addReplaceVars("serverName", serverName);
         addReplaceVars("port", port);
 
-        Map<String, Pattern> variablePatterns = varsToReplace.keySet().stream()
-                .collect(Collectors.toMap(var -> var, var -> Pattern.compile("\\$\\{" + var + "}")));
+        Map<String, Pattern> variablePatterns = varsToReplace.keySet().stream().collect(Collectors.toMap(var -> var, var -> Pattern.compile("\\$\\{" + var + "}")));
 
         for (EngineData.ReplaceMask mask : replaceTemplate) {
             String maskKey = mask.getMask();
@@ -247,6 +222,14 @@ public class FileLoaderImpl extends ComponentsAccessor implements FileLoaderList
 
             replaceMasks.put(maskKey, maskValue);
         }
+    }
+
+    public Core getCore() {
+        return core;
+    }
+
+    public DownloadUtils getDownloadUtils() {
+        return downloadUtils;
     }
 
     private String replaceVariableValue(Pattern pattern, String originalValue, String replacementValue) {

@@ -114,6 +114,24 @@
                       height: 40
                     }
                   }
+                },
+                {
+                  type: "label",
+                  fontSize: 14,
+                  color: "#636c73bf",
+                  style: "title",
+                  imageIcon: "assets/ui/icons/speed.svg",
+                  iconWidth: 36,
+                  iconHeight: 36,
+                  id: "downloadSpeed",
+                  bounds: {
+                    x: 20,
+                    y: 90,
+                    size: {
+                      width: 600,
+                      height: 40
+                    }
+                  }
                 }
               ]
             }

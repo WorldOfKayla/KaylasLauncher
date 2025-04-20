@@ -115,11 +115,13 @@
         "count": 10
       },
       "keyframes": [
-        { "time": 1000, "position": { "x": 960, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 0.0, "scaleY": 0.0 },
-        { "time": 7800, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 5, "opacity": 0, "scaleX": 0.1, "scaleY": 0.1, "soundFile": "flyIn", "volume": 0.4 },
-        { "time": 8500, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 10, "opacity": 0, "scaleX": 0.1, "scaleY": 1, "soundFile": "flyIn", "volume": 0.4 },
+        { "time": 1000, "position": { "x": 960, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 0.0 },
+        { "time": 7800, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 0.1, "soundFile": "flyIn", "volume": 0.4 },
+        { "time": 8500, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 0, "scaleX": 1, "scaleY": 0.5, "soundFile": "flyIn", "volume": 0.4 },
         { "time": 9000, "position": { "x": 460, "y": 115 }, "radius": 1, "rotation": 0, "opacity": 1, "scaleX": 1, "scaleY": 1 }
       ]
+
+
     },
     {
       "type": "image",

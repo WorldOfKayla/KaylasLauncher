@@ -3,7 +3,7 @@ package org.foxesworld.launcher.user;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-class UserAttributes {
+public class UserAttributes {
 
     @SuppressWarnings("unused")
     String login, password, token, uuid, colorScheme, userAction, groupName, userFullName;
@@ -44,4 +44,43 @@ class UserAttributes {
         return targetType.cast(value);
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getColorScheme() {
+        return colorScheme;
+    }
+
+    public String getUserAction() {
+        return userAction;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
+    }
+
+    public Object getGroup() {
+        return group;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
 }

@@ -13,6 +13,7 @@ import org.foxesworld.launcher.auth.Auth;
 import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.gui.BlendedImageIcon;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
+import org.foxesworld.launcher.user.loader.GroupLoader;
 import org.foxesworld.launcher.user.loader.HeadLoader;
 import org.foxesworld.launcher.user.loader.SkinLoader;
 import org.foxesworld.notification.Notification;
@@ -40,6 +41,7 @@ public class User extends org.foxesworld.engine.user.User {
     private ServerInfoDisplayer serverInfoDisplayer;
     private SkinLoader skinLoader;
     private HeadLoader headLoader;
+    private GroupLoader groupLoader;
     private JFrame taskMgrFrame;
 
     @Component
@@ -122,6 +124,8 @@ public class User extends org.foxesworld.engine.user.User {
         setUserGroupLabel();
         setupDiscordRpc();
         auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
+        groupLoader = new GroupLoader(this);
+        groupLoader.getUserGroup();
         loggedForm.getGreetUser().setText(
                 lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()})
         );
@@ -185,6 +189,8 @@ public class User extends org.foxesworld.engine.user.User {
                 });
             }
         });
+
+
 
         notifyUserLoggedIn();
     }
@@ -287,8 +293,7 @@ public class User extends org.foxesworld.engine.user.User {
 
     private void setUserGroupLabel() {
         runOnEDT(() -> {
-            String groupKey = "group.group-" + auth.getAuthCredentials("group");
-            userGroup.setText(lang.getString(groupKey));
+            userGroup.setText(lang.getString(groupLoader.getUserGroupObject().getGroupName()));
             userLogin.setText(userAttributes.userFullName);
         });
     }
@@ -328,7 +333,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void showTaskMgr() {
-        if (auth.getAuthStatus() == AuthStatus.AUTHORISED && getUserGroup() == UserGroup.ADMIN) {
+        if (auth.getAuthStatus() == AuthStatus.AUTHORISED && getGroupLoader().getUserGroupObject().getGroupType().equals("admin")) {
             runOnEDT(() -> {
                 launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
                 taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
@@ -389,13 +394,15 @@ public class User extends org.foxesworld.engine.user.User {
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
-    public UserGroup getUserGroup() {
-        if (auth.getAuthStatus() == AuthStatus.AUTHORISED) {
-            return UserGroup.fromGroupId(Integer.parseInt((String) userAttributes.group));
-        }
-        return UserGroup.GUEST;
-    }
+
     private void runOnEDT(Runnable task) {
         SwingUtilities.invokeLater(task);
+    }
+    public UserAttributes getUserAttributes() {
+        return userAttributes;
+    }
+
+    public GroupLoader getGroupLoader() {
+        return groupLoader;
     }
 }

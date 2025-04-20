@@ -27,6 +27,7 @@ import java.util.function.Consumer;
  * </p>
  */
 public class SkinLoader extends HTTPrequest {
+    private boolean cacheEnabled = true;
     private static final String CACHE_DIR = "cache/skins/";
     private final User user;
     @HttpParam
@@ -96,6 +97,9 @@ public class SkinLoader extends HTTPrequest {
      * @return the BufferedImage of the skin if found; otherwise, null
      */
     private BufferedImage loadSkinFromCache(String login, String side) {
+        if (!cacheEnabled) {
+            return null;
+        }
         Path cachePath = Paths.get(CACHE_DIR + login + File.separator, side + ".png");
         if (Files.exists(cachePath)) {
             try {
@@ -108,6 +112,7 @@ public class SkinLoader extends HTTPrequest {
         return null;
     }
 
+
     /**
      * Caches the downloaded skin image to a file.
      *
@@ -116,6 +121,9 @@ public class SkinLoader extends HTTPrequest {
      * @param image the BufferedImage of the skin
      */
     private void cacheSkinToFile(String login, String side, BufferedImage image) {
+        if (!cacheEnabled) {
+            return;
+        }
         Path cachePath = Paths.get(CACHE_DIR + login + File.separator, side + ".png");
         try {
             ImageIO.write(image, "PNG", cachePath.toFile());
@@ -124,6 +132,7 @@ public class SkinLoader extends HTTPrequest {
             Engine.getLOGGER().error("Failed to cache skin {} side for {}: {}", side, login, e.getMessage());
         }
     }
+
 
     /**
      * Ensures that the cache directory for skins exists; creates it if necessary.
@@ -173,8 +182,7 @@ public class SkinLoader extends HTTPrequest {
      */
     private void handleSkinLoad(Object response, String side) {
         Launcher.LOGGER.info("Adding skin {} side for {}", side, user.getLogin());
-        BufferedImage image = user.getLauncher().getImageUtils()
-                .base64ToBufferedImage(String.valueOf(response));
+        BufferedImage image = user.getLauncher().getImageUtils().base64ToBufferedImage(String.valueOf(response));
         userSkin.put(side, image);
         cacheSkinToFile(user.getLogin(), side, image);
     }
@@ -187,5 +195,9 @@ public class SkinLoader extends HTTPrequest {
      */
     private void handleSkinLoadError(Throwable error, String side) {
         Engine.getLOGGER().error("Skin {} request failed for {}: {}", side, user.getLogin(), error.getMessage());
+    }
+
+    public void setCacheEnabled(boolean enabled) {
+        this.cacheEnabled = enabled;
     }
 }

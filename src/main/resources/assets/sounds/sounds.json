@@ -66,8 +66,9 @@
   "music": {
     "launcherTheme": {
       "sounds": [
-        "assets/sounds/mus/music0.ogg",
-        "assets/sounds/mus/music1.ogg"
+        "assets/sounds/mus/mus1.ogg",
+        "assets/sounds/mus/mus2.ogg",
+        "assets/sounds/mus/mus3.ogg"
       ]
     }
   },

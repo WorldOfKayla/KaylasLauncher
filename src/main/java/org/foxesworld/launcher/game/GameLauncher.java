@@ -6,7 +6,6 @@ import org.foxesworld.engine.game.argsReader.ArgsReader;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
-import org.foxesworld.launcher.user.UserGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +57,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
         List<String> gameArgs = getGameArgs();
         logger.debug("GameArgs " + gameArgs.toString());
         this.addArgsToProcess(gameArgs);
-        if (this.user.getUserGroup() == UserGroup.ADMIN) {
+        if (this.user.getGroupLoader().getUserGroupObject().getGroupType().equals("admin")) {
             this.processArgs.add("-Dforge.logging.console.level=debug");
             this.processArgs.add("-Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP,CLASSLOADING");
         }

@@ -376,28 +376,6 @@
       "pl_PL": "Błąd analizowania danych!"
     }
   },
-  "group": {
-    "group-null": {
-      "en_US": "Solenoid",
-      "ru_RU": "Соленоид",
-      "pl_PL": "Solenoid"
-    },
-    "group-1": {
-      "en_US": "Administrator",
-      "ru_RU": "Администратор",
-      "pl_PL": "Administrator"
-    },
-    "group-4": {
-      "en_US": "Player",
-      "ru_RU": "Игрок",
-      "pl_PL": "Gracz"
-    },
-    "group-3": {
-      "en_US": "Tester",
-      "ru_RU": "Тестер",
-      "pl_PL": "Testjer"
-    }
-  },
   "tooltip": {
   "gameTooltip": {
     "en_US": "Let's Play! (ENTER)",

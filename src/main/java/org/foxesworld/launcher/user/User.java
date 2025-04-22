@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.foxesworld.engine.utils.FontUtils.hexToColor;
+
 public class User extends org.foxesworld.engine.user.User {
     private final Auth auth;
     private final LoggedForm loggedForm;
@@ -294,6 +296,7 @@ public class User extends org.foxesworld.engine.user.User {
     private void setUserGroupLabel() {
         runOnEDT(() -> {
             userGroup.setText(lang.getString(groupLoader.getUserGroupObject().getGroupName()));
+            userGroup.setTextColor(hexToColor(groupLoader.getUserGroupObject().getGroupColor()));
             userLogin.setText(userAttributes.userFullName);
         });
     }

@@ -44,7 +44,6 @@ public class GroupLoader extends HTTPrequest  {
      * Метод поиска группы по номеру
      * @param json JSON-строка
      * @param targetGroupNum номер группы для поиска
-     * @return объект Group с совпадающим groupNum, либо null
      */
     public void findGroupByNum(String json, int targetGroupNum) {
         Gson gson = new Gson();

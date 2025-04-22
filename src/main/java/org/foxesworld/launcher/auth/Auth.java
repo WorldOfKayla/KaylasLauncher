@@ -168,6 +168,7 @@ public class Auth {
         // Сохранение дополнительных данных авторизации
         authCredentials.put("uuid", authResponse.getUuid());
         authCredentials.put("token", authResponse.getToken());
+        authCredentials.put("login", authResponse.getLogin());
         authCredentials.put("group", String.valueOf(authResponse.getGroup()));
         authCredentials.put("colorScheme", String.valueOf(authResponse.getColorScheme()));
         authCredentials.put("userFullName", String.valueOf(authResponse.getUserFullName()));

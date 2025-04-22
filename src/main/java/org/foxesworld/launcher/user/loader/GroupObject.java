@@ -3,6 +3,7 @@ package org.foxesworld.launcher.user.loader;
 public class GroupObject {
     private String id;
     private String groupName;
+    private String groupColor;
     private int groupNum;
     private String groupType;
 
@@ -30,5 +31,9 @@ public class GroupObject {
 
     public String getGroupType() {
         return groupType;
+    }
+
+    public String getGroupColor() {
+        return groupColor;
     }
 }

@@ -1,0 +1,38 @@
+{
+  "entrance": [
+    {
+      "time": 0,
+      "scaleX": 1.2,
+      "scaleY": 1.2,
+      "offsetX": 0,
+      "offsetY": 10,
+      "interpolation": "easeOut"
+    },
+    {
+      "time": 0.5,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "offsetX": 0,
+      "offsetY": 10,
+      "interpolation": "easeIn"
+    }
+  ],
+  "exit": [
+    {
+      "time": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "offsetX": 0,
+      "offsetY": 0,
+      "interpolation": "easeIn"
+    },
+    {
+      "time": 1.0,
+      "scaleX": 0.8,
+      "scaleY": 0.8,
+      "offsetX": 0,
+      "offsetY": 100,
+      "interpolation": "easeOut"
+    }
+  ]
+}

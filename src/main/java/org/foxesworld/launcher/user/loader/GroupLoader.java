@@ -21,6 +21,7 @@ public class GroupLoader extends HTTPrequest  {
     public GroupLoader(User user) {
         super(user.getLauncher(), "POST");
         this.user = user;
+        this.getUserGroup();
     }
 
     public void getUserGroup(){
@@ -38,6 +39,7 @@ public class GroupLoader extends HTTPrequest  {
     private void handleGroupLoad(Object response) {
         int userGroup = Integer.parseInt(String.valueOf(this.user.getUserAttributes().getGroup()));
         this.findGroupByNum(String.valueOf(response), userGroup);
+        user.setUserGroupLabel(userGroupObject);
     }
 
     /**
@@ -61,7 +63,4 @@ public class GroupLoader extends HTTPrequest  {
         Engine.getLOGGER().error("Group load request failed for {}: {}",  user.getLogin(), error.getMessage());
     }
 
-    public GroupObject getUserGroupObject() {
-        return userGroupObject;
-    }
 }

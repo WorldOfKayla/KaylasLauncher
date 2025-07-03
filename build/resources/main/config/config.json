@@ -1,0 +1,16 @@
+{
+  "lang": 0,
+  "logLevel": "INFO",
+  "loaderIndex": 0,
+  "autoEnter": false,
+  "launchAC": true,
+  "fullScreen": false,
+  "enableSound": true,
+  "backgroundMusic": true,
+  "homeDir": "SysVal{AppDir}\\.FoxesWorld",
+  "discordRPC": true,
+  "ramAmount": 4096,
+  "width": 900,
+  "height": 512,
+  "volume": 85
+}

@@ -1,0 +1,61 @@
+{
+  panels: {
+    userBalance: {
+      panelOptions: {
+        opaque: true,
+        visible: true,
+        background: "#4d2c2cc2",
+        bounds: {
+          x: 210,
+          y: 0,
+          size: {
+            width: 135,
+            height: 75
+          }
+        }
+      },
+      childComponents: [
+        {
+          type: "label",
+          fontSize: 11,
+          style: "title",
+          imageIcon: "assets/ui/icons/units.png",
+          iconWidth: 32,
+          iconHeight: 32,
+          localeKey: "logged.units",
+          color: "#d68700",
+          id: "unitsField",
+          initialValue: "balance#units",
+          bounds: {
+            x: 5,
+            y: -8,
+            size: {
+              width: 250,
+              height: 50
+            }
+          }
+        },
+        {
+          type: "label",
+          fontSize: 11,
+          style: "title",
+          imageIcon: "assets/ui/icons/crystals.png",
+          iconWidth: 32,
+          iconHeight: 32,
+          localeKey: "logged.crystals",
+          color: "#fe75fb",
+          id: "crystalsField",
+          initialValue: "balance#crystals",
+          bounds: {
+            x: 0,
+            y: 28,
+            size: {
+              width: 250,
+              height: 50
+            }
+          }
+        }
+      ]
+    }
+  }
+}

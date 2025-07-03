@@ -1,0 +1,172 @@
+{
+  "panels": {
+    "serverInfo": {
+      "panelOptions": {
+        "visible": false,
+        "doubleBuffered": true,
+        "opaque": true,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "size": {
+            "width": 510,
+            "height": 500
+          }
+        },
+        "background": "#0707079e"
+      },
+      "childComponents": [
+        {
+          "panels": {
+            "serverTitle": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": true,
+                "doubleBuffered": true,
+                "background": "#7c3306",
+                "cornerRadius": 20,
+                "bounds": {
+                  "x": 10,
+                  "y": 5,
+                  "size": {
+                    "width": 295,
+                    "height": 37
+                  }
+                },
+                "border": "1,1,1,1,#ffffff"
+              },
+              "childComponents": [
+                {
+                  "type": "label",
+                  "style": "heading",
+                  "fontSize": 16,
+                  "id": "serverTitle",
+                  color: "#000000",
+                  "bounds": {
+                    "x": 10,
+                    "y": -115,
+                    "size": {
+                      "width": 480,
+                      "height": 280
+                    }
+                  }
+                },
+                {
+                  "type": "label",
+                  "fontSize": 0,
+                  "id": "serverCore",
+                  style: "titleBold",
+                  iconWidth: 32,
+                  iconHeight: 32,
+                  "bounds": {
+                    "x": 250,
+                    "y": -45,
+                    "size": {
+                      "width": 128,
+                      "height": 128
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "panels": {
+            "serverOnline": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": true,
+                "doubleBuffered": true,
+                "background": "#b3b2b0",
+                "cornerRadius": 20,
+                "bounds": {
+                  "x": 310,
+                  "y": 5,
+                  "size": {
+                    "width": 170,
+                    "height": 37
+                  }
+                }
+              },
+              "childComponents": [
+                {
+                  "type": "label",
+                  "style": "title",
+                  "fontSize": 16,
+                  "id": "srvOnline",
+                  "color": "#7e7d7c",
+                  "bounds": {
+                    "x": 50,
+                    "y": -120,
+                    "size": {
+                      "width": 480,
+                      "height": 280
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "label",
+          "style": "title",
+          "id": "serverImg",
+          "bounds": {
+            "x": 10,
+            "y": 45,
+            "size": {
+              "width": 470,
+              "height": 260
+            }
+          }
+        },
+        {
+          "panels": {
+            "serverDesc": {
+              "panelOptions": {
+                "visible": true,
+                "opaque": true,
+                "doubleBuffered": true,
+                "background": "#b3b2b0",
+                "cornerRadius": 10,
+                "bounds": {
+                  "x": 10,
+                  "y": 310,
+                  "size": {
+                    "width": 470,
+                    "height": 150
+                  }
+                },
+                "layout": "box",
+                "border": "1,1,1,1,#ffffff"
+              },
+              "childComponents": [
+                {
+                  "type": "textArea",
+                  "lineWrap": true,
+                  "editable": false,
+                  "enabled": false,
+                  "style": "textFieldMain",
+                  "fontSize": 13,
+                  "border": "5,5,5,5",
+                  "color": "#7e7d7c",
+                  "id": "serverDescLabel",
+                  "bounds": {
+                    "x": 10,
+                    "y": 10,
+                    "size": {
+                      "width": 470,
+                      "height": 110
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

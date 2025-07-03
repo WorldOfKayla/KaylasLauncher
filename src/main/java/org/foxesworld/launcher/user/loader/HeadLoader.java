@@ -6,12 +6,8 @@ import org.foxesworld.engine.utils.HTTP.HttpParam;
 import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Base64;
 import java.util.Map;
+
 
 /**
  * HeadLoader is responsible for asynchronously fetching user head data.
@@ -29,6 +25,7 @@ public class HeadLoader extends HTTPrequest {
     @HttpParam
     private final String sysRequest = "userHead";
 
+    private Engine engine;
     /**
      * Constructs a new HeadLoader instance.
      *
@@ -37,6 +34,7 @@ public class HeadLoader extends HTTPrequest {
      */
     public HeadLoader(Engine engine, String requestMethod) {
         super(engine, requestMethod);
+        this.engine = engine;
     }
 
     /**

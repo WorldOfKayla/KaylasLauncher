@@ -14,10 +14,8 @@ import org.foxesworld.launcher.auth.AuthStatus;
 import org.foxesworld.launcher.gui.BlendedImageIcon;
 import org.foxesworld.launcher.gui.GifPlayerSwing;
 import org.foxesworld.launcher.server.ServerInfoDisplayer;
-import org.foxesworld.launcher.user.loader.GroupLoader;
-import org.foxesworld.launcher.user.loader.GroupObject;
-import org.foxesworld.launcher.user.loader.HeadLoader;
-import org.foxesworld.launcher.user.loader.SkinLoader;
+import org.foxesworld.launcher.user.loader.*;
+import org.foxesworld.launcher.utils.SvgUtils;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.utils.DataInjector;
 
@@ -28,6 +26,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -68,7 +70,7 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
     public void initializeUser() {
-        if(auth.getAuthRequest() != null) {
+        if (auth.getAuthRequest() != null) {
             RequestState status = auth.getAuthRequest().getRequestState();
             if (status != RequestState.FAILED) {
                 if (status == RequestState.PENDING) {
@@ -113,8 +115,6 @@ public class User extends org.foxesworld.engine.user.User {
     }
 
 
-
-
     public void setBalance(Map<String, AtomicInteger> balance) {
         runOnEDT(() -> {
             String crystals = balance.get("crystals") != null ? balance.get("crystals").toString() : "0";
@@ -130,22 +130,72 @@ public class User extends org.foxesworld.engine.user.User {
         auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
         groupLoader = new GroupLoader(this);
         loggedForm.getGreetUser().setText(lang.getStringWithKey("logged.greet", new String[]{"login"}, new String[]{getLogin()}));
-        headLoader = new HeadLoader(launcher, "GET");
+        headLoader = new HeadLoader(this, "GET");
         setUserHeadIcon(getLogin());
+
+        BadgeLoader badgeLoader = new BadgeLoader(this.getLauncher(), this.userAttributes.login);
+        badgeLoader.loadBadgesAsync(
+                // --- onSuccess ---
+                // --- onSuccess ---
+                (List<BadgeObject> badges) -> {
+                    System.out.println("Значки для пользователя " + this.userAttributes.login + " успешно загружены!");
+
+                    SwingUtilities.invokeLater(() -> {
+                        JPanel badgePanel = launcher.getGuiBuilder().getPanelsMap().get("userBadges");
+                        if (badgePanel == null) {
+                            System.err.println("Панель 'userBadges' не найдена!");
+                            return;
+                        }
+
+                        badgePanel.removeAll();
+
+                        if (badges.isEmpty()) {
+                            badgePanel.setVisible(false);
+                        } else {
+                            badgePanel.setVisible(true);
+
+                            // *** ГЛАВНОЕ ИЗМЕНЕНИЕ ЗДЕСЬ ***
+                            // Устанавливаем FlowLayout с горизонтальным отступом 5 пикселей
+                            // и вертикальным отступом 0. Выравнивание по левому краю.
+                            badgePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 4));
+
+                            for (BadgeObject badge : badges) {
+                                try {
+                                    URL badgeUrl = new URL(this.launcher.getEngineData().getBindUrl() + badge.getBadgeImg());
+                                    BufferedImage image = SvgUtils.renderToImage(badgeUrl, 25, 25);
+
+                                    JLabel label = new JLabel(new ImageIcon(image));
+                                    label.setToolTipText(badge.getDescription());
+                                    badgePanel.add(label);
+
+                                } catch (Exception e) {
+                                    System.err.println("Не удалось загрузить значок " + badge.getBadgeName() + ": " + e.getMessage());
+                                }
+                            }
+                        }
+
+                        badgePanel.revalidate();
+                        badgePanel.repaint();
+                    });
+                },
+
+// --- onFailure ---
+                (Throwable error) -> {
+                    System.err.println("Не удалось загрузить значки для " + this.userAttributes.login + ". Причина: " + error.getMessage());
+                }
+        );
 
         skinLoader.loadSkin(skins -> {
             BufferedImage front = skins.get("front");
             BufferedImage back = skins.get("back");
             JLabel skinLabel = loggedForm.getUserSkin();
-
-            // Установка начальной иконки с изображением front
             skinLabel.setIcon(new ImageIcon(front));
 
             // Если компонент активен, устанавливаем слушатели для плавной смены скина
             if (skinLabel.isEnabled()) {
                 // Параметры анимации
-                final int animationDuration = 10; // общая длительность анимации в мс
-                final int animationSteps = 25;       // количество шагов обновления
+                final int animationDuration = 1; // общая длительность анимации в мс
+                final int animationSteps = 15;       // количество шагов обновления
                 final int delay = animationDuration / animationSteps; // интервал между шагами в мс
 
                 skinLabel.addMouseListener(new MouseAdapter() {
@@ -189,10 +239,8 @@ public class User extends org.foxesworld.engine.user.User {
                     }
                 });
             }
+            showTaskMgr();
         });
-
-
-
         notifyUserLoggedIn();
     }
 
@@ -285,9 +333,9 @@ public class User extends org.foxesworld.engine.user.User {
 
     public void setUserGroupLabel(GroupObject groupObject) {
         runOnEDT(() -> {
-                userGroup.setText(lang.getString(groupObject.getGroupName()));
-                userGroup.setTextColor(hexToColor(groupObject.getGroupColor()));
-                userLogin.setText(userAttributes.userFullName);
+            userGroup.setText(lang.getString(groupObject.getGroupName()));
+            userGroup.setTextColor(hexToColor(groupObject.getGroupColor()));
+            userLogin.setText(userAttributes.userFullName);
         });
     }
 
@@ -325,9 +373,9 @@ public class User extends org.foxesworld.engine.user.User {
         }
     }
 
-    /*
+
     public void showTaskMgr() {
-        if (auth.getAuthStatus() == AuthStatus.AUTHORISED && getGroupLoader().getUserGroupObject().getGroupType().equals("admin")) {
+        if (auth.getAuthStatus() == AuthStatus.AUTHORISED && this.userAttributes.getGroup().equals("1")) {
             runOnEDT(() -> {
                 launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
                 taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
@@ -343,7 +391,7 @@ public class User extends org.foxesworld.engine.user.User {
             });
         }
 
-    }*/
+    }
 
     @Deprecated
     private void addNewsItem(Map<String, String> newsItem) {
@@ -393,6 +441,7 @@ public class User extends org.foxesworld.engine.user.User {
     private void runOnEDT(Runnable task) {
         SwingUtilities.invokeLater(task);
     }
+
     public UserAttributes getUserAttributes() {
         return userAttributes;
     }

@@ -18,6 +18,7 @@ public class GroupLoader extends HTTPrequest  {
     private final String sysRequest = "getGroups";
     private final  User user;
     private GroupObject userGroupObject;
+
     public GroupLoader(User user) {
         super(user.getLauncher(), "POST");
         this.user = user;

@@ -5,6 +5,7 @@ import org.foxesworld.engine.utils.HTTP.HTTPrequest;
 import org.foxesworld.engine.utils.HTTP.HttpParam;
 import org.foxesworld.engine.utils.HTTP.OnFailure;
 import org.foxesworld.engine.utils.HTTP.OnSuccess;
+import org.foxesworld.launcher.user.User;
 
 import java.util.Map;
 
@@ -29,12 +30,12 @@ public class HeadLoader extends HTTPrequest {
     /**
      * Constructs a new HeadLoader instance.
      *
-     * @param engine        the Engine instance used for configuration and logging
+     * @param user        the Engine instance used for configuration and logging
      * @param requestMethod the HTTP request method (e.g., "GET")
      */
-    public HeadLoader(Engine engine, String requestMethod) {
-        super(engine, requestMethod);
-        this.engine = engine;
+    public HeadLoader(User user, String requestMethod) {
+        super(user.getLauncher(), requestMethod);
+        this.engine = user.getLauncher().getEngine();
     }
 
     /**

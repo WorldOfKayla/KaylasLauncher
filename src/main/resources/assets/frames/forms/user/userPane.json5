@@ -46,7 +46,7 @@
                   initialValue: "user#userFullName",
                   bounds: {
                     x: 90,
-                    y: 5,
+                    y: -15,
                     size: {
                       width: 250,
                       height: 50
@@ -63,13 +63,39 @@
                   initialValue: "user#group",
                   bounds: {
                     x: 90,
-                    y: 25,
+                    y: 0,
                     size: {
                       width: 250,
                       height: 50
                     }
                   }
                 },
+
+
+                {
+                  panels: {
+                    userBadges: {
+                      panelOptions: {
+                        opaque: true,
+                        visible: true,
+                        background: "#7e696969",
+                        cornerRadius: 10,
+                        zIndex: 0,
+                        bounds: {
+                          x: 85,
+                          y: 35,
+                          size: {
+                            width: 120,
+                            height: 30
+                          }
+                        }
+                      },
+                      childComponents: []
+                    }
+                  }
+                },
+
+
                 {
                   type: "label",
                   fontSize: 11,
@@ -88,27 +114,27 @@
                     }
                   }
                 },
-/*
-                {
-                  type: "button",
-                  enabled: true,
-                  visible: true,
-                  keyCode: "F5",
-                  style: "altButton",
-                  id: "smallButton",
-                  toolTip: "tooltip.test",
-                  tooltipStyle: "warning",
-                  localeKey: "TEST",
-                  bounds: {
-                    x: 80,
-                    y: 10,
-                    size: {
-                      width: 60,
-                      height: 34
-                    }
-                  }
-                },
-*/
+                /*
+                                {
+                                  type: "button",
+                                  enabled: true,
+                                  visible: true,
+                                  keyCode: "F5",
+                                  style: "altButton",
+                                  id: "smallButton",
+                                  toolTip: "tooltip.test",
+                                  tooltipStyle: "warning",
+                                  localeKey: "TEST",
+                                  bounds: {
+                                    x: 80,
+                                    y: 10,
+                                    size: {
+                                      width: 60,
+                                      height: 34
+                                    }
+                                  }
+                                },
+                */
                 {
                   readFrom: "assets/frames/forms/user/userBalance.json5"
                 }

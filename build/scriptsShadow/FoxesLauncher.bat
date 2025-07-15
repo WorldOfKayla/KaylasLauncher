@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\FoxesLauncher-1.24.6-SkyForge-all.jar
+set CLASSPATH=%APP_HOME%\lib\FoxesLauncher-1.24.7-SkyForge-all.jar
 
 @rem Execute FoxesLauncher
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %FOXES_LAUNCHER_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%

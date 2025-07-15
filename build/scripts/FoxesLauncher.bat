@@ -68,7 +68,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\FoxesLauncher-1.24.6-SkyForge.jar;%APP_HOME%\lib\fox-engine-1.15.13-TET-all.jar;%APP_HOME%\lib\Ascendix-1.11.0-SNAPSHOT.jar
+set CLASSPATH=%APP_HOME%\lib\FoxesLauncher-1.24.7-SkyForge.jar;%APP_HOME%\lib\fox-engine-1.15.14-TET-all.jar;%APP_HOME%\lib\Ascendix-1.11.5-SNAPSHOT.jar
 
 
 @rem Execute FoxesLauncher

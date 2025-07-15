@@ -58,12 +58,12 @@ public class Launcher extends Engine {
     }
 
     private static void showSplashAndStartLauncher() {
-        //SplashScreenWindow splashScreen = new SplashScreenWindow();
-        //splashScreen.showSplashScreen();
-        //splashScreen.getLottieSwingEngine().getAnimationPanel().setOnAnimationCompleted(() -> {
+        SplashScreenWindow splashScreen = new SplashScreenWindow();
+        splashScreen.showSplashScreen();
+        splashScreen.getLottieSwingEngine().getAnimationPanel().setOnAnimationCompleted(() -> {
             new Launcher(null);
-            //splashScreen.dispose();
-        //});
+            splashScreen.dispose();
+        });
     }
 
     public Launcher(Rectangle bounds) {

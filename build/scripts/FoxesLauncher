@@ -112,7 +112,7 @@ case "$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/FoxesLauncher-1.24.6-SkyForge.jar:$APP_HOME/lib/fox-engine-1.15.13-TET-all.jar:$APP_HOME/lib/Ascendix-1.11.0-SNAPSHOT.jar
+CLASSPATH=$APP_HOME/lib/FoxesLauncher-1.24.7-SkyForge.jar:$APP_HOME/lib/fox-engine-1.15.14-TET-all.jar:$APP_HOME/lib/Ascendix-1.11.5-SNAPSHOT.jar
 
 
 # Determine the Java command to use to start the JVM.

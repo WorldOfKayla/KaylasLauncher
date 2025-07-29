@@ -182,7 +182,7 @@ public class SkinLoader extends HTTPrequest {
      */
     private void handleSkinLoad(Object response, String side) {
         Launcher.LOGGER.info("Adding skin {} side for {}", side, user.getLogin());
-        BufferedImage image = user.getLauncher().getImageUtils().base64ToBufferedImage(String.valueOf(response));
+        BufferedImage image = user.getLauncher().getImageUtils().fromBase64(String.valueOf(response)).get();
         userSkin.put(side, image);
         cacheSkinToFile(user.getLogin(), side, image);
     }

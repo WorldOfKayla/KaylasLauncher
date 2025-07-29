@@ -310,7 +310,7 @@ public class User extends org.foxesworld.engine.user.User {
                 return;
             }
             try {
-                BufferedImage userHeadImage = engine.getImageUtils().base64ToBufferedImage(userHeadBase64);
+                BufferedImage userHeadImage = engine.getImageUtils().fromBase64(userHeadBase64).get();
                 if (userHeadImage == null) {
                     Engine.getLOGGER().warn("Decoded user head image is null for login: {}", login);
                     return;

@@ -2,7 +2,8 @@
   panels: {
     generalInfo: {
       panelOptions: {
-        opaque: false,
+        opaque: true,
+        background: "#7e6969",
         doubleBuffered: true,
         visible: true,
         zIndex: 2,

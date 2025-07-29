@@ -108,8 +108,7 @@ public class Core implements GameListener {
                 this.launcher.getExecutorServiceProvider().shutdown();
                 this.actionHandler.getLauncher().restartApplication(
                         2048,
-                        this.actionHandler.getLauncher().getEngineData().getProgramRuntime()
-                                + '-' + getOSPrefix() + "-x" + getCorrectOSArch()
+                        this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch()// getOSPrefix()
                 );
             } else {
                 Engine.getLOGGER().error("Launcher can't be a directory!");

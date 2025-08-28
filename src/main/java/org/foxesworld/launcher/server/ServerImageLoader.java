@@ -70,7 +70,7 @@ public class ServerImageLoader extends HTTPrequest {
 
         sendAsyncCF(Collections.emptyMap())
                 .thenApply(response -> {
-                    BufferedImage downloaded = user.getLauncher().getImageUtils().base64ToBufferedImage(response);
+                    BufferedImage downloaded = user.getLauncher().getImageUtils().fromBase64(response).get();//base64ToBufferedImage(response);
                     if (downloaded == null) {
                         downloaded = user.getLauncher().getImageUtils().getLocalImage("assets/ui/img/noimg.jpg");
                     }

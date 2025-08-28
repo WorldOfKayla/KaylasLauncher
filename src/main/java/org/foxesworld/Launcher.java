@@ -3,14 +3,10 @@ package org.foxesworld;
 import org.apache.logging.log4j.Level;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.discord.Discord;
-import org.foxesworld.engine.gui.FileProperties;
 import org.foxesworld.engine.gui.GuiBuilder;
-import org.foxesworld.engine.gui.components.frame.FrameConstructor;
 import org.foxesworld.engine.gui.components.frame.OptionGroups;
 import org.foxesworld.engine.gui.styles.StyleProvider;
 import org.foxesworld.engine.locale.LanguageProvider;
-import org.foxesworld.engine.sound.Sound;
-import org.foxesworld.engine.utils.Crypt.CryptUtils;
 import org.foxesworld.engine.utils.DragListener;
 import org.foxesworld.engine.utils.IconUtils;
 import org.foxesworld.engine.utils.ServerInfo;
@@ -41,8 +37,6 @@ public class Launcher extends Engine {
     long startTime;
     private User user;
     private Settings settings;
-    private final FileProperties fileProperties;
-    private IconUtils iconUtils;
     private final File launcherFile;
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     private ActionHandler actionHandler;
@@ -70,11 +64,10 @@ public class Launcher extends Engine {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
-        this.fileProperties = getFileProperties();
-        preInit();
+        //preInit();
         safeSubmitTask(() -> new LauncherValidator(this).validate(), "validation");
 
-        init();
+        //init();
         if(bounds != null) {
             this.getFrame().setBounds(bounds);
         }
@@ -95,10 +88,7 @@ public class Launcher extends Engine {
         }
         this.config.processConfig();
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
-        this.SOUND = new Sound(this, getClass().getClassLoader().getResourceAsStream(fileProperties.getSoundsFile()));
-        this.frameConstructor = new FrameConstructor(this);
         this.serverInfo = new ServerInfo(this);
-        this.CRYPTO = new CryptUtils();
         this.setLogLevel(Level.valueOf(((org.foxesworld.launcher.config.Config) config).getLogLevel()));
         this.frameConstructor.setFocusStatusListener(this);
         this.auth = new Auth(this);
@@ -110,7 +100,7 @@ public class Launcher extends Engine {
         setupDiscord();
 
         safeSubmitTask(() -> {
-            buildGui(getEngineData().getStyles());
+            buildGui(new InitialValue(this));
             loadMainPanel(fileProperties.getMainFrame());
         }, "init");
     }
@@ -127,15 +117,6 @@ public class Launcher extends Engine {
                     new String[]{"key"},
                     new String[]{getEngineData().getBindUrl()}));
         }, "discordSetUp");
-    }
-
-    private void buildGui(String[] styles) {
-        setStyleProvider(new StyleProvider(styles));
-        setGuiBuilder(new GuiBuilder(this));
-        getGuiBuilder().getComponentFactory().setComponentFactoryListener(new InitialValue(this));
-        getGuiBuilder().addGuiBuilderListener(this);
-        getGuiBuilder().buildGuiAsync(fileProperties.getFrameTpl(), getFrame().getRootPanel());
-        this.iconUtils = new IconUtils(this);
     }
 
     public void logStartupTime(long startTime) {
@@ -215,10 +196,6 @@ public class Launcher extends Engine {
 
     public Config getConfig() {
         return (Config) this.config;
-    }
-
-    public IconUtils getIconUtils() {
-        return iconUtils;
     }
 
     public File getLauncherFile() {

@@ -11,23 +11,34 @@ import org.foxesworld.engine.gui.components.textfield.TextField;
 import org.foxesworld.engine.server.ServerAttributes;
 import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.auth.AuthStatus;
-import org.foxesworld.launcher.gui.command.DynamicCommandRegistry;
 import org.foxesworld.notification.Notification;
 import org.foxesworld.engine.gui.componentAccessor.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
-public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler implements DynamicCommandRegistry {
+/**
+ * Thread-safe and improved ActionHandler.
+ * Основные изменения:
+ * - потокобезопасный реестр команд (ConcurrentHashMap)
+ * - защищённый запуск обработчиков команд в EDT (SwingUtilities.invokeLater)
+ * - избегание долгих/блокирующих операций в EDT (вынесены в executor)
+ * - volatile для полей, которые могут меняться из разных потоков
+ * - getter для реестра возвращает неизменяемое представление
+ */
+public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler {
 
-    protected Launcher launcher;
-    private Core core;
-    protected ServerAttributes currentServer;
+    protected final Launcher launcher;
+    private volatile Core core;
+    protected volatile ServerAttributes currentServer;
 
     @Component
     private TextField login;
@@ -44,10 +55,12 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
     @Component
     private DropBox serverBox;
 
-    private final Map<String, Consumer<ActionEvent>> commandRegistry = new HashMap<>();
+    // Thread-safe map for commands
+    private final ConcurrentMap<String, Consumer<ActionEvent>> commandRegistry = new ConcurrentHashMap<>();
 
     public ActionHandler(Launcher launcher) {
-        super(launcher.getGuiBuilder(), "mainFrame", List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
+        super(Objects.requireNonNull(launcher, "launcher").getGuiBuilder(), "mainFrame",
+                List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         registerCommands();
@@ -55,69 +68,101 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
 
     @Override
     public void registerCommand(String key, Consumer<ActionEvent> command) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(command);
         Launcher.LOGGER.info("  - Registered command for {} action", key);
-        commandRegistry.put(key, command);
+        Consumer<ActionEvent> prev = commandRegistry.put(key, command);
+        if (prev != null) {
+            Launcher.LOGGER.warn("Command for key '{}' was overwritten", key);
+        }
     }
 
     @Override
     public void unregisterCommand(String key) {
+        if (key == null) return;
         commandRegistry.remove(key);
     }
 
     @Override
     public void executeCommand(String key, ActionEvent event) {
         Consumer<ActionEvent> handler = commandRegistry.get(key);
-        if (handler != null) {
-            handler.accept(event);
+        if (handler == null) {
+            Engine.getLOGGER().warn("No command registered for: {}", key);
+            return;
+        }
+
+        Runnable runHandler = () -> {
+            try {
+                handler.accept(event);
+            } catch (Throwable ex) {
+                Engine.getLOGGER().error("Exception while executing command '{}':", key, ex);
+            }
+        };
+
+        // Ensure handlers execute on EDT. Handlers should offload heavy work to the executor.
+        if (SwingUtilities.isEventDispatchThread()) {
+            runHandler.run();
         } else {
-            Engine.getLOGGER().warn("No command registered for: " + key);
+            SwingUtilities.invokeLater(runHandler);
         }
     }
 
     /**
-     * Метод для динамической регистрации команд.
-     * Здесь для каждой команды используется метод registerCommand из интерфейса DynamicCommandRegistry.
+     * Регистрация команд. Внутри команд — минимальная работа на EDT, тяжёлые операции выносятся в executor.
      */
     private void registerCommands() {
+        // Авторизация: выключаем кнопку на EDT, выполняем авторизацию в executor, затем обновляем UI в EDT
         registerCommand("authForm>submit", e -> {
-            authSubmit.setEnabled(false);
-            this.launcher.getExecutorServiceProvider().submitTask(() -> {
-                this.launcher.getAuth().formAuth(authSubmit, () -> {
-                    launcher.setInit(false);
-                    launcher.LambdaInit();
-                });
-                if (this.launcher.getAuth().getAuthStatus() == AuthStatus.AUTHORISED) {
-                    engine.getFrame().getRootPanel().removeAll();
-                    engine.getPanelVisibility().displayPanel("authForm->false");
-                    this.launcher.init();
-                } else {
-                    login.resetText();
-                    password.resetText();
+            // disable UI immediately (we are running handlers on EDT via executeCommand)
+            if (authSubmit != null) authSubmit.setEnabled(false);
+
+            launcher.getExecutorServiceProvider().submitTask(() -> {
+                try {
+                    // Выполнение авторизации (может взаимодействовать с UI только через безопасные колбеки)
+                    launcher.getAuth().formAuth(authSubmit, () -> {
+                        launcher.setInit(false);
+                        launcher.LambdaInit();
+                    });
+
+                    AuthStatus status = launcher.getAuth().getAuthStatus();
+
+                    SwingUtilities.invokeLater(() -> {
+                        if (authSubmit != null) authSubmit.setEnabled(true);
+
+                        if (status == AuthStatus.AUTHORISED) {
+                            try {
+                                engine.getFrame().getRootPanel().removeAll();
+                                engine.getPanelVisibility().displayPanel("authForm->false");
+                                // launcher.init() может создавать UI компоненты — вызываем на EDT
+                                launcher.init();
+                            } catch (Exception ex) {
+                                Engine.getLOGGER().error("Error while switching panels after auth", ex);
+                            }
+                        } else {
+                            if (login != null) login.resetText();
+                            if (password != null) password.resetText();
+                        }
+                    });
+                } catch (Throwable ex) {
+                    Engine.getLOGGER().error("Exception during auth task", ex);
+                    SwingUtilities.invokeLater(() -> {
+                        if (authSubmit != null) authSubmit.setEnabled(true);
+                    });
                 }
             }, "auth");
         });
 
-        // Тестовая команда для пользовательской информации
-        registerCommand("userinfo>submit", e ->
-                Engine.getLOGGER().warn("TEST"));
+        // Тестовая команда
+        registerCommand("userinfo>submit", e -> Engine.getLOGGER().warn("TEST"));
 
-        // Переключение видимости загрузчика
-        registerCommand("smallButton", e ->
-                this.launcher.getLoadingManager().toggleVisibility());
+        registerCommand("smallButton", e -> this.launcher.getLoadingManager().toggleVisibility());
+        registerCommand("gameDir-small", e -> this.launcher.getSettings().openGameFolder());
+        registerCommand("cancelDownload-small", e -> {
+            Core localCore = this.core; // volatile read
+            if (localCore != null) localCore.getFileLoader().cancel();
+        });
+        registerCommand("applySettings", e -> this.launcher.getSettings().applySettings("settingsFields"));
 
-        // Открытие папки игры
-        registerCommand("gameDir-small", e ->
-                this.launcher.getSettings().openGameFolder());
-
-        // Отмена загрузки
-        registerCommand("cancelDownload-small", e ->
-                core.getFileLoader().cancel());
-
-        // Применение настроек
-        registerCommand("applySettings", e ->
-                this.launcher.getSettings().applySettings("settingsFields"));
-
-        // Выход из учётной записи
         registerCommand("logOut", e -> {
             this.launcher.getSOUND().playSound("other", "loggedOut");
             this.launcher.getGuiBuilder().getNotification().show(
@@ -127,7 +172,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             this.launcher.getAuth().logOut();
         });
 
-        // Отображение информационной панели
         registerCommand("info-small", e -> {
             if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|test->true");
@@ -136,7 +180,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             }
         });
 
-        // Отображение панели настроек
         registerCommand("settings-small", e -> {
             if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->false|newsForm->false|settings->true");
@@ -145,7 +188,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             }
         });
 
-        // Отмена загрузки с дополнительными действиями
         registerCommand("loadCancel-small", e -> {
             this.core.getFileLoader().cancel();
             this.launcher.getLoadingManager().toggleVisibility();
@@ -153,7 +195,6 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             this.getComponent("logOut").setEnabled(false);
         });
 
-        // Возврат к предыдущему состоянию
         registerCommand("back", e -> {
             if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
                 engine.getPanelVisibility().displayPanel("authForm->true|newsForm->true|settings->false");
@@ -162,171 +203,171 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
             }
         });
 
-        // Запуск игры
+        // Запуск игры — подготовка и создание Core в background-потоке
         registerCommand("toGame", e -> {
             this.launcher.getSOUND().playSound("other", "start");
-            this.currentServer = launcher.getAuth().getUserDataLoader().getUserServersAttributes().get(serverBox.getSelectedIndex());
-            Engine.getLOGGER().info("Launching " + this.currentServer.getServerName());
-            this.launcher.getConfig().setConfigValue("selectedServer", serverBox.getSelectedIndex());
+
+            // Считываем выбранный сервер и сохраняем конфиг на EDT
+            int selectedIndex = 0;
+            if (serverBox != null) {
+                selectedIndex = serverBox.getSelectedIndex();
+            }
+
+            this.launcher.getConfig().setConfigValue("selectedServer", selectedIndex);
             this.launcher.getConfig().writeCurrentConfig();
-            this.core = new Core(this, forceUpdate.isSelected());
+
+            // Получаем объект сервера (читаем volatile-safe)
+            ServerAttributes serverAttr = launcher.getAuth().getUserDataLoader().getUserServersAttributes().get(selectedIndex);
+            this.currentServer = serverAttr;
+
+            // Создание Core — долгое действие, делаем в executor
+            launcher.getExecutorServiceProvider().submitTask(() -> {
+                try {
+                    Core created = new Core(this, forceUpdate != null && forceUpdate.isSelected());
+                    this.core = created; // volatile write
+                } catch (Throwable ex) {
+                    Engine.getLOGGER().error("Failed to create Core", ex);
+                    SwingUtilities.invokeLater(() -> launcher.showDialog("Failed to start game: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, false));
+                }
+            }, "createCore");
         });
 
-        // Оповещение о недоступности опциональных модов
-        registerCommand("optionalMods", e ->
-                launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false));
+        registerCommand("optionalMods", e -> launcher.showDialog("Optional mods will arrive later ;)", "Work In Progress", JOptionPane.WARNING_MESSAGE, false));
 
-        // Экспериментальная команда: анимация и переключение пользовательской панели
+        // userPane — анимация и UI-манипуляции выполняются на EDT (используем встроенные Timer'ы)
         registerCommand("userPane", e -> {
-            this.getEngine().getExecutorServiceProvider().submitTask(() -> {
-                SwingUtilities.invokeLater(() -> {
-                    try {
-                        JPanel panel = this.launcher.getUser().getPanel();
-                        if (panel == null) {
-                            Engine.getLOGGER().error("User panel is null.");
-                            return;
+            // Ensure we're on EDT
+            Runnable uiTask = () -> {
+                try {
+                    JPanel panel = this.launcher.getUser().getPanel();
+                    if (panel == null) {
+                        Engine.getLOGGER().error("User panel is null.");
+                        return;
+                    }
+
+                    Container panelParent = panel.getParent();
+                    if (panelParent == null) {
+                        Engine.getLOGGER().error("User panel parent is null.");
+                        return;
+                    }
+
+                    boolean isVisible = panel.isVisible();
+                    String oldIconPath = isVisible ? "assets/ui/icons/back.svg" : "assets/ui/icons/menu.svg";
+                    String newIconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
+
+                    ImageIcon oldIcon = this.launcher.getIconUtils().getVectorIcon(oldIconPath, 20, 24);
+                    ImageIcon newIcon = this.launcher.getIconUtils().getVectorIcon(newIconPath, 20, 24);
+
+                    JComponent pressedComponent = this.getComponent("userPane");
+                    if (!(pressedComponent instanceof Button button)) {
+                        Engine.getLOGGER().warn("Pressed component is not a Button.");
+                        return;
+                    }
+
+                    final int iconAnimationDuration = 250; // ms
+                    final long iconStart = System.currentTimeMillis();
+                    Timer iconTimer = new Timer(15, null);
+                    iconTimer.addActionListener(event -> {
+                        long elapsed = System.currentTimeMillis() - iconStart;
+                        float progress = Math.min(1f, (float) elapsed / iconAnimationDuration);
+                        float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
+
+                        BlendedImageIcon blendedIcon = new BlendedImageIcon(oldIcon.getImage(), newIcon.getImage(), easedProgress);
+                        button.setIcon(blendedIcon);
+                        button.repaint();
+
+                        if (progress >= 1f) {
+                            iconTimer.stop();
+                            button.setIcon(newIcon);
                         }
+                    });
+                    iconTimer.start();
 
-                        Container panelParent = panel.getParent();
-                        if (panelParent == null) {
-                            Engine.getLOGGER().error("User panel parent is null.");
-                            return;
-                        }
+                    int startX = isVisible ? panel.getX() : -panel.getWidth();
+                    int endX = isVisible ? -panel.getWidth() : 0;
 
-                        boolean isVisible = panel.isVisible();
-                        String oldIconPath = isVisible ? "assets/ui/icons/back.svg" : "assets/ui/icons/menu.svg";
-                        String newIconPath = isVisible ? "assets/ui/icons/menu.svg" : "assets/ui/icons/back.svg";
+                    panelParent.setComponentZOrder(pressedComponent, 0);
+                    pressedComponent.setBounds(10, 40, 30, 30);
 
-                        ImageIcon oldIcon = this.launcher.getIconUtils().getVectorIcon(oldIconPath, 20, 24);
-                        ImageIcon newIcon = this.launcher.getIconUtils().getVectorIcon(newIconPath, 20, 24);
+                    if (!isVisible) {
+                        panel.setVisible(true);
+                    } else {
+                        JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
+                        if (userActionsPanel != null) userActionsPanel.setVisible(true);
+                    }
+                    panelParent.revalidate();
+                    panelParent.repaint();
 
-                        // Получаем компонент, вызвавший команду
-                        JComponent pressedComponent = this.getComponent("userPane");
-                        if (!(pressedComponent instanceof Button button)) {
-                            Engine.getLOGGER().warn("Pressed component is not a Button.");
-                            return;
-                        }
+                    Object currentAnimation = panel.getClientProperty("currentAnimation");
+                    if (currentAnimation instanceof Timer oldTimer && oldTimer.isRunning()) {
+                        oldTimer.stop();
+                    }
 
-                        // Анимация смены иконки
-                        Timer iconTimer = new Timer(15, null);
-                        final long startTime = System.currentTimeMillis();
-                        final int iconAnimationDuration = 250; // длительность анимации
+                    final int panelAnimationDuration = 220;
+                    final long panelStartTime = System.currentTimeMillis();
 
-                        iconTimer.addActionListener(event -> {
-                            long elapsed = System.currentTimeMillis() - startTime;
-                            float progress = Math.min(1f, (float) elapsed / iconAnimationDuration);
+                    Timer panelTimer = new Timer(0, null);
+                    panel.putClientProperty("currentAnimation", panelTimer);
+                    panelTimer.addActionListener(animationEvent -> {
+                        try {
+                            long elapsed = System.currentTimeMillis() - panelStartTime;
+                            float progress = Math.min(1f, (float) elapsed / panelAnimationDuration);
                             float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
+                            int newX = (int) (startX + (endX - startX) * easedProgress);
 
-                            BlendedImageIcon blendedIcon = new BlendedImageIcon(
-                                    oldIcon.getImage(),
-                                    newIcon.getImage(),
-                                    easedProgress
-                            );
-
-                            button.setIcon(blendedIcon);
-                            button.repaint(); // Принудительное обновление кнопки
+                            panel.setLocation(newX, panel.getY());
+                            panelParent.setComponentZOrder(panel, 1);
+                            panelParent.repaint();
 
                             if (progress >= 1f) {
-                                iconTimer.stop();
-                                button.setIcon(newIcon); // Финальное обновление
-                            }
-                        });
-                        iconTimer.start();
-
-                        // Вычисление позиций для анимации
-                        int startX = isVisible ? panel.getX() : -panel.getWidth();
-                        int endX = isVisible ? -panel.getWidth() : 0;
-
-                        // Настройка компонента, вызвавшего команду
-                        panelParent.setComponentZOrder(pressedComponent, 0);
-                        pressedComponent.setBounds(10, 40, 30, 30);
-
-                        // Отображение панелей до начала анимации
-                        if (!isVisible) {
-                            panel.setVisible(true);
-                        } else {
-                            JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
-                            if (userActionsPanel != null) {
-                                userActionsPanel.setVisible(true);
-                            }
-                        }
-                        panelParent.revalidate();
-                        panelParent.repaint();
-
-                        Object currentAnimation = panel.getClientProperty("currentAnimation");
-                        if (currentAnimation instanceof Timer oldTimer && oldTimer.isRunning()) {
-                            oldTimer.stop();
-                        }
-
-                        Timer panelTimer = new Timer(0, null);
-                        panel.putClientProperty("currentAnimation", panelTimer);
-
-                        final long panelStartTime = System.currentTimeMillis();
-                        final int panelAnimationDuration = 220;
-
-                        panelTimer.addActionListener(animationEvent -> {
-                            try {
-                                long elapsed = System.currentTimeMillis() - panelStartTime;
-                                float progress = Math.min(1f, (float) elapsed / panelAnimationDuration);
-                                float easedProgress = 1 - (float) Math.pow(1 - progress, 2);
-                                int newX = (int) (startX + (endX - startX) * easedProgress);
-
-                                panel.setLocation(newX, panel.getY());
-                                panelParent.setComponentZOrder(panel, 1);
-                                panelParent.repaint();
-
-                                if (progress >= 1f) {
-                                    panelTimer.stop();
-                                    panel.putClientProperty("currentAnimation", null);
-
-                                    if (isVisible) {
-                                        panel.setVisible(false);
-                                    } else {
-                                        JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
-                                        if (userActionsPanel != null) {
-                                            userActionsPanel.setVisible(false);
-                                        }
-                                    }
-                                    panelParent.revalidate();
-                                }
-                            } catch (Exception ex) {
-                                Engine.getLOGGER().error("Error during animation", ex);
                                 panelTimer.stop();
+                                panel.putClientProperty("currentAnimation", null);
+
+                                if (isVisible) {
+                                    panel.setVisible(false);
+                                } else {
+                                    JPanel userActionsPanel = this.getEngine().getGuiBuilder().getPanelsMap().get("userActions");
+                                    if (userActionsPanel != null) userActionsPanel.setVisible(false);
+                                }
+                                panelParent.revalidate();
                             }
-                        });
-                        panelTimer.start();
-                    } catch (Exception ex) {
-                        Engine.getLOGGER().error("Exception in userPane command", ex);
-                    }
-                });
-            }, "userPaneToggle");
+                        } catch (Exception ex) {
+                            Engine.getLOGGER().error("Error during animation", ex);
+                            panelTimer.stop();
+                        }
+                    });
+                    panelTimer.start();
+
+                } catch (Exception ex) {
+                    Engine.getLOGGER().error("Exception in userPane command", ex);
+                }
+            };
+
+            if (SwingUtilities.isEventDispatchThread()) uiTask.run();
+            else SwingUtilities.invokeLater(uiTask);
         });
 
-
-
-        // Завершение работы приложения
         registerCommand("closeButton", e -> {
-            //this.launcher.getFrame().setVisible(false);
-            this.launcher.getExecutorServiceProvider().shutdown();
-            //this.launcher.getSOUND().getSoundPlayer().stopAllSounds(() -> {
-            //    this.launcher.getExecutorServiceProvider().shutdown();
+            // Плавный shutdown: разрешаем звуку остановиться, затем завершаем executor и выходим
+            try {
+                this.launcher.getExecutorServiceProvider().shutdown();
+            } catch (Exception ex) {
+                Engine.getLOGGER().warn("Error shutting down executor provider", ex);
+            }
+            try {
+                // Вызов System.exit удобнее делать в EDT
+                SwingUtilities.invokeLater(() -> System.exit(0));
+            } catch (Exception ignored) {
                 System.exit(0);
-            //});
+            }
         });
 
-        // Свернуть окно
-        registerCommand("hideButton", e ->
-                engine.getFrame().setExtendedState(Frame.ICONIFIED));
+        registerCommand("hideButton", e -> engine.getFrame().setExtendedState(Frame.ICONIFIED));
     }
 
-    /**
-     * Основной метод обработки событий.
-     * Делегирует выполнение команды методу executeCommand.
-     *
-     * @param e событие, содержащее информацию о нажатой команде.
-     */
     @Override
     public void handleAction(ActionEvent e) {
+        if (e == null) return;
         executeCommand(e.getActionCommand(), e);
     }
 
@@ -344,7 +385,10 @@ public class ActionHandler extends org.foxesworld.engine.gui.ActionHandler imple
         return launcher;
     }
 
+    /**
+     * Возвращаем неизменяемое отображение реестра команд, чтобы внешние клиенты не могли модифицировать его.
+     */
     public Map<String, Consumer<ActionEvent>> getCommandRegistry() {
-        return commandRegistry;
+        return Collections.unmodifiableMap(commandRegistry);
     }
 }

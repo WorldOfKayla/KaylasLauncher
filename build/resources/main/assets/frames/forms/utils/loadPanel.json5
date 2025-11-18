@@ -1,0 +1,84 @@
+{
+  panels: {
+    loadPanel: {
+      panelOptions: {
+        opaque: true,
+        focusable: true,
+        visible: false,
+        background: "#c0a1a0f7",
+        backgroundImage: "assets/ui/img/bg/season/summer.png",
+        border: "1,1,1,1,#242221",
+        bounds: {
+          x: 0,
+          y: 0,
+          size: {
+            width: 500,
+            height: 200
+          }
+        }
+      },
+      childComponents: [
+        {
+          type: "label",
+          fontSize: 16,
+          style: "titleBold",
+          localeKey: "loading.title",
+          id: "titleLabel",
+          bounds: {
+            x: 120,
+            y: 45,
+            size: {
+              width: 300,
+              height: 35
+            }
+          }
+        },
+        {
+          type: "label",
+          fontSize: 11,
+          style: "title",
+          localeKey: "loading.msg",
+          id: "loaderText",
+          bounds: {
+            x: 120,
+            y: 75,
+            size: {
+              width: 400,
+              height: 20
+            }
+          }
+        },
+        {
+          type: "progressBar",
+          style: "progressMini",
+          id: "loadProgress",
+          color: "#ffffff",
+          borderRadius: 20,
+          bounds: {
+            x: 40,
+            y: 100,
+            size: {
+              width: 350,
+              height: 30
+            }
+          }
+        },
+        {
+          type: "label",
+          fontSize: 11,
+          style: "title",
+          localeKey: "loading.msg",
+          id: "progressText",
+          bounds: {
+            x: 12,
+            y: 7,
+            size: {
+              width: 400,
+              height: 20
+            }
+          }
+        }
+      ]
+    }
+  }
+}

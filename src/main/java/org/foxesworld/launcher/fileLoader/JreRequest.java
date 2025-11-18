@@ -7,11 +7,13 @@ import org.foxesworld.engine.utils.HTTP.HttpParam;
 public class JreRequest extends HTTPrequest {
 
     @HttpParam
-    private final String sysRequest = "getJre", jreVersion;
+    private final String sysRequest = "getJre", jreVersion, jrePlatform, bitDepth;
 
-    public JreRequest(Engine engine, String jreVersion) {
+    public JreRequest(Engine engine, String jreVersion, String jrePlatform, String bitDepth) {
         super(engine, "POST");
         this.jreVersion = jreVersion;
+        this.jrePlatform = jrePlatform;
+        this.bitDepth = bitDepth;
     }
 
 }

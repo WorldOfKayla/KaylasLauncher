@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: org.foxesworld.Launcher
+Premain-Class: org.foxesworld.test.patch.PanelAgent
+Can-Redefine-Classes: true
+

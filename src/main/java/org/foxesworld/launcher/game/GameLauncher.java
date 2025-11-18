@@ -3,6 +3,7 @@ package org.foxesworld.launcher.game;
 import org.foxesworld.Launcher;
 import org.foxesworld.engine.Engine;
 import org.foxesworld.engine.game.argsReader.ArgsReader;
+import org.foxesworld.launcher.Core;
 import org.foxesworld.launcher.config.Config;
 import org.foxesworld.launcher.gui.ActionHandler;
 import org.foxesworld.launcher.user.User;
@@ -45,7 +46,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
 
     @Override
     protected void setJreArgs() {
-        processArgs.add(getPathBuilders().buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + "bin" + File.separator + "java");
+        processArgs.add(getJreBin() + File.separator + "java");
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
         List<String> jvmArgs = getJvmArgs();
         this.addArgsToProcess(jvmArgs);
@@ -116,7 +117,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
                 setGameArgs();
 
                 // Логируем сформированную команду для отладки
-                Engine.LOGGER.debug("Executing command: " + processArgs.toString());
+                Engine.LOGGER.debug("Executing command: " + processArgs);
 
                 ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
                 processBuilder.directory(new File(getPathBuilders().buildClientDir().toUri()));
@@ -295,7 +296,7 @@ public class GameLauncher extends org.foxesworld.engine.game.GameLauncher {
     }
 
     public String getJreBin() {
-        return getPathBuilders().buildRuntimeDir().toString() + File.separator + getCurrentJre() + File.separator + "bin";
+        return getPathBuilders().buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + this.gameClient.getJreVersion() +'-' + Core.getOSPrefix() +"-x64" + File.separator + "bin";
     }
 
     public String buildAssetsPath() {

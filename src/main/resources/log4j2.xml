@@ -18,7 +18,7 @@
     </Appenders>
 
     <Loggers>
-        <Root level="${sys:log.level}">
+        <Root level="DEBUG">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
         </Root>

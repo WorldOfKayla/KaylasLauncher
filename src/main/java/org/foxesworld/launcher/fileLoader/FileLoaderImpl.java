@@ -58,7 +58,7 @@ public class FileLoaderImpl implements FileLoaderListener {
     }
 
     public void addJreToLoadAsync(String jreVersion) {
-        JreRequest jreRequest = new JreRequest(this.core.getLauncher(), jreVersion);
+        JreRequest jreRequest = new JreRequest(this.core.getLauncher(), jreVersion, Core.getOSPrefix(), "x64");
         CompletableFuture<FileAttributes> future = new CompletableFuture<>();
         jreRequest.sendAsync(Map.of(), response -> {
             try {
@@ -180,7 +180,7 @@ public class FileLoaderImpl implements FileLoaderListener {
         this.fileLoaderUI.getPanel().revalidate();
     }
     private void unpackRuntimeZipIfNeeded(String fullPath) {
-        if (fullPath.contains("runtime") && fullPath.contains("zip")) {
+        if (fullPath.contains("runtime") && fullPath.contains(Core.getOSPrefix()) && fullPath.contains("zip")) {
             core.getFileLoader().getDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }

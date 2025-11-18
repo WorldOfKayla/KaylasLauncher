@@ -1,0 +1,77 @@
+{
+  panels: {
+    generalInfo: {
+      panelOptions: {
+        opaque: true,
+        background: "#7e6969",
+        doubleBuffered: true,
+        visible: true,
+        zIndex: 2,
+        bounds: {
+          x: 490,
+          y: 0,
+          size: {
+            width: 290,
+            height: 450
+          }
+        }
+      },
+      childComponents: [
+        {
+          type: "label",
+          fontSize: 14,
+          style: "titleBold",
+          imageIcon: "assets/ui/icons/info.svg",
+          iconWidth: 32,
+          iconHeight: 32,
+          localeKey: "settings.settingsInfo",
+          id: "optionsInfo",
+          bounds: {
+            x: 5,
+            y: 20,
+            size: {
+              width: 270,
+              height: 60
+            }
+          }
+        },
+        {
+          type: "textArea",
+          lineWrap: true,
+          fontSize: 11,
+          style: "textFieldMain",
+          color: "#ffffff",
+          localeKey: "settings.info",
+          id: "settingsInfo",
+          bounds: {
+            x: 5,
+            y: 70,
+            size: {
+              width: 280,
+              height: 70
+            }
+          },
+          border: "5,5,5,5"
+        },
+        {
+          type: "button",
+          enabled: true,
+          keyCode: "ENTER",
+          toolTip: "tooltip.applySettings",
+          tooltipStyle: "success",
+          style: "buttonMain",
+          id: "applySettings",
+          localeKey: "settings.applySettings",
+          bounds: {
+            x: 10,
+            y: 400,
+            size: {
+              width: 280,
+              height: 47
+            }
+          }
+        }
+      ]
+    }
+  }
+}

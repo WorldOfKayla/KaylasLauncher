@@ -16,6 +16,7 @@ import org.takesome.kaylasEngine.utils.animation.AnimationManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.takesome.kaylasEngine.utils.FontUtils.hexToColor;
@@ -34,6 +35,7 @@ public class LoadStatus extends LoadingManager {
     private final Launcher launcher;
     private final LoadingUiScriptConfig loadingUi;
     private final EdtLagWatchdog edtLagWatchdog = new EdtLagWatchdog("LoadStatus");
+    private final List<SpriteAnimation> pausedFrameSprites = new ArrayList<>();
 
     private JProgressBar progressBar;
     private Label progressText;
@@ -210,6 +212,7 @@ public class LoadStatus extends LoadingManager {
                             nanosToMillis(System.nanoTime() - listenerRegisteredAt)
                     );
                     edtLagWatchdog.start();
+                    pauseFrameSprites();
                     changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
                     setVisible(true);
                     ensureOverlay();
@@ -239,6 +242,7 @@ public class LoadStatus extends LoadingManager {
                 fadeOverlayTo(0, loadingUi.overlay().fadeOutMs(), () -> {
                     removeOverlay();
                     setVisible(false);
+                    resumeFrameSprites();
                     edtLagWatchdog.stop();
                     JPanel mainFramePanel = loggedForm.getPanel();
                     if (mainFramePanel != null) {
@@ -304,10 +308,14 @@ public class LoadStatus extends LoadingManager {
     }
 
     /**
-     * Runs the overlay alpha transition on the EDT with coalesced Swing timer events.
+     * Applies the overlay alpha transition instantly.
+     *
+     * <p>The previous fade used a high-frequency Swing timer. During loading it competed with
+     * sprite timers and progress timers. A single alpha update is materially cheaper and removes
+     * a source of timer contention.</p>
      *
      * @param targetAlpha target alpha in the {@code 0..255} range
-     * @param durationMs transition duration in milliseconds
+     * @param durationMs configured transition duration, logged for diagnostics only
      * @param onComplete optional completion callback executed on the EDT
      */
     private void fadeOverlayTo(int targetAlpha, int durationMs, Runnable onComplete) {
@@ -316,39 +324,17 @@ public class LoadStatus extends LoadingManager {
             overlayFadeTimer.stop();
         }
 
+        long startedAt = System.nanoTime();
+        setOverlayAlpha(targetAlpha);
         Engine.getLOGGER().debug(
-                "[LOAD-UI] overlay fade start: alpha {} -> {}, duration={} ms",
-                overlayAlpha,
+                "[LOAD-UI] overlay alpha applied instantly: targetAlpha={}, configuredDuration={} ms, elapsed={} ms",
                 targetAlpha,
-                durationMs
+                durationMs,
+                nanosToMillis(System.nanoTime() - startedAt)
         );
-
-        final int startAlpha = overlayAlpha;
-        final int delta = targetAlpha - startAlpha;
-        final long startedAt = System.nanoTime();
-        final long durationNanos = Math.max(1, durationMs) * 1_000_000L;
-
-        overlayFadeTimer = new Timer(Math.max(16, loadingUi.overlay().frameDelayMs()), event -> {
-            float progress = Math.min(1f, (System.nanoTime() - startedAt) / (float) durationNanos);
-            float eased = 1f - (1f - progress) * (1f - progress);
-            int alpha = Math.round(startAlpha + delta * eased);
-            setOverlayAlpha(alpha);
-            if (progress >= 1f) {
-                overlayFadeTimer.stop();
-                setOverlayAlpha(targetAlpha);
-                Engine.getLOGGER().debug(
-                        "[LOAD-UI] overlay fade complete: targetAlpha={}, elapsed={} ms",
-                        targetAlpha,
-                        nanosToMillis(System.nanoTime() - startedAt)
-                );
-                if (onComplete != null) {
-                    onComplete.run();
-                }
-            }
-        });
-        overlayFadeTimer.setInitialDelay(0);
-        overlayFadeTimer.setCoalesce(true);
-        overlayFadeTimer.start();
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 
     /** Starts the progress animation if it is enabled and all required widgets exist. */
@@ -366,6 +352,40 @@ public class LoadStatus extends LoadingManager {
             progressBarAnimator = new ProgressBarAnimator(launcher, progressBar, progressText);
         }
         progressBarAnimator.startProgressTest();
+    }
+
+    /** Pauses non-loading sprite animations from the main frame while the loading window is visible. */
+    private void pauseFrameSprites() {
+        pausedFrameSprites.clear();
+        collectAndPauseSprites(launcher.getFrame().getContentPane());
+        collectAndPauseSprites(launcher.getFrame().getLayeredPane());
+        Engine.getLOGGER().debug("[LOAD-UI] paused frame sprites: count={}", pausedFrameSprites.size());
+    }
+
+    private void collectAndPauseSprites(Component component) {
+        if (component instanceof SpriteAnimation spriteAnimation
+                && !spriteAnimation.isAnimationStopped()
+                && !pausedFrameSprites.contains(spriteAnimation)) {
+            spriteAnimation.setAnimationStopped(true);
+            pausedFrameSprites.add(spriteAnimation);
+        }
+
+        if (component instanceof Container container) {
+            for (Component child : container.getComponents()) {
+                collectAndPauseSprites(child);
+            }
+        }
+    }
+
+    /** Resumes only the sprite animations paused by {@link #pauseFrameSprites()}. */
+    private void resumeFrameSprites() {
+        for (SpriteAnimation spriteAnimation : pausedFrameSprites) {
+            if (spriteAnimation.isDisplayable()) {
+                spriteAnimation.setAnimationStopped(false);
+            }
+        }
+        Engine.getLOGGER().debug("[LOAD-UI] resumed frame sprites: count={}", pausedFrameSprites.size());
+        pausedFrameSprites.clear();
     }
 
     private void setOverlayAlpha(int alpha) {

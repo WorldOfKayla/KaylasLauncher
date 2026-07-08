@@ -1,0 +1,96 @@
+{
+  "scopes": {
+    "mainFrame": "mainFrame"
+  },
+  "forms": {
+    "authForm": "authForm",
+    "settingsFields": "settingsFields"
+  },
+  "localeKeys": {
+    "authLoggedOut": "auth.loggedOut"
+  },
+  "components": {
+    "userPane": "userPane",
+    "userControls": "userControls",
+    "userActions": "userActions",
+    "authSubmit": "authForm>submit",
+    "userinfoSubmit": "userinfo>submit",
+    "smallButton": "smallButton",
+    "gameDirSmall": "gameDir-small",
+    "cancelDownloadSmall": "cancelDownload-small",
+    "applySettings": "applySettings",
+    "logOut": "logOut",
+    "infoSmall": "info-small",
+    "settingsSmall": "settings-small",
+    "loadCancelSmall": "loadCancel-small",
+    "back": "back",
+    "toGame": "toGame",
+    "optionalMods": "optionalMods",
+    "closeButton": "closeButton",
+    "hideButton": "hideButton"
+  },
+  "panels": {
+    "authForm": "authForm",
+    "newsForm": "newsForm",
+    "loggedForm": "loggedForm",
+    "settings": "settings",
+    "test": "test"
+  },
+  "panelSpecs": {
+    "authToTest": "authForm->false|newsForm->false|test->true",
+    "loggedToTest": "loggedForm->false|newsForm->false|test->true",
+    "authToSettings": "authForm->false|newsForm->false|settings->true",
+    "loggedToSettings": "loggedForm->false|newsForm->false|settings->true",
+    "backToAuth": "authForm->true|newsForm->true|settings->false",
+    "backToLogged": "loggedForm->true|newsForm->true|settings->false",
+    "hideAuth": "authForm->false"
+  },
+  "events": {
+    "userPaneToggle": "launcher.userPane.toggle",
+    "openInfo": "launcher.ui.open.info",
+    "openSettings": "launcher.ui.open.settings",
+    "back": "launcher.ui.back",
+    "optionalMods": "launcher.ui.optionalMods",
+    "loadingToggle": "launcher.ui.loading.toggle",
+    "openGameDir": "launcher.ui.gameDir.open",
+    "applySettings": "launcher.ui.settings.apply"
+  },
+  "listeners": {
+    "userPaneToggle": "launcher.actionHandler.userPane.toggle",
+    "openInfo": "launcher.actionHandler.open.info",
+    "openSettings": "launcher.actionHandler.open.settings",
+    "back": "launcher.actionHandler.back",
+    "optionalMods": "launcher.actionHandler.optionalMods",
+    "loadingToggle": "launcher.actionHandler.loading.toggle",
+    "openGameDir": "launcher.actionHandler.gameDir.open",
+    "applySettings": "launcher.actionHandler.settings.apply"
+  },
+  "scripts": {
+    "launcherUi": "assets/scripts/launcher/launcher-ui.lua",
+    "loadingUi": "assets/scripts/launcher/loading-ui.lua",
+    "userUi": "assets/scripts/launcher/User.lua"
+  },
+  "icons": {
+    "userPaneMenu": "assets/ui/icons/menu.svg",
+    "userPaneBack": "assets/ui/icons/back.svg"
+  },
+  "sounds": {
+    "other": "other",
+    "start": "start",
+    "loggedOut": "loggedOut"
+  },
+  "dialogs": {
+    "errorTitle": "error.title",
+    "optionalModsTitle": "optionalMods.optionalTitle",
+    "optionalModsMessage": "optionalMods.message",
+    "noServersMessage": "error.noServers",
+    "failedToStartGame": "error.failedToStartGame"
+  },
+  "configKeys": {
+    "selectedServer": "selectedServer"
+  },
+  "tasks": {
+    "auth": "auth",
+    "createCore": "createCore"
+  }
+}

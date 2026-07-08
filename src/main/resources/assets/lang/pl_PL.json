@@ -1,0 +1,149 @@
+{
+  "general": {
+    "pl_PL": "Polski",
+    "ru_RU": "Rosyjski",
+    "en_US": "Angielski",
+    "appTitle": "Kinetic Horizons",
+    "status": "Alfa",
+    "website": "Strona {key}",
+    "launcher": "Launcher",
+    "cancel": "Anuluj"
+  },
+  "error": {
+    "title": "Błąd",
+    "noServers": "Brak dostępnych serwerów dla tego użytkownika.",
+    "failedToStartGame": "Nie udało się uruchomić gry: {error}",
+    "invalidJVM": "Nieprawidłowa maszyna JVM!",
+    "invalidLauncher": "Launcher wymaga aktualizacji!",
+    "alreadyRunning": "Launcher jest już uruchomiony!",
+    "file": "Wystąpił błąd pliku!"
+  },
+  "pane": {
+    "settingsButt": "Ustawienia",
+    "uploadSkin": "Prześlij skórkę",
+    "website": "Strona główna",
+    "logOut": "Wyloguj się"
+  },
+  "settings": {
+    "back": "Wstecz",
+    "baseOptions": "Opcje podstawowe",
+    "settingsInfo": "Informacje",
+    "autoEnter": "Automatyczne dołączanie do wybranego serwera",
+    "autoEnter-desc": "Po włączeniu tej opcji gra automatycznie połączy się z wybranym serwerem, pomijając menu główne.",
+    "fullScreen": "Uruchom w trybie pełnoekranowym",
+    "fullScreen-desc": "Po uruchomieniu gra będzie działać w trybie pełnoekranowym. Aby go wyłączyć, użyj klawisza F11.",
+    "loadNews": "Ładuj wiadomości",
+    "loadNews-desc": "Ładuje blok wiadomości. Możesz wyłączyć tę opcję, aby ograniczyć transfer danych.",
+    "enableSound": "Włącz dźwięk",
+    "enableSound-desc": "Włącza efekty dźwiękowe w launcherze.",
+    "backgroundMusic": "Muzyka w tle",
+    "backgroundMusic-desc": "Włącza muzykę w tle w launcherze.",
+    "launchAC": "Uruchom launcher po opuszczeniu serwera",
+    "launchAC-desc": "Po włączeniu tej opcji launcher uruchomi się automatycznie po wyjściu z gry.",
+    "applySettings": "Zastosuj",
+    "ramField": "Ilość pamięci RAM (MB)",
+    "ramPlaceholder": "RAM",
+    "soundVolume": "Głośność dźwięku",
+    "langBox": "Język",
+    "info": "Informacje o ustawieniach",
+    "homeDir": "Katalog gry",
+    "width": "Szerokość",
+    "height": "Wysokość",
+    "gameFiles": "Pliki gry"
+  },
+  "auth": {
+    "authTitle": "Logowanie",
+    "passwordPlaceholder": "Hasło",
+    "loginPlaceholder": "Login",
+    "loginField": "Pole loginu",
+    "submit": "Zaloguj się",
+    "rememberMe": "Zapamiętaj mnie",
+    "loggedIn": "Pomyślnie zalogowano jako {login}",
+    "loggedOut": "Wylogowano"
+  },
+  "file": {
+    "gettingFiles-title": "Pobieranie plików",
+    "gettingFiles-desc": "Sprawdzanie listy plików do pobrania...",
+    "listBuilt-title": "Lista plików gotowa",
+    "listBuilt-desc": "Ustalono, które pliki należy pobrać.",
+    "isBuilt": "Lista została utworzona"
+  },
+  "loading": {
+    "title": "Ładowanie...",
+    "msg": "Proszę czekać"
+  },
+  "logged": {
+    "greet": "Witaj, {login}!",
+    "loggedIn": "Jesteś zalogowany!",
+    "toGame": "Do gry",
+    "forceUpdate": "Wymuś aktualizację",
+    "units": "Jednostki: ",
+    "crystals": "Kryształy: "
+  },
+  "download": {
+    "file": "Plik: ",
+    "directory": "Katalog: ",
+    "totalSize": "Łączny rozmiar: "
+  },
+  "game": {
+    "playing": "Gra na serwerze {server}",
+    "login": "Login użytkownika: {login}"
+  },
+  "server": {
+    "updating": "Aktualizowanie serwera...",
+    "serverOff": "Serwer jest wyłączony",
+    "serverOn": "%% graczy z ##",
+    "serverFull": "Serwer jest pełny! Całkowita liczba slotów: %%",
+    "serverErr": "Błąd parsowania danych!"
+  },
+  "tooltip": {
+    "gameTooltip": "Zagraj! (ENTER)",
+    "logOutToolTip": "Wyloguj się (ESC)",
+    "test": "TEST! Naciśnij F5",
+    "settings": "Ustawienia! (S)",
+    "folder": "Otwórz folder! (F)",
+    "back": "Wstecz! (Backspace)",
+    "applySettings": "Zapisz! (ENTER)",
+    "selectServer": "Wybierz serwer!",
+    "optionalMods": "Mody opcjonalne",
+    "userPane": "Panel użytkownika"
+  },
+  "playback": {
+    "started": "Rozpoczęto grę",
+    "finished": "Zakończono grę"
+  },
+  "optionalMods": {
+    "message": "Mody opcjonalne pojawią się później ;)",
+    "optionalTitle": "Mody opcjonalne",
+    "apply": "Zastosuj"
+  },
+  "dev": {
+    "token": "Token dostępu: ",
+    "uuid": "UUID: ",
+    "TEST": "Test zakończony powodzeniem!",
+    "experimental": "Informacje o użytkowniku",
+    "remindMe": "Przypomnij mi",
+    "userName": "Nazwa użytkownika",
+    "userStatus": "Status użytkownika"
+  },
+  "launcherUi": {
+    "noEmitter": "Brak emitera zdarzenia dla akcji {action}",
+    "noComponentId": "Komponent bez id nie może wykonać akcji UI launchera.",
+    "noAction": "Dla komponentu '{component}' nie zarejestrowano akcji UI launchera.",
+    "ignoredDisabled": "Zignorowano akcję {action} z wyłączonego komponentu {component}",
+    "dispatching": "Wykonuję akcję {action} -> {event}",
+    "action.toggleUserPane": "Przełącz panel użytkownika",
+    "action.openSettings": "Otwórz ustawienia",
+    "action.backFromSettings": "Powrót z ustawień",
+    "action.optionalMods": "Mody opcjonalne",
+    "action.toggleLoadingOverlay": "Przełącz okno ładowania",
+    "action.openGameDirectory": "Otwórz folder gry",
+    "action.applySettings": "Zastosuj ustawienia"
+  },
+  "user": {
+    "badges": {
+      "singleFailure": "Nie udało się załadować odznaki {badge}: {error}",
+      "allFailure": "Nie udało się załadować odznak dla {login}. Powód: {error}"
+    }
+  }
+}

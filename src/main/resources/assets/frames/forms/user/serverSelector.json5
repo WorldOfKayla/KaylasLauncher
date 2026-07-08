@@ -29,7 +29,7 @@
                   x: 0,
                   y: 30,
                   size: {
-                    width: 348,
+                    width: 350,
                     height: 43
                   }
                 },
@@ -45,6 +45,9 @@
                   iconWidth: 20,
                   iconHeight: 24,
                   id: "userPane",
+                  scripts: {
+                    action: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 10,
                     y: 10,
@@ -108,10 +111,14 @@
                 },
                 {
                   type: "dropBox",
-                  style: "selectable2",
+                  style: "selectable",
                   id: "serverBox",
                   initialValue: "servers",
                   toolTip: "tooltip.selectServer",
+                  scripts: {
+                    init: "assets/scripts/launcher/launcher-ui.lua",
+                    valuesChanged: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 35,
                     y: 350,
@@ -169,6 +176,9 @@
                   iconHeight: 16,
                   tooltipStyle: "success",
                   id: "optionalMods",
+                  scripts: {
+                    action: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 260,
                     y: 310,

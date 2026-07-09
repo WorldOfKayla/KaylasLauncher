@@ -21,14 +21,20 @@ import org.takesome.launcher.LauncherValidator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, ComboboxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
+    private static final String LANGUAGE_COMBOBOX_ID = "lang";
+    private static final String FLAG_ICON_ROOT = "assets/ui/icons/flags/";
+    private static final String FLAG_ICON_EXTENSION = ".svg";
+    private static final int FLAG_ICON_SIZE = 20;
     private static final LauncherUiProvider UI_PROVIDER = LauncherUiProvider.load();
     private Launcher launcher;
     private final LauncherUiProvider ui;
@@ -99,21 +105,45 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
             }
 
             if (component instanceof Combobox combobox) {
-                String[] localeTranslate = new String[this.launcher.getLANG().getLocalesSet().length];
-                int num = 0;
-                for (String lang : launcher.getLANG().getLocalesSet()) {
-                    localeTranslate[num] = this.launcher.getLANG().getString("general." + lang);
-                    num += 1;
-                }
-                combobox.setValues(localeTranslate);
-                combobox.setSelectedIndex(launcher.getLANG().getLocaleIndex());
-                combobox.setComboboxListener(this);
+                configureLanguageCombobox(combobox);
             }
 
             if (component instanceof Spinner spinner) {
                 spinner.setSpinnerListener(this);
             }
         }
+    }
+
+
+    private void configureLanguageCombobox(Combobox combobox) {
+        String[] locales = launcher.getLANG().getLocalesSet();
+        String[] localeTranslate = new String[locales.length];
+        for (int index = 0; index < locales.length; index++) {
+            localeTranslate[index] = launcher.getLANG().getString("general." + locales[index]);
+        }
+        combobox.setValues(localeTranslate);
+        combobox.setSelectedIndex(launcher.getLANG().getLocaleIndex());
+        if (LANGUAGE_COMBOBOX_ID.equals(combobox.getName())) {
+            combobox.setIcons(loadLanguageFlagIcons(locales));
+        }
+        combobox.setComboboxListener(this);
+    }
+
+    private BufferedImage[] loadLanguageFlagIcons(String[] locales) {
+        if (locales == null || locales.length == 0) {
+            return new BufferedImage[0];
+        }
+
+        BufferedImage[] flags = new BufferedImage[locales.length];
+        for (int index = 0; index < locales.length; index++) {
+            String locale = locales[index];
+            if (locale == null || locale.isBlank()) {
+                continue;
+            }
+            String flagPath = FLAG_ICON_ROOT + locale.toLowerCase(Locale.ROOT) + FLAG_ICON_EXTENSION;
+            flags[index] = launcher.getIconUtils().getVectorImage(flagPath, FLAG_ICON_SIZE, FLAG_ICON_SIZE);
+        }
+        return flags;
     }
 
     public void openGameFolder() {

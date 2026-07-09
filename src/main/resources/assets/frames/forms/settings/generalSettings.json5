@@ -8,7 +8,7 @@
         visible: true,
         bounds: {
           x: 0,
-          y: 0,
+          y: 10,
           size: {
             width: 490,
             height: 450
@@ -41,7 +41,7 @@
               panelOptions: {
                 opaque: true,
                 visible: true,
-                background: "#c0a1a0f7",
+                background: "#c0a1a0",
                 bounds: {
                   x: 0,
                   y: 20,

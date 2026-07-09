@@ -1,0 +1,19 @@
+<ui>
+    <childComponents>
+        <component type="checkBox" enabled="true" style="solid1" keyCode="F1" id="autoEnter" localeKey="settings.autoEnter" initialValue="config#autoEnter">
+            <bounds x="30" y="40" width="320" height="32" />
+        </component>
+        <component type="checkBox" enabled="true" style="solid1" keyCode="F2" id="fullScreen" localeKey="settings.fullScreen" initialValue="config#fullScreen">
+            <bounds x="30" y="60" width="320" height="32" />
+        </component>
+        <component type="checkBox" enabled="true" style="solid1" keyCode="F3" id="enableSound" localeKey="settings.enableSound" initialValue="config#enableSound">
+            <bounds x="30" y="80" width="240" height="32" />
+        </component>
+        <component type="checkBox" enabled="true" style="solid1" keyCode="F4" id="backgroundMusic" localeKey="settings.backgroundMusic" initialValue="config#backgroundMusic">
+            <bounds x="30" y="100" width="240" height="32" />
+        </component>
+        <component type="checkBox" enabled="true" style="solid1" keyCode="F5" id="launchAC" localeKey="settings.launchAC" initialValue="config#launchAC">
+            <bounds x="30" y="120" width="370" height="32" />
+        </component>
+    </childComponents>
+</ui>

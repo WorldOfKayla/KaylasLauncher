@@ -49,6 +49,9 @@
                   iconHeight: 16,
                   style: "altButton",
                   id: "back",
+                  scripts: {
+                    action: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 0,
                     y: 0,

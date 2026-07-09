@@ -1,0 +1,159 @@
+package org.takesome.launcher;
+
+import org.takesome.Launcher;
+import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.fileLoader.fileGuard.FileGuard;
+import org.takesome.kaylasEngine.game.GameListener;
+import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.launcher.fileLoader.FileLoaderImpl;
+import org.takesome.launcher.fileLoader.LauncherFileLoader;
+import org.takesome.launcher.game.GameLauncher;
+import org.takesome.launcher.game.GameTimeTask;
+import org.takesome.launcher.gui.ActionHandler;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Locale;
+
+import static org.takesome.kaylasEngine.utils.helper.JVMHelper.getCorrectOSArch;
+
+public class Core implements GameListener {
+    private final Launcher launcher;
+    private FileGuard fileGuard;
+    private final ActionHandler actionHandler;
+    private final LauncherFileLoader fileLoader;
+    private GameLauncher gameLauncher;
+    private final GameTimeTask gameTimeTask;
+
+    public Core(ActionHandler actionHandler, boolean forceUpdate) {
+        ServerAttributes currentServer = actionHandler.getCurrentServer();
+        actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
+        actionHandler.getEngine().getDiscord().discordRpcStart(
+                actionHandler.getEngine().getLANG().getStringWithKey("game.login",
+                        new String[]{"login"},
+                        new String[]{actionHandler.getLauncher().getUser().getLogin()}),
+                actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
+                        new String[]{"server"},
+                        new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
+                currentServer.getServerName().toLowerCase(Locale.ROOT)
+        );
+        this.actionHandler = actionHandler;
+        this.launcher = actionHandler.getLauncher();
+        fileLoader = new LauncherFileLoader(actionHandler, actionHandler.getLauncher().getConfig().getHomeDir());
+        FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
+        fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
+        fileLoader.setLoaderListener(fileLoaderImpl);
+
+        this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
+
+        this.gameTimeTask = new GameTimeTask(
+                currentServer,
+                this.launcher.getUser().getLogin(),
+                this.launcher.getExecutorServiceProvider().getExecutorService(),
+                this.launcher
+        );
+    }
+
+
+    @Override
+    public void onGameStart(ServerAttributes serverAttributes) {
+        // Скрываем окно лаунчера и воспроизводим звук старта
+        this.launcher.getFrame().setVisible(false);
+        this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
+
+        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName()
+                + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
+
+        // Если отображается экран загрузки, скрываем его
+        if (getLauncher().getLoadingManager().isVisible()) {
+            getLauncher().getLoadingManager().toggleVisibility();
+        }
+
+        //FileProtector fileProtector = new FileProtector();
+
+
+        try {
+            // Строим пути для отслеживания
+            Path assetsPath = this.gameLauncher.getPathBuilders().buildAssetsPath();
+            Path librariesPath = this.gameLauncher.getPathBuilders().buildLibrariesPath();
+            Path clientDir = this.gameLauncher.getPathBuilders().buildClientDir();
+
+            //fileProtector.protectDirectory(assetsPath);
+            //fileProtector.protectDirectory(librariesPath);
+            //fileProtector.protectDirectory(clientDir);
+
+            //DirWatcher dirWatcher = new DirWatcher(Arrays.asList(assetsPath, librariesPath, clientDir), event -> {
+            //    Launcher.LOGGER.warn("Detected event: " + event.getKind() + " on " + event.getPath());
+            //});
+            //dirWatcher.start();
+            //Launcher.LOGGER.info("DirWatcher started successfully!");
+        } catch (Exception e) {
+            System.err.println("Failed to start DirWatcher: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        gameTimeTask.start();
+    }
+
+    @Override
+    public void onGameExit(ServerAttributes serverAttributes) {
+        gameTimeTask.finishPlaying();
+        Engine.LOGGER.info("Сессия игры завершена для пользователя " + this.launcher.getUser().getLogin());
+
+        // Если требуется перезапуск приложения, можно выполнить соответствующую логику:
+        if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
+            File appDirectory = new File(this.actionHandler.getEngine().appPath());
+            if (!appDirectory.isDirectory() || this.launcher.appPath().equals("IDE")) {
+                this.launcher.getExecutorServiceProvider().shutdown();
+                this.actionHandler.getLauncher().restartApplication(
+                        2048,
+                        this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch()// getOSPrefix()
+                );
+            } else {
+                Engine.getLOGGER().error("Launcher can't be a directory!");
+            }
+        }
+        this.launcher.getExecutorServiceProvider().shutdown();
+        System.exit(0);
+    }
+
+
+    public static String getOSPrefix() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            return "win";
+        } else if (osName.contains("mac")) {
+            return "mac";
+        } else {
+            return "unix";
+        }
+    }
+
+    public ActionHandler getActionHandler() {
+        return actionHandler;
+    }
+
+    public GameLauncher getGameLauncher() {
+        return gameLauncher;
+    }
+
+    public LauncherFileLoader getFileLoader() {
+        return fileLoader;
+    }
+
+    public void setFileGuard(FileGuard fileGuard) {
+        this.fileGuard = fileGuard;
+    }
+
+    public FileGuard getFileGuard() {
+        return fileGuard;
+    }
+
+    public Launcher getLauncher() {
+        return launcher;
+    }
+
+    public void setGameLauncher(GameLauncher gameLauncher) {
+        this.gameLauncher = gameLauncher;
+    }
+}

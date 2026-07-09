@@ -26,6 +26,9 @@
           iconHeight: 32,
           keyCode: "S",
           id: "settings-small",
+          scripts: {
+            action: "assets/scripts/launcher/launcher-ui.lua"
+          },
           bounds: {
             x: 10,
             y: 35,

@@ -20,6 +20,7 @@
         {
           type: "textField",
           style: "textFieldMain",
+          toolTip: "auth.loginField",
           localeKey: "auth.loginPlaceholder",
           id: "login",
           bounds: {
@@ -34,6 +35,7 @@
         {
           type: "passField",
           style: "textFieldMain",
+          toolTip: "auth.passwordField",
           localeKey: "auth.passwordPlaceholder",
           showIcon: "assets/ui/icons/show.svg",
           hideIcon: "assets/ui/icons/hide.svg",
@@ -83,6 +85,7 @@
           enabled: true,
           keyCode: "ENTER",
           style: "buttonMain",
+          toolTip: "auth.submitButton",
           id: "authForm>submit",
           localeKey: "auth.submit",
           bounds: {
@@ -103,6 +106,9 @@
           iconWidth: 32,
           iconHeight: 32,
           id: "settings-small",
+          scripts: {
+            action: "assets/scripts/launcher/launcher-ui.lua"
+          },
           bounds: {
             x: 280,
             y: 435,

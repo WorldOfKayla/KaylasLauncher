@@ -39,8 +39,8 @@ return {
         headRequestMethod = "GET"
     },
     headIcon = {
-        size = 72,
-        radius = 80
+        size = 64,
+        radius = 32
     },
     badges = {
         hgap = 5,
@@ -51,7 +51,7 @@ return {
         allBadgesFailureKey = "user.badges.allFailure"
     },
     skinHover = {
-        durationMs = 180,
+        durationMs = 120,
         steps = 15
     },
     loginNotification = {

@@ -1,0 +1,28 @@
+<ui>
+    <childComponents>
+        <component type="compositeSlider" fontSize="12" localeKey="settings.soundVolume" stepSize="6" minValue="50" maxValue="100" minorSpacing="5" majorSpacing="10" initialValue="config#volume" id="volume">
+            <bounds x="35" y="160" width="430" height="65" />
+            <styles>
+                <style target="label" name="title" />
+                <style target="slider" name="slidingOut" />
+            </styles>
+            <layoutConfig>
+                <label x="0" y="0" width="160" height="25" />
+                <slider x="0" y="20" width="300" height="45" />
+                <spinner x="320" y="15" width="80" height="30" />
+            </layoutConfig>
+        </component>
+        <component type="compositeSlider" fontSize="12" localeKey="settings.ramField" stepSize="6" minorSpacing="512" majorSpacing="1024" initialValue="config#ramAmount" id="ramAmount">
+            <bounds x="35" y="230" width="430" height="65" />
+            <styles>
+                <style target="label" name="title" />
+                <style target="slider" name="slidingOut" />
+            </styles>
+            <layoutConfig>
+                <label x="0" y="0" width="290" height="25" />
+                <slider x="0" y="20" width="300" height="45" />
+                <spinner x="320" y="15" width="80" height="30" />
+            </layoutConfig>
+        </component>
+    </childComponents>
+</ui>

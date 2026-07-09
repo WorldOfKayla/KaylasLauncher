@@ -81,4 +81,8 @@ public final class LauncherFileLoader extends AbstractFileLoader {
     public String resolveFileExtension(String fileName) {
         return getFileExtension(fileName);
     }
+
+    public int resolvePlatformCode() {
+        return getPlatformNumber();
+    }
 }

@@ -1,6 +1,5 @@
 package org.takesome.launcher.fileLoader;
 
-import com.google.gson.Gson;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.EngineData;
 import org.takesome.kaylasEngine.fileLoader.AbstractFileLoader;
@@ -14,6 +13,7 @@ import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.utils.Download.DownloadUtils;
 import org.takesome.kaylasEngine.utils.helper.JVMHelper;
 import org.takesome.launcher.Core;
+import org.takesome.launcher.backend.LauncherBackendClient;
 import org.takesome.launcher.fileLoader.fileGuard.FileGuardImpl;
 import org.takesome.launcher.game.GameLauncher;
 
@@ -23,12 +23,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FileLoaderImpl implements IFileLoaderListener {
+    private static final String RUNTIME_CLIENT = "Runtime";
+
     private final Core core;
     private FileLoaderUI fileLoaderUI;
     private final DownloadUtils downloadUtils;
@@ -58,14 +59,65 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     public void addJreToLoadAsync(String jreVersion) {
-        JreRequest jreRequest = new JreRequest(this.core.getLauncher(), jreVersion, Core.getOSPrefix(), "x64");
-        CompletableFuture<FileAttributes> future = jreRequest.sendAsyncCF(Map.of())
-                .thenApply(response -> {
-                    FileAttributes jreFile = new Gson().fromJson(response, FileAttributes.class);
-                    jreFile.setReplaceMask("/uploads/files/");
-                    return jreFile;
-                });
-        core.getFileLoader().addFileToDownload(future.join());
+        if (jreVersion == null || jreVersion.isBlank()) {
+            Engine.getLOGGER().warn("Runtime is missing locally, but server has no jreVersion. Continuing without runtime download.");
+            return;
+        }
+        if (hasQueuedRuntime(jreVersion)) {
+            Engine.getLOGGER().info("Runtime {} is already present in backend version file list.", jreVersion);
+            return;
+        }
+
+        LauncherBackendClient backendClient = core.getLauncher().getBackendClient();
+        if (backendClient == null) {
+            Engine.getLOGGER().warn("Runtime {} is missing locally, but backend client is not initialized. Continuing with version files only.", jreVersion);
+            return;
+        }
+
+        try {
+            FileAttributes[] runtimeFiles = backendClient
+                    .fetchVersionFiles(RUNTIME_CLIENT, jreVersion, core.getFileLoader().resolvePlatformCode())
+                    .join();
+            if (runtimeFiles == null || runtimeFiles.length == 0) {
+                Engine.getLOGGER().warn("Runtime {} is missing locally and backend returned no runtime files under client={}. Continuing with version files only.",
+                        jreVersion, RUNTIME_CLIENT);
+                return;
+            }
+
+            int added = 0;
+            for (FileAttributes runtimeFile : runtimeFiles) {
+                if (runtimeFile == null) {
+                    continue;
+                }
+                String replaceMask = runtimeFile.getReplaceMask();
+                if (replaceMask != null && !replaceMask.isBlank()) {
+                    processFileAttributes(runtimeFile, replaceMask);
+                }
+                core.getFileLoader().addFileToDownload(runtimeFile);
+                added++;
+            }
+            Engine.getLOGGER().info("Queued {} backend runtime file(s) for JRE {}.", added, jreVersion);
+        } catch (RuntimeException error) {
+            Throwable root = rootCause(error);
+            Engine.getLOGGER().warn("Unable to request runtime {} from backend: {}. Continuing with version files only.",
+                    jreVersion, root == null ? error.getMessage() : root.getMessage());
+        }
+    }
+
+    private boolean hasQueuedRuntime(String jreVersion) {
+        return core.getFileLoader().getFileAttributes().stream()
+                .map(FileAttributes::getFilename)
+                .filter(filename -> filename != null)
+                .map(String::toLowerCase)
+                .anyMatch(filename -> filename.contains("runtime") && filename.contains(jreVersion.toLowerCase()));
+    }
+
+    private Throwable rootCause(Throwable throwable) {
+        Throwable current = throwable;
+        while (current != null && current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+        return current == null ? throwable : current;
     }
 
     @Override

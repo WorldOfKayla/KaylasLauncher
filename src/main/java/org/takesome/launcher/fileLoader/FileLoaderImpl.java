@@ -92,9 +92,8 @@ public class FileLoaderImpl implements IFileLoaderListener {
                 if (runtimeFile == null) {
                     continue;
                 }
-                String replaceMask = runtimeFile.getReplaceMask();
-                if (replaceMask != null && !replaceMask.isBlank()) {
-                    processFileAttributes(runtimeFile, replaceMask);
+                if (runtimeFile.getReplaceMask() != null && !runtimeFile.getReplaceMask().isBlank()) {
+                    processFileAttributes(runtimeFile, runtimeFile.getReplaceMask());
                 }
                 core.getFileLoader().addFileToDownload(runtimeFile);
                 added++;
@@ -204,9 +203,9 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     private void processFileAttributes(FileAttributes fileAttributes, String bestMatch) {
         fileAttributes.setReplaceMask(bestMatch);
-        String fileWithoutMask = fileAttributes.getFilename().replace(bestMatch, "");
-        String fullPath = core.getFileLoader().getHomeDir() + fileWithoutMask;
-        core.getFileLoader().addFileToKeep(fileWithoutMask);
+        String localPath = core.getFileLoader().getLocalPath(fileAttributes);
+        String fullPath = core.getFileLoader().getHomeDir() + localPath;
+        core.getFileLoader().addFileToKeep(localPath);
         Engine.getLOGGER().debug("Adding to keep " + fullPath);
     }
 
@@ -233,7 +232,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     private String constructFullPath(String homeDir, FileAttributes currentFile) {
-        return homeDir + currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
+        return homeDir + core.getFileLoader().getLocalPath(currentFile);
     }
 
     private void startDownload(LauncherFileLoader fileLoader, FileAttributes currentFile, String fullPath) {
@@ -245,7 +244,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
         if (!shouldUpdateFileUi()) {
             return;
         }
-        String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
+        String localPath = core.getFileLoader().getLocalPath(currentFile);
         String fileName = new File(localPath).getName();
         String directory = String.valueOf(new File(localPath).getParentFile());
         String extension = this.core.getFileLoader().resolveFileExtension(currentFile.getFilename());

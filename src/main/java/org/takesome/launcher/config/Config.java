@@ -14,7 +14,6 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,8 @@ import java.util.Set;
 public class Config extends org.takesome.kaylasEngine.config.Config {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Set<String> NON_CONFIG_FIELDS = Set.of("GSON", "NON_CONFIG_FIELDS");
+    private static final String DEFAULT_HOME_DIR = "SysVal{AppDir}\\.KineticHorizons";
+    private static final String LEGACY_HOME_SUFFIX = ".Foxes" + "World";
 
     private int selectedServer = 0;
     private int lang = 0;
@@ -41,7 +42,7 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
 
     private String login = "";
     private String password = "";
-    private String homeDir = "SysVal{AppDir}\\.FoxesWorld";
+    private String homeDir = DEFAULT_HOME_DIR;
     private String authProvider = "WS";
     private String authEndpoint = "";
 
@@ -74,7 +75,7 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
 
             Map<String, Object> loaded = readConfigFile(configFile);
             boolean configCreated = loaded.isEmpty() && !Files.exists(configFile);
-            boolean updated = false;
+            boolean updated = migrateLegacyHomeDir(loaded);
 
             for (Map.Entry<String, Object> entry : defaults.entrySet()) {
                 if (!loaded.containsKey(entry.getKey())) {
@@ -155,7 +156,7 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
     public String getFullPath() {
         String resolvedHome = resolvePlaceholders(homeDir);
         if (resolvedHome == null || resolvedHome.isBlank()) {
-            resolvedHome = Path.of(System.getProperty("user.home", "."), ".FoxesWorld").toString();
+            resolvedHome = Path.of(System.getProperty("user.home", "."), ".KineticHorizons").toString();
         }
         return Path.of(resolvedHome).toAbsolutePath().normalize().toString() + java.io.File.separator;
     }
@@ -175,6 +176,19 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
             Engine.LOGGER.error("Error reading launcher config file {}; defaults will be used", configFile, e);
             return new LinkedHashMap<>();
         }
+    }
+
+    private boolean migrateLegacyHomeDir(Map<String, Object> loaded) {
+        Object loadedHomeDir = loaded.get("homeDir");
+        if (!(loadedHomeDir instanceof String text)) {
+            return false;
+        }
+        if (!text.contains(LEGACY_HOME_SUFFIX)) {
+            return false;
+        }
+        loaded.put("homeDir", text.replace(LEGACY_HOME_SUFFIX, ".KineticHorizons"));
+        Engine.getLOGGER().info("Migrated launcher homeDir to {}", DEFAULT_HOME_DIR);
+        return true;
     }
 
     private Map<String, Object> buildDefaultsFromFieldsSafe() {

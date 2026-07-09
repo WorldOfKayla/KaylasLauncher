@@ -535,13 +535,30 @@ public final class LauncherBackendClient implements AutoCloseable {
                 case "AUTH_DENIED" -> Engine.LOGGER.warn("Backend auth denied: {}", message.getPayload());
                 case "SERVERS" -> Engine.LOGGER.debug("Backend servers response: {}", message.getPayload());
                 case "VERSIONS" -> Engine.LOGGER.debug("Backend versions response: {}", message.getPayload());
-                case "FILES" -> Engine.LOGGER.debug("Backend files response: {}", message.getPayload());
+                case "FILES" -> logFilesResponse(message.getPayload());
                 case "ERROR" -> Engine.LOGGER.warn("Backend error: {}", message.getPayload());
                 default -> Engine.LOGGER.debug("Backend message {}: {}", message.getType(), message.getPayload());
             }
         } catch (RuntimeException error) {
             Engine.LOGGER.warn("Invalid backend WS payload: {}", payload, error);
         }
+    }
+
+    private void logFilesResponse(Map<String, Object> payload) {
+        if (payload == null) {
+            Engine.LOGGER.debug("Backend files response: empty payload");
+            return;
+        }
+        Object files = payload.get("files");
+        int count = files instanceof List<?> list ? list.size() : -1;
+        Engine.LOGGER.debug(
+                "Backend files response: client={} version={} platform={} count={} scope={}",
+                payload.get("client"),
+                payload.get("version"),
+                payload.get("platform"),
+                count,
+                payload.get("scope")
+        );
     }
 
     private void handleStatus(Map<String, Object> payload) {

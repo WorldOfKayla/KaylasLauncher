@@ -206,7 +206,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
         String localPath = core.getFileLoader().getLocalPath(fileAttributes);
         String fullPath = core.getFileLoader().getHomeDir() + localPath;
         core.getFileLoader().addFileToKeep(localPath);
-        Engine.getLOGGER().debug("Adding to keep " + fullPath);
+        Engine.getLOGGER().trace("Adding to keep {}", fullPath);
     }
 
     @Override

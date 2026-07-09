@@ -38,6 +38,7 @@ public final class LauncherBackendClient implements AutoCloseable {
     private static final Gson GSON = new Gson();
     private static final int REQUEST_TIMEOUT_SECONDS = 15;
     private static final Type SERVER_LIST_TYPE = new TypeToken<List<ServerAttributes>>() {}.getType();
+    private static final Type VERSION_LIST_TYPE = new TypeToken<List<LauncherGameVersion>>() {}.getType();
     private static final Type BADGE_LIST_TYPE = new TypeToken<List<BadgeObject>>() {}.getType();
     private static final Type BALANCE_LIST_TYPE = new TypeToken<List<Map<String, Integer>>>() {}.getType();
 
@@ -92,6 +93,10 @@ public final class LauncherBackendClient implements AutoCloseable {
         return endpoint;
     }
 
+    public URI resourceUri(String path) {
+        return httpUri(path, null, null, Map.of());
+    }
+
     public Map<String, Object> getBackendStatus() {
         return backendStatus;
     }
@@ -137,8 +142,79 @@ public final class LauncherBackendClient implements AutoCloseable {
         return servers == null ? List.of() : servers;
     }
 
+    public CompletableFuture<List<LauncherGameVersion>> fetchVersions() {
+        return fetchVersions(null);
+    }
+
+    public CompletableFuture<List<LauncherGameVersion>> fetchVersions(String client) {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        if (client != null && !client.isBlank()) {
+            payload.put("client", client);
+        }
+
+        return waitUntilBound()
+                .thenCompose(v -> request("VERSIONS_REQUEST", payload))
+                .thenApply(this::parseVersionsMessage);
+    }
+
+    private List<LauncherGameVersion> parseVersionsMessage(LauncherBackendMessage message) {
+        if (message == null) {
+            throw new IllegalStateException("Backend returned empty versions response.");
+        }
+        if ("ERROR".equals(message.getType())) {
+            Object errorPayload = message.getPayload() == null
+                    ? "unknown backend error"
+                    : message.getPayload().getOrDefault("message", message.getPayload());
+            throw new IllegalStateException("Backend versions request failed: " + errorPayload);
+        }
+        if (!"VERSIONS".equals(message.getType())) {
+            throw new IllegalStateException("Unexpected backend versions response type: " + message.getType());
+        }
+
+        Object versionsPayload = message.getPayload() == null ? null : message.getPayload().get("versions");
+        if (versionsPayload == null) {
+            return List.of();
+        }
+
+        List<LauncherGameVersion> versions = GSON.fromJson(GSON.toJson(versionsPayload), VERSION_LIST_TYPE);
+        return versions == null ? List.of() : versions;
+    }
+
     public CompletableFuture<List<BadgeObject>> fetchBadges(String login, String uuid) {
-        return getList("/user/badges", login, uuid, BADGE_LIST_TYPE);
+        Map<String, Object> payload = new LinkedHashMap<>();
+        if (uuid != null && !uuid.isBlank()) {
+            payload.put("uuid", uuid);
+        }
+        if (login != null && !login.isBlank()) {
+            payload.put("login", login);
+        }
+
+        return waitUntilBound()
+                .thenCompose(v -> request("BADGES_REQUEST", payload))
+                .thenApply(this::parseBadgesMessage);
+    }
+
+    private List<BadgeObject> parseBadgesMessage(LauncherBackendMessage message) {
+        if (message == null) {
+            throw new IllegalStateException("Backend returned empty badges response.");
+        }
+        if ("ERROR".equals(message.getType())) {
+            Object errorPayload = message.getPayload() == null
+                    ? "unknown backend error"
+                    : message.getPayload().getOrDefault("message", message.getPayload());
+            throw new IllegalStateException("Backend badges request failed: " + errorPayload);
+        }
+        if (!"BADGES".equals(message.getType())) {
+            throw new IllegalStateException("Unexpected backend badges response type: " + message.getType());
+        }
+
+        Object badgesPayload = message.getPayload() == null ? null : message.getPayload().get("badges");
+        if (badgesPayload == null) {
+            return List.of();
+        }
+
+        List<BadgeObject> badges = GSON.fromJson(GSON.toJson(badgesPayload), BADGE_LIST_TYPE);
+        return badges == null ? List.of() : badges;
     }
 
     public CompletableFuture<List<Map<String, Integer>>> fetchBalance(String login, String uuid) {
@@ -423,6 +499,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                 case "AUTH_OK" -> Engine.LOGGER.info("Backend auth accepted: {}", message.getPayload());
                 case "AUTH_DENIED" -> Engine.LOGGER.warn("Backend auth denied: {}", message.getPayload());
                 case "SERVERS" -> Engine.LOGGER.debug("Backend servers response: {}", message.getPayload());
+                case "VERSIONS" -> Engine.LOGGER.debug("Backend versions response: {}", message.getPayload());
                 case "ERROR" -> Engine.LOGGER.warn("Backend error: {}", message.getPayload());
                 default -> Engine.LOGGER.debug("Backend message {}: {}", message.getType(), message.getPayload());
             }

@@ -1,0 +1,147 @@
+{
+  "general": {
+    "en_US": "Англійська",
+    "pl_PL": "Польська",
+    "ru_RU": "Російська",
+    "uk_UA": "Українська",
+    "appTitle": "Kinetic Horizons",
+    "status": "Альфа",
+    "website": "Вебсайт {key}",
+    "launcher": "У лаунчері",
+    "cancel": "Скасувати"
+  },
+  "error": {
+    "title": "Помилка",
+    "noServers": "Для цього користувача немає доступних серверів.",
+    "failedToStartGame": "Не вдалося запустити гру: {error}",
+    "invalidJVM": "JVM некоректна!",
+    "invalidLauncher": "Лаунчер некоректний!",
+    "alreadyRunning": "Лаунчер уже запущено!",
+    "file": "Помилка читання файлу!"
+  },
+  "pane": {
+    "settingsButt": "Налаштування",
+    "uploadSkin": "Завантажити скін",
+    "website": "Сайт Kinetic",
+    "logOut": "Вийти"
+  },
+  "settings": {
+    "back": "Назад",
+    "baseOptions": "Основні параметри",
+    "settingsInfo": "Опис",
+    "autoEnter": "Автоматично входити на вибраний сервер",
+    "autoEnter-desc": "Після ввімкнення цієї опції ви одразу потрапите на сервер, без переходу через головне меню",
+    "fullScreen": "Увімкнути повноекранний режим після запуску",
+    "fullScreen-desc": "Після запуску гра буде у повноекранному режимі. Щоб вийти з нього, використовуйте F11",
+    "loadNews": "Завантажувати новини",
+    "loadNews-desc": "Завантажує блок новин. Можна вимкнути для економії трафіку",
+    "enableSound": "Увімкнути звук",
+    "enableSound-desc": "Увімкнути звукові ефекти в лаунчері",
+    "backgroundMusic": "Фонова музика",
+    "backgroundMusic-desc": "Увімкнути фонову музику в лаунчері",
+    "launchAC": "Запускати лаунчер після виходу з сервера",
+    "launchAC-desc": "Коли цю опцію ввімкнено, лаунчер автоматично запуститься після виходу з гри",
+    "applySettings": "Застосувати",
+    "ramField": "Обсяг RAM (МБ)",
+    "ramPlaceholder": "RAM",
+    "soundVolume": "Гучність звуку",
+    "langBox": "Мова",
+    "info": "Інформація про налаштування",
+    "homeDir": "Папка гри",
+    "width": "Ширина",
+    "height": "Висота",
+    "gameFiles": "Файли гри"
+  },
+  "auth": {
+    "authTitle": "Авторизація",
+    "passwordPlaceholder": "Пароль",
+    "loginPlaceholder": "Логін",
+    "loginField": "Поле логіна",
+    "submit": "Увійти",
+    "rememberMe": "Запам’ятати мене",
+    "loggedIn": "Успішний вхід для {login}",
+    "loggedOut": " вийшов з акаунта"
+  },
+  "file": {
+    "gettingFiles-title": "Отримання файлів",
+    "gettingFiles-desc": "Що потрібно завантажити?",
+    "listBuilt-title": "Файли отримано",
+    "listBuilt-desc": "Тепер ми знаємо, що потрібно завантажити!",
+    "isBuilt": "Список сформовано"
+  },
+  "loading": {
+    "title": "Завантаження...",
+    "msg": "Будь ласка, зачекайте"
+  },
+  "logged": {
+    "greet": "Вітаємо, {login}!",
+    "loggedIn": "Ви увійшли!",
+    "toGame": "До гри",
+    "forceUpdate": "Примусове оновлення",
+    "units": "Одиниці: ",
+    "crystals": "Кристали: "
+  },
+  "download": {
+    "file": "Файл: ",
+    "directory": "Папка: ",
+    "totalSize": "Загальний розмір: "
+  },
+  "game": {
+    "playing": "Грає на {server}",
+    "login": "Логін користувача: {login}"
+  },
+  "server": {
+    "updating": "Оновлення сервера...",
+    "serverOff": "Сервер вимкнено",
+    "serverOn": "%% із ##",
+    "serverFull": "Сервер заповнений! (Усього слотів: %%)",
+    "serverErr": "Помилка обробки даних!"
+  },
+  "tooltip": {
+    "gameTooltip": "Граймо! (ENTER)",
+    "logOutToolTip": "Вийти з акаунта (ESC)",
+    "test": "ТЕСТ! Натисніть F5 =)",
+    "settings": "Налаштування! (S)",
+    "folder": "Відкрити папку! (F)",
+    "back": "Повернутися назад! (Backspace)",
+    "applySettings": "Застосувати налаштування! (ENTER)",
+    "selectServer": "Не забудьте вибрати сервер!",
+    "optionalMods": "Додаткові моди",
+    "userPane": "Панель користувача"
+  },
+  "playback": {
+    "started": "Відтворення розпочато!",
+    "finished": "Відтворення завершено!"
+  },
+  "optionalMods": {
+    "message": "Додаткові моди з’являться пізніше ;)",
+    "optionalTitle": "Додаткові моди",
+    "apply": "Застосувати"
+  },
+  "dev": {
+    "token": "accessToken: ",
+    "uuid": "UUID: ",
+    "TEST": "Відбувся TEST!",
+    "experimental": "User-O-Info",
+    "remindMe": "Нагадати мені",
+    "userName": "Ім’я користувача",
+    "userStatus": "Це статус"
+  },
+  "launcherUi": {
+    "noEmitter": "Немає доступного емітера подій для дії {action}",
+    "noComponentId": "Компонент без id не може виконати дію UI лаунчера.",
+    "noAction": "Для компонента з id '{component}' не зареєстровано дію UI лаунчера.",
+    "ignoredDisabled": "Проігноровано дію {action} від вимкненого компонента {component}",
+    "dispatching": "Виконання дії {action} -> {event}",
+    "action.toggleUserPane": "Перемкнути панель користувача",
+    "action.openSettings": "Відкрити налаштування",
+    "action.backFromSettings": "Назад із налаштувань",
+    "action.optionalMods": "Додаткові моди",
+    "action.toggleLoadingOverlay": "Перемкнути екран завантаження",
+    "action.openGameDirectory": "Відкрити папку гри",
+    "action.applySettings": "Застосувати налаштування"
+  },
+  "user": {
+    "badges": "{'singleFailure': 'Не вдалося завантажити бейдж {badge}: {error}', 'allFailure': 'Не вдалося завантажити бейджі для {login}. Причина: {error}'}"
+  }
+}

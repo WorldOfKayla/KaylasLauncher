@@ -23,18 +23,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FileLoaderImpl implements IFileLoaderListener {
     private static final String RUNTIME_CLIENT = "Runtime";
+    private static final long FILE_UI_UPDATE_INTERVAL_MS = 150L;
 
     private final Core core;
     private FileLoaderUI fileLoaderUI;
     private final DownloadUtils downloadUtils;
     private final Map<String, String> replaceMasks = new HashMap<>();
     private final Map<String, String> varsToReplace = new HashMap<>();
+    private final AtomicLong lastFileUiUpdateMillis = new AtomicLong(0L);
 
     public FileLoaderImpl(Core core) {
 
@@ -122,9 +125,11 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void onDownloadStart() {
-        core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
-        core.getLauncher().getLoadingManager().toggleVisibility();
-        this.fileLoaderUI.getServerDescArea().setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
+        SwingUtilities.invokeLater(() -> {
+            core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
+            core.getLauncher().getLoadingManager().toggleVisibility();
+            this.fileLoaderUI.getServerDescArea().setText(this.core.getActionHandler().getCurrentServer().getServerDescription());
+        });
     }
 
     @Override
@@ -207,8 +212,18 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void onNewFileFound(AbstractFileLoader source) {
+        FileAttributes currentFile = source.getCurrentFile();
+        if (currentFile != null) {
+            onNewFileFound(source, currentFile);
+        }
+    }
+
+    @Override
+    public void onNewFileFound(AbstractFileLoader source, FileAttributes currentFile) {
+        if (currentFile == null) {
+            return;
+        }
         LauncherFileLoader fileLoader = core.getFileLoader();
-        FileAttributes currentFile = fileLoader.getCurrentFile();
         updateDownloadInfoComponents(currentFile);
         String fullPath = constructFullPath(fileLoader.getHomeDir(), currentFile);
         if (fileLoader.shouldDownloadFile(currentFile)) {
@@ -227,14 +242,30 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     private void updateDownloadInfoComponents(FileAttributes currentFile) {
+        if (!shouldUpdateFileUi()) {
+            return;
+        }
         String localPath = currentFile.getFilename().replace(currentFile.getReplaceMask(), "");
-        this.fileLoaderUI.getDownloadFile().setText(new File(localPath).getName());
-        this.fileLoaderUI.getDownloadDirectory().setText(String.valueOf(new File(localPath).getParentFile()));
-        this.fileLoaderUI.getDownloadFile().setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + this.core.getFileLoader().resolveFileExtension(currentFile.getFilename()) + ".svg", 36f, 38f));
-        this.fileLoaderUI.getDownloadSpeed().setText(String.valueOf(this.core.getFileLoader().getLauncherDownloadUtils().getFormatedSpeed()));
-        this.fileLoaderUI.getPanel().updateUI();
-        this.fileLoaderUI.getPanel().repaint();
-        this.fileLoaderUI.getPanel().revalidate();
+        String fileName = new File(localPath).getName();
+        String directory = String.valueOf(new File(localPath).getParentFile());
+        String extension = this.core.getFileLoader().resolveFileExtension(currentFile.getFilename());
+        String speedText = this.core.getFileLoader().getLauncherDownloadUtils().getCurrentSpeedText();
+        SwingUtilities.invokeLater(() -> {
+            if (this.fileLoaderUI == null) {
+                return;
+            }
+            this.fileLoaderUI.getDownloadFile().setText(fileName);
+            this.fileLoaderUI.getDownloadDirectory().setText(directory);
+            this.fileLoaderUI.getDownloadFile().setIcon(core.getLauncher().getIconUtils().getVectorIcon("assets/ui/icons/files/" + extension + ".svg", 36f, 38f));
+            this.fileLoaderUI.getDownloadSpeed().setText(speedText);
+            this.fileLoaderUI.getPanel().repaint();
+        });
+    }
+
+    private boolean shouldUpdateFileUi() {
+        long now = System.currentTimeMillis();
+        long last = lastFileUiUpdateMillis.get();
+        return now - last >= FILE_UI_UPDATE_INTERVAL_MS && lastFileUiUpdateMillis.compareAndSet(last, now);
     }
 
     private void unpackRuntimeZipIfNeeded(String fullPath) {
@@ -245,7 +276,9 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void filesProcessed() {
-        this.fileLoaderUI.getProgressBar().setValue(100);
+        if (this.fileLoaderUI != null) {
+            this.fileLoaderUI.getProgressBar().setValue(100);
+        }
     }
 
     @Override

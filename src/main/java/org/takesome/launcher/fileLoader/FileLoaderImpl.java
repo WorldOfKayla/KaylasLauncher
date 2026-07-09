@@ -11,7 +11,6 @@ import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.utils.Download.DownloadUtils;
-import org.takesome.kaylasEngine.utils.helper.JVMHelper;
 import org.takesome.launcher.Core;
 import org.takesome.launcher.backend.LauncherBackendClient;
 import org.takesome.launcher.fileLoader.fileGuard.FileGuardImpl;
@@ -19,6 +18,7 @@ import org.takesome.launcher.game.GameLauncher;
 
 import javax.swing.*;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +40,6 @@ public class FileLoaderImpl implements IFileLoaderListener {
     private final AtomicLong lastFileUiUpdateMillis = new AtomicLong(0L);
 
     public FileLoaderImpl(Core core) {
-
         this.core = core;
         this.downloadUtils = core.getFileLoader().getLauncherDownloadUtils();
     }
@@ -50,8 +49,8 @@ public class FileLoaderImpl implements IFileLoaderListener {
         Engine.getLOGGER().debug("--==|Files are read|==--");
         this.fileLoaderUI = new FileLoaderUI(this, "download", List.of(JProgressBar.class, Label.class, TextArea.class, Button.class));
         setupGameLauncher();
-        if (JVMHelper.getJavaVersion(core.getGameLauncher().getJreBin()) == null) {
-            addJreToLoadAsync(core.getGameLauncher().getCurrentJre());
+        if (!Files.isRegularFile(core.getGameLauncher().getJavaExecutablePath())) {
+            addRequiredRuntimeToDownload(core.getGameLauncher().getCurrentJre());
         }
         core.getFileLoader().downloadFiles();
     }
@@ -61,30 +60,23 @@ public class FileLoaderImpl implements IFileLoaderListener {
         core.getGameLauncher().setGameListener(core);
     }
 
-    public void addJreToLoadAsync(String jreVersion) {
+    public void addRequiredRuntimeToDownload(String jreVersion) {
         if (jreVersion == null || jreVersion.isBlank()) {
-            Engine.getLOGGER().warn("Runtime is missing locally, but server has no jreVersion. Continuing without runtime download.");
-            return;
-        }
-        if (hasQueuedRuntime(jreVersion)) {
-            Engine.getLOGGER().info("Runtime {} is already present in backend version file list.", jreVersion);
-            return;
+            throw new IllegalStateException("Required runtime is missing locally and server has no jreVersion.");
         }
 
         LauncherBackendClient backendClient = core.getLauncher().getBackendClient();
         if (backendClient == null) {
-            Engine.getLOGGER().warn("Runtime {} is missing locally, but backend client is not initialized. Continuing with version files only.", jreVersion);
-            return;
+            throw new IllegalStateException("Required runtime " + jreVersion + " is missing locally, but backend client is not initialized.");
         }
 
         try {
+            Engine.getLOGGER().info("Runtime {} is missing locally. Requesting runtime files from backend.", jreVersion);
             FileAttributes[] runtimeFiles = backendClient
                     .fetchVersionFiles(RUNTIME_CLIENT, jreVersion, core.getFileLoader().resolvePlatformCode())
                     .join();
             if (runtimeFiles == null || runtimeFiles.length == 0) {
-                Engine.getLOGGER().warn("Runtime {} is missing locally and backend returned no runtime files under client={}. Continuing with version files only.",
-                        jreVersion, RUNTIME_CLIENT);
-                return;
+                throw new IllegalStateException("Backend returned no runtime files for client=" + RUNTIME_CLIENT + " version=" + jreVersion);
             }
 
             int added = 0;
@@ -98,20 +90,15 @@ public class FileLoaderImpl implements IFileLoaderListener {
                 core.getFileLoader().addFileToDownload(runtimeFile);
                 added++;
             }
-            Engine.getLOGGER().info("Queued {} backend runtime file(s) for JRE {}.", added, jreVersion);
+            if (added == 0) {
+                throw new IllegalStateException("Backend runtime response contained no usable files for version " + jreVersion);
+            }
+            Engine.getLOGGER().info("Queued {} required backend runtime file(s) for JRE {}.", added, jreVersion);
         } catch (RuntimeException error) {
             Throwable root = rootCause(error);
-            Engine.getLOGGER().warn("Unable to request runtime {} from backend: {}. Continuing with version files only.",
-                    jreVersion, root == null ? error.getMessage() : root.getMessage());
+            throw new IllegalStateException("Unable to request required runtime " + jreVersion + " from backend: "
+                    + (root == null ? error.getMessage() : root.getMessage()), error);
         }
-    }
-
-    private boolean hasQueuedRuntime(String jreVersion) {
-        return core.getFileLoader().getFileAttributes().stream()
-                .map(FileAttributes::getFilename)
-                .filter(filename -> filename != null)
-                .map(String::toLowerCase)
-                .anyMatch(filename -> filename.contains("runtime") && filename.contains(jreVersion.toLowerCase()));
     }
 
     private Throwable rootCause(Throwable throwable) {
@@ -134,6 +121,10 @@ public class FileLoaderImpl implements IFileLoaderListener {
     @Override
     public void onFilesLoaded() {
         Engine.getLOGGER().debug("--==|Files loaded|==--");
+        if (!Files.isRegularFile(core.getGameLauncher().getJavaExecutablePath())) {
+            throw new IllegalStateException("Required runtime was downloaded but no Java executable was found: "
+                    + core.getGameLauncher().getJavaExecutablePath());
+        }
         initializeArgsReader();
         setupFileGuard();
     }
@@ -268,7 +259,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     private void unpackRuntimeZipIfNeeded(String fullPath) {
-        if (fullPath.contains("runtime") && fullPath.contains(Core.getOSPrefix()) && fullPath.contains("zip")) {
+        if (fullPath.contains("runtime") && fullPath.contains(Core.getOSPrefix()) && fullPath.endsWith(".zip")) {
             core.getFileLoader().getLauncherDownloadUtils().unpack(fullPath, new File(fullPath).getParentFile());
         }
     }

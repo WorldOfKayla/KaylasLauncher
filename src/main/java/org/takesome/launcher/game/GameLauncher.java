@@ -11,6 +11,8 @@ import org.takesome.launcher.user.User;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +48,11 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
 
     @Override
     protected void setJreArgs() {
-        processArgs.add(getJreBin() + File.separator + "java");
+        Path javaExecutable = getJavaExecutablePath();
+        if (!Files.isRegularFile(javaExecutable)) {
+            throw new IllegalStateException("Required game runtime was not downloaded or unpacked: " + javaExecutable);
+        }
+        processArgs.add(javaExecutable.toString());
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
         List<String> jvmArgs = getJvmArgs();
         this.addArgsToProcess(jvmArgs);
@@ -93,9 +99,9 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     @Override
     public void launchGame() {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            this.checkDangerousParams();
-            setJreArgs();
             try {
+                this.checkDangerousParams();
+                setJreArgs();
                 if (getIntVer() < 173) {
                     Engine.LOGGER.info("LEGACY!1!1!11!");
                 }
@@ -296,7 +302,42 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     }
 
     public String getJreBin() {
-        return getPathBuilders().buildRuntimeDir() + File.separator + this.gameClient.getJreVersion() + File.separator + this.gameClient.getJreVersion() +'-' + Core.getOSPrefix() +"-x64" + File.separator + "bin";
+        return getJavaExecutablePath().getParent().toString();
+    }
+
+    public Path getJavaExecutablePath() {
+        String executableName = isWindows() ? "java.exe" : "java";
+        Path runtimeVersionDir = runtimeVersionDir();
+        if (Files.isDirectory(runtimeVersionDir)) {
+            try (var stream = Files.walk(runtimeVersionDir, 5)) {
+                return stream
+                        .filter(Files::isRegularFile)
+                        .filter(path -> executableName.equalsIgnoreCase(path.getFileName().toString()))
+                        .filter(path -> path.getParent() != null && "bin".equalsIgnoreCase(path.getParent().getFileName().toString()))
+                        .sorted()
+                        .findFirst()
+                        .orElse(expectedJavaExecutable(executableName));
+            } catch (IOException error) {
+                Engine.LOGGER.warn("Unable to inspect runtime directory {}: {}", runtimeVersionDir, error.getMessage());
+            }
+        }
+        return expectedJavaExecutable(executableName);
+    }
+
+    private String runtimeDirectoryName() {
+        return this.gameClient.getJreVersion() + '-' + Core.getOSPrefix() + "-x64";
+    }
+
+    private Path runtimeVersionDir() {
+        return getPathBuilders().buildRuntimeDir().resolve(this.gameClient.getJreVersion());
+    }
+
+    private Path expectedJavaExecutable(String executableName) {
+        return runtimeVersionDir().resolve(runtimeDirectoryName()).resolve("bin").resolve(executableName);
+    }
+
+    private boolean isWindows() {
+        return System.getProperty("os.name", "").toLowerCase().contains("win");
     }
 
     public String buildAssetsPath() {

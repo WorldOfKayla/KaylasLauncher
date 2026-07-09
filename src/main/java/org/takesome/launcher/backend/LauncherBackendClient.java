@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.fileLoader.FileAttributes;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.launcher.user.loader.BadgeObject;
 
@@ -178,6 +179,40 @@ public final class LauncherBackendClient implements AutoCloseable {
 
         List<LauncherGameVersion> versions = GSON.fromJson(GSON.toJson(versionsPayload), VERSION_LIST_TYPE);
         return versions == null ? List.of() : versions;
+    }
+
+    public CompletableFuture<FileAttributes[]> fetchVersionFiles(String client, String version, int platform) {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("client", client);
+        payload.put("version", version);
+        payload.put("platform", platform);
+
+        return waitUntilBound()
+                .thenCompose(v -> request("FILES_REQUEST", payload))
+                .thenApply(this::parseFilesMessage);
+    }
+
+    private FileAttributes[] parseFilesMessage(LauncherBackendMessage message) {
+        if (message == null) {
+            throw new IllegalStateException("Backend returned empty files response.");
+        }
+        if ("ERROR".equals(message.getType())) {
+            Object errorPayload = message.getPayload() == null
+                    ? "unknown backend error"
+                    : message.getPayload().getOrDefault("message", message.getPayload());
+            throw new IllegalStateException("Backend files request failed: " + errorPayload);
+        }
+        if (!"FILES".equals(message.getType())) {
+            throw new IllegalStateException("Unexpected backend files response type: " + message.getType());
+        }
+
+        Object filesPayload = message.getPayload() == null ? null : message.getPayload().get("files");
+        if (filesPayload == null) {
+            return new FileAttributes[0];
+        }
+
+        FileAttributes[] files = GSON.fromJson(GSON.toJson(filesPayload), FileAttributes[].class);
+        return files == null ? new FileAttributes[0] : files;
     }
 
     public CompletableFuture<List<BadgeObject>> fetchBadges(String login, String uuid) {
@@ -500,6 +535,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                 case "AUTH_DENIED" -> Engine.LOGGER.warn("Backend auth denied: {}", message.getPayload());
                 case "SERVERS" -> Engine.LOGGER.debug("Backend servers response: {}", message.getPayload());
                 case "VERSIONS" -> Engine.LOGGER.debug("Backend versions response: {}", message.getPayload());
+                case "FILES" -> Engine.LOGGER.debug("Backend files response: {}", message.getPayload());
                 case "ERROR" -> Engine.LOGGER.warn("Backend error: {}", message.getPayload());
                 default -> Engine.LOGGER.debug("Backend message {}: {}", message.getType(), message.getPayload());
             }

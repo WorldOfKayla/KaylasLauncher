@@ -1,7 +1,6 @@
 package org.takesome.launcher.fileLoader;
 
 import org.takesome.kaylasEngine.fileLoader.AbstractFileLoader;
-import org.takesome.kaylasEngine.fileLoader.FileFetcher;
 import org.takesome.kaylasEngine.fileLoader.FileValidator;
 import org.takesome.kaylasEngine.fileLoader.ILoadingManager;
 import org.takesome.kaylasEngine.server.ServerAttributes;
@@ -11,11 +10,10 @@ import org.takesome.launcher.gui.ActionHandler;
 import java.util.Objects;
 
 /**
- * Launcher-side compatibility adapter for the new KaylasUIEngine file loading layer.
- * <p>
- * The old engine exposed a concrete {@code FileLoader}; the new engine exposes
- * {@link AbstractFileLoader} plus small strategy interfaces. This class keeps the
- * launcher's call-sites compact while binding them to the new implementation model.
+ * Launcher-side compatibility adapter for the KaylasUIEngine file loading layer.
+ *
+ * <p>File metadata is now requested from KaylasLauncherBackend through WebSocket. The backend scans
+ * its versions directory and returns FileAttributes with HTTP download URLs.</p>
  */
 public final class LauncherFileLoader extends AbstractFileLoader {
 
@@ -33,7 +31,7 @@ public final class LauncherFileLoader extends AbstractFileLoader {
         super(
                 actionHandler.getEngine(),
                 loadingManagerAdapter(actionHandler),
-                new FileFetcher(actionHandler.getEngine())::fetchDownloadList,
+                new BackendFileFetcher(actionHandler.getLauncher()),
                 new FileValidator(),
                 downloadUtils::setTotalSize,
                 homeDir,

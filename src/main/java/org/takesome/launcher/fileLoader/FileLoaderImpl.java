@@ -109,6 +109,14 @@ public class FileLoaderImpl implements IFileLoaderListener {
         String bestMatch = findBestMatch(fileAttributes.getFilename());
         if (bestMatch != null) {
             processFileAttributes(fileAttributes, bestMatch);
+            return;
+        }
+
+        String backendReplaceMask = fileAttributes.getReplaceMask();
+        if (backendReplaceMask != null && !backendReplaceMask.isBlank()) {
+            processFileAttributes(fileAttributes, backendReplaceMask);
+        } else {
+            Engine.getLOGGER().warn("File attribute has no matching replace mask: {}", fileAttributes.getFilename());
         }
     }
 

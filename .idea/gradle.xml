@@ -4,13 +4,30 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/../cfgProvider" name="cfgProvider">
+                <projects>
+                  <project path="$PROJECT_DIR$/../cfgProvider" />
+                </projects>
+              </build>
+              <build path="$PROJECT_DIR$/../KaylasUIEngine" name="KaylasUIEngine">
+                <projects>
+                  <project path="$PROJECT_DIR$/../KaylasUIEngine" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/../KaylasUIEngine" />
+            <option value="$PROJECT_DIR$/../cfgProvider" />
           </set>
         </option>
       </GradleProjectSettings>

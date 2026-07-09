@@ -10,7 +10,7 @@
       <option name="EXCLUDE_ANNOS">
         <value>
           <list size="1">
-            <item index="0" class="java.lang.String" itemvalue="org.foxesworld.engine.utils.HTTP.HttpParam" />
+            <item index="0" class="java.lang.String" itemvalue="org.takesome.kaylasEngine.utils.HTTP.HttpParam" />
           </list>
         </value>
       </option>

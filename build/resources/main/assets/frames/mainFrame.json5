@@ -16,7 +16,7 @@
       },
       childComponents: [
         {
-          readFrom: "assets/frames/forms/mainPanel/authForm.json5"
+          readFrom: "assets/frames/forms/mainPanel/authForm.xml"
         },
         {
           readFrom: "assets/frames/forms/mainPanel/loggedForm.json5"
@@ -31,7 +31,7 @@
           readFrom: "assets/frames/forms/mainPanel/download.json5"
         },
         {
-          readFrom: "assets/frames/forms/utils/loadPanel.json5"
+          readFrom: "assets/frames/forms/utils/loadPanel.xml"
         }
       ]
     }

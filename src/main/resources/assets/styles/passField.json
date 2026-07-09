@@ -1,0 +1,21 @@
+{
+  "styles": {
+    "passField": {
+      "textFieldMain": {
+        "name": "Pumpkin Power",
+        "font": "mcfont",
+        "fontSize": 12,
+        "width": 203,
+        "height": 38,
+        "paddingX": 15,
+        "paddingY": 15,
+        "borderRadius": 5,
+        "color": "#9552f8",
+        "caretColor": "#937e51",
+        "background": "#ffffff",
+        "selectionColor": "#2dc5bb",
+        "texture": "assets/ui/components/input/textField.png"
+      }
+    }
+  }
+}

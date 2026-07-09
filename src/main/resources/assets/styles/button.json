@@ -1,0 +1,30 @@
+{
+  "styles": {
+    "button": {
+      "buttonMain": {
+        "name": "Woodpecker spirit",
+        "font": "mcfontBold",
+        "fontSize": 12,
+        "width": 256,
+        "height": 256,
+        "borderRadius": 0,
+        "color": "#9552f8",
+        "hoverColor": "#9a83bb",
+        "align": "CENTER",
+        "texture": "assets/ui/components/button/newButton.png"
+      },
+      "altButton": {
+        "name": "Woodpecker spirit",
+        "font": "mcfont",
+        "fontSize": 12,
+        "width": 116,
+        "height": 180,
+        "borderRadius": 5,
+        "color": "#1c1b19",
+        "hoverColor": "#543a07",
+        "align": "LEFT",
+        "texture": "assets/ui/components/button/altButton.png"
+      }
+    }
+  }
+}

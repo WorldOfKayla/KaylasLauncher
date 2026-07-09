@@ -1,1 +1,23 @@
-rootProject.name = 'FoxesLauncher'
+rootProject.name = 'Kayla\'s Launcher'
+
+def kaylasUiEngineDir = file('../KaylasUIEngine')
+def cfgProviderDir = file('../cfgProvider')
+
+if (cfgProviderDir.isDirectory()) {
+    includeBuild(cfgProviderDir) {
+        dependencySubstitution {
+            substitute(module('org.foxesworld:cfgProvider')).using(project(':'))
+        }
+    }
+}
+
+if (kaylasUiEngineDir.isDirectory()) {
+    includeBuild(kaylasUiEngineDir) {
+        dependencySubstitution {
+            substitute(module('org.foxesworld:kaylasengine')).using(project(':'))
+            substitute(module('org.foxesworld:kaylas-ui-engine')).using(project(':'))
+            substitute(module('org.takesome:kaylasengine')).using(project(':'))
+            substitute(module('org.takesome:kaylas-ui-engine')).using(project(':'))
+        }
+    }
+}

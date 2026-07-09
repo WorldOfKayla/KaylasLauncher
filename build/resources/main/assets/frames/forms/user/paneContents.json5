@@ -4,7 +4,7 @@
       panelOptions: {
         opaque: true,
         visible: true,
-        background: "#4d2c2c",
+        background: "#695d50",
         bounds: {
           x: 0,
           y: 140,
@@ -21,11 +21,11 @@
           style: "buttonMain",
           toolTip: "tooltip.settings",
           localeKey: "pane.settingsButt",
-          imageIcon: "assets/ui/icons/settingsGrey.svg",
-          iconWidth: 32,
-          iconHeight: 32,
           keyCode: "S",
           id: "settings-small",
+          scripts: {
+            action: "assets/scripts/launcher/launcher-ui.lua"
+          },
           bounds: {
             x: 10,
             y: 35,
@@ -41,9 +41,6 @@
           style: "buttonMain",
           toolTip: "tooltip.uploadSkin",
           localeKey: "pane.uploadSkin",
-          imageIcon: "assets/ui/icons/upload.svg",
-          iconWidth: 32,
-          iconHeight: 32,
           keyCode: "S",
           id: "uploadSkin-small",
           bounds: {
@@ -64,9 +61,6 @@
           tooltipStyle: "error",
           id: "logOut",
           localeKey: "pane.website",
-          imageIcon: "assets/ui/icons/site.svg",
-          iconWidth: 32,
-          iconHeight: 32,
           bounds: {
             x: 10,
             y: 145,
@@ -85,9 +79,6 @@
           tooltipStyle: "error",
           id: "logOut",
           localeKey: "pane.logOut",
-          imageIcon: "assets/ui/icons/logout.svg",
-          iconWidth: 32,
-          iconHeight: 32,
           bounds: {
             x: 10,
             y: 200,

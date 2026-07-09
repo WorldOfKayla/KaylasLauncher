@@ -1,0 +1,20 @@
+{
+  "styles": {
+    "checkBox": {
+      "solid": {
+        "opaque": false ,
+        "name": "Pumpkin Power" ,
+        "font": "mcfont" ,
+        "fontSize": 12 ,
+        "width": 2172,
+        "height": 724,
+        "iconWidth": 36,
+        "iconHeight": 36,
+        "color": "#ffffff" ,
+        "background": "#ffffff" ,
+        "hoverColor": "#fce4ab",
+        "texture": "assets/ui/components/checkbox/checkbox.png"
+      }
+    }
+  }
+}

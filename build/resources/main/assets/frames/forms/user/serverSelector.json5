@@ -23,8 +23,8 @@
                 opaque: true,
                 focusable: true,
                 visible: true,
-                doubleBuffered: false,
-                background: "#0707079e",
+                doubleBuffered: true,
+                background: "#b6aaa0c7",
                 bounds: {
                   x: 0,
                   y: 30,
@@ -33,7 +33,7 @@
                     height: 43
                   }
                 },
-                zIndex: 1
+                zIndex: 3
               },
               childComponents: [
                 {
@@ -45,6 +45,9 @@
                   iconWidth: 20,
                   iconHeight: 24,
                   id: "userPane",
+                  scripts: {
+                    action: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 10,
                     y: 10,
@@ -58,6 +61,7 @@
                   type: "label",
                   fontSize: 14,
                   style: "title",
+                  color: "#5a1ab3",
                   id: "greetUser",
                   localeKey: "logged.greet",
                   bounds: {
@@ -107,11 +111,15 @@
                   }
                 },
                 {
-                  type: "dropBox",
-                  style: "selectable2",
+                  type: "combobox",
+                  style: "selectable",
                   id: "serverBox",
                   initialValue: "servers",
                   toolTip: "tooltip.selectServer",
+                  scripts: {
+                    init: "assets/scripts/launcher/launcher-ui.lua",
+                    valuesChanged: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 35,
                     y: 350,
@@ -143,18 +151,15 @@
                   keyCode: "ENTER",
                   style: "buttonMain",
                   toolTip: "tooltip.gameTooltip",
-                  imageIcon: "assets/ui/icons/sword.svg",
-                  iconWidth: 20,
-                  iconHeight: 24,
                   tooltipStyle: "success",
                   id: "toGame",
                   localeKey: "logged.toGame",
                   bounds: {
                     x: 30,
-                    y: 310,
+                    y: 305,
                     size: {
                       width: 235,
-                      height: 30
+                      height: 45
                     }
                   }
                 },
@@ -169,12 +174,15 @@
                   iconHeight: 16,
                   tooltipStyle: "success",
                   id: "optionalMods",
+                  scripts: {
+                    action: "assets/scripts/launcher/launcher-ui.lua"
+                  },
                   bounds: {
                     x: 260,
-                    y: 310,
+                    y: 305,
                     size: {
-                      width: 32,
-                      height: 32
+                      width: 45,
+                      height: 45
                     }
                   }
                 }

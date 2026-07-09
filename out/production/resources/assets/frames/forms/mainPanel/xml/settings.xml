@@ -1,0 +1,25 @@
+<ui>
+    <panels>
+        <panel id="settings">
+            <panelOptions opaque="true" doubleBuffered="true" background="#4a4c4fe6" border="1,1,1,1,#242221" zIndex="1" visible="false">
+                <bounds x="35" y="35" width="780" height="450" />
+            </panelOptions>
+            <childComponents>
+                <component readFrom="assets/frames/forms/settings/generalSettings.xml" />
+                <component readFrom="assets/frames/forms/settings/settingsInfo.xml" />
+            </childComponents>
+            <panels>
+                <panel id="settingsPane">
+                    <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="true" backgroundImage="assets/ui/img/bg/header2.png" background="#4a4c4fe6" zIndex="2">
+                        <bounds x="0" y="0" width="780" height="35" />
+                    </panelOptions>
+                    <childComponents>
+                        <component type="button" enabled="true" keyCode="BACK_SPACE" toolTip="tooltip.back" imageIcon="assets/ui/icons/back.svg" iconWidth="16" iconHeight="16" style="altButton" id="back">
+                            <bounds x="0" y="0" width="97" height="34" />
+                        </component>
+                    </childComponents>
+                </panel>
+            </panels>
+        </panel>
+    </panels>
+</ui>

@@ -1,0 +1,151 @@
+{
+  "general": {
+    "pl_PL": "Polska",
+    "ru_RU": "Russian",
+    "en_US": "American English",
+    "appTitle": "Kinetic Horizons",
+    "status": "Alpha",
+    "website": "Website {key}",
+    "launcher": "In launcher",
+    "cancel": "Cancel",
+    "uk_UA": "Ukrainian",
+    "it_IT": "Italian"
+  },
+  "error": {
+    "title": "Error",
+    "noServers": "No available servers for this user.",
+    "failedToStartGame": "Failed to start game: {error}",
+    "invalidJVM": "The JVM is invalid!",
+    "invalidLauncher": "The launcher is invalid!",
+    "alreadyRunning": "The launcher is already running!",
+    "file": "File read error!"
+  },
+  "pane": {
+    "settingsButt": "Settings",
+    "uploadSkin": "Upload Skin",
+    "website": "Kinetic Site",
+    "logOut": "Log Out"
+  },
+  "settings": {
+    "back": "Back",
+    "baseOptions": "Base Options",
+    "settingsInfo": "Description",
+    "autoEnter": "Auto enter a selected server",
+    "autoEnter-desc": "After enabling this option you will go straight to server without visiting main menu",
+    "fullScreen": "Set full screen after launching",
+    "fullScreen-desc": "When the game launches, it will be in full-screen mode. To exit full-screen mode, use F11",
+    "loadNews": "Load news",
+    "loadNews-desc": "Loads the news block (Can be disabled to save traffic)",
+    "enableSound": "Enable Sound",
+    "enableSound-desc": "Enable sound effects in the launcher",
+    "backgroundMusic": "Background music",
+    "backgroundMusic-desc": "Enable background music in the launcher",
+    "launchAC": "Start launcher after server exit",
+    "launchAC-desc": "When this option is enabled, the launcher will automatically start after exiting the game",
+    "applySettings": "Apply",
+    "ramField": "RAM amount (Mb)",
+    "ramPlaceholder": "RAM",
+    "soundVolume": "Sound volume",
+    "langBox": "Language",
+    "info": "Settings information",
+    "homeDir": "Game Dir",
+    "width": "Width",
+    "height": "Height",
+    "gameFiles": "GameFiles"
+  },
+  "auth": {
+    "authTitle": "Authorization",
+    "passwordPlaceholder": "Password",
+    "loginPlaceholder": "Login",
+    "loginField": "Login field",
+    "submit": "Submit",
+    "rememberMe": "Remember Me",
+    "loggedIn": "Successful login for {login}",
+    "loggedOut": " logged out"
+  },
+  "file": {
+    "gettingFiles-title": "Getting Files",
+    "gettingFiles-desc": "What should be loaded?",
+    "listBuilt-title": "We got the files",
+    "listBuilt-desc": "Now we know what to load!",
+    "isBuilt": "List is built"
+  },
+  "loading": {
+    "title": "Loading...",
+    "msg": "Please wait"
+  },
+  "logged": {
+    "greet": "Hello, {login}!",
+    "loggedIn": "You're in!",
+    "toGame": "To game",
+    "forceUpdate": "Force Update",
+    "units": "Units: ",
+    "crystals": "Crystals: "
+  },
+  "download": {
+    "file": "File: ",
+    "directory": "Directory: ",
+    "totalSize": "Total size: "
+  },
+  "game": {
+    "playing": "Playing on {server}",
+    "login": "User login: {login}"
+  },
+  "server": {
+    "updating": "Updating server...",
+    "serverOff": "Server off",
+    "serverOn": "%% of ##",
+    "serverFull": "Server full! (Total slots: %%)",
+    "serverErr": "Error parsing data!"
+  },
+  "tooltip": {
+    "gameTooltip": "Let's Play! (ENTER)",
+    "logOutToolTip": "Exit an account (ESC)",
+    "test": "TEST! Press F5 =)",
+    "settings": "Settings! (S)",
+    "folder": "Open Folder! (F)",
+    "back": "Return back! (Backspace)",
+    "applySettings": "Apply settings! (ENTER)",
+    "selectServer": "Don't forget to chose a server!",
+    "optionalMods": "Optional mods",
+    "userPane": "User Pane"
+  },
+  "playback": {
+    "started": "Playback started!",
+    "finished": "Playback finished!"
+  },
+  "optionalMods": {
+    "message": "Optional mods will arrive later ;)",
+    "optionalTitle": "Optional Mods",
+    "apply": "Apply"
+  },
+  "dev": {
+    "token": "accessToken: ",
+    "uuid": "UUID: ",
+    "TEST": "TEST occurs!",
+    "experimental": "User-O-Info",
+    "remindMe": "Remind Me",
+    "userName": "User Name",
+    "userStatus": "It's status"
+  },
+  "launcherUi": {
+    "noEmitter": "No event emitter is available for action {action}",
+    "noComponentId": "Component without id cannot dispatch launcher UI action.",
+    "noAction": "No launcher UI action is registered for component id '{component}'.",
+    "ignoredDisabled": "Ignored disabled component action {action} from {component}",
+    "dispatching": "Dispatching action {action} -> {event}",
+    "action.toggleUserPane": "Toggle user pane",
+    "action.openSettings": "Open settings",
+    "action.backFromSettings": "Back from settings",
+    "action.optionalMods": "Optional mods",
+    "action.toggleLoadingOverlay": "Toggle loading overlay",
+    "action.openGameDirectory": "Open game directory",
+    "action.applySettings": "Apply settings"
+  },
+  "user": {
+    "badges": {
+      "singleFailure": "Failed to load badge {badge}: {error}",
+      "allFailure": "Failed to load badges for {login}. Reason: {error}"
+    }
+  }
+}

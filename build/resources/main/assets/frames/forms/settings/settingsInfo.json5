@@ -61,6 +61,9 @@
           tooltipStyle: "success",
           style: "buttonMain",
           id: "applySettings",
+          scripts: {
+            action: "assets/scripts/launcher/launcher-ui.lua"
+          },
           localeKey: "settings.applySettings",
           bounds: {
             x: 10,

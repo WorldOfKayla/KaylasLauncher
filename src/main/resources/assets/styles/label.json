@@ -1,0 +1,31 @@
+{
+  "styles": {
+    "label": {
+      "promptLabel": {
+        "opaque": false,
+        "float": "right",
+        "name": "Pumpkin Power",
+        "font": "mcfont",
+        "color": "#ffffff"
+      },
+      "heading": {
+        "opaque": false,
+        "name": "Naming the space",
+        "font": "Primary",
+        "color": "#252424"
+      },
+      "title": {
+        "opaque": false,
+        "name": "Title",
+        "font": "mcfont",
+        "color": "#b0976b"
+      },
+      "titleBold": {
+        "opaque": false,
+        "name": "Title",
+        "font": "mcfontBold",
+        "color": "#252424"
+      }
+    }
+  }
+}

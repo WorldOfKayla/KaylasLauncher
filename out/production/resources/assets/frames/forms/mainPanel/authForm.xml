@@ -1,0 +1,29 @@
+<ui>
+    <panels>
+        <panel id="authForm">
+            <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="false" background="">
+                <bounds x="0" y="0" width="350" height="500" />
+            </panelOptions>
+            <childComponents>
+                <component type="textField" style="textFieldMain" localeKey="auth.loginPlaceholder" id="login">
+                    <bounds x="45" y="150" width="262" height="45" />
+                </component>
+                <component type="passField" style="textFieldMain" localeKey="auth.passwordPlaceholder" showIcon="assets/ui/icons/show.svg" hideIcon="assets/ui/icons/hide.svg" revealButton="true" id="password">
+                    <bounds x="45" y="220" width="262" height="45" />
+                </component>
+                <component type="label" fontSize="25" style="titleBold" localeKey="auth.authTitle" id="appHeader">
+                    <bounds x="50" y="50" width="340" height="50" />
+                </component>
+                <component type="checkBox" enabled="true" style="solid" id="rememberMe" localeKey="auth.rememberMe">
+                    <bounds x="40" y="265" width="240" height="32" />
+                </component>
+                <component type="button" enabled="true" keyCode="ENTER" style="buttonMain" id="authForm&gt;submit" localeKey="auth.submit">
+                    <bounds x="55" y="300" width="240" height="47" />
+                </component>
+                <component type="button" enabled="true" style="altButton" toolTip="tooltip.settings" imageIcon="assets/ui/icons/settings.png" iconWidth="32" iconHeight="32" id="settings-small">
+                    <bounds x="280" y="435" width="64" height="64" />
+                </component>
+            </childComponents>
+        </panel>
+    </panels>
+</ui>

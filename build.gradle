@@ -1,93 +1,160 @@
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
-        maven {
-            url "https://jcenter.bintray.com/"
-        }
-        maven {
-            url "https://jitpack.io/"
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/FoxesWorld/FoxesLauncher")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME_GITHUB")
-                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN_GITHUB")
-            }
-        }
-    }
-    dependencies {
-        classpath "com.github.johnrengelman:shadow:8.1.0"
-    }
-}
-
 plugins {
     id 'java'
     id 'application'
-    id "com.github.johnrengelman.shadow" version "8.1.0"
-    //id("com.scalified.plugins.gradle.proguard") version "1.6.0"
+    id 'com.gradleup.shadow' version '9.5.1'
+    // id("com.scalified.plugins.gradle.proguard") version "1.6.0"
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+Properties localProperties = new Properties()
+def localPropertiesFile = project.rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def readSetting = { String key, String envKey, String fallback ->
+    def gradleValue = findProperty(key)
+    def envValue = System.getenv(envKey)
+    def localValue = localProperties.getProperty(key)
+    return (gradleValue ?: envValue ?: localValue ?: fallback).toString()
+}
+
+def normalizeMainClass = { String mainClass ->
+    return switch (mainClass) {
+        case 'org.foxesworld.Launcher' -> 'org.takesome.Launcher'
+        default -> mainClass
+    }
+}
+
+def launcherMainClass = normalizeMainClass(readSetting('project.mainclass', 'PROJECT_MAIN_CLASS', 'org.takesome.Launcher'))
+def launcherVersion = readSetting('project.version', 'PROJECT_VERSION', '2.0.0-Anderson')
+def launcherGroup = readSetting('project.group', 'PROJECT_GROUP', 'org.takesome')
+def launcherArchivesBaseName = readSetting('project.archivesBaseName', 'PROJECT_ARCHIVES_BASE_NAME', 'kaylas-launcher')
+
+def engineDependencyGroup = readSetting('engine.group', 'ENGINE_GROUP', 'org.takesome')
+def engineDependencyArtifact = readSetting('engine.artifact', 'ENGINE_ARTIFACT', readSetting('engine.name', 'ENGINE_NAME', 'kaylas-ui-engine'))
+def engineDependencyVersion = readSetting('engine.version', 'ENGINE_VERSION', '1.18.0-AURELIA')
+
+group = launcherGroup
+version = launcherVersion
+
+base {
+    archivesName = launcherArchivesBaseName
+}
 
 application {
-    mainClass = properties.getProperty('project.mainclass')
+    mainClass = launcherMainClass
+    applicationName = 'KaylasLauncher'
 }
 
-
-group=properties.getProperty('project.group')
-version=properties.getProperty('project.version')
-
 repositories {
+    maven { url = uri('local-maven') }
+    maven { url = uri('../KaylasUIEngine/local-maven') }
+    mavenLocal()
     mavenCentral()
 }
 
-dependencies {
-    implementation files('lib/foxesworld/fox-engine-1.15.16-TET-all.jar')
-    implementation files('lib/foxesworld/fox-engine-1.15.16-TET-javadoc.jar')
-    implementation files('lib/foxesworld/Ascendix-1.11.5-SNAPSHOT.jar')
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
-jar {
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation "${engineDependencyGroup}:${engineDependencyArtifact}:${engineDependencyVersion}"
+    implementation 'org.foxesworld:cfgProvider:2.3.0-STABLE'
+    implementation 'raven.toast:FoxNotifications:1.0.4'
+    implementation 'com.formdev:flatlaf:3.4.1'
+    implementation 'com.formdev:flatlaf-extras:3.4.1'
+    implementation 'com.github.weisj:jsvg:1.6.1'
+    implementation 'org.foxesworld:Ascendix:1.11.5-SNAPSHOT'
+
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+}
+
+sourceSets {
+    main {
+        java {
+            // Slider lives in KaylasUIEngine now; keep legacy copies in the repo, but do not compile them into the launcher artifact.
+            exclude 'org/foxesworld/engine/gui/components/slider/**'
+        }
+    }
+}
+
+def configureLauncherJavaExec = { JavaExec task ->
+    task.group = 'application'
+    task.workingDir = projectDir
+    task.classpath = sourceSets.main.runtimeClasspath
+    task.mainClass = launcherMainClass
+    task.systemProperty 'file.encoding', 'UTF-8'
+    task.systemProperty 'java.net.preferIPv4Stack', 'true'
+    task.systemProperty 'kaylas.launcher.devRun', 'true'
+    task.doFirst {
+        logger.lifecycle("Running KaylasLauncher main={} engine={}:{}:{}", launcherMainClass, engineDependencyGroup, engineDependencyArtifact, engineDependencyVersion)
+    }
+}
+
+tasks.named('run', JavaExec).configure { task ->
+    description = 'Runs KaylasLauncher directly from classes/resources using the current KaylasUIEngine runtime.'
+    configureLauncherJavaExec(task)
+}
+
+tasks.register('runLauncher', JavaExec) { task ->
+    description = 'IDE-friendly launcher run task; does not use self javaagent/shadowJar.'
+    dependsOn tasks.named('classes')
+    configureLauncherJavaExec(task)
+}
+
+tasks.register('runLauncherShadow', JavaExec) { task ->
+    description = 'Runs the assembled shadow jar as an application, not as a javaagent.'
+    dependsOn tasks.named('shadowJar')
+    group = 'application'
+    workingDir = projectDir
+    mainClass = launcherMainClass
+    classpath = files(tasks.named('shadowJar').flatMap { it.archiveFile })
+    systemProperty 'file.encoding', 'UTF-8'
+    systemProperty 'java.net.preferIPv4Stack', 'true'
+}
+
+tasks.named('jar') {
     manifest {
         attributes(
-                'Main-Class': properties.getProperty('project.mainclass'),
-                'Premain-Class': properties.getProperty('project.premainclass'),
+                'Main-Class': launcherMainClass,
                 'Can-Redefine-Classes': 'true'
         )
     }
 }
 
-tasks.named('run', JavaExec) {
-    // Зависим от сборки shadowJar, чтобы артефакт уже существовал
-    dependsOn shadowJar
-    doFirst {
-        // Перед запуском получаем путь к собранному jar-у (shadowJar)
-        def agentJar = shadowJar.archiveFile.get().asFile.absolutePath
-        println "Используется javaagent: ${agentJar}"
-        jvmArgs += ["-javaagent:${agentJar}"]
+tasks.named('shadowJar') {
+    manifest {
+        attributes(
+                'Main-Class': launcherMainClass,
+                'Can-Redefine-Classes': 'true'
+        )
     }
 }
-
-
-apply plugin: "com.github.johnrengelman.shadow"
 
 if (System.getProperty("java.home") == null) {
     System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...")
     System.setProperty("java.home", new File(".").getAbsolutePath())
 }
 
-//proguard {
-//    configurations.setFrom(files("$rootDir/proguard-rules.pro", "$projectDir/proguard-rules.pro"))
-
-//}
-
+tasks.register('runtimeEnvironment') {
+    group = 'help'
+    description = 'Prints launcher runtime settings used by run/runLauncher.'
+    doLast {
+        println "Launcher main: ${launcherMainClass}"
+        println "Launcher version: ${launcherVersion}"
+        println "Engine dependency: ${engineDependencyGroup}:${engineDependencyArtifact}:${engineDependencyVersion}"
+        println "Java: ${System.getProperty('java.version')} (${System.getProperty('java.vendor')})"
+        println "CWD: ${layout.projectDirectory.asFile.absolutePath}"
+    }
+}
 
 tasks.register('nativeDist') {
     doLast {

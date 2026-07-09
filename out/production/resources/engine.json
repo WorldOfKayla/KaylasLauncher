@@ -1,5 +1,5 @@
 {
-  "launcherBrand": "FoxesLauncher",
+  "launcherBrand": "TakeSomeLauncher",
   "launcherVersion": "2.0.0",
   "launcherBuild": "Anderson",
   "styles": [
@@ -9,6 +9,7 @@
     "multiButton",
     "passField",
     "progressBar",
+    "combobox",
     "dropBox",
     "textField",
     "textArea",
@@ -16,18 +17,22 @@
     "spinner",
     "compositeSlider"
   ],
-  "loadAdapters": ["json", "json5"],
+  "loadAdapters": [
+    "xml",
+    "json",
+    "json5"
+  ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",
   "bindUrl": "https://foxescraft.ru",
   "appId": "712667904956432456",
   "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",
-  "groupDomain": "foxesworlds1",
+  "groupDomain": "takesome",
   "vkAPIversion": "5.101",
   "files": {
-    "frameTpl": "assets/frames/frame.json",
+    "frameTpl": "assets/frames/frame.json5",
     "mainFrame": "assets/frames/mainFrame.json5",
-    "localeFile": "assets/lang/locale.json",
+    "localeFile": "assets/lang/",
     "soundsFile": "assets/sounds/sounds.json"
   },
   "loadManager": [
@@ -77,7 +82,7 @@
     "requestProperties": [
       {
         "propertyKey": "User-Agent",
-        "propertyValue": "FoxesWorldLauncher"
+        "propertyValue": "TakeSomeLauncher"
       },
       {
         "propertyKey": "Accept-Language",

@@ -1,2 +1,5 @@
 /cache/
 /logs/
+/out/
+/build/
+/.idea/

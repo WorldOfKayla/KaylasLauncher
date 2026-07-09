@@ -4,7 +4,8 @@
       panelOptions: {
         opaque: true,
         visible: true,
-        background: "#4d2c2cc2",
+        background: "#ae6a2b",
+        border: "1,1,1,1,#242221",
         bounds: {
           x: 210,
           y: 0,

@@ -5,12 +5,13 @@ import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.GuiBuilder;
 import org.takesome.kaylasEngine.gui.componentAccessor.Component;
-import org.takesome.kaylasEngine.gui.components.dropBox.DropBox;
+import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.locale.LanguageProvider;
 import org.takesome.kaylasEngine.utils.HTTP.RequestState;
 import org.takesome.kaylasEngine.utils.ServerInfo;
 import org.takesome.launcher.auth.Auth;
+import org.takesome.launcher.auth.AuthResponse;
 import org.takesome.launcher.auth.AuthStatus;
 import org.takesome.launcher.gui.BlendedImageIcon;
 import org.takesome.launcher.gui.LauncherUserUiConfig;
@@ -78,7 +79,7 @@ public class User extends org.takesome.kaylasEngine.user.User {
         this.auth = launcher.getAuth();
         this.userUi = LauncherUserUiConfig.load(launcher);
         this.userAttributes = new UserAttributes(this);
-        this.loggedForm = new LoggedForm(launcher.getGuiBuilder(), userUi.panels().loggedForm(), List.of(DropBox.class, Label.class));
+        this.loggedForm = new LoggedForm(launcher.getGuiBuilder(), userUi.panels().loggedForm(), List.of(Combobox.class, Label.class));
         this.engine = launcher.getEngine();
         this.serverInfo = engine.getServerInfo();
         this.lang = launcher.getLANG();
@@ -213,7 +214,8 @@ public class User extends org.takesome.kaylasEngine.user.User {
     }
 
     public void setUserSpace() {
-        setDropBoxData(loggedForm.getServerBox());
+        refreshUserAttributesFromAuth();
+        setComboboxData(loggedForm.getServerBox());
         setupDiscordRpc();
         auth.getUserDataLoader().getBalanceInjector().addListener(this::setBalance);
         setBalance(auth.getUserDataLoader().getBalanceMap());
@@ -233,13 +235,14 @@ public class User extends org.takesome.kaylasEngine.user.User {
     }
 
     private void configureBadges() {
-        BadgeLoader badgeLoader = new BadgeLoader(this.getLauncher(), this.userAttributes.login);
+        String login = getLogin();
+        BadgeLoader badgeLoader = new BadgeLoader(this.getLauncher(), login);
         badgeLoader.loadBadgesAsync(
                 badges -> SwingUtilities.invokeLater(() -> renderBadges(badges)),
                 error -> Engine.getLOGGER().warn(lang.getStringWithKey(
                         userUi.badges().allBadgesFailureKey(),
                         new String[]{"login", "error"},
-                        new String[]{this.userAttributes.login, error.getMessage()}
+                        new String[]{login, safeText(error == null ? null : error.getMessage(), "unknown error")}
                 ))
         );
     }
@@ -271,7 +274,7 @@ public class User extends org.takesome.kaylasEngine.user.User {
 
     private void renderBadge(JPanel badgePanel, BadgeObject badge) {
         try {
-            URL badgeUrl = new URL(this.launcher.getEngineData().getBindUrl() + badge.getBadgeImg());
+            URL badgeUrl = badgeUrl(badge);
             BufferedImage image = SvgUtils.renderToImage(
                     badgeUrl,
                     userUi.badges().iconWidth(),
@@ -287,6 +290,27 @@ public class User extends org.takesome.kaylasEngine.user.User {
                     new String[]{badge.getBadgeName(), error.getMessage()}
             ));
         }
+    }
+
+    private URL badgeUrl(BadgeObject badge) throws Exception {
+        String badgeImage = badge == null ? null : badge.getBadgeImg();
+        if (badgeImage == null || badgeImage.isBlank()) {
+            throw new IllegalArgumentException("Badge image path is empty.");
+        }
+
+        String trimmed = badgeImage.trim();
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+            return new URL(trimmed);
+        }
+
+        AuthResponse response = auth.getAuthResponse();
+        boolean backendManaged = response != null && response.isBackendManaged();
+        if (backendManaged && launcher.getBackendClient() != null) {
+            String backendPath = trimmed.startsWith("/") ? trimmed : "/" + trimmed;
+            return launcher.getBackendClient().resourceUri(backendPath).toURL();
+        }
+
+        return new URL(this.launcher.getEngineData().getBindUrl() + trimmed);
     }
 
     private void configureSkin() {
@@ -345,37 +369,37 @@ public class User extends org.takesome.kaylasEngine.user.User {
         timer.start();
     }
 
-    private void setDropBoxData(DropBox dropBox) {
+    private void setComboboxData(Combobox combobox) {
         String[] servers = auth.getUserDataLoader().getUserServersArray();
         if (servers == null || servers.length == 0) {
-            Launcher.LOGGER.warn("User servers array is null or empty. Disabling server dropBox.");
-            dropBox.setScrollBoxListener(null);
-            dropBox.setValues(new String[0]);
-            dropBox.setIcons(new BufferedImage[0]);
-            dropBox.setEnabled(false);
-            dropBox.revalidate();
-            dropBox.repaint();
+            Launcher.LOGGER.warn("User servers array is null or empty. Disabling server combobox.");
+            combobox.setComboboxListener(null);
+            combobox.setValues(new String[0]);
+            combobox.setIcons(new BufferedImage[0]);
+            combobox.setEnabled(false);
+            combobox.revalidate();
+            combobox.repaint();
             return;
         }
 
-        dropBox.setEnabled(true);
-        dropBox.setValues(servers);
+        combobox.setEnabled(true);
+        combobox.setValues(servers);
         runOnEDT(() -> {
             int selectedIndex = launcher.getConfig().getSelectedServer();
             if (selectedIndex < 0 || selectedIndex >= servers.length) {
                 Launcher.LOGGER.warn("Selected server index {} is out of bounds. Defaulting to index 0.", selectedIndex);
                 selectedIndex = 0;
             }
-            dropBox.setSelectedIndex(selectedIndex);
-            dropBox.setScrollBoxListener(serverInfoDisplayer);
+            combobox.setSelectedIndex(selectedIndex);
+            combobox.setComboboxListener(serverInfoDisplayer);
             launcher.getGuiBuilder()
                     .getComponentFactory()
                     .getLuaUiScriptEngine()
                     .emitComponentEvent(userUi.serverBox().valuesChangedEvent(),
-                            dropBox,
+                            combobox,
                             Map.of("reason", userUi.serverBox().valuesChangedReason()));
-            dropBox.revalidate();
-            dropBox.repaint();
+            combobox.revalidate();
+            combobox.repaint();
         });
     }
 
@@ -386,7 +410,7 @@ public class User extends org.takesome.kaylasEngine.user.User {
                     lang.getStringWithKey(
                             userUi.discord().loginLocaleKey(),
                             new String[]{userUi.discord().loginPlaceholder()},
-                            new String[]{auth.getAuthCredentials("login")}
+                            new String[]{getLogin()}
                     ),
                     launcher.getAppTitle(),
                     userUi.discord().iconKey()
@@ -460,16 +484,74 @@ public class User extends org.takesome.kaylasEngine.user.User {
         runOnEDT(() -> {
             userGroup.setText(lang.getString(groupObject.getGroupName()));
             userGroup.setTextColor(hexToColor(groupObject.getGroupColor()));
-            userLogin.setText(userAttributes.userFullName);
+            userLogin.setText(getDisplayName());
         });
     }
 
+    private void refreshUserAttributesFromAuth() {
+        userAttributes.refreshFromMap(auth.getAuthCredentials());
+        AuthResponse response = auth.getAuthResponse();
+        if (response != null) {
+            if (isBlank(userAttributes.login)) {
+                userAttributes.login = response.getLogin();
+            }
+            if (isBlank(userAttributes.uuid)) {
+                userAttributes.uuid = response.getUuid();
+            }
+            if (isBlank(userAttributes.token)) {
+                userAttributes.token = response.getToken();
+            }
+            if (isBlank(userAttributes.groupName)) {
+                userAttributes.groupName = response.getGroupName();
+            }
+            if (isBlank(userAttributes.userFullName)) {
+                userAttributes.userFullName = response.getUserFullName();
+            }
+            if (userAttributes.group == null) {
+                userAttributes.group = response.getGroup();
+            }
+        }
+    }
+
     public String getLogin() {
-        return userAttributes.login;
+        AuthResponse response = auth.getAuthResponse();
+        String responseLogin = response == null ? null : response.getLogin();
+        return firstNonBlank(
+                userAttributes.login,
+                responseLogin,
+                auth.getAuthCredentials("login"),
+                launcher.getConfig().getLogin(),
+                "unknown"
+        );
+    }
+
+    private String getDisplayName() {
+        AuthResponse response = auth.getAuthResponse();
+        String responseDisplayName = response == null ? null : response.getUserFullName();
+        return firstNonBlank(userAttributes.userFullName, responseDisplayName, getLogin());
+    }
+
+    private static String firstNonBlank(String... values) {
+        if (values != null) {
+            for (String value : values) {
+                if (!isBlank(value)) {
+                    return value;
+                }
+            }
+        }
+        return "";
+    }
+
+    private static String safeText(String value, String fallback) {
+        return isBlank(value) ? fallback : value;
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank() || "null".equalsIgnoreCase(value);
     }
 
     public String getToken() {
-        return userAttributes.token;
+        return firstNonBlank(userAttributes.token, auth.getAuthCredentials("token"));
     }
 
     @Deprecated

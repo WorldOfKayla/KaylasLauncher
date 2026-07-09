@@ -4,7 +4,7 @@ import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
-import org.takesome.kaylasEngine.gui.components.dropBox.DropBox;
+import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.multiButton.MultiButton;
 import org.takesome.kaylasEngine.gui.components.passfield.PassField;
 import org.takesome.kaylasEngine.gui.components.textfield.TextField;
@@ -54,13 +54,13 @@ public class ActionHandler extends org.takesome.kaylasEngine.gui.ActionHandler {
     private Checkbox forceUpdate;
 
     @Component
-    private DropBox serverBox;
+    private Combobox serverBox;
 
     private final ConcurrentMap<String, Consumer<ActionEvent>> commandRegistry = new ConcurrentHashMap<>();
 
     public ActionHandler(Launcher launcher) {
         super(Objects.requireNonNull(launcher, "launcher").getGuiBuilder(), UI_PROVIDER.scopes().mainFrame(),
-                List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, DropBox.class));
+                List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, Combobox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.ui = UI_PROVIDER;

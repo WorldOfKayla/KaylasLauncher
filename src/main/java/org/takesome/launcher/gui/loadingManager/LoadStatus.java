@@ -5,7 +5,7 @@ import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
 import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
-import org.takesome.kaylasEngine.gui.components.dropBox.DropBox;
+import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.gui.components.sprite.SpriteAnimation;
 import org.takesome.kaylasEngine.gui.loadingManager.LoadManagerAttributes;
@@ -59,7 +59,7 @@ public class LoadStatus extends LoadingManager {
         this.animationManager.setAnimationStats(this);
 
         this.loadPanel = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class, JProgressBar.class));
-        this.loggedForm = new ComponentsAccessor(this.engine.getGuiBuilder(), "loggedForm", List.of(Button.class, DropBox.class, Checkbox.class));
+        this.loggedForm = new ComponentsAccessor(this.engine.getGuiBuilder(), "loggedForm", List.of(Button.class, Combobox.class, Checkbox.class));
 
         Engine.getLOGGER().info(
                 "[LOAD-UI] config: animationSpeed={} overlayAlpha={} overlayFadeInMs={} overlayFadeOutMs={} overlayFrameDelayMs={} progressEnabled={}",

@@ -1,0 +1,46 @@
+<ui>
+    <panels>
+        <panel id="userActions">
+            <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="false">
+                <bounds x="0" y="0" width="350" height="500" />
+            </panelOptions>
+            <panels>
+                <panel id="infoPane">
+                    <panelOptions opaque="true" focusable="true" visible="true" doubleBuffered="false" background="#0707079e" zIndex="1">
+                        <bounds x="0" y="30" width="348" height="43" />
+                    </panelOptions>
+                    <childComponents>
+                        <component type="button" enabled="true" keyCode="U" style="altButton" imageIcon="assets/ui/icons/menu.svg" iconWidth="20" iconHeight="24" id="userPane">
+                            <bounds x="10" y="10" width="32" height="32" />
+                        </component>
+                        <component type="label" fontSize="14" style="title" id="greetUser" localeKey="logged.greet">
+                            <bounds x="60" y="10" width="320" height="30" />
+                        </component>
+                    </childComponents>
+                </panel>
+                <panel id="userControls">
+                    <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="false">
+                        <bounds x="0" y="30" width="350" height="500" />
+                    </panelOptions>
+                    <childComponents>
+                        <component type="label" fontSize="14" style="titleBold" id="userSkin" localeKey="">
+                            <bounds x="110" y="75" width="120" height="230" />
+                        </component>
+                        <component type="combobox" style="selectable" id="serverBox" initialValue="servers" toolTip="tooltip.selectServer">
+                            <bounds x="35" y="350" width="273" height="25" />
+                        </component>
+                        <component type="checkBox" enabled="true" style="solid" id="forceUpdate" localeKey="logged.forceUpdate" initialValue="false">
+                            <bounds x="30" y="390" width="270" height="32" />
+                        </component>
+                        <component type="button" enabled="true" keyCode="ENTER" style="buttonMain" toolTip="tooltip.gameTooltip" imageIcon="assets/ui/icons/sword.svg" iconWidth="20" iconHeight="24" tooltipStyle="success" id="toGame" localeKey="logged.toGame">
+                            <bounds x="30" y="310" width="235" height="30" />
+                        </component>
+                        <component type="button" enabled="true" keyCode="O" style="altButton" toolTip="tooltip.optionalMods" imageIcon="assets/ui/icons/settingsGrey.svg" iconWidth="16" iconHeight="16" tooltipStyle="success" id="optionalMods">
+                            <bounds x="260" y="310" width="32" height="32" />
+                        </component>
+                    </childComponents>
+                </panel>
+            </panels>
+        </panel>
+    </panels>
+</ui>

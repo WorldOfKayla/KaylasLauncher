@@ -110,7 +110,7 @@
                   }
                 },
                 {
-                  type: "dropBox",
+                  type: "combobox",
                   style: "selectable",
                   id: "serverBox",
                   initialValue: "servers",
@@ -158,10 +158,10 @@
                   localeKey: "logged.toGame",
                   bounds: {
                     x: 30,
-                    y: 310,
+                    y: 305,
                     size: {
                       width: 235,
-                      height: 30
+                      height: 45
                     }
                   }
                 },
@@ -181,10 +181,10 @@
                   },
                   bounds: {
                     x: 260,
-                    y: 310,
+                    y: 305,
                     size: {
-                      width: 32,
-                      height: 32
+                      width: 45,
+                      height: 45
                     }
                   }
                 }

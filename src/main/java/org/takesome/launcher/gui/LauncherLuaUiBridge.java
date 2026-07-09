@@ -2,7 +2,7 @@ package org.takesome.launcher.gui;
 
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
-import org.takesome.kaylasEngine.gui.components.dropBox.DropBox;
+import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.launcher.auth.AuthStatus;
 
@@ -119,14 +119,14 @@ final class LauncherLuaUiBridge {
                 .getComponentFactory()
                 .getLuaUiScriptEngine()
                 .findComponent(resolvedComponentId);
-        if (!(component instanceof DropBox dropBox)) {
-            Engine.getLOGGER().warn("Lua requested server core icons for non-dropBox component '{}'.", resolvedComponentId);
+        if (!(component instanceof Combobox combobox)) {
+            Engine.getLOGGER().warn("Lua requested server core icons for non-combobox component '{}'.", resolvedComponentId);
             return;
         }
 
-        String[] values = dropBox.getValues();
+        String[] values = combobox.getValues();
         if (values == null || values.length == 0) {
-            dropBox.setIcons(new BufferedImage[0]);
+            combobox.setIcons(new BufferedImage[0]);
             return;
         }
 
@@ -136,21 +136,21 @@ final class LauncherLuaUiBridge {
                 ? launcher.getAuth().getUserDataLoader().getUserServersAttributes()
                 : Collections.emptyList();
 
-        String iconRoot = componentStringProperty(dropBox, "iconRoot", DEFAULT_ICON_ROOT);
-        String iconExt = componentStringProperty(dropBox, "iconExt", DEFAULT_ICON_EXT);
-        String fallback = componentStringProperty(dropBox, "fallback", DEFAULT_CORE_ICON);
+        String iconRoot = componentStringProperty(combobox, "iconRoot", DEFAULT_ICON_ROOT);
+        String iconExt = componentStringProperty(combobox, "iconExt", DEFAULT_ICON_EXT);
+        String fallback = componentStringProperty(combobox, "fallback", DEFAULT_CORE_ICON);
 
         BufferedImage[] icons = new BufferedImage[values.length];
         for (int i = 0; i < values.length; i++) {
             ServerAttributes server = i < servers.size() ? servers.get(i) : null;
             String coreName = resolveCoreName(server, values[i], fallback);
-            String iconName = mappedIconName(dropBox, coreName, fallback);
+            String iconName = mappedIconName(combobox, coreName, fallback);
             icons[i] = launcher.getImageUtils().getLocalImage(resolveIconPath(iconRoot, iconExt, iconName));
         }
 
         SwingUtilities.invokeLater(() -> {
-            dropBox.setIcons(icons);
-            dropBox.repaint();
+            combobox.setIcons(icons);
+            combobox.repaint();
         });
         Engine.getLOGGER().debug("Applied {} server core icons from launcher Lua policy.", icons.length);
     }

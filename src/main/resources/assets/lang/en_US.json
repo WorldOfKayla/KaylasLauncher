@@ -8,7 +8,8 @@
     "website": "Website {key}",
     "launcher": "In launcher",
     "cancel": "Cancel",
-    "uk_UA": "Ukrainian"
+    "uk_UA": "Ukrainian",
+    "it_IT": "Italian"
   },
   "error": {
     "title": "Error",

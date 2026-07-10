@@ -23,17 +23,17 @@
                 opaque: true,
                 focusable: true,
                 visible: true,
-                doubleBuffered: false,
-                background: "#0707079e",
+                doubleBuffered: true,
+                background: "#b6aaa0",
                 bounds: {
                   x: 0,
                   y: 30,
                   size: {
-                    width: 350,
+                    width: 348,
                     height: 43
                   }
                 },
-                zIndex: 1
+                zIndex: 3
               },
               childComponents: [
                 {
@@ -41,7 +41,7 @@
                   enabled: true,
                   keyCode: "U",
                   style: "altButton",
-                  imageIcon: "assets/ui/icons/menu.svg",
+                  imageIcon: "fa:menu",
                   iconWidth: 20,
                   iconHeight: 24,
                   id: "userPane",
@@ -61,6 +61,7 @@
                   type: "label",
                   fontSize: 14,
                   style: "title",
+                  color: "#5a1ab3",
                   id: "greetUser",
                   localeKey: "logged.greet",
                   bounds: {
@@ -150,9 +151,6 @@
                   keyCode: "ENTER",
                   style: "buttonMain",
                   toolTip: "tooltip.gameTooltip",
-                  imageIcon: "assets/ui/icons/sword.svg",
-                  iconWidth: 20,
-                  iconHeight: 24,
                   tooltipStyle: "success",
                   id: "toGame",
                   localeKey: "logged.toGame",
@@ -171,7 +169,7 @@
                   keyCode: "O",
                   style: "altButton",
                   toolTip: "tooltip.optionalMods",
-                  imageIcon: "assets/ui/icons/settingsGrey.svg",
+                  imageIcon: "fa:settings",
                   iconWidth: 16,
                   iconHeight: 16,
                   tooltipStyle: "success",

@@ -4,8 +4,7 @@
       panelOptions: {
         opaque: true,
         visible: false,
-        background: "#7e6969",
-        backgroundImage: "assets/ui/img/bg/info.png",
+        background: "#695d50",
         zIndex: 2,
         bounds: {
           x: -600,
@@ -22,9 +21,9 @@
             userData: {
               panelOptions: {
                 cornerRadius: 10,
-                opaque: true,
+                opaque: false,
                 visible: true,
-                background: "#4d2c2cc2",
+                background: "#ae6a2b",
                 zIndex: 1,
                 bounds: {
                   x: 10,
@@ -110,7 +109,6 @@
                     }
                   }
                 },
-                /*
                 {
                   type: "button",
                   enabled: true,
@@ -132,7 +130,7 @@
                       height: 34
                     }
                   }
-                },*/
+                },
                 {
                   readFrom: "assets/frames/forms/user/userBalance.json5"
                 }

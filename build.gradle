@@ -32,7 +32,7 @@ def launcherArchivesBaseName = readSetting('project.archivesBaseName', 'PROJECT_
 
 def engineDependencyGroup = readSetting('engine.group', 'ENGINE_GROUP', 'org.takesome')
 def engineDependencyArtifact = readSetting('engine.artifact', 'ENGINE_ARTIFACT', readSetting('engine.name', 'ENGINE_NAME', 'kaylas-ui-engine'))
-def engineDependencyVersion = readSetting('engine.version', 'ENGINE_VERSION', '1.18.0-AURELIA')
+def engineDependencyVersion = readSetting('engine.version', 'ENGINE_VERSION', '2.1.0-AURELIA')
 
 group = launcherGroup
 version = launcherVersion
@@ -63,6 +63,11 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+
+tasks.withType(Test).configureEach {
+    failOnNoDiscoveredTests = false
+}
+
 tasks.named('processResources').configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
@@ -77,6 +82,7 @@ dependencies {
     implementation 'org.foxesworld:Ascendix:1.11.5-SNAPSHOT'
 
     implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'org.luaj:luaj-jse:3.0.1'
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 }
@@ -146,6 +152,19 @@ tasks.named('shadowJar') {
 if (System.getProperty("java.home") == null) {
     System.out.println("No Java Home set, assuming that we are running from GraalVM. Fixing...")
     System.setProperty("java.home", new File(".").getAbsolutePath())
+}
+
+tasks.register('launcherComponentsCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies launcher Component Constructor 2.1 templates, screen migration, Lua policies and styles.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.gui.components.LauncherComponentLibraryVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('launcherComponentsCheck')
 }
 
 tasks.register('runtimeEnvironment') {

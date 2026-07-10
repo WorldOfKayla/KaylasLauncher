@@ -1,5 +1,5 @@
 {
-  "launcherBrand": "TakeSomeLauncher",
+  "launcherBrand": "Kayla's Launcher",
   "launcherVersion": "2.0.0",
   "launcherBuild": "Anderson",
   "styles": [
@@ -24,11 +24,14 @@
   ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",
-  "bindUrl": "https://foxescraft.ru",
-  "appId": "712667904956432456",
-  "accessToken": "ccdd6e40ccdd6e40ccdd6e40ecccaf012ecccddccdd6e4092074eb9f3eea48edf8a6e39",
-  "groupDomain": "takesome",
-  "vkAPIversion": "5.101",
+  "bindUrl": "",
+  "backend": {
+    "enabled": true,
+    "wsUrl": "ws://127.0.0.1:18080/ws/launcher",
+    "heartbeatSeconds": 15,
+    "maxReconnectAttempts": 0
+  },
+  "appId": "1524737795942256660",
   "files": {
     "frameTpl": "assets/frames/frame.json5",
     "mainFrame": "assets/frames/mainFrame.json5",
@@ -40,8 +43,8 @@
       "spritePath": "assets/ui/sprites/loaderFox.png",
       "bgPath": "assets/ui/img/bg/season/summer.png",
       "blurColor": "#b3a8998a",
-      "titleColor": "#ffffff",
-      "descColor": "#473c3c",
+      "titleColor": "#252424",
+      "descColor": "#7534d4",
       "rows": 3,
       "cols": 5,
       "delay": 55,

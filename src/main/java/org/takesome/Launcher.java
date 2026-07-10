@@ -7,7 +7,6 @@ import org.takesome.kaylasEngine.gui.GuiBuilder;
 import org.takesome.kaylasEngine.gui.components.frame.OptionGroups;
 import org.takesome.kaylasEngine.gui.styles.StyleProvider;
 import org.takesome.kaylasEngine.locale.LanguageProvider;
-import org.takesome.kaylasEngine.utils.DragListener;
 import org.takesome.kaylasEngine.utils.IconUtils;
 import org.takesome.kaylasEngine.utils.ServerInfo;
 import org.takesome.kaylasEngine.utils.hook.HookException;
@@ -267,7 +266,6 @@ public class Launcher extends Engine {
                 int sectionHeight = oldTitleBar.getHeight();
                 int yOffset = hasFocus ? sectionHeight : 0;
 
-                DragListener dragListener = new DragListener(this.frameConstructor);
                 JPanel newTitleBar = new JPanel() {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -293,7 +291,7 @@ public class Launcher extends Engine {
                     newTitleBar.add(component);
                 }
 
-                dragListener.apply(newTitleBar, this.getFrame());
+                getPanelListenerRegistry().install("windowDrag", newTitleBar, this.getFrame());
                 this.getGuiBuilder().getPanelsMap().put("titleBar", newTitleBar);
 
                 Container parent = oldTitleBar.getParent();

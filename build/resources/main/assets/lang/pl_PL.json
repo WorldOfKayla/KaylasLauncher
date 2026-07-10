@@ -74,6 +74,40 @@
     "title": "Ładowanie...",
     "msg": "Proszę czekać"
   },
+  "progressMessages": {
+    "message001": "Grzejemy nogi przy kaloryferze...",
+    "message002": "Szukamy wojowników...",
+    "message003": "Piszemy Javę...",
+    "message004": "Uruchamiamy Lisi Świat...",
+    "message005": "Kradniemy miecze...",
+    "message006": "Wytyczamy szlak...",
+    "message007": "Wzywamy lisy na pomoc...",
+    "message008": "Ładujemy magię...",
+    "message009": "Bawimy się materiałami wybuchowymi...",
+    "message010": "Rysujemy plany podboju...",
+    "message011": "Przygotowujemy legendy...",
+    "message012": "Warzymy eliksir sukcesu...",
+    "message013": "Zbieramy armię uśmiechów...",
+    "message014": "Naprawiamy błędy...",
+    "message015": "Przywołujemy pradawnych...",
+    "message016": "Podłączamy wyobraźnię...",
+    "message017": "Konfigurujemy tryb kosmiczny...",
+    "message018": "Prosimy o wybaczenie...",
+    "message019": "Wysadzamy umysł Friedricha...",
+    "message020": "Uprawiamy pszenicę...",
+    "message021": "Szukamy krów...",
+    "message022": "Otwieramy portale...",
+    "message023": "Odczytujemy pradawne runy...",
+    "message024": "Ostrzymy pazury...",
+    "message025": "Odganiamy złe duchy...",
+    "message026": "Tworzymy nowe światy...",
+    "message027": "Próbujemy zaklęcia szczęścia...",
+    "message028": "Szukamy artefaktów...",
+    "message029": "Przepisujemy rzeczywistość...",
+    "message030": "Podsłuchujemy rozmowy smoków...",
+    "message031": "Układamy plan podboju świata...",
+    "message032": "Przygotowujemy jedzenie dla gości..."
+  },
   "logged": {
     "greet": "Witaj, {login}!",
     "loggedIn": "Jesteś zalogowany!",
@@ -90,6 +124,15 @@
   "game": {
     "playing": "Gra na serwerze {server}",
     "login": "Login użytkownika: {login}"
+  },
+  "discord": {
+    "selecting": "Wybiera serwer {server}",
+    "preparing": "Przygotowuje {server}",
+    "downloading": "Pobiera pliki dla {server}",
+    "verifying": "Sprawdza klienta {server}",
+    "launching": "Uruchamia {server}",
+    "failed": "Nie udało się uruchomić {server}",
+    "cancelled": "Anulowano uruchamianie {server}"
   },
   "server": {
     "updating": "Aktualizowanie serwera...",

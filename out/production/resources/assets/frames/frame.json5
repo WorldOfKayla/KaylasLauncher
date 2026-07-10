@@ -9,7 +9,7 @@
   "width": 850,
   "height": 500,
   "borderRadius": 20,
-  "resizable": false,
+  "resizable": true,
   "undecorated": true,
   "panels": {
     "titleBar": {
@@ -71,7 +71,7 @@
           "style": "titleBold",
           "localeKey": "|",
           "initialValue": "build",
-          "color": "#630101",
+          "color": "#252424",
           "id": "appBuild",
           "bounds": {
             "x": 290,

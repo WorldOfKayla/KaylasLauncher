@@ -8,7 +8,7 @@
         visible: true,
         bounds: {
           x: 0,
-          y: 0,
+          y: 10,
           size: {
             width: 490,
             height: 450
@@ -21,7 +21,7 @@
           type: "label",
           fontSize: 14,
           style: "titleBold",
-          imageIcon: "assets/ui/icons/settingsGrey.svg",
+          imageIcon: "fa:settings",
           iconWidth: 32,
           iconHeight: 32,
           localeKey: "settings.baseOptions",
@@ -41,7 +41,7 @@
               panelOptions: {
                 opaque: true,
                 visible: true,
-                background: "#c0a1a0f7",
+                background: "#c0a1a0",
                 bounds: {
                   x: 0,
                   y: 20,
@@ -65,7 +65,7 @@
                   keyCode: "F",
                   fontSize: 12,
                   toolTip: "tooltip.folder",
-                  imageIcon: "assets/ui/icons/files/folder.svg",
+                  imageIcon: "fa:folder",
                   iconWidth: 32,
                   iconHeight: 32,
                   style: "altButton",
@@ -134,7 +134,7 @@
 					"textField": "textFieldMain",
 					"button": "altButton"
 				  },
-                  imageIcon: "assets/ui/icons/files/folder.svg",
+                  imageIcon: "fa:folder",
                   iconWidth: 20,
                   iconHeight: 24,
                   initialValue: "config#homeDir",

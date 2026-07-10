@@ -43,7 +43,7 @@ local loading = {
                     path = "assets/ui/sprites/loaderFox.png",
                     rows = 3,
                     columns = 5,
-                    frameDelayMs = 55,
+                    frameDelayMs = 45,
                     bounds = {
                         x = 30,
                         y = 40,
@@ -90,11 +90,11 @@ local loading = {
         entry = {
             motion = {
                 enabled = true,
-                delayMs = 0,
+                delayMs = 120,
 
                 -- Controls the speed at which the loader drops into place.
-                durationMs = 420,
-                frameDelayMs = 16,
+                durationMs = 820,
+                frameDelayMs = 360,
                 easing = cubic_bezier(0.16, 1.0, 0.30, 1.0),
 
                 -- referenceX/referenceY choose a point on the launcher frame.
@@ -107,7 +107,7 @@ local loading = {
             opacity = {
                 enabled = true,
                 delayMs = 35,
-                durationMs = 250,
+                durationMs = 550,
                 frameDelayMs = 16,
                 easing = "easeOutCubic",
                 from = 0.0,

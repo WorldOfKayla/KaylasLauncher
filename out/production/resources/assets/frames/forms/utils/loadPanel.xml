@@ -11,11 +11,21 @@
                 <component type="label" fontSize="11" style="title" localeKey="loading.msg" id="loaderText">
                     <bounds x="120" y="75" width="400" height="20" />
                 </component>
-                <component type="progressBar" style="progressMini" id="loadProgress" color="#ffffff" borderRadius="20">
+                <component type="progressBar"
+                           style="progressMini"
+                           id="loadProgress"
+                           minValue="0"
+                           maxValue="100"
+                           initialValue="0"
+                           stringPainted="true"
+                           showPercent="false"
+                           textColor="#ffffffff"
+                           textShadowColor="#000000d0"
+                           progressTextFormat="{text} — {percent}%"
+                           borderRadius="20"
+                           fillBorderRadius="18"
+                           trackPadding="2">
                     <bounds x="40" y="100" width="350" height="30" />
-                </component>
-                <component type="label" fontSize="11" style="title" localeKey="loading.msg" id="progressText">
-                    <bounds x="12" y="7" width="400" height="20" />
                 </component>
             </childComponents>
         </panel>

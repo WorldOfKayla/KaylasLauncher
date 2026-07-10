@@ -74,6 +74,40 @@
     "title": "Loading...",
     "msg": "Please wait"
   },
+  "progressMessages": {
+    "message001": "Warming our feet by the radiator...",
+    "message002": "Looking for warriors...",
+    "message003": "Writing Java...",
+    "message004": "Launching Fox World...",
+    "message005": "Stealing swords...",
+    "message006": "Building a path...",
+    "message007": "Calling foxes for help...",
+    "message008": "Charging magic...",
+    "message009": "Playing with explosives...",
+    "message010": "Drawing up conquest plans...",
+    "message011": "Preparing legends...",
+    "message012": "Brewing a potion of success...",
+    "message013": "Assembling an army of smiles...",
+    "message014": "Fixing bugs...",
+    "message015": "Summoning the ancients...",
+    "message016": "Connecting imagination...",
+    "message017": "Configuring space mode...",
+    "message018": "Asking for forgiveness...",
+    "message019": "Blowing Friedrich's mind...",
+    "message020": "Growing wheat...",
+    "message021": "Looking for cows...",
+    "message022": "Opening portals...",
+    "message023": "Deciphering ancient runes...",
+    "message024": "Sharpening claws...",
+    "message025": "Driving away evil spirits...",
+    "message026": "Creating new worlds...",
+    "message027": "Trying a luck spell...",
+    "message028": "Searching for artifacts...",
+    "message029": "Rewriting reality...",
+    "message030": "Eavesdropping on dragons...",
+    "message031": "Planning a world takeover...",
+    "message032": "Preparing food for guests..."
+  },
   "logged": {
     "greet": "Hello, {login}!",
     "loggedIn": "You're in!",
@@ -90,6 +124,15 @@
   "game": {
     "playing": "Playing on {server}",
     "login": "User login: {login}"
+  },
+  "discord": {
+    "selecting": "Choosing server {server}",
+    "preparing": "Preparing {server}",
+    "downloading": "Downloading files for {server}",
+    "verifying": "Verifying client for {server}",
+    "launching": "Launching {server}",
+    "failed": "Launch failed for {server}",
+    "cancelled": "Launch cancelled for {server}"
   },
   "server": {
     "updating": "Updating server...",

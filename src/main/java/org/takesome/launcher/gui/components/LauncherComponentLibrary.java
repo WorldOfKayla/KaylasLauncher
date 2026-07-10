@@ -2,7 +2,7 @@ package org.takesome.launcher.gui.components;
 
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.GuiBuilder;
-import org.takesome.kaylasEngine.gui.adapters.xml.XmlFrameAttributesLoader;
+import org.takesome.kaylasEngine.gui.descriptor.XmlUiDescriptorLoader;
 import org.takesome.kaylasEngine.gui.components.Attributes;
 import org.takesome.kaylasEngine.gui.components.ComponentAttributes;
 import org.takesome.kaylasEngine.gui.components.ComponentCatalog;
@@ -382,7 +382,7 @@ public final class LauncherComponentLibrary {
     }
 
     private static Map<String, ComponentAttributes> loadNodes(String resourcePath) {
-        Attributes attributes = new XmlFrameAttributesLoader().getAttributes(resourcePath);
+        Attributes attributes = new XmlUiDescriptorLoader().load(resourcePath);
         Map<String, ComponentAttributes> result = new LinkedHashMap<>();
         for (ComponentAttributes component : attributes.getChildComponents()) {
             String id = component.getComponentId();

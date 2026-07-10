@@ -48,7 +48,7 @@ assets/components/settings/
 └── directory-control.xml
 ```
 
-Each prototype XML is parsed by `XmlFrameAttributesLoader` during library registration. Child descriptors are deep-copied by the engine before each instance is created.
+Each prototype XML is parsed by `XmlUiDescriptorLoader` during library registration. Child descriptors are deep-copied by the engine before each instance is created.
 
 ### Volume graph
 

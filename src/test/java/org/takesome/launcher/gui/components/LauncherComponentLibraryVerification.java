@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.takesome.kaylasEngine.Engine;
-import org.takesome.kaylasEngine.gui.adapters.xml.XmlFrameAttributesLoader;
+import org.takesome.kaylasEngine.gui.descriptor.XmlUiDescriptorLoader;
 import org.takesome.kaylasEngine.gui.components.Attributes;
 import org.takesome.kaylasEngine.gui.components.ComponentAttributes;
 
@@ -69,9 +69,9 @@ public final class LauncherComponentLibraryVerification {
     }
 
     private static void verifyTemplates() {
-        XmlFrameAttributesLoader loader = new XmlFrameAttributesLoader();
+        XmlUiDescriptorLoader loader = new XmlUiDescriptorLoader();
         TEMPLATES.forEach((resource, expectedNodes) -> {
-            Attributes attributes = loader.getAttributes(resource);
+            Attributes attributes = loader.load(resource);
             Map<String, ComponentAttributes> nodes = index(attributes.getChildComponents());
             require(nodes.size() == expectedNodes.size(),
                     "Unexpected node count in " + resource + ": " + nodes.keySet());
@@ -117,8 +117,8 @@ public final class LauncherComponentLibraryVerification {
         require(!sliders.contains("type=\"compositeSlider\""),
                 "Legacy compositeSlider remains in settings sliders screen");
 
-        Attributes sliderScreen = new XmlFrameAttributesLoader()
-                .getAttributes("assets/frames/forms/settings/sliders.xml");
+        Attributes sliderScreen = new XmlUiDescriptorLoader()
+                .load("assets/frames/forms/settings/sliders.xml");
         Map<String, ComponentAttributes> sliderControls = index(sliderScreen.getChildComponents());
         for (String controlId : List.of("volume", "ramAmount")) {
             ComponentAttributes control = sliderControls.get(controlId);

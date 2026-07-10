@@ -9,15 +9,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-/** Periodic read-only monitor for newly loaded modules in the current process. */
+/** Periodic read-only monitor for modules loaded after the trusted startup baseline. */
 public final class SecureProcessModuleMonitor implements AutoCloseable {
+    private static final String FAIL_ON_BASELINE_PROPERTY =
+            "kaylas.secureProcess.failOnBaselineFindings";
+
     private final ScheduledExecutorService executor;
     private final Consumer<SecureProcessAuditReport.Module> findingConsumer;
     private final Map<String, String> observedModules = new HashMap<>();
+    private final boolean failOnBaselineFindings;
+    private boolean baselineEstablished;
     private long auditSequence;
 
     private SecureProcessModuleMonitor(Consumer<SecureProcessAuditReport.Module> findingConsumer) {
         this.findingConsumer = Objects.requireNonNull(findingConsumer, "findingConsumer");
+        this.failOnBaselineFindings = Boolean.parseBoolean(
+                System.getProperty(FAIL_ON_BASELINE_PROPERTY, "false")
+        );
         this.executor = Executors.newSingleThreadScheduledExecutor(runnable -> {
             Thread thread = new Thread(runnable, "secure-process-module-audit");
             thread.setDaemon(true);
@@ -34,7 +42,11 @@ public final class SecureProcessModuleMonitor implements AutoCloseable {
                 : interval;
         SecureProcessModuleMonitor monitor = new SecureProcessModuleMonitor(findingConsumer);
         long intervalSeconds = Math.max(1, effectiveInterval.toSeconds());
-        SecureProcessLog.logger().info("Module audit monitor starting: intervalSeconds={}, failClosed=true", intervalSeconds);
+        SecureProcessLog.logger().info(
+                "Module audit monitor starting: intervalSeconds={}, failClosed=true, failOnBaselineFindings={}",
+                intervalSeconds,
+                monitor.failOnBaselineFindings
+        );
         monitor.executor.scheduleWithFixedDelay(
                 monitor::auditSafely,
                 0,
@@ -57,39 +69,110 @@ public final class SecureProcessModuleMonitor implements AutoCloseable {
                 return;
             }
 
-            int findings = 0;
-            int newModules = 0;
-            int changedModules = 0;
             synchronized (observedModules) {
-                for (SecureProcessAuditReport.Module module : report.modules()) {
-                    String previousHash = observedModules.putIfAbsent(module.path(), module.sha256());
-                    if (previousHash == null) {
-                        newModules++;
-                        SecureProcessLog.logger().debug(
-                                "Observed module: path='{}', sha256={}, finding={}, signed={}, size={}",
-                                module.path(), module.sha256(), module.finding(), module.signatureTrusted(), module.imageSize());
-                        if (isFinding(module)) {
-                            findings++;
-                            logFinding("new-untrusted-module", module, previousHash);
-                            findingConsumer.accept(module);
-                        }
-                    } else if (!Objects.equals(previousHash, module.sha256())) {
-                        findings++;
-                        changedModules++;
-                        logFinding("module-hash-changed", module, previousHash);
-                        findingConsumer.accept(module);
-                        observedModules.put(module.path(), module.sha256());
-                    }
+                if (!baselineEstablished) {
+                    establishBaseline(report, sequence, startedAt);
+                    return;
                 }
-            }
 
-            long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt);
-            SecureProcessLog.logger().debug(
-                    "Module audit #{} completed: modules={}, new={}, changed={}, findings={}, durationMs={}",
-                    sequence, report.modules().size(), newModules, changedModules, findings, durationMs);
+                inspectDelta(report, sequence, startedAt);
+            }
         } catch (RuntimeException error) {
             SecureProcessLog.logger().error("Module audit #{} raised an exception", sequence, error);
         }
+    }
+
+    private void establishBaseline(
+            SecureProcessAuditReport report,
+            long sequence,
+            long startedAt
+    ) {
+        int baselineFindings = 0;
+        for (SecureProcessAuditReport.Module module : report.modules()) {
+            observedModules.put(module.path(), module.sha256());
+            SecureProcessLog.logger().trace(
+                    "Baseline module: path='{}', sha256={}, finding={}, signed={}, size={}",
+                    module.path(),
+                    module.sha256(),
+                    module.finding(),
+                    module.signatureTrusted(),
+                    module.imageSize()
+            );
+
+            if (isFinding(module)) {
+                baselineFindings++;
+                SecureProcessLog.logger().warn(
+                        "Baseline contains an untrusted module: finding={}, path='{}', sha256={}, signed={}",
+                        module.finding(),
+                        module.path(),
+                        module.sha256(),
+                        module.signatureTrusted()
+                );
+                if (failOnBaselineFindings) {
+                    logFinding("baseline-untrusted-module", module, null);
+                    findingConsumer.accept(module);
+                    return;
+                }
+            }
+        }
+
+        baselineEstablished = true;
+        long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt);
+        SecureProcessLog.logger().info(
+                "Trusted module baseline established: audit={}, modules={}, baselineFindings={}, durationMs={}",
+                sequence,
+                report.modules().size(),
+                baselineFindings,
+                durationMs
+        );
+    }
+
+    private void inspectDelta(
+            SecureProcessAuditReport report,
+            long sequence,
+            long startedAt
+    ) {
+        int findings = 0;
+        int newModules = 0;
+        int changedModules = 0;
+
+        for (SecureProcessAuditReport.Module module : report.modules()) {
+            String previousHash = observedModules.putIfAbsent(module.path(), module.sha256());
+            if (previousHash == null) {
+                newModules++;
+                SecureProcessLog.logger().debug(
+                        "New module observed after baseline: path='{}', sha256={}, finding={}, signed={}, size={}",
+                        module.path(),
+                        module.sha256(),
+                        module.finding(),
+                        module.signatureTrusted(),
+                        module.imageSize()
+                );
+                if (isFinding(module)) {
+                    findings++;
+                    logFinding("new-untrusted-module", module, null);
+                    findingConsumer.accept(module);
+                    return;
+                }
+            } else if (!Objects.equals(previousHash, module.sha256())) {
+                findings++;
+                changedModules++;
+                logFinding("module-hash-changed", module, previousHash);
+                findingConsumer.accept(module);
+                return;
+            }
+        }
+
+        long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt);
+        SecureProcessLog.logger().debug(
+                "Module audit #{} completed: modules={}, new={}, changed={}, findings={}, durationMs={}",
+                sequence,
+                report.modules().size(),
+                newModules,
+                changedModules,
+                findings,
+                durationMs
+        );
     }
 
     private static void logFinding(
@@ -119,8 +202,12 @@ public final class SecureProcessModuleMonitor implements AutoCloseable {
 
     @Override
     public void close() {
-        SecureProcessLog.logger().info("Module audit monitor stopping: auditsCompleted={}, observedModules={}",
-                auditSequence, observedModules.size());
+        SecureProcessLog.logger().info(
+                "Module audit monitor stopping: auditsCompleted={}, observedModules={}, baselineEstablished={}",
+                auditSequence,
+                observedModules.size(),
+                baselineEstablished
+        );
         executor.shutdownNow();
     }
 }

@@ -1,7 +1,5 @@
 package org.takesome.launcher.security;
 
-import org.takesome.kaylasEngine.Engine;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -20,18 +18,26 @@ public final class SecureProcessIncidentHandler {
     }
 
     public static void handle(SecureProcessAuditReport.Module module) {
-        if (module == null || !HALTING.compareAndSet(false, true)) {
+        if (module == null) {
+            SecureProcessLog.logger().error("SecureProcess incident handler received a null module");
+            return;
+        }
+        if (!HALTING.compareAndSet(false, true)) {
+            SecureProcessLog.logger().warn("SecureProcess halt already in progress; duplicate finding ignored for '{}'", module.path());
             return;
         }
 
         String incident = formatIncident(module);
-        if (Engine.LOGGER != null) {
-            Engine.LOGGER.fatal("SecureProcess confirmed process-integrity violation. Halting JVM. {}", incident);
-        } else {
-            System.err.println("SecureProcess confirmed process-integrity violation. Halting JVM. " + incident);
-        }
+        SecureProcessLog.logger().fatal(
+                "Confirmed process-integrity violation; persisting incident and halting JVM with exitCode={}. {}",
+                HALT_EXIT_CODE,
+                incident
+        );
 
-        persistIncident(incident);
+        Path incidentFile = persistIncident(incident);
+        if (incidentFile != null) {
+            SecureProcessLog.logger().fatal("Incident persisted to '{}'", incidentFile);
+        }
         Runtime.getRuntime().halt(HALT_EXIT_CODE);
     }
 
@@ -46,22 +52,25 @@ public final class SecureProcessIncidentHandler {
                 + ", authenticodeStatus=" + module.signatureStatus();
     }
 
-    private static void persistIncident(String incident) {
+    private static Path persistIncident(String incident) {
         try {
             Path logDirectory = Path.of(System.getProperty("log.dir", System.getProperty("user.dir", ".")), "logs")
                     .toAbsolutePath()
                     .normalize();
             Files.createDirectories(logDirectory);
+            Path incidentFile = logDirectory.resolve("secure-process-incidents.log");
             Files.writeString(
-                    logDirectory.resolve("secure-process-incidents.log"),
+                    incidentFile,
                     incident + System.lineSeparator(),
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.WRITE,
                     StandardOpenOption.APPEND
             );
-        } catch (IOException ignored) {
-            // Failure to persist diagnostics must not delay fail-closed termination.
+            return incidentFile;
+        } catch (IOException error) {
+            SecureProcessLog.logger().error("Failed to persist SecureProcess incident report", error);
+            return null;
         }
     }
 }

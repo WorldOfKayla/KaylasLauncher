@@ -23,6 +23,7 @@ import org.takesome.launcher.gui.SplashScreenWindow;
 import org.takesome.launcher.gui.loadingManager.LoadStatus;
 import org.takesome.launcher.gui.components.LauncherComponentLibrary;
 import org.takesome.launcher.security.SecureProcessIncidentHandler;
+import org.takesome.launcher.security.SecureProcessLog;
 import org.takesome.launcher.security.SecureProcessModuleMonitor;
 import org.takesome.launcher.security.SecureProcess;
 import org.takesome.launcher.security.SecureProcessResult;
@@ -53,11 +54,24 @@ public class Launcher extends Engine {
     private SecureProcessModuleMonitor secureProcessModuleMonitor;
 
     public static void main(String[] args) {
+        System.setProperty("log.dir", System.getProperty("user.dir", "."));
+        SecureProcessLog.logger().info("Launcher security bootstrap started: java={}, vendor={}, os={}, arch={}",
+                System.getProperty("java.version", "unknown"),
+                System.getProperty("java.vendor", "unknown"),
+                System.getProperty("os.name", "unknown"),
+                System.getProperty("os.arch", "unknown"));
+
         SecureProcessResult secureProcess = SecureProcess.initializeEarly();
         if (secureProcess.fullyApplied()) {
-            System.out.println("SecureProcess " + secureProcess.nativeVersion() + " active");
+            SecureProcessLog.logger().info(
+                    "SecureProcess active: version={}, applied=0x{}, failed=0x{}, sha256={}, path={}",
+                    secureProcess.nativeVersion(),
+                    Integer.toHexString(secureProcess.appliedFlags()),
+                    Integer.toHexString(secureProcess.failedFlags()),
+                    secureProcess.sha256(),
+                    secureProcess.libraryPath());
         } else {
-            System.err.println("SecureProcess degraded: " + secureProcess.message());
+            SecureProcessLog.logger().error("SecureProcess degraded: {}", secureProcess.message());
         }
 
         System.setProperty("java.net.preferIPv4Stack", "true");

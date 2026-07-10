@@ -45,15 +45,37 @@ public final class SecureProcess {
     public static SecureProcessResult initializeEarly() {
         SecureProcessResult existing = RESULT.get();
         if (existing != null) {
+            SecureProcessLog.logger().debug(
+                    "SecureProcess initialization reused: loaded={}, applied=0x{}, failed=0x{}",
+                    existing.nativeLibraryLoaded(),
+                    Integer.toHexString(existing.appliedFlags()),
+                    Integer.toHexString(existing.failedFlags()));
             return existing;
         }
 
-        SecureProcessResult created = initialize(parseRequestedFlags());
+        int requestedFlags = parseRequestedFlags();
+        SecureProcessLog.logger().info("SecureProcess initialization started: requestedFlags=0x{}, strict={}, integrityRequired={}",
+                Integer.toHexString(requestedFlags), required(), integrityRequired());
+        SecureProcessResult created = initialize(requestedFlags);
         if (!RESULT.compareAndSet(null, created)) {
             return RESULT.get();
         }
 
+        if (created.nativeLibraryLoaded()) {
+            SecureProcessLog.logger().info(
+                    "SecureProcess initialization completed: version={}, applied=0x{}, failed=0x{}, hashVerified={}, signatureVerified={}, authenticodeTrusted={}",
+                    created.nativeVersion(),
+                    Integer.toHexString(created.appliedFlags()),
+                    Integer.toHexString(created.failedFlags()),
+                    created.hashVerified(),
+                    created.detachedSignatureVerified(),
+                    created.authenticodeTrusted());
+        } else {
+            SecureProcessLog.logger().error("SecureProcess initialization failed: {}", created.message());
+        }
+
         if (required() && !created.fullyApplied()) {
+            SecureProcessLog.logger().fatal("Strict SecureProcess policy rejected startup: {}", created.message());
             throw new IllegalStateException("SecureProcess is required but failed: " + created.message());
         }
         return created;
@@ -78,7 +100,15 @@ public final class SecureProcess {
             SecureProcessIntegrity.Verification verification = null;
 
             if (libraryPath != null) {
+                SecureProcessLog.logger().debug("Native library resolved: '{}'", libraryPath);
                 verification = SecureProcessIntegrity.verify(libraryPath);
+                SecureProcessLog.logger().debug(
+                        "Pre-load integrity verified: sha256={}, hashConfigured={}, hashVerified={}, signatureConfigured={}, signatureVerified={}",
+                        verification.actualSha256(),
+                        verification.hashConfigured(),
+                        verification.hashVerified(),
+                        verification.signatureConfigured(),
+                        verification.signatureVerified());
                 if (!verification.accepted()) {
                     throw new SecurityException(
                             "SecureProcess DLL integrity verification failed: sha256="
@@ -92,6 +122,7 @@ public final class SecureProcess {
                             "SecureProcess integrity is required but no SHA-256 or detached signature is configured"
                     );
                 }
+                SecureProcessLog.logger().debug("Loading native library from '{}'", libraryPath);
                 System.load(libraryPath.toString());
             } else {
                 if (integrityRequired()) {
@@ -99,6 +130,7 @@ public final class SecureProcess {
                             "SecureProcess integrity requires an explicit or resolvable DLL path"
                     );
                 }
+                SecureProcessLog.logger().warn("Native library path unresolved; loading through java.library.path");
                 System.loadLibrary("secure_process");
             }
 
@@ -112,6 +144,12 @@ public final class SecureProcess {
                     ? -1
                     : SecureProcessNative.verifyAuthenticode(libraryPath.toString());
             boolean authenticodeTrusted = authenticodeStatus == 0;
+            SecureProcessLog.logger().debug(
+                    "Native mitigation result: applied=0x{}, failed=0x{}, authenticodeStatus={}, authenticodeTrusted={}",
+                    Integer.toHexString(appliedFlags),
+                    Integer.toHexString(failedFlags),
+                    authenticodeStatus,
+                    authenticodeTrusted);
             boolean requireAuthenticode = Boolean.parseBoolean(
                     System.getProperty("kaylas.secureProcess.authenticodeRequired", "false")
             );
@@ -144,6 +182,7 @@ public final class SecureProcess {
                     message
             );
         } catch (Exception | UnsatisfiedLinkError error) {
+            SecureProcessLog.logger().error("SecureProcess initialization exception", error);
             return failure(
                     requestedFlags,
                     error.getClass().getSimpleName() + ": " + safeMessage(error)
@@ -203,6 +242,7 @@ public final class SecureProcess {
     private static Path extractBundledNativeLibrary() throws IOException {
         try (InputStream input = SecureProcess.class.getResourceAsStream(BUNDLED_RESOURCE)) {
             if (input == null) {
+                SecureProcessLog.logger().debug("Bundled SecureProcess resource '{}' is unavailable", BUNDLED_RESOURCE);
                 return null;
             }
 
@@ -216,6 +256,7 @@ public final class SecureProcess {
 
             Path target = directory.resolve("secure_process.dll");
             if (Files.isRegularFile(target)) {
+                SecureProcessLog.logger().debug("Reusing extracted SecureProcess DLL '{}'", target);
                 return target;
             }
 
@@ -236,6 +277,7 @@ public final class SecureProcess {
                 Files.deleteIfExists(temporary);
             }
             target.toFile().deleteOnExit();
+            SecureProcessLog.logger().info("Bundled SecureProcess DLL extracted to '{}'", target);
             return target;
         }
     }

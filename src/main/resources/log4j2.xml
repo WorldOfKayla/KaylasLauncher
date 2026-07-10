@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="logDir">${sys:log.dir}</Property>
+        <Property name="logDir">${sys:log.dir:-${sys:user.dir}}</Property>
     </Properties>
 
     <Appenders>
@@ -15,9 +15,26 @@
             <PatternLayout
                     pattern="[%d{HH:mm:ss.SSS}][%p]%X{workerName}{[Name-%X{workerName}]} %m%n" />
         </File>
+
+        <RollingFile name="SecureProcessFile"
+                     fileName="${logDir}/logs/secure-process.log"
+                     filePattern="${logDir}/logs/archive/secure-process-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%p][%t][%c] %m%n" />
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
     </Appenders>
 
     <Loggers>
+        <Logger name="SecureProcess" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="SecureProcessFile" />
+        </Logger>
+
         <Root level="DEBUG">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />

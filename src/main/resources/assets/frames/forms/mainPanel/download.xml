@@ -11,7 +11,7 @@
                 <component type="label" fontSize="12" style="title" color="#ffffff" id="progressLabel">
                     <bounds x="15" y="5" width="250" height="20" />
                 </component>
-                <component type="button" style="altButton" imageIcon="assets/ui/icons/cancel.svg" iconWidth="16" iconHeight="16" id="cancelDownload-small">
+                <component type="button" style="altButton" imageIcon="fa:cancel" iconWidth="16" iconHeight="16" id="cancelDownload-small">
                     <bounds x="760" y="0" width="32" height="32" />
                 </component>
             </childComponents>
@@ -21,13 +21,13 @@
                         <bounds x="300" y="40" width="500" height="300" />
                     </panelOptions>
                     <childComponents>
-                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="assets/ui/icons/file.png" iconWidth="36" iconHeight="36" id="downloadFile">
+                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="fa:file" iconWidth="36" iconHeight="36" id="downloadFile">
                             <bounds x="20" y="10" width="600" height="40" />
                         </component>
-                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="assets/ui/icons/files/folder.svg" iconWidth="36" iconHeight="36" id="downloadDirectory">
+                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="fa:folder" iconWidth="36" iconHeight="36" id="downloadDirectory">
                             <bounds x="20" y="50" width="600" height="40" />
                         </component>
-                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="assets/ui/icons/speed.svg" iconWidth="36" iconHeight="36" id="downloadSpeed">
+                        <component type="label" fontSize="14" color="#636c73bf" style="title" imageIcon="fa:speed" iconWidth="36" iconHeight="36" id="downloadSpeed">
                             <bounds x="20" y="90" width="600" height="40" />
                         </component>
                     </childComponents>

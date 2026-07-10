@@ -14,7 +14,7 @@
                         <bounds x="0" y="0" width="780" height="35" />
                     </panelOptions>
                     <childComponents>
-                        <component type="button" enabled="true" keyCode="BACK_SPACE" toolTip="tooltip.back" imageIcon="assets/ui/icons/back.svg" iconWidth="16" iconHeight="16" style="altButton" id="back">
+                        <component type="button" enabled="true" keyCode="BACK_SPACE" toolTip="tooltip.back" imageIcon="fa:back" iconWidth="16" iconHeight="16" style="altButton" id="back">
                             <bounds x="0" y="0" width="97" height="34" />
                         </component>
                     </childComponents>

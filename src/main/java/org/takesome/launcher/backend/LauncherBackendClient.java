@@ -54,7 +54,10 @@ public final class LauncherBackendClient implements AutoCloseable {
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean statusRequested = new AtomicBoolean(false);
     private final AtomicInteger reconnectAttempts = new AtomicInteger(0);
+    private final AtomicInteger connectionSequence = new AtomicInteger(0);
     private final ConcurrentHashMap<String, CompletableFuture<LauncherBackendMessage>> pendingRequests = new ConcurrentHashMap<>();
+    private final Object sendLock = new Object();
+    private CompletableFuture<WebSocket> sendQueue = CompletableFuture.completedFuture(null);
 
     private volatile WebSocket webSocket;
     private volatile Map<String, Object> backendStatus = Map.of();
@@ -143,6 +146,43 @@ public final class LauncherBackendClient implements AutoCloseable {
         return servers == null ? List.of() : servers;
     }
 
+    public CompletableFuture<LauncherServerStatus> fetchServerStatus(ServerAttributes server) {
+        if (server == null) {
+            return CompletableFuture.failedFuture(new IllegalArgumentException("server is required"));
+        }
+        Map<String, Object> payload = new LinkedHashMap<>();
+        if (server.getId() > 0) {
+            payload.put("serverId", server.getId());
+        }
+        payload.put("serverName", server.getServerName());
+        payload.put("host", server.getHost());
+        payload.put("port", server.getPort());
+        return waitUntilBound()
+                .thenCompose(v -> request("SERVER_STATUS_REQUEST", payload))
+                .thenApply(this::parseServerStatusMessage);
+    }
+
+    private LauncherServerStatus parseServerStatusMessage(LauncherBackendMessage message) {
+        if (message == null) {
+            throw new IllegalStateException("Backend returned empty server status response.");
+        }
+        if ("ERROR".equals(message.getType())) {
+            Object errorPayload = message.getPayload() == null
+                    ? "unknown backend error"
+                    : message.getPayload().getOrDefault("message", message.getPayload());
+            throw new IllegalStateException("Backend server status request failed: " + errorPayload);
+        }
+        if (!"SERVER_STATUS".equals(message.getType())) {
+            throw new IllegalStateException("Unexpected backend server status response type: " + message.getType());
+        }
+
+        Object statusPayload = message.getPayload() == null ? null : message.getPayload().get("status");
+        if (statusPayload == null) {
+            throw new IllegalStateException("Backend server status response has no status payload.");
+        }
+        return GSON.fromJson(GSON.toJson(statusPayload), LauncherServerStatus.class);
+    }
+
     public CompletableFuture<List<LauncherGameVersion>> fetchVersions() {
         return fetchVersions(null);
     }
@@ -182,8 +222,17 @@ public final class LauncherBackendClient implements AutoCloseable {
     }
 
     public CompletableFuture<FileAttributes[]> fetchVersionFiles(String client, String version, int platform) {
+        return fetchVersionFiles(client, null, version, platform);
+    }
+
+    public CompletableFuture<FileAttributes[]> fetchVersionFiles(String coreType, String client, String version, int platform) {
         Map<String, Object> payload = new LinkedHashMap<>();
-        payload.put("client", client);
+        if (coreType != null && !coreType.isBlank()) {
+            payload.put("coreType", coreType);
+        }
+        if (client != null && !client.isBlank()) {
+            payload.put("client", client);
+        }
         payload.put("version", version);
         payload.put("platform", platform);
 
@@ -376,12 +425,12 @@ public final class LauncherBackendClient implements AutoCloseable {
             }
         }, REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
-        socket.sendText(GSON.toJson(message), true)
-                .exceptionally(error -> {
-                    pendingRequests.remove(requestId);
-                    future.completeExceptionally(error);
-                    return null;
-                });
+        sendQueued(type, message).whenComplete((ignored, error) -> {
+            if (error != null) {
+                pendingRequests.remove(requestId);
+                future.completeExceptionally(error);
+            }
+        });
         return future;
     }
 
@@ -434,17 +483,41 @@ public final class LauncherBackendClient implements AutoCloseable {
     }
 
     public void send(String type, Map<String, Object> payload) {
-        WebSocket socket = webSocket;
-        if (socket == null || closed.get()) {
+        if (closed.get()) {
             return;
         }
         LauncherBackendMessage message = LauncherBackendMessage.of(type, UUID.randomUUID().toString(), payload);
-        socket.sendText(GSON.toJson(message), true)
-                .exceptionally(error -> {
-                    bound.set(false);
-                    Engine.LOGGER.warn("Unable to send backend WS message type={}: {}", type, error.getMessage());
-                    return null;
-                });
+        sendQueued(type, message).exceptionally(error -> {
+            Engine.LOGGER.warn("Unable to send backend WS message type={}: {}", type, error.getMessage());
+            return null;
+        });
+    }
+
+    private CompletableFuture<Void> sendQueued(String type, LauncherBackendMessage message) {
+        String json = GSON.toJson(message);
+        int expectedConnection = connectionSequence.get();
+        CompletableFuture<WebSocket> sendFuture;
+        synchronized (sendLock) {
+            sendFuture = sendQueue.handle((ignoredSocket, ignoredError) -> null)
+                    .thenCompose(ignored -> {
+                        WebSocket socket = webSocket;
+                        if (socket == null || closed.get() || !bound.get()) {
+                            return failedWebSocketSend("Launcher backend is not connected: " + endpoint);
+                        }
+                        if (expectedConnection != connectionSequence.get()) {
+                            return failedWebSocketSend("Launcher backend connection changed before sending " + type);
+                        }
+                        return socket.sendText(json, true);
+                    });
+            sendQueue = sendFuture;
+        }
+        return sendFuture.thenApply(ignored -> null);
+    }
+
+    private CompletableFuture<WebSocket> failedWebSocketSend(String message) {
+        CompletableFuture<WebSocket> failed = new CompletableFuture<>();
+        failed.completeExceptionally(new IllegalStateException(message));
+        return failed;
     }
 
     @Override
@@ -465,6 +538,7 @@ public final class LauncherBackendClient implements AutoCloseable {
         @Override
         public void onOpen(WebSocket webSocket) {
             LauncherBackendClient.this.webSocket = webSocket;
+            connectionSequence.incrementAndGet();
             bound.set(true);
             reconnectAttempts.set(0);
             statusRequested.set(false);
@@ -487,6 +561,7 @@ public final class LauncherBackendClient implements AutoCloseable {
 
         @Override
         public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
+            connectionSequence.incrementAndGet();
             bound.set(false);
             statusRequested.set(false);
             failPendingRequests("Backend WS closed: " + statusCode + " " + reason);
@@ -496,6 +571,7 @@ public final class LauncherBackendClient implements AutoCloseable {
 
         @Override
         public void onError(WebSocket webSocket, Throwable error) {
+            connectionSequence.incrementAndGet();
             bound.set(false);
             statusRequested.set(false);
             failPendingRequests("Backend WS error: " + error.getMessage());
@@ -534,6 +610,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                 case "AUTH_OK" -> Engine.LOGGER.info("Backend auth accepted: {}", message.getPayload());
                 case "AUTH_DENIED" -> Engine.LOGGER.warn("Backend auth denied: {}", message.getPayload());
                 case "SERVERS" -> Engine.LOGGER.debug("Backend servers response: {}", message.getPayload());
+                case "SERVER_STATUS" -> Engine.LOGGER.debug("Backend server status response: {}", message.getPayload());
                 case "VERSIONS" -> Engine.LOGGER.debug("Backend versions response: {}", message.getPayload());
                 case "FILES" -> logFilesResponse(message.getPayload());
                 case "ERROR" -> Engine.LOGGER.warn("Backend error: {}", message.getPayload());
@@ -552,7 +629,8 @@ public final class LauncherBackendClient implements AutoCloseable {
         Object files = payload.get("files");
         int count = files instanceof List<?> list ? list.size() : -1;
         Engine.LOGGER.debug(
-                "Backend files response: client={} version={} platform={} count={} scope={}",
+                "Backend files response: coreType={} client={} version={} platform={} count={} scope={}",
+                payload.get("coreType"),
                 payload.get("client"),
                 payload.get("version"),
                 payload.get("platform"),

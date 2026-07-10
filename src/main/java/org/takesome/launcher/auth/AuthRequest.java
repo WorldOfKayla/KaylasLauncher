@@ -1,18 +1,20 @@
 package org.takesome.launcher.auth;
 
-import org.takesome.kaylasEngine.Engine;
-import org.takesome.kaylasEngine.utils.HTTP.HTTPrequest;
-import org.takesome.kaylasEngine.utils.HTTP.HttpParam;
+import org.takesome.kaylasEngine.utils.HTTP.RequestState;
 
-public class AuthRequest extends HTTPrequest {
+/**
+ * Lightweight auth request state holder retained for UI compatibility.
+ *
+ * <p>HTTP auth is disabled; authentication should use KaylasLauncherBackend.</p>
+ */
+public class AuthRequest {
+    private RequestState requestState = RequestState.PENDING;
 
-    @HttpParam
-    @SuppressWarnings("unused")
-    private final String login, password, userAction = "auth";
+    public RequestState getRequestState() {
+        return requestState;
+    }
 
-    public AuthRequest(Engine engine, String login, String password) {
-        super(engine, "POST");
-        this.login = login;
-        this.password = password;
+    public void setRequestState(RequestState requestState) {
+        this.requestState = requestState == null ? RequestState.PENDING : requestState;
     }
 }

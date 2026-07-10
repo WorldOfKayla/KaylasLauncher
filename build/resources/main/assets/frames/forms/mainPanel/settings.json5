@@ -44,7 +44,7 @@
                   enabled: true,
                   keyCode: "BACK_SPACE",
                   toolTip: "tooltip.back",
-                  imageIcon: "assets/ui/icons/back.svg",
+                  imageIcon: "fa:back",
                   iconWidth: 16,
                   iconHeight: 16,
                   style: "altButton",

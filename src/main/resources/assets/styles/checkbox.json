@@ -8,11 +8,11 @@
         "fontSize": 12 ,
         "width": 2172,
         "height": 724,
-        "iconWidth": 36,
-        "iconHeight": 36,
-        "color": "#ffffff" ,
+        "iconWidth": 32,
+        "iconHeight": 32,
+        "color": "#9552f8" ,
         "background": "#ffffff" ,
-        "hoverColor": "#fce4ab",
+        "hoverColor": "#9a83bb",
         "texture": "assets/ui/components/checkbox/checkbox.png"
       }
     }

@@ -24,7 +24,6 @@
                 opaque: false,
                 visible: true,
                 background: "#ae6a2b",
-                border: "1,1,1,1,#242221",
                 zIndex: 1,
                 bounds: {
                   x: 10,

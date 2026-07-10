@@ -1,28 +1,19 @@
 package org.takesome.launcher;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.takesome.Launcher;
-import org.takesome.kaylasEngine.utils.HTTP.HTTPrequest;
-import org.takesome.kaylasEngine.utils.HTTP.HttpParam;
 import org.takesome.kaylasEngine.utils.HashUtils;
 import org.takesome.kaylasEngine.utils.helper.JVMHelper;
 
 import javax.swing.*;
-import java.util.Map;
-import java.util.Objects;
 import java.net.ServerSocket;
 import java.io.IOException;
 
-public class LauncherValidator extends HTTPrequest {
+public class LauncherValidator {
     private final Launcher launcher;
-    @HttpParam
-    private final String sysRequest = "downloadLatest";
     private static ServerSocket instanceSocket;
     private static final int bindPort = 45678;
 
     public LauncherValidator(Launcher launcher) {
-        super(launcher, "POST");
         this.launcher = launcher;
     }
 
@@ -52,30 +43,9 @@ public class LauncherValidator extends HTTPrequest {
         String selfMd5 = HashUtils.md5(launcher.appPath());
         Launcher.LOGGER.info("Calculated self MD5: " + selfMd5);
 
-        if ("IDE".equals(selfMd5)) {
-            return;
+        if (!"IDE".equals(selfMd5)) {
+            Launcher.LOGGER.info("Launcher validation request is disabled; backend-managed validation is not implemented yet.");
         }
-
-        sendAsyncCF(Map.of()).thenAccept(response -> {
-                    try {
-                        Launcher.LauncherAttributes launcherAttributes = new Gson()
-                                .fromJson(response, Launcher.LauncherAttributes.class);
-                        Launcher.LOGGER.info("Server response MD5: " + launcherAttributes.getFileMd5());
-
-                        boolean isValid = Objects.equals(selfMd5, launcherAttributes.getFileMd5());
-                        if (!isValid) {
-                            Launcher.LOGGER.info("Launcher validation failed: MD5 mismatch");
-                            showDialog("error.invalidLauncher", launcher.getAppTitle() + " Guard",
-                                    JOptionPane.WARNING_MESSAGE, true);
-                        }
-                    } catch (JsonSyntaxException e) {
-                        Launcher.LOGGER.error("JSON parsing error during launcher validation: " + e.getMessage());
-                    }
-                })
-                .exceptionally(error -> {
-                    Launcher.LOGGER.error("Unexpected error during launcher validation: " + error.getMessage());
-                    return null;
-                });
     }
 
     private void validateJRE() {

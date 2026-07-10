@@ -22,13 +22,13 @@
           readFrom: "assets/frames/forms/mainPanel/loggedForm.json5"
         },
         {
-          readFrom: "assets/frames/forms/mainPanel/newsForm.json5"
+          readFrom: "assets/frames/forms/mainPanel/newsForm.xml"
         },
         {
           readFrom: "assets/frames/forms/mainPanel/settings.json5"
         },
         {
-          readFrom: "assets/frames/forms/mainPanel/download.json5"
+          readFrom: "assets/frames/forms/mainPanel/download.xml"
         },
         {
           readFrom: "assets/frames/forms/utils/loadPanel.xml"

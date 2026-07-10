@@ -310,7 +310,7 @@ public class User extends org.takesome.kaylasEngine.user.User {
             return launcher.getBackendClient().resourceUri(backendPath).toURL();
         }
 
-        return new URL(this.launcher.getEngineData().getBindUrl() + trimmed);
+        throw new IllegalStateException("Relative badge path requires backend-managed auth: " + trimmed);
     }
 
     private void configureSkin() {
@@ -439,15 +439,12 @@ public class User extends org.takesome.kaylasEngine.user.User {
 
     @Deprecated
     public void updateServer(int index) {
-        launcher.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                var serverAttr = auth.getUserDataLoader().getUserServersAttributes().get(index);
-                String[] status = serverInfo.pollServer(serverAttr.getHost(), serverAttr.getPort());
-                Engine.getLOGGER().debug("Server status polled for {}:{} -> {}", serverAttr.getHost(), serverAttr.getPort(), (Object) status);
-            } catch (Exception e) {
-                Engine.getLOGGER().error("Error refreshing server: {}", e.getMessage());
-            }
-        }, userUi.tasks().updateServerPrefix() + index);
+        if (serverInfoDisplayer == null) {
+            Engine.getLOGGER().warn("ServerInfoDisplayer is not initialized. Cannot refresh server metadata.");
+            return;
+        }
+        serverInfoDisplayer.displayServerInfo(index);
+        Engine.getLOGGER().debug("Server polling is disabled; refreshed backend-managed server metadata for index {}.", index);
     }
 
     private void setUserHeadIcon(String login) {

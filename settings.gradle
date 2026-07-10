@@ -14,9 +14,6 @@ if (cfgProviderDir.isDirectory()) {
 if (kaylasUiEngineDir.isDirectory()) {
     includeBuild(kaylasUiEngineDir) {
         dependencySubstitution {
-            substitute(module('org.foxesworld:kaylasengine')).using(project(':'))
-            substitute(module('org.foxesworld:kaylas-ui-engine')).using(project(':'))
-            substitute(module('org.takesome:kaylasengine')).using(project(':'))
             substitute(module('org.takesome:kaylas-ui-engine')).using(project(':'))
         }
     }

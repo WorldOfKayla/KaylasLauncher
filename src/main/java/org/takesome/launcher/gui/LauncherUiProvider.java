@@ -2,12 +2,8 @@ package org.takesome.launcher.gui;
 
 import com.google.gson.Gson;
 import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.resources.ResourceLoader;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -30,42 +26,16 @@ public final class LauncherUiProvider {
     public static LauncherUiProvider load() {
         String manifestPath = System.getProperty(MANIFEST_PROPERTY, DEFAULT_MANIFEST_RESOURCE);
         try {
-            LauncherUiManifest manifest = loadManifest(manifestPath);
-            return new LauncherUiProvider(manifest);
+            LauncherUiManifest manifest = ResourceLoader.loadJson(
+                    manifestPath,
+                    LauncherUiManifest.class,
+                    GSON,
+                    LauncherUiProvider.class.getClassLoader()
+            );
+            return new LauncherUiProvider(manifest == null ? new LauncherUiManifest() : manifest);
         } catch (Exception error) {
             throw new IllegalStateException("Unable to load launcher UI manifest: " + manifestPath, error);
         }
-    }
-
-    private static LauncherUiManifest loadManifest(String manifestPath) throws Exception {
-        Path filePath = Path.of(manifestPath);
-        if (Files.isRegularFile(filePath)) {
-            try (InputStream input = Files.newInputStream(filePath);
-                 InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                return GSON.fromJson(reader, LauncherUiManifest.class);
-            }
-        }
-
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if (classLoader == null) {
-            classLoader = LauncherUiProvider.class.getClassLoader();
-        }
-        try (InputStream input = classLoader.getResourceAsStream(normalizeResourcePath(manifestPath))) {
-            if (input == null) {
-                throw new IllegalStateException("Launcher UI manifest was not found as resource or file: " + manifestPath);
-            }
-            try (InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                return GSON.fromJson(reader, LauncherUiManifest.class);
-            }
-        }
-    }
-
-    private static String normalizeResourcePath(String path) {
-        String normalized = path.replace('\\', '/');
-        while (normalized.startsWith("/")) {
-            normalized = normalized.substring(1);
-        }
-        return normalized;
     }
 
     LauncherUiManifest.Scopes scopes() { return manifest.scopes(); }

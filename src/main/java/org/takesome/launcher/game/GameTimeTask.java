@@ -1,33 +1,29 @@
 package org.takesome.launcher.game;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.server.ServerAttributes;
-import org.takesome.kaylasEngine.utils.HTTP.HTTPrequest;
-
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
- * GameTimeTask tracks the duration of a game session and sends periodic updates.
- * It monitors the player's status and automatically pauses/resumes the timer based on the player's activity.
- * If a new session is detected (via a change in the server's start timestamp), the timer is reset.
+ * GameTimeTask tracks the duration of a game session locally.
+ *
+ * <p>Remote play-time/status requests are disabled. Backend-managed telemetry should
+ * be added through KaylasLauncherBackend when a new protocol is defined.</p>
  */
 public class GameTimeTask {
 
     private static final int DEFAULT_DELAY_SECONDS = 15;
     private Launcher launcher;
-    private static final Gson gson = new Gson();
-
     private final int delaySeconds;
     private final ScheduledExecutorService scheduler;
     private final ExecutorService executorService;
-    private final HTTPrequest postRequest;
     private final ServerAttributes serverAttributes;
     private final String userLogin;
 
@@ -38,9 +34,6 @@ public class GameTimeTask {
     // Flags for session activity and pause state
     private volatile boolean running = false;
     private volatile boolean paused = false;
-    // Stores the last server startTimestamp to detect a new session
-    private volatile long lastServerStartTimestamp = 0;
-
     private ScheduledFuture<?> scheduledFuture;
     private GameTimeListener listener;
 
@@ -54,7 +47,6 @@ public class GameTimeTask {
         this.executorService = executorService;
         this.serverAttributes = serverAttributes;
         this.userLogin = userLogin;
-        this.postRequest = new HTTPrequest(launcher, "POST");
         this.delaySeconds = delaySeconds;
     }
 
@@ -79,11 +71,10 @@ public class GameTimeTask {
         paused = false;
         accumulatedTime = Duration.ZERO;
         startTime = Instant.now();
-        // Send request indicating session start
-        writePlayTime("startedPlaying", 0);
-        // Schedule periodic status check and time update
+        Engine.LOGGER.info("Game session timing started locally for user={} server={}", userLogin, serverAttributes.getServerName());
+        // Schedule periodic local play-time update. Remote status/playtime requests are disabled.
         scheduleTask();
-        Engine.LOGGER.info("GameTimeTask started with an interval of {} seconds.", delaySeconds);
+        Engine.LOGGER.info("GameTimeTask started with an interval of {} seconds; remote player status check is disabled.", delaySeconds);
     }
 
     /**
@@ -96,9 +87,9 @@ public class GameTimeTask {
         }
         cancelScheduledTask();
         long totalElapsedSeconds = getTotalElapsedSeconds();
-        writePlayTime("donePlaying", totalElapsedSeconds);
         running = false;
-        Engine.LOGGER.info("Session finished. Total time: {} seconds.", totalElapsedSeconds);
+        Engine.LOGGER.info("Session finished locally. User={} server={} totalTimeSeconds={}",
+                userLogin, serverAttributes.getServerName(), totalElapsedSeconds);
     }
 
     /**
@@ -171,42 +162,17 @@ public class GameTimeTask {
     }
 
     /**
-     * Periodically checks the player's status.
-     * If the player is online, the timer is updated.
-     * When a new server startTimestamp is detected, the timer resets.
-     * If the player goes offline, the timer is paused.
+     * Periodically publishes elapsed play time locally without remote network requests.
      */
     private void updateGameTime() {
         try {
-            PlayerStatusResponse statusResponse = getStatus();
-            if (statusResponse == null) {
-                Engine.LOGGER.warn("Failed to retrieve player status.");
+            if (!running || paused) {
                 return;
             }
 
-            if (statusResponse.isPlaying()) {
-                // Если обнаружен новый запуск сессии, сбрасываем таймер и обновляем timestamp
-                if (statusResponse.getStartTimestamp() != lastServerStartTimestamp) {
-                    Engine.LOGGER.info("New session detected (server startTimestamp: {}). Resetting timer.",
-                            statusResponse.getStartTimestamp());
-                    resetTiming();
-                    lastServerStartTimestamp = statusResponse.getStartTimestamp();
-                    writePlayTime("startedPlaying", 0);
-                } else if (paused) { // Если не новый сеанс, но таймер на паузе — возобновляем его
-                    Engine.LOGGER.info("Player returned to the server. Resuming session.");
-                    resume();
-                }
-                long elapsedSeconds = getTotalElapsedSeconds();
-                writePlayTime("playing", elapsedSeconds);
-                if (listener != null) {
-                    listener.onStatusUpdate(statusResponse);
-                    listener.onUpdate(new GameTimeResponse(elapsedSeconds));
-                }
-            } else {
-                if (!paused) {
-                    pause();
-                    Engine.LOGGER.info("Player left the server. Timer paused.");
-                }
+            long elapsedSeconds = getTotalElapsedSeconds();
+            if (listener != null) {
+                listener.onUpdate(new GameTimeResponse(elapsedSeconds));
             }
         } catch (Exception e) {
             Engine.LOGGER.error("Error updating game time", e);
@@ -215,7 +181,6 @@ public class GameTimeTask {
             }
         }
     }
-
 
     /**
      * Resets the timer by zeroing the accumulated time and setting the current start time.
@@ -227,95 +192,7 @@ public class GameTimeTask {
     }
 
     /**
-     * Builds the player data payload for sending.
-     *
-     * @param elapsedTime elapsed time in seconds
-     * @param action      the action to be reported
-     * @return a map containing player data
-     */
-    private Map<String, Object> buildPlayerData(long elapsedTime, String action) {
-        Map<String, Object> playerData = new HashMap<>();
-        playerData.put("serverName", serverAttributes.getServerName());
-        playerData.put("login", userLogin);
-        playerData.put("playTime", elapsedTime);
-        playerData.put("sysRequest", action);
-        playerData.put("serverIp", serverAttributes.getHost());
-        playerData.put("serverPort", serverAttributes.getPort());
-        return playerData;
-    }
-
-    /**
-     * Sends game time data asynchronously.
-     *
-     * @param action      the action indicating the state (e.g., "playing", "donePlaying")
-     * @param elapsedTime the elapsed time in seconds
-     */
-    private void writePlayTime(String action, long elapsedTime) {
-        executorService.submit(() -> {
-            try {
-                Map<String, Object> playerData = buildPlayerData(elapsedTime, action);
-                postRequest.sendAsyncCF(playerData)
-                        .thenAccept(response -> Engine.LOGGER.info("Game time sent: {}", response))
-                        .exceptionally(error -> {
-                            Engine.LOGGER.error("Error sending game time", error);
-                            return null;
-                        });
-            } catch (Exception e) {
-                Engine.LOGGER.error("Unexpected error in writePlayTime", e);
-            }
-        });
-    }
-
-    /**
-     * Synchronously checks the player's status by sending a request.
-     *
-     * @return the player's status response or null if an error occurs
-     * @throws InterruptedException if the thread is interrupted while waiting
-     */
-    public PlayerStatusResponse getStatus() throws InterruptedException {
-        Map<String, Object> statusData = new HashMap<>();
-        statusData.put("sysRequest", "checkStatus");
-        statusData.put("login", userLogin);
-        statusData.put("serverIp", serverAttributes.getHost());
-        statusData.put("serverPort", serverAttributes.getPort());
-
-        Engine.LOGGER.debug("Sending status check request: {}", statusData);
-
-        final PlayerStatusResponse[] responseHolder = new PlayerStatusResponse[1];
-        CountDownLatch latch = new CountDownLatch(1);
-
-        postRequest.sendAsyncCF(statusData)
-                .thenAccept(response -> {
-                    try {
-                        Engine.LOGGER.debug("Received status response: {}", response);
-                        PlayerStatusResponse statusResponse = gson.fromJson(response, PlayerStatusResponse.class);
-                        if (statusResponse != null) {
-                            Engine.LOGGER.info("Player status: {}, isPlaying: {}{}",
-                                    statusResponse.getMessage(),
-                                    statusResponse.isPlaying(),
-                                    statusResponse.isPlaying() ? ", startTimestamp: " + statusResponse.getStartTimestamp() : "");
-                            responseHolder[0] = statusResponse;
-                        } else {
-                            Engine.LOGGER.warn("JSON parsing of status returned null.");
-                        }
-                    } catch (JsonSyntaxException e) {
-                        Engine.LOGGER.error("Error parsing JSON status response", e);
-                    } finally {
-                        latch.countDown();
-                    }
-                })
-                .exceptionally(error -> {
-                    Engine.LOGGER.error("Error checking player status", error);
-                    latch.countDown();
-                    return null;
-                });
-
-        latch.await();
-        return responseHolder[0];
-    }
-
-    /**
-     * Listener interface for receiving notifications about game time updates and status changes.
+     * Listener interface for receiving game time notifications.
      */
     public interface GameTimeListener {
         /**
@@ -324,14 +201,6 @@ public class GameTimeTask {
          * @param response a GameTimeResponse containing the current elapsed time
          */
         void onUpdate(GameTimeResponse response);
-
-        /**
-         * Called when a status update is received.
-         *
-         * @param statusResponse the current player status response
-         */
-        void onStatusUpdate(PlayerStatusResponse statusResponse);
-
         /**
          * Called when an error occurs during the update process.
          *

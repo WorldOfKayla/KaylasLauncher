@@ -9,7 +9,7 @@
   "width": 850,
   "height": 500,
   "borderRadius": 20,
-  "resizable": false,
+  "resizable": true,
   "undecorated": true,
   "panels": {
     "titleBar": {

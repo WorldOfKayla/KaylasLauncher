@@ -63,6 +63,11 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+tasks.named('processResources').configure { task ->
+    outputs.upToDateWhen { false }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 dependencies {
     implementation "${engineDependencyGroup}:${engineDependencyArtifact}:${engineDependencyVersion}"
     implementation 'org.foxesworld:cfgProvider:2.3.0-STABLE'

@@ -5,7 +5,7 @@
         opaque: false,
         focusable: true,
         visible: false,
-        doubleBuffered: false,
+        doubleBuffered: true,
         background: "",
         bounds: {
           x: 0,

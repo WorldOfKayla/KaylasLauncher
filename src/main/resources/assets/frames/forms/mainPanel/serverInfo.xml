@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="serverInfo">
-            <panelOptions visible="false" doubleBuffered="true" opaque="true" background="#b6aaa0c7">
+            <panelOptions visible="false" doubleBuffered="true" opaque="true" background="#b6aaa0">
                 <bounds x="0" y="0" width="510" height="500" />
             </panelOptions>
             <childComponents>

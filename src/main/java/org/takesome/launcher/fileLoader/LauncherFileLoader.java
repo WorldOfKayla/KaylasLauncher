@@ -4,6 +4,7 @@ import org.takesome.kaylasEngine.fileLoader.AbstractFileLoader;
 import org.takesome.kaylasEngine.fileLoader.FileValidator;
 import org.takesome.kaylasEngine.fileLoader.ILoadingManager;
 import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.kaylasEngine.server.ServerIdentity;
 import org.takesome.kaylasEngine.utils.Download.DownloadUtils;
 import org.takesome.launcher.gui.ActionHandler;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 /**
  * Launcher-side compatibility adapter for the KaylasUIEngine file loading layer.
  *
- * <p>File metadata is now requested from KaylasLauncherBackend through WebSocket. The backend scans
+ * <p>File metadata is requested from KaylasLauncherBackend through WebSocket. The backend scans
  * its versions directory and returns FileAttributes with HTTP download URLs.</p>
  */
 public final class LauncherFileLoader extends AbstractFileLoader {
@@ -31,7 +32,7 @@ public final class LauncherFileLoader extends AbstractFileLoader {
         super(
                 actionHandler.getEngine(),
                 loadingManagerAdapter(actionHandler),
-                new BackendFileFetcher(actionHandler.getLauncher()),
+                new BackendFileFetcher(actionHandler),
                 new FileValidator(),
                 downloadUtils::setTotalSize,
                 homeDir,
@@ -56,22 +57,14 @@ public final class LauncherFileLoader extends AbstractFileLoader {
     }
 
     private static String resolveClient(ServerAttributes server) {
-        if (server == null) {
-            return "";
-        }
-        String client = server.getClient();
-        if (client != null && !client.isBlank()) {
-            return client;
-        }
-        String serverName = server.getServerName();
-        return serverName == null ? "" : serverName;
+        return ServerIdentity.clientName(server);
     }
 
     private static String resolveVersion(ServerAttributes server) {
         if (server == null || server.getServerVersion() == null) {
             return "";
         }
-        return server.getServerVersion();
+        return server.getServerVersion().trim();
     }
 
     public DownloadUtils getLauncherDownloadUtils() {

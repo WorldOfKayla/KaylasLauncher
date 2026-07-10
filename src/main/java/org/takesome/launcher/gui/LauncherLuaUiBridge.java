@@ -4,6 +4,7 @@ import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.kaylasEngine.server.ServerIdentity;
 import org.takesome.launcher.auth.AuthStatus;
 
 import javax.swing.JComponent;
@@ -12,7 +13,6 @@ import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -145,7 +145,14 @@ final class LauncherLuaUiBridge {
             ServerAttributes server = i < servers.size() ? servers.get(i) : null;
             String coreName = resolveCoreName(server, values[i], fallback);
             String iconName = mappedIconName(combobox, coreName, fallback);
-            icons[i] = launcher.getImageUtils().getLocalImage(resolveIconPath(iconRoot, iconExt, iconName));
+            String iconPath = resolveIconPath(iconRoot, iconExt, iconName);
+            icons[i] = launcher.getImageUtils().getLocalImage(iconPath);
+            Engine.getLOGGER().debug("Server combobox icon resolved: index={} value='{}' coreType='{}' icon='{}' path='{}'",
+                    i,
+                    values[i],
+                    coreName,
+                    iconName,
+                    iconPath);
         }
 
         SwingUtilities.invokeLater(() -> {
@@ -157,17 +164,23 @@ final class LauncherLuaUiBridge {
 
     private String resolveCoreName(ServerAttributes server, String displayValue, String fallback) {
         if (server != null) {
-            String versionCore = suffixAfterDash(server.getServerVersion());
+            String coreType = ServerIdentity.safe(server.getCoreType());
+            if (!coreType.isBlank()) {
+                return coreType;
+            }
+
+            String versionCore = ServerIdentity.suffixAfterDash(server.getServerVersion());
             if (!versionCore.isBlank()) {
                 return versionCore;
             }
-            String client = safe(server.getClient());
-            if (!client.isBlank()) {
+
+            String client = ServerIdentity.safe(server.getClient());
+            if (ServerIdentity.isKnownCoreType(client)) {
                 return client;
             }
         }
 
-        String displayCore = suffixAfterDash(displayValue);
+        String displayCore = ServerIdentity.suffixAfterDash(displayValue);
         if (!displayCore.isBlank()) {
             return displayCore;
         }
@@ -175,13 +188,13 @@ final class LauncherLuaUiBridge {
     }
 
     private String mappedIconName(JComponent component, String coreName, String fallback) {
-        String normalized = normalizeCoreKey(coreName);
+        String normalized = ServerIdentity.normalizeCoreKey(coreName);
         String mapped = componentStringProperty(component, "map." + normalized, "");
         return mapped.isBlank() ? fallback : mapped;
     }
 
     private String resolveIconPath(String iconRoot, String iconExt, String iconName) {
-        String safeIconName = safe(iconName).isBlank() ? DEFAULT_CORE_ICON : iconName.trim();
+        String safeIconName = ServerIdentity.safe(iconName).isBlank() ? DEFAULT_CORE_ICON : iconName.trim();
         if (safeIconName.contains("/") || safeIconName.contains("\\")) {
             return safeIconName;
         }
@@ -191,15 +204,6 @@ final class LauncherLuaUiBridge {
         return iconRoot + safeIconName + iconExt;
     }
 
-    private String suffixAfterDash(String value) {
-        String safeValue = safe(value);
-        int dash = safeValue.lastIndexOf('-');
-        if (dash < 0 || dash + 1 >= safeValue.length()) {
-            return "";
-        }
-        return safeValue.substring(dash + 1).trim();
-    }
-
     private String componentStringProperty(JComponent component, String key, String fallback) {
         if (component == null || key == null || key.isBlank()) {
             return fallback;
@@ -207,13 +211,5 @@ final class LauncherLuaUiBridge {
         Object value = component.getClientProperty(CORE_ICON_PROPERTY_PREFIX + key);
         String resolved = value == null ? "" : String.valueOf(value).trim();
         return resolved.isBlank() ? fallback : resolved;
-    }
-
-    private String normalizeCoreKey(String value) {
-        return safe(value).toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
-    }
-
-    private String safe(String value) {
-        return value == null ? "" : value.trim();
     }
 }

@@ -34,7 +34,7 @@ public class UserDataLoader {
             return;
         }
         if (!(engine instanceof Launcher launcher) || launcher.getBackendClient() == null) {
-            Engine.getLOGGER().warn("Backend WS client is unavailable; server list will not be loaded through legacy HTTP.");
+            Engine.getLOGGER().warn("Backend WS client is unavailable; server list cannot be loaded.");
             userServersAttributes = Collections.emptyList();
             userServersArray = new String[0];
             serversInjector.setContent(userServersArray);

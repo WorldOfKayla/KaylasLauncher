@@ -130,7 +130,11 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     private void initializeArgsReader() {
-        core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher(), this.core.getActionHandler().getCurrentServer().isCheckLib()));
+        boolean checkLib = this.core.getActionHandler().getCurrentServer().isCheckLib();
+        if (!checkLib) {
+            Engine.getLOGGER().warn("LIBRARY HASH IS IGNORED!!! That may be insecure!!!");
+        }
+        core.getGameLauncher().setArgsReader(new ArgsReader(core.getGameLauncher(), checkLib));
     }
 
     private void setupFileGuard() {

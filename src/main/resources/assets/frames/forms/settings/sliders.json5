@@ -57,6 +57,7 @@
       majorSpacing: 1024,
       initialValue: "config#ramAmount",
       id: "ramAmount",
+      visible: true,
       layoutConfig: {
         "label": {
           "x": 0,

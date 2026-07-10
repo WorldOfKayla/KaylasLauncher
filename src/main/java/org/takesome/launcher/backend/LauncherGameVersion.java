@@ -6,6 +6,7 @@ import java.util.Map;
 public class LauncherGameVersion {
     private String id;
     private String name;
+    private String coreType;
     private String client;
     private String version;
     private String jreVersion;
@@ -20,6 +21,8 @@ public class LauncherGameVersion {
     public void setId(String id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public String getCoreType() { return coreType; }
+    public void setCoreType(String coreType) { this.coreType = coreType; }
     public String getClient() { return client; }
     public void setClient(String client) { this.client = client; }
     public String getVersion() { return version; }

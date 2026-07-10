@@ -45,7 +45,7 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), UI_PROVIDER.panels().settings(), List.of(
                 TextArea.class,
-                JSpinner.class,
+                Spinner.class,
                 Checkbox.class,
                 Combobox.class,
                 TextField.class,

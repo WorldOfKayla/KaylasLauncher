@@ -258,6 +258,12 @@ public class Auth {
         });
     }
 
+    private boolean isBackendBindingEnabled() {
+        return launcher.getEngineData() != null
+                && launcher.getEngineData().getBackend() != null
+                && launcher.getEngineData().getBackend().isEnabled();
+    }
+
     private boolean shouldClearCredentialsAfterFailure(AuthProviderType providerType) {
         if (providerType == AuthProviderType.NO_PASSWORD) {
             return false;
@@ -284,7 +290,7 @@ public class Auth {
         }
 
         AuthProviderType resolved = AuthProviderType.from(provider);
-        if (resolved != AuthProviderType.NO_PASSWORD && config.isBackendBinding()) {
+        if (resolved != AuthProviderType.NO_PASSWORD && isBackendBindingEnabled()) {
             return AuthProviderType.WS;
         }
         return resolved;

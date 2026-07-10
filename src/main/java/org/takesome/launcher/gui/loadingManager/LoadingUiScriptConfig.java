@@ -3,6 +3,7 @@ package org.takesome.launcher.gui.loadingManager;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.scripting.LuaConfigScript;
+import org.takesome.kaylasEngine.gui.scripting.LuaConfigValues;
 import org.takesome.kaylasEngine.gui.scripting.UiScriptContext;
 import org.takesome.launcher.gui.LauncherUiProvider;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
 /**
  * Launcher-owned loading UI visual policy loaded from Lua.
  *
- * KaylasUIEngine executes Lua and provides generic functionality. The launcher owns visual policy.
+ * KaylasUIEngine executes Lua and provides generic config readers. The launcher owns visual policy.
  */
 final class LoadingUiScriptConfig {
     private static final LoadingUiScriptConfig FALLBACK = new LoadingUiScriptConfig(
@@ -42,9 +43,9 @@ final class LoadingUiScriptConfig {
             String scriptPath = LauncherUiProvider.load().loadingUiScriptPath();
             Map<String, Object> root = LuaConfigScript.load(context, scriptPath);
             return new LoadingUiScriptConfig(
-                    Overlay.from(mapValue(root, "overlay")),
-                    Window.from(mapValue(root, "window")),
-                    Progress.from(mapValue(root, "progress"))
+                    Overlay.from(LuaConfigValues.map(root, "overlay")),
+                    Window.from(LuaConfigValues.map(root, "window")),
+                    Progress.from(LuaConfigValues.map(root, "progress"))
             );
         } catch (Exception error) {
             Engine.getLOGGER().warn("Unable to load launcher loading UI Lua config. Using fallback.", error);
@@ -80,7 +81,7 @@ final class LoadingUiScriptConfig {
                         int frameDelayMs, int x, int y, int width, int height) {
             this.name = name;
             this.color = color;
-            this.targetAlpha = clamp(targetAlpha, 0, 255);
+            this.targetAlpha = LuaConfigValues.clamp(targetAlpha, 0, 255);
             this.fadeInMs = Math.max(1, fadeInMs);
             this.fadeOutMs = Math.max(1, fadeOutMs);
             this.frameDelayMs = Math.max(1, frameDelayMs);
@@ -91,16 +92,16 @@ final class LoadingUiScriptConfig {
         }
 
         private static Overlay from(Map<String, Object> table) {
-            String name = stringValue(table, "name", FALLBACK.overlay.name);
-            Color color = colorValue(table, "color", FALLBACK.overlay.color);
-            int alpha = alphaValue(table, FALLBACK.overlay.targetAlpha);
-            int fadeInMs = intValue(table, "fadeInMs", FALLBACK.overlay.fadeInMs);
-            int fadeOutMs = intValue(table, "fadeOutMs", FALLBACK.overlay.fadeOutMs);
-            int frameDelayMs = intValue(table, "frameDelayMs", FALLBACK.overlay.frameDelayMs);
-            int x = intValue(table, "x", FALLBACK.overlay.x);
-            int y = intValue(table, "y", FALLBACK.overlay.y);
-            int width = intValue(table, "width", FALLBACK.overlay.width);
-            int height = intValue(table, "height", FALLBACK.overlay.height);
+            String name = LuaConfigValues.string(table, "name", FALLBACK.overlay.name);
+            Color color = LuaConfigValues.color(table, "color", FALLBACK.overlay.color);
+            int alpha = LuaConfigValues.alpha(table, FALLBACK.overlay.targetAlpha);
+            int fadeInMs = LuaConfigValues.integer(table, "fadeInMs", FALLBACK.overlay.fadeInMs);
+            int fadeOutMs = LuaConfigValues.integer(table, "fadeOutMs", FALLBACK.overlay.fadeOutMs);
+            int frameDelayMs = LuaConfigValues.integer(table, "frameDelayMs", FALLBACK.overlay.frameDelayMs);
+            int x = LuaConfigValues.integer(table, "x", FALLBACK.overlay.x);
+            int y = LuaConfigValues.integer(table, "y", FALLBACK.overlay.y);
+            int width = LuaConfigValues.integer(table, "width", FALLBACK.overlay.width);
+            int height = LuaConfigValues.integer(table, "height", FALLBACK.overlay.height);
             return new Overlay(name, color, alpha, fadeInMs, fadeOutMs, frameDelayMs, x, y, width, height);
         }
 
@@ -146,8 +147,8 @@ final class LoadingUiScriptConfig {
 
         private static Window from(Map<String, Object> table) {
             return new Window(
-                    booleanValue(table, "alwaysOnTop", FALLBACK.window.alwaysOnTop),
-                    intValue(table, "cornerRadius", FALLBACK.window.cornerRadius)
+                    LuaConfigValues.bool(table, "alwaysOnTop", FALLBACK.window.alwaysOnTop),
+                    LuaConfigValues.integer(table, "cornerRadius", FALLBACK.window.cornerRadius)
             );
         }
 
@@ -168,78 +169,11 @@ final class LoadingUiScriptConfig {
         }
 
         private static Progress from(Map<String, Object> table) {
-            return new Progress(booleanValue(table, "enabled", FALLBACK.progress.enabled));
+            return new Progress(LuaConfigValues.bool(table, "enabled", FALLBACK.progress.enabled));
         }
 
         boolean enabled() {
             return enabled;
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Map<String, Object> mapValue(Map<String, Object> root, String key) {
-        Object value = root == null ? null : root.get(key);
-        return value instanceof Map<?, ?> map ? (Map<String, Object>) map : Map.of();
-    }
-
-    private static String stringValue(Map<String, Object> table, String key, String fallback) {
-        Object value = table.get(key);
-        return value == null ? fallback : String.valueOf(value);
-    }
-
-    private static int intValue(Map<String, Object> table, String key, int fallback) {
-        Object value = table.get(key);
-        if (value instanceof Number number) {
-            return number.intValue();
-        }
-        if (value instanceof String text) {
-            try {
-                return Integer.parseInt(text.trim());
-            } catch (NumberFormatException ignored) {
-                return fallback;
-            }
-        }
-        return fallback;
-    }
-
-    private static boolean booleanValue(Map<String, Object> table, String key, boolean fallback) {
-        Object value = table.get(key);
-        if (value instanceof Boolean bool) {
-            return bool;
-        }
-        if (value instanceof String text) {
-            return Boolean.parseBoolean(text.trim());
-        }
-        return fallback;
-    }
-
-    private static int alphaValue(Map<String, Object> table, int fallback) {
-        Object alpha = table.get("alpha");
-        if (alpha instanceof Number number) {
-            return clamp(number.intValue(), 0, 255);
-        }
-        Object opacity = table.get("opacity");
-        if (opacity instanceof Number number) {
-            return clamp((int) Math.round(number.doubleValue() * 255.0), 0, 255);
-        }
-        return fallback;
-    }
-
-    private static Color colorValue(Map<String, Object> table, String key, Color fallback) {
-        Object value = table.get(key);
-        if (value == null) {
-            return fallback;
-        }
-        try {
-            String raw = String.valueOf(value).trim();
-            return Color.decode(raw.startsWith("#") ? raw : "#" + raw);
-        } catch (Exception error) {
-            Engine.getLOGGER().warn("Invalid loading overlay color '{}'.", value);
-            return fallback;
-        }
-    }
-
-    private static int clamp(int value, int min, int max) {
-        return Math.max(min, Math.min(max, value));
     }
 }

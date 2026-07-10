@@ -23,9 +23,15 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class Config extends org.takesome.kaylasEngine.config.Config {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Set<String> NON_CONFIG_FIELDS = Set.of("GSON", "NON_CONFIG_FIELDS");
+    private static final Set<String> NON_CONFIG_FIELDS = Set.of("GSON", "NON_CONFIG_FIELDS", "DEPRECATED_CONFIG_FIELDS", "PREVIOUS_HOME_SUFFIX");
+    private static final Set<String> DEPRECATED_CONFIG_FIELDS = Set.of(
+            "backendBinding",
+            "backendWsUrl",
+            "backendHeartbeatSeconds",
+            "backendMaxReconnectAttempts"
+    );
     private static final String DEFAULT_HOME_DIR = "SysVal{AppDir}\\.KineticHorizons";
-    private static final String LEGACY_HOME_SUFFIX = ".Foxes" + "World";
+    private static final String PREVIOUS_HOME_SUFFIX = ".Foxes" + "World";
 
     private int selectedServer = 0;
     private int lang = 0;
@@ -51,10 +57,6 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
     private boolean loadNews = true;
     private boolean launchAC = true;
     private boolean discordRPC = true;
-    private boolean backendBinding = true;
-    private String backendWsUrl = "ws://127.0.0.1:18080/ws/launcher";
-    private int backendHeartbeatSeconds = 15;
-    private int backendMaxReconnectAttempts = 0;
 
     public Config(Engine engine) {
         super(engine.getConfigFiles(), Engine.LOGGER);
@@ -75,7 +77,8 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
 
             Map<String, Object> loaded = readConfigFile(configFile);
             boolean configCreated = loaded.isEmpty() && !Files.exists(configFile);
-            boolean updated = migrateLegacyHomeDir(loaded);
+            boolean updated = migratePreviousHomeDir(loaded);
+            updated = removeDeprecatedRuntimeKeys(loaded) || updated;
 
             for (Map.Entry<String, Object> entry : defaults.entrySet()) {
                 if (!loaded.containsKey(entry.getKey())) {
@@ -178,15 +181,26 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
         }
     }
 
-    private boolean migrateLegacyHomeDir(Map<String, Object> loaded) {
+    private boolean removeDeprecatedRuntimeKeys(Map<String, Object> loaded) {
+        boolean removed = false;
+        for (String key : DEPRECATED_CONFIG_FIELDS) {
+            if (loaded.remove(key) != null) {
+                Engine.getLOGGER().info("Removed deprecated launcher config key '{}'; runtime backend settings now live in engine.json.", key);
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    private boolean migratePreviousHomeDir(Map<String, Object> loaded) {
         Object loadedHomeDir = loaded.get("homeDir");
         if (!(loadedHomeDir instanceof String text)) {
             return false;
         }
-        if (!text.contains(LEGACY_HOME_SUFFIX)) {
+        if (!text.contains(PREVIOUS_HOME_SUFFIX)) {
             return false;
         }
-        loaded.put("homeDir", text.replace(LEGACY_HOME_SUFFIX, ".KineticHorizons"));
+        loaded.put("homeDir", text.replace(PREVIOUS_HOME_SUFFIX, ".KineticHorizons"));
         Engine.getLOGGER().info("Migrated launcher homeDir to {}", DEFAULT_HOME_DIR);
         return true;
     }
@@ -258,10 +272,6 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
     public boolean isLaunchAC() { return launchAC; }
     public boolean isBackgroundMusic() { return backgroundMusic; }
     public boolean isDiscordRPC() { return discordRPC; }
-    public boolean isBackendBinding() { return backendBinding; }
-    public String getBackendWsUrl() { return backendWsUrl; }
-    public int getBackendHeartbeatSeconds() { return backendHeartbeatSeconds; }
-    public int getBackendMaxReconnectAttempts() { return backendMaxReconnectAttempts; }
     public int getSelectedServer() { return selectedServer; }
     public int getLoaderIndex() { return loaderIndex; }
     public int getWidth() { return width; }

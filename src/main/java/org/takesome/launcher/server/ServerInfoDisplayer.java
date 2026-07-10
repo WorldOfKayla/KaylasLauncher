@@ -12,17 +12,19 @@ import org.takesome.kaylasEngine.gui.components.combobox.ComboboxListener;
 import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.launcher.backend.LauncherBackendClient;
+import org.takesome.launcher.backend.LauncherServerStatus;
 import org.takesome.launcher.user.User;
-import org.takesome.kaylasEngine.utils.DataInjector;
 
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.takesome.launcher.auth.AuthStatus.UNAUTHORISED;
 
 /**
- * Displays selected Minecraft server metadata and status.
+ * Displays selected backend-managed Minecraft server metadata.
  */
 public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxListener {
 
@@ -30,6 +32,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
     private final User user;
     private final JPanel newsPanel;
     private final GuiBuilder guiBuilder;
+    private final AtomicInteger statusRequestSequence = new AtomicInteger();
 
     @Component
     @SuppressWarnings("unused")
@@ -45,7 +48,6 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
         this.launcher = user.getLauncher();
         this.newsPanel = user.getNewsPanel();
         this.guiBuilder = user.getGuiBuilder();
-        SwingUtilities.invokeLater(() -> displayServerInfo(this.launcher.getConfig().getSelectedServer()));
     }
 
     @Override
@@ -97,28 +99,99 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
             updateServerInfoComponents(server);
             newsPanel.repaint();
         });
-
-        DataInjector<String> statusInjector = new DataInjector<>();
-        statusInjector.addErrorListener(e -> Launcher.LOGGER.error("Error in statusInjector", e));
-        statusInjector.addListener(serverStatus -> SwingUtilities.invokeLater(() -> srvOnline.setText(serverStatus)));
-
-        launcher.getExecutorServiceProvider().submitTask(() -> {
-            String[] status = user.getServerInfo().pollServer(server.getHost(), server.getPort());
-            String serverStatus = user.getServerInfo().genServerStatus(status);
-            statusInjector.setContent(serverStatus);
-        }, "displayServer-" + index);
+        requestBackendServerStatus(server);
     }
 
     private void updateServerInfoComponents(ServerAttributes thisServer) {
-        String serverName = thisServer.getServerName() == null ? "" : thisServer.getServerName();
-        String serverVersion = thisServer.getServerVersion() == null ? "" : thisServer.getServerVersion();
+        String serverName = safe(thisServer.getServerName());
+        String serverVersion = safe(thisServer.getServerVersion());
         this.serverTitle.setText((serverName + ' ' + serverVersion).trim());
-        this.serverDescLabel.setText(thisServer.getServerDescription());
+        this.serverDescLabel.setText(safe(thisServer.getServerDescription()));
+        this.srvOnline.setText(formatServerMetadata(thisServer));
 
         ServerImageLoader imageLoader = new ServerImageLoader(user, thisServer.getServerImage());
         imageLoader.loadServerImage(image -> SwingUtilities.invokeLater(() ->
                 serverImg.setIcon(new ImageIcon(image))
         ));
+    }
+
+    private void requestBackendServerStatus(ServerAttributes server) {
+        int requestSequence = statusRequestSequence.incrementAndGet();
+        LauncherBackendClient backendClient = launcher.getBackendClient();
+        if (backendClient == null || !backendClient.isBound()) {
+            Launcher.LOGGER.debug("Backend is not bound; server status remains metadata-only for {}:{}.",
+                    server.getHost(), server.getPort());
+            return;
+        }
+
+        backendClient.fetchServerStatus(server).whenComplete((status, error) -> {
+            if (requestSequence != statusRequestSequence.get()) {
+                return;
+            }
+            if (error != null) {
+                Launcher.LOGGER.warn("Unable to load backend server status for {}:{}: {}",
+                        server.getHost(), server.getPort(), error.getMessage());
+                return;
+            }
+            SwingUtilities.invokeLater(() -> srvOnline.setText(formatServerStatus(status, server)));
+        });
+    }
+
+    private String formatServerStatus(LauncherServerStatus status, ServerAttributes fallback) {
+        if (status == null) {
+            return formatServerMetadata(fallback);
+        }
+        if (status.isOnline()) {
+            return formatOnlineStatus(status);
+        }
+        String offline = launcher.getLANG().getString("server.serverOff");
+        if (!"server.serverOff".equals(offline)) {
+            return offline;
+        }
+        String message = safe(status.getMessage());
+        return message.isEmpty() ? "Server off" : message;
+    }
+
+    private String formatOnlineStatus(LauncherServerStatus status) {
+        if (status.getPlayersOnline() >= 0 && status.getPlayersMax() >= 0) {
+            String template = launcher.getLANG().getString("server.serverOn");
+            if (!"server.serverOn".equals(template)) {
+                return template
+                        .replace("%%", String.valueOf(status.getPlayersOnline()))
+                        .replace("##", String.valueOf(status.getPlayersMax()));
+            }
+            return status.getPlayersOnline() + " / " + status.getPlayersMax();
+        }
+        String message = safe(status.getMessage());
+        return message.isEmpty() ? "Online" : message;
+    }
+
+    private String formatServerMetadata(ServerAttributes server) {
+        String client = safe(server.getClient());
+        String address = formatAddress(server);
+        if (!client.isEmpty() && !address.isEmpty()) {
+            return client + " | " + address;
+        }
+        if (!client.isEmpty()) {
+            return client;
+        }
+        if (!address.isEmpty()) {
+            return address;
+        }
+        return "Backend managed";
+    }
+
+    private String formatAddress(ServerAttributes server) {
+        String host = safe(server.getHost());
+        int port = server.getPort();
+        if (host.isEmpty()) {
+            return port > 0 ? String.valueOf(port) : "";
+        }
+        return port > 0 ? host + ':' + port : host;
+    }
+
+    private String safe(String value) {
+        return value == null ? "" : value.trim();
     }
 
     private void modsInfoArr(String json) {

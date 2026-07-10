@@ -13,6 +13,7 @@ import org.takesome.kaylasEngine.utils.ServerInfo;
 import org.takesome.kaylasEngine.utils.hook.HookException;
 import org.takesome.launcher.LauncherValidator;
 import org.takesome.launcher.auth.Auth;
+import org.takesome.kaylasEngine.EngineData;
 import org.takesome.launcher.backend.LauncherBackendClient;
 import org.takesome.launcher.config.Config;
 import org.takesome.launcher.gui.ActionHandler;
@@ -98,17 +99,17 @@ public class Launcher extends Engine {
     }
 
     private void bindBackend() {
-        Config cfg = getConfig();
-        if (cfg == null || !cfg.isBackendBinding()) {
-            LOGGER.info("Launcher backend binding is disabled.");
+        EngineData.BackendBinding backend = getEngineData() == null ? null : getEngineData().getBackend();
+        if (backend == null || !backend.isEnabled()) {
+            LOGGER.info("Launcher backend binding is disabled by engine runtime config.");
             return;
         }
         try {
             this.backendClient = new LauncherBackendClient(
                     this,
-                    cfg.getBackendWsUrl(),
-                    cfg.getBackendHeartbeatSeconds(),
-                    cfg.getBackendMaxReconnectAttempts()
+                    backend.getWsUrl(),
+                    backend.getHeartbeatSeconds(),
+                    backend.getMaxReconnectAttempts()
             );
             this.backendClient.start();
         } catch (RuntimeException error) {
@@ -135,9 +136,7 @@ public class Launcher extends Engine {
     private void setupDiscord() {
         safeSubmitTask(() -> {
             this.discord = new Discord(this, "aiden");
-            this.discord.setLargeImageText(getLANG().getStringWithKey("general.website",
-                    new String[]{"key"},
-                    new String[]{getEngineData().getBindUrl()}));
+            this.discord.setLargeImageText(getEngineData().getLauncherBrand() + " " + getEngineData().getLauncherVersion());
         }, "discordSetUp");
     }
 

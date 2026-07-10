@@ -2,28 +2,35 @@ package org.takesome.launcher.game;
 
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
-import org.takesome.kaylasEngine.game.argsReader.ArgsReader;
+import org.takesome.kaylasEngine.crash.CrashReportDialog;
 import org.takesome.launcher.Core;
 import org.takesome.launcher.config.Config;
 import org.takesome.launcher.gui.ActionHandler;
 import org.takesome.launcher.user.User;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
+import javax.swing.SwingUtilities;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
+    private static final String DEFAULT_MAIN_CLASS = "net.minecraft.client.main.Main";
+    private static final int MAX_PROCESS_OUTPUT_CHARS = 24_000;
 
     private final Config config;
-    private String mainClass, tweakClassVal = "";
+    private String mainClass = DEFAULT_MAIN_CLASS;
+    private String tweakClassVal = "";
     public final Launcher launcher;
-    private Map<String, String> replaceValues = new HashMap<>();
-    //private final ClientType clientType;
     protected final User user;
     private final AuthLib authLib;
 
@@ -37,13 +44,7 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
         this.printDebug();
         this.user = actionHandler.getLauncher().getUser();
         this.authLib = new AuthLib(this);
-        //this.clientType = ClientType.getType(this.gameClient.getClient());
-        this.intVer = Integer.parseInt(this.gameClient.getServerVersion().replaceAll("\\D", ""));
-        if(this.pathBuilders.getArgsFile() != null){
-            boolean checkLib = actionHandler.getCurrentServer().isCheckLib();
-            if(!checkLib) { logger.warn("LIBRARY HASH IS IGNORED!!! That may be insecure!!!"); }
-            argsReader = new ArgsReader(this, checkLib);
-        }
+        this.intVer = parseVersionNumber(this.gameClient.getServerVersion());
     }
 
     @Override
@@ -54,251 +55,227 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
         }
         processArgs.add(javaExecutable.toString());
         processArgs.add("-Xmx" + config.getRamAmount() + 'M');
-        List<String> jvmArgs = getJvmArgs();
-        this.addArgsToProcess(jvmArgs);
+        this.addArgsToProcess(getJvmArgs());
     }
 
     @Override
     protected void setGameArgs() {
-        Engine.getLOGGER().debug("Client version " + getVersion());
+        Engine.getLOGGER().debug("Client version {}", getVersion());
         List<String> gameArgs = getGameArgs();
-        logger.debug("GameArgs " + gameArgs.toString());
+        logger.debug("Prepared {} game argument(s).", gameArgs.size());
         this.addArgsToProcess(gameArgs);
-        if (this.user.getUserAttributes().getGroup().equals("admin")) {
+
+        if (isAdminUser()) {
             this.processArgs.add("-Dforge.logging.console.level=debug");
             this.processArgs.add("-Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP,CLASSLOADING");
         }
-        /*
-        switch (this.clientType) {
-            case forgeclient:
-            case fmlclient:
-                break;
-            case fabricclient:
-                break;
-        }
-        */
-        //Optional
         if (config.isFullScreen()) {
             processArgs.add("--fullscreen=true");
-
         }
-        //Optional
         if (config.isAutoEnter()) {
             processArgs.add("--server=" + gameClient.getHost());
             processArgs.add("--port=" + gameClient.getPort());
         }
-        processArgs.add("--width=" + this.config.getWidth());
-        processArgs.add("--height=" + this.config.getHeight());
-
-        //if(this.User.re) Adding multiplayer only to an online User
-        //processArgs.add("--disableMultiplayer");
-        //processArgs.add("--disableChat");
-        //processArgs.add(tweakClassVal);
     }
 
     @Override
     public void launchGame() {
-        this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            try {
-                this.checkDangerousParams();
-                setJreArgs();
-                if (getIntVer() < 173) {
-                    Engine.LOGGER.info("LEGACY!1!1!11!");
-                }
-                // Добавляем --tweakClass для определённых версий
-                if (getIntVer() == 1710 || getIntVer() == 1122) {
-                    tweakClassVal = addTweakClass();
-                    mainClass = (tweakClassVal != null && !tweakClassVal.isEmpty()
-                            ? "net.minecraft.launchwrapper.Launch" : "net.minecraft.client.main.Main");
-                }
-                if (this.argsReader.getMainClass() != null) {
-                    mainClass = argsReader.getMainClass();
-                }
-                processArgs.add(mainClass);
-                if (Boolean.valueOf(this.argsReader.isAuthLib())) {
-                    authLib.loadAuthLib();
-                } else {
-                    Engine.LOGGER.info("Launching without AuthLib loaded!");
-                }
-                setGameArgs();
-
-                // Логируем сформированную команду для отладки
-                Engine.LOGGER.debug("Executing command: " + processArgs);
-
-                ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
-                processBuilder.directory(new File(getPathBuilders().buildClientDir().toUri()));
-                processBuilder.redirectErrorStream(true);
-                processBuilder.environment().put("JAVA_HOME", getPathBuilders().buildRuntimeDir().toString());
-                // Перенаправляем вывод в PIPE для его захвата
-                processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
-
-                Process process = processBuilder.start();
-                if (process.isAlive()) {
-                    gameListener.onGameStart(gameClient);
-                }
-
-                StringBuilder processOutput = new StringBuilder();
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        processOutput.append(line).append("\n");
-                    }
-                }
-
-                if (process.isAlive()) {
-                    gameListener.onGameStart(gameClient);
-                }
-                engine.getFrame().setVisible(false);
-
-                int exitCode = process.waitFor();
-                System.out.println("Process exit code: " + exitCode);
-
-                if (exitCode != 0) {
-                    logger.error("Error launching minecraft. Error code: " + exitCode);
-                    // Создаем исключение с текстом, включающим код завершения и вывод процесса
-                    Exception launchException = new Exception("Minecraft exited with error code: " + exitCode +
-                            "\nProcess output:\n" + processOutput);
-                    SwingUtilities.invokeLater(() -> {
-                        showErrorReport(launchException);
-                        gameListener.onGameExit(this.gameClient);
-                        System.exit(1);
-                    });
-                } else {
-                    SwingUtilities.invokeLater(() -> {
-                        logger.info("Task completed, stopping the game.");
-                        gameListener.onGameExit(this.gameClient);
-                        System.exit(0);
-                    });
-                }
-            } catch (IOException | InterruptedException | RuntimeException e) {
-                logger.error("Exception occurred during game launch: ", e);
-                SwingUtilities.invokeLater(() -> {
-                    showErrorReport(e);
-                    gameListener.onGameExit(this.gameClient);
-                });
-            }
-        }, "launch-" + this.gameClient.getServerName());
+        this.launcher.getExecutorServiceProvider().submitTask(
+                this::launchGameInternal,
+                "launch-" + safeTaskName(this.gameClient.getServerName())
+        );
     }
 
+    private void launchGameInternal() {
+        try {
+            resetLaunchState();
+            checkDangerousParams();
+            ensureArgsReaderReady();
+            setJreArgs();
+            initializeMainClass();
+            processArgs.add(mainClass);
+
+            if (this.argsReader.isAuthLib()) {
+                authLib.loadAuthLib();
+            } else {
+                Engine.LOGGER.info("Launching without AuthLib loaded.");
+            }
+            setGameArgs();
+
+            Engine.LOGGER.debug("Executing command: {}", sanitizedProcessArgs());
+
+            Process process = startProcess();
+            notifyGameStart();
+
+            String processOutput = readProcessOutput(process);
+            int exitCode = process.waitFor();
+            logger.info("Minecraft process exited with code {}", exitCode);
+
+            if (exitCode != 0) {
+                Exception launchException = new Exception("Minecraft exited with error code: " + exitCode
+                        + "\nProcess output:\n" + processOutput);
+                reportFailure(launchException, exitCode);
+                return;
+            }
+
+            notifyGameExit();
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            reportFailure(error, 1);
+        } catch (IOException | RuntimeException error) {
+            reportFailure(error, 1);
+        }
+    }
+
+    private void resetLaunchState() {
+        resetProcessArgs();
+        mainClass = DEFAULT_MAIN_CLASS;
+        tweakClassVal = "";
+    }
+
+    private void ensureArgsReaderReady() {
+        if (this.argsReader == null) {
+            throw new IllegalStateException("Minecraft arguments reader is not initialized for " + this.pathBuilders.getArgsFile());
+        }
+    }
+
+    private void initializeMainClass() {
+        if (getIntVer() == 1710 || getIntVer() == 1122) {
+            tweakClassVal = addTweakClass();
+            mainClass = (tweakClassVal != null && !tweakClassVal.isEmpty())
+                    ? "net.minecraft.launchwrapper.Launch"
+                    : DEFAULT_MAIN_CLASS;
+        }
+        if (this.argsReader.getMainClass() != null && !this.argsReader.getMainClass().isBlank()) {
+            mainClass = argsReader.getMainClass();
+        }
+    }
+
+    private Process startProcess() throws IOException {
+        ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
+        processBuilder.directory(getPathBuilders().buildClientDir().toFile());
+        processBuilder.redirectErrorStream(true);
+        processBuilder.environment().put("JAVA_HOME", javaHomePath().toString());
+        processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
+        return processBuilder.start();
+    }
+
+    private Path javaHomePath() {
+        Path javaExecutable = getJavaExecutablePath();
+        Path binDir = javaExecutable.getParent();
+        if (binDir != null && binDir.getParent() != null) {
+            return binDir.getParent();
+        }
+        return getPathBuilders().buildRuntimeDir();
+    }
+
+    private String readProcessOutput(Process process) throws IOException {
+        StringBuilder processOutput = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                appendProcessOutputLine(processOutput, line);
+            }
+        }
+        return processOutput.toString();
+    }
+
+    private void appendProcessOutputLine(StringBuilder processOutput, String line) {
+        String normalizedLine = line + System.lineSeparator();
+        int overflow = processOutput.length() + normalizedLine.length() - MAX_PROCESS_OUTPUT_CHARS;
+        if (overflow > 0) {
+            processOutput.delete(0, Math.min(overflow, processOutput.length()));
+        }
+        processOutput.append(normalizedLine);
+    }
+
+    private void reportFailure(Throwable throwable, int exitCode) {
+        int normalizedExitCode = exitCode <= 0 ? 1 : exitCode;
+        logger.error("Exception occurred during game launch.", throwable);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                showErrorReport(throwable);
+            } catch (RuntimeException dialogError) {
+                logger.error("Unable to show crash report dialog.", dialogError);
+            } finally {
+                notifyGameFailed(throwable, normalizedExitCode);
+            }
+        });
+    }
 
     private void showErrorReport(Throwable throwable) {
-        StringBuilder header = new StringBuilder();
-        header.append("Crash Report\n");
-        header.append("============\n");
-        header.append("Date: ").append(java.time.LocalDateTime.now()).append("\n");
-        header.append("OC: ").append(System.getProperty("os.name")).append(" ")
-                .append(System.getProperty("os.version")).append("\n");
-        header.append("Java: ").append(System.getProperty("java.version")).append("\n");
-        header.append("User: ").append(System.getProperty("user.name")).append("\n");
-        header.append("\n");
+        Map<String, String> context = new LinkedHashMap<>();
+        context.put("Crash Source", "Minecraft process");
+        context.put("Server", gameClient == null ? "unknown" : gameClient.getServerName());
+        context.put("Version", gameClient == null ? "unknown" : gameClient.getServerVersion());
+        context.put("Client", gameClient == null ? "unknown" : gameClient.getClient());
+        context.put("Main Class", mainClass == null ? "unknown" : mainClass);
+        context.put("Game Dir", getPathBuilders().buildClientDir().toAbsolutePath().toString());
+        context.put("Runtime", getJavaExecutablePath().toAbsolutePath().toString());
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace(pw);
-        String stackTrace = sw.toString();
-
-        String errorText = header + stackTrace;
-
-        JTextArea textArea = new JTextArea(errorText);
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        textArea.setBackground(new Color(30, 30, 30));
-        textArea.setForeground(new Color(200, 200, 200));
-        textArea.setCaretColor(new Color(200, 200, 200));
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(700, 400));
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton saveButton = new JButton("CoxpaHutb");
-
-        saveButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Save Report");
-            fileChooser.setSelectedFile(new File("crash_report.log"));
-            int userSelection = fileChooser.showSaveDialog(engine.getFrame());
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                File fileToSave = fileChooser.getSelectedFile();
-                if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
-                    fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".log");
-                }
-                try (FileWriter fw = new FileWriter(fileToSave)) {
-                    fw.write(errorText);
-
-                } catch (IOException ioException) {
-                    JOptionPane.showMessageDialog(engine.getFrame(), "Не удалось сохранить отчет:\n" + ioException.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-            gameListener.onGameExit(this.gameClient);
-        });
-
-        buttonPanel.add(saveButton);
-
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        JOptionPane.showMessageDialog(
-                engine.getFrame(),
-                mainPanel,
-                this.launcher.getAppTitle() + " Crash Report",
-                JOptionPane.ERROR_MESSAGE,
-                this.launcher.getIconUtils().getVectorIcon("assets/ui/icons/bug.svg", 64, 64)
+        CrashReportDialog.show(
+                engine,
+                throwable,
+                context,
+                getPathBuilders().buildGameDir().resolve("crash-reports")
         );
-        gameListener.onGameExit(this.gameClient);
     }
-
-
-
 
     @Override
     protected String addTweakClass() {
-        String tweakClassVal;
         String[] tweakClasses = this.engine.getEngineData().getTweakClasses();
         for (String className : tweakClasses) {
-            Engine.getLOGGER().debug("Searching " + className);
+            Engine.getLOGGER().debug("Searching tweak class {}", className);
             try {
-                System.out.println("Trying... " + className);
                 getClassLoader().loadClass(className);
-                tweakClassVal = "--tweakClass=" + className;
-                this.logger.debug("TweakClass " + className + " was found!");
+                this.logger.debug("TweakClass {} was found.", className);
                 System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true");
                 System.setProperty("fml.ignorePatchDiscrepancies", "true");
-                return tweakClassVal;
+                return "--tweakClass=" + className;
             } catch (ClassNotFoundException classNotFoundException) {
-                Engine.getLOGGER().debug("TweakClass " + className + " not found");
+                Engine.getLOGGER().debug("TweakClass {} not found", className);
             }
         }
         return "";
     }
 
-    private List<String> getGameArgs(){
-        this.replaceValues = new HashMap<>();
-        this.replaceValues.put("tweakClass", this.tweakClassVal);
-        this.replaceValues.put("auth_player_name", this.user.getLogin());
-        this.replaceValues.put("version_name", this.getVersion());
-        this.replaceValues.put("game_directory", getPathBuilders().buildClientDir().toAbsolutePath().toString());
-        this.replaceValues.put("assets_root", getPathBuilders().buildAssetsPath().toAbsolutePath().toString());
-        this.replaceValues.put("assets_index_name", this.getVersion());
-        this.replaceValues.put("auth_uuid", this.user.getUuid());
-        this.replaceValues.put("auth_access_token", this.user.getToken());
-        this.replaceValues.put("user_type", "legacy");
-        this.replaceValues.put("version_type", "release");
-        return this.argsReader.replaceMask(this.argsReader.getGameArguments(), this.replaceValues);
+    private List<String> getGameArgs() {
+        Map<String, String> values = new HashMap<>();
+        values.put("tweakClass", this.tweakClassVal);
+        values.put("auth_player_name", this.user.getLogin());
+        values.put("version_name", this.getVersion());
+        values.put("game_directory", getPathBuilders().buildClientDir().toAbsolutePath().toString());
+        values.put("assets_root", getPathBuilders().buildAssetsPath().toAbsolutePath().toString());
+        values.put("assets_index_name", assetIndexName());
+        values.put("auth_uuid", this.user.getUuid());
+        values.put("auth_access_token", this.user.getToken());
+        values.put("clientid", "0");
+        values.put("auth_xuid", "0");
+        values.put("resolution_width", String.valueOf(this.config.getWidth()));
+        values.put("resolution_height", String.valueOf(this.config.getHeight()));
+        values.put("user_type", "msa");
+        values.put("version_type", "release");
+        return this.argsReader.replaceMask(this.argsReader.getGameArguments(), values);
     }
+
     private List<String> getJvmArgs() {
-        this.replaceValues = new HashMap<>();
-        this.replaceValues.put("natives_directory", getPathBuilders().buildNativesPath().toAbsolutePath().toString());
-        this.replaceValues.put("library_directory", getPathBuilders().buildLibrariesPath().toAbsolutePath().toString());
-        this.replaceValues.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
-        this.replaceValues.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
-        this.replaceValues.put("classpath_separator", File.pathSeparator);
-        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath().toAbsolutePath().toString()) + this.pathBuilders.buildMinecraftJarPath();
-        this.replaceValues.put("classpath", cp);
-        this.replaceValues.put("version_name", this.gameClient.getServerVersion());
-        return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), this.replaceValues);
+        Map<String, String> values = new HashMap<>();
+        values.put("natives_directory", getPathBuilders().buildNativesPath().toAbsolutePath().toString());
+        values.put("library_directory", getPathBuilders().buildLibrariesPath().toAbsolutePath().toString());
+        values.put("launcher_name", this.engine.getEngineData().getLauncherBrand());
+        values.put("launcher_version", this.engine.getEngineData().getLauncherVersion());
+        values.put("classpath_separator", File.pathSeparator);
+        if (this.argsReader == null) {
+            throw new IllegalStateException("Minecraft arguments reader is not initialized for " + this.pathBuilders.getArgsFile());
+        }
+        if (this.argsReader.getLibraryReader() == null) {
+            throw new IllegalStateException("Minecraft library reader is not initialized for " + this.pathBuilders.getArgsFile());
+        }
+        String cp = this.argsReader.getLibraryReader().getLibrariesAsString(this.pathBuilders.buildLibrariesPath().toAbsolutePath().toString())
+                + this.pathBuilders.buildMinecraftJarPath();
+        values.put("classpath", cp);
+        values.put("version_name", this.gameClient.getServerVersion());
+        return this.argsReader.replaceMask(this.argsReader.getJvmArguments(), values);
     }
 
     public String getJreBin() {
@@ -337,11 +314,79 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     }
 
     private boolean isWindows() {
-        return System.getProperty("os.name", "").toLowerCase().contains("win");
+        return System.getProperty("os.name", "").toLowerCase(Locale.ROOT).contains("win");
     }
 
     public String buildAssetsPath() {
-        return this.getPathBuilders().buildGameDir() + "assets" + this.gameClient.getServerVersion();
+        return this.getPathBuilders().buildAssetsPath().toString();
+    }
+
+    private String assetIndexName() {
+        if (this.argsReader != null && this.argsReader.getAssets() != null && !this.argsReader.getAssets().isBlank()) {
+            return this.argsReader.getAssets();
+        }
+        return this.getVersion();
+    }
+
+    private boolean isAdminUser() {
+        return this.user != null
+                && this.user.getUserAttributes() != null
+                && "admin".equalsIgnoreCase(String.valueOf(this.user.getUserAttributes().getGroup()));
+    }
+
+    private int parseVersionNumber(String version) {
+        if (version == null || version.isBlank()) {
+            return 0;
+        }
+        String digits = version.replaceAll("\\D", "");
+        if (digits.isBlank()) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(digits);
+        } catch (NumberFormatException error) {
+            Engine.LOGGER.warn("Unable to parse Minecraft version number from '{}'.", version);
+            return 0;
+        }
+    }
+
+    private String safeTaskName(String value) {
+        String safeValue = value == null || value.isBlank() ? "unknown" : value.trim();
+        return safeValue.replaceAll("[^A-Za-z0-9_.-]", "_");
+    }
+
+    private List<String> sanitizedProcessArgs() {
+        List<String> sanitized = new ArrayList<>(processArgs.size());
+        String token = this.user == null ? "" : this.user.getToken();
+        for (int i = 0; i < processArgs.size(); i++) {
+            String argument = processArgs.get(i);
+            if (isSensitiveOption(argument)) {
+                sanitized.add(argument);
+                if (i + 1 < processArgs.size()) {
+                    sanitized.add("***");
+                    i++;
+                }
+                continue;
+            }
+            if (token != null && !token.isBlank() && argument != null && argument.contains(token)) {
+                sanitized.add(argument.replace(token, "***"));
+            } else {
+                sanitized.add(argument);
+            }
+        }
+        return sanitized;
+    }
+
+    private boolean isSensitiveOption(String argument) {
+        if (argument == null) {
+            return false;
+        }
+        String normalized = argument.toLowerCase(Locale.ROOT);
+        return normalized.equals("--accesstoken")
+                || normalized.equals("--access_token")
+                || normalized.equals("--auth_access_token")
+                || normalized.equals("--clienttoken")
+                || normalized.equals("--client_token");
     }
 
     @Override

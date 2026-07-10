@@ -11,38 +11,36 @@ import org.takesome.launcher.game.GameLauncher;
 import org.takesome.launcher.game.GameTimeTask;
 import org.takesome.launcher.gui.ActionHandler;
 
+import javax.swing.SwingUtilities;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.takesome.kaylasEngine.utils.helper.JVMHelper.getCorrectOSArch;
 
 public class Core implements GameListener {
     private final Launcher launcher;
-    private FileGuard fileGuard;
     private final ActionHandler actionHandler;
     private final LauncherFileLoader fileLoader;
-    private GameLauncher gameLauncher;
     private final GameTimeTask gameTimeTask;
+    private final AtomicBoolean sessionFinished = new AtomicBoolean(false);
+
+    private FileGuard fileGuard;
+    private GameLauncher gameLauncher;
 
     public Core(ActionHandler actionHandler, boolean forceUpdate) {
-        ServerAttributes currentServer = actionHandler.getCurrentServer();
-        actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
-        actionHandler.getEngine().getDiscord().discordRpcStart(
-                actionHandler.getEngine().getLANG().getStringWithKey("game.login",
-                        new String[]{"login"},
-                        new String[]{actionHandler.getLauncher().getUser().getLogin()}),
-                actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
-                        new String[]{"server"},
-                        new String[]{currentServer.getServerName() + ' ' + currentServer.getServerVersion()}),
-                currentServer.getServerName().toLowerCase(Locale.ROOT)
-        );
-        this.actionHandler = actionHandler;
-        this.launcher = actionHandler.getLauncher();
-        fileLoader = new LauncherFileLoader(actionHandler, actionHandler.getLauncher().getConfig().getHomeDir());
+        this.actionHandler = Objects.requireNonNull(actionHandler, "actionHandler");
+        this.launcher = this.actionHandler.getLauncher();
+
+        ServerAttributes currentServer = Objects.requireNonNull(this.actionHandler.getCurrentServer(), "currentServer");
+        bindDiscordPresence(currentServer);
+
+        this.fileLoader = new LauncherFileLoader(this.actionHandler, this.launcher.getConfig().getHomeDir());
         FileLoaderImpl fileLoaderImpl = new FileLoaderImpl(this);
-        fileLoaderImpl.setReplaceMasks(actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
-        fileLoader.setLoaderListener(fileLoaderImpl);
+        fileLoaderImpl.setReplaceMasks(this.actionHandler.getEngine().getEngineData().getDownloadManager().getReplaceMasks());
+        this.fileLoader.setLoaderListener(fileLoaderImpl);
 
         this.launcher.getExecutorServiceProvider().submitTask(() -> fileLoader.getFilesToDownload(forceUpdate), "downloadFiles");
 
@@ -54,69 +52,98 @@ public class Core implements GameListener {
         );
     }
 
+    private void bindDiscordPresence(ServerAttributes currentServer) {
+        this.actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
+        this.actionHandler.getEngine().getDiscord().discordRpcStart(
+                this.actionHandler.getEngine().getLANG().getStringWithKey("game.login",
+                        new String[]{"login"},
+                        new String[]{this.launcher.getUser().getLogin()}),
+                this.actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
+                        new String[]{"server"},
+                        new String[]{safe(currentServer.getServerName()) + ' ' + safe(currentServer.getServerVersion())}),
+                safe(currentServer.getServerName()).toLowerCase(Locale.ROOT)
+        );
+    }
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
-        // Скрываем окно лаунчера и воспроизводим звук старта
-        this.launcher.getFrame().setVisible(false);
-        this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
+        SwingUtilities.invokeLater(() -> {
+            this.launcher.getFrame().setVisible(false);
+            this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
+            if (getLauncher().getLoadingManager().isVisible()) {
+                getLauncher().getLoadingManager().toggleVisibility();
+            }
+        });
 
-        Engine.LOGGER.info("=== GAME CLIENT " + serverAttributes.getServerName()
-                + " STARTED by " + this.launcher.getUser().getLogin() + " ===");
+        Engine.LOGGER.info("=== GAME CLIENT {} STARTED by {} ===",
+                safe(serverAttributes.getServerName()),
+                this.launcher.getUser().getLogin());
+        logGamePaths();
+        gameTimeTask.start();
+    }
 
-        // Если отображается экран загрузки, скрываем его
-        if (getLauncher().getLoadingManager().isVisible()) {
-            getLauncher().getLoadingManager().toggleVisibility();
+    private void logGamePaths() {
+        if (this.gameLauncher == null) {
+            return;
         }
-
-        //FileProtector fileProtector = new FileProtector();
-
-
         try {
-            // Строим пути для отслеживания
             Path assetsPath = this.gameLauncher.getPathBuilders().buildAssetsPath();
             Path librariesPath = this.gameLauncher.getPathBuilders().buildLibrariesPath();
             Path clientDir = this.gameLauncher.getPathBuilders().buildClientDir();
-
-            //fileProtector.protectDirectory(assetsPath);
-            //fileProtector.protectDirectory(librariesPath);
-            //fileProtector.protectDirectory(clientDir);
-
-            //DirWatcher dirWatcher = new DirWatcher(Arrays.asList(assetsPath, librariesPath, clientDir), event -> {
-            //    Launcher.LOGGER.warn("Detected event: " + event.getKind() + " on " + event.getPath());
-            //});
-            //dirWatcher.start();
-            //Launcher.LOGGER.info("DirWatcher started successfully!");
-        } catch (Exception e) {
-            System.err.println("Failed to start DirWatcher: " + e.getMessage());
-            e.printStackTrace();
+            Engine.LOGGER.debug("Game paths ready: assets={}, libraries={}, clientDir={}", assetsPath, librariesPath, clientDir);
+        } catch (RuntimeException error) {
+            Engine.LOGGER.warn("Unable to resolve game paths for diagnostics: {}", error.getMessage(), error);
         }
-
-        gameTimeTask.start();
     }
 
     @Override
     public void onGameExit(ServerAttributes serverAttributes) {
-        gameTimeTask.finishPlaying();
-        Engine.LOGGER.info("Сессия игры завершена для пользователя " + this.launcher.getUser().getLogin());
-
-        // Если требуется перезапуск приложения, можно выполнить соответствующую логику:
-        if (this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
-            File appDirectory = new File(this.actionHandler.getEngine().appPath());
-            if (!appDirectory.isDirectory() || this.launcher.appPath().equals("IDE")) {
-                this.launcher.getExecutorServiceProvider().shutdown();
-                this.actionHandler.getLauncher().restartApplication(
-                        2048,
-                        this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch()// getOSPrefix()
-                );
-            } else {
-                Engine.getLOGGER().error("Launcher can't be a directory!");
-            }
-        }
-        this.launcher.getExecutorServiceProvider().shutdown();
-        System.exit(0);
+        finishGameSession(serverAttributes, 0);
     }
 
+    @Override
+    public void onGameFailed(ServerAttributes serverAttributes, Throwable throwable, int exitCode) {
+        int normalizedExitCode = exitCode <= 0 ? 1 : exitCode;
+        Engine.LOGGER.error("=== GAME CLIENT {} FAILED by {} exitCode={} ===",
+                serverAttributes == null ? "unknown" : safe(serverAttributes.getServerName()),
+                this.launcher.getUser().getLogin(),
+                normalizedExitCode,
+                throwable);
+        finishGameSession(serverAttributes, normalizedExitCode);
+    }
+
+    private void finishGameSession(ServerAttributes serverAttributes, int exitCode) {
+        if (!sessionFinished.compareAndSet(false, true)) {
+            Engine.LOGGER.debug("Game session finish already processed for {}.",
+                    serverAttributes == null ? "unknown" : safe(serverAttributes.getServerName()));
+            return;
+        }
+
+        try {
+            gameTimeTask.finishPlaying();
+        } catch (RuntimeException error) {
+            Engine.LOGGER.warn("Unable to finish play-time task cleanly: {}", error.getMessage(), error);
+        }
+
+        if (exitCode == 0 && this.actionHandler.getLauncher().getConfig().isLaunchAC()) {
+            restartLauncherRuntimeIfNeeded();
+        }
+
+        this.launcher.getExecutorServiceProvider().shutdown();
+        System.exit(exitCode);
+    }
+
+    private void restartLauncherRuntimeIfNeeded() {
+        File appDirectory = new File(this.actionHandler.getEngine().appPath());
+        if (!appDirectory.isDirectory() || this.launcher.appPath().equals("IDE")) {
+            this.actionHandler.getLauncher().restartApplication(
+                    2048,
+                    this.actionHandler.getLauncher().getEngineData().getProgramRuntime() + "-x" + getCorrectOSArch()
+            );
+        } else {
+            Engine.getLOGGER().error("Launcher can't be a directory!");
+        }
+    }
 
     public static String getOSPrefix() {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -155,5 +182,9 @@ public class Core implements GameListener {
 
     public void setGameLauncher(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
+    }
+
+    private String safe(String value) {
+        return value == null ? "" : value.trim();
     }
 }

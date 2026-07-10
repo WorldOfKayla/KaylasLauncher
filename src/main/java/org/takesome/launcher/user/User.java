@@ -1,6 +1,5 @@
 package org.takesome.launcher.user;
 
-import org.foxesworld.notification.Notification;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.GuiBuilder;
@@ -16,6 +15,7 @@ import org.takesome.launcher.auth.AuthResponse;
 import org.takesome.launcher.auth.AuthStatus;
 import org.takesome.launcher.gui.BlendedImageIcon;
 import org.takesome.launcher.gui.LauncherUserUiConfig;
+import org.takesome.launcher.gui.LauncherNotifications;
 import org.takesome.launcher.server.ServerInfoDisplayer;
 import org.takesome.launcher.user.loader.BadgeLoader;
 import org.takesome.launcher.user.loader.BadgeObject;
@@ -422,21 +422,19 @@ public class User extends org.takesome.kaylasEngine.user.User {
     }
 
     private void notifyUserLoggedIn() {
-        String message = lang.getStringWithKey(
+        LauncherNotifications.showLocalized(
+                launcher,
+                "SUCCESS",
+                "BOTTOM_LEFT",
+                userUi.loginNotification().durationMs(),
                 userUi.loginNotification().localeKey(),
-                new String[]{userUi.loginNotification().loginPlaceholder()},
-                new String[]{getLogin()}
-        );
-        guiBuilder.getNotification().show(
-                Notification.Type.SUCCESS,
+                Map.of(userUi.loginNotification().loginPlaceholder(), getLogin()),
                 new Rectangle(
                         userUi.loginNotification().x(),
                         loggedForm.getServerBox().getY() + userUi.loginNotification().yOffset(),
                         userUi.loginNotification().width(),
                         userUi.loginNotification().height()
-                ),
-                userUi.loginNotification().durationMs(),
-                message
+                )
         );
     }
 

@@ -12,7 +12,6 @@ import org.takesome.kaylasEngine.gui.components.textfield.TextField;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.launcher.Core;
 import org.takesome.launcher.auth.AuthStatus;
-import org.foxesworld.notification.Notification;
 import org.takesome.kaylasEngine.gui.componentAccessor.Component;
 
 import javax.swing.*;
@@ -160,10 +159,14 @@ public class ActionHandler extends org.takesome.kaylasEngine.gui.ActionHandler {
 
         registerCommand(ui.components().logOut(), e -> {
             this.launcher.getSOUND().playSound(ui.sounds().other(), ui.sounds().loggedOut());
-            this.launcher.getGuiBuilder().getNotification().show(
-                    Notification.Type.SUCCESS,
-                    Notification.Location.BOTTOM_LEFT,
-                    this.launcher.getUser().getLogin() + this.launcher.getLANG().getString(ui.localeKeys().authLoggedOut()));
+            LauncherNotifications.show(
+                    this.launcher,
+                    "SUCCESS",
+                    "BOTTOM_LEFT",
+                    3000,
+                    this.launcher.getUser().getLogin()
+                            + this.launcher.getLANG().getString(ui.localeKeys().authLoggedOut())
+            );
             this.launcher.getAuth().logOut();
         });
 

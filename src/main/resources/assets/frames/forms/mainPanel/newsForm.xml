@@ -1,15 +1,24 @@
 <ui>
     <panels>
         <panel id="newsForm">
-            <panelOptions visible="true" doubleBuffered="true">
+            <panelOptions doubleBuffered="true">
+                <visible/>
                 <bounds x="348" y="30" width="510" height="500" />
             </panelOptions>
             <childComponents>
-                <component repeat="true" opaque="false" id="newsLoading" type="spriteImage" colNum="8" rowNum="2" delay="35" imageIcon="assets/ui/sprites/ff.png">
+                <component repeat="true" id="newsLoading" type="spriteImage" colNum="8" rowNum="2" delay="35" imageIcon="assets/ui/sprites/ff.png">
+                    <visible/>
+                    <enabled/>
                     <bounds x="200" y="200" width="500" height="500" />
                 </component>
-                <component loadPanel="newsFrame" />
-                <component readFrom="assets/frames/forms/mainPanel/serverInfo.xml" />
+                <component loadPanel="newsFrame">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/mainPanel/serverInfo.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
             </childComponents>
         </panel>
     </panels>

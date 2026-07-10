@@ -1,18 +1,24 @@
 <ui>
     <panels>
         <panel id="settings">
-            <panelOptions opaque="true" visible="false" doubleBuffered="true" background="#4a4c4fe6" border="1,1,1,1,#242221" zIndex="1">
+            <panelOptions doubleBuffered="true" background="#4a4c4fe6" border="1,1,1,1,#242221" zIndex="1">
+                <opaque/>
                 <bounds x="35" y="35" width="780" height="450" />
             </panelOptions>
             <childComponents>
                 <component>
+                    <visible/>
+                    <enabled/>
                     <panels>
                         <panel id="settingsPane">
-                            <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="true" backgroundImage="assets/ui/img/bg/header2.png" background="#4a4c4fe6" zIndex="2">
+                            <panelOptions focusable="true" doubleBuffered="true" backgroundImage="assets/ui/img/bg/header2.png" background="#4a4c4fe6" zIndex="2">
+                                <visible/>
                                 <bounds x="0" y="0" width="780" height="35" />
                             </panelOptions>
                             <childComponents>
-                                <component type="button" enabled="true" keyCode="BACK_SPACE" toolTip="tooltip.back" imageIcon="fa:back" iconWidth="16" iconHeight="16" style="altButton" id="back">
+                                <component type="button" keyCode="BACK_SPACE" toolTip="tooltip.back" imageIcon="fa:back" iconWidth="16" iconHeight="16" style="altButton" id="back">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="0" y="0" width="97" height="34" />
                                     <scripts>
                                         <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
@@ -22,8 +28,14 @@
                         </panel>
                     </panels>
                 </component>
-                <component readFrom="assets/frames/forms/settings/generalSettings.xml" />
-                <component readFrom="assets/frames/forms/settings/settingsInfo.xml" />
+                <component readFrom="assets/frames/forms/settings/generalSettings.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/settings/settingsInfo.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
             </childComponents>
         </panel>
     </panels>

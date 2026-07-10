@@ -6,9 +6,9 @@
             id="label"
             style="title"
             localeKey="settings.ramField"
-            fontSize="12"
-            opaque="false"
-            visible="true">
+            fontSize="12">
+            <visible/>
+            <enabled/>
             <bounds x="0" y="0" width="290" height="25" />
         </component>
 
@@ -19,9 +19,9 @@
             stepSize="6"
             minorSpacing="512"
             majorSpacing="1024"
-            initialValue="config#ramAmount"
-            opaque="false"
-            visible="true">
+            initialValue="config#ramAmount">
+            <visible/>
+            <enabled/>
             <bounds x="0" y="20" width="300" height="45" />
             <styles>
                 <style target="tickLabel" name="title" />
@@ -38,9 +38,9 @@
             type="launcherSettingSpinner"
             id="spinner"
             stepSize="512"
-            initialValue="config#ramAmount"
-            opaque="false"
-            visible="true">
+            initialValue="config#ramAmount">
+            <visible/>
+            <enabled/>
             <bounds x="320" y="15" width="80" height="30" />
             <properties>
                 <property name="launcher.slider.ram" value="true" type="boolean" />

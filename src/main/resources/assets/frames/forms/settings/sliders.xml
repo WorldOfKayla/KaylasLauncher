@@ -5,9 +5,9 @@
             type="launcherVolumeControl"
             id="volume"
             style="default"
-            initialValue="config#volume"
-            opaque="false"
-            visible="true">
+            initialValue="config#volume">
+            <visible/>
+            <enabled/>
             <bounds x="35" y="160" width="430" height="65" />
             <styles>
                 <style target="label" name="title" />
@@ -25,9 +25,9 @@
             type="launcherRamControl"
             id="ramAmount"
             style="default"
-            initialValue="config#ramAmount"
-            opaque="false"
-            visible="true">
+            initialValue="config#ramAmount">
+            <visible/>
+            <enabled/>
             <bounds x="35" y="230" width="430" height="65" />
             <styles>
                 <style target="label" name="title" />

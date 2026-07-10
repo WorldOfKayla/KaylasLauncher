@@ -7,9 +7,9 @@
             style="textFieldMain"
             initialValue="config#homeDir"
             editable="false"
-            focusable="false"
-            opaque="false"
-            visible="true">
+            focusable="false">
+            <visible/>
+            <enabled/>
             <bounds x="0" y="0" width="305" height="35" />
         </component>
 
@@ -20,9 +20,9 @@
             imageIcon="fa:folder"
             iconWidth="20"
             iconHeight="24"
-            cursor="hand"
-            opaque="false"
-            visible="true">
+            cursor="hand">
+            <visible/>
+            <enabled/>
             <bounds x="315" y="0" width="65" height="35" />
         </component>
     </childComponents>

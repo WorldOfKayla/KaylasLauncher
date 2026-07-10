@@ -1,23 +1,35 @@
 <frame appTitle="general.appTitle" appIcon="assets/ui/icons/logo.svg" winterImage="assets/ui/img/bg/season/winter.png" springImage="assets/ui/img/bg/season/spring.png" summerImage="assets/ui/img/bg/season/summer.png" autumnImage="assets/ui/img/bg/season/autumn.png" backgroundBlur="#494d4d52" width="850" height="500" borderRadius="20" resizable="true" undecorated="true">
     <panels>
         <panel id="titleBar">
-            <panelOptions opaque="true" visible="true" listeners="windowDrag" background="#503030c6" backgroundImage="assets/ui/img/bg/header2.png">
+            <panelOptions listeners="windowDrag" background="#503030c6" backgroundImage="assets/ui/img/bg/header2.png">
+                <visible/>
+                <opaque/>
                 <bounds x="0" y="0" width="850" height="30" />
             </panelOptions>
             <childComponents>
                 <component type="label" style="titleBold" fontSize="10" localeKey="general.appTitle" id="appLogo" color="#f78600" imageIcon="assets/ui/icons/wrnch.png" iconWidth="32" iconHeight="32">
+                    <visible/>
+                    <enabled/>
                     <bounds x="5" y="0" width="570" height="30" />
                 </component>
                 <component type="label" fontSize="10" style="titleBold" localeKey="Build" initialValue="version" color="#010206" id="appVersion">
+                    <visible/>
+                    <enabled/>
                     <bounds x="160" y="-19" width="250" height="50" />
                 </component>
                 <component type="label" fontSize="10" style="titleBold" localeKey="|" initialValue="build" color="#252424" id="appBuild">
+                    <visible/>
+                    <enabled/>
                     <bounds x="290" y="-19" width="250" height="50" />
                 </component>
                 <component type="multiButton" style="frameButtons" id="closeButton" imgCount="3" rowNum="1">
+                    <visible/>
+                    <enabled/>
                     <bounds x="788" y="0" width="62" height="30" />
                 </component>
                 <component type="multiButton" style="frameButtons" id="hideButton" imgCount="3" rowNum="0">
+                    <visible/>
+                    <enabled/>
                     <bounds x="725" y="0" width="62" height="30" />
                 </component>
             </childComponents>

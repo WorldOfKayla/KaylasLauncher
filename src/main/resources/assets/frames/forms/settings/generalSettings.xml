@@ -2,44 +2,65 @@
 <ui>
     <panels>
         <panel id="generalSettings">
-            <panelOptions opaque="false" doubleBuffered="true" focusable="true" visible="true" display="true">
+            <panelOptions doubleBuffered="true" focusable="true" display="true">
+                <visible/>
                 <bounds x="0" y="10" width="490" height="450" />
             </panelOptions>
             <childComponents>
                 <component type="label" fontSize="14" style="titleBold" imageIcon="fa:settings" iconWidth="32" iconHeight="32" localeKey="settings.baseOptions" id="baseOptions">
+                    <visible/>
+                    <enabled/>
                     <bounds x="5" y="20" width="270" height="60" />
                 </component>
                 <component>
+                    <visible/>
+                    <enabled/>
                     <panels>
                         <panel id="settingsFields">
-                            <panelOptions opaque="true" visible="true" background="#c0a1a0" display="true">
+                            <panelOptions background="#c0a1a0" display="true">
+                                <visible/>
+                                <opaque/>
                                 <bounds x="0" y="20" width="490" height="450" />
                             </panelOptions>
                             <childComponents>
-                                <component readFrom="assets/frames/forms/settings/checkBoxes.xml" />
-                                <component readFrom="assets/frames/forms/settings/sliders.xml" />
-                                <component type="button" enabled="true" keyCode="F" fontSize="12" toolTip="tooltip.folder" imageIcon="fa:folder" iconWidth="32" iconHeight="32" style="altButton" localeKey="settings.homeDir" id="gameDir-small">
+                                <component readFrom="assets/frames/forms/settings/checkBoxes.xml">
+                                    <visible/>
+                                    <enabled/>
+                                </component>
+                                <component readFrom="assets/frames/forms/settings/sliders.xml">
+                                    <visible/>
+                                    <enabled/>
+                                </component>
+                                <component type="button" keyCode="F" fontSize="12" toolTip="tooltip.folder" imageIcon="fa:folder" iconWidth="32" iconHeight="32" style="altButton" localeKey="settings.homeDir" id="gameDir-small">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="410" y="20" width="64" height="64" />
                                     <scripts>
                                         <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
                                     </scripts>
                                 </component>
                                 <component type="label" fontSize="12" style="promptLabel" localeKey="settings.langBox" id="langBoxLabel">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="40" y="285" width="250" height="50" />
                                 </component>
                                 <component type="combobox" style="selectable" id="lang">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="40" y="320" width="380" height="25" />
                                 </component>
                                 <component type="label" fontSize="12" style="promptLabel" localeKey="settings.gameFiles" id="langBoxLabel">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="40" y="345" width="250" height="50" />
                                 </component>
                                 <component
                                     type="launcherDirectoryControl"
                                     id="homeDir"
                                     style="default"
-                                    initialValue="config#homeDir"
-                                    opaque="false"
-                                    visible="true">
+                                    initialValue="config#homeDir">
+                                    <visible/>
+                                    <enabled/>
                                     <bounds x="40" y="380" width="380" height="35" />
                                     <properties>
                                         <property name="launcher.setting.key" value="homeDir" />

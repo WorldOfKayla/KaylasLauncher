@@ -1,26 +1,39 @@
 <ui>
     <panels>
         <panel id="authForm">
-            <panelOptions opaque="false" focusable="true" visible="true" doubleBuffered="false" background="#b6aaa0" cornerRadius="12">
+            <panelOptions focusable="true" doubleBuffered="false" background="#b6aaa0" cornerRadius="12">
+                <visible/>
                 <bounds x="10" y="40" width="350" height="440" />
             </panelOptions>
             <childComponents>
                 <component type="textField" style="textFieldMain" localeKey="auth.loginPlaceholder" id="login">
+                    <visible/>
+                    <enabled/>
                     <bounds x="45" y="150" width="262" height="45" />
                 </component>
                 <component type="passField" style="textFieldMain" localeKey="auth.passwordPlaceholder" showIcon="assets/ui/icons/show.svg" hideIcon="assets/ui/icons/hide.svg" revealButton="true" id="password">
+                    <visible/>
+                    <enabled/>
                     <bounds x="45" y="220" width="262" height="45" />
                 </component>
                 <component type="label" fontSize="25" style="titleBold" localeKey="auth.authTitle" id="appHeader">
+                    <visible/>
+                    <enabled/>
                     <bounds x="50" y="50" width="340" height="50" />
                 </component>
-                <component type="checkBox" enabled="true" style="solid" id="rememberMe" localeKey="auth.rememberMe">
+                <component type="checkBox" style="solid" id="rememberMe" localeKey="auth.rememberMe">
+                    <visible/>
+                    <enabled/>
                     <bounds x="40" y="265" width="240" height="32" />
                 </component>
-                <component type="button" enabled="true" keyCode="ENTER" style="buttonMain" id="authForm&gt;submit" localeKey="auth.submit">
+                <component type="button" keyCode="ENTER" style="buttonMain" id="authForm&gt;submit" localeKey="auth.submit">
+                    <visible/>
+                    <enabled/>
                     <bounds x="55" y="300" width="240" height="47" />
                 </component>
-                <component type="button" enabled="true" style="altButton" toolTip="tooltip.settings" imageIcon="fa:settings" iconWidth="32" iconHeight="32" id="settings-small">
+                <component type="button" style="altButton" toolTip="tooltip.settings" imageIcon="fa:settings" iconWidth="32" iconHeight="32" id="settings-small">
+                    <visible/>
+                    <enabled/>
                     <bounds x="270" y="375" width="64" height="64" />
                 </component>
             </childComponents>

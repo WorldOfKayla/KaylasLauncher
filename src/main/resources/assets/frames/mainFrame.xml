@@ -1,16 +1,35 @@
 <ui>
     <panels>
         <panel id="mainFrame">
-            <panelOptions opaque="false" visible="true" doubleBuffered="true">
+            <panelOptions doubleBuffered="true">
+                <visible/>
                 <bounds x="0" y="0" width="850" height="500" />
             </panelOptions>
             <childComponents>
-                <component readFrom="assets/frames/forms/mainPanel/authForm.xml" />
-                <component readFrom="assets/frames/forms/mainPanel/loggedForm.xml" />
-                <component readFrom="assets/frames/forms/mainPanel/newsForm.xml" />
-                <component readFrom="assets/frames/forms/mainPanel/settings.xml" />
-                <component readFrom="assets/frames/forms/mainPanel/download.xml" />
-                <component readFrom="assets/frames/forms/utils/loadPanel.xml" />
+                <component readFrom="assets/frames/forms/mainPanel/authForm.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/mainPanel/loggedForm.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/mainPanel/newsForm.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/mainPanel/settings.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/mainPanel/download.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
+                <component readFrom="assets/frames/forms/utils/loadPanel.xml">
+                    <visible/>
+                    <enabled/>
+                </component>
             </childComponents>
         </panel>
     </panels>

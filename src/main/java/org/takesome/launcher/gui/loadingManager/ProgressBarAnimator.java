@@ -1,6 +1,7 @@
 package org.takesome.launcher.gui.loadingManager;
 
 import org.takesome.Launcher;
+import org.takesome.kaylasEngine.gui.loadingManager.ScriptedLoadingUi;
 
 import javax.swing.JLabel;
 import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
@@ -10,12 +11,12 @@ import java.util.Objects;
 /** Launcher adapter for the engine-owned progress animation controller. */
 public final class ProgressBarAnimator extends org.takesome.kaylasEngine.gui.animation.ProgressBarAnimator {
     private final Launcher launcher;
-    private final LoadingUiScriptConfig.Progress progressConfig;
+    private final ScriptedLoadingUi.Progress progressConfig;
 
     public ProgressBarAnimator(Launcher launcher,
                                ProgressBar progressBar,
                                JLabel progressText,
-                               LoadingUiScriptConfig.Progress progressConfig) {
+                               ScriptedLoadingUi.Progress progressConfig) {
         super(
                 progressBar,
                 progressText,

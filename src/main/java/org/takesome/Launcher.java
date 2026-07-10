@@ -16,11 +16,13 @@ import org.takesome.launcher.auth.Auth;
 import org.takesome.kaylasEngine.EngineData;
 import org.takesome.launcher.backend.LauncherBackendClient;
 import org.takesome.launcher.config.Config;
+import org.takesome.launcher.discord.LauncherDiscordPresence;
 import org.takesome.launcher.gui.ActionHandler;
 import org.takesome.launcher.gui.InitialValue;
 import org.takesome.launcher.gui.Settings;
 import org.takesome.launcher.gui.SplashScreenWindow;
 import org.takesome.launcher.gui.loadingManager.LoadStatus;
+import org.takesome.launcher.gui.components.LauncherComponentLibrary;
 import org.takesome.launcher.user.User;
 
 import javax.swing.*;
@@ -43,6 +45,7 @@ public class Launcher extends Engine {
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     private ActionHandler actionHandler;
     private LauncherBackendClient backendClient;
+    private final LauncherDiscordPresence discordPresence;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -65,6 +68,7 @@ public class Launcher extends Engine {
 
     public Launcher(Rectangle bounds) {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
+        this.discordPresence = new LauncherDiscordPresence(this, "aiden");
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
         //preInit();
@@ -124,6 +128,7 @@ public class Launcher extends Engine {
 
         safeSubmitTask(() -> {
             buildGui(new InitialValue(this));
+            LauncherComponentLibrary.register(getGuiBuilder());
             loadMainPanel(fileProperties.getMainFrame());
         }, "init");
     }
@@ -137,6 +142,7 @@ public class Launcher extends Engine {
         safeSubmitTask(() -> {
             this.discord = new Discord(this, "aiden");
             this.discord.setLargeImageText(getEngineData().getLauncherBrand() + " " + getEngineData().getLauncherVersion());
+            this.discordPresence.refresh();
         }, "discordSetUp");
     }
 
@@ -223,8 +229,16 @@ public class Launcher extends Engine {
         return backendClient;
     }
 
+    public LauncherDiscordPresence getDiscordPresence() {
+        return discordPresence;
+    }
+
     @Override
     public void shutdownExecutorService() {
+        Discord currentDiscord = getDiscord();
+        if (currentDiscord != null) {
+            currentDiscord.shutdown();
+        }
         LauncherBackendClient currentBackendClient = backendClient;
         if (currentBackendClient != null) {
             currentBackendClient.close();

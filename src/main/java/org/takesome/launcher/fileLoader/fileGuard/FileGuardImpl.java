@@ -15,6 +15,10 @@ public class FileGuardImpl implements FileGuardListener {
 
     @Override
     public void onFilesChecked(int filesDeleted) {
+        core.getLauncher().getDiscordPresence().showLaunching(
+                core.getActionHandler().getCurrentServer(),
+                core.getLauncher().getUser().getLogin()
+        );
         Engine.getLOGGER().debug("--==|Files checked|==--");
         Engine.getLOGGER().info("{} files removed", filesDeleted);
         core.getActionHandler().getEngine().getSOUND().getSoundPlayer().stopAllSounds();

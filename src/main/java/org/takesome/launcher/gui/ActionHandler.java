@@ -206,6 +206,10 @@ public class ActionHandler extends org.takesome.kaylasEngine.gui.ActionHandler {
 
             ServerAttributes serverAttr = servers.get(selectedIndex);
             this.currentServer = serverAttr;
+            this.launcher.getDiscordPresence().showPreparing(
+                    serverAttr,
+                    this.launcher.getUser().getLogin()
+            );
 
             launcher.getExecutorServiceProvider().submitTask(() -> {
                 try {

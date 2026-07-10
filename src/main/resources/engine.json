@@ -15,7 +15,13 @@
     "textArea",
     "slider",
     "spinner",
-    "compositeSlider"
+    "compositeSlider",
+    "launcherSliderTrack",
+    "launcherSettingSpinner",
+    "launcherDirectoryButton",
+    "launcherVolumeControl",
+    "launcherRamControl",
+    "launcherDirectoryControl"
   ],
   "loadAdapters": [
     "xml"
@@ -36,46 +42,6 @@
     "localeFile": "assets/lang/",
     "soundsFile": "assets/sounds/sounds.json"
   },
-  "loadManager": [
-    {
-      "spritePath": "assets/ui/sprites/loaderFox.png",
-      "bgPath": "assets/ui/img/bg/season/summer.png",
-      "blurColor": "#b3a8998a",
-      "titleColor": "#252424",
-      "descColor": "#7534d4",
-      "rows": 3,
-      "cols": 5,
-      "delay": 55,
-      "animSpeed": 55,
-      "bounds": {
-        "x": 30,
-        "y": 40,
-        "size": {
-          "width": 64,
-          "height": 64
-        }
-      }
-    },
-    {
-      "spritePath": "assets/ui/sprites/exp.png",
-      "bgPath": "assets/ui/img/bg/season/summer.png",
-      "blurColor": "#b3a8998a",
-      "titleColor": "#ffffff",
-      "descColor": "#473c3c",
-      "rows": 7,
-      "cols": 6,
-      "delay": 50,
-      "animSpeed": 65,
-      "bounds": {
-        "x": 30,
-        "y": 40,
-        "size": {
-          "width": 64,
-          "height": 64
-        }
-      }
-    }
-  ],
   "httpConf": {
     "useCaches": false,
     "doInput": true,

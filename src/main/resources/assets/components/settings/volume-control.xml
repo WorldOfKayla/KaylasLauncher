@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui>
+    <childComponents>
+        <component
+            type="label"
+            id="label"
+            style="title"
+            localeKey="settings.soundVolume"
+            fontSize="12"
+            opaque="false"
+            visible="true">
+            <bounds x="0" y="0" width="160" height="25" />
+        </component>
+
+        <component
+            type="launcherSliderTrack"
+            id="slider"
+            style="slidingOut"
+            minValue="50"
+            maxValue="100"
+            stepSize="6"
+            minorSpacing="5"
+            majorSpacing="10"
+            initialValue="config#volume"
+            opaque="false"
+            visible="true">
+            <bounds x="0" y="20" width="300" height="45" />
+            <styles>
+                <style target="tickLabel" name="title" />
+            </styles>
+            <scripts>
+                <script event="init" path="assets/scripts/launcher/component-links.lua" />
+            </scripts>
+        </component>
+
+        <component
+            type="launcherSettingSpinner"
+            id="spinner"
+            minValue="50"
+            maxValue="100"
+            stepSize="5"
+            initialValue="config#volume"
+            opaque="false"
+            visible="true">
+            <bounds x="320" y="15" width="80" height="30" />
+            <scripts>
+                <script event="init" path="assets/scripts/launcher/component-links.lua" />
+            </scripts>
+        </component>
+    </childComponents>
+</ui>

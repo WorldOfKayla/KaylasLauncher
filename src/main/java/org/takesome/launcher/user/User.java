@@ -8,6 +8,7 @@ import org.takesome.kaylasEngine.gui.componentAccessor.Component;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.locale.LanguageProvider;
+import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.kaylasEngine.utils.HTTP.RequestState;
 import org.takesome.kaylasEngine.utils.ServerInfo;
 import org.takesome.launcher.auth.Auth;
@@ -403,18 +404,21 @@ public class User extends org.takesome.kaylasEngine.user.User {
     }
 
     private void setupDiscordRpc() {
-        if (launcher.getConfig().isDiscordRPC()) {
-            launcher.getDiscord().setSmallImageText(lang.getString(userUi.discord().launcherLocaleKey()));
-            launcher.getDiscord().discordRpcStart(
-                    lang.getStringWithKey(
-                            userUi.discord().loginLocaleKey(),
-                            new String[]{userUi.discord().loginPlaceholder()},
-                            new String[]{getLogin()}
-                    ),
-                    launcher.getAppTitle(),
-                    userUi.discord().iconKey()
-            );
+        if (!launcher.getConfig().isDiscordRPC()) {
+            return;
         }
+
+        List<ServerAttributes> servers = auth.getUserDataLoader().getUserServersAttributes();
+        if (servers == null || servers.isEmpty()) {
+            launcher.getDiscordPresence().showLauncher(getLogin());
+            return;
+        }
+
+        int selectedIndex = launcher.getConfig().getSelectedServer();
+        if (selectedIndex < 0 || selectedIndex >= servers.size()) {
+            selectedIndex = 0;
+        }
+        launcher.getDiscordPresence().showServerSelection(servers.get(selectedIndex), getLogin());
     }
 
     private void notifyUserLoggedIn() {

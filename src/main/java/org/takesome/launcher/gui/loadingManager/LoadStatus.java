@@ -3,6 +3,7 @@ package org.takesome.launcher.gui.loadingManager;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.animation.LayeredPaneOverlay;
+import org.takesome.kaylasEngine.gui.animation.ScriptedWindowAnimator;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
 import org.takesome.kaylasEngine.gui.components.ComponentFactory;
 import org.takesome.kaylasEngine.gui.components.button.Button;
@@ -13,16 +14,17 @@ import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
 import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBarStyle;
 import org.takesome.kaylasEngine.gui.components.sprite.SpriteAnimation;
 import org.takesome.kaylasEngine.gui.diagnostics.EdtLagWatchdog;
-import org.takesome.kaylasEngine.gui.loadingManager.LoadManagerAttributes;
 import org.takesome.kaylasEngine.gui.loadingManager.LoadingManager;
+import org.takesome.kaylasEngine.gui.loadingManager.ScriptedLoadingUi;
 import org.takesome.kaylasEngine.gui.styles.StyleAttributes;
 import org.takesome.kaylasEngine.utils.DataInjector;
-import org.takesome.kaylasEngine.utils.animation.AnimationManager;
+import org.takesome.launcher.gui.LauncherUiProvider;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
@@ -31,10 +33,10 @@ import static org.takesome.kaylasEngine.utils.FontUtils.hexToColor;
 import static org.takesome.kaylasEngine.utils.FontUtils.styleName;
 
 /**
- * Launcher-specific loading window implementation.
+ * Launcher binding for the engine-owned scripted loading UI runtime.
  *
- * <p>Visual primitives, overlay animation, progress animation, and EDT diagnostics are supplied by
- * KaylasUIEngine. This class only binds launcher components and localization to those services.</p>
+ * <p>Every visual and animation decision lives in the application Lua script. This class only
+ * binds launcher components, localization and lifecycle events to generic engine services.</p>
  */
 public class LoadStatus extends LoadingManager {
     private static final long UI_QUEUE_WARN_NANOS = 250_000_000L;
@@ -42,7 +44,8 @@ public class LoadStatus extends LoadingManager {
 
     private final ComponentsAccessor loadPanel, loggedForm;
     private final Launcher launcher;
-    private final LoadingUiScriptConfig loadingUi;
+    private final ScriptedLoadingUi loadingUi;
+    private final ScriptedWindowAnimator scriptedWindowAnimator;
     private final EdtLagWatchdog edtLagWatchdog = new EdtLagWatchdog("LoadStatus", Engine.getLOGGER());
 
     private ProgressBar progressBar;
@@ -53,18 +56,24 @@ public class LoadStatus extends LoadingManager {
     /** Completes when Swing components required by the loading frame are initialized. */
     private final DataInjector<Boolean> initInjector = new DataInjector<>();
 
-    public LoadStatus(Launcher launcher, int index) {
+    public LoadStatus(Launcher launcher, int profileIndex) {
         super(launcher);
         this.launcher = launcher;
-        this.loadingUi = LoadingUiScriptConfig.load(launcher);
+        this.loadingUi = ScriptedLoadingUi.load(
+                launcher.getGuiBuilder()
+                        .getComponentFactory()
+                        .getLuaUiScriptEngine()
+                        .getContext(),
+                LauncherUiProvider.load().loadingUiScriptPath(),
+                profileIndex
+        );
+        this.FRAME_WIDTH = loadingUi.window().width();
+        this.FRAME_HEIGHT = loadingUi.window().height();
+        this.scriptedWindowAnimator = new ScriptedWindowAnimator(this, loadingUi.transition());
+        this.scriptedWindowAnimator.setAnimationStats(this);
 
-        this.attributesList = List.of(this.engine.getEngineData().getLoadManager());
         this.loadingText = engine.getLANG().getString("loading.msg");
         this.loadingTitle = engine.getLANG().getString("loading.title");
-
-        this.ANIMATION_SPEED = attributesList.get(index).getAnimSpeed();
-        this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
-        this.animationManager.setAnimationStats(this);
 
         this.loadPanel = new ComponentsAccessor(
                 this.engine.getGuiBuilder(),
@@ -78,12 +87,25 @@ public class LoadStatus extends LoadingManager {
         );
 
         Engine.getLOGGER().info(
-                "[LOAD-UI] config: animationSpeed={} overlayAlpha={} overlayFadeInMs={} overlayFadeOutMs={} overlayFrameDelayMs={} progressEnabled={} progressUpdateMs={} progressStep={} progressLoop={} progressTimelineMs={} progressTimelineFrameMs={} randomMessages={} showText={} showPercent={} messagesSection={} localizedMessages={} progressStyle={} progressFont={} progressFontSize={} progressFontStyle={} titleStyle={} messageStyle={}",
-                ANIMATION_SPEED,
+                "[LOAD-UI] script policy: window={}x{} loaderEnabled={} sprite={} grid={}x{} spriteFrameMs={} loaderBounds={} transitionEnabled={} entryMotionMs={} entryOpacityMs={} exitMotionMs={} exitOpacityMs={} overlayEnabled={} overlayAlpha={} overlayFadeInMs={} overlayFadeOutMs={} overlayBounds={} progressEnabled={} progressUpdateMs={} progressStep={} progressLoop={} progressTimelineMs={} progressTimelineFrameMs={} randomMessages={} showText={} showPercent={} messagesSection={} localizedMessages={} progressStyle={} progressFont={} progressFontSize={} progressFontStyle={} titleStyle={} messageStyle={}",
+                loadingUi.window().width(),
+                loadingUi.window().height(),
+                loadingUi.loader().enabled(),
+                loadingUi.loader().spritePath(),
+                loadingUi.loader().rows(),
+                loadingUi.loader().columns(),
+                loadingUi.loader().frameDelayMs(),
+                loadingUi.loader().bounds(),
+                loadingUi.transition().enabled(),
+                loadingUi.transition().entry().motion().totalDurationMs(),
+                loadingUi.transition().entry().opacity().totalDurationMs(),
+                loadingUi.transition().exit().motion().totalDurationMs(),
+                loadingUi.transition().exit().opacity().totalDurationMs(),
+                loadingUi.overlay().enabled(),
                 loadingUi.overlay().targetAlpha(),
-                loadingUi.overlay().fadeInMs(),
-                loadingUi.overlay().fadeOutMs(),
-                loadingUi.overlay().frameDelayMs(),
+                loadingUi.overlay().fadeIn().durationMs(),
+                loadingUi.overlay().fadeOut().durationMs(),
+                loadingUi.overlay().bounds(launcher.getFrame().getWidth(), launcher.getFrame().getHeight()),
                 loadingUi.progress().enabled(),
                 loadingUi.progress().updateMs(),
                 loadingUi.progress().step(),
@@ -106,52 +128,55 @@ public class LoadStatus extends LoadingManager {
         long queuedAt = System.nanoTime();
         SwingUtilities.invokeLater(() -> {
             logUiQueueDelay("initializeLoadingFrame", queuedAt);
-            initializeLoadingFrame(index);
+            initializeLoadingFrame(profileIndex);
         });
     }
 
     @Override
-    protected void initializeLoadingFrame(int index) {
+    protected void initializeLoadingFrame(int ignoredProfileIndex) {
         if (!SwingUtilities.isEventDispatchThread()) {
             long queuedAt = System.nanoTime();
             SwingUtilities.invokeLater(() -> {
                 logUiQueueDelay("initializeLoadingFrame.reschedule", queuedAt);
-                initializeLoadingFrame(index);
+                initializeLoadingFrame(ignoredProfileIndex);
             });
             return;
         }
 
         long startedAt = System.nanoTime();
         try {
-            setSize(getFrameWidth(), getFrameHeight());
-            LoadManagerAttributes attributes = attributesList.get(index);
+            setSize(loadingUi.window().width(), loadingUi.window().height());
+            ScriptedLoadingUi.Loader loaderConfig = loadingUi.loader();
 
             createBackgroundPanel(
                     this.engine.getGuiBuilder().getPanelsMap().get("loadPanel"),
-                    attributes.getBgPath(),
-                    attributes.getBlurColor()
+                    loaderConfig.background().image(),
+                    loaderConfig.background().color()
             );
 
-            SpriteAnimation currentLoader = new SpriteAnimation(
-                    engine,
-                    attributes.getSpritePath(),
-                    attributes.getRows(),
-                    attributes.getCols(),
-                    attributes.getDelay(),
-                    new Rectangle(attributes.getBounds())
-            );
-            currentLoader.setBounds(attributes.getBounds());
+            if (loaderConfig.enabled() && !loaderConfig.spritePath().isBlank()) {
+                Rectangle loaderBounds = loaderConfig.bounds();
+                SpriteAnimation currentLoader = new SpriteAnimation(
+                        engine,
+                        loaderConfig.spritePath(),
+                        loaderConfig.rows(),
+                        loaderConfig.columns(),
+                        loaderConfig.frameDelayMs(),
+                        new Rectangle(loaderBounds)
+                );
+                currentLoader.setBounds(loaderBounds);
+                backgroundPanel.add(currentLoader);
+            }
             backgroundPanel.setVisible(true);
-            backgroundPanel.add(currentLoader);
 
-            setupLabels(attributes);
+            setupLabels(loaderConfig);
             setAlwaysOnTop(loadingUi.window().alwaysOnTop());
 
             int cornerRadius = loadingUi.window().cornerRadius();
             setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius));
             initInjector.setContent(true);
         } catch (Exception error) {
-            Engine.getLOGGER().error("Unable to initialize loading frame", error);
+            Engine.getLOGGER().error("Unable to initialize scripted loading frame", error);
         } finally {
             long elapsed = System.nanoTime() - startedAt;
             if (elapsed >= SLOW_INIT_WARN_NANOS) {
@@ -162,12 +187,12 @@ public class LoadStatus extends LoadingManager {
         }
     }
 
-    private void setupLabels(LoadManagerAttributes attributes) {
+    private void setupLabels(ScriptedLoadingUi.Loader loaderConfig) {
         if (!SwingUtilities.isEventDispatchThread()) {
             long queuedAt = System.nanoTime();
             SwingUtilities.invokeLater(() -> {
                 logUiQueueDelay("setupLabels.reschedule", queuedAt);
-                setupLabels(attributes);
+                setupLabels(loaderConfig);
             });
             return;
         }
@@ -208,7 +233,7 @@ public class LoadStatus extends LoadingManager {
                 applyLabelTypography(
                         loaderText,
                         loadingUi.typography().message(),
-                        attributes.getDescColor()
+                        loaderConfig.messageColor()
                 );
             }
             if (titleLabel != null) {
@@ -218,7 +243,7 @@ public class LoadStatus extends LoadingManager {
                 applyLabelTypography(
                         titleLabel,
                         loadingUi.typography().title(),
-                        attributes.getTitleColor()
+                        loaderConfig.titleColor()
                 );
             }
         } catch (Exception error) {
@@ -227,7 +252,7 @@ public class LoadStatus extends LoadingManager {
     }
 
     private void applyProgressTypography(ProgressBar progressBar,
-                                         LoadingUiScriptConfig.Progress progressConfig) {
+                                         ScriptedLoadingUi.Progress progressConfig) {
         Font currentFont = progressBar.getTextFont();
         String fontName = valueOr(progressConfig.fontName(), currentFont.getFamily());
         int fontSize = progressConfig.fontSize() > 0
@@ -241,7 +266,7 @@ public class LoadStatus extends LoadingManager {
     }
 
     private void applyLabelTypography(JLabel label,
-                                      LoadingUiScriptConfig.TextStyle textConfig,
+                                      ScriptedLoadingUi.TextStyle textConfig,
                                       String fallbackColor) {
         String requestedStyle = valueOr(textConfig.styleName(), "default");
         StyleAttributes style = engine.getStyleProvider().getStyle("label", requestedStyle);
@@ -277,6 +302,35 @@ public class LoadStatus extends LoadingManager {
     }
 
     @Override
+    public void animateLoadingWindow(boolean isEntry) {
+        scriptedWindowAnimator.animate(isEntry);
+    }
+
+    @Override
+    public void toggleVisibility() {
+        scriptedWindowAnimator.toggleVisibility();
+    }
+
+    @Override
+    protected void updateLoadingFramePosition() {
+        long queuedAt = System.nanoTime();
+        SwingUtilities.invokeLater(() -> {
+            logUiQueueDelay("updateLoadingFramePosition", queuedAt);
+            if (!isAnimating()) {
+                Point target = loadingUi.transition()
+                        .entry()
+                        .motion()
+                        .to()
+                        .resolve(this, getLocation());
+                setLocation(target);
+            }
+            if (overlayController != null) {
+                overlayController.refreshBounds();
+            }
+        });
+    }
+
+    @Override
     public void fadeIn() {
         long listenerRegisteredAt = System.nanoTime();
         initInjector.addListener(initialized -> {
@@ -291,14 +345,19 @@ public class LoadStatus extends LoadingManager {
                     edtLagWatchdog.start();
                     changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
                     setVisible(true);
-                    overlayController().fadeIn(
-                            loadingUi.overlay().targetAlpha(),
-                            loadingUi.overlay().fadeInMs(),
-                            null
-                    );
+                    if (loadingUi.overlay().enabled()) {
+                        ScriptedLoadingUi.Fade fade = loadingUi.overlay().fadeIn();
+                        overlayController().fadeIn(
+                                loadingUi.overlay().targetAlpha(),
+                                fade.durationMs(),
+                                fade.frameDelayMs(),
+                                fade.curve(),
+                                null
+                        );
+                    }
                     startProgressAnimator();
                 } catch (Exception error) {
-                    Engine.getLOGGER().error("Unable to fade in loading overlay", error);
+                    Engine.getLOGGER().error("Unable to fade in scripted loading UI", error);
                 }
             });
         });
@@ -317,19 +376,34 @@ public class LoadStatus extends LoadingManager {
                 if (progressBar != null) {
                     progressBar.setVisible(false);
                 }
-                overlayController().fadeOut(loadingUi.overlay().fadeOutMs(), () -> {
-                    setVisible(false);
-                    edtLagWatchdog.stop();
-                    JPanel mainFramePanel = loggedForm.getPanel();
-                    if (mainFramePanel != null) {
-                        mainFramePanel.revalidate();
-                        mainFramePanel.repaint();
-                    }
-                });
+
+                Runnable complete = this::completeFadeOut;
+                if (loadingUi.overlay().enabled() && overlayController != null) {
+                    ScriptedLoadingUi.Fade fade = loadingUi.overlay().fadeOut();
+                    overlayController.fadeOut(
+                            fade.durationMs(),
+                            fade.frameDelayMs(),
+                            fade.curve(),
+                            complete
+                    );
+                } else {
+                    complete.run();
+                }
             } catch (Exception error) {
-                Engine.getLOGGER().error("Unable to fade out loading overlay", error);
+                Engine.getLOGGER().error("Unable to fade out scripted loading UI", error);
+                completeFadeOut();
             }
         });
+    }
+
+    private void completeFadeOut() {
+        setVisible(false);
+        edtLagWatchdog.stop();
+        JPanel mainFramePanel = loggedForm.getPanel();
+        if (mainFramePanel != null) {
+            mainFramePanel.revalidate();
+            mainFramePanel.repaint();
+        }
     }
 
     private void startProgressAnimator() {
@@ -350,6 +424,10 @@ public class LoadStatus extends LoadingManager {
 
     private LayeredPaneOverlay overlayController() {
         if (overlayController == null) {
+            int defaultFrameDelayMs = Math.min(
+                    loadingUi.overlay().fadeIn().frameDelayMs(),
+                    loadingUi.overlay().fadeOut().frameDelayMs()
+            );
             overlayController = new LayeredPaneOverlay(
                     launcher.getFrame().getLayeredPane(),
                     () -> loadingUi.overlay().bounds(
@@ -358,7 +436,7 @@ public class LoadStatus extends LoadingManager {
                     ),
                     loadingUi.overlay().color(),
                     loadingUi.overlay().name(),
-                    loadingUi.overlay().frameDelayMs(),
+                    defaultFrameDelayMs,
                     Engine.getLOGGER(),
                     "[LOAD-UI]"
             );

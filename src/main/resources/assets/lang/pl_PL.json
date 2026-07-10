@@ -125,6 +125,15 @@
     "playing": "Gra na serwerze {server}",
     "login": "Login użytkownika: {login}"
   },
+  "discord": {
+    "selecting": "Wybiera serwer {server}",
+    "preparing": "Przygotowuje {server}",
+    "downloading": "Pobiera pliki dla {server}",
+    "verifying": "Sprawdza klienta {server}",
+    "launching": "Uruchamia {server}",
+    "failed": "Nie udało się uruchomić {server}",
+    "cancelled": "Anulowano uruchamianie {server}"
+  },
   "server": {
     "updating": "Aktualizowanie serwera...",
     "serverOff": "Serwer jest wyłączony",

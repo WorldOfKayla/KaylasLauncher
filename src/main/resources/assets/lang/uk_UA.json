@@ -125,6 +125,15 @@
     "playing": "Грає на {server}",
     "login": "Логін користувача: {login}"
   },
+  "discord": {
+    "selecting": "Обирає сервер {server}",
+    "preparing": "Готує {server}",
+    "downloading": "Завантажує файли для {server}",
+    "verifying": "Перевіряє клієнт {server}",
+    "launching": "Запускає {server}",
+    "failed": "Не вдалося запустити {server}",
+    "cancelled": "Запуск {server} скасовано"
+  },
   "server": {
     "updating": "Оновлення сервера...",
     "serverOff": "Сервер вимкнено",

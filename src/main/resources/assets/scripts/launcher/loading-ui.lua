@@ -1,38 +1,182 @@
--- Launcher-owned loading UI configuration and renderer.
+-- Kayla's Launcher loading UI policy.
 --
--- KaylasUIEngine provides the window/timer/Lua execution/draw primitives.
--- KaylasLauncher owns visual policy and render logic here.
+-- This script is the single source of truth for the loader appearance and animation.
+-- KaylasUIEngine only validates these tables and executes the requested transitions.
+
+local function position(reference, reference_x, reference_y, window_x, window_y, offset_x, offset_y)
+    return {
+        reference = reference,
+        referenceX = reference_x,
+        referenceY = reference_y,
+        windowX = window_x,
+        windowY = window_y,
+        offsetX = offset_x or 0,
+        offsetY = offset_y or 0
+    }
+end
+
+local function cubic_bezier(x1, y1, x2, y2)
+    return {
+        type = "cubicBezier",
+        x1 = x1,
+        y1 = y1,
+        x2 = x2,
+        y2 = y2
+    }
+end
 
 local loading = {
-    overlay = {
-        name = "loadingOverlay",
-        color = "#000000",
-
-        -- 0.0 .. 1.0. Converted to Swing alpha 0..255 by the launcher.
-        opacity = 0.70,
-
-        -- Fade timing in milliseconds.
-        fadeInMs = 220,
-        fadeOutMs = 240,
-        frameDelayMs = 32,
-
-        -- Overlay geometry is launcher policy.
-        -- x/y are relative to the launcher frame layered pane.
-        x = 0,
-        y = 0,
-
-        -- Use -1 to follow the current frame size.
-        width = -1,
-        height = -1
-    },
-
     window = {
+        width = 500,
+        height = 150,
         alwaysOnTop = true,
         cornerRadius = 15
     },
 
-    -- Typography of the loading-window labels.
-    -- Empty font/color values inherit them from the selected label style.
+    -- The launcher setting loaderIndex selects one of these profiles (0-based).
+    -- Every sprite/background detail lives here rather than in engine.json.
+    loader = {
+        profiles = {
+            {
+                enabled = true,
+                sprite = {
+                    path = "assets/ui/sprites/loaderFox.png",
+                    rows = 3,
+                    columns = 5,
+                    frameDelayMs = 55,
+                    bounds = {
+                        x = 30,
+                        y = 40,
+                        width = 64,
+                        height = 64
+                    }
+                },
+                background = {
+                    image = "assets/ui/img/bg/season/summer.png",
+                    color = "#b3a8998a"
+                },
+                titleColor = "#252424",
+                messageColor = "#7534d4"
+            },
+            {
+                enabled = true,
+                sprite = {
+                    path = "assets/ui/sprites/exp.png",
+                    rows = 7,
+                    columns = 6,
+                    frameDelayMs = 50,
+                    bounds = {
+                        x = 30,
+                        y = 40,
+                        width = 64,
+                        height = 64
+                    }
+                },
+                background = {
+                    image = "assets/ui/img/bg/season/summer.png",
+                    color = "#b3a8998a"
+                },
+                titleColor = "#ffffff",
+                messageColor = "#473c3c"
+            }
+        }
+    },
+
+    -- Floating loader-window animation.
+    -- Motion and opacity are independent channels and may use different speeds, delays and easing.
+    transition = {
+        enabled = true,
+
+        entry = {
+            motion = {
+                enabled = true,
+                delayMs = 0,
+
+                -- Controls the speed at which the loader drops into place.
+                durationMs = 420,
+                frameDelayMs = 16,
+                easing = cubic_bezier(0.16, 1.0, 0.30, 1.0),
+
+                -- referenceX/referenceY choose a point on the launcher frame.
+                -- windowX/windowY choose the point on the loader window attached to it.
+                -- This starts above the frame and ends in its center.
+                from = position("frame", 0.5, 0.0, 0.5, 1.0, 0, -12),
+                to = position("frame", 0.5, 0.5, 0.5, 0.5, 0, 0)
+            },
+
+            opacity = {
+                enabled = true,
+                delayMs = 35,
+                durationMs = 250,
+                frameDelayMs = 16,
+                easing = "easeOutCubic",
+                from = 0.0,
+                to = 1.0
+            }
+        },
+
+        exit = {
+            motion = {
+                enabled = true,
+                delayMs = 0,
+                durationMs = 300,
+                frameDelayMs = 16,
+                easing = "easeInCubic",
+
+                -- current keeps the exact current position as the start point.
+                from = {
+                    reference = "current",
+                    offsetX = 0,
+                    offsetY = 0
+                },
+
+                -- Move beyond the right edge of the launcher frame.
+                to = position("frame", 1.0, 0.5, 0.0, 0.5, 24, 0)
+            },
+
+            opacity = {
+                enabled = true,
+                delayMs = 40,
+                durationMs = 210,
+                frameDelayMs = 16,
+                easing = "easeInQuad",
+                from = 1.0,
+                to = 0.0
+            }
+        }
+    },
+
+    -- Main-frame darkening behind the floating loader window.
+    overlay = {
+        enabled = true,
+        name = "loadingOverlay",
+        color = "#000000",
+
+        -- 0.0 .. 1.0; alpha = 0 .. 255 is also accepted.
+        opacity = 0.70,
+
+        -- Independent darkening and clearing speeds.
+        fadeIn = {
+            durationMs = 220,
+            frameDelayMs = 16,
+            easing = "easeOutQuad"
+        },
+        fadeOut = {
+            durationMs = 260,
+            frameDelayMs = 16,
+            easing = "easeInOutSine"
+        },
+
+        -- Exact darkened region relative to the launcher's layered pane.
+        -- -1 follows the current launcher width or height.
+        bounds = {
+            x = 0,
+            y = 0,
+            width = -1,
+            height = -1
+        }
+    },
+
     typography = {
         title = {
             style = "titleBold",
@@ -53,17 +197,13 @@ local loading = {
 
     progress = {
         enabled = true,
-
-        -- Named profile from assets/styles/progressBar.json.
         style = "progressMini",
 
-        -- Text font override. Empty/0 values inherit from the named style.
         font = "FSElliotPro",
         fontSize = 13,
-        fontStyle = "plain", -- plain | bold | italic | boldItalic
+        fontStyle = "plain",
         textColor = "#9552f8",
 
-        -- Progress speed policy. Smaller updateMs and larger step = faster fill.
         updateMs = 85,
         step = 4,
         maxValue = -1,
@@ -71,48 +211,22 @@ local loading = {
         cycleDelayMs = 16,
         loop = true,
 
-        -- Entrance/exit animation policy.
         timelineDurationMs = 256,
         timelineFrameDelayMs = 32,
         animateEntrance = true,
         animateExit = true,
 
-        -- Text policy. Messages are read from progressMessages in the active assets/lang/* locale.
         showText = true,
         showPercent = false,
         randomMessages = true,
         resetOnStop = true,
         hideOnStop = true,
 
-        -- Primary localized source: the complete section in assets/lang/<locale>.json.
         messagesSection = "progressMessages",
-
-        -- Legacy fallback used only when the localized section is absent.
         messagesResource = "assets/messages.json",
         animationConfigResource = "assets/animation_config.json",
-
         messageKeys = {}
     }
 }
-
-local function resolve_size(value, fallback)
-    if value == nil or value < 0 then
-        return fallback
-    end
-    return value
-end
-
-function loading.overlay.render(ctx, draw)
-    local overlay = loading.overlay
-    local state = ctx.state or {}
-    local alpha = state.alpha or 0
-
-    local x = overlay.x or 0
-    local y = overlay.y or 0
-    local width = resolve_size(overlay.width, ctx.width)
-    local height = resolve_size(overlay.height, ctx.height)
-
-    draw.fillRect(x, y, width, height, overlay.color, alpha)
-end
 
 return loading

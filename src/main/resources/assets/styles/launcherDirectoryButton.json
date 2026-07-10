@@ -1,0 +1,14 @@
+{
+  "styles": {
+    "launcherDirectoryButton": {
+      "default": {
+        "name": "Launcher directory button",
+        "background": "#00000000",
+        "opaque": false
+      },
+      "altButton": {
+        "extends": "default"
+      }
+    }
+  }
+}

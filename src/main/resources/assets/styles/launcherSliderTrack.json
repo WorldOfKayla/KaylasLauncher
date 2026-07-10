@@ -1,0 +1,14 @@
+{
+  "styles": {
+    "launcherSliderTrack": {
+      "default": {
+        "name": "Launcher slider track",
+        "background": "#00000000",
+        "opaque": false
+      },
+      "slidingOut": {
+        "extends": "default"
+      }
+    }
+  }
+}

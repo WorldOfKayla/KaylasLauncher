@@ -110,6 +110,10 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void onDownloadStart() {
+        core.getLauncher().getDiscordPresence().showDownloading(
+                core.getActionHandler().getCurrentServer(),
+                core.getLauncher().getUser().getLogin()
+        );
         SwingUtilities.invokeLater(() -> {
             core.getLauncher().getPanelVisibility().displayPanel("loggedForm->false|newsForm->false|download->true");
             core.getLauncher().getLoadingManager().toggleVisibility();
@@ -119,6 +123,10 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void onFilesLoaded() {
+        core.getLauncher().getDiscordPresence().showVerifying(
+                core.getActionHandler().getCurrentServer(),
+                core.getLauncher().getUser().getLogin()
+        );
         Engine.getLOGGER().debug("--==|Files loaded|==--");
         if (!Files.isRegularFile(core.getGameLauncher().getJavaExecutablePath())) {
             throw new IllegalStateException("Required runtime was downloaded but no Java executable was found: "
@@ -255,6 +263,10 @@ public class FileLoaderImpl implements IFileLoaderListener {
 
     @Override
     public void onCancel() {
+        core.getLauncher().getDiscordPresence().showCancelled(
+                core.getActionHandler().getCurrentServer(),
+                core.getLauncher().getUser().getLogin()
+        );
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
         core.getLauncher().shutdownExecutorService();

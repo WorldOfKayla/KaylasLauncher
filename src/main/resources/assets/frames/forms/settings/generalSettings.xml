@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui>
     <panels>
         <panel id="generalSettings">
@@ -32,12 +33,20 @@
                                 <component type="label" fontSize="12" style="promptLabel" localeKey="settings.gameFiles" id="langBoxLabel">
                                     <bounds x="40" y="345" width="250" height="50" />
                                 </component>
-                                <component type="fileSelector" selectionMode="DIRECTORIES_ONLY" id="homeDir" imageIcon="fa:folder" iconWidth="20" iconHeight="24" initialValue="config#homeDir">
+                                <component
+                                    type="launcherDirectoryControl"
+                                    id="homeDir"
+                                    style="default"
+                                    initialValue="config#homeDir"
+                                    opaque="false"
+                                    visible="true">
                                     <bounds x="40" y="380" width="380" height="35" />
-                                    <styles>
-                                        <style target="textField" name="textFieldMain" />
-                                        <style target="button" name="altButton" />
-                                    </styles>
+                                    <properties>
+                                        <property name="launcher.setting.key" value="homeDir" />
+                                    </properties>
+                                    <scripts>
+                                        <script event="init" path="assets/scripts/launcher/composite-controls.lua" />
+                                    </scripts>
                                 </component>
                             </childComponents>
                         </panel>

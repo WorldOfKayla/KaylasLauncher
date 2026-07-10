@@ -14,7 +14,6 @@ import org.takesome.launcher.gui.ActionHandler;
 import javax.swing.SwingUtilities;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,20 +51,18 @@ public class Core implements GameListener {
     }
 
     private void bindDiscordPresence(ServerAttributes currentServer) {
-        this.actionHandler.getEngine().getDiscord().setSmallImageText(currentServer.getServerDescription());
-        this.actionHandler.getEngine().getDiscord().discordRpcStart(
-                this.actionHandler.getEngine().getLANG().getStringWithKey("game.login",
-                        new String[]{"login"},
-                        new String[]{this.launcher.getUser().getLogin()}),
-                this.actionHandler.getEngine().getLANG().getStringWithKey("game.playing",
-                        new String[]{"server"},
-                        new String[]{safe(currentServer.getServerName()) + ' ' + safe(currentServer.getServerVersion())}),
-                safe(currentServer.getServerName()).toLowerCase(Locale.ROOT)
+        this.launcher.getDiscordPresence().showPreparing(
+                currentServer,
+                this.launcher.getUser().getLogin()
         );
     }
 
     @Override
     public void onGameStart(ServerAttributes serverAttributes) {
+        this.launcher.getDiscordPresence().showPlaying(
+                serverAttributes,
+                this.launcher.getUser().getLogin()
+        );
         SwingUtilities.invokeLater(() -> {
             this.launcher.getFrame().setVisible(false);
             this.getActionHandler().getLauncher().getSOUND().playSound("other", "start");
@@ -102,6 +99,10 @@ public class Core implements GameListener {
 
     @Override
     public void onGameFailed(ServerAttributes serverAttributes, Throwable throwable, int exitCode) {
+        this.launcher.getDiscordPresence().showLaunchFailed(
+                serverAttributes,
+                this.launcher.getUser().getLogin()
+        );
         int normalizedExitCode = exitCode <= 0 ? 1 : exitCode;
         Engine.LOGGER.error("=== GAME CLIENT {} FAILED by {} exitCode={} ===",
                 serverAttributes == null ? "unknown" : safe(serverAttributes.getServerName()),

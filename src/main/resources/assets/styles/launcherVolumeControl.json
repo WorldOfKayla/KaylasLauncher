@@ -1,0 +1,11 @@
+{
+  "styles": {
+    "launcherVolumeControl": {
+      "default": {
+        "name": "Launcher volume control",
+        "background": "#00000000",
+        "opaque": false
+      }
+    }
+  }
+}

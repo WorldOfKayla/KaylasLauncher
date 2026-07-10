@@ -1,0 +1,11 @@
+{
+  "styles": {
+    "launcherRamControl": {
+      "default": {
+        "name": "Launcher RAM control",
+        "background": "#00000000",
+        "opaque": false
+      }
+    }
+  }
+}

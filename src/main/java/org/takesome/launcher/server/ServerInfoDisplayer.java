@@ -63,10 +63,19 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
     @Override
     public void onComboboxClose(Combobox combobox) {
         this.launcher.getExecutorServiceProvider().submitTask(() -> {
-            if (Arrays.stream(this.user.getAuth().getUserDataLoader().getUserServersArray()).count() == 1) {
-                displayServerInfo(0);
-            } else {
-                displayServerInfo(combobox.getSelectedIndex());
+            int selectedIndex = Arrays.stream(
+                    this.user.getAuth().getUserDataLoader().getUserServersArray()
+            ).count() == 1 ? 0 : combobox.getSelectedIndex();
+            displayServerInfo(selectedIndex);
+
+            List<ServerAttributes> servers = this.user.getAuth()
+                    .getUserDataLoader()
+                    .getUserServersAttributes();
+            if (servers != null && selectedIndex >= 0 && selectedIndex < servers.size()) {
+                launcher.getDiscordPresence().showServerSelection(
+                        servers.get(selectedIndex),
+                        user.getLogin()
+                );
             }
         }, "comboboxClose");
         this.getPanel().repaint();

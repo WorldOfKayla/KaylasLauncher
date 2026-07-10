@@ -1,0 +1,11 @@
+{
+  "styles": {
+    "launcherSettingSpinner": {
+      "default": {
+        "name": "Launcher setting spinner",
+        "background": "#00000000",
+        "opaque": false
+      }
+    }
+  }
+}

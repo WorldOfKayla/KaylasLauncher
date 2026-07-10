@@ -1,0 +1,11 @@
+{
+  "styles": {
+    "launcherDirectoryControl": {
+      "default": {
+        "name": "Launcher directory control",
+        "background": "#00000000",
+        "opaque": false
+      }
+    }
+  }
+}

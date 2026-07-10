@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui>
+    <childComponents>
+        <component
+            type="textField"
+            id="path"
+            style="textFieldMain"
+            initialValue="config#homeDir"
+            editable="false"
+            focusable="false"
+            opaque="false"
+            visible="true">
+            <bounds x="0" y="0" width="305" height="35" />
+        </component>
+
+        <component
+            type="launcherDirectoryButton"
+            id="browse"
+            style="altButton"
+            imageIcon="fa:folder"
+            iconWidth="20"
+            iconHeight="24"
+            cursor="hand"
+            opaque="false"
+            visible="true">
+            <bounds x="315" y="0" width="65" height="35" />
+        </component>
+    </childComponents>
+</ui>

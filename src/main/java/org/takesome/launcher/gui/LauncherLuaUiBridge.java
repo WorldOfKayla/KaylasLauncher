@@ -1,16 +1,25 @@
 package org.takesome.launcher.gui;
 
+import org.luaj.vm2.LuaValue;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
+import org.takesome.kaylasEngine.gui.components.constructor.ConstructedCompositeComponent;
+import org.takesome.kaylasEngine.gui.components.textfield.TextField;
+import org.takesome.kaylasEngine.gui.scripting.UiScriptEvent;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.kaylasEngine.server.ServerIdentity;
 import org.takesome.launcher.auth.AuthStatus;
+import org.takesome.launcher.gui.components.LauncherComponentLibrary;
 
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -75,6 +84,16 @@ final class LauncherLuaUiBridge {
             context.on(SERVER_CORE_ICONS_EVENT,
                     "launcher.serverBox.coreIcons",
                     event -> applyServerBoxCoreIcons(DEFAULT_SERVER_BOX_ID));
+            context.on(
+                    LauncherComponentLibrary.LUA_VALUE_CHANGED_EVENT,
+                    "launcher.settings.constructor.valueChanged",
+                    this::applyConstructedSettingValue
+            );
+            context.on(
+                    LauncherComponentLibrary.LUA_DIRECTORY_REQUESTED_EVENT,
+                    "launcher.settings.constructor.directoryRequested",
+                    this::openConstructedDirectoryChooser
+            );
         } catch (Exception error) {
             Engine.getLOGGER().warn("Unable to register launcher Lua UI bridge: {}", error.getMessage());
         }
@@ -111,6 +130,135 @@ final class LauncherLuaUiBridge {
                 JOptionPane.WARNING_MESSAGE,
                 false
         );
+    }
+
+    private void applyConstructedSettingValue(UiScriptEvent event) {
+        if (event == null || !event.hasPayload() || !event.payload().istable()) {
+            Engine.getLOGGER().warn("Constructor setting event ignored because payload is not a table.");
+            return;
+        }
+
+        LuaValue payload = event.payload();
+        String key = payload.get("key").optjstring("").trim();
+        Object value = luaValue(payload.get("value"));
+        if (key.isBlank() || value == null) {
+            Engine.getLOGGER().warn(
+                    "Constructor setting event ignored: key='{}', value='{}'",
+                    key,
+                    value
+            );
+            return;
+        }
+
+        if (event.source() != null
+                && event.source().component() instanceof ConstructedCompositeComponent root) {
+            root.setValue(value);
+        }
+
+        launcher.getConfig().setConfigValue(key, value);
+        if ("volume".equals(key)) {
+            int volume = intValue(value, (int) Math.round(launcher.getConfig().getVolume()));
+            launcher.getConfig().setVolume(volume);
+            launcher.getConfig().getConfig().put("volume", volume);
+            launcher.getSOUND().getSoundPlayer().changeActiveVolume(volume / 100.0f - 0.15F);
+        }
+        Engine.getLOGGER().debug(
+                "Constructor setting updated: key='{}', value='{}', source='{}'",
+                key,
+                value,
+                event.sourceId()
+        );
+    }
+
+    private void openConstructedDirectoryChooser(UiScriptEvent event) {
+        if (event == null
+                || event.source() == null
+                || !(event.source().component() instanceof ConstructedCompositeComponent root)) {
+            Engine.getLOGGER().warn("Directory constructor event has no composite source.");
+            return;
+        }
+
+        String key = event.hasPayload() && event.payload().istable()
+                ? event.payload().get("key").optjstring("homeDir").trim()
+                : "homeDir";
+        SwingUtilities.invokeLater(() -> chooseDirectory(root, key));
+    }
+
+    private void chooseDirectory(ConstructedCompositeComponent root, String settingKey) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setDialogTitle(engine.getLANG().getString("settings.homeDir"));
+
+        File currentDirectory = directoryFrom(root.getValue());
+        if (currentDirectory != null) {
+            chooser.setCurrentDirectory(currentDirectory);
+        }
+
+        int result = chooser.showOpenDialog(engine.getFrame());
+        if (result != JFileChooser.APPROVE_OPTION || chooser.getSelectedFile() == null) {
+            return;
+        }
+
+        String selectedPath = chooser.getSelectedFile().toPath()
+                .toAbsolutePath()
+                .normalize()
+                .toString();
+        JComponent pathNode = root.getNode(LauncherComponentLibrary.NODE_PATH);
+        if (pathNode instanceof TextField textField) {
+            // setText emits textChanged; the constructor route updates the root and configuration.
+            textField.setText(selectedPath);
+        } else {
+            root.setValue(selectedPath);
+            launcher.getConfig().setConfigValue(settingKey, selectedPath);
+        }
+        Engine.getLOGGER().info(
+                "Launcher directory selected through constructor control: key='{}', path='{}'",
+                settingKey,
+                selectedPath
+        );
+    }
+
+    private File directoryFrom(Object value) {
+        if (value == null || String.valueOf(value).isBlank()) {
+            return null;
+        }
+        try {
+            Path path = Path.of(String.valueOf(value)).toAbsolutePath().normalize();
+            File file = path.toFile();
+            return file.isDirectory() ? file : file.getParentFile();
+        } catch (InvalidPathException error) {
+            Engine.getLOGGER().debug("Ignoring invalid directory value '{}'.", value);
+            return null;
+        }
+    }
+
+    private Object luaValue(LuaValue value) {
+        if (value == null || value.isnil()) {
+            return null;
+        }
+        if (value.isboolean()) {
+            return value.toboolean();
+        }
+        if (value.isnumber()) {
+            double numeric = value.todouble();
+            if (numeric == Math.rint(numeric)) {
+                return (int) numeric;
+            }
+            return numeric;
+        }
+        return value.tojstring();
+    }
+
+    private int intValue(Object value, int fallback) {
+        if (value instanceof Number number) {
+            return number.intValue();
+        }
+        try {
+            return Integer.parseInt(String.valueOf(value));
+        } catch (NumberFormatException error) {
+            return fallback;
+        }
     }
 
     private void applyServerBoxCoreIcons(String componentId) {

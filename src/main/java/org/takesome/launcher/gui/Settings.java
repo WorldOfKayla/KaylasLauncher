@@ -7,15 +7,8 @@ import org.takesome.kaylasEngine.gui.components.checkbox.CheckBoxListener;
 import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.combobox.ComboboxListener;
-import org.takesome.kaylasEngine.gui.components.compositeSlider.CompositeSlider;
-import org.takesome.kaylasEngine.gui.components.compositeSlider.SliderListener;
-import org.takesome.kaylasEngine.gui.components.fileSelector.FileSelector;
-import org.takesome.kaylasEngine.gui.components.slider.Slider;
-import org.takesome.kaylasEngine.gui.components.spinner.Spinner;
-import org.takesome.kaylasEngine.gui.components.spinner.SpinnerListener;
+import org.takesome.kaylasEngine.gui.components.constructor.ConstructedCompositeComponent;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
-import org.takesome.kaylasEngine.gui.components.textfield.TextField;
-import org.takesome.kaylasEngine.gui.components.textfield.TextFieldListener;
 import org.takesome.kaylasEngine.utils.DataInjector;
 import org.takesome.launcher.LauncherValidator;
 
@@ -26,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Settings extends ComponentsAccessor implements SliderListener, ComboboxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
+public class Settings extends ComponentsAccessor implements ComboboxListener, CheckBoxListener {
     private static final String LANGUAGE_COMBOBOX_ID = "lang";
     private static final String FLAG_ICON_ROOT = "assets/ui/icons/flags/";
     private static final String FLAG_ICON_EXTENSION = ".svg";
@@ -41,13 +34,9 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
     public Settings(Launcher launcher) {
         super(launcher.getGuiBuilder(), UI_PROVIDER.panels().settings(), List.of(
                 TextArea.class,
-                Spinner.class,
                 Checkbox.class,
                 Combobox.class,
-                TextField.class,
-                Slider.class,
-                CompositeSlider.class,
-                FileSelector.class
+                ConstructedCompositeComponent.class
         ));
         this.launcher = launcher;
         this.ui = UI_PROVIDER;
@@ -88,14 +77,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
 
     public void addListeners() {
         for (JComponent component : this.getComponentsForPanel(ui.forms().settingsFields())) {
-            if (component instanceof CompositeSlider compositeSlider) {
-                compositeSlider.setSliderListener(this);
-            }
-
-            if (component instanceof TextField textField) {
-                textField.setTextFieldListener(this);
-            }
-
             if (component instanceof Checkbox checkbox) {
                 checkbox.setCheckBoxListener(this);
             }
@@ -104,9 +85,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
                 configureLanguageCombobox(combobox);
             }
 
-            if (component instanceof Spinner spinner) {
-                spinner.setSpinnerListener(this);
-            }
         }
     }
 
@@ -174,16 +152,6 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
     }
 
     @Override
-    public void onTextChange(TextField textfield) {
-        if (!textfield.getText().equals("")) {
-            Slider slider = (Slider) this.getComponent(textfield.getName().replace("Text", "Slider"));
-            if (slider != null) {
-                slider.setValue(Integer.parseInt(textfield.getText()));
-            }
-        }
-    }
-
-    @Override
     public void onHover(JCheckBox jCheckBox) {
         DataInjector<String> descInjector = new DataInjector<>();
         descInjector.addListener(desc -> SwingUtilities.invokeLater(() -> {
@@ -208,25 +176,4 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
     public void onDisable(JCheckBox jCheckBox) {
     }
 
-    @Override
-    public void onSpinnerChange(Spinner customJSpinner) {
-        ((Slider) this.getComponent(customJSpinner.getName().replace("Text", "Slider"))).setValue((Integer) customJSpinner.getValue());
-    }
-
-    @Override
-    public void onSliderChange(CompositeSlider compositeSlider) {
-        SwingUtilities.invokeLater(() -> {
-            int value = (int) compositeSlider.getValue();
-            switch (compositeSlider.getName()) {
-                case "volume" -> {
-                    launcher.getConfig().setVolume(value);
-                    launcher.getEngine().getConfig().getConfig().put("volume", value);
-                    launcher.getSOUND().getSoundPlayer().changeActiveVolume(value / 100.0f - 0.15F);
-                }
-                case "ramAmount" -> {
-                    // Reserved for future RAM slider-specific behavior.
-                }
-            }
-        });
-    }
 }

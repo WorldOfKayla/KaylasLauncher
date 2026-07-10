@@ -125,6 +125,15 @@
     "playing": "In gioco su {server}",
     "login": "Login utente: {login}"
   },
+  "discord": {
+    "selecting": "Sta scegliendo il server {server}",
+    "preparing": "Preparazione di {server}",
+    "downloading": "Download dei file per {server}",
+    "verifying": "Verifica del client {server}",
+    "launching": "Avvio di {server}",
+    "failed": "Avvio non riuscito per {server}",
+    "cancelled": "Avvio annullato per {server}"
+  },
   "server": {
     "updating": "Aggiornamento del server...",
     "serverOff": "Server offline",

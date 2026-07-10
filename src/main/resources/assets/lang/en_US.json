@@ -125,6 +125,15 @@
     "playing": "Playing on {server}",
     "login": "User login: {login}"
   },
+  "discord": {
+    "selecting": "Choosing server {server}",
+    "preparing": "Preparing {server}",
+    "downloading": "Downloading files for {server}",
+    "verifying": "Verifying client for {server}",
+    "launching": "Launching {server}",
+    "failed": "Launch failed for {server}",
+    "cancelled": "Launch cancelled for {server}"
+  },
   "server": {
     "updating": "Updating server...",
     "serverOff": "Server off",

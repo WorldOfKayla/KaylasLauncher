@@ -217,6 +217,15 @@
     "playing": "Играет на {server}",
     "login": "Логин: {login}"
   },
+  "discord": {
+    "selecting": "Выбирает сервер {server}",
+    "preparing": "Подготавливает {server}",
+    "downloading": "Загружает файлы для {server}",
+    "verifying": "Проверяет клиент {server}",
+    "launching": "Запускает {server}",
+    "failed": "Не удалось запустить {server}",
+    "cancelled": "Запуск {server} отменён"
+  },
   "server": {
     "updating": "Обновление...",
     "serverOff": "Оффлайн",

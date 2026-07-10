@@ -22,6 +22,10 @@ import org.takesome.launcher.gui.Settings;
 import org.takesome.launcher.gui.SplashScreenWindow;
 import org.takesome.launcher.gui.loadingManager.LoadStatus;
 import org.takesome.launcher.gui.components.LauncherComponentLibrary;
+import org.takesome.launcher.security.SecureProcessIncidentHandler;
+import org.takesome.launcher.security.SecureProcessModuleMonitor;
+import org.takesome.launcher.security.SecureProcess;
+import org.takesome.launcher.security.SecureProcessResult;
 import org.takesome.launcher.user.User;
 
 import javax.swing.*;
@@ -31,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.time.Duration;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +50,16 @@ public class Launcher extends Engine {
     private ActionHandler actionHandler;
     private LauncherBackendClient backendClient;
     private final LauncherDiscordPresence discordPresence;
+    private SecureProcessModuleMonitor secureProcessModuleMonitor;
 
     public static void main(String[] args) {
+        SecureProcessResult secureProcess = SecureProcess.initializeEarly();
+        if (secureProcess.fullyApplied()) {
+            System.out.println("SecureProcess " + secureProcess.nativeVersion() + " active");
+        } else {
+            System.err.println("SecureProcess degraded: " + secureProcess.message());
+        }
+
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.setProperty("file.encoding", "UTF-8");
         SwingUtilities.invokeLater(Launcher::showSplashAndStartLauncher);
@@ -67,6 +80,13 @@ public class Launcher extends Engine {
 
     public Launcher(Rectangle bounds) {
         super(Runtime.getRuntime().availableProcessors(), "forge", CONFIG_FILES);
+        if (SecureProcess.isNativeLibraryLoaded()) {
+            long intervalSeconds = Long.getLong("kaylas.secureProcess.auditIntervalSeconds", 30L);
+            this.secureProcessModuleMonitor = SecureProcessModuleMonitor.start(
+                    Duration.ofSeconds(Math.max(1L, intervalSeconds)),
+                    SecureProcessIncidentHandler::handle
+            );
+        }
         this.discordPresence = new LauncherDiscordPresence(this, "aiden");
         startTime = System.currentTimeMillis();
         this.launcherFile = new File(appPath());
@@ -241,6 +261,10 @@ public class Launcher extends Engine {
         LauncherBackendClient currentBackendClient = backendClient;
         if (currentBackendClient != null) {
             currentBackendClient.close();
+        }
+        SecureProcessModuleMonitor currentMonitor = secureProcessModuleMonitor;
+        if (currentMonitor != null) {
+            currentMonitor.close();
         }
         super.shutdownExecutorService();
     }

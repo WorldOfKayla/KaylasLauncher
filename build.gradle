@@ -200,3 +200,5 @@ tasks.register('nativeDist') {
         }
     }
 }
+
+apply from: 'native/secure-process/secure-process.gradle'

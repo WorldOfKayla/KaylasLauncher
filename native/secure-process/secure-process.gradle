@@ -1,0 +1,35 @@
+import org.gradle.internal.os.OperatingSystem
+
+
+def secureProcessDir = layout.projectDirectory.dir('native/secure-process')
+def secureProcessBuildDir = secureProcessDir.dir('build')
+
+tasks.register('buildSecureProcess', Exec) {
+    group = 'build'
+    description = 'Builds the SecureProcess Windows x64 JNI library with CMake.'
+    onlyIf { OperatingSystem.current().isWindows() }
+    workingDir secureProcessDir
+    commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+            '-File', 'scripts/build-release.ps1'
+}
+
+tasks.register('packageSecureProcess', Copy) {
+    group = 'distribution'
+    description = 'Copies the SecureProcess DLL into the launcher distribution.'
+    dependsOn tasks.named('buildSecureProcess')
+    from secureProcessBuildDir.file('Release/secure_process.dll')
+    into layout.buildDirectory.dir('dist/native')
+}
+
+tasks.register('secureLauncherDist') {
+    group = 'distribution'
+    description = 'Builds the launcher shadow JAR and packages SecureProcess.'
+    dependsOn tasks.named('shadowJar')
+    dependsOn tasks.named('packageSecureProcess')
+    doLast {
+        copy {
+            from tasks.named('shadowJar').flatMap { it.archiveFile }
+            into layout.buildDirectory.dir('dist')
+        }
+    }
+}

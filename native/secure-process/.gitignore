@@ -1,0 +1,7 @@
+build/
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.jvmargs

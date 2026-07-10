@@ -149,6 +149,18 @@ public final class SecureProcessAudit {
         Set<Path> roots = new HashSet<>();
         addRoot(roots, System.getProperty("java.home", ""));
         addRoot(roots, System.getProperty("user.dir", ""));
+
+        SecureProcessResult secureProcess = SecureProcess.currentResult();
+        if (secureProcess != null && secureProcess.nativeLibraryLoaded()) {
+            try {
+                Path loadedLibrary = Path.of(secureProcess.libraryPath()).toAbsolutePath().normalize();
+                Path parent = loadedLibrary.getParent();
+                addRoot(roots, parent == null ? "" : parent.toString());
+            } catch (RuntimeException ignored) {
+                // Keep auditing if a non-path library location was reported.
+            }
+        }
+
         String systemRoot = System.getenv("SystemRoot");
         if (systemRoot != null && !systemRoot.isBlank()) {
             addRoot(roots, Path.of(systemRoot, "System32").toString());

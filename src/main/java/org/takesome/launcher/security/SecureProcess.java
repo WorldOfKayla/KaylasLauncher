@@ -1,8 +1,11 @@
 package org.takesome.launcher.security;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,6 +33,9 @@ public final class SecureProcess {
     private static final String INTEGRITY_REQUIRED_PROPERTY = "kaylas.secureProcess.integrityRequired";
     private static final String LIBRARY_PROPERTY = "kaylas.secureProcess.library";
     private static final String PROFILE_PROPERTY = "kaylas.secureProcess.flags";
+    private static final String SHA256_PROPERTY = "kaylas.secureProcess.sha256";
+    private static final String BUNDLED_RESOURCE = "/native/windows-x86_64/secure_process.dll";
+    private static final String BUNDLED_SHA256 = "1bd304ccfd64ab75d8992e767299e3a33e29d401975590c65dc64025c560505d";
     private static final AtomicReference<SecureProcessResult> RESULT = new AtomicReference<>();
 
     private SecureProcess() {
@@ -164,7 +170,7 @@ public final class SecureProcess {
         );
     }
 
-    private static Path resolveNativeLibrary() {
+    private static Path resolveNativeLibrary() throws IOException {
         String explicitPath = System.getProperty(LIBRARY_PROPERTY, "").trim();
         if (!explicitPath.isEmpty()) {
             Path path = Path.of(explicitPath).toAbsolutePath().normalize();
@@ -172,6 +178,12 @@ public final class SecureProcess {
                 throw new UnsatisfiedLinkError("SecureProcess DLL does not exist: " + path);
             }
             return path;
+        }
+
+        Path bundled = extractBundledNativeLibrary();
+        if (bundled != null) {
+            System.setProperty(SHA256_PROPERTY, BUNDLED_SHA256);
+            return bundled;
         }
 
         String mappedName = System.mapLibraryName("secure_process");
@@ -186,6 +198,46 @@ public final class SecureProcess {
             }
         }
         return null;
+    }
+
+    private static Path extractBundledNativeLibrary() throws IOException {
+        try (InputStream input = SecureProcess.class.getResourceAsStream(BUNDLED_RESOURCE)) {
+            if (input == null) {
+                return null;
+            }
+
+            Path directory = Path.of(
+                    System.getProperty("java.io.tmpdir"),
+                    "kaylas-launcher",
+                    "secure-process",
+                    BUNDLED_SHA256
+            ).toAbsolutePath().normalize();
+            Files.createDirectories(directory);
+
+            Path target = directory.resolve("secure_process.dll");
+            if (Files.isRegularFile(target)) {
+                return target;
+            }
+
+            Path temporary = Files.createTempFile(directory, "secure_process-", ".tmp");
+            try {
+                Files.copy(input, temporary, StandardCopyOption.REPLACE_EXISTING);
+                try {
+                    Files.move(
+                            temporary,
+                            target,
+                            StandardCopyOption.ATOMIC_MOVE,
+                            StandardCopyOption.REPLACE_EXISTING
+                    );
+                } catch (java.nio.file.AtomicMoveNotSupportedException ignored) {
+                    Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } finally {
+                Files.deleteIfExists(temporary);
+            }
+            target.toFile().deleteOnExit();
+            return target;
+        }
     }
 
     private static int parseRequestedFlags() {

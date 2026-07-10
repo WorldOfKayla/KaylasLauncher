@@ -63,9 +63,8 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-tasks.named('processResources').configure { task ->
-    outputs.upToDateWhen { false }
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+tasks.named('processResources').configure {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {

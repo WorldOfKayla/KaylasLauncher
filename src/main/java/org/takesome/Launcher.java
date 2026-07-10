@@ -223,6 +223,15 @@ public class Launcher extends Engine {
         return backendClient;
     }
 
+    @Override
+    public void shutdownExecutorService() {
+        LauncherBackendClient currentBackendClient = backendClient;
+        if (currentBackendClient != null) {
+            currentBackendClient.close();
+        }
+        super.shutdownExecutorService();
+    }
+
     public File getLauncherFile() {
         return launcherFile;
     }

@@ -3,24 +3,23 @@ package org.takesome.launcher.game;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.crash.CrashReportDialog;
+import org.takesome.kaylasEngine.game.CommandLineSanitizer;
+import org.takesome.kaylasEngine.game.JavaRuntimeLocator;
+import org.takesome.kaylasEngine.game.process.ProcessExecution;
 import org.takesome.launcher.Core;
 import org.takesome.launcher.config.Config;
 import org.takesome.launcher.gui.ActionHandler;
 import org.takesome.launcher.user.User;
 
 import javax.swing.SwingUtilities;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
@@ -28,6 +27,7 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     private static final int MAX_PROCESS_OUTPUT_CHARS = 24_000;
 
     private final Config config;
+    private final ProcessExecution processExecution;
     private String mainClass = DEFAULT_MAIN_CLASS;
     private String tweakClassVal = "";
     public final Launcher launcher;
@@ -41,6 +41,7 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
         this.engine = actionHandler.getEngine();
         this.pathBuilders = new PathBuilders(this, config.getHomeDir());
         this.logger = Engine.getLOGGER();
+        this.processExecution = new ProcessExecution(this.logger);
         this.printDebug();
         this.user = actionHandler.getLauncher().getUser();
         this.authLib = new AuthLib(this);
@@ -104,16 +105,13 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
 
             Engine.LOGGER.debug("Executing command: {}", sanitizedProcessArgs());
 
-            Process process = startProcess();
-            notifyGameStart();
+            ProcessExecution.Result result = executeGameProcess();
+            int exitCode = result.exitCode();
+            logger.info("Minecraft process exited with code {} after {} ms", exitCode, result.duration().toMillis());
 
-            String processOutput = readProcessOutput(process);
-            int exitCode = process.waitFor();
-            logger.info("Minecraft process exited with code {}", exitCode);
-
-            if (exitCode != 0) {
+            if (!result.successful()) {
                 Exception launchException = new Exception("Minecraft exited with error code: " + exitCode
-                        + "\nProcess output:\n" + processOutput);
+                        + "\nProcess output:\n" + result.output());
                 reportFailure(launchException, exitCode);
                 return;
             }
@@ -125,6 +123,19 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
         } catch (IOException | RuntimeException error) {
             reportFailure(error, 1);
         }
+    }
+
+    private ProcessExecution.Result executeGameProcess() throws IOException, InterruptedException {
+        Path javaHome = javaHomePath();
+        ProcessExecution.Request request = new ProcessExecution.Request(
+                processArgs,
+                getPathBuilders().buildClientDir(),
+                Map.of("JAVA_HOME", javaHome.toString()),
+                StandardCharsets.UTF_8,
+                MAX_PROCESS_OUTPUT_CHARS,
+                this::notifyGameStart
+        );
+        return processExecution.execute(request);
     }
 
     private void resetLaunchState() {
@@ -151,15 +162,6 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
         }
     }
 
-    private Process startProcess() throws IOException {
-        ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
-        processBuilder.directory(getPathBuilders().buildClientDir().toFile());
-        processBuilder.redirectErrorStream(true);
-        processBuilder.environment().put("JAVA_HOME", javaHomePath().toString());
-        processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
-        return processBuilder.start();
-    }
-
     private Path javaHomePath() {
         Path javaExecutable = getJavaExecutablePath();
         Path binDir = javaExecutable.getParent();
@@ -167,26 +169,6 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
             return binDir.getParent();
         }
         return getPathBuilders().buildRuntimeDir();
-    }
-
-    private String readProcessOutput(Process process) throws IOException {
-        StringBuilder processOutput = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                appendProcessOutputLine(processOutput, line);
-            }
-        }
-        return processOutput.toString();
-    }
-
-    private void appendProcessOutputLine(StringBuilder processOutput, String line) {
-        String normalizedLine = line + System.lineSeparator();
-        int overflow = processOutput.length() + normalizedLine.length() - MAX_PROCESS_OUTPUT_CHARS;
-        if (overflow > 0) {
-            processOutput.delete(0, Math.min(overflow, processOutput.length()));
-        }
-        processOutput.append(normalizedLine);
     }
 
     private void reportFailure(Throwable throwable, int exitCode) {
@@ -283,22 +265,7 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     }
 
     public Path getJavaExecutablePath() {
-        String executableName = isWindows() ? "java.exe" : "java";
-        Path runtimeVersionDir = runtimeVersionDir();
-        if (Files.isDirectory(runtimeVersionDir)) {
-            try (var stream = Files.walk(runtimeVersionDir, 5)) {
-                return stream
-                        .filter(Files::isRegularFile)
-                        .filter(path -> executableName.equalsIgnoreCase(path.getFileName().toString()))
-                        .filter(path -> path.getParent() != null && "bin".equalsIgnoreCase(path.getParent().getFileName().toString()))
-                        .sorted()
-                        .findFirst()
-                        .orElse(expectedJavaExecutable(executableName));
-            } catch (IOException error) {
-                Engine.LOGGER.warn("Unable to inspect runtime directory {}: {}", runtimeVersionDir, error.getMessage());
-            }
-        }
-        return expectedJavaExecutable(executableName);
+        return JavaRuntimeLocator.locate(runtimeVersionDir(), runtimeDirectoryName());
     }
 
     private String runtimeDirectoryName() {
@@ -307,14 +274,6 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
 
     private Path runtimeVersionDir() {
         return getPathBuilders().buildRuntimeDir().resolve(this.gameClient.getJreVersion());
-    }
-
-    private Path expectedJavaExecutable(String executableName) {
-        return runtimeVersionDir().resolve(runtimeDirectoryName()).resolve("bin").resolve(executableName);
-    }
-
-    private boolean isWindows() {
-        return System.getProperty("os.name", "").toLowerCase(Locale.ROOT).contains("win");
     }
 
     public String buildAssetsPath() {
@@ -356,37 +315,11 @@ public class GameLauncher extends org.takesome.kaylasEngine.game.GameLauncher {
     }
 
     private List<String> sanitizedProcessArgs() {
-        List<String> sanitized = new ArrayList<>(processArgs.size());
-        String token = this.user == null ? "" : this.user.getToken();
-        for (int i = 0; i < processArgs.size(); i++) {
-            String argument = processArgs.get(i);
-            if (isSensitiveOption(argument)) {
-                sanitized.add(argument);
-                if (i + 1 < processArgs.size()) {
-                    sanitized.add("***");
-                    i++;
-                }
-                continue;
-            }
-            if (token != null && !token.isBlank() && argument != null && argument.contains(token)) {
-                sanitized.add(argument.replace(token, "***"));
-            } else {
-                sanitized.add(argument);
-            }
-        }
-        return sanitized;
-    }
-
-    private boolean isSensitiveOption(String argument) {
-        if (argument == null) {
-            return false;
-        }
-        String normalized = argument.toLowerCase(Locale.ROOT);
-        return normalized.equals("--accesstoken")
-                || normalized.equals("--access_token")
-                || normalized.equals("--auth_access_token")
-                || normalized.equals("--clienttoken")
-                || normalized.equals("--client_token");
+        String token = this.user == null ? null : this.user.getToken();
+        return CommandLineSanitizer.sanitize(
+                processArgs,
+                token == null || token.isBlank() ? List.of() : List.of(token)
+        );
     }
 
     @Override

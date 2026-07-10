@@ -2,29 +2,39 @@ package org.takesome.launcher.gui.loadingManager;
 
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.gui.animation.LayeredPaneOverlay;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
+import org.takesome.kaylasEngine.gui.components.ComponentFactory;
 import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.label.Label;
+import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
+import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBarStyle;
 import org.takesome.kaylasEngine.gui.components.sprite.SpriteAnimation;
+import org.takesome.kaylasEngine.gui.diagnostics.EdtLagWatchdog;
 import org.takesome.kaylasEngine.gui.loadingManager.LoadManagerAttributes;
 import org.takesome.kaylasEngine.gui.loadingManager.LoadingManager;
+import org.takesome.kaylasEngine.gui.styles.StyleAttributes;
 import org.takesome.kaylasEngine.utils.DataInjector;
 import org.takesome.kaylasEngine.utils.animation.AnimationManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
 import static org.takesome.kaylasEngine.utils.FontUtils.hexToColor;
+import static org.takesome.kaylasEngine.utils.FontUtils.styleName;
 
 /**
  * Launcher-specific loading window implementation.
  *
- * <p>The class owns the visual loading overlay, sprite loader, progress animation, and
- * lightweight EDT diagnostics used to identify UI stalls while the loading layer is visible.</p>
+ * <p>Visual primitives, overlay animation, progress animation, and EDT diagnostics are supplied by
+ * KaylasUIEngine. This class only binds launcher components and localization to those services.</p>
  */
 public class LoadStatus extends LoadingManager {
     private static final long UI_QUEUE_WARN_NANOS = 250_000_000L;
@@ -33,14 +43,12 @@ public class LoadStatus extends LoadingManager {
     private final ComponentsAccessor loadPanel, loggedForm;
     private final Launcher launcher;
     private final LoadingUiScriptConfig loadingUi;
-    private final EdtLagWatchdog edtLagWatchdog = new EdtLagWatchdog("LoadStatus");
+    private final EdtLagWatchdog edtLagWatchdog = new EdtLagWatchdog("LoadStatus", Engine.getLOGGER());
 
-    private JProgressBar progressBar;
-    private Label progressText;
-    private JPanel loadingOverlay;
-    private Timer overlayFadeTimer;
-    private int overlayAlpha;
+    private ProgressBar progressBar;
+    private JLabel progressText;
     private ProgressBarAnimator progressBarAnimator;
+    private LayeredPaneOverlay overlayController;
 
     /** Completes when Swing components required by the loading frame are initialized. */
     private final DataInjector<Boolean> initInjector = new DataInjector<>();
@@ -58,17 +66,41 @@ public class LoadStatus extends LoadingManager {
         this.animationManager = new AnimationManager(this, getANIMATION_DURATION(), getANIMATION_SPEED());
         this.animationManager.setAnimationStats(this);
 
-        this.loadPanel = new ComponentsAccessor(this.engine.getGuiBuilder(), "loadPanel", List.of(Label.class, SpriteAnimation.class, JProgressBar.class));
-        this.loggedForm = new ComponentsAccessor(this.engine.getGuiBuilder(), "loggedForm", List.of(Button.class, Combobox.class, Checkbox.class));
+        this.loadPanel = new ComponentsAccessor(
+                this.engine.getGuiBuilder(),
+                "loadPanel",
+                List.of(Label.class, SpriteAnimation.class, ProgressBar.class)
+        );
+        this.loggedForm = new ComponentsAccessor(
+                this.engine.getGuiBuilder(),
+                "loggedForm",
+                List.of(Button.class, Combobox.class, Checkbox.class)
+        );
 
         Engine.getLOGGER().info(
-                "[LOAD-UI] config: animationSpeed={} overlayAlpha={} overlayFadeInMs={} overlayFadeOutMs={} overlayFrameDelayMs={} progressEnabled={}",
+                "[LOAD-UI] config: animationSpeed={} overlayAlpha={} overlayFadeInMs={} overlayFadeOutMs={} overlayFrameDelayMs={} progressEnabled={} progressUpdateMs={} progressStep={} progressLoop={} progressTimelineMs={} progressTimelineFrameMs={} randomMessages={} showText={} showPercent={} messagesSection={} localizedMessages={} progressStyle={} progressFont={} progressFontSize={} progressFontStyle={} titleStyle={} messageStyle={}",
                 ANIMATION_SPEED,
                 loadingUi.overlay().targetAlpha(),
                 loadingUi.overlay().fadeInMs(),
                 loadingUi.overlay().fadeOutMs(),
                 loadingUi.overlay().frameDelayMs(),
-                loadingUi.progress().enabled()
+                loadingUi.progress().enabled(),
+                loadingUi.progress().updateMs(),
+                loadingUi.progress().step(),
+                loadingUi.progress().loop(),
+                loadingUi.progress().timelineDurationMs(),
+                loadingUi.progress().timelineFrameDelayMs(),
+                loadingUi.progress().randomMessages(),
+                loadingUi.progress().showText(),
+                loadingUi.progress().showPercent(),
+                loadingUi.progress().messagesSection(),
+                launcher.getLANG().getSectionValues(loadingUi.progress().messagesSection()).size(),
+                loadingUi.progress().styleName(),
+                loadingUi.progress().fontName(),
+                loadingUi.progress().fontSize(),
+                loadingUi.progress().fontStyle(),
+                loadingUi.typography().title().styleName(),
+                loadingUi.typography().message().styleName()
         );
 
         long queuedAt = System.nanoTime();
@@ -78,11 +110,6 @@ public class LoadStatus extends LoadingManager {
         });
     }
 
-    /**
-     * Initializes the loading frame for the selected loading-manager attribute set.
-     *
-     * @param index loading-manager attribute index
-     */
     @Override
     protected void initializeLoadingFrame(int index) {
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -122,10 +149,9 @@ public class LoadStatus extends LoadingManager {
 
             int cornerRadius = loadingUi.window().cornerRadius();
             setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius));
-
             initInjector.setContent(true);
-        } catch (Exception ex) {
-            Engine.getLOGGER().error("Unable to initialize loading frame", ex);
+        } catch (Exception error) {
+            Engine.getLOGGER().error("Unable to initialize loading frame", error);
         } finally {
             long elapsed = System.nanoTime() - startedAt;
             if (elapsed >= SLOW_INIT_WARN_NANOS) {
@@ -136,11 +162,6 @@ public class LoadStatus extends LoadingManager {
         }
     }
 
-    /**
-     * Binds labels and progress widgets from the configured loading panel.
-     *
-     * @param attributes loading-manager visual attributes
-     */
     private void setupLabels(LoadManagerAttributes attributes) {
         if (!SwingUtilities.isEventDispatchThread()) {
             long queuedAt = System.nanoTime();
@@ -156,47 +177,105 @@ public class LoadStatus extends LoadingManager {
             loaderText = (JLabel) loadPanel.getComponent("loaderText");
 
             Object progressComponent = loadPanel.getComponent("loadProgress");
-            if (progressComponent instanceof JProgressBar) {
-                progressBar = (JProgressBar) progressComponent;
+            if (progressComponent instanceof ProgressBar compositeProgressBar) {
+                progressBar = compositeProgressBar;
+                ComponentFactory componentFactory = engine.getGuiBuilder().getComponentFactory();
+                String appliedStyle = ProgressBarStyle.applyNamedStyle(
+                        componentFactory,
+                        progressBar,
+                        loadingUi.progress().styleName()
+                );
+                applyProgressTypography(progressBar, loadingUi.progress());
+                progressBar.setStringPainted(loadingUi.progress().showText());
+                progressBar.setShowPercent(loadingUi.progress().showPercent());
+                progressText = compositeProgressBar.getTextLabel();
+                Engine.getLOGGER().debug(
+                        "[LOAD-UI] progress visual policy applied: style={} font={} size={} fontStyle={} textColor={}",
+                        appliedStyle,
+                        progressBar.getTextFont().getFamily(),
+                        progressBar.getTextFont().getSize(),
+                        styleName(progressBar.getTextFont().getStyle()),
+                        progressBar.getTextColor()
+                );
             } else {
-                Engine.getLOGGER().error("Component 'loadProgress' was not found or is not a JProgressBar.");
-            }
-
-            Object progressTextComponent = loadPanel.getComponent("progressText");
-            if (progressTextComponent instanceof Label) {
-                progressText = (Label) progressTextComponent;
-            } else {
-                Engine.getLOGGER().error("Component 'progressText' was not found or is not a Label.");
-            }
-
-            if (progressBar != null && progressText != null && progressText.getParent() != progressBar) {
-                progressBar.add(progressText);
+                Engine.getLOGGER().error("Component 'loadProgress' was not found or is not a composite ProgressBar.");
             }
 
             if (loaderText != null) {
                 if (loadingText != null) {
                     loaderText.setText(loadingText);
                 }
-                loaderText.setForeground(hexToColor(attributes.getDescColor()));
+                applyLabelTypography(
+                        loaderText,
+                        loadingUi.typography().message(),
+                        attributes.getDescColor()
+                );
             }
             if (titleLabel != null) {
                 if (loadingTitle != null) {
                     titleLabel.setText(loadingTitle);
                 }
-                titleLabel.setForeground(hexToColor(attributes.getTitleColor()));
+                applyLabelTypography(
+                        titleLabel,
+                        loadingUi.typography().title(),
+                        attributes.getTitleColor()
+                );
             }
-        } catch (Exception ex) {
-            Engine.getLOGGER().error("Unable to configure LoadStatus labels", ex);
+        } catch (Exception error) {
+            Engine.getLOGGER().error("Unable to configure LoadStatus labels", error);
         }
     }
 
-    /** Kept for compatibility with the base floating-window contract. */
-    @Override
-    protected void initializeLoadingFrame() {
-        // no-op
+    private void applyProgressTypography(ProgressBar progressBar,
+                                         LoadingUiScriptConfig.Progress progressConfig) {
+        Font currentFont = progressBar.getTextFont();
+        String fontName = valueOr(progressConfig.fontName(), currentFont.getFamily());
+        int fontSize = progressConfig.fontSize() > 0
+                ? progressConfig.fontSize()
+                : currentFont.getSize();
+        String fontStyle = valueOr(progressConfig.fontStyle(), styleName(currentFont.getStyle()));
+        progressBar.setTextFont(engine.getFONTUTILS().getFont(fontName, fontSize, fontStyle));
+        if (progressConfig.textColor() != null && !progressConfig.textColor().isBlank()) {
+            progressBar.setTextColor(hexToColor(progressConfig.textColor()));
+        }
     }
 
-    /** Shows the loading window and starts lightweight EDT stall monitoring. */
+    private void applyLabelTypography(JLabel label,
+                                      LoadingUiScriptConfig.TextStyle textConfig,
+                                      String fallbackColor) {
+        String requestedStyle = valueOr(textConfig.styleName(), "default");
+        StyleAttributes style = engine.getStyleProvider().getStyle("label", requestedStyle);
+        String fontName = valueOr(textConfig.fontName(), style.getFont());
+        int fontSize = textConfig.fontSize() > 0 ? textConfig.fontSize() : style.getFontSize();
+        String fontStyle = valueOr(textConfig.fontStyle(), style.getFontStyle());
+        String color = valueOr(textConfig.color(), valueOr(fallbackColor, style.getColor()));
+
+        label.setFont(engine.getFONTUTILS().getFont(fontName, fontSize, fontStyle));
+        label.setForeground(hexToColor(color));
+        label.setHorizontalAlignment(textAlignment(style.getAlign()));
+        label.putClientProperty("kaylas.ui.label.style", requestedStyle);
+    }
+
+    private int textAlignment(String alignment) {
+        if (alignment == null) {
+            return JLabel.LEFT;
+        }
+        return switch (alignment.trim().toLowerCase()) {
+            case "center", "middle" -> JLabel.CENTER;
+            case "right", "end" -> JLabel.RIGHT;
+            default -> JLabel.LEFT;
+        };
+    }
+
+    private String valueOr(String value, String fallback) {
+        return value == null || value.isBlank() ? fallback : value.trim();
+    }
+
+    @Override
+    protected void initializeLoadingFrame() {
+        // Compatibility with the base floating-window contract.
+    }
+
     @Override
     public void fadeIn() {
         long listenerRegisteredAt = System.nanoTime();
@@ -212,17 +291,19 @@ public class LoadStatus extends LoadingManager {
                     edtLagWatchdog.start();
                     changeComponentStatus(loggedForm.getComponentMap(), loggedForm.getPanel(), false);
                     setVisible(true);
-                    ensureOverlay();
-                    fadeOverlayTo(loadingUi.overlay().targetAlpha(), loadingUi.overlay().fadeInMs(), null);
+                    overlayController().fadeIn(
+                            loadingUi.overlay().targetAlpha(),
+                            loadingUi.overlay().fadeInMs(),
+                            null
+                    );
                     startProgressAnimator();
-                } catch (Exception ex) {
-                    Engine.getLOGGER().error("Unable to fade in loading overlay", ex);
+                } catch (Exception error) {
+                    Engine.getLOGGER().error("Unable to fade in loading overlay", error);
                 }
             });
         });
     }
 
-    /** Hides the loading window and stops all loading-layer animations. */
     @Override
     public void fadeOut() {
         long queuedAt = System.nanoTime();
@@ -236,8 +317,7 @@ public class LoadStatus extends LoadingManager {
                 if (progressBar != null) {
                     progressBar.setVisible(false);
                 }
-                fadeOverlayTo(0, loadingUi.overlay().fadeOutMs(), () -> {
-                    removeOverlay();
+                overlayController().fadeOut(loadingUi.overlay().fadeOutMs(), () -> {
                     setVisible(false);
                     edtLagWatchdog.stop();
                     JPanel mainFramePanel = loggedForm.getPanel();
@@ -246,112 +326,12 @@ public class LoadStatus extends LoadingManager {
                         mainFramePanel.repaint();
                     }
                 });
-            } catch (Exception ex) {
-                Engine.getLOGGER().error("Unable to fade out loading overlay", ex);
+            } catch (Exception error) {
+                Engine.getLOGGER().error("Unable to fade out loading overlay", error);
             }
         });
     }
 
-    /** Creates the lightweight overlay used during loading transitions. */
-    private void ensureOverlay() {
-        JLayeredPane layeredPane = launcher.getFrame().getLayeredPane();
-        if (loadingOverlay == null) {
-            loadingOverlay = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics graphics) {
-                    super.paintComponent(graphics);
-                    int alpha = Math.max(0, Math.min(255, overlayAlpha));
-                    if (alpha <= 0) {
-                        return;
-                    }
-
-                    Graphics2D graphics2D = (Graphics2D) graphics.create();
-                    try {
-                        graphics2D.setComposite(AlphaComposite.SrcOver.derive(alpha / 255f));
-                        graphics2D.setColor(loadingUi.overlay().color());
-                        graphics2D.fillRect(0, 0, getWidth(), getHeight());
-                    } finally {
-                        graphics2D.dispose();
-                    }
-                }
-            };
-            loadingOverlay.setName(loadingUi.overlay().name());
-            loadingOverlay.setOpaque(false);
-            loadingOverlay.setDoubleBuffered(true);
-            Engine.getLOGGER().debug("[LOAD-UI] lightweight overlay created");
-        }
-
-        loadingOverlay.setBounds(loadingUi.overlay().bounds(launcher.getFrame().getWidth(), launcher.getFrame().getHeight()));
-        if (loadingOverlay.getParent() != layeredPane) {
-            layeredPane.add(loadingOverlay, JLayeredPane.POPUP_LAYER);
-        }
-        layeredPane.setLayer(loadingOverlay, JLayeredPane.POPUP_LAYER);
-        loadingOverlay.setVisible(true);
-        loadingOverlay.repaint();
-    }
-
-    private void removeOverlay() {
-        if (loadingOverlay == null) {
-            return;
-        }
-        Container parent = loadingOverlay.getParent();
-        if (parent != null) {
-            parent.remove(loadingOverlay);
-            parent.revalidate();
-            parent.repaint();
-        }
-        setOverlayAlpha(0);
-    }
-
-    /**
-     * Runs the overlay alpha transition on the EDT with coalesced Swing timer events.
-     *
-     * @param targetAlpha target alpha in the {@code 0..255} range
-     * @param durationMs transition duration in milliseconds
-     * @param onComplete optional completion callback executed on the EDT
-     */
-    private void fadeOverlayTo(int targetAlpha, int durationMs, Runnable onComplete) {
-        ensureOverlay();
-        if (overlayFadeTimer != null && overlayFadeTimer.isRunning()) {
-            overlayFadeTimer.stop();
-        }
-
-        Engine.getLOGGER().debug(
-                "[LOAD-UI] overlay fade start: alpha {} -> {}, duration={} ms",
-                overlayAlpha,
-                targetAlpha,
-                durationMs
-        );
-
-        final int startAlpha = overlayAlpha;
-        final int delta = targetAlpha - startAlpha;
-        final long startedAt = System.nanoTime();
-        final long durationNanos = Math.max(1, durationMs) * 1_000_000L;
-
-        overlayFadeTimer = new Timer(Math.max(16, loadingUi.overlay().frameDelayMs()), event -> {
-            float progress = Math.min(1f, (System.nanoTime() - startedAt) / (float) durationNanos);
-            float eased = 1f - (1f - progress) * (1f - progress);
-            int alpha = Math.round(startAlpha + delta * eased);
-            setOverlayAlpha(alpha);
-            if (progress >= 1f) {
-                overlayFadeTimer.stop();
-                setOverlayAlpha(targetAlpha);
-                Engine.getLOGGER().debug(
-                        "[LOAD-UI] overlay fade complete: targetAlpha={}, elapsed={} ms",
-                        targetAlpha,
-                        nanosToMillis(System.nanoTime() - startedAt)
-                );
-                if (onComplete != null) {
-                    onComplete.run();
-                }
-            }
-        });
-        overlayFadeTimer.setInitialDelay(0);
-        overlayFadeTimer.setCoalesce(true);
-        overlayFadeTimer.start();
-    }
-
-    /** Starts the progress animation if it is enabled and all required widgets exist. */
     private void startProgressAnimator() {
         if (!loadingUi.progress().enabled() || progressBar == null || progressText == null) {
             Engine.getLOGGER().debug(
@@ -363,88 +343,34 @@ public class LoadStatus extends LoadingManager {
             return;
         }
         if (progressBarAnimator == null) {
-            progressBarAnimator = new ProgressBarAnimator(launcher, progressBar, progressText);
+            progressBarAnimator = new ProgressBarAnimator(launcher, progressBar, progressText, loadingUi.progress());
         }
         progressBarAnimator.startProgressTest();
     }
 
-    private void setOverlayAlpha(int alpha) {
-        overlayAlpha = Math.max(0, Math.min(255, alpha));
-        if (loadingOverlay != null) {
-            loadingOverlay.repaint();
+    private LayeredPaneOverlay overlayController() {
+        if (overlayController == null) {
+            overlayController = new LayeredPaneOverlay(
+                    launcher.getFrame().getLayeredPane(),
+                    () -> loadingUi.overlay().bounds(
+                            launcher.getFrame().getWidth(),
+                            launcher.getFrame().getHeight()
+                    ),
+                    loadingUi.overlay().color(),
+                    loadingUi.overlay().name(),
+                    loadingUi.overlay().frameDelayMs(),
+                    Engine.getLOGGER(),
+                    "[LOAD-UI]"
+            );
         }
+        return overlayController;
     }
 
     private void logUiQueueDelay(String operation, long queuedAtNanos) {
-        long delay = System.nanoTime() - queuedAtNanos;
-        if (delay >= UI_QUEUE_WARN_NANOS) {
-            Engine.getLOGGER().warn("[EDT-QUEUE] {} waited {} ms before execution", operation, nanosToMillis(delay));
-        }
+        edtLagWatchdog.logQueueDelay(operation, queuedAtNanos, UI_QUEUE_WARN_NANOS);
     }
 
     private static long nanosToMillis(long nanos) {
-        return nanos / 1_000_000L;
-    }
-
-    /**
-     * Small EDT heartbeat used while the loading UI is visible.
-     *
-     * <p>Because Swing timers execute on the EDT, a delayed heartbeat directly exposes UI thread stalls.</p>
-     */
-    private static final class EdtLagWatchdog {
-        private static final int SAMPLE_MS = 250;
-        private static final long LAG_WARN_NANOS = 350_000_000L;
-        private static final long STATUS_INTERVAL_NANOS = 5_000_000_000L;
-
-        private final String name;
-        private final Timer timer;
-        private long lastTickNanos;
-        private long lastStatusNanos;
-        private long maxLagNanos;
-        private boolean running;
-
-        private EdtLagWatchdog(String name) {
-            this.name = name;
-            this.timer = new Timer(SAMPLE_MS, event -> tick());
-            this.timer.setCoalesce(true);
-        }
-
-        private void start() {
-            if (running) {
-                return;
-            }
-            running = true;
-            lastTickNanos = System.nanoTime();
-            lastStatusNanos = lastTickNanos;
-            maxLagNanos = 0L;
-            timer.start();
-            Engine.getLOGGER().info("[EDT-WATCHDOG] {} started", name);
-        }
-
-        private void stop() {
-            if (!running) {
-                return;
-            }
-            timer.stop();
-            running = false;
-            Engine.getLOGGER().info("[EDT-WATCHDOG] {} stopped; maxLag={} ms", name, nanosToMillis(maxLagNanos));
-        }
-
-        private void tick() {
-            long now = System.nanoTime();
-            long elapsed = now - lastTickNanos;
-            long expected = SAMPLE_MS * 1_000_000L;
-            long lag = Math.max(0L, elapsed - expected);
-            maxLagNanos = Math.max(maxLagNanos, lag);
-
-            if (lag >= LAG_WARN_NANOS) {
-                Engine.getLOGGER().warn("[EDT-LAG] {} delayed by {} ms", name, nanosToMillis(lag));
-            } else if (now - lastStatusNanos >= STATUS_INTERVAL_NANOS) {
-                Engine.getLOGGER().debug("[EDT-WATCHDOG] {} alive; maxLag={} ms", name, nanosToMillis(maxLagNanos));
-                lastStatusNanos = now;
-            }
-
-            lastTickNanos = now;
-        }
+        return EdtLagWatchdog.nanosToMillis(nanos);
     }
 }

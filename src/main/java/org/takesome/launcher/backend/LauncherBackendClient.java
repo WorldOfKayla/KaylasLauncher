@@ -28,12 +28,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class LauncherBackendClient implements AutoCloseable {
     private static final Gson GSON = new Gson();
@@ -48,18 +47,19 @@ public final class LauncherBackendClient implements AutoCloseable {
     private final int heartbeatSeconds;
     private final int maxReconnectAttempts;
     private final HttpClient httpClient;
-    private final ScheduledExecutorService scheduler;
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final AtomicBoolean bound = new AtomicBoolean(false);
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean statusRequested = new AtomicBoolean(false);
     private final AtomicInteger reconnectAttempts = new AtomicInteger(0);
     private final AtomicInteger connectionSequence = new AtomicInteger(0);
+    private final AtomicReference<CompletableFuture<Void>> boundSignal = new AtomicReference<>(new CompletableFuture<>());
     private final ConcurrentHashMap<String, CompletableFuture<LauncherBackendMessage>> pendingRequests = new ConcurrentHashMap<>();
     private final Object sendLock = new Object();
     private CompletableFuture<WebSocket> sendQueue = CompletableFuture.completedFuture(null);
 
     private volatile WebSocket webSocket;
+    private volatile ScheduledFuture<?> heartbeatTask;
     private volatile Map<String, Object> backendStatus = Map.of();
 
     public LauncherBackendClient(Launcher launcher, String endpoint, int heartbeatSeconds, int maxReconnectAttempts) {
@@ -69,12 +69,8 @@ public final class LauncherBackendClient implements AutoCloseable {
         this.maxReconnectAttempts = Math.max(0, maxReconnectAttempts);
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(3))
+                .executor(launcher.getExecutorServiceProvider().getExecutorService())
                 .build();
-        this.scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
-            Thread thread = new Thread(runnable, "kaylas-launcher-backend-client");
-            thread.setDaemon(true);
-            return thread;
-        });
     }
 
     public void start() {
@@ -83,10 +79,12 @@ public final class LauncherBackendClient implements AutoCloseable {
         }
         Engine.LOGGER.info("Binding launcher to backend WS: {}", endpoint);
         connect();
-        scheduler.scheduleAtFixedRate(this::heartbeatOrReconnect,
-                heartbeatSeconds,
-                heartbeatSeconds,
-                TimeUnit.SECONDS);
+        heartbeatTask = launcher.getScheduledTaskService().scheduleAtFixedRate(
+                "launcher-backend-heartbeat",
+                this::heartbeatOrReconnect,
+                Duration.ofSeconds(heartbeatSeconds),
+                Duration.ofSeconds(heartbeatSeconds)
+        );
     }
 
     public boolean isBound() {
@@ -391,21 +389,21 @@ public final class LauncherBackendClient implements AutoCloseable {
     }
 
     private CompletableFuture<Void> waitUntilBound() {
-        return CompletableFuture.runAsync(() -> {
-            long deadline = System.currentTimeMillis() + 10000L;
-            while (!closed.get() && System.currentTimeMillis() < deadline) {
-                if (bound.get() && webSocket != null) {
-                    return;
-                }
-                try {
-                    Thread.sleep(100L);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new IllegalStateException("Interrupted while waiting for launcher backend connection.", e);
-                }
-            }
-            throw new IllegalStateException("Launcher backend did not connect within 10 seconds: " + endpoint);
-        });
+        if (closed.get()) {
+            return CompletableFuture.failedFuture(new IllegalStateException("Launcher backend client is closed."));
+        }
+        if (bound.get() && webSocket != null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        CompletableFuture<Void> signal = boundSignal.get();
+        return signal.thenApply(ignored -> (Void) null)
+                .orTimeout(10, TimeUnit.SECONDS)
+                .exceptionallyCompose(error -> CompletableFuture.failedFuture(
+                        new IllegalStateException(
+                                "Launcher backend did not connect within 10 seconds: " + endpoint,
+                                error
+                        )
+                ));
     }
 
     public CompletableFuture<LauncherBackendMessage> request(String type, Map<String, Object> payload) {
@@ -418,12 +416,8 @@ public final class LauncherBackendClient implements AutoCloseable {
         LauncherBackendMessage message = LauncherBackendMessage.of(type, requestId, payload);
         CompletableFuture<LauncherBackendMessage> future = new CompletableFuture<>();
         pendingRequests.put(requestId, future);
-        scheduler.schedule(() -> {
-            CompletableFuture<LauncherBackendMessage> pending = pendingRequests.remove(requestId);
-            if (pending != null) {
-                pending.completeExceptionally(new TimeoutException("Backend request timed out: " + type));
-            }
-        }, REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        future.orTimeout(REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .whenComplete((response, error) -> pendingRequests.remove(requestId, future));
 
         sendQueued(type, message).whenComplete((ignored, error) -> {
             if (error != null) {
@@ -444,6 +438,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                 .whenComplete((socket, error) -> {
                     if (error != null) {
                         bound.set(false);
+                        resetBoundSignal();
                         int attempt = reconnectAttempts.incrementAndGet();
                         Engine.LOGGER.warn("Backend WS bind failed: {} attempt={}/{}", endpoint, attempt, maxReconnectAttempts);
                         return;
@@ -522,10 +517,16 @@ public final class LauncherBackendClient implements AutoCloseable {
 
     @Override
     public void close() {
-        closed.set(true);
+        if (!closed.compareAndSet(false, true)) {
+            return;
+        }
         pendingRequests.forEach((requestId, future) -> future.completeExceptionally(new IllegalStateException("Backend client closed.")));
         pendingRequests.clear();
-        scheduler.shutdownNow();
+        boundSignal.get().completeExceptionally(new IllegalStateException("Backend client closed."));
+        ScheduledFuture<?> currentHeartbeat = heartbeatTask;
+        if (currentHeartbeat != null) {
+            currentHeartbeat.cancel(false);
+        }
         WebSocket socket = webSocket;
         if (socket != null) {
             socket.sendClose(WebSocket.NORMAL_CLOSURE, "launcher shutdown");
@@ -540,6 +541,7 @@ public final class LauncherBackendClient implements AutoCloseable {
             LauncherBackendClient.this.webSocket = webSocket;
             connectionSequence.incrementAndGet();
             bound.set(true);
+            boundSignal.get().complete(null);
             reconnectAttempts.set(0);
             statusRequested.set(false);
             Engine.LOGGER.info("Backend WS bound: {}", endpoint);
@@ -563,6 +565,7 @@ public final class LauncherBackendClient implements AutoCloseable {
         public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
             connectionSequence.incrementAndGet();
             bound.set(false);
+            resetBoundSignal();
             statusRequested.set(false);
             failPendingRequests("Backend WS closed: " + statusCode + " " + reason);
             Engine.LOGGER.warn("Backend WS closed: status={} reason={}", statusCode, reason);
@@ -573,10 +576,18 @@ public final class LauncherBackendClient implements AutoCloseable {
         public void onError(WebSocket webSocket, Throwable error) {
             connectionSequence.incrementAndGet();
             bound.set(false);
+            resetBoundSignal();
             statusRequested.set(false);
             failPendingRequests("Backend WS error: " + error.getMessage());
             Engine.LOGGER.warn("Backend WS error: {}", error.getMessage());
         }
+    }
+
+    private void resetBoundSignal() {
+        if (closed.get()) {
+            return;
+        }
+        boundSignal.updateAndGet(current -> current.isDone() ? new CompletableFuture<>() : current);
     }
 
     private void failPendingRequests(String message) {

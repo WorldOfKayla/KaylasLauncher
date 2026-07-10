@@ -22,7 +22,6 @@ import org.takesome.launcher.user.loader.GroupLoader;
 import org.takesome.launcher.user.loader.GroupObject;
 import org.takesome.launcher.user.loader.HeadLoader;
 import org.takesome.launcher.user.loader.SkinLoader;
-import org.takesome.launcher.utils.SvgUtils;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -275,7 +274,7 @@ public class User extends org.takesome.kaylasEngine.user.User {
     private void renderBadge(JPanel badgePanel, BadgeObject badge) {
         try {
             URL badgeUrl = badgeUrl(badge);
-            BufferedImage image = SvgUtils.renderToImage(
+            BufferedImage image = launcher.getIconUtils().getVectorImage(
                     badgeUrl,
                     userUi.badges().iconWidth(),
                     userUi.badges().iconHeight()

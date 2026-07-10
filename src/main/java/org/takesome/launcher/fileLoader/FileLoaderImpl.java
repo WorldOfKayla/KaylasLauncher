@@ -9,8 +9,11 @@ import org.takesome.kaylasEngine.fileLoader.fileGuard.FileGuard;
 import org.takesome.kaylasEngine.game.argsReader.ArgsReader;
 import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.label.Label;
+import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.utils.Download.DownloadUtils;
+import org.takesome.kaylasEngine.utils.LongestPrefixMatcher;
+import org.takesome.kaylasEngine.utils.StringTemplateResolver;
 import org.takesome.launcher.Core;
 import org.takesome.launcher.backend.LauncherBackendClient;
 import org.takesome.launcher.fileLoader.fileGuard.FileGuardImpl;
@@ -20,13 +23,10 @@ import javax.swing.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class FileLoaderImpl implements IFileLoaderListener {
     private static final String RUNTIME_CLIENT = "Runtime";
@@ -35,8 +35,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
     private final Core core;
     private FileLoaderUI fileLoaderUI;
     private final DownloadUtils downloadUtils;
-    private final Map<String, String> replaceMasks = new HashMap<>();
-    private final Map<String, String> varsToReplace = new HashMap<>();
+    private final LongestPrefixMatcher<String> replaceMaskMatcher = new LongestPrefixMatcher<>();
     private final AtomicLong lastFileUiUpdateMillis = new AtomicLong(0L);
 
     public FileLoaderImpl(Core core) {
@@ -47,7 +46,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
     @Override
     public void onFilesRead() {
         Engine.getLOGGER().debug("--==|Files are read|==--");
-        this.fileLoaderUI = new FileLoaderUI(this, "download", List.of(JProgressBar.class, Label.class, TextArea.class, Button.class));
+        this.fileLoaderUI = new FileLoaderUI(this, "download", List.of(ProgressBar.class, Label.class, TextArea.class, Button.class));
         setupGameLauncher();
         if (!Files.isRegularFile(core.getGameLauncher().getJavaExecutablePath())) {
             addRequiredRuntimeToDownload(core.getGameLauncher().getCurrentJre());
@@ -172,28 +171,7 @@ public class FileLoaderImpl implements IFileLoaderListener {
     }
 
     private String findBestMatch(String filename) {
-        String bestMatch = null;
-        int bestMatchLength = 0;
-
-        for (Map.Entry<String, String> entry : replaceMasks.entrySet()) {
-            String maskKey = entry.getKey();
-            String maskValue = entry.getValue();
-
-            if (filename.startsWith(maskKey)) {
-                int maskKeyLength = maskKey.length();
-                if (maskKeyLength > bestMatchLength) {
-                    bestMatch = maskValue;
-                    bestMatchLength = maskKeyLength;
-                }
-
-                // Early exit for exact match
-                if (maskKeyLength == filename.length()) {
-                    break;
-                }
-            }
-        }
-
-        return bestMatch;
+        return replaceMaskMatcher.match(filename).orElse(null);
     }
 
     private void processFileAttributes(FileAttributes fileAttributes, String bestMatch) {
@@ -279,35 +257,30 @@ public class FileLoaderImpl implements IFileLoaderListener {
     public void onCancel() {
         Engine.getLOGGER().info("--==|Download canceled|==--");
         core.getLauncher().getPanelVisibility().displayPanel("download->false|loggedForm->true|newsForm->true");
-        core.getLauncher().getExecutorServiceProvider().shutdown();
+        core.getLauncher().shutdownExecutorService();
         this.fileLoaderUI.getProgressBar().setValue(0);
     }
 
     public void setReplaceMasks(List<EngineData.ReplaceMask> replaceTemplate) {
-        String serverVersion = core.getActionHandler().getCurrentServer().getServerVersion();
-        String serverName = core.getActionHandler().getCurrentServer().getServerName();
-        String port = String.valueOf(core.getActionHandler().getCurrentServer().getPort());
-
-        addReplaceVars("version", serverVersion);
-        addReplaceVars("serverName", serverName);
-        addReplaceVars("port", port);
-
-        Map<String, Pattern> variablePatterns = varsToReplace.keySet().stream().collect(Collectors.toMap(var -> var, var -> Pattern.compile("\\$\\{" + var + "}")));
-
-        for (EngineData.ReplaceMask mask : replaceTemplate) {
-            String maskKey = mask.getMask();
-            String maskValue = mask.getReplace();
-
-            for (Map.Entry<String, String> entry : varsToReplace.entrySet()) {
-                String variable = entry.getKey();
-                String replacementValue = entry.getValue();
-                Pattern pattern = variablePatterns.get(variable);
-                maskKey = replaceVariableValue(pattern, maskKey, replacementValue);
-                maskValue = replaceVariableValue(pattern, maskValue, replacementValue);
+        Map<String, Object> variables = Map.of(
+                "version", core.getActionHandler().getCurrentServer().getServerVersion(),
+                "serverName", core.getActionHandler().getCurrentServer().getServerName(),
+                "port", core.getActionHandler().getCurrentServer().getPort()
+        );
+        Map<String, String> resolvedMasks = new LinkedHashMap<>();
+        if (replaceTemplate != null) {
+            for (EngineData.ReplaceMask mask : replaceTemplate) {
+                if (mask == null || mask.getMask() == null || mask.getMask().isEmpty()) {
+                    continue;
+                }
+                resolvedMasks.put(
+                        StringTemplateResolver.resolve(mask.getMask(), variables),
+                        StringTemplateResolver.resolve(mask.getReplace(), variables)
+                );
             }
-
-            replaceMasks.put(maskKey, maskValue);
         }
+        replaceMaskMatcher.replaceAll(resolvedMasks);
+        Engine.LOGGER.debug("Prepared {} file replace-mask prefix rule(s).", replaceMaskMatcher.size());
     }
 
     public Core getCore() {
@@ -318,12 +291,5 @@ public class FileLoaderImpl implements IFileLoaderListener {
         return downloadUtils;
     }
 
-    private String replaceVariableValue(Pattern pattern, String originalValue, String replacementValue) {
-        Matcher matcher = pattern.matcher(originalValue);
-        return matcher.replaceAll(replacementValue);
-    }
 
-    private void addReplaceVars(String replace, String replacer) {
-        varsToReplace.put(replace, replacer);
-    }
 }

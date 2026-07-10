@@ -7,6 +7,7 @@ import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.multiButton.MultiButton;
 import org.takesome.kaylasEngine.gui.components.passfield.PassField;
+import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
 import org.takesome.kaylasEngine.gui.components.textfield.TextField;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.launcher.Core;
@@ -60,7 +61,7 @@ public class ActionHandler extends org.takesome.kaylasEngine.gui.ActionHandler {
 
     public ActionHandler(Launcher launcher) {
         super(Objects.requireNonNull(launcher, "launcher").getGuiBuilder(), UI_PROVIDER.scopes().mainFrame(),
-                List.of(TextField.class, Checkbox.class, JProgressBar.class, PassField.class, Button.class, MultiButton.class, Combobox.class));
+                List.of(TextField.class, Checkbox.class, ProgressBar.class, PassField.class, Button.class, MultiButton.class, Combobox.class));
         this.launcher = launcher;
         this.engine = launcher.getEngine();
         this.ui = UI_PROVIDER;

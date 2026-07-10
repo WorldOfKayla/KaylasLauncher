@@ -1,0 +1,22 @@
+{
+  "styles": {
+    "progressBar": {
+      "progress": {
+        "opaque": false,
+        "name": "Let's Rule the file kingdom!",
+        "background": "#ffffff",
+        "color": "#ffffff",
+        "borderColor": "#183824",
+        "texture": "assets/ui/components/progressBar/progressBar.png"
+      },
+      "progressMini": {
+        "opaque": false,
+        "name": "Let's get some files",
+        "background": "#ffffff",
+        "color": "#183824",
+        "borderColor": "#000000",
+        "texture": "assets/ui/components/progressBar/progressBarMini.png"
+      }
+    }
+  }
+}

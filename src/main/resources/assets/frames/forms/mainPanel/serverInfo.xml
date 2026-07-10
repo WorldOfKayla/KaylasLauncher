@@ -25,7 +25,7 @@
                         <bounds x="310" y="5" width="170" height="37" />
                     </panelOptions>
                     <childComponents>
-                        <component type="label" style="heading" fontSize="16" id="srvOnline" color="#7e7d7c">
+                        <component type="label" style="title" fontSize="16" id="srvOnline" color="#7e7d7c">
                             <bounds x="10" y="-115" width="480" height="280" />
                         </component>
                     </childComponents>
@@ -35,7 +35,7 @@
                         <bounds x="10" y="310" width="470" height="150" />
                     </panelOptions>
                     <childComponents>
-                        <component type="textArea" lineWrap="true" editable="false" enabled="false" style="textFieldMain" fontSize="13" border="5,5,5,5" color="#7e7d7c" id="serverDescLabel">
+                        <component type="textArea" lineWrap="true" editable="false" enabled="false" style="textFieldMain" fontSize="13" border="5,5,5,5" color="#183824" id="serverDescLabel">
                             <bounds x="10" y="10" width="470" height="110" />
                         </component>
                     </childComponents>

@@ -14,7 +14,7 @@ local loading = {
         -- Fade timing in milliseconds.
         fadeInMs = 220,
         fadeOutMs = 240,
-        frameDelayMs = 16,
+        frameDelayMs = 32,
 
         -- Overlay geometry is launcher policy.
         -- x/y are relative to the launcher frame layered pane.
@@ -28,11 +28,70 @@ local loading = {
 
     window = {
         alwaysOnTop = true,
-        cornerRadius = 20
+        cornerRadius = 15
+    },
+
+    -- Typography of the loading-window labels.
+    -- Empty font/color values inherit them from the selected label style.
+    typography = {
+        title = {
+            style = "titleBold",
+            font = "mcfontBold",
+            fontSize = 16,
+            fontStyle = "plain", -- plain | bold | italic | boldItalic
+            color = ""
+        },
+
+        message = {
+            style = "title",
+            font = "mcfont",
+            fontSize = 11,
+            fontStyle = "plain",
+            color = ""
+        }
     },
 
     progress = {
-        enabled = true
+        enabled = true,
+
+        -- Named profile from assets/styles/progressBar.json.
+        style = "progressMini",
+
+        -- Text font override. Empty/0 values inherit from the named style.
+        font = "FSElliotPro",
+        fontSize = 13,
+        fontStyle = "plain", -- plain | bold | italic | boldItalic
+        textColor = "#9552f8",
+
+        -- Progress speed policy. Smaller updateMs and larger step = faster fill.
+        updateMs = 85,
+        step = 4,
+        maxValue = -1,
+        initialDelayMs = 0,
+        cycleDelayMs = 16,
+        loop = true,
+
+        -- Entrance/exit animation policy.
+        timelineDurationMs = 256,
+        timelineFrameDelayMs = 32,
+        animateEntrance = true,
+        animateExit = true,
+
+        -- Text policy. Messages are read from progressMessages in the active assets/lang/* locale.
+        showText = true,
+        showPercent = false,
+        randomMessages = true,
+        resetOnStop = true,
+        hideOnStop = true,
+
+        -- Primary localized source: the complete section in assets/lang/<locale>.json.
+        messagesSection = "progressMessages",
+
+        -- Legacy fallback used only when the localized section is absent.
+        messagesResource = "assets/messages.json",
+        animationConfigResource = "assets/animation_config.json",
+
+        messageKeys = {}
     }
 }
 

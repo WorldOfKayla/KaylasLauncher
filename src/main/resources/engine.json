@@ -18,23 +18,21 @@
     "compositeSlider"
   ],
   "loadAdapters": [
-    "xml",
-    "json",
-    "json5"
+    "xml"
   ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",
   "bindUrl": "",
   "backend": {
     "enabled": true,
-    "wsUrl": "wss://api.kaylas-systems.ru/ws/launcher",
+    "wsUrl": "ws://127.0.0.1:18080/ws/launcher",
     "heartbeatSeconds": 15,
     "maxReconnectAttempts": 0
   },
   "appId": "1524737795942256660",
   "files": {
-    "frameTpl": "assets/frames/frame.json5",
-    "mainFrame": "assets/frames/mainFrame.json5",
+    "frameTpl": "assets/frames/frame.xml",
+    "mainFrame": "assets/frames/mainFrame.xml",
     "localeFile": "assets/lang/",
     "soundsFile": "assets/sounds/sounds.json"
   },

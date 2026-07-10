@@ -20,15 +20,11 @@ import org.takesome.kaylasEngine.utils.DataInjector;
 import org.takesome.launcher.LauncherValidator;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class Settings extends ComponentsAccessor implements SliderListener, ComboboxListener, TextFieldListener, CheckBoxListener, SpinnerListener {
     private static final String LANGUAGE_COMBOBOX_ID = "lang";
@@ -147,11 +143,16 @@ public class Settings extends ComponentsAccessor implements SliderListener, Comb
     }
 
     public void openGameFolder() {
-        try {
-            Desktop d = Desktop.getDesktop();
-            d.browse(new URI(this.launcher.getConfig().getHomeDir().replaceAll(Pattern.quote("\\"), "/")));
-        } catch (IOException | URISyntaxException ignored) {
-        }
+        Path homeDirectory = Path.of(this.launcher.getConfig().getFullPath());
+        this.launcher.getSystemFileManager()
+                .openDirectory(homeDirectory)
+                .whenComplete((openedDirectory, error) -> {
+                    if (error != null) {
+                        Launcher.LOGGER.error("Unable to open launcher home directory {}", homeDirectory, error);
+                    } else {
+                        Launcher.LOGGER.debug("Launcher home directory opened in system file manager: {}", openedDirectory);
+                    }
+                });
     }
 
     @Override

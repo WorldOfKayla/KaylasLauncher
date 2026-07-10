@@ -13,6 +13,9 @@
                 </component>
                 <component type="button" enabled="true" keyCode="ENTER" toolTip="tooltip.applySettings" tooltipStyle="success" style="buttonMain" id="applySettings" localeKey="settings.applySettings">
                     <bounds x="10" y="400" width="280" height="47" />
+                    <scripts>
+                        <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
+                    </scripts>
                 </component>
             </childComponents>
         </panel>

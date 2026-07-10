@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="loggedForm">
-            <panelOptions opaque="false" focusable="true" visible="false" doubleBuffered="false" background="">
+            <panelOptions opaque="false" focusable="true" visible="false" doubleBuffered="true" background="">
                 <bounds x="0" y="0" width="350" height="500" />
             </panelOptions>
             <childComponents>

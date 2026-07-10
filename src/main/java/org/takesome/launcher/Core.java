@@ -47,8 +47,7 @@ public class Core implements GameListener {
         this.gameTimeTask = new GameTimeTask(
                 currentServer,
                 this.launcher.getUser().getLogin(),
-                this.launcher.getExecutorServiceProvider().getExecutorService(),
-                this.launcher
+                this.launcher.getScheduledTaskService()
         );
     }
 
@@ -129,7 +128,7 @@ public class Core implements GameListener {
             restartLauncherRuntimeIfNeeded();
         }
 
-        this.launcher.getExecutorServiceProvider().shutdown();
+        this.launcher.shutdownExecutorService();
         System.exit(exitCode);
     }
 

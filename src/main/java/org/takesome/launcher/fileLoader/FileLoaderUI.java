@@ -4,10 +4,10 @@ import org.takesome.kaylasEngine.gui.componentAccessor.Component;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
 import org.takesome.kaylasEngine.gui.components.button.Button;
 import org.takesome.kaylasEngine.gui.components.label.Label;
+import org.takesome.kaylasEngine.gui.components.progressBar.ProgressBar;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.utils.Download.DownloadUtils;
 
-import javax.swing.*;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -16,7 +16,7 @@ public class FileLoaderUI extends ComponentsAccessor {
     @Component
     private Label progressLabel, downloadFile, downloadDirectory, downloadSpeed;
     @Component
-    private JProgressBar progressBar;
+    private ProgressBar progressBar;
     @Component
     private TextArea serverDescArea;
     @Component("cancelDownload-small")
@@ -49,7 +49,7 @@ public class FileLoaderUI extends ComponentsAccessor {
         return downloadSpeed;
     }
 
-    public JProgressBar getProgressBar() {
+    public ProgressBar getProgressBar() {
         return progressBar;
     }
 

@@ -3,10 +3,15 @@ package org.takesome.launcher;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatPropertiesLaf;
-import org.takesome.launcher.gui.GifPlayerSwing;
+import org.takesome.kaylasEngine.gui.components.image.GifPlayer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -15,7 +20,7 @@ import java.io.InputStream;
 public class GifPlayerFrame extends JFrame implements ActionListener {
     private final JButton openButton;
     private final JPanel contentPanel;
-    private GifPlayerSwing player;
+    private GifPlayer player;
 
     public GifPlayerFrame() {
         super("GIF Player");
@@ -34,23 +39,35 @@ public class GifPlayerFrame extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
         JFileChooser chooser = new JFileChooser();
         int result = chooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            try {
-                if (player != null) player.stop();
-                contentPanel.removeAll();
-                player = new GifPlayerSwing(file);
-                contentPanel.add(player, BorderLayout.CENTER);
-                contentPanel.revalidate();
-                contentPanel.repaint();
-                pack();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Ошибка загрузки GIF: " + ex.getMessage());
-            }
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return;
         }
+
+        File file = chooser.getSelectedFile();
+        try {
+            if (player != null) {
+                player.close();
+            }
+            contentPanel.removeAll();
+            player = new GifPlayer(file);
+            contentPanel.add(player, BorderLayout.CENTER);
+            contentPanel.revalidate();
+            contentPanel.repaint();
+            pack();
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(this, "Ошибка загрузки GIF: " + error.getMessage());
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (player != null) {
+            player.close();
+        }
+        super.dispose();
     }
 
     public static void main(String[] args) {
@@ -62,21 +79,15 @@ public class GifPlayerFrame extends JFrame implements ActionListener {
     }
 
     public static void setupTheme(String theme) {
-        try {
-            InputStream themeStream = GifPlayerFrame.class.getClassLoader().getResourceAsStream(theme);
-
-            if(themeStream == null) {
-                throw new RuntimeException("Theme file not found in resources");
+        try (InputStream themeStream = GifPlayerFrame.class.getClassLoader().getResourceAsStream(theme)) {
+            if (themeStream == null) {
+                throw new IllegalStateException("Theme file not found in resources: " + theme);
             }
-
             FlatPropertiesLaf laf = new FlatPropertiesLaf("Dark Theme", themeStream);
             FlatLaf.setup(laf);
-
-        } catch(Exception ex) {
-            // Fallback на стандартную темную тему
+        } catch (Exception error) {
             FlatLaf.setup(new FlatDarkLaf());
-            ex.printStackTrace();
+            error.printStackTrace();
         }
-
     }
 }

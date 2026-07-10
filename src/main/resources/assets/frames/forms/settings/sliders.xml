@@ -12,7 +12,7 @@
                 <spinner x="320" y="15" width="80" height="30" />
             </layoutConfig>
         </component>
-        <component type="compositeSlider" fontSize="12" localeKey="settings.ramField" stepSize="6" minorSpacing="512" majorSpacing="1024" initialValue="config#ramAmount" id="ramAmount">
+        <component type="compositeSlider" fontSize="12" localeKey="settings.ramField" stepSize="6" minorSpacing="512" majorSpacing="1024" initialValue="config#ramAmount" id="ramAmount" visible="true">
             <bounds x="35" y="230" width="430" height="65" />
             <styles>
                 <style target="label" name="title" />

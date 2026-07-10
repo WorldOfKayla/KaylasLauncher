@@ -9,6 +9,9 @@ import org.takesome.launcher.gui.LauncherUiProvider;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,19 +21,57 @@ import java.util.Objects;
  * KaylasUIEngine executes Lua and provides generic config readers. The launcher owns visual policy.
  */
 final class LoadingUiScriptConfig {
+    private static final String DEFAULT_PROGRESS_MESSAGES_SECTION = "progressMessages";
+    private static final List<String> DEFAULT_PROGRESS_MESSAGE_KEYS = List.of();
+
     private static final LoadingUiScriptConfig FALLBACK = new LoadingUiScriptConfig(
             new Overlay("loadingOverlay", Color.BLACK, 0, 1, 1, 16, 0, 0, -1, -1),
             new Window(true, 20),
-            new Progress(true)
+            new Typography(
+                    new TextStyle("titleBold", "", 16, "plain", ""),
+                    new TextStyle("title", "", 11, "plain", "")
+            ),
+            new Progress(
+                    true,
+                    100,
+                    1,
+                    0,
+                    0,
+                    500,
+                    16,
+                    -1,
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    DEFAULT_PROGRESS_MESSAGES_SECTION,
+                    "assets/messages.json",
+                    "assets/animation_config.json",
+                    DEFAULT_PROGRESS_MESSAGE_KEYS,
+                    "progressMini",
+                    "",
+                    0,
+                    "",
+                    ""
+            )
     );
 
     private final Overlay overlay;
     private final Window window;
+    private final Typography typography;
     private final Progress progress;
 
-    private LoadingUiScriptConfig(Overlay overlay, Window window, Progress progress) {
+    private LoadingUiScriptConfig(Overlay overlay,
+                                  Window window,
+                                  Typography typography,
+                                  Progress progress) {
         this.overlay = Objects.requireNonNull(overlay, "overlay");
         this.window = Objects.requireNonNull(window, "window");
+        this.typography = Objects.requireNonNull(typography, "typography");
         this.progress = Objects.requireNonNull(progress, "progress");
     }
 
@@ -45,6 +86,10 @@ final class LoadingUiScriptConfig {
             return new LoadingUiScriptConfig(
                     Overlay.from(LuaConfigValues.map(root, "overlay")),
                     Window.from(LuaConfigValues.map(root, "window")),
+                    Typography.from(
+                            LuaConfigValues.map(root, "typography"),
+                            FALLBACK.typography
+                    ),
                     Progress.from(LuaConfigValues.map(root, "progress"))
             );
         } catch (Exception error) {
@@ -59,6 +104,10 @@ final class LoadingUiScriptConfig {
 
     Window window() {
         return window;
+    }
+
+    Typography typography() {
+        return typography;
     }
 
     Progress progress() {
@@ -161,19 +210,248 @@ final class LoadingUiScriptConfig {
         }
     }
 
+    static final class Typography {
+        private final TextStyle title;
+        private final TextStyle message;
+
+        private Typography(TextStyle title, TextStyle message) {
+            this.title = Objects.requireNonNull(title, "title");
+            this.message = Objects.requireNonNull(message, "message");
+        }
+
+        private static Typography from(Map<String, Object> table, Typography fallback) {
+            return new Typography(
+                    TextStyle.from(LuaConfigValues.map(table, "title"), fallback.title),
+                    TextStyle.from(LuaConfigValues.map(table, "message"), fallback.message)
+            );
+        }
+
+        TextStyle title() { return title; }
+        TextStyle message() { return message; }
+    }
+
+    static final class TextStyle {
+        private final String styleName;
+        private final String fontName;
+        private final int fontSize;
+        private final String fontStyle;
+        private final String color;
+
+        private TextStyle(String styleName,
+                          String fontName,
+                          int fontSize,
+                          String fontStyle,
+                          String color) {
+            this.styleName = styleName == null ? "" : styleName.trim();
+            this.fontName = fontName == null ? "" : fontName.trim();
+            this.fontSize = Math.max(0, fontSize);
+            this.fontStyle = fontStyle == null ? "" : fontStyle.trim();
+            this.color = color == null ? "" : color.trim();
+        }
+
+        private static TextStyle from(Map<String, Object> table, TextStyle fallback) {
+            return new TextStyle(
+                    LuaConfigValues.string(table, "style", fallback.styleName),
+                    LuaConfigValues.string(table, "font", fallback.fontName),
+                    LuaConfigValues.integer(table, "fontSize", fallback.fontSize),
+                    LuaConfigValues.string(table, "fontStyle", fallback.fontStyle),
+                    LuaConfigValues.string(table, "color", fallback.color)
+            );
+        }
+
+        String styleName() { return styleName; }
+        String fontName() { return fontName; }
+        int fontSize() { return fontSize; }
+        String fontStyle() { return fontStyle; }
+        String color() { return color; }
+    }
+
     static final class Progress {
         private final boolean enabled;
+        private final int updateMs;
+        private final int step;
+        private final int initialDelayMs;
+        private final int cycleDelayMs;
+        private final int timelineDurationMs;
+        private final int timelineFrameDelayMs;
+        private final int maxValue;
+        private final boolean loop;
+        private final boolean randomMessages;
+        private final boolean showText;
+        private final boolean showPercent;
+        private final boolean resetOnStop;
+        private final boolean hideOnStop;
+        private final boolean animateEntrance;
+        private final boolean animateExit;
+        private final String messagesSection;
+        private final String messagesResource;
+        private final String animationConfigResource;
+        private final List<String> messageKeys;
+        private final String styleName;
+        private final String fontName;
+        private final int fontSize;
+        private final String fontStyle;
+        private final String textColor;
 
-        private Progress(boolean enabled) {
+        private Progress(boolean enabled,
+                         int updateMs,
+                         int step,
+                         int initialDelayMs,
+                         int cycleDelayMs,
+                         int timelineDurationMs,
+                         int timelineFrameDelayMs,
+                         int maxValue,
+                         boolean loop,
+                         boolean randomMessages,
+                         boolean showText,
+                         boolean showPercent,
+                         boolean resetOnStop,
+                         boolean hideOnStop,
+                         boolean animateEntrance,
+                         boolean animateExit,
+                         String messagesSection,
+                         String messagesResource,
+                         String animationConfigResource,
+                         List<String> messageKeys,
+                         String styleName,
+                         String fontName,
+                         int fontSize,
+                         String fontStyle,
+                         String textColor) {
             this.enabled = enabled;
+            this.updateMs = Math.max(1, updateMs);
+            this.step = Math.max(1, step);
+            this.initialDelayMs = Math.max(0, initialDelayMs);
+            this.cycleDelayMs = Math.max(0, cycleDelayMs);
+            this.timelineDurationMs = Math.max(1, timelineDurationMs);
+            this.timelineFrameDelayMs = Math.max(1, timelineFrameDelayMs);
+            this.maxValue = maxValue;
+            this.loop = loop;
+            this.randomMessages = randomMessages;
+            this.showText = showText;
+            this.showPercent = showPercent;
+            this.resetOnStop = resetOnStop;
+            this.hideOnStop = hideOnStop;
+            this.animateEntrance = animateEntrance;
+            this.animateExit = animateExit;
+            this.messagesSection = messagesSection == null || messagesSection.isBlank()
+                    ? DEFAULT_PROGRESS_MESSAGES_SECTION
+                    : messagesSection.trim();
+            this.messagesResource = messagesResource;
+            this.animationConfigResource = animationConfigResource;
+            this.messageKeys = List.copyOf(messageKeys == null ? List.of() : messageKeys);
+            this.styleName = styleName == null || styleName.isBlank() ? "progressMini" : styleName.trim();
+            this.fontName = fontName == null ? "" : fontName.trim();
+            this.fontSize = Math.max(0, fontSize);
+            this.fontStyle = fontStyle == null ? "" : fontStyle.trim();
+            this.textColor = textColor == null ? "" : textColor.trim();
         }
 
         private static Progress from(Map<String, Object> table) {
-            return new Progress(LuaConfigValues.bool(table, "enabled", FALLBACK.progress.enabled));
+            Progress fallback = FALLBACK.progress;
+            return new Progress(
+                    LuaConfigValues.bool(table, "enabled", fallback.enabled),
+                    LuaConfigValues.integer(table, "updateMs", LuaConfigValues.integer(table, "progressUpdateMs", fallback.updateMs)),
+                    LuaConfigValues.integer(table, "step", LuaConfigValues.integer(table, "progressStep", fallback.step)),
+                    LuaConfigValues.integer(table, "initialDelayMs", fallback.initialDelayMs),
+                    LuaConfigValues.integer(table, "cycleDelayMs", fallback.cycleDelayMs),
+                    LuaConfigValues.integer(table, "timelineDurationMs", fallback.timelineDurationMs),
+                    LuaConfigValues.integer(table, "timelineFrameDelayMs", fallback.timelineFrameDelayMs),
+                    LuaConfigValues.integer(table, "maxValue", fallback.maxValue),
+                    LuaConfigValues.bool(table, "loop", fallback.loop),
+                    LuaConfigValues.bool(table, "randomMessages", fallback.randomMessages),
+                    LuaConfigValues.bool(table, "showText", fallback.showText),
+                    LuaConfigValues.bool(table, "showPercent", fallback.showPercent),
+                    LuaConfigValues.bool(table, "resetOnStop", fallback.resetOnStop),
+                    LuaConfigValues.bool(table, "hideOnStop", fallback.hideOnStop),
+                    LuaConfigValues.bool(table, "animateEntrance", fallback.animateEntrance),
+                    LuaConfigValues.bool(table, "animateExit", fallback.animateExit),
+                    LuaConfigValues.string(table, "messagesSection", fallback.messagesSection),
+                    LuaConfigValues.string(table, "messagesResource", fallback.messagesResource),
+                    LuaConfigValues.string(table, "animationConfigResource", fallback.animationConfigResource),
+                    stringList(table, "messageKeys", fallback.messageKeys),
+                    LuaConfigValues.string(table, "style", fallback.styleName),
+                    LuaConfigValues.string(table, "font", fallback.fontName),
+                    LuaConfigValues.integer(table, "fontSize", fallback.fontSize),
+                    LuaConfigValues.string(table, "fontStyle", fallback.fontStyle),
+                    LuaConfigValues.string(table, "textColor", fallback.textColor)
+            );
         }
 
-        boolean enabled() {
-            return enabled;
+        boolean enabled() { return enabled; }
+        int updateMs() { return updateMs; }
+        int step() { return step; }
+        int timelineDurationMs() { return timelineDurationMs; }
+        int timelineFrameDelayMs() { return timelineFrameDelayMs; }
+        boolean loop() { return loop; }
+        boolean randomMessages() { return randomMessages; }
+        boolean showText() { return showText; }
+        boolean showPercent() { return showPercent; }
+        String messagesSection() { return messagesSection; }
+        String messagesResource() { return messagesResource; }
+        String animationConfigResource() { return animationConfigResource; }
+        List<String> messageKeys() { return messageKeys; }
+        String styleName() { return styleName; }
+        String fontName() { return fontName; }
+        int fontSize() { return fontSize; }
+        String fontStyle() { return fontStyle; }
+        String textColor() { return textColor; }
+
+        org.takesome.kaylasEngine.gui.animation.ProgressBarAnimator.Options toEngineOptions() {
+            return new org.takesome.kaylasEngine.gui.animation.ProgressBarAnimator.Options()
+                    .setProgressUpdateMs(updateMs)
+                    .setProgressStep(step)
+                    .setInitialDelayMs(initialDelayMs)
+                    .setCycleDelayMs(cycleDelayMs)
+                    .setTimelineDurationMs(timelineDurationMs)
+                    .setTimelineFrameDelayMs(timelineFrameDelayMs)
+                    .setMaxValue(maxValue)
+                    .setLoop(loop)
+                    .setRandomMessages(randomMessages)
+                    .setShowText(showText)
+                    .setShowPercent(showPercent)
+                    .setResetOnStop(resetOnStop)
+                    .setHideOnStop(hideOnStop)
+                    .setAnimateEntrance(animateEntrance)
+                    .setAnimateExit(animateExit);
+        }
+    }
+
+    private static List<String> stringList(Map<String, Object> table, String key, List<String> fallback) {
+        Object value = table == null ? null : table.get(key);
+        if (value instanceof String text) {
+            String trimmed = text.trim();
+            return trimmed.isEmpty() ? fallback : List.of(trimmed);
+        }
+        if (!(value instanceof Map<?, ?> map)) {
+            return fallback;
+        }
+
+        List<Map.Entry<?, ?>> entries = new ArrayList<>(map.entrySet());
+        entries.sort(Comparator.comparingInt(entry -> numericKey(entry.getKey())));
+
+        List<String> values = new ArrayList<>();
+        for (Map.Entry<?, ?> entry : entries) {
+            Object rawValue = entry.getValue();
+            if (rawValue == null) {
+                continue;
+            }
+            String stringValue = String.valueOf(rawValue).trim();
+            if (!stringValue.isEmpty()) {
+                values.add(stringValue);
+            }
+        }
+        return values.isEmpty() ? fallback : List.copyOf(values);
+    }
+
+    private static int numericKey(Object key) {
+        if (key instanceof Number number) {
+            return number.intValue();
+        }
+        try {
+            return Integer.parseInt(String.valueOf(key));
+        } catch (NumberFormatException ignored) {
+            return Integer.MAX_VALUE;
         }
     }
 }

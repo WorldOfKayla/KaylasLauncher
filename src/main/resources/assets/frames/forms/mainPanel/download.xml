@@ -5,7 +5,28 @@
                 <bounds x="20" y="40" width="800" height="440" />
             </panelOptions>
             <childComponents>
-                <component type="progressBar" style="progress" id="progressBar" color="#ffffff">
+                <component type="progressBar"
+                           style="progress"
+                           id="progressBar"
+                           minValue="0"
+                           maxValue="100"
+                           initialValue="0"
+                           stringPainted="false"
+                           fillColor="#b0976bff"
+                           trackColor="#202720ff"
+                           borderColor="#183824ff"
+                           borderWidth="1"
+                           borderPainted="true"
+                           borderRadius="10"
+                           fillBorderRadius="8"
+                           trackPadding="2"
+                           striped="true"
+                           stripeColor="#ffffff22"
+                           stripeWidth="12"
+                           stripeGap="8"
+                           stripeSpeedMs="800"
+                           animateValue="true"
+                           animationDurationMs="120">
                     <bounds x="5" y="370" width="790" height="30" />
                 </component>
                 <component type="label" fontSize="12" style="title" color="#ffffff" id="progressLabel">

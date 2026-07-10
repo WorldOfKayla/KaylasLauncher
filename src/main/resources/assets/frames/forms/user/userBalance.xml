@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="userBalance">
-            <panelOptions opaque="true" visible="true" background="#4d2c2cc2">
+            <panelOptions opaque="true" visible="true" background="#ae6a2b" border="1,1,1,1,#242221">
                 <bounds x="210" y="0" width="135" height="75" />
             </panelOptions>
             <childComponents>

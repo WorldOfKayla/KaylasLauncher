@@ -149,6 +149,14 @@ public final class LauncherComponentLibraryVerification {
                 .load("assets/frames/forms/settings/generalSettings.xml");
         var settingsPanel = settingsDescriptor.getGroups().get("generalSettings");
         require(settingsPanel != null, "generalSettings panel is missing");
+        require(settingsPanel.getPanelOptions() != null,
+                "generalSettings panel options are missing");
+        require(settingsPanel.getPanelOptions().isOpaque(),
+                "settings tabs surface must remain opaque");
+        require("#c0a1a0".equalsIgnoreCase(
+                        settingsPanel.getPanelOptions().getBackground()
+                ),
+                "settings tabs surface background was not restored");
 
         Map<String, ComponentAttributes> rootComponents = index(settingsPanel.getChildComponents());
         ComponentAttributes tabs = rootComponents.get("settingsTabs");

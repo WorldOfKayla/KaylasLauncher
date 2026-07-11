@@ -2,8 +2,9 @@
 <ui>
     <panels>
         <panel id="generalSettings">
-            <panelOptions doubleBuffered="true" focusable="true" display="true">
+            <panelOptions background="#c0a1a0" doubleBuffered="true" focusable="true" display="true">
                 <visible/>
+                <opaque/>
                 <bounds x="0" y="35" width="490" height="415" />
             </panelOptions>
             <childComponents>

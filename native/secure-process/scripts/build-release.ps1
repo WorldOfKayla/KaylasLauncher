@@ -12,6 +12,36 @@ try {
         throw "JAVA_HOME is required"
     }
 
+    # Fail-closed source validation. Hardware attestation may never downgrade to SP1.
+    $forbiddenMarkers = @(
+        "SOFTWARE_FALLBACK",
+        "fallbackAllowed",
+        "fallbackReasonCode",
+        "allowSoftwareFallback",
+        "softwareFallbackProtocol"
+    )
+    $sourceFiles = Get-ChildItem -Path (Join-Path $projectDir "src") -Recurse -File
+    foreach ($sourceFile in $sourceFiles) {
+        if ($sourceFile.Name.ToLowerInvariant().Contains("fallback")) {
+            throw "Fail-closed policy rejected downgrade source file: $($sourceFile.FullName)"
+        }
+        $content = Get-Content -Raw -LiteralPath $sourceFile.FullName
+        foreach ($markerValue in $forbiddenMarkers) {
+            if ($content.Contains($markerValue)) {
+                throw "Fail-closed policy rejected downgrade marker '$markerValue' in $($sourceFile.FullName)"
+            }
+        }
+    }
+    $packageScript = Join-Path $projectDir "scripts\package-hardware-release.ps1"
+    if (Test-Path $packageScript) {
+        $packageContent = Get-Content -Raw -LiteralPath $packageScript
+        foreach ($markerValue in $forbiddenMarkers) {
+            if ($packageContent.Contains($markerValue)) {
+                throw "Fail-closed policy rejected downgrade marker '$markerValue' in $packageScript"
+            }
+        }
+    }
+
     $cmakeJavaHome = $JavaHome.Replace('\', '/')
     $cmakeArgs = @(
         "-S", ".",

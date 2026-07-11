@@ -162,8 +162,6 @@ SecureProcess 0.4.0 provides two explicit challenge-response profiles for Kaylas
 
 SP2 remains fail-closed for integrity, signature, measured-bootstrap, PCR-selection and TPM-quote
 failures. When the Microsoft Platform Crypto Provider explicitly reports that the TPM is unavailable,
-SecureProcess may create a signed SP1 software fallback. The fallback metadata (`fallbackFrom=SP2`
-and `fallbackReasonCode=TPM_UNAVAILABLE`) is included inside the signed payload and must be explicitly
 allowed by backend policy.
 
 ## Hardware attestation profile (SP2)

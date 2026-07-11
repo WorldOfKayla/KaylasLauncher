@@ -92,10 +92,10 @@ It produces `build/hardware-release/secure-process-hardware-release.json`.
 ```text
 SecureProcess version = 0.4.0
 SP1 keyId = 83999a6747bb4fe53f8693baa646649bd4ed6a18a20528a628b8c22142ee4b1a
-IDE build = 7c29461e62887a84249223433eee9437efb5d475ac34c1c65451227c12dbd79a
-release JAR = bd4c6513123498cb68af9864a0da46be230b573a1bd881ebb1cfdb8ce511ed9e
-SecureProcess DLL = 6161b93bc75b1a47e1529aa1da89fcd3551ab70170ba6d7288f1c6c269b1328f
-unsigned pinned bootstrap = b21f5b46db3d3e160cc32bcb17f834e6e460a511d94387b30a624e74fb39535b
+IDE build = 6a1aaa91913f0fd585e407ed29eccb74d8c9a1ec2075422af15b5abefe09e720
+release JAR = 752167d685a8a58300d82a65f7acda9528214bad9bb67059e35f7212ef52a9d4
+SecureProcess DLL = ef40c92747eac48458ebb0800fcb951ba4bef8d62524c09f97e4b588f20686f5
+unsigned pinned bootstrap = b7d0db1710ee58a4c0093cd03a11dfc786c6106dcdbe6d5f59e1b3f17827ceee
 ```
 
 Signing changes the native artifact hashes. Backend SP2 allowlists must use the final signed hashes,

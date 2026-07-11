@@ -86,8 +86,6 @@ try {
         schema = "kaylas.secure-process.hardware-release.v1"
         secureProcessVersion = "0.4.0"
         attestationProtocol = "SP2"
-        softwareFallbackProtocol = "SP1"
-        softwareFallbackReasonCode = "TPM_UNAVAILABLE"
         launcherFile = (Split-Path $resolvedLauncher -Leaf)
         launcherSha256 = $launcherHash
         secureProcessSha256 = $dllHash

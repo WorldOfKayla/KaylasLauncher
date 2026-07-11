@@ -36,7 +36,7 @@ public final class SecureProcess {
     private static final String PROFILE_PROPERTY = "kaylas.secureProcess.flags";
     private static final String SHA256_PROPERTY = "kaylas.secureProcess.sha256";
     private static final String BUNDLED_RESOURCE = "/native/windows-x86_64/secure_process.dll";
-    private static final String BUNDLED_SHA256 = "ef40c92747eac48458ebb0800fcb951ba4bef8d62524c09f97e4b588f20686f5";
+    private static final String BUNDLED_SHA256 = "658945f45308e3653a227f89c86ca00ce79a7e3f2a758f3627febb090088ebc3";
     private static final AtomicReference<SecureProcessResult> RESULT = new AtomicReference<>();
 
     private SecureProcess() {

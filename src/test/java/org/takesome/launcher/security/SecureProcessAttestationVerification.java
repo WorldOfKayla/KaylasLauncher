@@ -2,7 +2,7 @@ package org.takesome.launcher.security;
 
 import java.util.Map;
 
-/** Executable verification for native SecureProcess challenge signing and TPM fallback. */
+/** Executable verification for native SecureProcess SP1 challenge signing. */
 public final class SecureProcessAttestationVerification {
     private SecureProcessAttestationVerification() {
     }
@@ -36,31 +36,6 @@ public final class SecureProcessAttestationVerification {
         require(result.sha256().equals(softwareEvidence.get("secureProcessSha256")),
                 "Signed SecureProcess hash differs from verified DLL hash");
 
-        Map<String, Object> preferredHardwareEvidence = SecureProcessAttestation.create(
-                "hardware-verification-challenge",
-                "hardware-verification-session",
-                "2.12.0",
-                "0.1.0",
-                SecureProcessAttestation.HARDWARE_PROTOCOL
-        );
-        String selectedProtocol = String.valueOf(preferredHardwareEvidence.get("version"));
-        require(
-                SecureProcessAttestation.HARDWARE_PROTOCOL.equals(selectedProtocol)
-                        || SecureProcessAttestation.SOFTWARE_PROTOCOL.equals(selectedProtocol),
-                "Unexpected preferred hardware attestation protocol: " + selectedProtocol
-        );
-        if (SecureProcessAttestation.SOFTWARE_PROTOCOL.equals(selectedProtocol)) {
-            require("SOFTWARE_FALLBACK".equals(
-                            preferredHardwareEvidence.get("attestationMode")),
-                    "SP2 fallback mode is not signed into evidence");
-            require(SecureProcessAttestation.HARDWARE_PROTOCOL.equals(
-                            preferredHardwareEvidence.get("fallbackFrom")),
-                    "SP2 fallback source is missing");
-            require("TPM_UNAVAILABLE".equals(
-                            preferredHardwareEvidence.get("fallbackReasonCode")),
-                    "SP2 fallback reason is missing");
-        }
-
         System.out.println("SecureProcess native attestation verification passed.");
         System.out.println("SecureProcess attestation keyId="
                 + softwareEvidence.get("keyId"));
@@ -70,7 +45,6 @@ public final class SecureProcessAttestationVerification {
                 + softwareEvidence.get("secureProcessSha256"));
         System.out.println("Process sha256="
                 + softwareEvidence.get("processSha256"));
-        System.out.println("Preferred hardware evidence protocol=" + selectedProtocol);
     }
 
     private static void require(boolean condition, String message) {

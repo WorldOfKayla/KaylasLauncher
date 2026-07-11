@@ -232,13 +232,79 @@ tasks.register('backendTransportSecurityCheck', JavaExec) {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
+tasks.register('secureProcessFailClosedSourceCheck') {
+    group = 'verification'
+    description = 'Rejects SecureProcess software downgrade sources and markers.'
+    doLast {
+        List<String> markers = [
+                'SOFTWARE_FALLBACK',
+                'fallbackAllowed',
+                'fallbackReasonCode',
+                'allowSoftwareFallback',
+                'softwareFallbackProtocol',
+                'SOFTWARE_DEGRADED',
+                'degradedReasonCode',
+                'allowTpmUnavailableDegradedMode',
+                'SecureProcessAttestationSelector',
+                'SecureProcessDegradedNative',
+                'createDegradedAttestation',
+                'Sp2DegradedEvidenceVerifier',
+                'createSoftwareFallbackAttestation',
+                'tpm_unavailable_attestation',
+                'secure_process_tpm_unavailable_jni',
+                'TpmUnavailableAttestation',
+                'createTpmUnavailableAttestation'
+        ]
+        List<File> roots = [
+                layout.projectDirectory.dir('src/main/java/org/takesome/launcher/security').asFile,
+                layout.projectDirectory.dir('src/test/java/org/takesome/launcher/security').asFile,
+                layout.projectDirectory.dir('native/secure-process/src').asFile,
+                layout.projectDirectory.dir('native/secure-process/scripts').asFile
+        ]
+        roots.findAll { it.exists() }.each { root ->
+            fileTree(root).matching {
+                include '**/*.java', '**/*.cpp', '**/*.hpp', '**/*.ps1'
+                exclude '**/build-release.ps1'
+            }.files.each { sourceFile ->
+                String lowerName = sourceFile.name.toLowerCase(java.util.Locale.ROOT)
+                if (lowerName.contains('fallback')
+                        || lowerName.contains('degraded')
+                        || lowerName.contains('tpm_unavailable')) {
+                    throw new GradleException(
+                            "Fail-closed policy rejected downgrade source file: ${sourceFile}"
+                    )
+                }
+                String content = sourceFile.getText('UTF-8')
+                markers.each { marker ->
+                    if (content.contains(marker)) {
+                        throw new GradleException(
+                                "Fail-closed policy rejected downgrade marker '${marker}' in ${sourceFile}"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('secureProcessFailClosedSourceCheck')
+}
+tasks.named('compileTestJava') {
+    dependsOn tasks.named('secureProcessFailClosedSourceCheck')
+}
+tasks.matching { it.name == 'buildSecureProcess' }.configureEach {
+    dependsOn tasks.named('secureProcessFailClosedSourceCheck')
+}
+
 tasks.register('secureProcessAttestationCheck', JavaExec) {
     group = 'verification'
+    dependsOn tasks.named('secureProcessFailClosedSourceCheck')
     description = 'Builds SecureProcess and verifies native CNG challenge signing.'
     dependsOn tasks.named('buildSecureProcess')
     dependsOn tasks.named('testClasses')
     classpath = sourceSets.test.runtimeClasspath
-    mainClass = 'org.takesome.launcher.security.SecureProcessAttestationVerification'
+    mainClass = 'org.takesome.launcher.security.SecureProcessTpmUnavailableVerification'
     systemProperty 'file.encoding', 'UTF-8'
     doFirst {
         File dll = layout.projectDirectory.file('native/secure-process/build/Release/secure_process.dll').asFile

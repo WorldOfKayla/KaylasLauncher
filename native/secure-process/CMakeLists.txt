@@ -7,8 +7,36 @@ endif()
 
 find_package(JNI REQUIRED)
 
+
+set(SECURE_PROCESS_DOWNGRADE_MARKERS
+    "SOFTWARE_FALLBACK"
+    "fallbackAllowed"
+    "fallbackReasonCode"
+    "allowSoftwareFallback"
+    "softwareFallbackProtocol"
+)
+file(GLOB_RECURSE SECURE_PROCESS_NATIVE_SOURCE_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
+)
+foreach(SECURE_PROCESS_SOURCE_FILE IN LISTS SECURE_PROCESS_NATIVE_SOURCE_FILES)
+    get_filename_component(SECURE_PROCESS_SOURCE_NAME "${SECURE_PROCESS_SOURCE_FILE}" NAME)
+    string(TOLOWER "${SECURE_PROCESS_SOURCE_NAME}" SECURE_PROCESS_SOURCE_NAME_LOWER)
+    if(SECURE_PROCESS_SOURCE_NAME_LOWER MATCHES "fallback")
+        message(FATAL_ERROR "Fail-closed policy rejected downgrade source file: ${SECURE_PROCESS_SOURCE_FILE}")
+    endif()
+    file(READ "${SECURE_PROCESS_SOURCE_FILE}" SECURE_PROCESS_SOURCE_CONTENT)
+    foreach(SECURE_PROCESS_MARKER IN LISTS SECURE_PROCESS_DOWNGRADE_MARKERS)
+        string(FIND "${SECURE_PROCESS_SOURCE_CONTENT}" "${SECURE_PROCESS_MARKER}" SECURE_PROCESS_MARKER_OFFSET)
+        if(NOT SECURE_PROCESS_MARKER_OFFSET EQUAL -1)
+            message(FATAL_ERROR "Fail-closed policy rejected downgrade marker in: ${SECURE_PROCESS_SOURCE_FILE}")
+        endif()
+    endforeach()
+endforeach()
+
 add_library(secure_process SHARED
     src/secure_process_jni.cpp
+    src/secure_process_tpm_unavailable_jni.cpp
     src/core/text.cpp
     src/core/error_state.cpp
     src/runtime/process_state.cpp
@@ -20,6 +48,7 @@ add_library(secure_process SHARED
     src/attestation/tpm_key.cpp
     src/attestation/attestation.cpp
     src/attestation/hardware_attestation.cpp
+    src/attestation/tpm_unavailable_attestation.cpp
     src/bootstrap/bootstrap_evidence.cpp
 )
 

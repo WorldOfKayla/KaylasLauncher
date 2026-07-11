@@ -42,7 +42,9 @@ public final class SecureProcessAudit {
                 throw new IllegalStateException("Native audit returned no report");
             }
 
-            Set<Path> trustedRoots = trustedRoots();
+            Set<Path> trustedRoots = SecureProcessTrustedLocations.resolve(
+                    SecureProcess.currentResult()
+            );
             Set<String> allowedHashes = allowedHashes();
             List<SecureProcessAuditReport.Module> modules = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public final class SecureProcessAudit {
             );
         }
 
-        boolean trustedLocation = trustedRoots.stream().anyMatch(path::startsWith);
+        boolean trustedLocation = SecureProcessTrustedLocations.contains(trustedRoots, path);
         if (!Files.isRegularFile(path)) {
             return new SecureProcessAuditReport.Module(
                     path.toString(),
@@ -157,34 +159,6 @@ public final class SecureProcessAudit {
         );
     }
 
-    private static Set<Path> trustedRoots() {
-        Set<Path> roots = new HashSet<>();
-        addRoot(roots, System.getProperty("java.home", ""));
-        addRoot(roots, System.getProperty("user.dir", ""));
-
-        SecureProcessResult secureProcess = SecureProcess.currentResult();
-        if (secureProcess != null && secureProcess.nativeLibraryLoaded()) {
-            try {
-                Path loadedLibrary = Path.of(secureProcess.libraryPath()).toAbsolutePath().normalize();
-                Path parent = loadedLibrary.getParent();
-                addRoot(roots, parent == null ? "" : parent.toString());
-            } catch (RuntimeException ignored) {
-                // Keep auditing if a non-path library location was reported.
-            }
-        }
-
-        String systemRoot = System.getenv("SystemRoot");
-        if (systemRoot != null && !systemRoot.isBlank()) {
-            addRoot(roots, Path.of(systemRoot, "System32").toString());
-        }
-
-        String configured = System.getProperty("kaylas.secureProcess.trustedModuleRoots", "");
-        for (String value : configured.split(java.util.regex.Pattern.quote(java.io.File.pathSeparator))) {
-            addRoot(roots, value);
-        }
-        return Set.copyOf(roots);
-    }
-
     private static Set<String> allowedHashes() {
         Set<String> hashes = new HashSet<>();
         String configured = System.getProperty("kaylas.secureProcess.allowedModuleSha256", "");
@@ -194,13 +168,6 @@ public final class SecureProcessAudit {
             }
         }
         return Set.copyOf(hashes);
-    }
-
-    private static void addRoot(Set<Path> roots, String value) {
-        if (value == null || value.isBlank()) {
-            return;
-        }
-        roots.add(Path.of(value).toAbsolutePath().normalize());
     }
 
     private static String sha256(Path path)

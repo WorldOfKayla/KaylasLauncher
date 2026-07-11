@@ -120,11 +120,11 @@ public class Launcher extends Engine {
         System.setProperty("RamAmount", String.valueOf(Runtime.getRuntime().maxMemory() / 45));
         try {
             if (getPreInitHooks().hook(null, null)) {
-                LOGGER.info("Pre-init hooks прервали инициализацию");
+                LOGGER.info("Pre-init hooks requested launcher initialization to stop.");
                 return;
             }
         } catch (HookException e) {
-            LOGGER.error("Ошибка в pre-init hooks", e);
+            LOGGER.error("Pre-init hook execution failed", e);
         }
         this.config.processConfig();
         this.LANG = new LanguageProvider(this, fileProperties.getLocaleFile(), getConfig().getLang());
@@ -181,7 +181,7 @@ public class Launcher extends Engine {
 
     public void logStartupTime(long startTime) {
         long duration = System.currentTimeMillis() - startTime;
-        getLOGGER().info(getAppTitle() + " запущен за " + duration + " мс!");
+        getLOGGER().info(getAppTitle() + " started in " + duration + " ms.");
     }
 
     @Override
@@ -192,7 +192,7 @@ public class Launcher extends Engine {
                     StandardCharsets.UTF_8
             );
         } catch (URISyntaxException e) {
-            getLOGGER().error("Ошибка декодирования пути приложения: {}", e.getMessage(), e);
+            getLOGGER().error("Unable to resolve application path: {}", e.getMessage(), e);
             return null;
         }
     }

@@ -32,7 +32,7 @@ def launcherArchivesBaseName = readSetting('project.archivesBaseName', 'PROJECT_
 
 def engineDependencyGroup = readSetting('engine.group', 'ENGINE_GROUP', 'org.takesome')
 def engineDependencyArtifact = readSetting('engine.artifact', 'ENGINE_ARTIFACT', readSetting('engine.name', 'ENGINE_NAME', 'kaylas-ui-engine'))
-def engineDependencyVersion = readSetting('engine.version', 'ENGINE_VERSION', '2.1.0-AURELIA')
+def engineDependencyVersion = readSetting('engine.version', 'ENGINE_VERSION', '2.3.0-KINETICA')
 
 group = launcherGroup
 version = launcherVersion
@@ -163,8 +163,38 @@ tasks.register('launcherComponentsCheck', JavaExec) {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
+tasks.register('serverPresentationCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies server-card summaries, endpoint formatting and backend status presentation.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.server.ServerStatusTextVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.register('secureProcessCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies SecureProcess fail-open bootstrap behavior.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.security.SecureProcessVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.register('secureProcessAuditPolicyCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies trusted Windows module roots and untrusted user paths.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.security.SecureProcessAuditPolicyVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
 tasks.named('check') {
     dependsOn tasks.named('launcherComponentsCheck')
+    dependsOn tasks.named('serverPresentationCheck')
+    dependsOn tasks.named('secureProcessCheck')
+    dependsOn tasks.named('secureProcessAuditPolicyCheck')
 }
 
 tasks.register('runtimeEnvironment') {

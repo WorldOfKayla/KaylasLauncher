@@ -11,7 +11,7 @@ public final class SecureProcessAttestationVerification {
         SecureProcessResult result = SecureProcess.initializeEarly();
         require(result.nativeLibraryLoaded(), "SecureProcess native library did not load");
         require(result.fullyApplied(), "SecureProcess mitigation baseline is incomplete");
-        require("0.3.0".equals(result.nativeVersion()),
+        require("0.3.1".equals(result.nativeVersion()),
                 "Unexpected SecureProcess native version: " + result.nativeVersion());
 
         Map<String, Object> evidence = SecureProcessAttestation.create(

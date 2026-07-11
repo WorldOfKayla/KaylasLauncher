@@ -2,7 +2,7 @@
 
 KaylasLauncher does not consider a WebSocket transport usable until SecureProcess attestation succeeds.
 
-The client receives a one-time backend challenge, asks SecureProcess 0.3.0 to measure and sign the current launcher state,
+The client receives a one-time backend challenge, asks SecureProcess 0.3.1 to measure and sign the current launcher state,
 and sends the evidence back. Only `ATTESTATION_OK` completes the backend-bound future used by authentication,
 server lists, versions, files and user resources.
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(SecureProcess VERSION 0.2.0 LANGUAGES CXX)
+project(SecureProcess VERSION 0.3.0 LANGUAGES CXX)
 
 if (NOT WIN32)
     message(FATAL_ERROR "SecureProcess currently supports Windows only")
@@ -27,6 +27,8 @@ target_link_libraries(secure_process PRIVATE
     wintrust
     crypt32
     psapi
+    bcrypt
+    ncrypt
 )
 
 if (MSVC)

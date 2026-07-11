@@ -6,6 +6,7 @@ import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
 import org.takesome.kaylasEngine.fileLoader.FileAttributes;
 import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.launcher.security.SecureProcessAttestation;
 import org.takesome.launcher.user.loader.BadgeObject;
 
 import javax.imageio.ImageIO;
@@ -37,6 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class LauncherBackendClient implements AutoCloseable {
     private static final Gson GSON = new Gson();
     private static final int REQUEST_TIMEOUT_SECONDS = 15;
+    private static final String ATTESTATION_HEADER = "X-Kaylas-Launcher-Attestation";
+    private static final String BACKEND_PROTOCOL_VERSION = "0.1.0";
     private static final Type SERVER_LIST_TYPE = new TypeToken<List<ServerAttributes>>() {}.getType();
     private static final Type VERSION_LIST_TYPE = new TypeToken<List<LauncherGameVersion>>() {}.getType();
     private static final Type BADGE_LIST_TYPE = new TypeToken<List<BadgeObject>>() {}.getType();
@@ -48,12 +51,14 @@ public final class LauncherBackendClient implements AutoCloseable {
     private final int maxReconnectAttempts;
     private final HttpClient httpClient;
     private final AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean connected = new AtomicBoolean(false);
     private final AtomicBoolean bound = new AtomicBoolean(false);
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean statusRequested = new AtomicBoolean(false);
     private final AtomicInteger reconnectAttempts = new AtomicInteger(0);
     private final AtomicInteger connectionSequence = new AtomicInteger(0);
     private final AtomicReference<CompletableFuture<Void>> boundSignal = new AtomicReference<>(new CompletableFuture<>());
+    private final AtomicReference<String> attestationToken = new AtomicReference<>("");
     private final ConcurrentHashMap<String, CompletableFuture<LauncherBackendMessage>> pendingRequests = new ConcurrentHashMap<>();
     private final Object sendLock = new Object();
     private CompletableFuture<WebSocket> sendQueue = CompletableFuture.completedFuture(null);
@@ -314,10 +319,11 @@ public final class LauncherBackendClient implements AutoCloseable {
     private <T> CompletableFuture<T> getList(String path, String login, String uuid, Type type) {
         return waitUntilBound().thenCompose(v -> {
             URI uri = httpUri(path, login, uuid);
-            HttpRequest request = HttpRequest.newBuilder(uri)
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(uri)
                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT_SECONDS))
-                    .GET()
-                    .build();
+                    .GET();
+            applyAttestationHeader(requestBuilder);
+            HttpRequest request = requestBuilder.build();
             return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenApply(response -> {
                         if (response.statusCode() < 200 || response.statusCode() >= 300) {
@@ -331,10 +337,11 @@ public final class LauncherBackendClient implements AutoCloseable {
     private CompletableFuture<BufferedImage> getImage(String path, String login, String uuid, Map<String, String> extraQuery) {
         return waitUntilBound().thenCompose(v -> {
             URI uri = httpUri(path, login, uuid, extraQuery);
-            HttpRequest request = HttpRequest.newBuilder(uri)
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(uri)
                     .timeout(Duration.ofSeconds(REQUEST_TIMEOUT_SECONDS))
-                    .GET()
-                    .build();
+                    .GET();
+            applyAttestationHeader(requestBuilder);
+            HttpRequest request = requestBuilder.build();
             return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray())
                     .thenApply(response -> {
                         if (response.statusCode() < 200 || response.statusCode() >= 300) {
@@ -365,6 +372,10 @@ public final class LauncherBackendClient implements AutoCloseable {
         } else if (login != null && !login.isBlank()) {
             queryParameters.put("login", login);
         }
+        String currentAttestationToken = attestationToken.get();
+        if (currentAttestationToken != null && !currentAttestationToken.isBlank()) {
+            queryParameters.put("attestation", currentAttestationToken);
+        }
         if (extraQuery != null) {
             extraQuery.forEach((key, value) -> {
                 if (key != null && !key.isBlank() && value != null && !value.isBlank()) {
@@ -385,6 +396,13 @@ public final class LauncherBackendClient implements AutoCloseable {
             return new URI(scheme, null, endpoint.getHost(), endpoint.getPort(), path, query, null);
         } catch (Exception error) {
             throw new IllegalStateException("Unable to build backend HTTP URI for " + path, error);
+        }
+    }
+
+    private void applyAttestationHeader(HttpRequest.Builder builder) {
+        String token = attestationToken.get();
+        if (token != null && !token.isBlank()) {
+            builder.header(ATTESTATION_HEADER, token);
         }
     }
 
@@ -437,6 +455,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                 .buildAsync(endpoint, new BackendWebSocketListener())
                 .whenComplete((socket, error) -> {
                     if (error != null) {
+                        connected.set(false);
                         bound.set(false);
                         resetBoundSignal();
                         int attempt = reconnectAttempts.incrementAndGet();
@@ -452,14 +471,16 @@ public final class LauncherBackendClient implements AutoCloseable {
             return;
         }
         WebSocket socket = webSocket;
-        if (socket == null || !bound.get()) {
+        if (socket == null || !connected.get()) {
             if (maxReconnectAttempts == 0 || reconnectAttempts.get() < maxReconnectAttempts) {
                 statusRequested.set(false);
                 connect();
             }
             return;
         }
-        send("PING", Map.of("launcherTime", String.valueOf(System.currentTimeMillis())));
+        if (bound.get()) {
+            send("PING", Map.of("launcherTime", String.valueOf(System.currentTimeMillis())));
+        }
     }
 
     private void hello() {
@@ -467,7 +488,7 @@ public final class LauncherBackendClient implements AutoCloseable {
         payload.put("launcher", launcher.getAppTitle());
         payload.put("version", launcher.getEngineData() != null ? launcher.getEngineData().getLauncherVersion() : "unknown");
         payload.put("runtime", "KaylasLauncher");
-        payload.put("protocolVersion", "0.1.0");
+        payload.put("protocolVersion", BACKEND_PROTOCOL_VERSION);
         send("HELLO", payload);
     }
 
@@ -496,8 +517,13 @@ public final class LauncherBackendClient implements AutoCloseable {
             sendFuture = sendQueue.handle((ignoredSocket, ignoredError) -> null)
                     .thenCompose(ignored -> {
                         WebSocket socket = webSocket;
-                        if (socket == null || closed.get() || !bound.get()) {
-                            return failedWebSocketSend("Launcher backend is not connected: " + endpoint);
+                        boolean handshakeMessage = "HELLO".equals(type)
+                                || "ATTESTATION_RESPONSE".equals(type);
+                        if (socket == null
+                                || closed.get()
+                                || !connected.get()
+                                || (!bound.get() && !handshakeMessage)) {
+                            return failedWebSocketSend("Launcher backend is not attested: " + endpoint);
                         }
                         if (expectedConnection != connectionSequence.get()) {
                             return failedWebSocketSend("Launcher backend connection changed before sending " + type);
@@ -520,6 +546,9 @@ public final class LauncherBackendClient implements AutoCloseable {
         if (!closed.compareAndSet(false, true)) {
             return;
         }
+        connected.set(false);
+        bound.set(false);
+        attestationToken.set("");
         pendingRequests.forEach((requestId, future) -> future.completeExceptionally(new IllegalStateException("Backend client closed.")));
         pendingRequests.clear();
         boundSignal.get().completeExceptionally(new IllegalStateException("Backend client closed."));
@@ -540,11 +569,13 @@ public final class LauncherBackendClient implements AutoCloseable {
         public void onOpen(WebSocket webSocket) {
             LauncherBackendClient.this.webSocket = webSocket;
             connectionSequence.incrementAndGet();
-            bound.set(true);
-            boundSignal.get().complete(null);
+            connected.set(true);
+            bound.set(false);
+            attestationToken.set("");
+            resetBoundSignal();
             reconnectAttempts.set(0);
             statusRequested.set(false);
-            Engine.LOGGER.info("Backend WS bound: {}", endpoint);
+            Engine.LOGGER.info("Backend WS transport connected: {}", endpoint);
             webSocket.request(1);
             hello();
         }
@@ -564,7 +595,9 @@ public final class LauncherBackendClient implements AutoCloseable {
         @Override
         public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
             connectionSequence.incrementAndGet();
+            connected.set(false);
             bound.set(false);
+            attestationToken.set("");
             resetBoundSignal();
             statusRequested.set(false);
             failPendingRequests("Backend WS closed: " + statusCode + " " + reason);
@@ -575,7 +608,9 @@ public final class LauncherBackendClient implements AutoCloseable {
         @Override
         public void onError(WebSocket webSocket, Throwable error) {
             connectionSequence.incrementAndGet();
+            connected.set(false);
             bound.set(false);
+            attestationToken.set("");
             resetBoundSignal();
             statusRequested.set(false);
             failPendingRequests("Backend WS error: " + error.getMessage());
@@ -611,10 +646,19 @@ public final class LauncherBackendClient implements AutoCloseable {
             }
 
             switch (message.getType()) {
+                case "ATTESTATION_CHALLENGE" -> handleAttestationChallenge(message);
+                case "ATTESTATION_OK" -> handleAttestationAccepted(message);
+                case "ATTESTATION_DENIED" -> handleAttestationDenied(message);
                 case "HELLO_ACK" -> {
-                    bound.set(true);
                     Engine.LOGGER.info("Backend HELLO acknowledged: {}", message.getPayload());
-                    requestStatus();
+                    boolean required = message.getPayload() != null
+                            && Boolean.parseBoolean(String.valueOf(
+                                    message.getPayload().getOrDefault("attestationRequired", false)
+                            ));
+                    if (!required && bound.compareAndSet(false, true)) {
+                        boundSignal.get().complete(null);
+                        requestStatus();
+                    }
                 }
                 case "PONG" -> Engine.LOGGER.debug("Backend PONG: {}", message.getPayload());
                 case "STATUS" -> handleStatus(message.getPayload());
@@ -629,6 +673,98 @@ public final class LauncherBackendClient implements AutoCloseable {
             }
         } catch (RuntimeException error) {
             Engine.LOGGER.warn("Invalid backend WS payload: {}", payload, error);
+        }
+    }
+
+    private void handleAttestationChallenge(LauncherBackendMessage message) {
+        Map<String, Object> payload = message.getPayload();
+        if (payload == null) {
+            rejectAttestationLocally("Backend challenge payload is missing");
+            return;
+        }
+        String challenge = String.valueOf(payload.getOrDefault("challenge", "")).trim();
+        String session = String.valueOf(payload.getOrDefault("session", "")).trim();
+        String protocolVersion = String.valueOf(
+                payload.getOrDefault("protocolVersion", BACKEND_PROTOCOL_VERSION)
+        ).trim();
+        if (challenge.isBlank() || session.isBlank()) {
+            rejectAttestationLocally("Backend challenge is incomplete");
+            return;
+        }
+
+        try {
+            String launcherVersion = launcher.getEngineData() == null
+                    ? "unknown"
+                    : launcher.getEngineData().getLauncherVersion();
+            Map<String, Object> evidence = SecureProcessAttestation.create(
+                    challenge,
+                    session,
+                    launcherVersion,
+                    protocolVersion
+            );
+            Map<String, Object> responsePayload = new LinkedHashMap<>();
+            responsePayload.put("evidence", evidence);
+            LauncherBackendMessage response = LauncherBackendMessage.of(
+                    "ATTESTATION_RESPONSE",
+                    message.getRequestId(),
+                    responsePayload
+            );
+            sendQueued("ATTESTATION_RESPONSE", response).exceptionally(error -> {
+                rejectAttestationLocally("Unable to send attestation response: " + error.getMessage());
+                return null;
+            });
+            Engine.LOGGER.info(
+                    "SecureProcess attestation response created: keyId={} build={} nativeVersion={}",
+                    evidence.get("keyId"),
+                    evidence.get("launcherBuildSha256"),
+                    evidence.get("nativeVersion")
+            );
+        } catch (RuntimeException error) {
+            rejectAttestationLocally(error.getMessage());
+        }
+    }
+
+    private void handleAttestationAccepted(LauncherBackendMessage message) {
+        Map<String, Object> payload = message.getPayload();
+        String token = payload == null
+                ? ""
+                : String.valueOf(payload.getOrDefault("accessToken", "")).trim();
+        if (token.isBlank()) {
+            rejectAttestationLocally("Backend accepted attestation without an access token");
+            return;
+        }
+        attestationToken.set(token);
+        bound.set(true);
+        boundSignal.get().complete(null);
+        reconnectAttempts.set(0);
+        Engine.LOGGER.info(
+                "SecureProcess attestation accepted: keyId={} expiresAt={}",
+                payload.get("keyId"),
+                payload.get("expiresAt")
+        );
+        requestStatus();
+    }
+
+    private void handleAttestationDenied(LauncherBackendMessage message) {
+        Object reason = message.getPayload() == null
+                ? "attestation denied"
+                : message.getPayload().getOrDefault("reason", message.getPayload());
+        rejectAttestationLocally(String.valueOf(reason));
+    }
+
+    private void rejectAttestationLocally(String reason) {
+        connected.set(false);
+        bound.set(false);
+        attestationToken.set("");
+        IllegalStateException failure = new IllegalStateException(
+                "SecureProcess backend attestation failed: " + reason
+        );
+        boundSignal.get().completeExceptionally(failure);
+        failPendingRequests(failure.getMessage());
+        Engine.LOGGER.error(failure.getMessage());
+        WebSocket socket = webSocket;
+        if (socket != null) {
+            socket.sendClose(1008, "SecureProcess attestation failed");
         }
     }
 

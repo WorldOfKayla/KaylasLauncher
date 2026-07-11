@@ -62,6 +62,10 @@ java {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
 
 
 tasks.withType(Test).configureEach {
@@ -181,6 +185,105 @@ tasks.register('secureProcessCheck', JavaExec) {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
+tasks.register('secureProcessBundleCheck') {
+    group = 'verification'
+    description = 'Verifies that the built, bundled and declared SecureProcess DLL hashes match.'
+    dependsOn tasks.named('buildSecureProcess')
+    doLast {
+        File built = layout.projectDirectory.file('native/secure-process/build/Release/secure_process.dll').asFile
+        File bundled = layout.projectDirectory.file('src/main/resources/native/windows-x86_64/secure_process.dll').asFile
+        File source = layout.projectDirectory.file('src/main/java/org/takesome/launcher/security/SecureProcess.java').asFile
+        if (!built.isFile() || !bundled.isFile()) {
+            throw new GradleException("SecureProcess built or bundled DLL is missing")
+        }
+        def sha256 = { File file ->
+            def digest = java.security.MessageDigest.getInstance('SHA-256')
+            file.withInputStream { input ->
+                byte[] buffer = new byte[64 * 1024]
+                int read
+                while ((read = input.read(buffer)) >= 0) {
+                    if (read > 0) digest.update(buffer, 0, read)
+                }
+            }
+            java.util.HexFormat.of().formatHex(digest.digest())
+        }
+        String builtHash = sha256(built)
+        String bundledHash = sha256(bundled)
+        def matcher = source.getText('UTF-8') =~ /BUNDLED_SHA256\s*=\s*"([0-9a-f]{64})"/
+        if (!matcher.find()) {
+            throw new GradleException('Unable to resolve SecureProcess.BUNDLED_SHA256')
+        }
+        String declaredHash = matcher.group(1)
+        if (builtHash != bundledHash || builtHash != declaredHash) {
+            throw new GradleException(
+                    "SecureProcess bundle mismatch: built=${builtHash}, bundled=${bundledHash}, declared=${declaredHash}"
+            )
+        }
+        println "SecureProcess bundle verification passed: sha256=${builtHash}"
+    }
+}
+
+tasks.register('secureProcessAttestationCheck', JavaExec) {
+    group = 'verification'
+    description = 'Builds SecureProcess and verifies native CNG challenge signing.'
+    dependsOn tasks.named('buildSecureProcess')
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.security.SecureProcessAttestationVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+    doFirst {
+        File dll = layout.projectDirectory.file('native/secure-process/build/Release/secure_process.dll').asFile
+        if (!dll.isFile()) {
+            throw new GradleException("SecureProcess DLL was not built: ${dll}")
+        }
+        def digest = java.security.MessageDigest.getInstance('SHA-256')
+        dll.withInputStream { input ->
+            byte[] buffer = new byte[64 * 1024]
+            int read
+            while ((read = input.read(buffer)) >= 0) {
+                if (read > 0) {
+                    digest.update(buffer, 0, read)
+                }
+            }
+        }
+        String sha256 = java.util.HexFormat.of().formatHex(digest.digest())
+        systemProperty 'kaylas.secureProcess.library', dll.absolutePath
+        systemProperty 'kaylas.secureProcess.sha256', sha256
+        systemProperty 'kaylas.secureProcess.required', 'true'
+        systemProperty 'kaylas.secureProcess.integrityRequired', 'true'
+        systemProperty 'kaylas.secureProcess.authenticodeRequired', 'false'
+    }
+}
+
+tasks.register('secureProcessBackendHandshakeCheck', JavaExec) {
+    group = 'verification'
+    description = 'Runs an end-to-end SecureProcess challenge-response against a live backend.'
+    dependsOn tasks.named('buildSecureProcess')
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.security.SecureProcessBackendHandshakeVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+    if (project.hasProperty('attestationEndpoint')) {
+        args project.property('attestationEndpoint').toString()
+    }
+    doFirst {
+        File dll = layout.projectDirectory.file('native/secure-process/build/Release/secure_process.dll').asFile
+        def digest = java.security.MessageDigest.getInstance('SHA-256')
+        dll.withInputStream { input ->
+            byte[] buffer = new byte[64 * 1024]
+            int read
+            while ((read = input.read(buffer)) >= 0) {
+                if (read > 0) digest.update(buffer, 0, read)
+            }
+        }
+        systemProperty 'kaylas.secureProcess.library', dll.absolutePath
+        systemProperty 'kaylas.secureProcess.sha256', java.util.HexFormat.of().formatHex(digest.digest())
+        systemProperty 'kaylas.secureProcess.required', 'true'
+        systemProperty 'kaylas.secureProcess.integrityRequired', 'true'
+        systemProperty 'kaylas.secureProcess.authenticodeRequired', 'false'
+    }
+}
+
 tasks.register('secureProcessAuditPolicyCheck', JavaExec) {
     group = 'verification'
     description = 'Verifies trusted Windows module roots and untrusted user paths.'
@@ -204,6 +307,8 @@ tasks.named('check') {
     dependsOn tasks.named('serverPresentationCheck')
     dependsOn tasks.named('secureProcessCheck')
     dependsOn tasks.named('secureProcessAuditPolicyCheck')
+    dependsOn tasks.named('secureProcessBundleCheck')
+    dependsOn tasks.named('secureProcessAttestationCheck')
     dependsOn tasks.named('settingsGroupPolicyCheck')
 }
 

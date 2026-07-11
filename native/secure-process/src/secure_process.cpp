@@ -3,7 +3,13 @@
 #include <psapi.h>
 #include <softpub.h>
 #include <wintrust.h>
+#include <bcrypt.h>
+#include <ncrypt.h>
+#include <wincrypt.h>
 
+#include <array>
+#include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <iomanip>
 #include <mutex>
@@ -24,6 +30,11 @@ constexpr std::uint32_t kPreferSystem32Images = 1u << 7;
 
 std::mutex g_error_mutex;
 std::string g_last_error;
+std::atomic<std::uint32_t> g_applied_flags{0};
+std::atomic<std::uint32_t> g_failed_flags{0};
+HMODULE g_module = nullptr;
+constexpr wchar_t kAttestationKeyName[] = L"KaylasLauncher.SecureProcess.Attestation.v1";
+constexpr char kAttestationProtocol[] = "SP1";
 
 std::string utf8_from_wide(const std::wstring& input) {
     if (input.empty()) {
@@ -342,6 +353,546 @@ std::string audit_loaded_modules_json() {
     return output.str();
 }
 
+
+std::string hex_encode(const std::vector<std::uint8_t>& bytes) {
+    std::ostringstream output;
+    output << std::hex << std::setfill('0');
+    for (const std::uint8_t value : bytes) {
+        output << std::setw(2) << static_cast<unsigned int>(value);
+    }
+    return output.str();
+}
+
+std::string base64_encode(const std::vector<std::uint8_t>& bytes) {
+    if (bytes.empty()) {
+        return {};
+    }
+    DWORD required = 0;
+    if (CryptBinaryToStringA(
+            bytes.data(),
+            static_cast<DWORD>(bytes.size()),
+            CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
+            nullptr,
+            &required
+    ) == FALSE || required == 0) {
+        return {};
+    }
+    std::string output(static_cast<std::size_t>(required), '\0');
+    if (CryptBinaryToStringA(
+            bytes.data(),
+            static_cast<DWORD>(bytes.size()),
+            CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
+            output.data(),
+            &required
+    ) == FALSE) {
+        return {};
+    }
+    while (!output.empty() && output.back() == '\0') {
+        output.pop_back();
+    }
+    return output;
+}
+
+bool sha256_begin(BCRYPT_ALG_HANDLE& algorithm,
+                  BCRYPT_HASH_HANDLE& hash,
+                  std::vector<std::uint8_t>& object,
+                  std::vector<std::uint8_t>& digest,
+                  std::string& error) {
+    NTSTATUS status = BCryptOpenAlgorithmProvider(
+            &algorithm,
+            BCRYPT_SHA256_ALGORITHM,
+            nullptr,
+            0
+    );
+    if (status < 0) {
+        error = "BCryptOpenAlgorithmProvider failed: " + std::to_string(status);
+        return false;
+    }
+
+    DWORD object_length = 0;
+    DWORD digest_length = 0;
+    DWORD copied = 0;
+    status = BCryptGetProperty(
+            algorithm,
+            BCRYPT_OBJECT_LENGTH,
+            reinterpret_cast<PUCHAR>(&object_length),
+            sizeof(object_length),
+            &copied,
+            0
+    );
+    if (status < 0 || object_length == 0) {
+        error = "BCryptGetProperty(BCRYPT_OBJECT_LENGTH) failed: " + std::to_string(status);
+        BCryptCloseAlgorithmProvider(algorithm, 0);
+        algorithm = nullptr;
+        return false;
+    }
+    status = BCryptGetProperty(
+            algorithm,
+            BCRYPT_HASH_LENGTH,
+            reinterpret_cast<PUCHAR>(&digest_length),
+            sizeof(digest_length),
+            &copied,
+            0
+    );
+    if (status < 0 || digest_length == 0) {
+        error = "BCryptGetProperty(BCRYPT_HASH_LENGTH) failed: " + std::to_string(status);
+        BCryptCloseAlgorithmProvider(algorithm, 0);
+        algorithm = nullptr;
+        return false;
+    }
+
+    object.resize(object_length);
+    digest.resize(digest_length);
+    status = BCryptCreateHash(
+            algorithm,
+            &hash,
+            object.data(),
+            static_cast<ULONG>(object.size()),
+            nullptr,
+            0,
+            0
+    );
+    if (status < 0) {
+        error = "BCryptCreateHash failed: " + std::to_string(status);
+        BCryptCloseAlgorithmProvider(algorithm, 0);
+        algorithm = nullptr;
+        return false;
+    }
+    return true;
+}
+
+void sha256_close(BCRYPT_ALG_HANDLE algorithm, BCRYPT_HASH_HANDLE hash) {
+    if (hash != nullptr) {
+        BCryptDestroyHash(hash);
+    }
+    if (algorithm != nullptr) {
+        BCryptCloseAlgorithmProvider(algorithm, 0);
+    }
+}
+
+bool sha256_bytes(const std::string& value,
+                  std::vector<std::uint8_t>& digest,
+                  std::string& error) {
+    BCRYPT_ALG_HANDLE algorithm = nullptr;
+    BCRYPT_HASH_HANDLE hash = nullptr;
+    std::vector<std::uint8_t> object;
+    if (!sha256_begin(algorithm, hash, object, digest, error)) {
+        return false;
+    }
+    const NTSTATUS update_status = BCryptHashData(
+            hash,
+            reinterpret_cast<PUCHAR>(const_cast<char*>(value.data())),
+            static_cast<ULONG>(value.size()),
+            0
+    );
+    if (update_status < 0) {
+        error = "BCryptHashData failed: " + std::to_string(update_status);
+        sha256_close(algorithm, hash);
+        return false;
+    }
+    const NTSTATUS finish_status = BCryptFinishHash(
+            hash,
+            digest.data(),
+            static_cast<ULONG>(digest.size()),
+            0
+    );
+    if (finish_status < 0) {
+        error = "BCryptFinishHash failed: " + std::to_string(finish_status);
+        sha256_close(algorithm, hash);
+        return false;
+    }
+    sha256_close(algorithm, hash);
+    return true;
+}
+
+bool sha256_file(const std::wstring& path,
+                 std::vector<std::uint8_t>& digest,
+                 std::string& error) {
+    HANDLE file = CreateFileW(
+            path.c_str(),
+            GENERIC_READ,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN,
+            nullptr
+    );
+    if (file == INVALID_HANDLE_VALUE) {
+        error = "CreateFileW failed for attestation input: " + format_windows_error(GetLastError());
+        return false;
+    }
+
+    BCRYPT_ALG_HANDLE algorithm = nullptr;
+    BCRYPT_HASH_HANDLE hash = nullptr;
+    std::vector<std::uint8_t> object;
+    if (!sha256_begin(algorithm, hash, object, digest, error)) {
+        CloseHandle(file);
+        return false;
+    }
+
+    std::array<std::uint8_t, 64 * 1024> buffer{};
+    DWORD read = 0;
+    bool success = true;
+    while (ReadFile(file, buffer.data(), static_cast<DWORD>(buffer.size()), &read, nullptr) != FALSE) {
+        if (read == 0) {
+            break;
+        }
+        const NTSTATUS status = BCryptHashData(hash, buffer.data(), read, 0);
+        if (status < 0) {
+            error = "BCryptHashData(file) failed: " + std::to_string(status);
+            success = false;
+            break;
+        }
+    }
+    if (success && read != 0) {
+        error = "ReadFile failed for attestation input: " + format_windows_error(GetLastError());
+        success = false;
+    }
+    if (success) {
+        const NTSTATUS status = BCryptFinishHash(
+                hash,
+                digest.data(),
+                static_cast<ULONG>(digest.size()),
+                0
+        );
+        if (status < 0) {
+            error = "BCryptFinishHash(file) failed: " + std::to_string(status);
+            success = false;
+        }
+    }
+    sha256_close(algorithm, hash);
+    CloseHandle(file);
+    return success;
+}
+
+std::wstring current_process_path() {
+    std::vector<wchar_t> buffer(32768);
+    const DWORD length = GetModuleFileNameW(
+            nullptr,
+            buffer.data(),
+            static_cast<DWORD>(buffer.size())
+    );
+    return length == 0 ? std::wstring{} : std::wstring(buffer.data(), length);
+}
+
+std::wstring secure_process_path() {
+    if (g_module == nullptr) {
+        return {};
+    }
+    std::vector<wchar_t> buffer(32768);
+    const DWORD length = GetModuleFileNameW(
+            g_module,
+            buffer.data(),
+            static_cast<DWORD>(buffer.size())
+    );
+    return length == 0 ? std::wstring{} : std::wstring(buffer.data(), length);
+}
+
+bool safe_attestation_field(const std::string& value) {
+    return value.find('\n') == std::string::npos && value.find('\r') == std::string::npos;
+}
+
+bool open_or_create_attestation_key(NCRYPT_PROV_HANDLE& provider,
+                                    NCRYPT_KEY_HANDLE& key,
+                                    std::string& error) {
+    SECURITY_STATUS status = NCryptOpenStorageProvider(
+            &provider,
+            MS_KEY_STORAGE_PROVIDER,
+            0
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptOpenStorageProvider failed: " + std::to_string(status);
+        return false;
+    }
+
+    status = NCryptOpenKey(
+            provider,
+            &key,
+            kAttestationKeyName,
+            0,
+            NCRYPT_SILENT_FLAG
+    );
+    if (status == ERROR_SUCCESS) {
+        return true;
+    }
+    if (status != NTE_BAD_KEYSET && status != NTE_NOT_FOUND) {
+        error = "NCryptOpenKey failed: " + std::to_string(status);
+        NCryptFreeObject(provider);
+        provider = 0;
+        return false;
+    }
+
+    status = NCryptCreatePersistedKey(
+            provider,
+            &key,
+            NCRYPT_ECDSA_P256_ALGORITHM,
+            kAttestationKeyName,
+            0,
+            NCRYPT_SILENT_FLAG
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptCreatePersistedKey failed: " + std::to_string(status);
+        NCryptFreeObject(provider);
+        provider = 0;
+        return false;
+    }
+
+    DWORD key_usage = NCRYPT_ALLOW_SIGNING_FLAG;
+    status = NCryptSetProperty(
+            key,
+            NCRYPT_KEY_USAGE_PROPERTY,
+            reinterpret_cast<PBYTE>(&key_usage),
+            sizeof(key_usage),
+            0
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptSetProperty(key usage) failed: " + std::to_string(status);
+        NCryptDeleteKey(key, 0);
+        key = 0;
+        NCryptFreeObject(provider);
+        provider = 0;
+        return false;
+    }
+
+    DWORD export_policy = 0;
+    status = NCryptSetProperty(
+            key,
+            NCRYPT_EXPORT_POLICY_PROPERTY,
+            reinterpret_cast<PBYTE>(&export_policy),
+            sizeof(export_policy),
+            0
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptSetProperty(export policy) failed: " + std::to_string(status);
+        NCryptDeleteKey(key, 0);
+        key = 0;
+        NCryptFreeObject(provider);
+        provider = 0;
+        return false;
+    }
+
+    status = NCryptFinalizeKey(key, NCRYPT_SILENT_FLAG);
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptFinalizeKey failed: " + std::to_string(status);
+        NCryptDeleteKey(key, 0);
+        key = 0;
+        NCryptFreeObject(provider);
+        provider = 0;
+        return false;
+    }
+    return true;
+}
+
+void close_attestation_key(NCRYPT_PROV_HANDLE provider, NCRYPT_KEY_HANDLE key) {
+    if (key != 0) {
+        NCryptFreeObject(key);
+    }
+    if (provider != 0) {
+        NCryptFreeObject(provider);
+    }
+}
+
+bool export_attestation_public_key(NCRYPT_KEY_HANDLE key,
+                                   std::vector<std::uint8_t>& public_key,
+                                   std::string& error) {
+    DWORD size = 0;
+    SECURITY_STATUS status = NCryptExportKey(
+            key,
+            0,
+            BCRYPT_ECCPUBLIC_BLOB,
+            nullptr,
+            nullptr,
+            0,
+            &size,
+            0
+    );
+    if (status != ERROR_SUCCESS || size == 0) {
+        error = "NCryptExportKey(size) failed: " + std::to_string(status);
+        return false;
+    }
+    public_key.resize(size);
+    status = NCryptExportKey(
+            key,
+            0,
+            BCRYPT_ECCPUBLIC_BLOB,
+            nullptr,
+            public_key.data(),
+            static_cast<DWORD>(public_key.size()),
+            &size,
+            0
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptExportKey failed: " + std::to_string(status);
+        return false;
+    }
+    public_key.resize(size);
+    return true;
+}
+
+bool sign_attestation_payload(NCRYPT_KEY_HANDLE key,
+                              const std::string& payload,
+                              std::vector<std::uint8_t>& signature,
+                              std::string& error) {
+    std::vector<std::uint8_t> digest;
+    if (!sha256_bytes(payload, digest, error)) {
+        return false;
+    }
+
+    DWORD size = 0;
+    SECURITY_STATUS status = NCryptSignHash(
+            key,
+            nullptr,
+            digest.data(),
+            static_cast<DWORD>(digest.size()),
+            nullptr,
+            0,
+            &size,
+            0
+    );
+    if (status != ERROR_SUCCESS || size == 0) {
+        error = "NCryptSignHash(size) failed: " + std::to_string(status);
+        return false;
+    }
+    signature.resize(size);
+    status = NCryptSignHash(
+            key,
+            nullptr,
+            digest.data(),
+            static_cast<DWORD>(digest.size()),
+            signature.data(),
+            static_cast<DWORD>(signature.size()),
+            &size,
+            0
+    );
+    if (status != ERROR_SUCCESS) {
+        error = "NCryptSignHash failed: " + std::to_string(status);
+        return false;
+    }
+    signature.resize(size);
+    return true;
+}
+
+std::string attestation_error_json(const std::string& error) {
+    return "{\"error\":\"" + json_escape(error) + "\"}";
+}
+
+std::string create_attestation_json(const std::string& challenge,
+                                    const std::string& session_binding,
+                                    const std::string& launcher_build_sha256,
+                                    const std::string& launcher_version,
+                                    const std::string& protocol_version) {
+    if (challenge.empty() || session_binding.empty() || launcher_build_sha256.empty()) {
+        return attestation_error_json("Attestation challenge, session and launcher build hash are required");
+    }
+    if (!safe_attestation_field(challenge)
+            || !safe_attestation_field(session_binding)
+            || !safe_attestation_field(launcher_build_sha256)
+            || !safe_attestation_field(launcher_version)
+            || !safe_attestation_field(protocol_version)) {
+        return attestation_error_json("Attestation fields must not contain line breaks");
+    }
+
+    const std::wstring process_path_wide = current_process_path();
+    const std::wstring secure_path_wide = secure_process_path();
+    if (process_path_wide.empty() || secure_path_wide.empty()) {
+        return attestation_error_json("Unable to resolve process or SecureProcess module path");
+    }
+
+    std::string error;
+    std::vector<std::uint8_t> process_digest;
+    std::vector<std::uint8_t> secure_digest;
+    if (!sha256_file(process_path_wide, process_digest, error)) {
+        return attestation_error_json(error);
+    }
+    if (!sha256_file(secure_path_wide, secure_digest, error)) {
+        return attestation_error_json(error);
+    }
+
+    NCRYPT_PROV_HANDLE provider = 0;
+    NCRYPT_KEY_HANDLE key = 0;
+    if (!open_or_create_attestation_key(provider, key, error)) {
+        return attestation_error_json(error);
+    }
+
+    std::vector<std::uint8_t> public_key;
+    if (!export_attestation_public_key(key, public_key, error)) {
+        close_attestation_key(provider, key);
+        return attestation_error_json(error);
+    }
+    std::vector<std::uint8_t> key_digest;
+    const std::string public_key_binary(
+            reinterpret_cast<const char*>(public_key.data()),
+            public_key.size()
+    );
+    if (!sha256_bytes(public_key_binary, key_digest, error)) {
+        close_attestation_key(provider, key);
+        return attestation_error_json(error);
+    }
+
+    const std::string process_hash = hex_encode(process_digest);
+    const std::string secure_hash = hex_encode(secure_digest);
+    const std::string key_id = hex_encode(key_digest);
+    const auto issued_at = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()
+    ).count();
+    const std::uint32_t applied = g_applied_flags.load();
+    const std::uint32_t failed = g_failed_flags.load();
+
+    std::ostringstream canonical;
+    canonical << kAttestationProtocol << '\n'
+              << challenge << '\n'
+              << session_binding << '\n'
+              << launcher_build_sha256 << '\n'
+              << launcher_version << '\n'
+              << protocol_version << '\n'
+              << issued_at << '\n'
+              << GetCurrentProcessId() << '\n'
+              << process_hash << '\n'
+              << secure_hash << '\n'
+              << SECURE_PROCESS_VERSION << '\n'
+              << applied << '\n'
+              << failed << '\n'
+              << key_id;
+    const std::string signed_payload = canonical.str();
+
+    std::vector<std::uint8_t> signature;
+    if (!sign_attestation_payload(key, signed_payload, signature, error)) {
+        close_attestation_key(provider, key);
+        return attestation_error_json(error);
+    }
+    close_attestation_key(provider, key);
+
+    const std::vector<std::uint8_t> payload_bytes(
+            signed_payload.begin(),
+            signed_payload.end()
+    );
+    const std::string process_path = utf8_from_wide(process_path_wide);
+    const std::string secure_path = utf8_from_wide(secure_path_wide);
+
+    std::ostringstream json;
+    json << "{\"version\":\"" << kAttestationProtocol << "\""
+         << ",\"challenge\":\"" << json_escape(challenge) << "\""
+         << ",\"session\":\"" << json_escape(session_binding) << "\""
+         << ",\"launcherBuildSha256\":\"" << launcher_build_sha256 << "\""
+         << ",\"launcherVersion\":\"" << json_escape(launcher_version) << "\""
+         << ",\"protocolVersion\":\"" << json_escape(protocol_version) << "\""
+         << ",\"issuedAt\":" << issued_at
+         << ",\"processId\":" << GetCurrentProcessId()
+         << ",\"processPath\":\"" << json_escape(process_path) << "\""
+         << ",\"processSha256\":\"" << process_hash << "\""
+         << ",\"secureProcessPath\":\"" << json_escape(secure_path) << "\""
+         << ",\"secureProcessSha256\":\"" << secure_hash << "\""
+         << ",\"nativeVersion\":\"" << SECURE_PROCESS_VERSION << "\""
+         << ",\"appliedFlags\":" << applied
+         << ",\"failedFlags\":" << failed
+         << ",\"keyId\":\"" << key_id << "\""
+         << ",\"publicKey\":\"" << base64_encode(public_key) << "\""
+         << ",\"signedPayload\":\"" << base64_encode(payload_bytes) << "\""
+         << ",\"signature\":\"" << base64_encode(signature) << "\"}"
+         ;
+    return json.str();
+}
+
 } // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -394,6 +945,8 @@ Java_org_takesome_launcher_security_SecureProcessNative_initialize(
         apply(kStrictHandleChecks, apply_strict_handle_checks(failures));
     }
 
+    g_applied_flags.store(applied);
+    g_failed_flags.store(failed);
     set_last_error_message(failures);
     return static_cast<jlong>(pack_result(applied, failed));
 }
@@ -417,6 +970,26 @@ Java_org_takesome_launcher_security_SecureProcessNative_auditLoadedModulesJson(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
+Java_org_takesome_launcher_security_SecureProcessNative_createAttestation(
+        JNIEnv* environment,
+        jclass,
+        jstring challenge,
+        jstring session_binding,
+        jstring launcher_build_sha256,
+        jstring launcher_version,
+        jstring protocol_version
+) {
+    const std::string json = create_attestation_json(
+            utf8_from_wide(wide_from_java(environment, challenge)),
+            utf8_from_wide(wide_from_java(environment, session_binding)),
+            utf8_from_wide(wide_from_java(environment, launcher_build_sha256)),
+            utf8_from_wide(wide_from_java(environment, launcher_version)),
+            utf8_from_wide(wide_from_java(environment, protocol_version))
+    );
+    return environment->NewStringUTF(json.c_str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
 Java_org_takesome_launcher_security_SecureProcessNative_lastError(
         JNIEnv* environment,
         jclass
@@ -435,6 +1008,7 @@ Java_org_takesome_launcher_security_SecureProcessNative_version(
 
 BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID) {
     if (reason == DLL_PROCESS_ATTACH) {
+        g_module = module;
         DisableThreadLibraryCalls(module);
     }
     return TRUE;

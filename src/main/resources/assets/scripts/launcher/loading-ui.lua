@@ -56,7 +56,7 @@ local loading = {
                     color = "#b3a8998a"
                 },
                 titleColor = "#252424",
-                messageColor = "#7534d4"
+                messageColor = "#2c382f"
             },
             {
                 enabled = true,
@@ -77,7 +77,7 @@ local loading = {
                     color = "#b3a8998a"
                 },
                 titleColor = "#ffffff",
-                messageColor = "#473c3c"
+                messageColor = "#2c382f"
             }
         }
     },
@@ -202,7 +202,7 @@ local loading = {
         font = "FSElliotPro",
         fontSize = 13,
         fontStyle = "plain",
-        textColor = "#9552f8",
+        textColor = "#2c382f",
 
         updateMs = 85,
         step = 4,

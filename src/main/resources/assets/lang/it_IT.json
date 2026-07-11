@@ -18,7 +18,9 @@
     "invalidJVM": "La JVM non è valida!",
     "invalidLauncher": "Il launcher non è valido!",
     "alreadyRunning": "Il launcher è già in esecuzione!",
-    "file": "Errore di lettura del file!"
+    "file": "Errore di lettura del file!",
+    "attestationFailed": "Attestazione di sicurezza del launcher non riuscita: {reason}",
+    "backendUnavailable": "Il server del launcher non è raggiungibile. Controlla la connessione di rete o riprova più tardi."
   },
   "pane": {
     "settingsButt": "Impostazioni",

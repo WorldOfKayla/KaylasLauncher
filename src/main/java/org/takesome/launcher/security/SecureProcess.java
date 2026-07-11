@@ -32,10 +32,11 @@ public final class SecureProcess {
     private static final String REQUIRED_PROPERTY = "kaylas.secureProcess.required";
     private static final String INTEGRITY_REQUIRED_PROPERTY = "kaylas.secureProcess.integrityRequired";
     private static final String LIBRARY_PROPERTY = "kaylas.secureProcess.library";
+    private static final String LIBRARY_ENVIRONMENT = "KAYLAS_SECURE_PROCESS_DLL";
     private static final String PROFILE_PROPERTY = "kaylas.secureProcess.flags";
     private static final String SHA256_PROPERTY = "kaylas.secureProcess.sha256";
     private static final String BUNDLED_RESOURCE = "/native/windows-x86_64/secure_process.dll";
-    private static final String BUNDLED_SHA256 = "053a8ab4b71b7ea97354f3ce6982cf04022c85415ec0b33b497104943a866bce";
+    private static final String BUNDLED_SHA256 = "ef40c92747eac48458ebb0800fcb951ba4bef8d62524c09f97e4b588f20686f5";
     private static final AtomicReference<SecureProcessResult> RESULT = new AtomicReference<>();
 
     private SecureProcess() {
@@ -211,6 +212,9 @@ public final class SecureProcess {
 
     private static Path resolveNativeLibrary() throws IOException {
         String explicitPath = System.getProperty(LIBRARY_PROPERTY, "").trim();
+        if (explicitPath.isEmpty()) {
+            explicitPath = System.getenv().getOrDefault(LIBRARY_ENVIRONMENT, "").trim();
+        }
         if (!explicitPath.isEmpty()) {
             Path path = Path.of(explicitPath).toAbsolutePath().normalize();
             if (!Files.isRegularFile(path)) {

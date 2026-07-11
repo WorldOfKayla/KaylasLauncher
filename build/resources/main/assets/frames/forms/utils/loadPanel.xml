@@ -1,14 +1,19 @@
 <ui>
     <panels>
         <panel id="loadPanel">
-            <panelOptions opaque="true" focusable="true" visible="false" background="#c0a1a0f7" backgroundImage="assets/ui/img/bg/season/summer.png" border="1,1,1,1,#242221">
+            <panelOptions focusable="true" background="#c0a1a0f7" backgroundImage="assets/ui/img/bg/season/summer.png" border="1,1,1,1,#242221">
+                <opaque/>
                 <bounds x="0" y="0" width="500" height="200" />
             </panelOptions>
             <childComponents>
                 <component type="label" fontSize="16" style="titleBold" localeKey="loading.title" id="titleLabel">
+                    <visible/>
+                    <enabled/>
                     <bounds x="120" y="45" width="300" height="35" />
                 </component>
                 <component type="label" fontSize="11" style="title" localeKey="loading.msg" id="loaderText">
+                    <visible/>
+                    <enabled/>
                     <bounds x="120" y="75" width="400" height="20" />
                 </component>
                 <component type="progressBar"
@@ -25,6 +30,8 @@
                            borderRadius="20"
                            fillBorderRadius="18"
                            trackPadding="2">
+                    <visible/>
+                    <enabled/>
                     <bounds x="40" y="100" width="350" height="30" />
                 </component>
             </childComponents>

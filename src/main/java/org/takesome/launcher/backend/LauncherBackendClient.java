@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.crash.CrashReportSendResult;
+import org.takesome.kaylasEngine.crash.CrashReportSubmission;
 import org.takesome.kaylasEngine.fileLoader.FileAttributes;
 import org.takesome.kaylasEngine.server.ServerAttributes;
+import org.takesome.launcher.gui.LauncherNotifications;
 import org.takesome.launcher.security.SecureProcessAttestation;
 import org.takesome.launcher.user.loader.BadgeObject;
 
@@ -44,6 +47,16 @@ public final class LauncherBackendClient implements AutoCloseable {
     private static final Type VERSION_LIST_TYPE = new TypeToken<List<LauncherGameVersion>>() {}.getType();
     private static final Type BADGE_LIST_TYPE = new TypeToken<List<BadgeObject>>() {}.getType();
     private static final Type BALANCE_LIST_TYPE = new TypeToken<List<Map<String, Integer>>>() {}.getType();
+    private static final String ATTESTATION_FAILED_LOCALE_KEY = "error.attestationFailed";
+    private static final String BACKEND_UNAVAILABLE_LOCALE_KEY = "error.backendUnavailable";
+    private static final String FAILURE_NOTIFICATION_LOCATION = "BOTTOM_RIGHT";
+    private static final long FAILURE_NOTIFICATION_DURATION_MS = 8_000L;
+
+    private enum FailureNotification {
+        NONE,
+        BACKEND_UNAVAILABLE,
+        ATTESTATION_FAILED
+    }
 
     private final Launcher launcher;
     private final URI endpoint;
@@ -59,6 +72,8 @@ public final class LauncherBackendClient implements AutoCloseable {
     private final AtomicInteger connectionSequence = new AtomicInteger(0);
     private final AtomicReference<CompletableFuture<Void>> boundSignal = new AtomicReference<>(new CompletableFuture<>());
     private final AtomicReference<String> attestationToken = new AtomicReference<>("");
+    private final AtomicReference<FailureNotification> activeFailureNotification =
+            new AtomicReference<>(FailureNotification.NONE);
     private final ConcurrentHashMap<String, CompletableFuture<LauncherBackendMessage>> pendingRequests = new ConcurrentHashMap<>();
     private final Object sendLock = new Object();
     private CompletableFuture<WebSocket> sendQueue = CompletableFuture.completedFuture(null);
@@ -67,15 +82,26 @@ public final class LauncherBackendClient implements AutoCloseable {
     private volatile ScheduledFuture<?> heartbeatTask;
     private volatile Map<String, Object> backendStatus = Map.of();
 
-    public LauncherBackendClient(Launcher launcher, String endpoint, int heartbeatSeconds, int maxReconnectAttempts) {
+    public LauncherBackendClient(
+            Launcher launcher,
+            String endpoint,
+            int heartbeatSeconds,
+            int maxReconnectAttempts,
+            boolean requireSecureTransport,
+            boolean allowInsecureLoopback,
+            String tlsPublicKeySha256
+    ) {
         this.launcher = Objects.requireNonNull(launcher, "launcher");
         this.endpoint = URI.create(Objects.requireNonNull(endpoint, "endpoint"));
         this.heartbeatSeconds = Math.max(5, heartbeatSeconds);
         this.maxReconnectAttempts = Math.max(0, maxReconnectAttempts);
-        this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(3))
-                .executor(launcher.getExecutorServiceProvider().getExecutorService())
-                .build();
+        this.httpClient = BackendTransportSecurity.createHttpClient(
+                launcher,
+                this.endpoint,
+                requireSecureTransport,
+                allowInsecureLoopback,
+                tlsPublicKeySha256
+        );
     }
 
     public void start() {
@@ -316,6 +342,59 @@ public final class LauncherBackendClient implements AutoCloseable {
         return getImage("/user/skin", login, uuid, Map.of("side", side == null || side.isBlank() ? "front" : side));
     }
 
+    public CompletableFuture<CrashReportSendResult> submitCrashReport(CrashReportSubmission submission) {
+        Objects.requireNonNull(submission, "submission");
+
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("application", submission.application());
+        payload.put("engineVersion", submission.engineVersion());
+        payload.put("generatedAt", submission.generatedAt().toString());
+        payload.put("context", submission.context());
+        payload.put("report", submission.reportText());
+        if (submission.localReport() != null && submission.localReport().getFileName() != null) {
+            payload.put("localFileName", submission.localReport().getFileName().toString());
+        }
+        if (launcher.getUser() != null) {
+            String login = launcher.getUser().getLogin();
+            String uuid = launcher.getUser().getUuid();
+            if (login != null && !login.isBlank()) {
+                payload.put("userLogin", login);
+            }
+            if (uuid != null && !uuid.isBlank()) {
+                payload.put("userUuid", uuid);
+            }
+        }
+
+        return waitUntilBound().thenCompose(ignored -> {
+            URI uri = httpUri("/user/crash-reports", null, null);
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(uri)
+                    .timeout(Duration.ofSeconds(REQUEST_TIMEOUT_SECONDS))
+                    .header("Content-Type", "application/json; charset=UTF-8")
+                    .header("Accept", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(GSON.toJson(payload), StandardCharsets.UTF_8));
+            applyAttestationHeader(requestBuilder);
+            return httpClient.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+                    .thenApply(response -> {
+                        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                            String body = response.body() == null ? "" : response.body().trim();
+                            if (body.length() > 512) {
+                                body = body.substring(0, 512);
+                            }
+                            throw new IllegalStateException(
+                                    "Backend rejected crash report with HTTP "
+                                            + response.statusCode()
+                                            + (body.isBlank() ? "" : ": " + body)
+                            );
+                        }
+                        CrashReportSendResult result = GSON.fromJson(response.body(), CrashReportSendResult.class);
+                        if (result == null || result.reportId().isBlank()) {
+                            throw new IllegalStateException("Backend returned an invalid crash-report acknowledgement.");
+                        }
+                        return result;
+                    });
+        });
+    }
+
     private <T> CompletableFuture<T> getList(String path, String login, String uuid, Type type) {
         return waitUntilBound().thenCompose(v -> {
             URI uri = httpUri(path, login, uuid);
@@ -459,7 +538,14 @@ public final class LauncherBackendClient implements AutoCloseable {
                         bound.set(false);
                         resetBoundSignal();
                         int attempt = reconnectAttempts.incrementAndGet();
-                        Engine.LOGGER.warn("Backend WS bind failed: {} attempt={}/{}", endpoint, attempt, maxReconnectAttempts);
+                        Engine.LOGGER.warn(
+                                "Backend WS bind failed: {} attempt={}/{} cause={}",
+                                endpoint,
+                                attempt,
+                                maxReconnectAttempts,
+                                failureMessage(error)
+                        );
+                        notifyBackendUnavailable();
                         return;
                     }
                     this.webSocket = socket;
@@ -575,6 +661,10 @@ public final class LauncherBackendClient implements AutoCloseable {
             resetBoundSignal();
             reconnectAttempts.set(0);
             statusRequested.set(false);
+            activeFailureNotification.compareAndSet(
+                    FailureNotification.BACKEND_UNAVAILABLE,
+                    FailureNotification.NONE
+            );
             Engine.LOGGER.info("Backend WS transport connected: {}", endpoint);
             webSocket.request(1);
             hello();
@@ -602,6 +692,10 @@ public final class LauncherBackendClient implements AutoCloseable {
             statusRequested.set(false);
             failPendingRequests("Backend WS closed: " + statusCode + " " + reason);
             Engine.LOGGER.warn("Backend WS closed: status={} reason={}", statusCode, reason);
+            if (!closed.get()
+                    && activeFailureNotification.get() != FailureNotification.ATTESTATION_FAILED) {
+                notifyBackendUnavailable();
+            }
             return null;
         }
 
@@ -613,8 +707,12 @@ public final class LauncherBackendClient implements AutoCloseable {
             attestationToken.set("");
             resetBoundSignal();
             statusRequested.set(false);
-            failPendingRequests("Backend WS error: " + error.getMessage());
-            Engine.LOGGER.warn("Backend WS error: {}", error.getMessage());
+            failPendingRequests("Backend WS error: " + failureMessage(error));
+            Engine.LOGGER.warn("Backend WS error: {}", failureMessage(error));
+            if (!closed.get()
+                    && activeFailureNotification.get() != FailureNotification.ATTESTATION_FAILED) {
+                notifyBackendUnavailable();
+            }
         }
     }
 
@@ -656,6 +754,7 @@ public final class LauncherBackendClient implements AutoCloseable {
                                     message.getPayload().getOrDefault("attestationRequired", false)
                             ));
                     if (!required && bound.compareAndSet(false, true)) {
+                        activeFailureNotification.set(FailureNotification.NONE);
                         boundSignal.get().complete(null);
                         requestStatus();
                     }
@@ -687,6 +786,12 @@ public final class LauncherBackendClient implements AutoCloseable {
         String protocolVersion = String.valueOf(
                 payload.getOrDefault("protocolVersion", BACKEND_PROTOCOL_VERSION)
         ).trim();
+        String attestationProtocol = String.valueOf(
+                payload.getOrDefault(
+                        "attestationProtocol",
+                        SecureProcessAttestation.SOFTWARE_PROTOCOL
+                )
+        ).trim();
         if (challenge.isBlank() || session.isBlank()) {
             rejectAttestationLocally("Backend challenge is incomplete");
             return;
@@ -700,7 +805,8 @@ public final class LauncherBackendClient implements AutoCloseable {
                     challenge,
                     session,
                     launcherVersion,
-                    protocolVersion
+                    protocolVersion,
+                    attestationProtocol
             );
             Map<String, Object> responsePayload = new LinkedHashMap<>();
             responsePayload.put("evidence", evidence);
@@ -714,7 +820,8 @@ public final class LauncherBackendClient implements AutoCloseable {
                 return null;
             });
             Engine.LOGGER.info(
-                    "SecureProcess attestation response created: keyId={} build={} nativeVersion={}",
+                    "SecureProcess attestation response created: profile={} keyId={} build={} nativeVersion={}",
+                    evidence.get("version"),
                     evidence.get("keyId"),
                     evidence.get("launcherBuildSha256"),
                     evidence.get("nativeVersion")
@@ -734,6 +841,7 @@ public final class LauncherBackendClient implements AutoCloseable {
             return;
         }
         attestationToken.set(token);
+        activeFailureNotification.set(FailureNotification.NONE);
         bound.set(true);
         boundSignal.get().complete(null);
         reconnectAttempts.set(0);
@@ -761,11 +869,77 @@ public final class LauncherBackendClient implements AutoCloseable {
         );
         boundSignal.get().completeExceptionally(failure);
         failPendingRequests(failure.getMessage());
+        notifyAttestationFailure(reason);
         Engine.LOGGER.error(failure.getMessage());
         WebSocket socket = webSocket;
         if (socket != null) {
             socket.sendClose(1008, "SecureProcess attestation failed");
         }
+    }
+
+    private void notifyAttestationFailure(String reason) {
+        String normalizedReason = reason == null || reason.isBlank()
+                ? "attestation denied"
+                : reason.trim();
+        showFailureNotification(
+                FailureNotification.ATTESTATION_FAILED,
+                ATTESTATION_FAILED_LOCALE_KEY,
+                Map.of("reason", normalizedReason)
+        );
+    }
+
+    private void notifyBackendUnavailable() {
+        showFailureNotification(
+                FailureNotification.BACKEND_UNAVAILABLE,
+                BACKEND_UNAVAILABLE_LOCALE_KEY,
+                Map.of()
+        );
+    }
+
+    private void showFailureNotification(
+            FailureNotification notification,
+            String localeKey,
+            Map<String, ?> replacements
+    ) {
+        if (closed.get()) {
+            return;
+        }
+        FailureNotification previous = activeFailureNotification.getAndSet(notification);
+        if (previous == notification) {
+            return;
+        }
+        try {
+            LauncherNotifications.showLocalized(
+                    launcher,
+                    "ERROR",
+                    FAILURE_NOTIFICATION_LOCATION,
+                    FAILURE_NOTIFICATION_DURATION_MS,
+                    localeKey,
+                    replacements,
+                    null
+            );
+        } catch (RuntimeException error) {
+            activeFailureNotification.compareAndSet(notification, previous);
+            Engine.LOGGER.warn(
+                    "Unable to display launcher backend notification key={}: {}",
+                    localeKey,
+                    failureMessage(error)
+            );
+        }
+    }
+
+    private static String failureMessage(Throwable error) {
+        if (error == null) {
+            return "unknown error";
+        }
+        Throwable current = error;
+        while (current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+        String message = current.getMessage();
+        return message == null || message.isBlank()
+                ? current.getClass().getSimpleName()
+                : message.trim();
     }
 
     private void logFilesResponse(Map<String, Object> payload) {

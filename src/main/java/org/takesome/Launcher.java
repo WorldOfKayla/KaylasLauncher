@@ -2,6 +2,8 @@ package org.takesome;
 
 import org.apache.logging.log4j.Level;
 import org.takesome.kaylasEngine.Engine;
+import org.takesome.kaylasEngine.crash.CrashReportDialog;
+import org.takesome.kaylasEngine.crash.CrashReportSubscription;
 import org.takesome.kaylasEngine.discord.Discord;
 import org.takesome.kaylasEngine.gui.GuiBuilder;
 import org.takesome.kaylasEngine.gui.components.frame.OptionGroups;
@@ -50,6 +52,7 @@ public class Launcher extends Engine {
     private static final Map<String, Class<?>> CONFIG_FILES = new HashMap<>();
     private ActionHandler actionHandler;
     private LauncherBackendClient backendClient;
+    private CrashReportSubscription crashReportSubscription;
     private final LauncherDiscordPresence discordPresence;
     private SecureProcessModuleMonitor secureProcessModuleMonitor;
 
@@ -146,9 +149,13 @@ public class Launcher extends Engine {
                     this,
                     backend.getWsUrl(),
                     backend.getHeartbeatSeconds(),
-                    backend.getMaxReconnectAttempts()
+                    backend.getMaxReconnectAttempts(),
+                    backend.isRequireSecureTransport(),
+                    backend.isAllowInsecureLoopback(),
+                    backend.getTlsPublicKeySha256()
             );
             this.backendClient.start();
+            this.crashReportSubscription = CrashReportDialog.subscribe(this, this.backendClient::submitCrashReport);
         } catch (RuntimeException error) {
             LOGGER.warn("Unable to initialize launcher backend binding: {}", error.getMessage());
         }
@@ -268,6 +275,11 @@ public class Launcher extends Engine {
 
     @Override
     public void shutdownExecutorService() {
+        CrashReportSubscription currentCrashReportSubscription = crashReportSubscription;
+        if (currentCrashReportSubscription != null) {
+            currentCrashReportSubscription.close();
+            crashReportSubscription = null;
+        }
         Discord currentDiscord = getDiscord();
         if (currentDiscord != null) {
             currentDiscord.shutdown();

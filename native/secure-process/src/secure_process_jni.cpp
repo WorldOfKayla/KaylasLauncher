@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "attestation/attestation.hpp"
+#include "attestation/hardware_attestation.hpp"
 #include "audit/authenticode.hpp"
 #include "audit/module_audit.hpp"
 #include "core/error_state.hpp"
@@ -61,6 +62,36 @@ Java_org_takesome_launcher_security_SecureProcessNative_createAttestation(
         jstring protocol_version
 ) {
     const std::string json = secure_process::attestation::create_json(
+            secure_process::core::utf8_from_wide(
+                    secure_process::core::wide_from_java(environment, challenge)
+            ),
+            secure_process::core::utf8_from_wide(
+                    secure_process::core::wide_from_java(environment, session_binding)
+            ),
+            secure_process::core::utf8_from_wide(
+                    secure_process::core::wide_from_java(environment, launcher_build_sha256)
+            ),
+            secure_process::core::utf8_from_wide(
+                    secure_process::core::wide_from_java(environment, launcher_version)
+            ),
+            secure_process::core::utf8_from_wide(
+                    secure_process::core::wide_from_java(environment, protocol_version)
+            )
+    );
+    return environment->NewStringUTF(json.c_str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_takesome_launcher_security_SecureProcessNative_createHardwareAttestation(
+        JNIEnv* environment,
+        jclass,
+        jstring challenge,
+        jstring session_binding,
+        jstring launcher_build_sha256,
+        jstring launcher_version,
+        jstring protocol_version
+) {
+    const std::string json = secure_process::attestation::create_hardware_json(
             secure_process::core::utf8_from_wide(
                     secure_process::core::wide_from_java(environment, challenge)
             ),

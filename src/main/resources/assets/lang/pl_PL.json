@@ -18,7 +18,9 @@
     "invalidJVM": "Nieprawidłowa maszyna JVM!",
     "invalidLauncher": "Launcher wymaga aktualizacji!",
     "alreadyRunning": "Launcher jest już uruchomiony!",
-    "file": "Wystąpił błąd pliku!"
+    "file": "Wystąpił błąd pliku!",
+    "attestationFailed": "Nie udało się przejść atestacji bezpieczeństwa launchera: {reason}",
+    "backendUnavailable": "Serwer launchera jest niedostępny. Sprawdź połączenie sieciowe lub spróbuj ponownie później."
   },
   "pane": {
     "settingsButt": "Ustawienia",

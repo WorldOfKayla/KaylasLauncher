@@ -16,10 +16,10 @@
                     <enabled/>
                     <bounds x="45" y="220" width="262" height="45" />
                 </component>
-                <component type="label" fontSize="25" style="titleBold" color="#c09255" localeKey="auth.authTitle" id="appHeader">
+                <component type="label" fontSize="23" style="titleBold" color="#c09255" localeKey="auth.authTitle" id="appHeader">
                     <visible/>
                     <enabled/>
-                    <bounds x="50" y="50" width="340" height="50" />
+                    <bounds x="35" y="50" width="340" height="50" />
                 </component>
                 <component type="checkBox" style="solid" id="rememberMe" localeKey="auth.rememberMe">
                     <visible/>

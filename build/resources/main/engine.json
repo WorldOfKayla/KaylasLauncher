@@ -1,7 +1,7 @@
 {
   "launcherBrand": "Kayla's Launcher",
-  "launcherVersion": "2.0.0",
-  "launcherBuild": "Anderson",
+  "launcherVersion": "2.12.0",
+  "launcherBuild": "Emberstone",
   "styles": [
     "button",
     "checkBox",
@@ -16,15 +16,14 @@
     "slider",
     "spinner",
     "compositeSlider",
+    "compositeComponent",
+    "tabs",
     "launcherSliderTrack",
     "launcherSettingSpinner",
     "launcherDirectoryButton",
     "launcherVolumeControl",
     "launcherRamControl",
     "launcherDirectoryControl"
-  ],
-  "loadAdapters": [
-    "xml"
   ],
   "logLevel": "INFO",
   "programRuntime": "jdk-17.0.11",
@@ -33,7 +32,10 @@
     "enabled": true,
     "wsUrl": "ws://127.0.0.1:18080/ws/launcher",
     "heartbeatSeconds": 15,
-    "maxReconnectAttempts": 0
+    "maxReconnectAttempts": 0,
+    "requireSecureTransport": true,
+    "allowInsecureLoopback": true,
+    "tlsPublicKeySha256": ""
   },
   "appId": "1524737795942256660",
   "files": {

@@ -68,10 +68,15 @@ src/
 |-- audit/
 |   |-- authenticode.*           WinVerifyTrust integration
 |   `-- module_audit.*           current-process module inventory
-`-- attestation/
-    |-- hashing.*                SHA-256 byte and file hashing
-    |-- cng_key.*                non-exportable CNG key lifecycle and signing
-    `-- attestation.*            canonical SP1 evidence construction
+|-- attestation/
+|   |-- hashing.*                SHA-256 byte and file hashing
+|   |-- cng_key.*                software-backed SP1 CNG signing key
+|   |-- tpm_key.*                TPM Platform Crypto Provider and quote creation
+|   |-- attestation.*            canonical SP1 evidence construction
+|   `-- hardware_attestation.*   canonical SP2 TPM evidence construction
+`-- bootstrap/
+    |-- bootstrap_evidence.*     parent-process and Authenticode measurement
+    `-- bootstrap_main.cpp       pinned native launcher bootstrap
 ```
 
 No subsystem depends on JNI except `core/text` for Java string conversion. Attestation consumes
@@ -144,7 +149,10 @@ Without strict mode, initialization is fail-open and returns a degraded diagnost
 
 ## Remote launcher attestation
 
-SecureProcess 0.3.1 adds a Windows CNG-backed challenge-response identity for KaylasLauncher.
+SecureProcess 0.4.0 provides two explicit challenge-response profiles for KaylasLauncher:
+
+- `SP1`: software-backed non-exportable Windows CNG signing key;
+- `SP2`: TPM-backed ECDSA P-256 key, TPM platform quote and measured native bootstrap.
 
 - A persisted ECDSA P-256 signing key is created in the Windows Key Storage Provider.
 - The private key is configured as non-exportable.
@@ -152,4 +160,46 @@ SecureProcess 0.3.1 adds a Windows CNG-backed challenge-response identity for Ka
 - The backend verifies the signature, nonce lifetime, anti-replay state, trusted key id and optional build/hash allowlists before issuing an access token.
 - The access token is required for protected WebSocket requests and protected HTTP resources.
 
-This raises the cost of protocol emulation and copied static identifiers, but it is not equivalent to hardware TPM remote attestation and cannot defeat a fully compromised administrator or kernel.
+SP2 remains fail-closed for integrity, signature, measured-bootstrap, PCR-selection and TPM-quote
+failures. When the Microsoft Platform Crypto Provider explicitly reports that the TPM is unavailable,
+SecureProcess may create a signed SP1 software fallback. The fallback metadata (`fallbackFrom=SP2`
+and `fallbackReasonCode=TPM_UNAVAILABLE`) is included inside the signed payload and must be explicitly
+allowed by backend policy.
+
+## Hardware attestation profile (SP2)
+
+SP2 requires:
+
+- TPM 2.0 available through `Microsoft Platform Crypto Provider`;
+- a hardware-backed, non-exportable ECDSA P-256 key;
+- a TPM platform quote bound to the backend challenge and measurement payload;
+- PCRs 0, 2, 4, 7 and 11 by default;
+- a native bootstrap compiled with the accepted launcher JAR SHA-256;
+- Authenticode trust for the bootstrap and SecureProcess DLL when the backend policy requires it.
+
+Build the release artifacts with a pinned launcher hash:
+
+```powershell
+.\scripts\build-release.ps1 -LauncherSha256 <launcher-jar-sha256>
+```
+
+Sign both native artifacts:
+
+```powershell
+.\scripts\sign-release.ps1 -CertificateThumbprint <thumbprint>
+```
+
+The signing script writes JVM arguments selecting `SP2` and the signed bootstrap path.
+The backend must independently allowlist the TPM key identifier, launcher build, DLL, bootstrap
+and optionally the TPM endorsement-key public hash.
+
+The diagnostic tool:
+
+```text
+build/Release/secure_process_tpm_probe.exe
+```
+
+creates or opens the TPM key and requests a platform quote. A result such as
+`NTE_DEVICE_NOT_READY (0x80090030)` is classified as `TPM_UNAVAILABLE`; an SP2 request may then use
+the signed SP1 fallback when both launcher and backend policies allow it. Other TPM errors remain
+operational failures and never trigger fallback.

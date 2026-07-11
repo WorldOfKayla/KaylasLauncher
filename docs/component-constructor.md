@@ -76,7 +76,20 @@ The RAM graph has the same node topology. Both numeric nodes carry:
 launcher.slider.ram = true
 ```
 
-The basic creators use `RamRangeCalculator` to resolve minimum, maximum, initial value, tick values and safe step size.
+The basic creators use `RamRangeCalculator` without per-capacity profile tables. The calculator derives a safe maximum allocation from detected physical memory and divides that maximum into four equal semantic quanta:
+
+```text
+quantum = maximumAllocation / markerCount
+value[n] = quantum * n, where n = 1..markerCount
+```
+
+For a calculated maximum of `16384 MB`, this produces:
+
+```text
+4096, 8192, 12288, 16384 MB
+```
+
+RAM slider and spinner values are discrete. A persisted value that is no longer present in the current machine range is normalized to the nearest generated allocation.
 
 ### Directory graph
 
@@ -128,6 +141,14 @@ To change the font, color, font style and size of the numeric scale values:
 ```xml
 <style target="slider.tickLabel" name="promptLabel" />
 ```
+
+To keep tick marks but hide their textual values, set the slider option:
+
+```xml
+<component type="launcherSliderTrack" hideWordMarkers="true" />
+```
+
+`hideWordMarkers` affects only text labels. The slider track, thumb and tick marks remain visible.
 
 The selector is hierarchical:
 

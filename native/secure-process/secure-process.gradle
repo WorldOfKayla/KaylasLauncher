@@ -33,3 +33,72 @@ tasks.register('secureLauncherDist') {
         }
     }
 }
+
+
+def hardwareReleaseRequested = gradle.startParameter.taskNames.any {
+    it == 'hardwareSecureLauncherDist' || it.endsWith(':hardwareSecureLauncherDist')
+}
+if (hardwareReleaseRequested) {
+    tasks.named('compileJava') {
+        outputs.cacheIf { false }
+    }
+    tasks.named('processResources') {
+        outputs.cacheIf { false }
+    }
+    tasks.named('shadowJar') {
+        outputs.cacheIf { false }
+    }
+}
+
+tasks.register('hardwareSecureLauncherDist', Exec) {
+    group = 'distribution'
+    description = 'Builds the SP2 launcher bundle with a launcher-hash-pinned native bootstrap.'
+    dependsOn tasks.named('clean')
+    dependsOn tasks.named('shadowJar')
+    onlyIf { OperatingSystem.current().isWindows() }
+    workingDir secureProcessDir
+    doFirst {
+        File launcherJar = tasks.named('shadowJar').get().archiveFile.get().asFile
+        File outputDir = layout.buildDirectory.dir('hardware-release').get().asFile
+        List<String> arguments = [
+                'powershell',
+                '-NoProfile',
+                '-ExecutionPolicy',
+                'Bypass',
+                '-File',
+                'scripts/package-hardware-release.ps1',
+                '-LauncherJar',
+                launcherJar.absolutePath,
+                '-OutputDir',
+                outputDir.absolutePath
+        ]
+        if (project.hasProperty('secureProcessCertificateThumbprint')) {
+            arguments.addAll([
+                    '-CertificateThumbprint',
+                    project.property('secureProcessCertificateThumbprint').toString()
+            ])
+        }
+        if (project.hasProperty('secureProcessTimestampUrl')) {
+            arguments.addAll([
+                    '-TimestampUrl',
+                    project.property('secureProcessTimestampUrl').toString()
+            ])
+        }
+        commandLine arguments
+    }
+}
+
+tasks.named('shadowJar') {
+    mustRunAfter tasks.named('clean')
+}
+
+tasks.register('secureProcessTpmProbe', Exec) {
+    group = 'verification'
+    description = 'Probes TPM Platform Crypto Provider availability and requests an SP2 platform quote.'
+    dependsOn tasks.named('buildSecureProcess')
+    onlyIf { OperatingSystem.current().isWindows() }
+    workingDir secureProcessDir
+    commandLine secureProcessBuildDir.file('Release/secure_process_tpm_probe.exe').asFile.absolutePath
+    ignoreExitValue = false
+}
+

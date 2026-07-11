@@ -223,6 +223,15 @@ tasks.register('secureProcessBundleCheck') {
     }
 }
 
+tasks.register('backendTransportSecurityCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies WSS enforcement and TLS public-key pin validation.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.backend.BackendTransportSecurityVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
 tasks.register('secureProcessAttestationCheck', JavaExec) {
     group = 'verification'
     description = 'Builds SecureProcess and verifies native CNG challenge signing.'

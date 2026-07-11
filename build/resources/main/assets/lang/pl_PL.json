@@ -18,7 +18,9 @@
     "invalidJVM": "Nieprawidłowa maszyna JVM!",
     "invalidLauncher": "Launcher wymaga aktualizacji!",
     "alreadyRunning": "Launcher jest już uruchomiony!",
-    "file": "Wystąpił błąd pliku!"
+    "file": "Wystąpił błąd pliku!",
+    "attestationFailed": "Nie udało się przejść atestacji bezpieczeństwa launchera: {reason}",
+    "backendUnavailable": "Serwer launchera jest niedostępny. Sprawdź połączenie sieciowe lub spróbuj ponownie później."
   },
   "pane": {
     "settingsButt": "Ustawienia",
@@ -27,6 +29,12 @@
     "logOut": "Wyloguj się"
   },
   "settings": {
+    "tabGeneral": "OgГіlne",
+    "tabRuntime": "Ељrodowisko",
+    "tabAdministration": "Administracja",
+    "showTaskManager": "PokaЕј MenedЕјer zadaЕ„",
+    "showTaskManager-desc": "PokaЕј MenedЕјer zadaЕ„ po zalogowaniu jako administrator",
+    "taskManagerAdminInfo": "Ta sekcja jest dostД™pna tylko dla administratorГіw. MenedЕјer zadaЕ„ pokazuje aktywne zadania launchera i postД™p executora.",
     "back": "Wstecz",
     "baseOptions": "Opcje podstawowe",
     "settingsInfo": "Informacje",
@@ -109,7 +117,7 @@
     "message032": "Przygotowujemy jedzenie dla gości..."
   },
   "logged": {
-    "greet": "Witaj, {login}!",
+    "greet": "Cześć, {login}!",
     "loggedIn": "Jesteś zalogowany!",
     "toGame": "Do gry",
     "forceUpdate": "Wymuś aktualizację",

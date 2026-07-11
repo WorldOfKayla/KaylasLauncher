@@ -19,6 +19,14 @@ final class SecureProcessNative {
             String protocolVersion
     );
 
+    static native String createHardwareAttestation(
+            String challenge,
+            String sessionBinding,
+            String launcherBuildSha256,
+            String launcherVersion,
+            String protocolVersion
+    );
+
     static native String lastError();
 
     static native String version();

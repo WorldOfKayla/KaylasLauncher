@@ -18,7 +18,9 @@
     "invalidJVM": "The JVM is invalid!",
     "invalidLauncher": "The launcher is invalid!",
     "alreadyRunning": "The launcher is already running!",
-    "file": "File read error!"
+    "file": "File read error!",
+    "attestationFailed": "Launcher security attestation failed: {reason}",
+    "backendUnavailable": "The launcher server is unreachable. Check your network connection or try again later."
   },
   "pane": {
     "settingsButt": "Settings",
@@ -27,6 +29,12 @@
     "logOut": "Log Out"
   },
   "settings": {
+    "tabGeneral": "General",
+    "tabRuntime": "Runtime",
+    "tabAdministration": "Administration",
+    "showTaskManager": "Show Task Manager",
+    "showTaskManager-desc": "Show the executor Task Manager after administrator sign-in",
+    "taskManagerAdminInfo": "This section is available only to administrators. The Task Manager displays active launcher tasks and executor progress.",
     "back": "Back",
     "baseOptions": "Base Options",
     "settingsInfo": "Description",

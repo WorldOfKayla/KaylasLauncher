@@ -20,6 +20,7 @@ local UI = {
 
     COMPONENTS = {
         USER_PANE = "userPane",
+        AUTH_SETTINGS = "authSettings",
         SETTINGS_SMALL = "settings-small",
         BACK = "back",
         OPTIONAL_MODS = "optionalMods",
@@ -78,6 +79,11 @@ UI.ACTIONS = {
         name = "toggleUserPane",
         event = UI.EVENTS.USER_PANE_TOGGLE,
         localeKey = UI.ACTION_LOCALE_KEYS.TOGGLE_USER_PANE
+    },
+    [UI.COMPONENTS.AUTH_SETTINGS] = {
+        name = "openSettings",
+        event = UI.EVENTS.OPEN_SETTINGS,
+        localeKey = UI.ACTION_LOCALE_KEYS.OPEN_SETTINGS
     },
     [UI.COMPONENTS.SETTINGS_SMALL] = {
         name = "openSettings",

@@ -21,6 +21,7 @@ import org.takesome.kaylasEngine.gui.styles.StyleAttributes;
 import org.takesome.kaylasEngine.utils.RamRangeCalculator;
 
 import javax.swing.JLabel;
+import javax.swing.SpinnerListModel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -186,13 +187,18 @@ public final class LauncherComponentLibrary {
     private static Slider createSlider(ComponentCreationContext context) {
         ComponentAttributes attributes = context.attributes();
         SliderRange range = resolveRange(attributes);
+        boolean ramRange = isRamRange(attributes);
         Slider slider = new Slider(context.factory());
 
         slider.setMinimum(range.minimum());
         slider.setMaximum(range.maximum());
+        if (ramRange) {
+            slider.setAllowedValues(range.values());
+        }
         slider.setValue(range.initial());
         slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
+        boolean showWordMarkers = !attributes.isHideWordMarkers();
+        slider.setPaintLabels(showWordMarkers);
         slider.setMajorTickSpacing(resolveMajorSpacing(attributes, range));
         slider.setMinorTickSpacing(resolveMinorSpacing(attributes, range));
         slider.setOpaque(false);
@@ -208,7 +214,9 @@ public final class LauncherComponentLibrary {
                 attributes,
                 sliderStyle
         );
-        slider.setLabelTable(createSliderLabels(context, range, tickLabelStyle));
+        if (showWordMarkers) {
+            slider.setLabelTable(createSliderLabels(context, range, tickLabelStyle));
+        }
         return slider;
     }
 
@@ -224,6 +232,10 @@ public final class LauncherComponentLibrary {
                 range.maximum(),
                 step
         );
+        if (isRamRange(attributes)) {
+            spinner.setModel(new SpinnerListModel(range.values()));
+            spinner.setValue(range.initial());
+        }
         spinner.setOpaque(false);
         return spinner;
     }
@@ -322,10 +334,9 @@ public final class LauncherComponentLibrary {
         if (Boolean.TRUE.equals(attributes.getProperties().get(RAM_RANGE_PROPERTY))) {
             RamRangeCalculator.SliderRange ramRange = new RamRangeCalculator()
                     .calculateSliderRange(Math.max(2, attributes.getStepSize()));
-            int initial = clamp(
-                    intValue(attributes.getInitialValue(), ramRange.initialValue()),
-                    ramRange.minValue(),
-                    ramRange.maxValue()
+            int initial = RamRangeCalculator.nearestValue(
+                    ramRange.values(),
+                    intValue(attributes.getInitialValue(), ramRange.initialValue())
             );
             return new SliderRange(
                     ramRange.minValue(),
@@ -356,6 +367,9 @@ public final class LauncherComponentLibrary {
     }
 
     private static int resolveMajorSpacing(ComponentAttributes attributes, SliderRange range) {
+        if (isRamRange(attributes) && range.values().size() > 1) {
+            return Math.max(1, range.values().get(1) - range.values().get(0));
+        }
         if (attributes.getMajorSpacing() > 0) {
             return attributes.getMajorSpacing();
         }
@@ -363,10 +377,17 @@ public final class LauncherComponentLibrary {
     }
 
     private static int resolveMinorSpacing(ComponentAttributes attributes, SliderRange range) {
+        if (isRamRange(attributes)) {
+            return resolveMajorSpacing(attributes, range);
+        }
         if (attributes.getMinorSpacing() > 0) {
             return attributes.getMinorSpacing();
         }
         return Math.max(1, (range.maximum() - range.minimum()) / 10);
+    }
+
+    private static boolean isRamRange(ComponentAttributes attributes) {
+        return Boolean.TRUE.equals(attributes.getProperties().get(RAM_RANGE_PROPERTY));
     }
 
     private static List<Integer> values(int minimum, int maximum, int spacing) {
@@ -439,4 +460,5 @@ public final class LauncherComponentLibrary {
             List<Integer> values
     ) {
     }
+
 }

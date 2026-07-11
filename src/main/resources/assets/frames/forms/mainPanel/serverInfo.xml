@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="serverInfo">
-            <panelOptions doubleBuffered="true" background="#b6aaa0">
+            <panelOptions doubleBuffered="true" background="#281f15">
                 <opaque/>
                 <bounds x="0" y="0" width="510" height="500" />
             </panelOptions>
@@ -9,49 +9,77 @@
                 <component type="label" style="title" id="serverImg">
                     <visible/>
                     <enabled/>
-                    <bounds x="10" y="45" width="470" height="260" />
+                    <bounds x="10" y="62" width="470" height="220" />
                 </component>
             </childComponents>
             <panels>
-                <panel id="serverTitle">
-                    <panelOptions doubleBuffered="true" background="#b7aea4" cornerRadius="15" border="1,1,1,1,#ffffff">
+                <panel id="serverHeader">
+                    <panelOptions doubleBuffered="true" backgroundImage="assets/ui/img/serverTitleBg.png" cornerRadius="12" >
                         <visible/>
                         <opaque/>
-                        <bounds x="10" y="5" width="295" height="37" />
+                        <bounds x="10" y="10" width="300" height="42" />
                     </panelOptions>
                     <childComponents>
-                        <component type="label" style="heading" fontSize="16" id="serverTitle" color="#000000">
+                        <component type="label" style="heading" fontSize="14" id="serverTitle" color="#c09255">
                             <visible/>
                             <enabled/>
-                            <bounds x="10" y="-115" width="480" height="280" />
+                            <bounds x="12" y="5" width="276" height="42" />
                         </component>
                     </childComponents>
                 </panel>
-                <panel id="serverOnline">
-                    <panelOptions doubleBuffered="true" background="#b7aea4" cornerRadius="15">
+                <panel id="serverStatus">
+                    <panelOptions doubleBuffered="true" backgroundImage="assets/ui/img/serverTitleBg.png" cornerRadius="12">
                         <visible/>
                         <opaque/>
-                        <bounds x="310" y="5" width="170" height="37" />
+                        <bounds x="315" y="10" width="165" height="42" />
                     </panelOptions>
                     <childComponents>
-                        <component type="label" style="title" fontSize="16" id="srvOnline" color="#7e7d7c">
+                        <component type="label" style="titleBold" fontSize="11" id="srvOnline" color="#c09255">
                             <visible/>
                             <enabled/>
-                            <bounds x="10" y="-115" width="480" height="280" />
+                            <bounds x="10" y="0" width="145" height="42" />
                         </component>
                     </childComponents>
                 </panel>
-                <panel id="serverDesc">
-                    <panelOptions doubleBuffered="true" background="#b3b2b0" cornerRadius="10" layout="box" border="1,1,1,1,#ffffff">
+                <panel id="serverRuntimeCard">
+                    <panelOptions doubleBuffered="true" backgroundImage="assets/ui/img/serverDesc.png" cornerRadius="10">
                         <visible/>
                         <opaque/>
-                        <bounds x="10" y="310" width="470" height="150" />
+                        <bounds x="10" y="292" width="225" height="48" />
                     </panelOptions>
                     <childComponents>
-                        <component type="textArea" lineWrap="true" editable="false" style="textFieldMain" fontSize="13" border="5,5,5,5" color="#183824" id="serverDescLabel">
+                        <component type="label" style="title" fontSize="12" id="serverRuntime" color="#fde08f">
+                            <visible/>
+                            <enabled/>
+                            <bounds x="12" y="0" width="201" height="48" />
+                        </component>
+                    </childComponents>
+                </panel>
+                <panel id="serverEndpointCard">
+                    <panelOptions doubleBuffered="true" backgroundImage="assets/ui/img/serverDesc.png" cornerRadius="10">
+                        <visible/>
+                        <opaque/>
+                        <bounds x="245" y="292" width="235" height="48" />
+                    </panelOptions>
+                    <childComponents>
+                        <component type="label" style="title" fontSize="11" id="serverEndpoint" color="#fde08f">
+                            <visible/>
+                            <enabled/>
+                            <bounds x="12" y="0" width="211" height="48" />
+                        </component>
+                    </childComponents>
+                </panel>
+                <panel id="serverDescriptionCard">
+                    <panelOptions doubleBuffered="true" backgroundImage="assets/ui/img/serverBg.png" cornerRadius="10" layout="box">
+                        <visible/>
+                        <opaque/>
+                        <bounds x="10" y="350" width="470" height="115" />
+                    </panelOptions>
+                    <childComponents>
+                        <component type="textArea" lineWrap="true" editable="false" style="textFieldMain" fontSize="13" border="8,10,8,10" color="#2c382f" id="serverDescLabel">
                             <visible/>
                             <disabled/>
-                            <bounds x="10" y="10" width="470" height="110" />
+                            <bounds x="15" y="15" width="446" height="92" />
                         </component>
                     </childComponents>
                 </panel>

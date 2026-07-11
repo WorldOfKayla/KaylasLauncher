@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="authForm">
-            <panelOptions focusable="true" doubleBuffered="false" background="#b6aaa0" cornerRadius="12">
+            <panelOptions focusable="true" doubleBuffered="false" background="#281f15" cornerRadius="12">
                 <visible/>
                 <bounds x="10" y="40" width="350" height="440" />
             </panelOptions>
@@ -16,7 +16,7 @@
                     <enabled/>
                     <bounds x="45" y="220" width="262" height="45" />
                 </component>
-                <component type="label" fontSize="25" style="titleBold" localeKey="auth.authTitle" id="appHeader">
+                <component type="label" fontSize="25" style="titleBold" color="#c09255" localeKey="auth.authTitle" id="appHeader">
                     <visible/>
                     <enabled/>
                     <bounds x="50" y="50" width="340" height="50" />
@@ -31,10 +31,13 @@
                     <enabled/>
                     <bounds x="55" y="300" width="240" height="47" />
                 </component>
-                <component type="button" style="altButton" toolTip="tooltip.settings" imageIcon="fa:settings" iconWidth="32" iconHeight="32" id="settings-small">
+                <component type="button" style="altButton" toolTip="tooltip.settings" imageIcon="fa:settings" iconWidth="32" iconHeight="32" id="authSettings">
                     <visible/>
                     <enabled/>
                     <bounds x="270" y="375" width="64" height="64" />
+                    <scripts>
+                        <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
+                    </scripts>
                 </component>
             </childComponents>
         </panel>

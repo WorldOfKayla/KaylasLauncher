@@ -1,7 +1,7 @@
 <ui>
     <panels>
         <panel id="userBalance">
-            <panelOptions background="#ae6a2b" border="1,1,1,1,#242221">
+            <panelOptions background="#00000000" border="1,1,1,1,#242221">
                 <visible/>
                 <opaque/>
                 <bounds x="210" y="0" width="135" height="75" />
@@ -10,12 +10,12 @@
                 <component type="label" fontSize="11" style="title" imageIcon="assets/ui/icons/units.png" iconWidth="32" iconHeight="32" localeKey="logged.units" color="#d68700" id="unitsField" initialValue="balance#units">
                     <visible/>
                     <enabled/>
-                    <bounds x="5" y="-8" width="250" height="50" />
+                    <bounds x="10" y="-8" width="250" height="50" />
                 </component>
                 <component type="label" fontSize="11" style="title" imageIcon="assets/ui/icons/crystals.png" iconWidth="32" iconHeight="32" localeKey="logged.crystals" color="#fe75fb" id="crystalsField" initialValue="balance#crystals">
                     <visible/>
                     <enabled/>
-                    <bounds x="0" y="28" width="250" height="50" />
+                    <bounds x="10" y="28" width="250" height="50" />
                 </component>
             </childComponents>
         </panel>

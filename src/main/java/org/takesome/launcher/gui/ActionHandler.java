@@ -172,6 +172,7 @@ public class ActionHandler extends org.takesome.kaylasEngine.gui.ActionHandler {
 
         registerCommand(ui.components().infoSmall(), this::scriptOwnedUiAction);
 
+        registerCommand(ui.components().authSettings(), this::scriptOwnedUiAction);
         registerCommand(ui.components().settingsSmall(), this::scriptOwnedUiAction);
 
         registerCommand(ui.components().loadCancelSmall(), e -> {

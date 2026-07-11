@@ -109,7 +109,7 @@
     "message032": "Przygotowujemy jedzenie dla gości..."
   },
   "logged": {
-    "greet": "Witaj, {login}!",
+    "greet": "Cześć, {login}!",
     "loggedIn": "Jesteś zalogowany!",
     "toGame": "Do gry",
     "forceUpdate": "Wymuś aktualizację",

@@ -18,8 +18,8 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public final class ServerImageLoader {
     private static final Path CACHE_DIR = Paths.get("cache", "serverImages");
-    private static final String IMAGE_VARIANT = "server-card-470x260-r25";
-    private static final String PLACEHOLDER_RESOURCE = "assets/ui/img/noimg.jpg";
+    private static final String IMAGE_VARIANT = "server-card-470x220-r24";
+    private static final String PLACEHOLDER_RESOURCE = "assets/ui/img/noimg.png";
 
     private final User user;
     private final String serverUrl;
@@ -74,8 +74,8 @@ public final class ServerImageLoader {
     }
 
     private BufferedImage prepareImage(BufferedImage image) {
-        BufferedImage scaled = (BufferedImage) user.getLauncher().getImageUtils().getScaledImage(image, 470, 260);
-        return user.getLauncher().getImageUtils().getRoundedImage(scaled, 25);
+        BufferedImage scaled = (BufferedImage) user.getLauncher().getImageUtils().getScaledImage(image, 470, 220);
+        return user.getLauncher().getImageUtils().getRoundedImage(scaled, 24);
     }
 
     private BufferedImage loadPlaceholderImage() {

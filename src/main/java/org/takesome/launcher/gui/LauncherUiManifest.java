@@ -66,6 +66,7 @@ final class LauncherUiManifest {
         private String userControls;
         private String userActions;
         private String authSubmit;
+        private String authSettings;
         private String userinfoSubmit;
         private String smallButton;
         private String gameDirSmall;
@@ -85,6 +86,7 @@ final class LauncherUiManifest {
         String userControls() { return required(userControls, "components.userControls"); }
         String userActions() { return required(userActions, "components.userActions"); }
         String authSubmit() { return required(authSubmit, "components.authSubmit"); }
+        String authSettings() { return required(authSettings, "components.authSettings"); }
         String userinfoSubmit() { return required(userinfoSubmit, "components.userinfoSubmit"); }
         String smallButton() { return required(smallButton, "components.smallButton"); }
         String gameDirSmall() { return required(gameDirSmall, "components.gameDirSmall"); }

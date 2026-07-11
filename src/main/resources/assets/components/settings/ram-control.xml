@@ -16,9 +16,7 @@
             type="launcherSliderTrack"
             id="slider"
             style="slidingOut"
-            stepSize="6"
-            minorSpacing="512"
-            majorSpacing="1024"
+            stepSize="4"
             initialValue="config#ramAmount">
             <visible/>
             <enabled/>

@@ -1,10 +1,6 @@
 package org.takesome.launcher.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.takesome.Launcher;
-import org.takesome.kaylasEngine.gui.GuiBuilder;
 import org.takesome.kaylasEngine.gui.componentAccessor.Component;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
@@ -13,7 +9,6 @@ import org.takesome.kaylasEngine.gui.components.label.Label;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.server.ServerAttributes;
 import org.takesome.launcher.backend.LauncherBackendClient;
-import org.takesome.launcher.backend.LauncherServerStatus;
 import org.takesome.launcher.user.User;
 
 import javax.swing.*;
@@ -31,12 +26,12 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
     private final Launcher launcher;
     private final User user;
     private final JPanel newsPanel;
-    private final GuiBuilder guiBuilder;
     private final AtomicInteger statusRequestSequence = new AtomicInteger();
+    private final ServerStatusText statusText;
 
     @Component
     @SuppressWarnings("unused")
-    private Label srvOnline, serverTitle, serverImg;
+    private Label srvOnline, serverTitle, serverImg, serverRuntime, serverEndpoint;
 
     @Component
     @SuppressWarnings("unused")
@@ -47,7 +42,7 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
         this.user = user;
         this.launcher = user.getLauncher();
         this.newsPanel = user.getNewsPanel();
-        this.guiBuilder = user.getGuiBuilder();
+        this.statusText = new ServerStatusText(launcher.getLANG());
     }
 
     @Override
@@ -101,38 +96,48 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
             return;
         }
         ServerAttributes server = servers.get(index);
+        int requestSequence = statusRequestSequence.incrementAndGet();
         SwingUtilities.invokeLater(() -> {
+            if (requestSequence != statusRequestSequence.get()) {
+                return;
+            }
             user.getAuth().getEngine().getPanelVisibility().displayPanel("serverInfo->true");
             newsPanel.removeAll();
             newsPanel.add(this.getPanel());
-            updateServerInfoComponents(server);
+            updateServerInfoComponents(server, requestSequence);
+            newsPanel.revalidate();
             newsPanel.repaint();
         });
-        requestBackendServerStatus(server);
+        requestBackendServerStatus(server, requestSequence);
     }
 
-    private void updateServerInfoComponents(ServerAttributes thisServer) {
-        String serverName = safe(thisServer.getServerName());
-        String serverVersion = safe(thisServer.getServerVersion());
-        this.serverTitle.setText((serverName + ' ' + serverVersion).trim());
-        this.serverDescLabel.setText(safe(thisServer.getServerDescription()));
-        this.srvOnline.setText(formatServerMetadata(thisServer));
+    private void updateServerInfoComponents(ServerAttributes server, int requestSequence) {
+        ServerStatusText.Summary summary = statusText.summarize(server);
+        serverTitle.setText(summary.title());
+        serverDescLabel.setText(summary.description());
+        serverRuntime.setText(summary.runtime());
+        serverEndpoint.setText(summary.endpoint());
+        srvOnline.setText(statusText.metadataStatus(server));
+        serverImg.setIcon(null);
 
-        ServerImageLoader imageLoader = new ServerImageLoader(user, thisServer.getServerImage());
-        imageLoader.loadServerImage(image -> SwingUtilities.invokeLater(() ->
-                serverImg.setIcon(new ImageIcon(image))
-        ));
+        ServerImageLoader imageLoader = new ServerImageLoader(user, server.getServerImage());
+        imageLoader.loadServerImage(image -> SwingUtilities.invokeLater(() -> {
+            if (requestSequence == statusRequestSequence.get()) {
+                serverImg.setIcon(new ImageIcon(image));
+            }
+        }));
     }
 
-    private void requestBackendServerStatus(ServerAttributes server) {
-        int requestSequence = statusRequestSequence.incrementAndGet();
+    private void requestBackendServerStatus(ServerAttributes server, int requestSequence) {
         LauncherBackendClient backendClient = launcher.getBackendClient();
         if (backendClient == null || !backendClient.isBound()) {
             Launcher.LOGGER.debug("Backend is not bound; server status remains metadata-only for {}:{}.",
                     server.getHost(), server.getPort());
+            updateStatusLabel(requestSequence, statusText.metadataStatus(server));
             return;
         }
 
+        updateStatusLabel(requestSequence, statusText.pending());
         backendClient.fetchServerStatus(server).whenComplete((status, error) -> {
             if (requestSequence != statusRequestSequence.get()) {
                 return;
@@ -140,80 +145,19 @@ public class ServerInfoDisplayer extends ComponentsAccessor implements ComboboxL
             if (error != null) {
                 Launcher.LOGGER.warn("Unable to load backend server status for {}:{}: {}",
                         server.getHost(), server.getPort(), error.getMessage());
+                updateStatusLabel(requestSequence, statusText.unavailable(server));
                 return;
             }
-            SwingUtilities.invokeLater(() -> srvOnline.setText(formatServerStatus(status, server)));
+            updateStatusLabel(requestSequence, statusText.status(status, server));
         });
     }
 
-    private String formatServerStatus(LauncherServerStatus status, ServerAttributes fallback) {
-        if (status == null) {
-            return formatServerMetadata(fallback);
-        }
-        if (status.isOnline()) {
-            return formatOnlineStatus(status);
-        }
-        String offline = launcher.getLANG().getString("server.serverOff");
-        if (!"server.serverOff".equals(offline)) {
-            return offline;
-        }
-        String message = safe(status.getMessage());
-        return message.isEmpty() ? "Server off" : message;
-    }
-
-    private String formatOnlineStatus(LauncherServerStatus status) {
-        if (status.getPlayersOnline() >= 0 && status.getPlayersMax() >= 0) {
-            String template = launcher.getLANG().getString("server.serverOn");
-            if (!"server.serverOn".equals(template)) {
-                return template
-                        .replace("%%", String.valueOf(status.getPlayersOnline()))
-                        .replace("##", String.valueOf(status.getPlayersMax()));
+    private void updateStatusLabel(int requestSequence, String text) {
+        SwingUtilities.invokeLater(() -> {
+            if (requestSequence == statusRequestSequence.get()) {
+                srvOnline.setText(text);
             }
-            return status.getPlayersOnline() + " / " + status.getPlayersMax();
-        }
-        String message = safe(status.getMessage());
-        return message.isEmpty() ? "Online" : message;
+        });
     }
 
-    private String formatServerMetadata(ServerAttributes server) {
-        String client = safe(server.getClient());
-        String address = formatAddress(server);
-        if (!client.isEmpty() && !address.isEmpty()) {
-            return client + " | " + address;
-        }
-        if (!client.isEmpty()) {
-            return client;
-        }
-        if (!address.isEmpty()) {
-            return address;
-        }
-        return "Backend managed";
-    }
-
-    private String formatAddress(ServerAttributes server) {
-        String host = safe(server.getHost());
-        int port = server.getPort();
-        if (host.isEmpty()) {
-            return port > 0 ? String.valueOf(port) : "";
-        }
-        return port > 0 ? host + ':' + port : host;
-    }
-
-    private String safe(String value) {
-        return value == null ? "" : value.trim();
-    }
-
-    private void modsInfoArr(String json) {
-        if (json != null && !json.isEmpty()) {
-            JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-                String modName = jsonObject.get("modName").getAsString();
-                String modPicture = jsonObject.get("modPicture").getAsString();
-                String modDesc = jsonObject.get("modDesc").getAsString();
-
-                System.out.printf("Mod Name: %s, Description: %s\n", modName, modDesc);
-            }
-        }
-    }
 }

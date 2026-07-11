@@ -14,6 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Executable verification for launcher-owned Component Constructor 2.1 resources. */
 public final class LauncherComponentLibraryVerification {
@@ -51,6 +53,31 @@ public final class LauncherComponentLibraryVerification {
             "assets/styles/launcherDirectoryControl.json"
     );
 
+    private static final List<String> SCREEN_DESCRIPTORS = List.of(
+            "assets/frames/frame.xml",
+            "assets/frames/mainFrame.xml",
+            "assets/frames/forms/mainPanel/authForm.xml",
+            "assets/frames/forms/mainPanel/download.xml",
+            "assets/frames/forms/mainPanel/loggedForm.xml",
+            "assets/frames/forms/mainPanel/newsForm.xml",
+            "assets/frames/forms/mainPanel/serverInfo.xml",
+            "assets/frames/forms/mainPanel/settings.xml",
+            "assets/frames/forms/settings/checkBoxes.xml",
+            "assets/frames/forms/settings/generalSettings.xml",
+            "assets/frames/forms/settings/settingsInfo.xml",
+            "assets/frames/forms/settings/sliders.xml",
+            "assets/frames/forms/user/paneContents.xml",
+            "assets/frames/forms/user/serverSelector.xml",
+            "assets/frames/forms/user/userBalance.xml",
+            "assets/frames/forms/user/userPane.xml",
+            "assets/frames/forms/utils/loadPanel.xml"
+    );
+
+    private static final Pattern COMPONENT_ID = Pattern.compile(
+            "<component\\b[^>]*\\bid=\"([^\"]+)\"",
+            Pattern.DOTALL
+    );
+
     private LauncherComponentLibraryVerification() {
     }
 
@@ -61,6 +88,7 @@ public final class LauncherComponentLibraryVerification {
 
         verifyTemplates();
         verifyLauncherScreens();
+        verifyUniqueScreenComponentIds();
         verifyLuaSyntax();
         verifyStyleResources();
         verifyEngineManifest();
@@ -137,6 +165,23 @@ public final class LauncherComponentLibraryVerification {
                 "General settings screen does not use launcherDirectoryControl");
         require(!generalSettings.contains("type=\"fileSelector\""),
                 "Legacy fileSelector remains in general settings screen");
+    }
+
+    private static void verifyUniqueScreenComponentIds() {
+        Map<String, String> owners = new LinkedHashMap<>();
+        for (String resource : SCREEN_DESCRIPTORS) {
+            Matcher matcher = COMPONENT_ID.matcher(resourceText(resource));
+            while (matcher.find()) {
+                String componentId = matcher.group(1);
+                String previousOwner = owners.putIfAbsent(componentId, resource);
+                require(
+                        previousOwner == null,
+                        "Duplicate launcher component id '" + componentId
+                                + "' in " + previousOwner + " and " + resource
+                );
+            }
+        }
+        require(!owners.isEmpty(), "Launcher descriptors did not expose any component ids");
     }
 
     private static void verifyLuaSyntax() {

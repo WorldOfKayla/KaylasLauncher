@@ -12,7 +12,7 @@
                     <panels>
                         <panel id="infoPane">
                             <panelOptions focusable="true" doubleBuffered="true"
-                                          background="#b6aaa0" zIndex="3">
+                                          background="#281f15" zIndex="3">
                                 <visible/>
                                 <opaque/>
                                 <bounds x="0" y="30" width="348" height="43"/>
@@ -90,7 +90,7 @@
                                     <panels>
                                         <panel id="serverLaunchPanel">
                                             <panelOptions focusable="false"
-                                                          doubleBuffered="true" background="#b6aaa0" cornerRadius="12" zIndex="999">
+                                                          doubleBuffered="true" background="#281f15" cornerRadius="12" zIndex="999">
                                                 <visible/>
                                                 <opaque/>
                                                 <bounds x="20" y="300" width="310" height="155"/>

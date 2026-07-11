@@ -14,6 +14,7 @@
     "userControls": "userControls",
     "userActions": "userActions",
     "authSubmit": "authForm>submit",
+    "authSettings": "authSettings",
     "userinfoSubmit": "userinfo>submit",
     "smallButton": "smallButton",
     "gameDirSmall": "gameDir-small",

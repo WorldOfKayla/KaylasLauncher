@@ -17,6 +17,8 @@ import java.util.Set;
 /** Read-only audit of modules loaded in the current launcher process. */
 public final class SecureProcessAudit {
     private static final Gson GSON = new Gson();
+    private static final SecureProcessRuntimeNativeCatalog RUNTIME_NATIVE_CATALOG =
+            SecureProcessRuntimeNativeCatalog.scanRuntimeClasspath();
 
     private SecureProcessAudit() {
     }
@@ -120,7 +122,17 @@ public final class SecureProcessAudit {
             );
         }
 
-        boolean hashAllowlisted = allowedHashes.contains(sha256);
+        boolean runtimeCatalogTrusted = RUNTIME_NATIVE_CATALOG.contains(sha256);
+        boolean hashAllowlisted = allowedHashes.contains(sha256) || runtimeCatalogTrusted;
+        if (runtimeCatalogTrusted) {
+            SecureProcessLog.logger().debug(
+                    "Module hash matched runtime native catalog: path='{}', sha256={}, origins={}",
+                    path,
+                    sha256,
+                    RUNTIME_NATIVE_CATALOG.origins(sha256)
+            );
+        }
+
         SecureProcessAuditReport.Finding finding;
         if (hashAllowlisted) {
             finding = SecureProcessAuditReport.Finding.HASH_ALLOWLISTED;

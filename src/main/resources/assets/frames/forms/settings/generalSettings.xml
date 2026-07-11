@@ -49,7 +49,7 @@
                                     <enabled/>
                                     <bounds x="40" y="320" width="380" height="25" />
                                 </component>
-                                <component type="label" fontSize="12" style="promptLabel" localeKey="settings.gameFiles" id="langBoxLabel">
+                                <component type="label" fontSize="12" style="promptLabel" localeKey="settings.gameFiles" id="gameFilesLabel">
                                     <visible/>
                                     <enabled/>
                                     <bounds x="40" y="345" width="250" height="50" />

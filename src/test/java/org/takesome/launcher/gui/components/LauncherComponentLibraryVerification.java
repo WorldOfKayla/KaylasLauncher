@@ -62,10 +62,8 @@ public final class LauncherComponentLibraryVerification {
             "assets/frames/forms/mainPanel/newsForm.xml",
             "assets/frames/forms/mainPanel/serverInfo.xml",
             "assets/frames/forms/mainPanel/settings.xml",
-            "assets/frames/forms/settings/checkBoxes.xml",
             "assets/frames/forms/settings/generalSettings.xml",
             "assets/frames/forms/settings/settingsInfo.xml",
-            "assets/frames/forms/settings/sliders.xml",
             "assets/frames/forms/user/paneContents.xml",
             "assets/frames/forms/user/serverSelector.xml",
             "assets/frames/forms/user/userBalance.xml",
@@ -137,34 +135,67 @@ public final class LauncherComponentLibraryVerification {
     }
 
     private static void verifyLauncherScreens() {
-        String sliders = resourceText("assets/frames/forms/settings/sliders.xml");
-        require(sliders.contains("type=\"" + LauncherComponentLibrary.VOLUME_CONTROL + "\""),
-                "Settings sliders screen does not use launcherVolumeControl");
-        require(sliders.contains("type=\"" + LauncherComponentLibrary.RAM_CONTROL + "\""),
-                "Settings sliders screen does not use launcherRamControl");
-        require(!sliders.contains("type=\"compositeSlider\""),
-                "Legacy compositeSlider remains in settings sliders screen");
+        String generalSettings = resourceText("assets/frames/forms/settings/generalSettings.xml");
+        require(generalSettings.contains("type=\"tabs\""),
+                "Settings screen does not use the generic tabs component");
+        require(generalSettings.contains("id=\"settingsTabs\""),
+                "Settings screen does not expose settingsTabs");
+        require(generalSettings.contains("launcher.access.group"),
+                "Administration settings tab does not declare a group policy");
+        require(generalSettings.contains("id=\"showTaskManager\""),
+                "Administrator Task Manager setting is missing");
 
-        Attributes sliderScreen = new XmlUiDescriptorLoader()
-                .load("assets/frames/forms/settings/sliders.xml");
-        Map<String, ComponentAttributes> sliderControls = index(sliderScreen.getChildComponents());
-        for (String controlId : List.of("volume", "ramAmount")) {
-            ComponentAttributes control = sliderControls.get(controlId);
-            require(control != null, "Missing settings control: " + controlId);
-            require("title".equals(control.getStyles().get("label")),
-                    "Settings control '" + controlId
-                            + "' does not expose an instance-level label style override");
-            require("title".equals(control.getStyles().get("slider.tickLabel")),
-                    "Settings control '" + controlId
-                            + "' does not expose an instance-level tick label style override");
+        Attributes settingsDescriptor = new XmlUiDescriptorLoader()
+                .load("assets/frames/forms/settings/generalSettings.xml");
+        var settingsPanel = settingsDescriptor.getGroups().get("generalSettings");
+        require(settingsPanel != null, "generalSettings panel is missing");
+
+        Map<String, ComponentAttributes> rootComponents = index(settingsPanel.getChildComponents());
+        ComponentAttributes tabs = rootComponents.get("settingsTabs");
+        require(tabs != null, "settingsTabs descriptor is missing");
+        require("tabs".equals(tabs.getComponentType()),
+                "settingsTabs is not backed by the engine tabs component");
+        require("general".equals(String.valueOf(tabs.getProperties().get("tabs.selected"))),
+                "settings tabs do not default to the general page");
+
+        Map<String, ComponentAttributes> pages = index(tabs.getChildComponents());
+        for (String pageId : List.of(
+                "settingsGeneralTab",
+                "settingsRuntimeTab",
+                "settingsAdministrationTab"
+        )) {
+            require(pages.containsKey(pageId), "Missing settings tab page: " + pageId);
         }
 
-        String generalSettings = resourceText("assets/frames/forms/settings/generalSettings.xml");
-        require(generalSettings.contains(
-                        "type=\"" + LauncherComponentLibrary.DIRECTORY_CONTROL + "\""),
-                "General settings screen does not use launcherDirectoryControl");
-        require(!generalSettings.contains("type=\"fileSelector\""),
-                "Legacy fileSelector remains in general settings screen");
+        ComponentAttributes administration = pages.get("settingsAdministrationTab");
+        require("false".equals(String.valueOf(administration.getProperties().get("tab.visible"))),
+                "Administration tab must be hidden until group authorization");
+        require("admin".equals(String.valueOf(
+                        administration.getProperties().get("launcher.access.group")
+                )),
+                "Administration tab does not require the admin group");
+
+        Map<String, ComponentAttributes> controls = indexRecursively(tabs.getChildComponents());
+        require(LauncherComponentLibrary.VOLUME_CONTROL.equals(
+                        controls.get("volume").getComponentType()
+                ),
+                "Runtime settings tab does not use launcherVolumeControl");
+        require(LauncherComponentLibrary.RAM_CONTROL.equals(
+                        controls.get("ramAmount").getComponentType()
+                ),
+                "Runtime settings tab does not use launcherRamControl");
+        require(LauncherComponentLibrary.DIRECTORY_CONTROL.equals(
+                        controls.get("homeDir").getComponentType()
+                ),
+                "Runtime settings tab does not use launcherDirectoryControl");
+        require("checkBox".equals(controls.get("showTaskManager").getComponentType()),
+                "Task Manager setting is not a checkbox");
+        require("admin".equals(String.valueOf(
+                        controls.get("showTaskManager")
+                                .getProperties()
+                                .get("launcher.access.group")
+                )),
+                "Task Manager setting does not require the admin group");
     }
 
     private static void verifyUniqueScreenComponentIds() {
@@ -225,6 +256,34 @@ public final class LauncherComponentLibraryVerification {
                     "Duplicate node id in component template: " + id);
         }
         return result;
+    }
+
+    private static Map<String, ComponentAttributes> indexRecursively(
+            List<ComponentAttributes> components
+    ) {
+        Map<String, ComponentAttributes> result = new LinkedHashMap<>();
+        indexRecursively(components, result);
+        return result;
+    }
+
+    private static void indexRecursively(
+            List<ComponentAttributes> components,
+            Map<String, ComponentAttributes> result
+    ) {
+        if (components == null) {
+            return;
+        }
+        for (ComponentAttributes component : components) {
+            if (component == null) {
+                continue;
+            }
+            String id = component.getComponentId();
+            if (id != null && !id.isBlank()) {
+                require(result.putIfAbsent(id, component) == null,
+                        "Duplicate nested settings component id: " + id);
+            }
+            indexRecursively(component.getChildComponents(), result);
+        }
     }
 
     private static String resourceText(String resource) {

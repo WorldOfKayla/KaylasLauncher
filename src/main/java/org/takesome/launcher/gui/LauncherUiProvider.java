@@ -65,7 +65,7 @@ public final class LauncherUiProvider {
         try {
             scopes().mainFrame();
             forms().authForm();
-            forms().settingsFields();
+            forms().settingsTabs();
             localeKeys().authLoggedOut();
             components().userPane();
             components().authSubmit();

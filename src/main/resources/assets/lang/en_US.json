@@ -27,6 +27,12 @@
     "logOut": "Log Out"
   },
   "settings": {
+    "tabGeneral": "General",
+    "tabRuntime": "Runtime",
+    "tabAdministration": "Administration",
+    "showTaskManager": "Show Task Manager",
+    "showTaskManager-desc": "Show the executor Task Manager after administrator sign-in",
+    "taskManagerAdminInfo": "This section is available only to administrators. The Task Manager displays active launcher tasks and executor progress.",
     "back": "Back",
     "baseOptions": "Base Options",
     "settingsInfo": "Description",

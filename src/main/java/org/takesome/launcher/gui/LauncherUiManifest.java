@@ -51,9 +51,9 @@ final class LauncherUiManifest {
 
     static final class Forms {
         private String authForm;
-        private String settingsFields;
+        private String settingsTabs;
         String authForm() { return required(authForm, "forms.authForm"); }
-        String settingsFields() { return required(settingsFields, "forms.settingsFields"); }
+        String settingsTabs() { return required(settingsTabs, "forms.settingsTabs"); }
     }
 
     static final class LocaleKeys {

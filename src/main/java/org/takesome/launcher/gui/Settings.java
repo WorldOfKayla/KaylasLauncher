@@ -9,9 +9,11 @@ import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
 import org.takesome.kaylasEngine.gui.components.combobox.ComboboxListener;
 import org.takesome.kaylasEngine.gui.components.constructor.ConstructedCompositeComponent;
+import org.takesome.kaylasEngine.gui.components.tabs.Tabs;
 import org.takesome.kaylasEngine.gui.components.textArea.TextArea;
 import org.takesome.kaylasEngine.utils.DataInjector;
 import org.takesome.launcher.LauncherValidator;
+import org.takesome.launcher.auth.LauncherGroupAccessPolicy;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +25,22 @@ import java.util.Map;
 
 public class Settings extends ComponentsAccessor implements ComboboxListener, CheckBoxListener {
     private static final String LANGUAGE_COMBOBOX_ID = "lang";
+    private static final String ADMINISTRATION_TAB_ID = "administration";
+    private static final String TASK_MANAGER_SETTING_ID = "showTaskManager";
+    private static final String ADMIN_GROUP = "admin";
+    private static final String ACCESS_GROUP_PROPERTY = "launcher.access.group";
+    private static final List<String> SETTING_IDS = List.of(
+            "autoEnter",
+            "fullScreen",
+            "enableSound",
+            "backgroundMusic",
+            "launchAC",
+            "volume",
+            "ramAmount",
+            LANGUAGE_COMBOBOX_ID,
+            "homeDir",
+            TASK_MANAGER_SETTING_ID
+    );
     private static final String ATTRIBUTES_PROPERTY = "kaylas.ui.attributes";
     private static final String FLAG_ICON_ROOT = "assets/ui/icons/flags/";
     private static final String FLAG_ICON_EXTENSION = ".svg";
@@ -45,20 +63,19 @@ public class Settings extends ComponentsAccessor implements ComboboxListener, Ch
         this.ui = UI_PROVIDER;
         this.ui.validate();
         this.addListeners();
+        this.prepareForDisplay();
     }
 
-    public void applySettings(String panelId) {
+    public void applySettings() {
         LauncherValidator.closeSocket();
-        Map<String, Object> settingsValues = new LinkedHashMap<>(
-                this.collectNativeFormValuesForPanel(panelId)
-        );
+        Map<String, Object> settingsValues = collectSettingsValues();
         this.findComponent(LANGUAGE_COMBOBOX_ID, Combobox.class)
                 .ifPresent(combobox -> settingsValues.put(
                         LANGUAGE_COMBOBOX_ID,
                         combobox.getSelectedIndex()
                 ));
 
-        Launcher.LOGGER.debug("Applying settings panel '{}': keys={}", panelId, settingsValues.keySet());
+        Launcher.LOGGER.debug("Applying settings tabs: keys={}", settingsValues.keySet());
         settingsValues.forEach(this.launcher.getConfig()::setConfigValue);
 
         this.launcher.getConfig().writeCurrentConfig();
@@ -67,8 +84,74 @@ public class Settings extends ComponentsAccessor implements ComboboxListener, Ch
         this.launcher = new Launcher(this.launcher.getFrame().getBounds());
     }
 
+    public void prepareForDisplay() {
+        String requiredGroup = requiredAdministrationGroup();
+        boolean administrator = LauncherGroupAccessPolicy.isMember(
+                launcher.getAuth(),
+                requiredGroup
+        );
+        this.findComponent(ui.forms().settingsTabs(), Tabs.class).ifPresent(tabs -> {
+            refreshTabTitles(tabs);
+            tabs.setTabVisible(ADMINISTRATION_TAB_ID, administrator);
+            if (!administrator && ADMINISTRATION_TAB_ID.equals(tabs.getSelectedTabId())) {
+                tabs.selectTab("general", "group-policy");
+            }
+        });
+        this.findComponent(TASK_MANAGER_SETTING_ID, Checkbox.class).ifPresent(checkbox -> {
+            checkbox.setVisible(administrator);
+            checkbox.setEnabled(administrator);
+            if (administrator) {
+                checkbox.setSelected(launcher.getConfig().isShowTaskManager());
+            }
+        });
+        Launcher.LOGGER.debug(
+                "Settings group policy applied: requiredGroup={}, administrator={}, taskManagerVisible={}",
+                requiredGroup,
+                administrator,
+                administrator && launcher.getConfig().isShowTaskManager()
+        );
+    }
+
+    private void refreshTabTitles(Tabs tabs) {
+        tabs.setTabTitle("general", launcher.getLANG().getString("settings.tabGeneral"));
+        tabs.setTabTitle("runtime", launcher.getLANG().getString("settings.tabRuntime"));
+        tabs.setTabTitle(
+                ADMINISTRATION_TAB_ID,
+                launcher.getLANG().getString("settings.tabAdministration")
+        );
+    }
+
+    private Map<String, Object> collectSettingsValues() {
+        Map<String, Object> settingsValues = new LinkedHashMap<>();
+        boolean administrator = isAdministrator();
+        for (String settingId : SETTING_IDS) {
+            if (TASK_MANAGER_SETTING_ID.equals(settingId) && !administrator) {
+                continue;
+            }
+            this.findValue(settingId).ifPresent(value -> settingsValues.put(settingId, value));
+        }
+        return settingsValues;
+    }
+
+    private boolean isAdministrator() {
+        return LauncherGroupAccessPolicy.isMember(
+                launcher.getAuth(),
+                requiredAdministrationGroup()
+        );
+    }
+
+    private String requiredAdministrationGroup() {
+        return this.findComponent(ui.forms().settingsTabs(), Tabs.class)
+                .map(tabs -> tabs.getTabContent(ADMINISTRATION_TAB_ID))
+                .map(content -> content.getClientProperty(ACCESS_GROUP_PROPERTY))
+                .map(String::valueOf)
+                .map(String::trim)
+                .filter(value -> !value.isEmpty())
+                .orElse(ADMIN_GROUP);
+    }
+
     public void addListeners() {
-        for (JComponent component : this.getComponentsForPanel(ui.forms().settingsFields())) {
+        for (JComponent component : this.getComponentMap().values()) {
             if (component instanceof Checkbox checkbox) {
                 checkbox.setCheckBoxListener(this);
             }
@@ -156,6 +239,7 @@ public class Settings extends ComponentsAccessor implements ComboboxListener, Ch
     }
 
     private void refreshLocalizedSettingsComponents() {
+        this.findComponent(ui.forms().settingsTabs(), Tabs.class).ifPresent(this::refreshTabTitles);
         for (JComponent component : this.getComponentMap().values()) {
             Object metadata = component.getClientProperty(ATTRIBUTES_PROPERTY);
             if (!(metadata instanceof ComponentAttributes attributes)) {

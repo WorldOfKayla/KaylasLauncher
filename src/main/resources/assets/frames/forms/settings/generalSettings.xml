@@ -4,64 +4,113 @@
         <panel id="generalSettings">
             <panelOptions doubleBuffered="true" focusable="true" display="true">
                 <visible/>
-                <bounds x="0" y="10" width="490" height="450" />
+                <bounds x="0" y="35" width="490" height="415" />
             </panelOptions>
             <childComponents>
-                <component type="label" fontSize="14" style="titleBold" imageIcon="fa:settings" iconWidth="32" iconHeight="32" localeKey="settings.baseOptions" id="baseOptions">
+                <component type="tabs" id="settingsTabs" orientation="top" style="default">
                     <visible/>
                     <enabled/>
-                    <bounds x="5" y="20" width="270" height="60" />
-                </component>
-                <component>
-                    <visible/>
-                    <enabled/>
-                    <panels>
-                        <panel id="settingsFields">
-                            <panelOptions background="#c0a1a0" display="true">
-                                <visible/>
-                                <opaque/>
-                                <bounds x="0" y="20" width="490" height="450" />
-                            </panelOptions>
+                    <bounds x="5" y="5" width="480" height="405" />
+                    <properties>
+                        <property name="tabs.gap" value="6" type="int" />
+                        <property name="tabs.selected" value="general" />
+                    </properties>
+                    <childComponents>
+                        <component type="compositeComponent" id="settingsGeneralTab" style="default">
+                            <visible/>
+                            <enabled/>
+                            <bounds x="0" y="0" width="470" height="365" />
+                            <properties>
+                                <property name="tab.id" value="general" />
+                                <property name="tab.titleKey" value="settings.tabGeneral" />
+                            </properties>
                             <childComponents>
-                                <component readFrom="assets/frames/forms/settings/checkBoxes.xml">
+                                <component type="checkBox" style="solid" keyCode="F1" id="autoEnter" localeKey="settings.autoEnter" initialValue="config#autoEnter">
                                     <visible/>
                                     <enabled/>
+                                    <bounds x="20" y="20" width="400" height="32" />
                                 </component>
-                                <component readFrom="assets/frames/forms/settings/sliders.xml">
+                                <component type="checkBox" style="solid" keyCode="F2" id="fullScreen" localeKey="settings.fullScreen" initialValue="config#fullScreen">
                                     <visible/>
                                     <enabled/>
+                                    <bounds x="20" y="58" width="400" height="32" />
                                 </component>
-                                <component type="button" keyCode="F" fontSize="12" toolTip="tooltip.folder" imageIcon="fa:folder" iconWidth="32" iconHeight="32" style="altButton" localeKey="settings.homeDir" id="gameDir-small">
+                                <component type="checkBox" style="solid" keyCode="F5" id="launchAC" localeKey="settings.launchAC" initialValue="config#launchAC">
                                     <visible/>
                                     <enabled/>
-                                    <bounds x="410" y="20" width="64" height="64" />
-                                    <scripts>
-                                        <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
-                                    </scripts>
+                                    <bounds x="20" y="96" width="420" height="32" />
                                 </component>
                                 <component type="label" fontSize="12" style="promptLabel" localeKey="settings.langBox" id="langBoxLabel">
                                     <visible/>
                                     <enabled/>
-                                    <bounds x="40" y="285" width="250" height="50" />
+                                    <bounds x="25" y="155" width="250" height="36" />
                                 </component>
                                 <component type="combobox" style="selectable" id="lang">
                                     <visible/>
                                     <enabled/>
-                                    <bounds x="40" y="320" width="380" height="25" />
+                                    <bounds x="25" y="195" width="405" height="28" />
+                                </component>
+                            </childComponents>
+                        </component>
+
+                        <component type="compositeComponent" id="settingsRuntimeTab" style="default">
+                            <visible/>
+                            <enabled/>
+                            <bounds x="0" y="0" width="470" height="365" />
+                            <properties>
+                                <property name="tab.id" value="runtime" />
+                                <property name="tab.titleKey" value="settings.tabRuntime" />
+                            </properties>
+                            <childComponents>
+                                <component type="checkBox" style="solid" keyCode="F3" id="enableSound" localeKey="settings.enableSound" initialValue="config#enableSound">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="20" y="10" width="300" height="32" />
+                                </component>
+                                <component type="checkBox" style="solid" keyCode="F4" id="backgroundMusic" localeKey="settings.backgroundMusic" initialValue="config#backgroundMusic">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="20" y="45" width="300" height="32" />
+                                </component>
+                                <component type="launcherVolumeControl" id="volume" style="default" initialValue="config#volume">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="20" y="78" width="430" height="65" />
+                                    <styles>
+                                        <style target="label" name="title" />
+                                        <style target="slider.tickLabel" name="title" />
+                                    </styles>
+                                    <properties>
+                                        <property name="launcher.setting.key" value="volume" />
+                                    </properties>
+                                    <scripts>
+                                        <script event="init" path="assets/scripts/launcher/composite-controls.lua" />
+                                    </scripts>
+                                </component>
+                                <component type="launcherRamControl" id="ramAmount" style="default" initialValue="config#ramAmount">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="20" y="145" width="430" height="65" />
+                                    <styles>
+                                        <style target="label" name="title" />
+                                        <style target="slider.tickLabel" name="title" />
+                                    </styles>
+                                    <properties>
+                                        <property name="launcher.setting.key" value="ramAmount" />
+                                    </properties>
+                                    <scripts>
+                                        <script event="init" path="assets/scripts/launcher/composite-controls.lua" />
+                                    </scripts>
                                 </component>
                                 <component type="label" fontSize="12" style="promptLabel" localeKey="settings.gameFiles" id="gameFilesLabel">
                                     <visible/>
                                     <enabled/>
-                                    <bounds x="40" y="345" width="250" height="50" />
+                                    <bounds x="25" y="218" width="250" height="34" />
                                 </component>
-                                <component
-                                    type="launcherDirectoryControl"
-                                    id="homeDir"
-                                    style="default"
-                                    initialValue="config#homeDir">
+                                <component type="launcherDirectoryControl" id="homeDir" style="default" initialValue="config#homeDir">
                                     <visible/>
                                     <enabled/>
-                                    <bounds x="40" y="380" width="380" height="35" />
+                                    <bounds x="25" y="255" width="365" height="35" />
                                     <properties>
                                         <property name="launcher.setting.key" value="homeDir" />
                                     </properties>
@@ -69,9 +118,44 @@
                                         <script event="init" path="assets/scripts/launcher/composite-controls.lua" />
                                     </scripts>
                                 </component>
+                                <component type="button" keyCode="F" toolTip="tooltip.folder" imageIcon="fa:folder" iconWidth="24" iconHeight="24" style="altButton" localeKey="settings.homeDir" id="gameDir-small">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="400" y="248" width="55" height="50" />
+                                    <scripts>
+                                        <script event="action" path="assets/scripts/launcher/launcher-ui.lua" />
+                                    </scripts>
+                                </component>
                             </childComponents>
-                        </panel>
-                    </panels>
+                        </component>
+
+                        <component type="compositeComponent" id="settingsAdministrationTab" style="default">
+                            <visible/>
+                            <enabled/>
+                            <bounds x="0" y="0" width="470" height="365" />
+                            <properties>
+                                <property name="tab.id" value="administration" />
+                                <property name="tab.titleKey" value="settings.tabAdministration" />
+                                <property name="tab.visible" value="false" type="boolean" />
+                                <property name="launcher.access.group" value="admin" />
+                            </properties>
+                            <childComponents>
+                                <component type="checkBox" style="solid" id="showTaskManager" localeKey="settings.showTaskManager" initialValue="config#showTaskManager">
+                                    <visible/>
+                                    <enabled/>
+                                    <bounds x="20" y="25" width="420" height="32" />
+                                    <properties>
+                                        <property name="launcher.access.group" value="admin" />
+                                    </properties>
+                                </component>
+                                <component type="textArea" lineWrap="true" editable="false" fontSize="11" style="textFieldMain" color="#d7d4c8" localeKey="settings.taskManagerAdminInfo" id="taskManagerAdminInfo" border="8,10,8,10">
+                                    <visible/>
+                                    <disabled/>
+                                    <bounds x="20" y="80" width="430" height="110" />
+                                </component>
+                            </childComponents>
+                        </component>
+                    </childComponents>
                 </component>
             </childComponents>
         </panel>

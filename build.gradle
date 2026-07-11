@@ -190,11 +190,21 @@ tasks.register('secureProcessAuditPolicyCheck', JavaExec) {
     systemProperty 'file.encoding', 'UTF-8'
 }
 
+tasks.register('settingsGroupPolicyCheck', JavaExec) {
+    group = 'verification'
+    description = 'Verifies group-scoped settings and administrator aliases.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.takesome.launcher.auth.LauncherGroupAccessPolicyVerification'
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
 tasks.named('check') {
     dependsOn tasks.named('launcherComponentsCheck')
     dependsOn tasks.named('serverPresentationCheck')
     dependsOn tasks.named('secureProcessCheck')
     dependsOn tasks.named('secureProcessAuditPolicyCheck')
+    dependsOn tasks.named('settingsGroupPolicyCheck')
 }
 
 tasks.register('runtimeEnvironment') {

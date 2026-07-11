@@ -64,7 +64,7 @@ return {
         durationMs = 3000
     },
     taskManager = {
-        adminGroup = "1",
+        adminGroup = "admin",
         iconPath = "assets/ui/icons/threadBolt.png",
         resizable = false
     },

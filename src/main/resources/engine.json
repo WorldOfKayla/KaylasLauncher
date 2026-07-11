@@ -16,6 +16,8 @@
     "slider",
     "spinner",
     "compositeSlider",
+    "compositeComponent",
+    "tabs",
     "launcherSliderTrack",
     "launcherSettingSpinner",
     "launcherDirectoryButton",

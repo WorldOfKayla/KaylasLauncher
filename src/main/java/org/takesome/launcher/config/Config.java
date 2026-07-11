@@ -57,6 +57,7 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
     private boolean loadNews = true;
     private boolean launchAC = true;
     private boolean discordRPC = true;
+    private boolean showTaskManager = true;
 
     public Config(Engine engine) {
         super(engine.getConfigFiles(), Engine.LOGGER);
@@ -272,6 +273,7 @@ public class Config extends org.takesome.kaylasEngine.config.Config {
     public boolean isLaunchAC() { return launchAC; }
     public boolean isBackgroundMusic() { return backgroundMusic; }
     public boolean isDiscordRPC() { return discordRPC; }
+    public boolean isShowTaskManager() { return showTaskManager; }
     public int getSelectedServer() { return selectedServer; }
     public int getLoaderIndex() { return loaderIndex; }
     public int getWidth() { return width; }

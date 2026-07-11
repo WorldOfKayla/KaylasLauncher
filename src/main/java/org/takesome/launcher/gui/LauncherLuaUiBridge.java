@@ -80,7 +80,7 @@ final class LauncherLuaUiBridge {
                     event -> launcher.getSettings().openGameFolder());
             context.on(ui.events().applySettings(),
                     ui.listeners().applySettings(),
-                    event -> launcher.getSettings().applySettings(ui.forms().settingsFields()));
+                    event -> launcher.getSettings().applySettings());
             context.on(SERVER_CORE_ICONS_EVENT,
                     "launcher.serverBox.coreIcons",
                     event -> applyServerBoxCoreIcons(DEFAULT_SERVER_BOX_ID));
@@ -108,6 +108,7 @@ final class LauncherLuaUiBridge {
     }
 
     private void openSettings() {
+        launcher.getSettings().prepareForDisplay();
         if (launcher.getAuth().getAuthStatus() == AuthStatus.UNAUTHORISED) {
             engine.getPanelVisibility().displayPanel(ui.panelSpecs().authToSettings());
         } else {

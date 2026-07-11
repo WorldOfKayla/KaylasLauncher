@@ -27,6 +27,12 @@
     "logOut": "Disconnetti"
   },
   "settings": {
+    "tabGeneral": "Generale",
+    "tabRuntime": "Runtime",
+    "tabAdministration": "Amministrazione",
+    "showTaskManager": "Mostra Task Manager",
+    "showTaskManager-desc": "Mostra il Task Manager dopo lвЂ™accesso come amministratore",
+    "taskManagerAdminInfo": "Questa sezione ГЁ disponibile solo agli amministratori. Il Task Manager mostra le attivitГ  attive del launcher e il progresso dellвЂ™executor.",
     "back": "Indietro",
     "baseOptions": "Opzioni di base",
     "settingsInfo": "Descrizione",

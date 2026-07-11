@@ -27,6 +27,12 @@
     "logOut": "Wyloguj się"
   },
   "settings": {
+    "tabGeneral": "OgГіlne",
+    "tabRuntime": "Ељrodowisko",
+    "tabAdministration": "Administracja",
+    "showTaskManager": "PokaЕј MenedЕјer zadaЕ„",
+    "showTaskManager-desc": "PokaЕј MenedЕјer zadaЕ„ po zalogowaniu jako administrator",
+    "taskManagerAdminInfo": "Ta sekcja jest dostД™pna tylko dla administratorГіw. MenedЕјer zadaЕ„ pokazuje aktywne zadania launchera i postД™p executora.",
     "back": "Wstecz",
     "baseOptions": "Opcje podstawowe",
     "settingsInfo": "Informacje",

@@ -13,6 +13,7 @@ import org.takesome.kaylasEngine.utils.ServerInfo;
 import org.takesome.launcher.auth.Auth;
 import org.takesome.launcher.auth.AuthResponse;
 import org.takesome.launcher.auth.AuthStatus;
+import org.takesome.launcher.auth.LauncherGroupAccessPolicy;
 import org.takesome.launcher.gui.BlendedImageIcon;
 import org.takesome.launcher.gui.LauncherUserUiConfig;
 import org.takesome.launcher.gui.LauncherNotifications;
@@ -578,23 +579,35 @@ public class User extends org.takesome.kaylasEngine.user.User {
         }
     }
 
+    public boolean canShowTaskManager() {
+        return launcher.getConfig().isShowTaskManager()
+                && LauncherGroupAccessPolicy.isMember(
+                        auth,
+                        userUi.taskManager().adminGroup()
+                );
+    }
+
     public void showTaskMgr() {
-        if (auth.getAuthStatus() == AuthStatus.AUTHORISED
-                && userUi.taskManager().adminGroup().equals(String.valueOf(this.userAttributes.getGroup()))) {
-            runOnEDT(() -> {
-                launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
-                taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
-                if (taskMgrFrame != null) {
-                    taskMgrFrame.setIconImage(launcher.getImageUtils().getLocalImage(userUi.taskManager().iconPath()));
-                    taskMgrFrame.setResizable(userUi.taskManager().resizable());
-                    Point parentLocation = launcher.getFrame().getLocationOnScreen();
-                    int parentX = parentLocation.x;
-                    int parentY = parentLocation.y;
-                    taskMgrFrame.setLocation(parentX + launcher.getFrame().getWidth(), parentY);
-                    taskMgrFrame.setVisible(true);
-                }
-            });
+        if (!canShowTaskManager()) {
+            if (taskMgrFrame != null) {
+                runOnEDT(() -> taskMgrFrame.setVisible(false));
+            }
+            return;
         }
+
+        runOnEDT(() -> {
+            launcher.getExecutorServiceProvider().getExecutorProgress().showTaskMgr();
+            taskMgrFrame = launcher.getExecutorServiceProvider().getExecutorProgress().getStatusFrame();
+            if (taskMgrFrame != null) {
+                taskMgrFrame.setIconImage(launcher.getImageUtils().getLocalImage(userUi.taskManager().iconPath()));
+                taskMgrFrame.setResizable(userUi.taskManager().resizable());
+                Point parentLocation = launcher.getFrame().getLocationOnScreen();
+                int parentX = parentLocation.x;
+                int parentY = parentLocation.y;
+                taskMgrFrame.setLocation(parentX + launcher.getFrame().getWidth(), parentY);
+                taskMgrFrame.setVisible(true);
+            }
+        });
     }
 
     @Deprecated

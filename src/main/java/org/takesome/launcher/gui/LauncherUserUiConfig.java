@@ -37,7 +37,7 @@ public final class LauncherUserUiConfig {
                     "user.badges.allFailure"),
             new SkinHover(180, 15),
             new LoginNotification("auth.loggedIn", "login", 10, 40, 340, 45, 3000),
-            new TaskManager("1", "assets/ui/icons/threadBolt.png", false),
+            new TaskManager("admin", "assets/ui/icons/threadBolt.png", false),
             new NewsItem(10, 10, 10, 10, "#000000", "#808080", "mcfontBold", "mcfont", 11),
             new Tasks("updateServer")
     );

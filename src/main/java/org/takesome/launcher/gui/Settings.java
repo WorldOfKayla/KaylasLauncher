@@ -3,6 +3,7 @@ package org.takesome.launcher.gui;
 import org.takesome.Launcher;
 import org.takesome.kaylasEngine.gui.componentAccessor.Component;
 import org.takesome.kaylasEngine.gui.componentAccessor.ComponentsAccessor;
+import org.takesome.kaylasEngine.gui.components.ComponentAttributes;
 import org.takesome.kaylasEngine.gui.components.checkbox.CheckBoxListener;
 import org.takesome.kaylasEngine.gui.components.checkbox.Checkbox;
 import org.takesome.kaylasEngine.gui.components.combobox.Combobox;
@@ -15,12 +16,14 @@ import org.takesome.launcher.LauncherValidator;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 public class Settings extends ComponentsAccessor implements ComboboxListener, CheckBoxListener {
     private static final String LANGUAGE_COMBOBOX_ID = "lang";
+    private static final String ATTRIBUTES_PROPERTY = "kaylas.ui.attributes";
     private static final String FLAG_ICON_ROOT = "assets/ui/icons/flags/";
     private static final String FLAG_ICON_EXTENSION = ".svg";
     private static final int FLAG_ICON_SIZE = 20;
@@ -46,33 +49,22 @@ public class Settings extends ComponentsAccessor implements ComboboxListener, Ch
 
     public void applySettings(String panelId) {
         LauncherValidator.closeSocket();
-        for (Map.Entry<String, Object> entry : this.collectFormCredentialsForPanel(panelId).entrySet()) {
-            Object value = determineValueType(entry.getValue());
-            this.launcher.getConfig().setConfigValue(entry.getKey(), value);
-        }
+        Map<String, Object> settingsValues = new LinkedHashMap<>(
+                this.collectNativeFormValuesForPanel(panelId)
+        );
+        this.findComponent(LANGUAGE_COMBOBOX_ID, Combobox.class)
+                .ifPresent(combobox -> settingsValues.put(
+                        LANGUAGE_COMBOBOX_ID,
+                        combobox.getSelectedIndex()
+                ));
+
+        Launcher.LOGGER.debug("Applying settings panel '{}': keys={}", panelId, settingsValues.keySet());
+        settingsValues.forEach(this.launcher.getConfig()::setConfigValue);
 
         this.launcher.getConfig().writeCurrentConfig();
         this.launcher.getSOUND().getSoundPlayer().stopAllSounds();
         this.launcher.getEngine().getFrame().dispose();
         this.launcher = new Launcher(this.launcher.getFrame().getBounds());
-    }
-
-    private Object determineValueType(Object value) {
-        if (value instanceof String stringValue) {
-            if ("true".equalsIgnoreCase(stringValue) || "false".equalsIgnoreCase(stringValue)) {
-                return Boolean.parseBoolean(stringValue);
-            }
-            try {
-                return Integer.parseInt(stringValue);
-            } catch (NumberFormatException ignored) {
-            }
-            try {
-                return Double.parseDouble(stringValue);
-            } catch (NumberFormatException ignored) {
-            }
-            return stringValue;
-        }
-        return value;
     }
 
     public void addListeners() {
@@ -143,8 +135,46 @@ public class Settings extends ComponentsAccessor implements ComboboxListener, Ch
 
     @Override
     public void onComboboxClose(Combobox combobox) {
-        launcher.getLANG().setLocaleIndex(combobox.getSelectedIndex());
+        if (!LANGUAGE_COMBOBOX_ID.equals(combobox.getName())) {
+            return;
+        }
+
+        int selectedIndex = combobox.getSelectedIndex();
+        if (selectedIndex != launcher.getLANG().getLocaleIndex()) {
+            launcher.getLANG().setLocaleIndex(selectedIndex);
+            launcher.getConfig().setConfigValue(LANGUAGE_COMBOBOX_ID, selectedIndex);
+            configureLanguageCombobox(combobox);
+            refreshLocalizedSettingsComponents();
+            Launcher.LOGGER.info(
+                    "Language selection changed: index={}, locale={}",
+                    selectedIndex,
+                    launcher.getLANG().getLocalesSet()[selectedIndex]
+            );
+        }
+        launcher.getFrame().getPanel().revalidate();
         launcher.getFrame().getPanel().repaint();
+    }
+
+    private void refreshLocalizedSettingsComponents() {
+        for (JComponent component : this.getComponentMap().values()) {
+            Object metadata = component.getClientProperty(ATTRIBUTES_PROPERTY);
+            if (!(metadata instanceof ComponentAttributes attributes)) {
+                continue;
+            }
+            String localeKey = attributes.getLocaleKey();
+            if (localeKey == null || localeKey.isBlank()) {
+                continue;
+            }
+
+            String localized = launcher.getLANG().getString(localeKey);
+            if (component instanceof JLabel label) {
+                label.setText(localized);
+            } else if (component instanceof AbstractButton button) {
+                button.setText(localized);
+            } else if (component instanceof TextArea textArea) {
+                textArea.setText(localized);
+            }
+        }
     }
 
     @Override
